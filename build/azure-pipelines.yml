@@ -47,29 +47,32 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'npm-package'
 
-# - stage: PublishPackage
-#   displayName: 'Publish to NPM'
-#   dependsOn: BuildAndTest
-#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-#   jobs:
-#   - job: Publish
-#     displayName: 'Publish to NPM'
-#     steps:
-#     - task: NodeTool@0
-#       displayName: 'Use Node.js $(nodeVersion)'
-#       inputs:
-#         versionSpec: '$(nodeVersion)'
-#     
-#     - script: npm ci
-#       displayName: 'Install dependencies'
-#     
-#     - script: npm run build
-#       displayName: 'Build package'
-#     
-#     - script: |
-#         npm pack
-#         files=( ./*.tgz )
-#         npm publish "${files[0]}" --tag alpha
-#       env:
-#         NPM_TOKEN: $(NPM_TOKEN)
-#       displayName: 'Pack and publish to NPM'
+  - stage: Deploy_Npm
+    displayName: Npm release
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    dependsOn:
+      - BuildAndTest
+    jobs:
+      - job: Publish
+        displayName: Push to NPM
+        steps:
+          - checkout: none
+          - download: current
+            artifact: 'npm-package'
+          - bash: echo "@umbraco-mcp:registry=https://registry.npmjs.org" >> .npmrc
+            workingDirectory: $(Pipeline.Workspace)/npm-package
+            displayName: Add scoped registry to .npmrc
+          - task: npmAuthenticate@0
+            displayName: Authenticate with npm
+            inputs:
+              workingFile: $(Pipeline.Workspace)/npm-package/.npmrc
+              customEndpoint: "NPM - Umbraco Backoffice"
+          - script: |
+              # Setup temp npm project to load in defaults from the local .npmrc
+              npm init -y
+
+              # Find the first .tgz file in the current directory and publish it
+              files=( ./*.tgz )
+              npm publish "${files[0]}"
+            displayName: Push to npm
+            workingDirectory: $(Pipeline.Workspace)/npm-package
