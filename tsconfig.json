@@ -20,8 +20,6 @@
       "@umb-management-client": [
         "./umb-management-api/umbraco-management-client.ts"
       ],
-      "@/umb-workflow-api/*": ["./umb-workflow/api/*"],
-      "@umb-workflow-client": ["./umb-workflow/umbraco-workflow-client.ts"]
     }
   },
   "files": ["global.d.ts"],
