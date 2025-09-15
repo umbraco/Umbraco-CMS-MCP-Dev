@@ -59,7 +59,7 @@ stages:
         - checkout: none
         - download: current
           artifact: 'npm-package'
-        - bash: echo "@umbraco-mcp:registry=https://registry.npmjs.org" >> .npmrc
+        - bash: echo "@umbraco-cms:registry=https://registry.npmjs.org" >> .npmrc
           workingDirectory: $(Pipeline.Workspace)/npm-package
           displayName: Add scoped registry to .npmrc
         - task: npmAuthenticate@0
