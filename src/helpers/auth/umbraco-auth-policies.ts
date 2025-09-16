@@ -11,7 +11,6 @@ export const sections = {
     packages: "Umb.Section.Packages",
     settings: "Umb.Section.Settings",
     translation: "Umb.Section.Translation",
-    workflow: "Umb.Section.Workflow",
     users: "Umb.Section.Users"
 }
 
