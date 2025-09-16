@@ -90,6 +90,6 @@ stages:
             fi
 
             echo "Publishing version ${version} with tag ${tag}"
-            npm publish "${files[0]}" --tag $tag
+            npm publish "${files[0]}" --tag $tag --access public
           displayName: Push to npm with dynamic tagging
           workingDirectory: $(Pipeline.Workspace)/npm-package
