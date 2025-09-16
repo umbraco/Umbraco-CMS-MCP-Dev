@@ -34,7 +34,7 @@ Once you have this information head back into Claude desktop app and head to Set
   "mcpServers": {
     "umbraco-mcp": {
       "command": "npx",
-      "args": ["@umbraco-mcp/umbraco-mcp-cms@alpha"],
+      "args": ["@umbraco-cms/mcp-dev@beta"],
       "env": {
         "NODE_TLS_REJECT_UNAUTHORIZED": "0",
         "UMBRACO_CLIENT_ID": "umbraco-back-office-mcp",
@@ -62,7 +62,7 @@ Restart Claude and try it out with a simple prompt such as `Tell me the GUID of 
 Use the Claude Code CLI to add the Umbraco MCP server:
 
 ```bash
-claude mcp add umbraco-mcp npx @umbraco-mcp/umbraco-mcp-cms@alpha
+claude mcp add umbraco-mcp npx @umbraco-cms/mcp-dev@beta
 ```
 
 Or configure environment variables and scope:
@@ -71,7 +71,7 @@ Or configure environment variables and scope:
 npm install -g @anthropic-ai/claude-code
 
 # Add with environment variables
-claude mcp add umbraco-mcp --env UMBRACO_CLIENT_ID="your-id" --env UMBRACO_CLIENT_SECRET="your-secret" --env UMBRACO_BASE_URL="https://your-domain.com" --env NODE_TLS_REJECT_UNAUTHORIZED="0" --env UMBRACO_INCLUDE_TOOL_COLLECTIONS="culture,document,media" -- npx @umbraco-mcp/umbraco-mcp-cms@alpha
+claude mcp add umbraco-mcp --env UMBRACO_CLIENT_ID="your-id" --env UMBRACO_CLIENT_SECRET="your-secret" --env UMBRACO_BASE_URL="https://your-domain.com" --env NODE_TLS_REJECT_UNAUTHORIZED="0" --env UMBRACO_INCLUDE_TOOL_COLLECTIONS="culture,document,media" -- npx @umbraco-cms/mcp-dev@beta
 
 # Verify installation
 claude mcp list
@@ -99,7 +99,7 @@ Follow the MCP [install guide](https://code.visualstudio.com/docs/copilot/custom
     "umbraco-mcp": {
       "type": "stdio",
       "command": "npx", 
-      "args": ["@umbraco-mcp/umbraco-mcp-cms@alpha"],
+      "args": ["@umbraco-cms/mcp-dev@beta"],
       "env": {
         "UMBRACO_CLIENT_ID": "<API user name>",
         "UMBRACO_CLIENT_SECRET": "<API client secret>",
@@ -127,7 +127,7 @@ Add the following to the config file and update the env variables.
   "mcpServers": {
     "umbraco-mcp": {
       "command": "npx", 
-      "args": ["@umbraco-mcp/umbraco-mcp-cms@alpha"],
+      "args": ["@umbraco-cms/mcp-dev@beta"],
       "env": {
         "UMBRACO_CLIENT_ID": "<API user name>",
         "UMBRACO_CLIENT_SECRET": "<API client secret>",
