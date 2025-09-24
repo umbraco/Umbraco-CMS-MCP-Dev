@@ -2,6 +2,7 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import {
   CreateDocumentTypeRequestModel,
   CompositionTypeModel,
+  CreateDocumentTypePropertyTypeRequestModel,
 } from "@/umb-management-api/schemas/index.js";
 import { postDocumentTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { DocumentTypeTestHelper } from "./document-type-test-helper.js";
@@ -102,6 +103,51 @@ export class DocumentTypeBuilder {
       documentType: { id: contentTypeId },
       compositionType,
     });
+    return this;
+  }
+
+  withProperty(
+    alias: string,
+    name: string,
+    dataTypeId: string,
+    options?: {
+      description?: string;
+      variesByCulture?: boolean;
+      variesBySegment?: boolean;
+      mandatory?: boolean;
+      mandatoryMessage?: string;
+      validationRegEx?: string;
+      validationRegExMessage?: string;
+      sortOrder?: number;
+      container?: string;
+    }
+  ): DocumentTypeBuilder {
+    const property: CreateDocumentTypePropertyTypeRequestModel = {
+      id: crypto.randomUUID(),
+      sortOrder: options?.sortOrder ?? this.model.properties.length,
+      alias,
+      name,
+      description: options?.description ?? null,
+      dataType: { id: dataTypeId },
+      variesByCulture: options?.variesByCulture ?? false,
+      variesBySegment: options?.variesBySegment ?? false,
+      validation: {
+        mandatory: options?.mandatory ?? false,
+        mandatoryMessage: options?.mandatoryMessage ?? null,
+        regEx: options?.validationRegEx ?? null,
+        regExMessage: options?.validationRegExMessage ?? null,
+      },
+      appearance: {
+        labelOnTop: false,
+      },
+    };
+
+    // Add container if specified
+    if (options?.container) {
+      property.container = { id: options.container };
+    }
+
+    this.model.properties.push(property);
     return this;
   }
 

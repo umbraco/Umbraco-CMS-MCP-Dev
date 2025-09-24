@@ -1,336 +1,326 @@
-# Umbraco Management API - Unsupported Endpoints Analysis
+# Umbraco MCP Endpoint Coverage Report
 
-This document provides a comprehensive comparison between the available Umbraco Management API endpoints and the currently implemented MCP tools, identifying gaps in functionality.
+Generated: 2025-09-24 (Updated for Media reference endpoints)
 
-## Summary
+## Executive Summary
 
-- **Total API Endpoints**: 393
-- **Implemented Tools**: 269
-- **Coverage**: ~68.4%
-- **Missing Endpoints**: ~124
+- **Total API Endpoints**: 401
+- **Implemented Endpoints**: 266
+- **Ignored Endpoints**: 22 (see [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md))
+- **Effective Coverage**: 70.2% (266 of 379 non-ignored)
+- **Actually Missing**: 113
 
-**Recent Updates:**
-- Added Document Version tools (4 endpoints)
-- Added Stylesheet tools (11 endpoints) 
-- Added Script tools (10 endpoints)
-- Expanded Partial View coverage
-- Enhanced test infrastructure and collection filtering system
+## Coverage Status by API Group
 
-## Coverage by Section
+### ✅ Complete (100% Coverage - excluding ignored) - 16 groups
+- Culture
+- DataType
+- Dictionary (import/export ignored)
+- DocumentType (import/export ignored)
+- Language
+- LogViewer
+- MediaType (import/export ignored)
+- PartialView
+- PropertyType
+- RedirectManagement
+- Script
+- Server
+- Stylesheet
+- Template
+- UmbracoManagement
+- Webhook
 
-### ✅ Well Covered Sections (80%+ coverage)
-- **Culture**: 100% coverage (1/1 endpoints)
-- **Data Types**: ~95% coverage (19/20 endpoints)
-- **Dictionary**: ~90% coverage (9/10 endpoints)  
-- **Document Blueprints**: ~85% coverage (6/7 endpoints)
-- **Document Types**: ~88% coverage (22/25 endpoints)
-- **Document Versions**: 100% coverage (4/4 endpoints) *NEW*
-- **Documents**: ~79% coverage (38/48 endpoints)
-- **Languages**: ~85% coverage (6/7 endpoints)
-- **Log Viewer**: ~90% coverage (9/10 endpoints)
-- **Media Types**: ~80% coverage (20/25 endpoints)
-- **Media**: ~85% coverage (29/34 endpoints)
-- **Member Groups**: ~85% coverage (6/7 endpoints)
-- **Member Types**: ~80% coverage (8/10 endpoints)
-- **Members**: ~83% coverage (5/6 endpoints)
-- **Partial Views**: ~83% coverage (10/12 endpoints) *IMPROVED*
-- **Property Types**: 100% coverage (1/1 endpoints)
-- **Redirects**: 100% coverage (5/5 endpoints)
-- **Scripts**: 100% coverage (10/10 endpoints) *NEW*
-- **Server**: 100% coverage (5/5 endpoints)
-- **Stylesheets**: 100% coverage (11/11 endpoints) *NEW*
-- **Templates**: 100% coverage (10/10 endpoints)
-- **Temporary Files**: 100% coverage (4/4 endpoints)
-- **User Groups**: 100% coverage (8/8 endpoints)
-- **Webhooks**: ~85% coverage (6/7 endpoints)
+### ⚠️ Nearly Complete (80-99% Coverage) - 2 groups
+- Media: 19/21 (90%)
+- Member: 25/31 (81%)
 
-### ❌ Missing Sections (0% coverage)
+### 🔶 Partial Coverage (1-79%) - 4 groups
+- Document: 42/53 (79%)
+- RecycleBin: 9/14 (64%)
+- RelationType: 1/3 (33%)
+- User: 2/53 (4%)
 
-#### Authentication & Security (22 endpoints)
-- `postSecurityForgotPassword`
-- `postSecurityForgotPasswordReset` 
-- `postSecurityForgotPasswordVerify`
-- `getSecurityConfiguration`
+### ❌ Not Implemented (0% Coverage) - 22 groups
+- Upgrade
+- Telemetry
+- Tag
+- StaticFile
+- Segment
+- Security
+- Searcher
+- Relation
+- PublishedCache
+- Profiling
+- Preview
+- Oembed
+- Object
+- ModelsBuilder
+- Manifest
+- Install
+- Indexer
+- Imaging
+- Help
+- Health
+- Dynamic
+
+## Priority Implementation Recommendations
+
+### 1. High Priority Groups (Core Functionality)
+These groups represent core Umbraco functionality and should be prioritized:
+
+#### User (4% complete, missing 51 endpoints)
+- `deleteUser`
+- `deleteUserAvatarById`
+- `deleteUserById`
+- `deleteUserById2faByProviderName`
+- `deleteUserByIdClientCredentialsByClientId`
+- ... and 40 more
+
+#### Member (81% complete, missing 6 endpoints)
+- `getMemberAreReferenced`
+- `getMemberByIdReferencedBy`
+- `getMemberByIdReferencedDescendants`
+- `getMemberGroup`
+- `postMemberValidate`
+- ... and 1 more
+
+#### Media (90% complete, missing 2 endpoints)
+- `postMediaValidate`
+- `putMediaByIdMoveToRecycleBin`
+
+#### Document (79% complete, missing 11 endpoints)
+- `getCollectionDocumentById`
+- `getDocumentAreReferenced`
+- `getDocumentBlueprintByIdScaffold`
+- `getDocumentByIdPublishWithDescendantsResultByTaskId`
+- `getDocumentByIdReferencedBy`
+- ... and 6 more
+
+## Detailed Missing Endpoints by Group
+
+
+
+
+### Member (Missing 6 endpoints)
+- `getMemberAreReferenced`
+- `getMemberByIdReferencedBy`
+- `getMemberByIdReferencedDescendants`
+- `getMemberGroup`
+- `postMemberValidate`
+- `putMemberByIdValidate`
+
+### Document (Missing 11 endpoints)
+- `getCollectionDocumentById`
+- `getDocumentAreReferenced`
+- `getDocumentBlueprintByIdScaffold`
+- `getDocumentByIdPublishWithDescendantsResultByTaskId`
+- `getDocumentByIdReferencedBy`
+- `getDocumentByIdReferencedDescendants`
+- `getItemDocument`
+- `getTreeDocumentBlueprintAncestors`
+- `getTreeDocumentBlueprintChildren`
+- `getTreeDocumentBlueprintRoot`
+- `postDocumentBlueprintFromDocument`
+
+### MediaType (Missing 1 endpoint)
+- `getItemMediaTypeFolders`
+
+### Media (Missing 2 endpoints)
+- `postMediaValidate`
+- `putMediaByIdMoveToRecycleBin`
+
+### RecycleBin (Missing 5 endpoints)
+- `deleteRecycleBinMedia`
+- `getRecycleBinDocumentByIdOriginalParent`
+- `getRecycleBinDocumentReferencedBy`
+- `getRecycleBinMediaByIdOriginalParent`
+- `getRecycleBinMediaReferencedBy`
+
+### RelationType (Missing 2 endpoints)
+- `getItemRelationType`
+- `getRelationTypeById`
+
+### User (Missing 43 endpoints)
+- `deleteUser`
+- `deleteUserAvatarById`
+- `deleteUserById`
+- `deleteUserById2faByProviderName`
+- `deleteUserByIdClientCredentialsByClientId`
+- `deleteUserCurrent2faByProviderName`
+- `deleteUserGroupByIdUsers`
+- `getFilterUser`
+- `getItemUser`
+- `getUser`
+- `getUserById`
+- `getUserById2fa`
+- `getUserByIdCalculateStartNodes`
+- `getUserByIdClientCredentials`
 - `getUserCurrent`
 - `getUserCurrent2fa`
-- `deleteUserCurrent2faByProviderName`
-- `postUserCurrent2faByProviderName`
 - `getUserCurrent2faByProviderName`
-- `postUserCurrentAvatar`
-- `postUserCurrentChangePassword`
-- `getUserCurrentConfiguration`
 - `getUserCurrentLoginProviders`
 - `getUserCurrentPermissions`
 - `getUserCurrentPermissionsDocument`
 - `getUserCurrentPermissionsMedia`
+- `getUserData`
+- `getUserDataById`
+- `postUser`
+- `postUserAvatarById`
+- `postUserByIdChangePassword`
+- `postUserByIdClientCredentials`
+- `postUserByIdResetPassword`
+- `postUserCurrent2faByProviderName`
+- `postUserCurrentAvatar`
+- `postUserCurrentChangePassword`
+- `postUserData`
 - `postUserDisable`
 - `postUserEnable`
+- `postUserGroupByIdUsers`
 - `postUserInvite`
 - `postUserInviteCreatePassword`
 - `postUserInviteResend`
 - `postUserInviteVerify`
-
-#### User Management (36 endpoints)
-- `postUserData`
-- `getUserData`
-- `putUserData`
-- `getUserDataById`
-- `getFilterUser`
-- `getItemUser`
-- `postUser`
-- `deleteUser`
-- `getUser`
-- `getUserById`
-- `deleteUserById`
-- `putUserById`
-- `getUserById2fa`
-- `deleteUserById2faByProviderName`
-- `getUserByIdCalculateStartNodes`
-- `postUserByIdChangePassword`
-- `postUserByIdClientCredentials`
-- `getUserByIdClientCredentials`
-- `deleteUserByIdClientCredentialsByClientId`
-- `postUserByIdResetPassword`
-- `deleteUserAvatarById`
-- `postUserAvatarById`
-- `getUserConfiguration`
-- `deleteUserGroupByIdUsers`
-- `postUserGroupByIdUsers`
 - `postUserSetUserGroups`
 - `postUserUnlock`
+- `putUserById`
+- `putUserData`
 
-#### Package Management (11 endpoints)
-- `postPackageByNameRunMigration`
-- `getPackageConfiguration`
-- `getPackageCreated`
-- `postPackageCreated`
-- `getPackageCreatedById`
-- `deletePackageCreatedById`
-- `putPackageCreatedById`
-- `getPackageCreatedByIdDownload`
-- `getPackageMigrationStatus`
+### Upgrade (Missing 2 endpoints)
+- `getUpgradeSettings`
+- `postUpgradeAuthorize`
 
-#### Scripting & Views (22 endpoints)
-- `getItemScript`
-- `postScript`
-- `getScriptByPath`
-- `deleteScriptByPath`
-- `putScriptByPath`
-- `putScriptByPathRename`
-- `postScriptFolder`
-- `getScriptFolderByPath`
-- `deleteScriptFolderByPath`
-- `getTreeScriptAncestors`
-- `getTreeScriptChildren`
-- `getTreeScriptRoot`
-- `getItemPartialView`
-- `postPartialView`
-- `getPartialViewByPath`
-- `deletePartialViewByPath`
-- `putPartialViewByPath`
-- `putPartialViewByPathRename`
-- `postPartialViewFolder`
-- `getPartialViewFolderByPath`
-- `deletePartialViewFolderByPath`
-- `getPartialViewSnippet`
-- `getPartialViewSnippetById`
-- `getTreePartialViewAncestors`
-- `getTreePartialViewChildren`
-- `getTreePartialViewRoot`
+### Telemetry (Missing 3 endpoints)
+- `getTelemetry`
+- `getTelemetryLevel`
+- `postTelemetryLevel`
 
-#### Stylesheets (10 endpoints)
-- `getItemStylesheet`
-- `postStylesheet`
-- `getStylesheetByPath`
-- `deleteStylesheetByPath`
-- `putStylesheetByPath`
-- `putStylesheetByPathRename`
-- `postStylesheetFolder`
-- `getStylesheetFolderByPath`
-- `deleteStylesheetFolderByPath`
-- `getTreeStylesheetAncestors`
-- `getTreeStylesheetChildren`
-- `getTreeStylesheetRoot`
+### Tag (Missing 1 endpoints)
+- `getTag`
 
-#### Static File Management (4 endpoints)
+### StaticFile (Missing 4 endpoints)
 - `getItemStaticFile`
 - `getTreeStaticFileAncestors`
 - `getTreeStaticFileChildren`
 - `getTreeStaticFileRoot`
 
-#### System Operations (29 endpoints)
+### Segment (Missing 1 endpoints)
+- `getSegment`
 
-**Health Checks (4 endpoints)**
-- `getHealthCheckGroup`
-- `getHealthCheckGroupByName`
-- `postHealthCheckGroupByNameCheck`
-- `postHealthCheckExecuteAction`
 
-**Help System (1 endpoint)**
-- `getHelp`
+### Searcher (Missing 2 endpoints)
+- `getSearcher`
+- `getSearcherBySearcherNameQuery`
 
-**Imaging (1 endpoint)**
-- `getImagingResizeUrls`
+### Relation (Missing 1 endpoints)
+- `getRelationByRelationTypeId`
 
-**Import/Export (1 endpoint)**
-- `getImportAnalyze`
+### PublishedCache (Missing 3 endpoints)
+- `getPublishedCacheRebuildStatus`
+- `postPublishedCacheRebuild`
+- `postPublishedCacheReload`
 
-**Indexing (3 endpoints)**
-- `getIndexer`
-- `getIndexerByIndexName`
-- `postIndexerByIndexNameRebuild`
+### Profiling (Missing 2 endpoints)
+- `getProfilingStatus`
+- `putProfilingStatus`
 
-**Installation (3 endpoints)**
-- `getInstallSettings`
-- `postInstallSetup`
-- `postInstallValidateDatabase`
+### Preview (Missing 2 endpoints)
+- `deletePreview`
+- `postPreview`
 
-**Manifests (3 endpoints)**
+
+### Oembed (Missing 1 endpoints)
+- `getOembedQuery`
+
+### Object (Missing 1 endpoints)
+- `getObjectTypes`
+
+### ModelsBuilder (Missing 3 endpoints)
+- `getModelsBuilderDashboard`
+- `getModelsBuilderStatus`
+- `postModelsBuilderBuild`
+
+### Manifest (Missing 3 endpoints)
 - `getManifestManifest`
 - `getManifestManifestPrivate`
 - `getManifestManifestPublic`
 
-**Models Builder (3 endpoints)**
-- `postModelsBuilderBuild`
-- `getModelsBuilderDashboard`
-- `getModelsBuilderStatus`
+### Install (Missing 3 endpoints)
+- `getInstallSettings`
+- `postInstallSetup`
+- `postInstallValidateDatabase`
 
-**Object Types (1 endpoint)**
-- `getObjectTypes`
+### Indexer (Missing 3 endpoints)
+- `getIndexer`
+- `getIndexerByIndexName`
+- `postIndexerByIndexNameRebuild`
 
-**OEmbed (1 endpoint)**
-- `getOembedQuery`
 
-**Preview (2 endpoints)**
-- `deletePreview`
-- `postPreview`
+### Imaging (Missing 1 endpoints)
+- `getImagingResizeUrls`
 
-**Profiling (2 endpoints)**
-- `getProfilingStatus`
-- `putProfilingStatus`
+### Help (Missing 1 endpoints)
+- `getHelp`
 
-**Published Cache (4 endpoints)**
-- `postPublishedCacheCollect`
-- `postPublishedCacheRebuild`
-- `postPublishedCacheReload`
-- `getPublishedCacheStatus`
+### Health (Missing 4 endpoints)
+- `getHealthCheckGroup`
+- `getHealthCheckGroupByName`
+- `postHealthCheckExecuteAction`
+- `postHealthCheckGroupByNameCheck`
 
-**Search (2 endpoints)**
-- `getSearcher`
-- `getSearcherBySearcherNameQuery`
-
-**Segments (1 endpoint)**
-- `getSegment`
-
-**Telemetry (3 endpoints)**
-- `getTelemetry`
-- `getTelemetryLevel`
-- `postTelemetryLevel`
-
-**Tags (1 endpoint)**
-- `getTag`
-
-**Upgrade (2 endpoints)**
-- `postUpgradeAuthorize`
-- `getUpgradeSettings`
-
-#### Relation Types (4 endpoints)
-- `getItemRelationType`
-- `getRelationType`
-- `getRelationTypeById`
-- `getRelationByRelationTypeId`
-
-#### Dynamic Root (2 endpoints)
-- `postDynamicRootQuery`
+### Dynamic (Missing 2 endpoints)
 - `getDynamicRootSteps`
-
-### ⚠️ Partially Covered Sections
-
-#### Data Types (Missing 1 endpoint)
-- `getFilterDataType` - Filtering functionality
-
-#### Dictionary (Missing 1 endpoint)
-- `getDictionaryByIdExport` - Export functionality
-
-#### Document Blueprints (Missing 1 endpoint)
-- `moveDocumentBlueprint` - Move functionality
-
-#### Document Types (Missing 3 endpoints)
-- `getDocumentTypeByIdExport` - Export functionality
-- `putDocumentTypeByIdImport` - Import functionality
-- `postDocumentTypeImport` - Import functionality
-
-#### Documents (Missing 10 endpoints)
-- Version management: `getDocumentVersion`, `getDocumentVersionById`, `putDocumentVersionByIdPreventCleanup`, `postDocumentVersionByIdRollback`
-- Collections: `getCollectionDocumentById`
-- References: `getDocumentByIdReferencedBy`, `getDocumentByIdReferencedDescendants`, `getDocumentAreReferenced`
-- Restore: `getRecycleBinDocumentByIdOriginalParent`, `putRecycleBinDocumentByIdRestore`
-
-#### Languages (Missing 1 endpoint)
-- `getItemLanguageDefault` - Default language item
-
-#### Log Viewer (Missing 1 endpoint)
-- `getLogViewerValidateLogsSize` - Log size validation
-
-#### Media Types (Missing 5 endpoints)
-- `getItemMediaTypeFolders` - Folder items
-- `getMediaTypeByIdExport` - Export functionality
-- `putMediaTypeByIdImport` - Import functionality
-- `postMediaTypeImport` - Import functionality
-
-#### Media (Missing 5 endpoints)
-- Collections: `getCollectionMedia`
-- References: `getMediaByIdReferencedBy`, `getMediaByIdReferencedDescendants`, `getMediaAreReferenced`
-- Restore: `getRecycleBinMediaByIdOriginalParent`, `putRecycleBinMediaByIdRestore`
-
-#### Member Groups (Missing 1 endpoint)
-- `getItemMemberGroup` - Member group items
-
-#### Member Types (Missing 2 endpoints)
-- `getItemMemberType` - Member type items
-- `getItemMemberTypeSearch` - Search functionality
-
-#### Members (Missing 1 endpoint)
-- `getFilterMember` - Filtering functionality
-
-#### Webhooks (Missing 1 endpoint)
-- `getWebhookByIdLogs` - Webhook-specific logs
-
-## Priority Recommendations
-
-### High Priority (Core CMS functionality)
-1. **User Management** - Critical for user administration
-2. **Authentication & Security** - Essential for security operations
-3. **Package Management** - Important for deployment and maintenance
-4. ~~**Version Management**~~ - ✅ COMPLETED (Document Versions added)
-
-### Medium Priority (Development tools)
-1. ~~**Scripting & Views**~~ - ✅ COMPLETED (Scripts and Partial Views added)
-2. ~~**Stylesheets**~~ - ✅ COMPLETED (100% coverage achieved)
-3. **System Operations** - Important for maintenance
-
-### Low Priority (Specialized features)
-1. **Static File Management** - Less commonly used
-2. **Relation Types** - Specialized use cases
-3. **Dynamic Root** - Advanced content modeling
+- `postDynamicRootQuery`
 
 ## Implementation Notes
 
-**Recent Achievements (68.4% coverage):**
-- ✅ **Document Versions** - Complete rollback and cleanup functionality
-- ✅ **Stylesheets** - Full CRUD operations and tree navigation
-- ✅ **Scripts** - Complete script file management
-- ✅ **Enhanced Test Infrastructure** - Comprehensive testing patterns and collection filtering
-- ✅ **Improved Coverage** - Significant jump from 47.6% to 68.4%
+1. **User Management**: Critical gap with only 15% coverage. Focus on:
+   - User CRUD operations
+   - User authentication and 2FA
+   - User permissions and groups
+   - User invitations and password management
 
-**Remaining gaps focus on:**
-- Advanced administrative functions (User management, Security)
-- System maintenance operations (Packages, Health checks)
-- Import/export functionality
-- Specialized features (Relations, Tags, Static files)
 
-The current MCP implementation now provides excellent coverage of the core content management workflows, with strong support for:
-- All content types (Documents, Media, Members)
-- Development workflow (Scripts, Stylesheets, Templates, Partial Views)
-- Content versioning and rollback capabilities
-- Comprehensive testing and quality assurance
+3. **Health & Monitoring**: No coverage for:
+   - Health checks
+   - Profiling
+   - Telemetry
+   - Server monitoring
+
+4. **Installation & Setup**: Missing all installation endpoints
+
+5. **Security Features**: No implementation for security configuration and password management
+
+## Recommendations
+
+1. **Immediate Priority**: Complete the nearly-complete groups (80%+ coverage)
+2. **High Priority**: Implement User management endpoints (critical for user administration)
+3. **Medium Priority**: Add Health and Security endpoints
+4. **Low Priority**: Installation, Telemetry, and other utility endpoints
+
+## Coverage Progress Tracking
+
+To improve coverage:
+1. Focus on completing groups that are already 80%+ implemented
+2. Prioritize based on typical Umbraco usage patterns
+3. Consider grouping related endpoints for batch implementation
+4. Ensure comprehensive testing for each new endpoint
+
+## Note on Tool Naming
+
+Some tools use different naming conventions than their corresponding API endpoints:
+- Search tools may map to `getItem*` endpoints
+- By-id-array tools may map to `getItem*` endpoints
+- This can cause discrepancies in automated coverage analysis
+
+## Ignored Endpoints
+
+Some endpoints are intentionally not implemented. See [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md) for:
+- List of 9 ignored endpoints (all import/export related)
+- Rationale for exclusion
+- Coverage statistics exclude these endpoints from calculations
+
+Ignored groups now showing 100% coverage:
+- Dictionary (2 import/export endpoints ignored)
+- DocumentType (3 import/export endpoints ignored)
+- MediaType (3 import/export endpoints ignored)
+- Import (1 analysis endpoint ignored)

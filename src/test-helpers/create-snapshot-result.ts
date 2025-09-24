@@ -23,6 +23,10 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
     if (item.documentType) {
       item.documentType = { ...item.documentType, id: BLANK_UUID };
     }
+    // Normalize mediaType reference
+    if (item.mediaType) {
+      item.mediaType = { ...item.mediaType, id: BLANK_UUID };
+    }
     // Normalize user reference
     if (item.user) {
       item.user = { ...item.user, id: BLANK_UUID };
@@ -44,6 +48,17 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
     }
     if (item.versionDate) {
       item.versionDate = "NORMALIZED_DATE";
+    }
+    // Normalize variants array if present
+    if (item.variants && Array.isArray(item.variants)) {
+      item.variants = item.variants.map((variant: any) => {
+        const normalizedVariant = { ...variant };
+        if (normalizedVariant.createDate) normalizedVariant.createDate = "NORMALIZED_DATE";
+        if (normalizedVariant.publishDate) normalizedVariant.publishDate = "NORMALIZED_DATE";
+        if (normalizedVariant.updateDate) normalizedVariant.updateDate = "NORMALIZED_DATE";
+        if (normalizedVariant.versionDate) normalizedVariant.versionDate = "NORMALIZED_DATE";
+        return normalizedVariant;
+      });
     }
     // Normalize test names that contain timestamps
     if (item.name && typeof item.name === "string") {

@@ -1,5 +1,6 @@
 import CreateTemplateTool from "./post/create-template.js";
 import GetTemplateTool from "./get/get-template.js";
+import GetTemplateConfigurationTool from "./get/get-template-configuration.js";
 import GetTemplatesByIdArrayTool from "./get/get-template-by-id-array.js";
 import UpdateTemplateTool from "./put/update-template.js";
 import DeleteTemplateTool from "./delete/delete-template.js";
@@ -31,11 +32,12 @@ export const TemplateCollection: ToolCollectionExport = {
 
     if (AuthorizationPolicies.TreeAccessTemplates(user)) {
       tools.push(GetTemplateTool());
+      tools.push(GetTemplateConfigurationTool());
       tools.push(GetTemplatesByIdArrayTool());
       tools.push(CreateTemplateTool());
       tools.push(UpdateTemplateTool());
       tools.push(DeleteTemplateTool());
-      
+
       // Query operations
       tools.push(ExecuteTemplateQueryTool());
       tools.push(GetTemplateQuerySettingsTool());

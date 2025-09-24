@@ -2,6 +2,7 @@ import { CompositionTypeModel } from "@/umb-management-api/schemas/compositionTy
 import { DocumentTypeBuilder } from "./document-type-builder.js";
 import { DocumentTypeTestHelper } from "./document-type-test-helper.js";
 import { jest } from "@jest/globals";
+import { TextString_DATA_TYPE_ID, MEDIA_PICKER_DATA_TYPE_ID } from "@/constants/constants.js";
 
 describe('DocumentTypeBuilder', () => {
   const TEST_DOCTYPE_NAME = '_Test Builder DocumentType';
@@ -152,6 +153,98 @@ describe('DocumentTypeBuilder', () => {
       expect(model.compositions).toContainEqual({ compositionType: CompositionTypeModel.Composition, documentType: { id: contentTypeId } });
     });
 
+    it('should add a simple property', () => {
+      builder.withProperty('title', 'Title', TextString_DATA_TYPE_ID);
+      const model = builder.build();
+
+      expect(model.properties).toHaveLength(1);
+      expect(model.properties[0]).toMatchObject({
+        alias: 'title',
+        name: 'Title',
+        dataType: { id: TextString_DATA_TYPE_ID },
+        variesByCulture: false,
+        variesBySegment: false,
+        sortOrder: 0,
+        validation: {
+          mandatory: false,
+          mandatoryMessage: null,
+          regEx: null,
+          regExMessage: null,
+        },
+        appearance: {
+          labelOnTop: false,
+        }
+      });
+      expect(model.properties[0].id).toBeDefined();
+    });
+
+    it('should add property with all options', () => {
+      const containerId = 'container-123';
+      builder.withProperty('mediaPicker', 'Media Picker', MEDIA_PICKER_DATA_TYPE_ID, {
+        description: 'Select an image',
+        variesByCulture: true,
+        variesBySegment: false,
+        mandatory: true,
+        mandatoryMessage: 'Please select an image',
+        validationRegEx: '^.+$',
+        validationRegExMessage: 'Invalid selection',
+        sortOrder: 5,
+        container: containerId
+      });
+      const model = builder.build();
+
+      expect(model.properties).toHaveLength(1);
+      expect(model.properties[0]).toMatchObject({
+        alias: 'mediaPicker',
+        name: 'Media Picker',
+        description: 'Select an image',
+        dataType: { id: MEDIA_PICKER_DATA_TYPE_ID },
+        variesByCulture: true,
+        variesBySegment: false,
+        sortOrder: 5,
+        container: { id: containerId },
+        validation: {
+          mandatory: true,
+          mandatoryMessage: 'Please select an image',
+          regEx: '^.+$',
+          regExMessage: 'Invalid selection',
+        },
+        appearance: {
+          labelOnTop: false,
+        }
+      });
+    });
+
+    it('should add multiple properties with correct sort order', () => {
+      builder
+        .withProperty('title', 'Title', TextString_DATA_TYPE_ID)
+        .withProperty('description', 'Description', TextString_DATA_TYPE_ID)
+        .withProperty('image', 'Image', MEDIA_PICKER_DATA_TYPE_ID);
+
+      const model = builder.build();
+
+      expect(model.properties).toHaveLength(3);
+      expect(model.properties[0].alias).toBe('title');
+      expect(model.properties[0].sortOrder).toBe(0);
+      expect(model.properties[1].alias).toBe('description');
+      expect(model.properties[1].sortOrder).toBe(1);
+      expect(model.properties[2].alias).toBe('image');
+      expect(model.properties[2].sortOrder).toBe(2);
+    });
+
+    it('should override auto sort order when specified', () => {
+      builder
+        .withProperty('first', 'First', TextString_DATA_TYPE_ID)
+        .withProperty('second', 'Second', TextString_DATA_TYPE_ID, { sortOrder: 10 })
+        .withProperty('third', 'Third', TextString_DATA_TYPE_ID);
+
+      const model = builder.build();
+
+      expect(model.properties[0].sortOrder).toBe(0);
+      expect(model.properties[1].sortOrder).toBe(10);
+      expect(model.properties[2].sortOrder).toBe(2);
+    });
+
     it('should chain builder methods', () => {
       const description = 'Test description';
       const icon = 'icon-test';
@@ -186,11 +279,37 @@ describe('DocumentTypeBuilder', () => {
         .create();
 
       expect(builder.getId()).toBeDefined();
-      
+
       const item = builder.getCreatedItem();
       expect(item).toBeDefined();
       expect(item.name).toBe(TEST_DOCTYPE_NAME);
       expect(item.isFolder).toBe(false);
+    });
+
+    it('should create document type with properties', async () => {
+      const testName = '_Test DocType With Properties';
+      await DocumentTypeTestHelper.cleanup(testName);
+
+      const builder = await new DocumentTypeBuilder()
+        .withName(testName)
+        .allowAsRoot()
+        .withProperty('title', 'Title', TextString_DATA_TYPE_ID, {
+          mandatory: true,
+          mandatoryMessage: 'Title is required'
+        })
+        .withProperty('mediaPicker', 'Featured Image', MEDIA_PICKER_DATA_TYPE_ID, {
+          description: 'Select a featured image'
+        })
+        .create();
+
+      expect(builder.getId()).toBeDefined();
+
+      const item = builder.getCreatedItem();
+      expect(item).toBeDefined();
+      expect(item.name).toBe(testName);
+
+      // Clean up
+      await DocumentTypeTestHelper.cleanup(testName);
     });
 
     it('should require name and alias for creation', async () => {

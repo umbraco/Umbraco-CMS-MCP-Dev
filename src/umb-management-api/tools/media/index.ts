@@ -18,6 +18,10 @@ import EmptyRecycleBinTool from "./delete/empty-recycle-bin.js";
 import RestoreFromRecycleBinTool from "./put/restore-from-recycle-bin.js";
 import MoveMediaToRecycleBinTool from "./put/move-to-recycle-bin.js";
 import DeleteFromRecycleBinTool from "./delete/delete-from-recycle-bin.js";
+import GetMediaAreReferencedTool from "./get/get-media-are-referenced.js";
+import GetMediaByIdReferencedByTool from "./get/get-media-by-id-referenced-by.js";
+import GetMediaByIdReferencedDescendantsTool from "./get/get-media-by-id-referenced-descendants.js";
+import GetCollectionMediaTool from "./get/get-collection-media.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -58,6 +62,10 @@ export const MediaCollection: ToolCollectionExport = {
       tools.push(RestoreFromRecycleBinTool());
       tools.push(MoveMediaToRecycleBinTool());
       tools.push(DeleteFromRecycleBinTool());
+      tools.push(GetMediaAreReferencedTool());
+      tools.push(GetMediaByIdReferencedByTool());
+      tools.push(GetMediaByIdReferencedDescendantsTool());
+      tools.push(GetCollectionMediaTool());
     }
 
     return tools;

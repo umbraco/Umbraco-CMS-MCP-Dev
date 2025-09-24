@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-user-configuration should get the user configuration 1`] = `
+{
+  "content": [
+    {
+      "text": "{"canInviteUsers":false,"usernameIsEmail":true,"passwordConfiguration":{"minimumPasswordLength":10,"requireNonLetterOrDigit":false,"requireDigit":false,"requireLowercase":false,"requireUppercase":false},"allowChangePassword":true,"allowTwoFactor":true}",
+      "type": "text",
+    },
+  ],
+}
+`;
