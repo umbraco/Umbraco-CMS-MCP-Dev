@@ -1,25 +1,27 @@
 # Umbraco MCP Endpoint Coverage Report
 
-Generated: 2025-09-24 (Updated for Media reference endpoints)
+Generated: 2025-09-25 (Updated for complete Media endpoint implementation)
 
 ## Executive Summary
 
 - **Total API Endpoints**: 401
-- **Implemented Endpoints**: 266
+- **Implemented Endpoints**: 275
 - **Ignored Endpoints**: 22 (see [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md))
-- **Effective Coverage**: 70.2% (266 of 379 non-ignored)
-- **Actually Missing**: 113
+- **Effective Coverage**: 72.6% (275 of 379 non-ignored)
+- **Actually Missing**: 104
 
 ## Coverage Status by API Group
 
-### ✅ Complete (100% Coverage - excluding ignored) - 16 groups
+### ✅ Complete (100% Coverage - excluding ignored) - 18 groups
 - Culture
 - DataType
 - Dictionary (import/export ignored)
 - DocumentType (import/export ignored)
 - Language
 - LogViewer
+- Media
 - MediaType (import/export ignored)
+- Member
 - PartialView
 - PropertyType
 - RedirectManagement
@@ -30,17 +32,14 @@ Generated: 2025-09-24 (Updated for Media reference endpoints)
 - UmbracoManagement
 - Webhook
 
-### ⚠️ Nearly Complete (80-99% Coverage) - 2 groups
-- Media: 19/21 (90%)
-- Member: 25/31 (81%)
+### ⚠️ Nearly Complete (80-99% Coverage) - 0 groups
 
-### 🔶 Partial Coverage (1-79%) - 4 groups
-- Document: 42/53 (79%)
-- RecycleBin: 9/14 (64%)
+### 🔶 Partial Coverage (1-79%) - 3 groups
+- Document: 42/57 (74%)
 - RelationType: 1/3 (33%)
 - User: 2/53 (4%)
 
-### ❌ Not Implemented (0% Coverage) - 22 groups
+### ❌ Not Implemented (0% Coverage) - 21 groups
 - Upgrade
 - Telemetry
 - Tag
@@ -76,19 +75,10 @@ These groups represent core Umbraco functionality and should be prioritized:
 - `deleteUserByIdClientCredentialsByClientId`
 - ... and 40 more
 
-#### Member (81% complete, missing 6 endpoints)
-- `getMemberAreReferenced`
-- `getMemberByIdReferencedBy`
-- `getMemberByIdReferencedDescendants`
-- `getMemberGroup`
-- `postMemberValidate`
-- ... and 1 more
+#### Media (100% complete, all endpoints implemented)
+All Media Management API endpoints are now implemented.
 
-#### Media (90% complete, missing 2 endpoints)
-- `postMediaValidate`
-- `putMediaByIdMoveToRecycleBin`
-
-#### Document (79% complete, missing 11 endpoints)
+#### Document (74% complete, missing 15 endpoints)
 - `getCollectionDocumentById`
 - `getDocumentAreReferenced`
 - `getDocumentBlueprintByIdScaffold`
@@ -98,18 +88,7 @@ These groups represent core Umbraco functionality and should be prioritized:
 
 ## Detailed Missing Endpoints by Group
 
-
-
-
-### Member (Missing 6 endpoints)
-- `getMemberAreReferenced`
-- `getMemberByIdReferencedBy`
-- `getMemberByIdReferencedDescendants`
-- `getMemberGroup`
-- `postMemberValidate`
-- `putMemberByIdValidate`
-
-### Document (Missing 11 endpoints)
+### Document (Missing 15 endpoints)
 - `getCollectionDocumentById`
 - `getDocumentAreReferenced`
 - `getDocumentBlueprintByIdScaffold`
@@ -117,6 +96,8 @@ These groups represent core Umbraco functionality and should be prioritized:
 - `getDocumentByIdReferencedBy`
 - `getDocumentByIdReferencedDescendants`
 - `getItemDocument`
+- `getRecycleBinDocumentByIdOriginalParent`
+- `getRecycleBinDocumentReferencedBy`
 - `getTreeDocumentBlueprintAncestors`
 - `getTreeDocumentBlueprintChildren`
 - `getTreeDocumentBlueprintRoot`
@@ -125,16 +106,10 @@ These groups represent core Umbraco functionality and should be prioritized:
 ### MediaType (Missing 1 endpoint)
 - `getItemMediaTypeFolders`
 
-### Media (Missing 2 endpoints)
-- `postMediaValidate`
-- `putMediaByIdMoveToRecycleBin`
-
-### RecycleBin (Missing 5 endpoints)
+### Media (Missing 3 endpoints)
 - `deleteRecycleBinMedia`
-- `getRecycleBinDocumentByIdOriginalParent`
-- `getRecycleBinDocumentReferencedBy`
 - `getRecycleBinMediaByIdOriginalParent`
-- `getRecycleBinMediaReferencedBy`
+- `postMediaValidate`
 
 ### RelationType (Missing 2 endpoints)
 - `getItemRelationType`
