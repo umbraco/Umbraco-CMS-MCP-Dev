@@ -45,4 +45,3 @@ dist
 **/.gemini/settings.json
 **/.qwen/settings.json
 **/.roo/mcp.json
-/tmp/
