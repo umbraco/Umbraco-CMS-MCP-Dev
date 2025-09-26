@@ -10,7 +10,7 @@ const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
   parentId: z.string().uuid("Must be a valid document UUID").optional(),
   name: z.string(),
-  cultures: z.array(z.string()).optional().describe("Array of culture codes. If not provided, will fetch available cultures from Umbraco."),
+  cultures: z.array(z.string()).optional().describe("Array of culture codes. If not provided or empty array, will create single variant with null culture."),
   values: z
     .array(
       z.object({
@@ -29,7 +29,7 @@ const CreateDocumentTool = CreateUmbracoTool(
   `Creates a document with support for multiple cultures.
 
   If cultures parameter is provided, a variant will be created for each culture code.
-  If cultures parameter is not provided, the tool will automatically fetch available cultures from Umbraco and create variants for all of them.
+  If cultures parameter is not provided or is an empty array, will create a single variant with null culture (original behavior).
 
   Always follow these requirements when creating documents exactly, do not deviate in any way.
 
@@ -641,18 +641,8 @@ const CreateDocumentTool = CreateUmbracoTool(
     let culturesToUse: (string | null)[] = [];
     
     if (model.cultures === undefined || model.cultures.length === 0) {
-      // If cultures not provided or empty array, fetch available cultures from Umbraco
-      try {
-        const cultureResponse = await client.getCulture({ take: 100 });
-        culturesToUse = cultureResponse.items.map(culture => culture.name);
-        // If no cultures available, fallback to null culture
-        if (culturesToUse.length === 0) {
-          culturesToUse = [null];
-        }
-      } catch (error) {
-        // If fetching cultures fails, fallback to null culture
-        culturesToUse = [null];
-      }
+      // If cultures not provided or empty array, use original behavior (null culture)
+      culturesToUse = [null];
     } else {
       // Use provided cultures
       culturesToUse = model.cultures;
