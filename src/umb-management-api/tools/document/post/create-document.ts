@@ -10,7 +10,7 @@ const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
   parentId: z.string().uuid("Must be a valid document UUID").optional(),
   name: z.string(),
-  cultures: z.array(z.string()).optional().describe("Array of culture codes. If not provided, will fetch available cultures from Umbraco. If empty array provided, will create without culture (null culture)."),
+  cultures: z.array(z.string()).optional().describe("Array of culture codes. If not provided, will fetch available cultures from Umbraco."),
   values: z
     .array(
       z.object({
@@ -30,7 +30,6 @@ const CreateDocumentTool = CreateUmbracoTool(
 
   If cultures parameter is provided, a variant will be created for each culture code.
   If cultures parameter is not provided, the tool will automatically fetch available cultures from Umbraco and create variants for all of them.
-  If an empty cultures array is provided, a single variant with null culture will be created (original behavior).
 
   Always follow these requirements when creating documents exactly, do not deviate in any way.
 
@@ -641,8 +640,8 @@ const CreateDocumentTool = CreateUmbracoTool(
     // Determine cultures to use
     let culturesToUse: (string | null)[] = [];
     
-    if (model.cultures === undefined) {
-      // If cultures not provided, fetch available cultures from Umbraco
+    if (model.cultures === undefined || model.cultures.length === 0) {
+      // If cultures not provided or empty array, fetch available cultures from Umbraco
       try {
         const cultureResponse = await client.getCulture({ take: 100 });
         culturesToUse = cultureResponse.items.map(culture => culture.name);
@@ -654,9 +653,6 @@ const CreateDocumentTool = CreateUmbracoTool(
         // If fetching cultures fails, fallback to null culture
         culturesToUse = [null];
       }
-    } else if (model.cultures.length === 0) {
-      // If empty array provided, use null culture (original behavior)
-      culturesToUse = [null];
     } else {
       // Use provided cultures
       culturesToUse = model.cultures;

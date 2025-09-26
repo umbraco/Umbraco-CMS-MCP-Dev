@@ -98,8 +98,8 @@ describe("create-document", () => {
     expect(cultures).toEqual(["da-DK", "en-US"]);
   });
 
-  it("should create a document with empty cultures array (null culture)", async () => {
-    // Create document with empty cultures array - should behave like original
+  it("should create a document with empty cultures array (auto-fetch behavior)", async () => {
+    // Create document with empty cultures array - should behave same as no cultures parameter
     const docModel = {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
@@ -115,8 +115,8 @@ describe("create-document", () => {
 
     const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
     expect(item).toBeDefined();
-    // Should have single variant with null culture
-    expect(item!.variants).toHaveLength(1);
-    expect(item!.variants[0].culture).toBeNull();
+    // Should fetch cultures and create variants (same as when cultures parameter is omitted)
+    // The exact number of variants depends on available cultures in the test environment
+    expect(item!.variants.length).toBeGreaterThanOrEqual(1);
   });
 });
