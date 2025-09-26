@@ -10,6 +10,7 @@ const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
   parentId: z.string().uuid("Must be a valid document UUID").optional(),
   name: z.string(),
+  cultures: z.array(z.string()).optional().describe("Array of culture codes. If not provided, will fetch available cultures from Umbraco. If empty array provided, will create without culture (null culture)."),
   values: z
     .array(
       z.object({
@@ -25,7 +26,11 @@ const createDocumentSchema = z.object({
 
 const CreateDocumentTool = CreateUmbracoTool(
   "create-document",
-  `Creates a document,
+  `Creates a document with support for multiple cultures.
+
+  If cultures parameter is provided, a variant will be created for each culture code.
+  If cultures parameter is not provided, the tool will automatically fetch available cultures from Umbraco and create variants for all of them.
+  If an empty cultures array is provided, a single variant with null culture will be created (original behavior).
 
   Always follow these requirements when creating documents exactly, do not deviate in any way.
 
@@ -633,6 +638,37 @@ const CreateDocumentTool = CreateUmbracoTool(
 
     const documentId = uuidv4();
 
+    // Determine cultures to use
+    let culturesToUse: (string | null)[] = [];
+    
+    if (model.cultures === undefined) {
+      // If cultures not provided, fetch available cultures from Umbraco
+      try {
+        const cultureResponse = await client.getCulture({ take: 100 });
+        culturesToUse = cultureResponse.items.map(culture => culture.name);
+        // If no cultures available, fallback to null culture
+        if (culturesToUse.length === 0) {
+          culturesToUse = [null];
+        }
+      } catch (error) {
+        // If fetching cultures fails, fallback to null culture
+        culturesToUse = [null];
+      }
+    } else if (model.cultures.length === 0) {
+      // If empty array provided, use null culture (original behavior)
+      culturesToUse = [null];
+    } else {
+      // Use provided cultures
+      culturesToUse = model.cultures;
+    }
+
+    // Create variants for each culture
+    const variants = culturesToUse.map(culture => ({
+      culture,
+      name: model.name,
+      segment: null,
+    }));
+
     const payload: CreateDocumentRequestModel = {
       id: documentId,
       documentType: {
@@ -645,13 +681,7 @@ const CreateDocumentTool = CreateUmbracoTool(
         : undefined,
       template: null,
       values: model.values,
-      variants: [
-        {
-          culture: null,
-          name: model.name,
-          segment: null,
-        },
-      ],
+      variants,
     };
 
     const response = await client.postDocument(payload);
