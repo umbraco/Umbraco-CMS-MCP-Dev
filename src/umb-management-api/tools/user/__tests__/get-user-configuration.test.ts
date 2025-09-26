@@ -21,16 +21,5 @@ describe("get-user-configuration", () => {
     // Assert
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
-
-    // Verify expected properties exist
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(parsed).toHaveProperty("canInviteUsers");
-    expect(parsed).toHaveProperty("usernameIsEmail");
-    expect(parsed).toHaveProperty("passwordConfiguration");
-    expect(parsed.passwordConfiguration).toHaveProperty("minimumPasswordLength");
-    expect(parsed.passwordConfiguration).toHaveProperty("requireNonLetterOrDigit");
-    expect(parsed.passwordConfiguration).toHaveProperty("requireDigit");
-    expect(parsed.passwordConfiguration).toHaveProperty("requireLowercase");
-    expect(parsed.passwordConfiguration).toHaveProperty("requireUppercase");
   });
 });

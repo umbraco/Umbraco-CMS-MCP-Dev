@@ -49,6 +49,15 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
     if (item.versionDate) {
       item.versionDate = "NORMALIZED_DATE";
     }
+    if (item.lastLoginDate) {
+      item.lastLoginDate = "NORMALIZED_DATE";
+    }
+    if (item.lastPasswordChangeDate) {
+      item.lastPasswordChangeDate = "NORMALIZED_DATE";
+    }
+    if (item.lastLockoutDate) {
+      item.lastLockoutDate = "NORMALIZED_DATE";
+    }
     // Normalize variants array if present
     if (item.variants && Array.isArray(item.variants)) {
       item.variants = item.variants.map((variant: any) => {
@@ -66,6 +75,19 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
     }
     if (item.path && typeof item.path === "string") {
       item.path = item.path.replace(/_\d{13}(?=_|\.js$|\/|$)/g, "_NORMALIZED_TIMESTAMP");
+    }
+    // Normalize email addresses with random numbers
+    if (item.email && typeof item.email === "string") {
+      item.email = item.email.replace(/-\d+@/, "-NORMALIZED@");
+    }
+    if (item.userName && typeof item.userName === "string") {
+      item.userName = item.userName.replace(/-\d+@/, "-NORMALIZED@");
+    }
+    // Normalize avatar URLs that contain dynamic file hashes
+    if (item.avatarUrls && Array.isArray(item.avatarUrls)) {
+      item.avatarUrls = item.avatarUrls.map((url: string) =>
+        url.replace(/\/[a-f0-9]{40}\.jpg/, "/NORMALIZED_AVATAR.jpg")
+      );
     }
     return item;
   }
@@ -93,6 +115,28 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
             }
             if (parsed.versionDate) {
               parsed.versionDate = "NORMALIZED_DATE";
+            }
+            if (parsed.lastLoginDate) {
+              parsed.lastLoginDate = "NORMALIZED_DATE";
+            }
+            if (parsed.lastPasswordChangeDate) {
+              parsed.lastPasswordChangeDate = "NORMALIZED_DATE";
+            }
+            if (parsed.lastLockoutDate) {
+              parsed.lastLockoutDate = "NORMALIZED_DATE";
+            }
+            // Normalize email addresses with random numbers
+            if (parsed.email && typeof parsed.email === "string") {
+              parsed.email = parsed.email.replace(/-\d+@/, "-NORMALIZED@");
+            }
+            if (parsed.userName && typeof parsed.userName === "string") {
+              parsed.userName = parsed.userName.replace(/-\d+@/, "-NORMALIZED@");
+            }
+            // Normalize avatar URLs that contain dynamic file hashes
+            if (parsed.avatarUrls && Array.isArray(parsed.avatarUrls)) {
+              parsed.avatarUrls = parsed.avatarUrls.map((url: string) =>
+                url.replace(/\/[a-f0-9]{40}\.jpg/, "/NORMALIZED_AVATAR.jpg")
+              );
             }
             // Normalize document version references
             if (parsed.document) {

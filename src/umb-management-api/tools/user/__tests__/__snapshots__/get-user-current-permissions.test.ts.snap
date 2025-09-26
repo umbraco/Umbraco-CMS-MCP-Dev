@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-user-current-permissions should get current user permissions 1`] = `
+{
+  "content": [
+    {
+      "text": "{"permissions":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-user-current-permissions should get current user permissions without parameters 1`] = `
+{
+  "content": [
+    {
+      "text": "{"permissions":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;
