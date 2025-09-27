@@ -10,14 +10,3 @@ exports[`get-user-current-permissions should get current user permissions 1`] = 
   ],
 }
 `;
-
-exports[`get-user-current-permissions should get current user permissions without parameters 1`] = `
-{
-  "content": [
-    {
-      "text": "{"permissions":[]}",
-      "type": "text",
-    },
-  ],
-}
-`;

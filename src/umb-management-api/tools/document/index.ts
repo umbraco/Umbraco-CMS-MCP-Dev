@@ -10,6 +10,12 @@ import GetDocumentPublishTool from "./get/get-document-publish.js";
 import GetDocumentConfigurationTool from "./get/get-document-configuration.js";
 import GetDocumentUrlsTool from "./get/get-document-urls.js";
 import SearchDocumentTool from "./get/search-document.js";
+import GetCollectionDocumentByIdTool from "./get/get-collection-document-by-id.js";
+import GetDocumentAreReferencedTool from "./get/get-document-are-referenced.js";
+import GetDocumentByIdReferencedByTool from "./get/get-document-by-id-referenced-by.js";
+import GetDocumentByIdReferencedDescendantsTool from "./get/get-document-by-id-referenced-descendants.js";
+import GetRecycleBinDocumentOriginalParentTool from "./get/get-recycle-bin-document-original-parent.js";
+import GetRecycleBinDocumentReferencedByTool from "./get/get-recycle-bin-document-referenced-by.js";
 import PostDocumentPublicAccessTool from "./post/post-document-public-access.js";
 import ValidateDocumentTool from "./post/validate-document.js";
 import CopyDocumentTool from "./post/copy-document.js";
@@ -75,6 +81,12 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(GetRecycleBinChildrenTool());
     tools.push(SearchDocumentTool());
     tools.push(ValidateDocumentTool());
+    tools.push(GetCollectionDocumentByIdTool());
+    tools.push(GetDocumentAreReferencedTool());
+    tools.push(GetDocumentByIdReferencedByTool());
+    tools.push(GetDocumentByIdReferencedDescendantsTool());
+    tools.push(GetRecycleBinDocumentOriginalParentTool());
+    tools.push(GetRecycleBinDocumentReferencedByTool());
   }
 
   if (AuthorizationPolicies.SectionAccessForContentTree(user)) {
