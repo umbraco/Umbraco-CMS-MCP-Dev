@@ -10,6 +10,7 @@ const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
   parentId: z.string().uuid("Must be a valid document UUID").optional(),
   name: z.string(),
+  cultures: z.array(z.string()).optional().describe("Array of culture codes. If not provided or empty array, will create single variant with null culture."),
   values: z
     .array(
       z.object({
@@ -25,7 +26,10 @@ const createDocumentSchema = z.object({
 
 const CreateDocumentTool = CreateUmbracoTool(
   "create-document",
-  `Creates a document,
+  `Creates a document with support for multiple cultures.
+
+  If cultures parameter is provided, a variant will be created for each culture code.
+  If cultures parameter is not provided or is an empty array, will create a single variant with null culture (original behavior).
 
   Always follow these requirements when creating documents exactly, do not deviate in any way.
 
@@ -633,6 +637,24 @@ const CreateDocumentTool = CreateUmbracoTool(
 
     const documentId = uuidv4();
 
+    // Determine cultures to use
+    let culturesToUse: (string | null)[] = [];
+    
+    if (model.cultures === undefined || model.cultures.length === 0) {
+      // If cultures not provided or empty array, use original behavior (null culture)
+      culturesToUse = [null];
+    } else {
+      // Use provided cultures
+      culturesToUse = model.cultures;
+    }
+
+    // Create variants for each culture
+    const variants = culturesToUse.map(culture => ({
+      culture,
+      name: model.name,
+      segment: null,
+    }));
+
     const payload: CreateDocumentRequestModel = {
       id: documentId,
       documentType: {
@@ -645,13 +667,7 @@ const CreateDocumentTool = CreateUmbracoTool(
         : undefined,
       template: null,
       values: model.values,
-      variants: [
-        {
-          culture: null,
-          name: model.name,
-          segment: null,
-        },
-      ],
+      variants,
     };
 
     const response = await client.postDocument(payload);
