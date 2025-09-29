@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`manifest tools get-manifest-manifest should get all manifests 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"name":"@umbraco-cms/backoffice","id":"00000000-0000-0000-0000-000000000000","version":"16.1.1","extensions":[]},{"name":"Umbraco Licenses","id":"00000000-0000-0000-0000-000000000000","version":"16.0.0","extensions":[{"name":"Umbraco Licenses EntryPoint","alias":"Umb.Licenses.EntryPoint","type":"backofficeEntryPoint","js":"/App_Plugins/Umbraco.Licenses/umbraco-licenses.js"}]},{"name":"Umbraco Workflow","id":"00000000-0000-0000-0000-000000000000","version":"16.0.3","extensions":[{"name":"Umbraco Workflow Backoffice EntryPoint","alias":"Workflow.BackofficeEntryPoint","type":"backofficeEntryPoint","js":"/App_Plugins/Umbraco.Workflow/umbraco-workflow.js"}]},{"name":"Clean","id":"00000000-0000-0000-0000-000000000000","version":"6.0.0","extensions":[{}]}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`manifest tools get-manifest-manifest-private should get private manifests 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"name":"@umbraco-cms/backoffice","id":"00000000-0000-0000-0000-000000000000","version":"16.1.1","extensions":[]},{"name":"Umbraco Licenses","id":"00000000-0000-0000-0000-000000000000","version":"16.0.0","extensions":[{"name":"Umbraco Licenses EntryPoint","alias":"Umb.Licenses.EntryPoint","type":"backofficeEntryPoint","js":"/App_Plugins/Umbraco.Licenses/umbraco-licenses.js"}]},{"name":"Umbraco Workflow","id":"00000000-0000-0000-0000-000000000000","version":"16.0.3","extensions":[{"name":"Umbraco Workflow Backoffice EntryPoint","alias":"Workflow.BackofficeEntryPoint","type":"backofficeEntryPoint","js":"/App_Plugins/Umbraco.Workflow/umbraco-workflow.js"}]},{"name":"Clean","id":"00000000-0000-0000-0000-000000000000","version":"6.0.0","extensions":[{}]}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`manifest tools get-manifest-manifest-public should get public manifests 1`] = `
+{
+  "content": [
+    {
+      "text": "[]",
+      "type": "text",
+    },
+  ],
+}
+`;

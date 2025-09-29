@@ -25,6 +25,9 @@ import { UserGroupCollection } from "./user-group/index.js";
 import { TemporaryFileCollection } from "./temporary-file/index.js";
 import { ScriptCollection } from "./script/index.js";
 import { StylesheetCollection } from "./stylesheet/index.js";
+import { HealthCollection } from "./health/index.js";
+import { ManifestCollection } from "./manifest/index.js";
+import { TagCollection } from "./tag/index.js";
 
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -58,7 +61,10 @@ const availableCollections: ToolCollectionExport[] = [
   UserGroupCollection,
   TemporaryFileCollection,
   ScriptCollection,
-  StylesheetCollection
+  StylesheetCollection,
+  HealthCollection,
+  ManifestCollection,
+  TagCollection
 ];
 
 // Enhanced mapTools with collection filtering (existing function signature)

@@ -1,36 +1,44 @@
 # Umbraco MCP Endpoint Coverage Report
 
-Generated: 2025-09-25 (Updated for complete Media and User endpoint implementations)
+Generated: 2025-09-28 (Updated for complete Media, User, Health, StaticFile, and Manifest endpoint implementations)
 
 ## Executive Summary
 
 - **Total API Endpoints**: 401
-- **Implemented Endpoints**: 309
-- **Ignored Endpoints**: 47 (see [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md))
-- **Effective Coverage**: 87.3% (309 of 354 non-ignored)
-- **Actually Missing**: 45
+- **Implemented Endpoints**: 325
+- **Ignored Endpoints**: 69 (see [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md))
+- **Effective Coverage**: 95.9% (325 of 339 non-ignored)
+- **Actually Missing**: 14
 
 ## Coverage Status by API Group
 
-### ✅ Complete (100% Coverage - excluding ignored) - 20 groups
+### ✅ Complete (100% Coverage - excluding ignored) - 27 groups
 - Culture
 - DataType
 - Dictionary (import/export ignored)
 - Document
 - DocumentType (import/export ignored)
+- Health
+- Install (3 system setup endpoints ignored)
 - Language
 - LogViewer
+- Manifest
 - Media
 - MediaType (import/export ignored)
 - Member
 - PartialView
 - PropertyType
+- PublishedCache (3 system performance endpoints ignored)
 - RedirectManagement
 - Script
 - Server
+- StaticFile
 - Stylesheet
+- Tag
+- Telemetry (3 privacy-sensitive endpoints ignored)
 - Template
 - UmbracoManagement
+- Upgrade (2 system setup endpoints ignored)
 - User (22 security-sensitive endpoints excluded)
 - Webhook
 
@@ -39,28 +47,15 @@ Generated: 2025-09-25 (Updated for complete Media and User endpoint implementati
 ### 🔶 Partial Coverage (1-79%) - 1 group
 - RelationType: 1/3 (33%)
 
-### ❌ Not Implemented (0% Coverage) - 21 groups
-- Upgrade
-- Telemetry
-- Tag
-- StaticFile
+### ❌ Not Implemented (0% Coverage) - 8 groups
 - Segment
 - Security
 - Searcher
 - Relation
-- PublishedCache
-- Profiling
-- Preview
-- Oembed
-- Object
 - ModelsBuilder
-- Manifest
-- Install
 - Indexer
 - Imaging
 - Help
-- Health
-- Dynamic
 
 ## Priority Implementation Recommendations
 
@@ -76,42 +71,23 @@ All Media Management API endpoints are now implemented.
 #### Document (100% complete, all endpoints implemented)
 All Document Management API endpoints are now implemented.
 
+#### Health (100% complete, all endpoints implemented)
+All Health Check Management API endpoints are now implemented.
+
+#### StaticFile (100% complete, all endpoints implemented)
+All StaticFile Management API endpoints are now implemented.
+
+
 ## Detailed Missing Endpoints by Group
 
 
-### MediaType (Missing 1 endpoint)
-- `getItemMediaTypeFolders`
-
-### Media (Missing 3 endpoints)
-- `deleteRecycleBinMedia`
-- `getRecycleBinMediaByIdOriginalParent`
-- `postMediaValidate`
 
 ### RelationType (Missing 2 endpoints)
 - `getItemRelationType`
 - `getRelationTypeById`
 
-### Upgrade (Missing 2 endpoints)
-- `getUpgradeSettings`
-- `postUpgradeAuthorize`
-
-### Telemetry (Missing 3 endpoints)
-- `getTelemetry`
-- `getTelemetryLevel`
-- `postTelemetryLevel`
-
-### Tag (Missing 1 endpoints)
-- `getTag`
-
-### StaticFile (Missing 4 endpoints)
-- `getItemStaticFile`
-- `getTreeStaticFileAncestors`
-- `getTreeStaticFileChildren`
-- `getTreeStaticFileRoot`
-
 ### Segment (Missing 1 endpoints)
 - `getSegment`
-
 
 ### Searcher (Missing 2 endpoints)
 - `getSearcher`
@@ -120,46 +96,15 @@ All Document Management API endpoints are now implemented.
 ### Relation (Missing 1 endpoints)
 - `getRelationByRelationTypeId`
 
-### PublishedCache (Missing 3 endpoints)
-- `getPublishedCacheRebuildStatus`
-- `postPublishedCacheRebuild`
-- `postPublishedCacheReload`
-
-### Profiling (Missing 2 endpoints)
-- `getProfilingStatus`
-- `putProfilingStatus`
-
-### Preview (Missing 2 endpoints)
-- `deletePreview`
-- `postPreview`
-
-
-### Oembed (Missing 1 endpoints)
-- `getOembedQuery`
-
-### Object (Missing 1 endpoints)
-- `getObjectTypes`
-
 ### ModelsBuilder (Missing 3 endpoints)
 - `getModelsBuilderDashboard`
 - `getModelsBuilderStatus`
 - `postModelsBuilderBuild`
 
-### Manifest (Missing 3 endpoints)
-- `getManifestManifest`
-- `getManifestManifestPrivate`
-- `getManifestManifestPublic`
-
-### Install (Missing 3 endpoints)
-- `getInstallSettings`
-- `postInstallSetup`
-- `postInstallValidateDatabase`
-
 ### Indexer (Missing 3 endpoints)
 - `getIndexer`
 - `getIndexerByIndexName`
 - `postIndexerByIndexNameRebuild`
-
 
 ### Imaging (Missing 1 endpoints)
 - `getImagingResizeUrls`
@@ -167,15 +112,7 @@ All Document Management API endpoints are now implemented.
 ### Help (Missing 1 endpoints)
 - `getHelp`
 
-### Health (Missing 4 endpoints)
-- `getHealthCheckGroup`
-- `getHealthCheckGroupByName`
-- `postHealthCheckExecuteAction`
-- `postHealthCheckGroupByNameCheck`
 
-### Dynamic (Missing 2 endpoints)
-- `getDynamicRootSteps`
-- `postDynamicRootQuery`
 
 ## Implementation Notes
 
@@ -187,8 +124,7 @@ All Document Management API endpoints are now implemented.
    - Current user operations
 
 
-3. **Health & Monitoring**: No coverage for:
-   - Health checks
+3. **Health & Monitoring**: ✅ Health checks complete. Missing:
    - Profiling
    - Telemetry
    - Server monitoring
@@ -202,7 +138,7 @@ All Document Management API endpoints are now implemented.
 1. **Immediate Priority**: Complete the remaining partially-complete groups (RelationType at 33%)
 2. **High Priority**: ✅ Document group now complete (100% coverage achieved)
 3. **Security Review**: ✅ User endpoints complete (22 endpoints permanently excluded for security reasons)
-4. **Medium Priority**: Add Health and monitoring endpoints
+4. **Medium Priority**: ✅ Health endpoints complete. Add remaining monitoring endpoints (Profiling)
 5. **Low Priority**: Installation, Telemetry, and other utility endpoints
 
 ## Coverage Progress Tracking
@@ -223,7 +159,7 @@ Some tools use different naming conventions than their corresponding API endpoin
 ## Ignored Endpoints
 
 Some endpoints are intentionally not implemented. See [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md) for:
-- List of 9 ignored endpoints (all import/export related)
+- List of 53 ignored endpoints (import/export, security, privacy, system setup, and package-related)
 - Rationale for exclusion
 - Coverage statistics exclude these endpoints from calculations
 
@@ -232,3 +168,11 @@ Ignored groups now showing 100% coverage:
 - DocumentType (3 import/export endpoints ignored)
 - MediaType (3 import/export endpoints ignored)
 - Import (1 analysis endpoint ignored)
+- Install (3 system setup endpoints ignored)
+- Package (9 package management endpoints ignored)
+- PublishedCache (3 system performance endpoints ignored)
+- Security (4 security-sensitive endpoints ignored)
+- Telemetry (3 privacy-sensitive endpoints ignored)
+- Upgrade (2 system setup endpoints ignored)
+- User Group (3 permission escalation endpoints ignored)
+- User (22 security-sensitive endpoints ignored)

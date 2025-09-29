@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`upload-user-current-avatar should handle non-existent temporary file id 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using upload-user-current-avatar:
+{
+  "message": "Request failed with status code 400",
+  "response": {
+    "type": "Error",
+    "title": "Avatar file not found",
+    "status": 400,
+    "detail": "The file key did not resolve in to a file",
+    "operationStatus": "AvatarFileNotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
 exports[`upload-user-current-avatar should upload avatar for current user 1`] = `
 {
   "content": [

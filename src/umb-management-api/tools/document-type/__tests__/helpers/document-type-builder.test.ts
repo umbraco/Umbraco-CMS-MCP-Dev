@@ -202,7 +202,7 @@ describe('DocumentTypeBuilder', () => {
         variesByCulture: true,
         variesBySegment: false,
         sortOrder: 5,
-        container: { id: containerId },
+        container: { id: model.containers[0].id },
         validation: {
           mandatory: true,
           mandatoryMessage: 'Please select an image',

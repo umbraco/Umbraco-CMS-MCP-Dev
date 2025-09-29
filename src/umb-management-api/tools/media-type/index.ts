@@ -8,6 +8,7 @@ import GetMediaTypeCompositionReferencesTool from "./get/get-media-type-composit
 import GetMediaTypeRootTool from "./items/get/get-root.js";
 import GetMediaTypeChildrenTool from "./items/get/get-children.js";
 import GetMediaTypeAncestorsTool from "./items/get/get-ancestors.js";
+import GetMediaTypeFoldersTool from "./items/get/get-media-type-folders.js";
 import GetMediaTypeFolderTool from "./folders/get/get-folder.js";
 import CreateMediaTypeFolderTool from "./folders/post/create-folder.js";
 import DeleteMediaTypeFolderTool from "./folders/delete/delete-folder.js";
@@ -49,6 +50,7 @@ export const MediaTypeCollection: ToolCollectionExport = {
       tools.push(GetMediaTypeRootTool());
       tools.push(GetMediaTypeChildrenTool());
       tools.push(GetMediaTypeAncestorsTool());
+      tools.push(GetMediaTypeFoldersTool());
     }
 
     if (AuthorizationPolicies.TreeAccessMediaOrMediaTypes(user)) {

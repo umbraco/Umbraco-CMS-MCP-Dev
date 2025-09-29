@@ -142,9 +142,22 @@ export class DocumentTypeBuilder {
       },
     };
 
-    // Add container if specified
-    if (options?.container) {
-      property.container = { id: options.container };
+    //There always needs to be a container, even if it's not specified
+    const containerName = options?.container ?? "Content";
+    let container = this.model.containers.find(
+      (container) => container.id === containerName
+    );
+    if (!container) {
+      container = {
+        id: crypto.randomUUID(),
+        sortOrder: 0,
+        name: containerName,
+        type: "Group",
+      };
+      this.model.containers.push(container);
+    }
+    if (container !== undefined) {
+      property.container = { id: container.id };
     }
 
     this.model.properties.push(property);

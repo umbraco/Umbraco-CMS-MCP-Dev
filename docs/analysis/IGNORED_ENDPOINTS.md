@@ -25,6 +25,11 @@ These endpoints are intentionally not implemented in the MCP server, typically b
 ### Import (1 endpoint)
 - `getImportAnalyze` - Import analysis functionality
 
+### Install (3 endpoints)
+- `getInstallSettings` - Installation configuration settings (system setup concerns)
+- `postInstallSetup` - System installation functionality (system modification risk)
+- `postInstallValidateDatabase` - Database validation during installation (system setup concerns)
+
 ### Package (9 endpoints)
 - `deletePackageCreatedById` - Delete created package functionality
 - `getPackageConfiguration` - Package configuration settings
@@ -46,6 +51,20 @@ These endpoints are intentionally not implemented in the MCP server, typically b
 - `deleteUserGroupByIdUsers` - Remove users from groups (permission escalation risk)
 - `postUserGroupByIdUsers` - Add users to groups (permission escalation risk)
 - `postUserSetUserGroups` - Set user's group memberships (permission escalation risk)
+
+### Telemetry (3 endpoints)
+- `getTelemetry` - System telemetry data collection (privacy concerns)
+- `getTelemetryLevel` - Telemetry configuration exposure (privacy concerns)
+- `postTelemetryLevel` - Telemetry settings modification (privacy concerns)
+
+### PublishedCache (3 endpoints)
+- `getPublishedCacheRebuildStatus` - Cache rebuild status monitoring (system performance concerns)
+- `postPublishedCacheRebuild` - Cache rebuild operations (system performance/stability risk)
+- `postPublishedCacheReload` - Cache reload operations (system performance/stability risk)
+
+### Upgrade (2 endpoints)
+- `getUpgradeSettings` - System upgrade configuration settings (system setup concerns)
+- `postUpgradeAuthorize` - System upgrade authorization functionality (system modification risk)
 
 ### User (22 endpoints)
 - `postUser` - User creation functionality (account proliferation/privilege escalation risk)
@@ -72,7 +91,25 @@ These endpoints are intentionally not implemented in the MCP server, typically b
 - `postUserEnable` - Compromised account activation risk (security risk)
 - `postUserUnlock` - Account security bypass risk (security risk)
 
-## Total Ignored: 47 endpoints
+### Profiling (2 endpoints)
+- `getProfilingStatus` - System profiling status monitoring (system performance/debugging concerns)
+- `putProfilingStatus` - System profiling configuration changes (system performance/stability risk)
+
+### Preview (2 endpoints)
+- `deletePreview` - Content preview deletion (frontend-specific functionality)
+- `postPreview` - Content preview creation (frontend-specific functionality)
+
+### Oembed (1 endpoint)
+- `getOembedQuery` - oEmbed media embedding functionality (frontend-specific functionality)
+
+### Object (1 endpoint)
+- `getObjectTypes` - System object type enumeration (internal system functionality)
+
+### Dynamic (2 endpoints)
+- `getDynamicRootSteps` - Dynamic root configuration steps (advanced configuration functionality)
+- `postDynamicRootQuery` - Dynamic root query processing (advanced configuration functionality)
+
+## Total Ignored: 69 endpoints
 
 ## Rationale
 
@@ -81,6 +118,12 @@ Import/Export endpoints are excluded because:
 2. Import operations can have wide-ranging effects on the system
 3. Export formats may be complex and not suitable for MCP tool responses
 4. These operations often require additional validation and user confirmation
+
+Install endpoints are excluded because:
+1. Installation operations modify core system configuration and should only be performed during initial setup
+2. Database validation during installation involves sensitive system checks
+3. Installation settings contain system-level configuration that should not be exposed or modified after setup
+4. These operations are typically only relevant during the initial Umbraco installation process
 
 Package endpoints are excluded because:
 1. Package creation and management involve complex file operations
@@ -94,11 +137,29 @@ Security endpoints are excluded because:
 3. Security configuration changes should be handled carefully through the Umbraco UI
 4. Automated security operations could pose security risks if misused
 
+Telemetry endpoints are excluded because:
+1. System telemetry data may contain sensitive system information
+2. Telemetry configuration changes could affect system monitoring and analytics
+3. Data collection settings raise privacy concerns and should be managed through the UI
+4. Automated modification of telemetry settings could impact system diagnostics
+
 User Group membership endpoints are excluded because:
 1. These operations present severe permission escalation risks
 2. AI could potentially assign users to administrator groups
 3. User group membership changes can compromise system security
 4. These sensitive operations should only be performed through the Umbraco UI with proper oversight
+
+PublishedCache endpoints are excluded because:
+1. Cache rebuild operations can significantly impact system performance and should be carefully timed
+2. Cache operations can affect site availability and user experience during execution
+3. Cache rebuild status monitoring could expose sensitive system performance information
+4. These operations require careful consideration of timing and system load and should be managed through the Umbraco UI
+
+Upgrade endpoints are excluded because:
+1. System upgrade operations involve critical system modifications that could break the installation
+2. Upgrade settings contain sensitive system configuration that should not be exposed
+3. Upgrade authorization involves system-level changes that require careful oversight
+4. These operations are typically only relevant during major version upgrades and should be handled through the Umbraco UI
 
 User endpoints are excluded because:
 1. User creation could enable account proliferation and privilege escalation attacks
@@ -110,3 +171,33 @@ User endpoints are excluded because:
 7. User state changes (disable/enable/unlock) could be used for denial of service attacks
 8. These operations require secure UI flows with proper validation and user confirmation
 9. Automated user security operations pose significant risks if misused by AI systems
+
+Profiling endpoints are excluded because:
+1. These endpoints control the MiniProfiler, which is a frontend debugging tool for web browsers
+2. Profiler activation and status are not relevant for MCP operations that work with data rather than UI
+3. The MiniProfiler is designed for developer debugging during web development, not for automated API interactions
+4. These operations are frontend-specific functionality that has no use case in the MCP context
+
+Preview endpoints are excluded because:
+1. Content preview functionality is designed for frontend website display and user interface interactions
+2. Preview operations are primarily used for content editors to see how content will appear on the website
+3. These operations are frontend-specific and not relevant for automated data management through MCP
+4. Preview creation and deletion are temporary UI-focused operations that have no use case in the MCP context
+
+Oembed endpoints are excluded because:
+1. oEmbed functionality is used for embedding external media content (videos, social media posts) into web pages
+2. This is primarily a frontend feature for content display and presentation
+3. oEmbed queries are typically used by content editors when creating web content, not for automated data management
+4. This frontend-specific functionality has no relevant use case in the MCP context
+
+Object endpoints are excluded because:
+1. Object type enumeration provides internal system metadata about Umbraco's object structure
+2. This information is primarily used by the Umbraco backend for internal operations and UI generation
+3. Object type data would be confusing and not actionable for AI assistants working with content
+4. This internal system functionality has no practical use case for MCP operations
+
+Dynamic endpoints are excluded because:
+1. Dynamic root functionality is an advanced configuration feature for creating custom content tree structures
+2. These operations involve complex system configuration that requires deep understanding of Umbraco architecture
+3. Dynamic root configuration is typically performed by experienced developers during system setup
+4. This advanced configuration functionality is not suitable for automated AI operations and could cause system instability if misused
