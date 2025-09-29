@@ -1,24 +1,25 @@
 # Umbraco MCP Endpoint Coverage Report
 
-Generated: 2025-09-29 (Updated for complete Searcher and Indexer endpoint implementations)
+Generated: 2025-09-29 (Updated for complete Searcher, Indexer, and Imaging endpoint implementations)
 
 ## Executive Summary
 
 - **Total API Endpoints**: 401
-- **Implemented Endpoints**: 333
-- **Ignored Endpoints**: 69 (see [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md))
-- **Effective Coverage**: 97.9% (333 of 340 non-ignored)
-- **Actually Missing**: 7
+- **Implemented Endpoints**: 334
+- **Ignored Endpoints**: 71 (see [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md))
+- **Effective Coverage**: 99.1% (334 of 337 non-ignored)
+- **Actually Missing**: 3
 
 ## Coverage Status by API Group
 
-### ✅ Complete (100% Coverage - excluding ignored) - 29 groups
+### ✅ Complete (100% Coverage - excluding ignored) - 30 groups
 - Culture
 - DataType
 - Dictionary (import/export ignored)
 - Document
 - DocumentType (import/export ignored)
 - Health
+- Imaging
 - Indexer
 - Install (3 system setup endpoints ignored)
 - Language
@@ -49,13 +50,10 @@ Generated: 2025-09-29 (Updated for complete Searcher and Indexer endpoint implem
 ### 🔶 Partial Coverage (1-79%) - 1 group
 - RelationType: 1/3 (33%)
 
-### ❌ Not Implemented (0% Coverage) - 6 groups
-- Segment
+### ❌ Not Implemented (0% Coverage) - 3 groups
 - Security
 - Relation
 - ModelsBuilder
-- Imaging
-- Help
 
 ## Priority Implementation Recommendations
 
@@ -83,6 +81,9 @@ All Searcher Management API endpoints are now implemented.
 #### Indexer (100% complete, all endpoints implemented)
 All Indexer Management API endpoints are now implemented, including the rebuild functionality.
 
+#### Imaging (100% complete, all endpoints implemented)
+All Imaging Management API endpoints are now implemented for image resizing and URL generation.
+
 
 ## Detailed Missing Endpoints by Group
 
@@ -92,20 +93,8 @@ All Indexer Management API endpoints are now implemented, including the rebuild 
 - `getItemRelationType`
 - `getRelationTypeById`
 
-### Segment (Missing 1 endpoints)
-- `getSegment`
-
-
 ### Relation (Missing 1 endpoints)
 - `getRelationByRelationTypeId`
-
-
-
-### Imaging (Missing 1 endpoints)
-- `getImagingResizeUrls`
-
-### Help (Missing 1 endpoints)
-- `getHelp`
 
 
 
@@ -162,12 +151,14 @@ Ignored groups now showing 100% coverage:
 - Dictionary (2 import/export endpoints ignored)
 - DocumentType (3 import/export endpoints ignored)
 - MediaType (3 import/export endpoints ignored)
+- Help (1 utility endpoint ignored)
 - Import (1 analysis endpoint ignored)
 - Indexer
 - Install (3 system setup endpoints ignored)
 - Package (9 package management endpoints ignored)
 - PublishedCache (3 system performance endpoints ignored)
 - Security (4 security-sensitive endpoints ignored)
+- Segment (1 utility endpoint ignored)
 - Telemetry (3 privacy-sensitive endpoints ignored)
 - Upgrade (2 system setup endpoints ignored)
 - User Group (3 permission escalation endpoints ignored)

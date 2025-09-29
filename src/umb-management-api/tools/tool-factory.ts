@@ -31,6 +31,7 @@ import { TagCollection } from "./tag/index.js";
 import { ModelsBuilderCollection } from "./models-builder/index.js";
 import { SearcherCollection } from "./searcher/index.js";
 import { IndexerCollection } from "./indexer/index.js";
+import { ImagingCollection } from "./imaging/index.js";
 
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -70,7 +71,8 @@ const availableCollections: ToolCollectionExport[] = [
   TagCollection,
   ModelsBuilderCollection,
   SearcherCollection,
-  IndexerCollection
+  IndexerCollection,
+  ImagingCollection
 ];
 
 // Enhanced mapTools with collection filtering (existing function signature)
