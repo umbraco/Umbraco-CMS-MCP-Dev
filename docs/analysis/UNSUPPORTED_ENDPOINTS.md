@@ -1,24 +1,25 @@
 # Umbraco MCP Endpoint Coverage Report
 
-Generated: 2025-09-28 (Updated for complete Media, User, Health, StaticFile, and Manifest endpoint implementations)
+Generated: 2025-09-29 (Updated for complete Searcher and Indexer endpoint implementations)
 
 ## Executive Summary
 
 - **Total API Endpoints**: 401
-- **Implemented Endpoints**: 328
+- **Implemented Endpoints**: 333
 - **Ignored Endpoints**: 69 (see [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md))
-- **Effective Coverage**: 96.8% (328 of 339 non-ignored)
-- **Actually Missing**: 11
+- **Effective Coverage**: 97.9% (333 of 340 non-ignored)
+- **Actually Missing**: 7
 
 ## Coverage Status by API Group
 
-### ✅ Complete (100% Coverage - excluding ignored) - 27 groups
+### ✅ Complete (100% Coverage - excluding ignored) - 29 groups
 - Culture
 - DataType
 - Dictionary (import/export ignored)
 - Document
 - DocumentType (import/export ignored)
 - Health
+- Indexer
 - Install (3 system setup endpoints ignored)
 - Language
 - LogViewer
@@ -31,6 +32,7 @@ Generated: 2025-09-28 (Updated for complete Media, User, Health, StaticFile, and
 - PublishedCache (3 system performance endpoints ignored)
 - RedirectManagement
 - Script
+- Searcher
 - Server
 - StaticFile
 - Stylesheet
@@ -47,13 +49,11 @@ Generated: 2025-09-28 (Updated for complete Media, User, Health, StaticFile, and
 ### 🔶 Partial Coverage (1-79%) - 1 group
 - RelationType: 1/3 (33%)
 
-### ❌ Not Implemented (0% Coverage) - 8 groups
+### ❌ Not Implemented (0% Coverage) - 6 groups
 - Segment
 - Security
-- Searcher
 - Relation
 - ModelsBuilder
-- Indexer
 - Imaging
 - Help
 
@@ -77,6 +77,12 @@ All Health Check Management API endpoints are now implemented.
 #### StaticFile (100% complete, all endpoints implemented)
 All StaticFile Management API endpoints are now implemented.
 
+#### Searcher (100% complete, all endpoints implemented)
+All Searcher Management API endpoints are now implemented.
+
+#### Indexer (100% complete, all endpoints implemented)
+All Indexer Management API endpoints are now implemented, including the rebuild functionality.
+
 
 ## Detailed Missing Endpoints by Group
 
@@ -89,18 +95,11 @@ All StaticFile Management API endpoints are now implemented.
 ### Segment (Missing 1 endpoints)
 - `getSegment`
 
-### Searcher (Missing 2 endpoints)
-- `getSearcher`
-- `getSearcherBySearcherNameQuery`
 
 ### Relation (Missing 1 endpoints)
 - `getRelationByRelationTypeId`
 
 
-### Indexer (Missing 3 endpoints)
-- `getIndexer`
-- `getIndexerByIndexName`
-- `postIndexerByIndexNameRebuild`
 
 ### Imaging (Missing 1 endpoints)
 - `getImagingResizeUrls`
@@ -164,6 +163,7 @@ Ignored groups now showing 100% coverage:
 - DocumentType (3 import/export endpoints ignored)
 - MediaType (3 import/export endpoints ignored)
 - Import (1 analysis endpoint ignored)
+- Indexer
 - Install (3 system setup endpoints ignored)
 - Package (9 package management endpoints ignored)
 - PublishedCache (3 system performance endpoints ignored)
