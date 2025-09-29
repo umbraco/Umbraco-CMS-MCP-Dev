@@ -28,6 +28,7 @@ import { StylesheetCollection } from "./stylesheet/index.js";
 import { HealthCollection } from "./health/index.js";
 import { ManifestCollection } from "./manifest/index.js";
 import { TagCollection } from "./tag/index.js";
+import { ModelsBuilderCollection } from "./models-builder/index.js";
 
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -64,7 +65,8 @@ const availableCollections: ToolCollectionExport[] = [
   StylesheetCollection,
   HealthCollection,
   ManifestCollection,
-  TagCollection
+  TagCollection,
+  ModelsBuilderCollection
 ];
 
 // Enhanced mapTools with collection filtering (existing function signature)

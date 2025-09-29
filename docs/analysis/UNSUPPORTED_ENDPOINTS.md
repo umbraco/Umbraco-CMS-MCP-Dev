@@ -5,10 +5,10 @@ Generated: 2025-09-28 (Updated for complete Media, User, Health, StaticFile, and
 ## Executive Summary
 
 - **Total API Endpoints**: 401
-- **Implemented Endpoints**: 325
+- **Implemented Endpoints**: 328
 - **Ignored Endpoints**: 69 (see [IGNORED_ENDPOINTS.md](./IGNORED_ENDPOINTS.md))
-- **Effective Coverage**: 95.9% (325 of 339 non-ignored)
-- **Actually Missing**: 14
+- **Effective Coverage**: 96.8% (328 of 339 non-ignored)
+- **Actually Missing**: 11
 
 ## Coverage Status by API Group
 
@@ -96,10 +96,6 @@ All StaticFile Management API endpoints are now implemented.
 ### Relation (Missing 1 endpoints)
 - `getRelationByRelationTypeId`
 
-### ModelsBuilder (Missing 3 endpoints)
-- `getModelsBuilderDashboard`
-- `getModelsBuilderStatus`
-- `postModelsBuilderBuild`
 
 ### Indexer (Missing 3 endpoints)
 - `getIndexer`
