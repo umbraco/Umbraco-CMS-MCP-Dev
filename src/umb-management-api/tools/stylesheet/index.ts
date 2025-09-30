@@ -55,17 +55,3 @@ export const StylesheetCollection: ToolCollectionExport = {
 export const StylesheetTools = (user: CurrentUserResponseModel) => {
   return StylesheetCollection.tools(user);
 };
-
-// Legacy exports for backward compatibility
-export { default as CreateStylesheetTool } from "./post/create-stylesheet.js";
-export { default as CreateStylesheetFolderTool } from "./post/create-stylesheet-folder.js";
-export { default as GetStylesheetByPathTool } from "./get/get-stylesheet-by-path.js";
-export { default as GetStylesheetFolderByPathTool } from "./get/get-stylesheet-folder-by-path.js";
-export { default as UpdateStylesheetTool } from "./put/update-stylesheet.js";
-export { default as RenameStylesheetTool } from "./put/rename-stylesheet.js";
-export { default as DeleteStylesheetTool } from "./delete/delete-stylesheet.js";
-export { default as DeleteStylesheetFolderTool } from "./delete/delete-stylesheet-folder.js";
-export { default as GetStylesheetAncestorsTool } from "./items/get/get-ancestors.js";
-export { default as GetStylesheetChildrenTool } from "./items/get/get-children.js";
-export { default as GetStylesheetRootTool } from "./items/get/get-root.js";
-export { default as GetStylesheetSearchTool } from "./items/get/get-search.js";

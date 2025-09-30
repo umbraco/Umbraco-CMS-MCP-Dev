@@ -58,15 +58,3 @@ export const TemplateTools = (user: CurrentUserResponseModel) => {
   return TemplateCollection.tools(user);
 };
 
-// Legacy exports for backward compatibility
-export { default as CreateTemplateTool } from "./post/create-template.js";
-export { default as GetTemplateTool } from "./get/get-template.js";
-export { default as GetTemplatesByIdArrayTool } from "./get/get-template-by-id-array.js";
-export { default as UpdateTemplateTool } from "./put/update-template.js";
-export { default as DeleteTemplateTool } from "./delete/delete-template.js";
-export { default as ExecuteTemplateQueryTool } from "./post/execute-template-query.js";
-export { default as GetTemplateQuerySettingsTool } from "./get/get-template-query-settings.js";
-export { default as GetTemplateAncestorsTool } from "./items/get/get-ancestors.js";
-export { default as GetTemplateChildrenTool } from "./items/get/get-children.js";
-export { default as GetTemplateRootTool } from "./items/get/get-root.js";
-export { default as GetTemplateSearchTool } from "./items/get/get-search.js";

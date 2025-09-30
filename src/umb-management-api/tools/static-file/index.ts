@@ -31,9 +31,3 @@ export const StaticFileCollection: ToolCollectionExport = {
 export const StaticFileTools = (user: CurrentUserResponseModel) => {
   return StaticFileCollection.tools(user);
 };
-
-// Individual tool exports for backward compatibility
-export { default as GetStaticFilesTool } from "./items/get/get-static-files.js";
-export { default as GetStaticFileRootTool } from "./items/get/get-root.js";
-export { default as GetStaticFileChildrenTool } from "./items/get/get-children.js";
-export { default as GetStaticFileAncestorsTool } from "./items/get/get-ancestors.js";
