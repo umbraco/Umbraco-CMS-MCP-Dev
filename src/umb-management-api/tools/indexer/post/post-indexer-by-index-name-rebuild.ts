@@ -6,7 +6,7 @@ const PostIndexerByIndexNameRebuildTool = CreateUmbracoTool(
   "post-indexer-by-index-name-rebuild",
   `Rebuilds a specific index by name.
   This operation will trigger a full rebuild of the index, which may take some time depending on the amount of content.
-  Use this when the index is out of sync or corrupted and needs to be completely rebuilt.`,
+  Use this only when asked to by the user.`,
   postIndexerByIndexNameRebuildParams.shape,
   async (model: { indexName: string }) => {
     const client = UmbracoManagementClient.getClient();

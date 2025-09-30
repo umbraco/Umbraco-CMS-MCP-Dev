@@ -4,14 +4,14 @@ exports[`get-item-data-type should get multiple data types by ID 1`] = `
 [
   {
     "editorAlias": "Umbraco.TextBox",
-    "editorUiAlias": "Umb.PropertyEditorUi.Textbox",
+    "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
     "id": "00000000-0000-0000-0000-000000000000",
     "isDeletable": true,
     "name": "_Test Item DataType",
   },
   {
     "editorAlias": "Umbraco.TextBox",
-    "editorUiAlias": "Umb.PropertyEditorUi.Textbox",
+    "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
     "id": "00000000-0000-0000-0000-000000000000",
     "isDeletable": true,
     "name": "_Test Item DataType2",
@@ -25,7 +25,7 @@ exports[`get-item-data-type should get single data type by ID 1`] = `
 [
   {
     "editorAlias": "Umbraco.TextBox",
-    "editorUiAlias": "Umb.PropertyEditorUi.Textbox",
+    "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
     "id": "00000000-0000-0000-0000-000000000000",
     "isDeletable": true,
     "name": "_Test Item DataType",

@@ -13,7 +13,7 @@ describe("get-data-type", () => {
     const builder = await new DataTypeBuilder()
       .withName(TEST_DATATYPE_NAME)
       .withEditorAlias("Umbraco.TextBox")
-      .withEditorUiAlias("textbox")
+      .withEditorUiAlias("Umb.PropertyEditorUi.TextBox")
       .create();
 
     dataTypeId = builder.getId();

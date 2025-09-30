@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-references-data-type should get references for a data type used in document type property 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"contentType":{"id":"BLANK_UUID","type":"document-type","name":"_Test DocType For References","icon":"icon-document"},"properties":[{"name":"Test Property","alias":"testProperty"}]}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-references-data-type should handle non-existent data type 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-references-data-type:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The data type could not be found",
+    "status": 404,
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-references-data-type should return empty array for unreferenced data type 1`] = `
+{
+  "content": [
+    {
+      "text": "[]",
+      "type": "text",
+    },
+  ],
+}
+`;

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-relation-type should get relation types with default pagination 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":6,"items":[{"id":"00000000-0000-0000-0000-000000000000","alias":"relateDocumentOnCopy","parentObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"childObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"name":"Relate Document On Copy","isBidirectional":true,"isDependency":false},{"id":"00000000-0000-0000-0000-000000000000","alias":"relateParentDocumentOnDelete","parentObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"childObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"name":"Relate Parent Document On Delete","isBidirectional":false,"isDependency":false},{"id":"00000000-0000-0000-0000-000000000000","alias":"relateParentMediaFolderOnDelete","parentObject":{"name":"Media","id":"b796f64c-1f99-4ffb-b886-4bf4bc011a9c"},"childObject":{"name":"Media","id":"b796f64c-1f99-4ffb-b886-4bf4bc011a9c"},"name":"Relate Parent Media Folder On Delete","isBidirectional":false,"isDependency":false},{"id":"00000000-0000-0000-0000-000000000000","alias":"umbDocument","parentObject":null,"childObject":null,"name":"Related Document","isBidirectional":false,"isDependency":true},{"id":"00000000-0000-0000-0000-000000000000","alias":"umbMedia","parentObject":null,"childObject":null,"name":"Related Media","isBidirectional":false,"isDependency":true},{"id":"00000000-0000-0000-0000-000000000000","alias":"umbMember","parentObject":null,"childObject":null,"name":"Related Member","isBidirectional":false,"isDependency":true}]}",
+      "type": "text",
+    },
+  ],
+}
+`;

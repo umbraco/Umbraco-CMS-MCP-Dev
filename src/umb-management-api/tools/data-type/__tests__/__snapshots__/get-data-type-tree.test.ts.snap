@@ -26,7 +26,7 @@ exports[`data-type-tree children should get child items 1`] = `
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"editorUiAlias":"Umb.PropertyEditorUi.Textbox","isDeletable":true,"isFolder":false,"name":"_Test Child DataType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":false}]}",
+      "text": "{"total":1,"items":[{"editorUiAlias":"Umb.PropertyEditorUi.TextBox","isDeletable":true,"isFolder":false,"name":"_Test Child DataType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":false}]}",
       "type": "text",
     },
   ],
