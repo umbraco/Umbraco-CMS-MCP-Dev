@@ -1,6 +1,6 @@
 {
-  "name": "@umbraco-mcp/umbraco-mcp-cms",
-  "version": "0.1.0-alpha.7",
+  "name": "@umbraco-cms/mcp-dev",
+  "version": "16.0.0-beta.1",
   "type": "module",
   "description": "A model context protocol (MCP) server for Umbraco CMS",
   "main": "index.js",
@@ -30,7 +30,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Matthew-Wise/umbraco-mcp.git"
+    "url": "git+https://github.com/umbraco/Umbraco-CMS-MCP-Dev"
   },
   "keywords": [
     "Umbraco",
@@ -43,9 +43,9 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Matthew-Wise/umbraco-mcp/issues"
+    "url": "https://github.com/umbraco/Umbraco-CMS-MCP-Dev/issues"
   },
-  "homepage": "https://github.com/Matthew-Wise/umbraco-mcp#readme",
+  "homepage": "https://github.com/umbraco/Umbraco-CMS-MCP-Dev#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.9.0",
     "@types/uuid": "^10.0.0",

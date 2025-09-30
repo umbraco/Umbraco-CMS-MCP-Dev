@@ -74,4 +74,49 @@ describe("create-document", () => {
     };
     expect(norm).toMatchSnapshot();
   });
+
+  it("should create a document with specific cultures", async () => {
+    // Create document with specific cultures
+    const docModel = {
+      documentTypeId: ROOT_DOCUMENT_TYPE_ID,
+      name: TEST_DOCUMENT_NAME,
+      cultures: ["en-US", "da-DK"],
+      values: [],
+    };
+
+    const result = await CreateDocumentTool().handler(docModel, {
+      signal: new AbortController().signal,
+    });
+
+    expect(result).toMatchSnapshot();
+
+    const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
+    expect(item).toBeDefined();
+    // Should have variants for both cultures
+    expect(item!.variants).toHaveLength(2);
+    const cultures = item!.variants.map(v => v.culture).sort();
+    expect(cultures).toEqual(["da-DK", "en-US"]);
+  });
+
+  it("should create a document with empty cultures array (null culture)", async () => {
+    // Create document with empty cultures array - should behave like original (null culture)
+    const docModel = {
+      documentTypeId: ROOT_DOCUMENT_TYPE_ID,
+      name: TEST_DOCUMENT_NAME,
+      cultures: [],
+      values: [],
+    };
+
+    const result = await CreateDocumentTool().handler(docModel, {
+      signal: new AbortController().signal,
+    });
+
+    expect(result).toMatchSnapshot();
+
+    const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
+    expect(item).toBeDefined();
+    // Should have single variant with null culture (original behavior)
+    expect(item!.variants).toHaveLength(1);
+    expect(item!.variants[0].culture).toBeNull();
+  });
 });
