@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`indexer-tool-index should have tools when user has no permissions 1`] = `[]`;
+
+exports[`indexer-tool-index should have tools when user has settings section access 1`] = `
+[
+  "get-indexer",
+  "get-indexer-by-index-name",
+  "post-indexer-by-index-name-rebuild",
+]
+`;

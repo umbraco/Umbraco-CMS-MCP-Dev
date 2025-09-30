@@ -28,7 +28,7 @@ export const TemplateCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [GetTemplateSearchTool()];
+    const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessTemplates(user)) {
       tools.push(GetTemplateTool());
@@ -46,6 +46,7 @@ export const TemplateCollection: ToolCollectionExport = {
       tools.push(GetTemplateAncestorsTool());
       tools.push(GetTemplateChildrenTool());
       tools.push(GetTemplateRootTool());
+      tools.push(GetTemplateSearchTool());
     }
 
     return tools;

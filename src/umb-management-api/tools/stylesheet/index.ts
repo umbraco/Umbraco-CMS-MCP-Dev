@@ -27,7 +27,7 @@ export const StylesheetCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [GetStylesheetSearchTool()];
+    const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessStylesheets(user)) {
       // Basic CRUD operations
@@ -44,6 +44,7 @@ export const StylesheetCollection: ToolCollectionExport = {
       tools.push(GetStylesheetAncestorsTool());
       tools.push(GetStylesheetChildrenTool());
       tools.push(GetStylesheetRootTool());
+      tools.push(GetStylesheetSearchTool());
     }
 
     return tools;

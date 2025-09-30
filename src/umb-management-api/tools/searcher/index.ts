@@ -2,6 +2,8 @@ import GetSearcherTool from "./get/get-searcher.js";
 import GetSearcherBySearcherNameQueryTool from "./get/get-searcher-by-searcher-name-query.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 
 export const SearcherCollection: ToolCollectionExport = {
   metadata: {
@@ -11,10 +13,15 @@ export const SearcherCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    return [
-      GetSearcherTool(),
-      GetSearcherBySearcherNameQueryTool()
-    ];
+
+    const tools: ToolDefinition<any>[] = [];
+
+    if (AuthorizationPolicies.SectionAccessSettings(user)) {
+      tools.push(GetSearcherTool());
+      tools.push(GetSearcherBySearcherNameQueryTool());
+    }
+
+    return tools;
   }
 };
 

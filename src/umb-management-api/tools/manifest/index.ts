@@ -3,6 +3,8 @@ import GetManifestManifestPrivateTool from "./get/get-manifest-manifest-private.
 import GetManifestManifestPublicTool from "./get/get-manifest-manifest-public.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 
 export const ManifestCollection: ToolCollectionExport = {
   metadata: {
@@ -12,11 +14,15 @@ export const ManifestCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    return [
-      GetManifestManifestTool(),
-      GetManifestManifestPrivateTool(),
-      GetManifestManifestPublicTool()
-    ];
+    const tools: ToolDefinition<any>[] = [];
+
+    if (AuthorizationPolicies.SectionAccessSettings(user)) {
+      tools.push(GetManifestManifestTool());
+      tools.push(GetManifestManifestPrivateTool());
+      tools.push(GetManifestManifestPublicTool());
+    }
+
+    return tools;
   }
 };
 
