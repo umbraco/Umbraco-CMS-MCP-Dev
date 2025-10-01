@@ -25,6 +25,18 @@ import { UserGroupCollection } from "./user-group/index.js";
 import { TemporaryFileCollection } from "./temporary-file/index.js";
 import { ScriptCollection } from "./script/index.js";
 import { StylesheetCollection } from "./stylesheet/index.js";
+import { HealthCollection } from "./health/index.js";
+import { ManifestCollection } from "./manifest/index.js";
+import { TagCollection } from "./tag/index.js";
+import { ModelsBuilderCollection } from "./models-builder/index.js";
+import { SearcherCollection } from "./searcher/index.js";
+import { IndexerCollection } from "./indexer/index.js";
+import { ImagingCollection } from "./imaging/index.js";
+import { RelationTypeCollection } from "./relation-type/index.js";
+import { RelationCollection } from "./relation/index.js";
+import { UserCollection } from "./user/index.js";
+import { UserDataCollection } from "./user-data/index.js";
+import { StaticFileCollection } from "./static-file/index.js";
 
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -58,7 +70,19 @@ const availableCollections: ToolCollectionExport[] = [
   UserGroupCollection,
   TemporaryFileCollection,
   ScriptCollection,
-  StylesheetCollection
+  StylesheetCollection,
+  HealthCollection,
+  ManifestCollection,
+  TagCollection,
+  ModelsBuilderCollection,
+  SearcherCollection,
+  IndexerCollection,
+  ImagingCollection,
+  RelationTypeCollection,
+  RelationCollection,
+  UserCollection,
+  UserDataCollection,
+  StaticFileCollection
 ];
 
 // Enhanced mapTools with collection filtering (existing function signature)

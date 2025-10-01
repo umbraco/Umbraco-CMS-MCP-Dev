@@ -117,4 +117,58 @@ export class DocumentBlueprintBuilder {
     }
     return this.createdItem;
   }
+
+  static async createFromDocument(
+    documentId: string,
+    blueprintName: string
+  ): Promise<DocumentBlueprintBuilder> {
+    try {
+      const client = UmbracoManagementClient.getClient();
+      const response = await client.postDocumentBlueprintFromDocument({
+        document: { id: documentId },
+        name: blueprintName
+      });
+
+      // Find the created blueprint
+      const createdItem = await DocumentBlueprintTestHelper.findDocumentBlueprint(blueprintName);
+
+      if (!createdItem) {
+        throw new Error(`Failed to find created document blueprint with name: ${blueprintName}`);
+      }
+
+      // Create a builder instance with the created item
+      const builder = new DocumentBlueprintBuilder(blueprintName);
+      builder.createdItem = createdItem;
+
+      return builder;
+    } catch (error) {
+      console.error("Error creating document blueprint from document:", error);
+      throw error;
+    }
+  }
+
+  async getScaffold(): Promise<any> {
+    if (!this.createdItem) {
+      throw new Error("No document blueprint has been created yet");
+    }
+    try {
+      const client = UmbracoManagementClient.getClient();
+      const response = await client.getDocumentBlueprintByIdScaffold(this.createdItem.id);
+      return response;
+    } catch (error) {
+      console.error("Error getting document blueprint scaffold:", error);
+      throw error;
+    }
+  }
+
+  async cleanup(): Promise<void> {
+    if (this.createdItem) {
+      try {
+        const client = UmbracoManagementClient.getClient();
+        await client.deleteDocumentBlueprintById(this.createdItem.id);
+      } catch (error) {
+        console.error("Error cleaning up document blueprint:", error);
+      }
+    }
+  }
 }

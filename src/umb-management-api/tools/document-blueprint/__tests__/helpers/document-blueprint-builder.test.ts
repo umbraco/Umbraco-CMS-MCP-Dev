@@ -10,6 +10,8 @@ describe("DocumentBlueprintBuilder", () => {
   const TEST_VALUE_ALIAS = "testAlias";
   const TEST_VALUE = "testValue";
   const TEST_VARIANT_NAME = "testVariant";
+  const TEST_FROM_DOCUMENT_BLUEPRINT_NAME = "_Test From Document Blueprint";
+  const TEST_SCAFFOLD_BLUEPRINT_NAME = "_Test Scaffold Blueprint";
   let originalConsoleError: typeof console.error;
 
   beforeEach(() => {
@@ -21,6 +23,8 @@ describe("DocumentBlueprintBuilder", () => {
     console.error = originalConsoleError;
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_PARENT_NAME);
+    await DocumentBlueprintTestHelper.cleanup(TEST_FROM_DOCUMENT_BLUEPRINT_NAME);
+    await DocumentBlueprintTestHelper.cleanup(TEST_SCAFFOLD_BLUEPRINT_NAME);
   });
 
   describe("construction", () => {
@@ -216,6 +220,63 @@ describe("DocumentBlueprintBuilder", () => {
       ).withDocumentType("invalid-id");
 
       await expect(builder.create()).rejects.toThrow();
+    });
+  });
+
+  describe("new methods", () => {
+    it("should create blueprint from document", async () => {
+      // First create a document to use as source
+      const { DocumentBuilder } = await import("../../../document/__tests__/helpers/document-builder.js");
+      const { DocumentTestHelper } = await import("../../../document/__tests__/helpers/document-test-helper.js");
+
+      const docBuilder = await new DocumentBuilder()
+        .withName("Test Document for Blueprint")
+        .withRootDocumentType()
+        .create();
+
+      await docBuilder.publish();
+
+      // Create blueprint from document
+      const blueprintBuilder = await DocumentBlueprintBuilder.createFromDocument(
+        docBuilder.getId(),
+        TEST_FROM_DOCUMENT_BLUEPRINT_NAME
+      );
+
+      expect(blueprintBuilder.getId()).toBeDefined();
+      const item = blueprintBuilder.getItem();
+      expect(item.name).toBe(TEST_FROM_DOCUMENT_BLUEPRINT_NAME);
+
+      // Cleanup document
+      await DocumentTestHelper.cleanup("Test Document for Blueprint");
+    });
+
+    it("should get scaffold for blueprint", async () => {
+      const builder = await new DocumentBlueprintBuilder(
+        TEST_SCAFFOLD_BLUEPRINT_NAME
+      ).create();
+
+      const scaffold = await builder.getScaffold();
+      expect(scaffold).toBeDefined();
+
+      // Should have basic scaffold properties
+      expect(scaffold).toHaveProperty('documentType');
+      expect(scaffold).toHaveProperty('variants');
+    });
+
+    it("should cleanup blueprint", async () => {
+      const builder = await new DocumentBlueprintBuilder(
+        TEST_BLUEPRINT_NAME
+      ).create();
+
+      const id = builder.getId();
+      expect(id).toBeDefined();
+
+      // Cleanup
+      await builder.cleanup();
+
+      // Verify it's been deleted by trying to find it
+      const found = await DocumentBlueprintTestHelper.findDocumentBlueprint(TEST_BLUEPRINT_NAME);
+      expect(found).toBeUndefined();
     });
   });
 });

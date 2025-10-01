@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tag-tool-index should have get-tags tool when user meets content section policy 1`] = `
+[
+  "get-tags",
+]
+`;
+
+exports[`tag-tool-index should have get-tags tool when user meets multiple policies 1`] = `
+[
+  "get-tags",
+]
+`;
+
+exports[`tag-tool-index should have get-tags tool when user meets settings section policy 1`] = `
+[
+  "get-tags",
+]
+`;
+
+exports[`tag-tool-index should only have get-tags tool when user meets no policies 1`] = `
+[
+  "get-tags",
+]
+`;

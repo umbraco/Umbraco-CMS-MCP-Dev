@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-template-configuration should get the template configuration 1`] = `
+{
+  "content": [
+    {
+      "text": "{"disabled":false}",
+      "type": "text",
+    },
+  ],
+}
+`;

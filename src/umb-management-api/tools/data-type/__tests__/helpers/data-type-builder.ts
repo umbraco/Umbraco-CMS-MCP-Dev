@@ -21,7 +21,7 @@ export class DataTypeBuilder {
 
   withTextbox(): DataTypeBuilder {
     this.withEditorAlias("Umbraco.TextBox");
-    this.withEditorUiAlias("Umb.PropertyEditorUi.Textbox");
+    this.withEditorUiAlias("Umb.PropertyEditorUi.TextBox");
     return this;
   }
 

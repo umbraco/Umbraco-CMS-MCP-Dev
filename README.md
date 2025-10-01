@@ -1,7 +1,7 @@
 # Umbraco MCP ![GitHub License](https://img.shields.io/github/license/umbraco/Umbraco-CMS-MCP-Dev?style=plastic&link=https%3A%2F%2Fgithub.com%2Fumbraco%2FUmbraco-CMS-MCP-Dev%2Fblob%2Fmain%2FLICENSE)
 
 An MCP (Model Context Protocol) server for [Umbraco CMS](https://umbraco.com/)
-it provides access to key parts of the Management API enabling you to do back office tasks with your agent.
+it provides developer access to the majority of the Management API enabling you to complete most back office tasks with your agent that you can accomplish using the UI.
 
 ## Intro
 
@@ -28,6 +28,7 @@ To get started with using the Umbraco MCP with Claude, first download and instal
 Start up your Umbraco instance (currently working with version **15.latest**) and create new API user credentials. You can see instructions on how to do that on the [Umbraco docs](https://docs.umbraco.com/umbraco-cms/fundamentals/data/users/api-users).
 
 Once you have this information head back into Claude desktop app and head to Settings > Developer > Edit Config. Open the json file in a text editor of your choice and add the below, replacing the `UMBRACO_CLIENT_ID`, `UMBRACO_CLIENT_SECRET` and `UMBRACO_BASE_URL` with your local connection information. The addition of the `NODE_TLS_REJECT_UNAUTHORIZED` env flag is to allow Claude to connect to the MCP using a self-signed cert.
+
 
 ```
 {
@@ -117,7 +118,7 @@ Follow the MCP [install guide](https://code.visualstudio.com/docs/copilot/custom
 <details>
 <summary>Cursor</summary>
 
-#### Or install manually:
+### Or install manually:
 Go to `Cursor Settings` -> `Tools & Integrations` -> `Add new MCP Server`. 
 
 Add the following to the config file and update the env variables.
@@ -141,39 +142,52 @@ Add the following to the config file and update the env variables.
 ```
 </details>
 
+#### Authentication Configuration Keys
 
-### Configuration Environment Variables
-
-`UMBRACO_CLIENT_ID`
+- `UMBRACO_CLIENT_ID`
 
 Umbraco API User name
 
-`UMBRACO_CLIENT_SECRET` 
+- `UMBRACO_CLIENT_SECRET`
 
 Umbraco API User client secert
 
-`UMBRACO_BASE_URL`
+- `UMBRACO_BASE_URL` 
 
-Url of the site you want to connect to, it only needs to be the scheme and domain e.g https://<nolink/>example.com
+Url of the Umbraco site, it only needs to be the scheme and domain e.g https://<nolink/>example.com
 
-`UMBRACO_EXCLUDE_TOOLS`
+## API Coverage
+
+This MCP server provides **comprehensive coverage** of the Umbraco Management API. We have achieved **full parity** with all applicable endpoints, implementing tools for every operational endpoint suitable for AI-assisted content management.
+
+### Implementation Status
+
+**✅ Implemented:** 36 tool collections and 337 tools covering operational endpoints including (but not limited to)
+- Content management (Documents, Media, Members)
+- Configuration (Document Types, Media Types, Data Types)
+- System management (Templates, Scripts, Stylesheets)
+- User administration (Users, User Groups, Permissions)
+- Advanced features (Webhooks, Relations, Health Checks)
+
+### Tool Configuration 
+
+- `UMBRACO_EXCLUDE_TOOLS`
 
 The allows you to specify tools by name if you wish to exclude them for the usable tools list. This is helpful as some Agents, cant handle so many tools. This is a commma seperated list of tools which can be found below.
 
-`UMBRACO_INCLUDE_TOOLS`
+- `UMBRACO_INCLUDE_TOOLS`
 
 The allows you to specify tools by name if you wish to include only specific tools in the usable tools list. When specified, only these tools will be available. This is a commma seperated list of tools which can be found below.
 
-`UMBRACO_INCLUDE_TOOL_COLLECTIONS`
+- `UMBRACO_INCLUDE_TOOL_COLLECTIONS`
 
 The allows you to specify collections by name if you wish to include only specific collections. When specified, only tools from these collections will be available. This is a commma seperated list of collection names (see tool list below for collection names).
 
-`UMBRACO_EXCLUDE_TOOL_COLLECTIONS`
+- `UMBRACO_EXCLUDE_TOOL_COLLECTIONS`
 
 The allows you to specify collections by name if you wish to exclude them from the usable tools list. This is a commma seperated list of collection names (see tool list below for collection names).
 
-
-##  Umbraco Management API Tools
+### Tool Collections
 
 **Note:** Collection names are shown in brackets for use with `UMBRACO_INCLUDE_TOOL_COLLECTIONS` and `UMBRACO_EXCLUDE_TOOL_COLLECTIONS`.
 
@@ -312,14 +326,40 @@ The allows you to specify collections by name if you wish to exclude them from t
 </details>
 
 <details>
+<summary>Health (health)</summary>
+<br>
+
+`get-health-check-groups` - Get all health check groups
+`get-health-check-group-by-name` - Get health check group by name
+`run-health-check-group` - Run health checks for a specific group
+`execute-health-check-action` - Execute a health check action
+</details>
+
+<details>
+<summary>Imaging (imaging)</summary>
+<br>
+
+`get-imaging-resize-urls` - Generate image resize URLs with various processing options
+</details>
+
+<details>
+<summary>Indexer (indexer)</summary>
+<br>
+
+`get-indexer` - Get all indexers
+`get-indexer-by-index-name` - Get indexer by index name
+`post-indexer-by-index-name-rebuild` - Rebuild an index by name
+</details>
+
+<details>
 <summary>Language (language)</summary>
 <br>
 
-`get-language-items` - Get all languages  
-`get-default-language` - Get default language  
-`create-language` - Create a new language  
-`update-language` - Update a language  
-`delete-language` - Delete a language  
+`get-language-items` - Get all languages
+`get-default-language` - Get default language
+`create-language` - Create a new language
+`update-language` - Update a language
+`delete-language` - Delete a language
 `get-language-by-iso-code` - Get language by ISO code
 </details>
 
@@ -327,15 +367,24 @@ The allows you to specify collections by name if you wish to exclude them from t
 <summary>Log Viewer (log-viewer)</summary>
 <br>
 
-`get-log-viewer-saved-search-by-name` - Get saved search by name  
-`get-log-viewer-level-count` - Get log level counts  
-`post-log-viewer-saved-search` - Save a log search  
-`delete-log-viewer-saved-search-by-name` - Delete saved search  
-`get-log-viewer` - Get logs  
-`get-log-viewer-level` - Get log levels  
-`get-log-viewer-search` - Search logs  
-`get-log-viewer-validate-logs` - Validate logs  
+`get-log-viewer-saved-search-by-name` - Get saved search by name
+`get-log-viewer-level-count` - Get log level counts
+`post-log-viewer-saved-search` - Save a log search
+`delete-log-viewer-saved-search-by-name` - Delete saved search
+`get-log-viewer` - Get logs
+`get-log-viewer-level` - Get log levels
+`get-log-viewer-search` - Search logs
+`get-log-viewer-validate-logs` - Validate logs
 `get-log-viewer-message-template` - Get message template
+</details>
+
+<details>
+<summary>Manifest (manifest)</summary>
+<br>
+
+`get-manifest-manifest` - Get all system manifests
+`get-manifest-manifest-private` - Get private manifests
+`get-manifest-manifest-public` - Get public manifests
 </details>
 
 <details>
@@ -417,16 +466,25 @@ The allows you to specify collections by name if you wish to exclude them from t
 <summary>Member Type (member-type)</summary>
 <br>
 
-`get-member-type-by-id` - Get member type by ID  
-`create-member-type` - Create a new member type  
-`get-member-type-by-id-array` - Get member types by IDs  
-`delete-member-type` - Delete a member type  
-`update-member-type` - Update a member type  
-`copy-member-type` - Copy a member type  
-`get-member-type-available-compositions` - Get available compositions  
-`get-member-type-composition-references` - Get composition references  
-`get-member-type-configuration` - Get member type configuration  
+`get-member-type-by-id` - Get member type by ID
+`create-member-type` - Create a new member type
+`get-member-type-by-id-array` - Get member types by IDs
+`delete-member-type` - Delete a member type
+`update-member-type` - Update a member type
+`copy-member-type` - Copy a member type
+`get-member-type-available-compositions` - Get available compositions
+`get-member-type-composition-references` - Get composition references
+`get-member-type-configuration` - Get member type configuration
 `get-member-type-root` - Get root member types
+</details>
+
+<details>
+<summary>Models Builder (models-builder)</summary>
+<br>
+
+`get-models-builder-dashboard` - Get Models Builder dashboard information
+`get-models-builder-status` - Get Models Builder status
+`post-models-builder-build` - Trigger Models Builder code generation
 </details>
 
 <details>
@@ -464,57 +522,97 @@ The allows you to specify collections by name if you wish to exclude them from t
 <summary>Redirect (redirect)</summary>
 <br>
 
-`get-all-redirects` - Get all redirects  
-`get-redirect-by-id` - Get redirect by ID  
-`delete-redirect` - Delete a redirect  
-`get-redirect-status` - Get redirect status  
+`get-all-redirects` - Get all redirects
+`get-redirect-by-id` - Get redirect by ID
+`delete-redirect` - Delete a redirect
+`get-redirect-status` - Get redirect status
 `update-redirect-status` - Update redirect status
+</details>
+
+<details>
+<summary>Relation (relation)</summary>
+<br>
+
+`get-relation-by-relation-type-id` - Get relations by relation type ID
+</details>
+
+<details>
+<summary>Relation Type (relation-type)</summary>
+<br>
+
+`get-relation-type` - Get all relation types
+`get-relation-type-by-id` - Get relation type by ID
 </details>
 
 <details>
 <summary>Script (script)</summary>
 <br>
 
-`get-script-by-path` - Get script by path  
-`get-script-folder-by-path` - Get script folder by path  
-`get-script-items` - Get script items  
-`create-script` - Create a new script  
-`create-script-folder` - Create a script folder  
-`update-script` - Update a script  
-`rename-script` - Rename a script  
-`delete-script` - Delete a script  
-`delete-script-folder` - Delete a script folder  
-`get-script-tree-root` - Get root script items  
-`get-script-tree-children` - Get child script items  
+`get-script-by-path` - Get script by path
+`get-script-folder-by-path` - Get script folder by path
+`get-script-items` - Get script items
+`create-script` - Create a new script
+`create-script-folder` - Create a script folder
+`update-script` - Update a script
+`rename-script` - Rename a script
+`delete-script` - Delete a script
+`delete-script-folder` - Delete a script folder
+`get-script-tree-root` - Get root script items
+`get-script-tree-children` - Get child script items
 `get-script-tree-ancestors` - Get script ancestors
 </details>
 
 <details>
-<summary>Stylesheet (stylesheet)</summary>
+<summary>Searcher (searcher)</summary>
 <br>
 
-`get-stylesheet-by-path` - Get stylesheet by path  
-`get-stylesheet-folder-by-path` - Get stylesheet folder by path  
-`create-stylesheet` - Create a new stylesheet  
-`create-stylesheet-folder` - Create a stylesheet folder  
-`update-stylesheet` - Update a stylesheet  
-`rename-stylesheet` - Rename a stylesheet  
-`delete-stylesheet` - Delete a stylesheet  
-`delete-stylesheet-folder` - Delete a stylesheet folder  
-`get-stylesheet-root` - Get root stylesheets  
-`get-stylesheet-children` - Get child stylesheets  
-`get-stylesheet-ancestors` - Get stylesheet ancestors  
-`get-stylesheet-search` - Search stylesheets
+`get-searcher` - Get all searchers
+`get-searcher-by-searcher-name-query` - Query a specific searcher by name
 </details>
 
 <details>
 <summary>Server (server)</summary>
 <br>
 
-`get-server-status` - Get server status  
-`get-server-log-file` - Get server log file  
-`tour-status` - Get tour status  
+`get-server-status` - Get server status
+`get-server-log-file` - Get server log file
+`tour-status` - Get tour status
 `upgrade-status` - Get upgrade status
+</details>
+
+<details>
+<summary>Static File (static-file)</summary>
+<br>
+
+`get-static-files` - Get static files with filtering
+`get-static-file-root` - Get root static files
+`get-static-file-children` - Get child static files
+`get-static-file-ancestors` - Get static file ancestors
+</details>
+
+<details>
+<summary>Stylesheet (stylesheet)</summary>
+<br>
+
+`get-stylesheet-by-path` - Get stylesheet by path
+`get-stylesheet-folder-by-path` - Get stylesheet folder by path
+`create-stylesheet` - Create a new stylesheet
+`create-stylesheet-folder` - Create a stylesheet folder
+`update-stylesheet` - Update a stylesheet
+`rename-stylesheet` - Rename a stylesheet
+`delete-stylesheet` - Delete a stylesheet
+`delete-stylesheet-folder` - Delete a stylesheet folder
+`get-stylesheet-root` - Get root stylesheets
+`get-stylesheet-children` - Get child stylesheets
+`get-stylesheet-ancestors` - Get stylesheet ancestors
+`get-stylesheet-search` - Search stylesheets
+</details>
+
+<details>
+<summary>Tag (tag)</summary>
+<br>
+
+`get-tags` - Get all tags
 </details>
 
 <details>
@@ -538,23 +636,54 @@ The allows you to specify collections by name if you wish to exclude them from t
 <summary>Temporary File (temporary-file)</summary>
 <br>
 
-`create-temporary-file` - Create a temporary file  
-`get-temporary-file` - Get a temporary file  
-`delete-temporary-file` - Delete a temporary file  
+`create-temporary-file` - Create a temporary file
+`get-temporary-file` - Get a temporary file
+`delete-temporary-file` - Delete a temporary file
 `get-temporary-file-configuration` - Get temporary file configuration
+</details>
+
+<details>
+<summary>User (user)</summary>
+<br>
+
+`get-user` - Get users with pagination
+`get-user-by-id` - Get user by ID
+`find-user` - Find users by search criteria
+`get-item-user` - Get user item information
+`get-user-current` - Get current authenticated user
+`get-user-configuration` - Get user configuration
+`get-user-current-configuration` - Get current user configuration
+`get-user-current-login-providers` - Get current user login providers
+`get-user-current-permissions` - Get current user permissions
+`get-user-current-permissions-document` - Get current user document permissions
+`get-user-current-permissions-media` - Get current user media permissions
+`get-user-by-id-calculate-start-nodes` - Calculate start nodes for a user
+`upload-user-avatar-by-id` - Upload avatar for a user
+`upload-user-current-avatar` - Upload avatar for current user
+`delete-user-avatar-by-id` - Delete user avatar
+</details>
+
+<details>
+<summary>User Data (user-data)</summary>
+<br>
+
+`create-user-data` - Create user data key-value pair
+`update-user-data` - Update user data value
+`get-user-data` - Get all user data for current user
+`get-user-data-by-id` - Get user data by key
 </details>
 
 <details>
 <summary>User Group (user-group)</summary>
 <br>
 
-`get-user-group` - Get user group  
-`get-user-group-by-id-array` - Get user groups by IDs  
-`get-user-groups` - Get all user groups  
-`get-filter-user-group` - Filter user groups  
-`create-user-group` - Create a new user group  
-`update-user-group` - Update a user group  
-`delete-user-group` - Delete a user group  
+`get-user-group` - Get user group
+`get-user-group-by-id-array` - Get user groups by IDs
+`get-user-groups` - Get all user groups
+`get-filter-user-group` - Filter user groups
+`create-user-group` - Create a new user group
+`update-user-group` - Update a user group
+`delete-user-group` - Delete a user group
 `delete-user-groups` - Delete multiple user groups
 </details>
 
@@ -571,6 +700,23 @@ The allows you to specify collections by name if you wish to exclude them from t
 `create-webhook` - Create a new webhook
 </details>
 </details>
+
+**⚠️ Intentionally Excluded:** 69 endpoints across 14 categories
+
+Certain endpoints are intentionally not implemented due to security, complexity, or contextual concerns. For a detailed breakdown of excluded endpoints and the rationale behind each exclusion, see [Ignored Endpoints Documentation](./docs/analysis/IGNORED_ENDPOINTS.md).
+
+### Excluded Categories Summary
+
+- **User Management (22 endpoints)** - User creation/deletion, password operations, 2FA management, and client credentials pose significant security risks
+- **User Group Membership (3 endpoints)** - Permission escalation risks from AI-driven group membership changes
+- **Security Operations (4 endpoints)** - Password reset workflows require email verification and user interaction
+- **Import/Export (9 endpoints)** - Complex file operations better handled through the Umbraco UI
+- **Package Management (9 endpoints)** - Package creation and migration involve system-wide changes
+- **Cache Operations (3 endpoints)** - Cache rebuild can impact system performance
+- **Telemetry (3 endpoints)** - System telemetry configuration and data collection
+- **Install/Upgrade (5 endpoints)** - One-time system setup and upgrade operations
+- **Preview/Profiling (4 endpoints)** - Frontend-specific debugging functionality
+- **Other (7 endpoints)** - Internal system functionality, oEmbed, dynamic roots, object types
 
 ## Contributing with AI Tools
 

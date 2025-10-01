@@ -1,5 +1,6 @@
 import GetWebhookByIdTool from "./get/get-webhook-by-id.js";
 import GetWebhookItemTool from "./get/get-webhook-by-id-array.js";
+import GetWebhookTool from "./get/get-webhook.js";
 import DeleteWebhookTool from "./delete/delete-webhook.js";
 import UpdateWebhookTool from "./put/update-webhook.js";
 import GetWebhookEventsTool from "./get/get-webhook-events.js";
@@ -24,6 +25,7 @@ export const WebhookCollection: ToolCollectionExport = {
       tools.push(GetWebhookItemTool());
 
       tools.push(CreateWebhookTool());
+      tools.push(GetWebhookTool());
       tools.push(GetWebhookByIdTool());
       tools.push(DeleteWebhookTool());
       tools.push(UpdateWebhookTool());

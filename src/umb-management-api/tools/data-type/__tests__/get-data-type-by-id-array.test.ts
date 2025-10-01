@@ -21,9 +21,9 @@ describe("get-item-data-type", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME_2);
+    console.error = originalConsoleError;
   });
 
   it("should get no data types for empty request", async () => {

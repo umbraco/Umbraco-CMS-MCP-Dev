@@ -5,6 +5,8 @@ import CreateDocumentBlueprintTool from "./post/create-blueprint.js";
 import GetDocumentBlueprintAncestorsTool from "./get/get-ancestors.js";
 import GetDocumentBlueprintChildrenTool from "./get/get-children.js";
 import GetDocumentBlueprintRootTool from "./get/get-root.js";
+import GetDocumentBlueprintScaffoldTool from "./get/get-document-blueprint-scaffold.js";
+import CreateDocumentBlueprintFromDocumentTool from "./post/create-document-blueprint-from-document.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -30,6 +32,8 @@ export const DocumentBlueprintCollection: ToolCollectionExport = {
       tools.push(GetDocumentBlueprintAncestorsTool());
       tools.push(GetDocumentBlueprintChildrenTool());
       tools.push(GetDocumentBlueprintRootTool());
+      tools.push(GetDocumentBlueprintScaffoldTool());
+      tools.push(CreateDocumentBlueprintFromDocumentTool());
     }
 
     return tools;

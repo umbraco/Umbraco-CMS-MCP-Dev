@@ -2,6 +2,7 @@ import CreateDataTypeTool from "./post/create-data-type.js";
 import DeleteDataTypeTool from "./delete/delete-data-type.js";
 import FindDataTypeTool from "./get/find-data-type.js";
 import GetDataTypeTool from "./get/get-data-type.js";
+import GetDataTypeConfigurationTool from "./get/get-data-type-configuration.js";
 import UpdateDataTypeTool from "./put/update-data-type.js";
 import CopyDataTypeTool from "./post/copy-data-type.js";
 import IsUsedDataTypeTool from "./get/is-used-data-type.js";
@@ -35,6 +36,7 @@ export const DataTypeCollection: ToolCollectionExport = {
       tools.push(GetReferencesDataTypeTool());
       tools.push(IsUsedDataTypeTool());
       tools.push(GetDataTypeTool());
+      tools.push(GetDataTypeConfigurationTool());
     }
 
     if (AuthorizationPolicies.TreeAccessDataTypes(user)) {

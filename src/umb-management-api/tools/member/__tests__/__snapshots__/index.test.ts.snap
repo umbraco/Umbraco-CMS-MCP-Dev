@@ -4,8 +4,13 @@ exports[`member-tool-index should have all tools when user has members section a
 [
   "get-member",
   "create-member",
+  "validate-member",
   "delete-member",
   "update-member",
+  "validate-member-update",
+  "get-member-are-referenced",
+  "get-member-by-id-referenced-by",
+  "get-member-by-id-referenced-descendants",
   "find-member",
 ]
 `;
