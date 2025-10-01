@@ -1,9 +1,5 @@
 export const BLANK_UUID = "00000000-0000-0000-0000-000000000000";
 
-// Test UUIDs for consistent testing
-export const TEST_UUID_1 = "550e8400-e29b-41d4-a716-446655440000";
-
-// Valid Umbraco User Group IDs for testing
 export const TRANSLATORS_USER_GROUP_ID = "550e8400-e29b-41d4-a716-446655440001";
 export const WRITERS_USER_GROUP_ID = "9fc2a16f-528c-46d6-a014-75bf4ec2480c";
 
