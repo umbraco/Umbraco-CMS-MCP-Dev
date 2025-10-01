@@ -19,11 +19,11 @@ describe("get-references-data-type", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await Promise.all([
       DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME),
       DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME),
     ]);
+    console.error = originalConsoleError;
   });
 
   it("should get references for a data type used in document type property", async () => {

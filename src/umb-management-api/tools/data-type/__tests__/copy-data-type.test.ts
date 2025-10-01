@@ -18,11 +18,11 @@ describe("copy-data-type", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test data types and folders
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_COPY_NAME);
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
+    console.error = originalConsoleError;
   });
 
   it("should copy a data type to a folder", async () => {

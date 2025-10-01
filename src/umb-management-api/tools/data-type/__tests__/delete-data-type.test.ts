@@ -14,9 +14,9 @@ describe("delete-data-type", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any remaining test data types
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
+    console.error = originalConsoleError;
   });
 
   it("should delete a data type", async () => {

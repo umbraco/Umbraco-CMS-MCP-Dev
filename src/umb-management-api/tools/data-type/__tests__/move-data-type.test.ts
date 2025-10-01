@@ -15,10 +15,10 @@ describe("move-data-type", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test data types and folders
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
+    console.error = originalConsoleError;
   });
 
   it("should move a data type", async () => {

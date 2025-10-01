@@ -15,9 +15,9 @@ describe("find-data-type", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME_2);
+    console.error = originalConsoleError;
   });
 
   it("should find a data type by name", async () => {

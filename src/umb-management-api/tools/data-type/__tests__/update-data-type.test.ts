@@ -15,10 +15,10 @@ describe("update-data-type", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test data types
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(UPDATED_DATATYPE_NAME);
+    console.error = originalConsoleError;
   });
 
   it("should update a data type", async () => {
