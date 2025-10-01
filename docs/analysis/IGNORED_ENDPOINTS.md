@@ -139,9 +139,6 @@ Security endpoints are excluded because:
 
 Telemetry endpoints are excluded because:
 1. System telemetry data may contain sensitive system information
-2. Telemetry configuration changes could affect system monitoring and analytics
-3. Data collection settings raise privacy concerns and should be managed through the UI
-4. Automated modification of telemetry settings could impact system diagnostics
 
 User Group membership endpoints are excluded because:
 1. These operations present severe permission escalation risks
@@ -153,7 +150,6 @@ PublishedCache endpoints are excluded because:
 1. Cache rebuild operations can significantly impact system performance and should be carefully timed
 2. Cache operations can affect site availability and user experience during execution
 3. Cache rebuild status monitoring could expose sensitive system performance information
-4. These operations require careful consideration of timing and system load and should be managed through the Umbraco UI
 
 Upgrade endpoints are excluded because:
 1. System upgrade operations involve critical system modifications that could break the installation
@@ -182,22 +178,15 @@ Preview endpoints are excluded because:
 1. Content preview functionality is designed for frontend website display and user interface interactions
 2. Preview operations are primarily used for content editors to see how content will appear on the website
 3. These operations are frontend-specific and not relevant for automated data management through MCP
-4. Preview creation and deletion are temporary UI-focused operations that have no use case in the MCP context
 
 Oembed endpoints are excluded because:
-1. oEmbed functionality is used for embedding external media content (videos, social media posts) into web pages
+1. oEmbed functionality is used for embedding external media content (videos, social media posts) into rich text editor
 2. This is primarily a frontend feature for content display and presentation
-3. oEmbed queries are typically used by content editors when creating web content, not for automated data management
-4. This frontend-specific functionality has no relevant use case in the MCP context
 
 Object endpoints are excluded because:
 1. Object type enumeration provides internal system metadata about Umbraco's object structure
 2. This information is primarily used by the Umbraco backend for internal operations and UI generation
-3. Object type data would be confusing and not actionable for AI assistants working with content
-4. This internal system functionality has no practical use case for MCP operations
 
 Dynamic endpoints are excluded because:
 1. Dynamic root functionality is an advanced configuration feature for creating custom content tree structures
-2. These operations involve complex system configuration that requires deep understanding of Umbraco architecture
-3. Dynamic root configuration is typically performed by experienced developers during system setup
-4. This advanced configuration functionality is not suitable for automated AI operations and could cause system instability if misused
+2. These operations are better compled using the UI

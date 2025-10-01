@@ -1,7 +1,7 @@
 # Umbraco MCP ![GitHub License](https://img.shields.io/github/license/umbraco/Umbraco-CMS-MCP-Dev?style=plastic&link=https%3A%2F%2Fgithub.com%2Fumbraco%2FUmbraco-CMS-MCP-Dev%2Fblob%2Fmain%2FLICENSE)
 
 An MCP (Model Context Protocol) server for [Umbraco CMS](https://umbraco.com/)
-it provides access to key parts of the Management API enabling you to do back office tasks with your agent.
+it provides developer access to the majority of the Management API enabling you to complete most back office tasks with your agent that you can accomplish using the UI.
 
 ## Intro
 
@@ -28,6 +28,7 @@ To get started with using the Umbraco MCP with Claude, first download and instal
 Start up your Umbraco instance (currently working with version **15.latest**) and create new API user credentials. You can see instructions on how to do that on the [Umbraco docs](https://docs.umbraco.com/umbraco-cms/fundamentals/data/users/api-users).
 
 Once you have this information head back into Claude desktop app and head to Settings > Developer > Edit Config. Open the json file in a text editor of your choice and add the below, replacing the `UMBRACO_CLIENT_ID`, `UMBRACO_CLIENT_SECRET` and `UMBRACO_BASE_URL` with your local connection information. The addition of the `NODE_TLS_REJECT_UNAUTHORIZED` env flag is to allow Claude to connect to the MCP using a self-signed cert.
+
 
 ```
 {
@@ -141,20 +142,52 @@ Add the following to the config file and update the env variables.
 ```
 </details>
 
-
-### Configuration Environment Variables
+### Authentication Configuration Keys
 
 `UMBRACO_CLIENT_ID`
 
 Umbraco API User name
 
-`UMBRACO_CLIENT_SECRET` 
-
+`UMBRACO_CLIENT_SECRET`
 Umbraco API User client secert
 
 `UMBRACO_BASE_URL`
 
 Url of the site you want to connect to, it only needs to be the scheme and domain e.g https://<nolink/>example.com
+
+## API Coverage
+
+This MCP server provides **comprehensive coverage** of the Umbraco Management API. We have achieved **full parity** with all applicable endpoints, implementing tools for every operational endpoint suitable for AI-assisted content management.
+
+### Implementation Status
+
+**✅ Implemented:** All 36 tool collections covering operational endpoints
+- Content management (Documents, Media, Members)
+- Configuration (Document Types, Media Types, Data Types)
+- System management (Templates, Scripts, Stylesheets)
+- User administration (Users, User Groups, Permissions)
+- Advanced features (Webhooks, Relations, Health Checks)
+
+**⚠️ Intentionally Excluded:** 69 endpoints across 14 categories
+
+Certain endpoints are intentionally not implemented due to security, complexity, or contextual concerns. For a detailed breakdown of excluded endpoints and the rationale behind each exclusion, see [Ignored Endpoints Documentation](./docs/analysis/IGNORED_ENDPOINTS.md).
+
+### Excluded Categories Summary
+
+- **User Management (22 endpoints)** - User creation/deletion, password operations, 2FA management, and client credentials pose significant security risks
+- **User Group Membership (3 endpoints)** - Permission escalation risks from AI-driven group membership changes
+- **Security Operations (4 endpoints)** - Password reset workflows require email verification and user interaction
+- **Import/Export (9 endpoints)** - Complex file operations better handled through the Umbraco UI
+- **Package Management (9 endpoints)** - Package creation and migration involve system-wide changes
+- **Cache Operations (3 endpoints)** - Cache rebuild can impact system performance
+- **Telemetry (3 endpoints)** - System telemetry configuration and data collection
+- **Install/Upgrade (5 endpoints)** - One-time system setup and upgrade operations
+- **Preview/Profiling (4 endpoints)** - Frontend-specific debugging functionality
+- **Other (7 endpoints)** - Internal system functionality, oEmbed, dynamic roots, object types
+
+For a comprehensive source code analysis validating these exclusions, see [Endpoint Exclusion Review](./docs/analysis/ENDPOINT_EXCLUSION_REVIEW.md).
+
+### Configuration Environment Variables
 
 `UMBRACO_EXCLUDE_TOOLS`
 
@@ -173,7 +206,7 @@ The allows you to specify collections by name if you wish to include only specif
 The allows you to specify collections by name if you wish to exclude them from the usable tools list. This is a commma seperated list of collection names (see tool list below for collection names).
 
 
-##  Umbraco Management API Tools
+### Tool Collections
 
 **Note:** Collection names are shown in brackets for use with `UMBRACO_INCLUDE_TOOL_COLLECTIONS` and `UMBRACO_EXCLUDE_TOOL_COLLECTIONS`.
 
