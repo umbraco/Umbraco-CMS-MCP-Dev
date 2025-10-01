@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`user-data-tool-index should always have all tools available 1`] = `
+[
+  "create-user-data",
+  "update-user-data",
+  "get-user-data",
+  "get-user-data-by-id",
+]
+`;
+
+exports[`user-data-tool-index should always have all tools available to authenticated users 1`] = `
+[
+  "create-user-data",
+  "update-user-data",
+  "get-user-data",
+  "get-user-data-by-id",
+]
+`;

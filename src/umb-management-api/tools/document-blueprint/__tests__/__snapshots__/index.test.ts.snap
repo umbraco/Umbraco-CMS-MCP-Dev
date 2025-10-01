@@ -9,6 +9,8 @@ exports[`document-blueprint-tool-index should have all blueprint tools when user
   "get-document-blueprint-ancestors",
   "get-document-blueprint-children",
   "get-document-blueprint-root",
+  "get-document-blueprint-scaffold",
+  "create-document-blueprint-from-document",
 ]
 `;
 

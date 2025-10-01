@@ -20,9 +20,9 @@ describe("data-type-folder", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await DataTypeTestHelper.cleanup(TEST_PARENT_FOLDER_NAME);
+    console.error = originalConsoleError;
   });
 
   describe("create", () => {

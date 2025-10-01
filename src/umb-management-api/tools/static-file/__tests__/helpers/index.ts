@@ -1,0 +1,1 @@
+export { StaticFileHelper } from "./static-file-helper.js";

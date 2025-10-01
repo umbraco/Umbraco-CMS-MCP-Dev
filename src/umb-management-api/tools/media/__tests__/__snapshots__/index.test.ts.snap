@@ -22,6 +22,12 @@ exports[`media-tool-index should have all tools when user has all required acces
   "restore-media-from-recycle-bin",
   "move-media-to-recycle-bin",
   "delete-media-from-recycle-bin",
+  "get-media-are-referenced",
+  "get-media-by-id-referenced-by",
+  "get-media-by-id-referenced-descendants",
+  "get-collection-media",
+  "get-recycle-bin-media-referenced-by",
+  "get-recycle-bin-media-original-parent",
 ]
 `;
 
@@ -53,6 +59,12 @@ exports[`media-tool-index should have management tools when user has media secti
   "restore-media-from-recycle-bin",
   "move-media-to-recycle-bin",
   "delete-media-from-recycle-bin",
+  "get-media-are-referenced",
+  "get-media-by-id-referenced-by",
+  "get-media-by-id-referenced-descendants",
+  "get-collection-media",
+  "get-recycle-bin-media-referenced-by",
+  "get-recycle-bin-media-original-parent",
 ]
 `;
 
@@ -78,5 +90,11 @@ exports[`media-tool-index should have tree tools when user has media tree access
   "restore-media-from-recycle-bin",
   "move-media-to-recycle-bin",
   "delete-media-from-recycle-bin",
+  "get-media-are-referenced",
+  "get-media-by-id-referenced-by",
+  "get-media-by-id-referenced-descendants",
+  "get-collection-media",
+  "get-recycle-bin-media-referenced-by",
+  "get-recycle-bin-media-original-parent",
 ]
 `;

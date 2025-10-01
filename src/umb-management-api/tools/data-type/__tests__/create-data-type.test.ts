@@ -15,10 +15,11 @@ describe("create-data-type", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test data types
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(EXISTING_DATATYPE_NAME);
+    console.error = originalConsoleError;
+
   });
 
   it("should create a data type", async () => {

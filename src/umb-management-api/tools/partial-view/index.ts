@@ -31,7 +31,7 @@ export const PartialViewCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [GetPartialViewSearchTool()];
+    const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessPartialViews(user)) {
       // Basic CRUD operations
@@ -52,6 +52,7 @@ export const PartialViewCollection: ToolCollectionExport = {
       tools.push(GetPartialViewAncestorsTool());
       tools.push(GetPartialViewChildrenTool());
       tools.push(GetPartialViewRootTool());
+      tools.push(GetPartialViewSearchTool());
     }
 
     return tools;
@@ -62,19 +63,3 @@ export const PartialViewCollection: ToolCollectionExport = {
 export const PartialViewTools = (user: CurrentUserResponseModel) => {
   return PartialViewCollection.tools(user);
 };
-
-// Legacy exports for backward compatibility
-export { default as CreatePartialViewTool } from "./post/create-partial-view.js";
-export { default as CreatePartialViewFolderTool } from "./post/create-partial-view-folder.js";
-export { default as GetPartialViewByPathTool } from "./get/get-partial-view-by-path.js";
-export { default as GetPartialViewFolderByPathTool } from "./get/get-partial-view-folder-by-path.js";
-export { default as UpdatePartialViewTool } from "./put/update-partial-view.js";
-export { default as RenamePartialViewTool } from "./put/rename-partial-view.js";
-export { default as DeletePartialViewTool } from "./delete/delete-partial-view.js";
-export { default as DeletePartialViewFolderTool } from "./delete/delete-partial-view-folder.js";
-export { default as GetPartialViewSnippetTool } from "./get/get-partial-view-snippet.js";
-export { default as GetPartialViewSnippetByIdTool } from "./get/get-partial-view-snippet-by-id.js";
-export { default as GetPartialViewAncestorsTool } from "./items/get/get-ancestors.js";
-export { default as GetPartialViewChildrenTool } from "./items/get/get-children.js";
-export { default as GetPartialViewRootTool } from "./items/get/get-root.js";
-export { default as GetPartialViewSearchTool } from "./items/get/get-search.js";

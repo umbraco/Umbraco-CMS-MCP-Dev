@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-health-check-group-by-name should get health check group by valid name 1`] = `
+{
+  "content": [
+    {
+      "text": "{"checks":[{"name":"Database data integrity check","description":"Checks for various data integrity issues in the Umbraco database.","id":"73dd0c1c-e0ca-4c31-9564-1dca509788af"}],"name":"Data Integrity"}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-health-check-group-by-name should handle empty group name 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":6,"items":[{"name":"Configuration"},{"name":"Data Integrity"},{"name":"Live Environment"},{"name":"Permissions"},{"name":"Security"},{"name":"Services"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-health-check-group-by-name should handle non-existent health check group 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-health-check-group-by-name:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The health check group could not be found",
+    "status": 404
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

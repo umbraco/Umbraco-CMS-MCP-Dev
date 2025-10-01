@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-user-by-id should get user by id 1`] = `
+{
+  "content": [
+    {
+      "text": "{"id":"00000000-0000-0000-0000-000000000000","languageIsoCode":"en-US","documentStartNodeIds":[],"hasDocumentRootAccess":false,"mediaStartNodeIds":[],"hasMediaRootAccess":false,"avatarUrls":[],"state":"Inactive","failedLoginAttempts":0,"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","lastLoginDate":null,"lastLockoutDate":null,"lastPasswordChangeDate":"NORMALIZED_DATE","isAdmin":true,"kind":"Default","email":"test-user-get-NORMALIZED@example.com","userName":"test-user-get-NORMALIZED@example.com","name":"_Test User Get By ID","userGroupIds":[{"id":"e5e7f6c8-7f9c-4b5b-8d5d-9e1e5a4f7e4d"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-user-by-id should handle non-existent user id 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-user-by-id:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The user was not found",
+    "status": 404,
+    "detail": "The specified user was not found.",
+    "operationStatus": "UserNotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

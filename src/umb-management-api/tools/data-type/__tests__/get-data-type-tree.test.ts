@@ -21,10 +21,10 @@ describe("data-type-tree", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DataTypeTestHelper.cleanup(TEST_ROOT_NAME);
     await DataTypeTestHelper.cleanup(TEST_CHILD_NAME);
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
+    console.error = originalConsoleError;
   });
 
   //can't test root as it will change throughout testing
