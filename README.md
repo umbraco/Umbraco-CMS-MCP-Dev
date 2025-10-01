@@ -162,31 +162,14 @@ This MCP server provides **comprehensive coverage** of the Umbraco Management AP
 
 ### Implementation Status
 
-**✅ Implemented:** All 36 tool collections covering operational endpoints
+**✅ Implemented:** 36 tool collections and 337 tools covering operational endpoints including (but not limited to)
 - Content management (Documents, Media, Members)
 - Configuration (Document Types, Media Types, Data Types)
 - System management (Templates, Scripts, Stylesheets)
 - User administration (Users, User Groups, Permissions)
 - Advanced features (Webhooks, Relations, Health Checks)
 
-**⚠️ Intentionally Excluded:** 69 endpoints across 14 categories
-
-Certain endpoints are intentionally not implemented due to security, complexity, or contextual concerns. For a detailed breakdown of excluded endpoints and the rationale behind each exclusion, see [Ignored Endpoints Documentation](./docs/analysis/IGNORED_ENDPOINTS.md).
-
-### Excluded Categories Summary
-
-- **User Management (22 endpoints)** - User creation/deletion, password operations, 2FA management, and client credentials pose significant security risks
-- **User Group Membership (3 endpoints)** - Permission escalation risks from AI-driven group membership changes
-- **Security Operations (4 endpoints)** - Password reset workflows require email verification and user interaction
-- **Import/Export (9 endpoints)** - Complex file operations better handled through the Umbraco UI
-- **Package Management (9 endpoints)** - Package creation and migration involve system-wide changes
-- **Cache Operations (3 endpoints)** - Cache rebuild can impact system performance
-- **Telemetry (3 endpoints)** - System telemetry configuration and data collection
-- **Install/Upgrade (5 endpoints)** - One-time system setup and upgrade operations
-- **Preview/Profiling (4 endpoints)** - Frontend-specific debugging functionality
-- **Other (7 endpoints)** - Internal system functionality, oEmbed, dynamic roots, object types
-
-### Configuration Environment Variables
+### Tool Configuration 
 
 - `UMBRACO_EXCLUDE_TOOLS`
 
@@ -203,7 +186,6 @@ The allows you to specify collections by name if you wish to include only specif
 - `UMBRACO_EXCLUDE_TOOL_COLLECTIONS`
 
 The allows you to specify collections by name if you wish to exclude them from the usable tools list. This is a commma seperated list of collection names (see tool list below for collection names).
-
 
 ### Tool Collections
 
@@ -718,6 +700,23 @@ The allows you to specify collections by name if you wish to exclude them from t
 `create-webhook` - Create a new webhook
 </details>
 </details>
+
+**⚠️ Intentionally Excluded:** 69 endpoints across 14 categories
+
+Certain endpoints are intentionally not implemented due to security, complexity, or contextual concerns. For a detailed breakdown of excluded endpoints and the rationale behind each exclusion, see [Ignored Endpoints Documentation](./docs/analysis/IGNORED_ENDPOINTS.md).
+
+### Excluded Categories Summary
+
+- **User Management (22 endpoints)** - User creation/deletion, password operations, 2FA management, and client credentials pose significant security risks
+- **User Group Membership (3 endpoints)** - Permission escalation risks from AI-driven group membership changes
+- **Security Operations (4 endpoints)** - Password reset workflows require email verification and user interaction
+- **Import/Export (9 endpoints)** - Complex file operations better handled through the Umbraco UI
+- **Package Management (9 endpoints)** - Package creation and migration involve system-wide changes
+- **Cache Operations (3 endpoints)** - Cache rebuild can impact system performance
+- **Telemetry (3 endpoints)** - System telemetry configuration and data collection
+- **Install/Upgrade (5 endpoints)** - One-time system setup and upgrade operations
+- **Preview/Profiling (4 endpoints)** - Frontend-specific debugging functionality
+- **Other (7 endpoints)** - Internal system functionality, oEmbed, dynamic roots, object types
 
 ## Contributing with AI Tools
 
