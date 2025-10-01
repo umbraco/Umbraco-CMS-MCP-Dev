@@ -186,8 +186,6 @@ Certain endpoints are intentionally not implemented due to security, complexity,
 - **Preview/Profiling (4 endpoints)** - Frontend-specific debugging functionality
 - **Other (7 endpoints)** - Internal system functionality, oEmbed, dynamic roots, object types
 
-For a comprehensive source code analysis validating these exclusions, see [Endpoint Exclusion Review](./docs/analysis/ENDPOINT_EXCLUSION_REVIEW.md).
-
 ### Configuration Environment Variables
 
 - `UMBRACO_EXCLUDE_TOOLS`
