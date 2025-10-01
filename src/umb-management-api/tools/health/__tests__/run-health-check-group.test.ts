@@ -1,5 +1,4 @@
 import RunHealthCheckGroupTool from "../post/run-health-check-group.js";
-import { HealthTestHelper } from "./helpers/health-test-helper.js";
 import { postHealthCheckGroupByNameCheckParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { jest } from "@jest/globals";
 
@@ -16,7 +15,6 @@ describe("run-health-check-group", () => {
 
   afterEach(async () => {
     console.error = originalConsoleError;
-    await HealthTestHelper.cleanup();
   });
 
   it("should validate parameters for valid group name", async () => {

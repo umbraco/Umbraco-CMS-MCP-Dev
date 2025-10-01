@@ -1,5 +1,4 @@
 import GetHealthCheckGroupsTool from "../get/get-health-check-groups.js";
-import { HealthTestHelper } from "./helpers/health-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
 
@@ -16,7 +15,6 @@ describe("get-health-check-groups", () => {
 
   afterEach(async () => {
     console.error = originalConsoleError;
-    await HealthTestHelper.cleanup();
   });
 
   it("should get health check groups", async () => {
