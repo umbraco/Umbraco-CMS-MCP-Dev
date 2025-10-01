@@ -118,7 +118,7 @@ Follow the MCP [install guide](https://code.visualstudio.com/docs/copilot/custom
 <details>
 <summary>Cursor</summary>
 
-#### Or install manually:
+### Or install manually:
 Go to `Cursor Settings` -> `Tools & Integrations` -> `Add new MCP Server`. 
 
 Add the following to the config file and update the env variables.
@@ -142,18 +142,19 @@ Add the following to the config file and update the env variables.
 ```
 </details>
 
-### Authentication Configuration Keys
+#### Authentication Configuration Keys
 
-`UMBRACO_CLIENT_ID`
+- `UMBRACO_CLIENT_ID`
 
 Umbraco API User name
 
-`UMBRACO_CLIENT_SECRET`
+- `UMBRACO_CLIENT_SECRET`
+
 Umbraco API User client secert
 
-`UMBRACO_BASE_URL`
+- `UMBRACO_BASE_URL` 
 
-Url of the site you want to connect to, it only needs to be the scheme and domain e.g https://<nolink/>example.com
+Url of the Umbraco site, it only needs to be the scheme and domain e.g https://<nolink/>example.com
 
 ## API Coverage
 
@@ -189,19 +190,19 @@ For a comprehensive source code analysis validating these exclusions, see [Endpo
 
 ### Configuration Environment Variables
 
-`UMBRACO_EXCLUDE_TOOLS`
+- `UMBRACO_EXCLUDE_TOOLS`
 
 The allows you to specify tools by name if you wish to exclude them for the usable tools list. This is helpful as some Agents, cant handle so many tools. This is a commma seperated list of tools which can be found below.
 
-`UMBRACO_INCLUDE_TOOLS`
+- `UMBRACO_INCLUDE_TOOLS`
 
 The allows you to specify tools by name if you wish to include only specific tools in the usable tools list. When specified, only these tools will be available. This is a commma seperated list of tools which can be found below.
 
-`UMBRACO_INCLUDE_TOOL_COLLECTIONS`
+- `UMBRACO_INCLUDE_TOOL_COLLECTIONS`
 
 The allows you to specify collections by name if you wish to include only specific collections. When specified, only tools from these collections will be available. This is a commma seperated list of collection names (see tool list below for collection names).
 
-`UMBRACO_EXCLUDE_TOOL_COLLECTIONS`
+- `UMBRACO_EXCLUDE_TOOL_COLLECTIONS`
 
 The allows you to specify collections by name if you wish to exclude them from the usable tools list. This is a commma seperated list of collection names (see tool list below for collection names).
 
