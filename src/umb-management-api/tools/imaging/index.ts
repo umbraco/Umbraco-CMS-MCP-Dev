@@ -9,7 +9,7 @@ export const ImagingCollection: ToolCollectionExport = {
     name: 'imaging',
     displayName: 'Imaging',
     description: 'Image processing and URL generation utilities',
-    dependencies: []
+    dependencies: ['media']
   },
   tools: (user: CurrentUserResponseModel) => {
 

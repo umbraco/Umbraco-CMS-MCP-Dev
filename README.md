@@ -312,14 +312,40 @@ The allows you to specify collections by name if you wish to exclude them from t
 </details>
 
 <details>
+<summary>Health (health)</summary>
+<br>
+
+`get-health-check-groups` - Get all health check groups
+`get-health-check-group-by-name` - Get health check group by name
+`run-health-check-group` - Run health checks for a specific group
+`execute-health-check-action` - Execute a health check action
+</details>
+
+<details>
+<summary>Imaging (imaging)</summary>
+<br>
+
+`get-imaging-resize-urls` - Generate image resize URLs with various processing options
+</details>
+
+<details>
+<summary>Indexer (indexer)</summary>
+<br>
+
+`get-indexer` - Get all indexers
+`get-indexer-by-index-name` - Get indexer by index name
+`post-indexer-by-index-name-rebuild` - Rebuild an index by name
+</details>
+
+<details>
 <summary>Language (language)</summary>
 <br>
 
-`get-language-items` - Get all languages  
-`get-default-language` - Get default language  
-`create-language` - Create a new language  
-`update-language` - Update a language  
-`delete-language` - Delete a language  
+`get-language-items` - Get all languages
+`get-default-language` - Get default language
+`create-language` - Create a new language
+`update-language` - Update a language
+`delete-language` - Delete a language
 `get-language-by-iso-code` - Get language by ISO code
 </details>
 
@@ -327,15 +353,24 @@ The allows you to specify collections by name if you wish to exclude them from t
 <summary>Log Viewer (log-viewer)</summary>
 <br>
 
-`get-log-viewer-saved-search-by-name` - Get saved search by name  
-`get-log-viewer-level-count` - Get log level counts  
-`post-log-viewer-saved-search` - Save a log search  
-`delete-log-viewer-saved-search-by-name` - Delete saved search  
-`get-log-viewer` - Get logs  
-`get-log-viewer-level` - Get log levels  
-`get-log-viewer-search` - Search logs  
-`get-log-viewer-validate-logs` - Validate logs  
+`get-log-viewer-saved-search-by-name` - Get saved search by name
+`get-log-viewer-level-count` - Get log level counts
+`post-log-viewer-saved-search` - Save a log search
+`delete-log-viewer-saved-search-by-name` - Delete saved search
+`get-log-viewer` - Get logs
+`get-log-viewer-level` - Get log levels
+`get-log-viewer-search` - Search logs
+`get-log-viewer-validate-logs` - Validate logs
 `get-log-viewer-message-template` - Get message template
+</details>
+
+<details>
+<summary>Manifest (manifest)</summary>
+<br>
+
+`get-manifest-manifest` - Get all system manifests
+`get-manifest-manifest-private` - Get private manifests
+`get-manifest-manifest-public` - Get public manifests
 </details>
 
 <details>
@@ -417,16 +452,25 @@ The allows you to specify collections by name if you wish to exclude them from t
 <summary>Member Type (member-type)</summary>
 <br>
 
-`get-member-type-by-id` - Get member type by ID  
-`create-member-type` - Create a new member type  
-`get-member-type-by-id-array` - Get member types by IDs  
-`delete-member-type` - Delete a member type  
-`update-member-type` - Update a member type  
-`copy-member-type` - Copy a member type  
-`get-member-type-available-compositions` - Get available compositions  
-`get-member-type-composition-references` - Get composition references  
-`get-member-type-configuration` - Get member type configuration  
+`get-member-type-by-id` - Get member type by ID
+`create-member-type` - Create a new member type
+`get-member-type-by-id-array` - Get member types by IDs
+`delete-member-type` - Delete a member type
+`update-member-type` - Update a member type
+`copy-member-type` - Copy a member type
+`get-member-type-available-compositions` - Get available compositions
+`get-member-type-composition-references` - Get composition references
+`get-member-type-configuration` - Get member type configuration
 `get-member-type-root` - Get root member types
+</details>
+
+<details>
+<summary>Models Builder (models-builder)</summary>
+<br>
+
+`get-models-builder-dashboard` - Get Models Builder dashboard information
+`get-models-builder-status` - Get Models Builder status
+`post-models-builder-build` - Trigger Models Builder code generation
 </details>
 
 <details>
@@ -464,57 +508,97 @@ The allows you to specify collections by name if you wish to exclude them from t
 <summary>Redirect (redirect)</summary>
 <br>
 
-`get-all-redirects` - Get all redirects  
-`get-redirect-by-id` - Get redirect by ID  
-`delete-redirect` - Delete a redirect  
-`get-redirect-status` - Get redirect status  
+`get-all-redirects` - Get all redirects
+`get-redirect-by-id` - Get redirect by ID
+`delete-redirect` - Delete a redirect
+`get-redirect-status` - Get redirect status
 `update-redirect-status` - Update redirect status
+</details>
+
+<details>
+<summary>Relation (relation)</summary>
+<br>
+
+`get-relation-by-relation-type-id` - Get relations by relation type ID
+</details>
+
+<details>
+<summary>Relation Type (relation-type)</summary>
+<br>
+
+`get-relation-type` - Get all relation types
+`get-relation-type-by-id` - Get relation type by ID
 </details>
 
 <details>
 <summary>Script (script)</summary>
 <br>
 
-`get-script-by-path` - Get script by path  
-`get-script-folder-by-path` - Get script folder by path  
-`get-script-items` - Get script items  
-`create-script` - Create a new script  
-`create-script-folder` - Create a script folder  
-`update-script` - Update a script  
-`rename-script` - Rename a script  
-`delete-script` - Delete a script  
-`delete-script-folder` - Delete a script folder  
-`get-script-tree-root` - Get root script items  
-`get-script-tree-children` - Get child script items  
+`get-script-by-path` - Get script by path
+`get-script-folder-by-path` - Get script folder by path
+`get-script-items` - Get script items
+`create-script` - Create a new script
+`create-script-folder` - Create a script folder
+`update-script` - Update a script
+`rename-script` - Rename a script
+`delete-script` - Delete a script
+`delete-script-folder` - Delete a script folder
+`get-script-tree-root` - Get root script items
+`get-script-tree-children` - Get child script items
 `get-script-tree-ancestors` - Get script ancestors
 </details>
 
 <details>
-<summary>Stylesheet (stylesheet)</summary>
+<summary>Searcher (searcher)</summary>
 <br>
 
-`get-stylesheet-by-path` - Get stylesheet by path  
-`get-stylesheet-folder-by-path` - Get stylesheet folder by path  
-`create-stylesheet` - Create a new stylesheet  
-`create-stylesheet-folder` - Create a stylesheet folder  
-`update-stylesheet` - Update a stylesheet  
-`rename-stylesheet` - Rename a stylesheet  
-`delete-stylesheet` - Delete a stylesheet  
-`delete-stylesheet-folder` - Delete a stylesheet folder  
-`get-stylesheet-root` - Get root stylesheets  
-`get-stylesheet-children` - Get child stylesheets  
-`get-stylesheet-ancestors` - Get stylesheet ancestors  
-`get-stylesheet-search` - Search stylesheets
+`get-searcher` - Get all searchers
+`get-searcher-by-searcher-name-query` - Query a specific searcher by name
 </details>
 
 <details>
 <summary>Server (server)</summary>
 <br>
 
-`get-server-status` - Get server status  
-`get-server-log-file` - Get server log file  
-`tour-status` - Get tour status  
+`get-server-status` - Get server status
+`get-server-log-file` - Get server log file
+`tour-status` - Get tour status
 `upgrade-status` - Get upgrade status
+</details>
+
+<details>
+<summary>Static File (static-file)</summary>
+<br>
+
+`get-static-files` - Get static files with filtering
+`get-static-file-root` - Get root static files
+`get-static-file-children` - Get child static files
+`get-static-file-ancestors` - Get static file ancestors
+</details>
+
+<details>
+<summary>Stylesheet (stylesheet)</summary>
+<br>
+
+`get-stylesheet-by-path` - Get stylesheet by path
+`get-stylesheet-folder-by-path` - Get stylesheet folder by path
+`create-stylesheet` - Create a new stylesheet
+`create-stylesheet-folder` - Create a stylesheet folder
+`update-stylesheet` - Update a stylesheet
+`rename-stylesheet` - Rename a stylesheet
+`delete-stylesheet` - Delete a stylesheet
+`delete-stylesheet-folder` - Delete a stylesheet folder
+`get-stylesheet-root` - Get root stylesheets
+`get-stylesheet-children` - Get child stylesheets
+`get-stylesheet-ancestors` - Get stylesheet ancestors
+`get-stylesheet-search` - Search stylesheets
+</details>
+
+<details>
+<summary>Tag (tag)</summary>
+<br>
+
+`get-tags` - Get all tags
 </details>
 
 <details>
@@ -538,23 +622,54 @@ The allows you to specify collections by name if you wish to exclude them from t
 <summary>Temporary File (temporary-file)</summary>
 <br>
 
-`create-temporary-file` - Create a temporary file  
-`get-temporary-file` - Get a temporary file  
-`delete-temporary-file` - Delete a temporary file  
+`create-temporary-file` - Create a temporary file
+`get-temporary-file` - Get a temporary file
+`delete-temporary-file` - Delete a temporary file
 `get-temporary-file-configuration` - Get temporary file configuration
+</details>
+
+<details>
+<summary>User (user)</summary>
+<br>
+
+`get-user` - Get users with pagination
+`get-user-by-id` - Get user by ID
+`find-user` - Find users by search criteria
+`get-item-user` - Get user item information
+`get-user-current` - Get current authenticated user
+`get-user-configuration` - Get user configuration
+`get-user-current-configuration` - Get current user configuration
+`get-user-current-login-providers` - Get current user login providers
+`get-user-current-permissions` - Get current user permissions
+`get-user-current-permissions-document` - Get current user document permissions
+`get-user-current-permissions-media` - Get current user media permissions
+`get-user-by-id-calculate-start-nodes` - Calculate start nodes for a user
+`upload-user-avatar-by-id` - Upload avatar for a user
+`upload-user-current-avatar` - Upload avatar for current user
+`delete-user-avatar-by-id` - Delete user avatar
+</details>
+
+<details>
+<summary>User Data (user-data)</summary>
+<br>
+
+`create-user-data` - Create user data key-value pair
+`update-user-data` - Update user data value
+`get-user-data` - Get all user data for current user
+`get-user-data-by-id` - Get user data by key
 </details>
 
 <details>
 <summary>User Group (user-group)</summary>
 <br>
 
-`get-user-group` - Get user group  
-`get-user-group-by-id-array` - Get user groups by IDs  
-`get-user-groups` - Get all user groups  
-`get-filter-user-group` - Filter user groups  
-`create-user-group` - Create a new user group  
-`update-user-group` - Update a user group  
-`delete-user-group` - Delete a user group  
+`get-user-group` - Get user group
+`get-user-group-by-id-array` - Get user groups by IDs
+`get-user-groups` - Get all user groups
+`get-filter-user-group` - Filter user groups
+`create-user-group` - Create a new user group
+`update-user-group` - Update a user group
+`delete-user-group` - Delete a user group
 `delete-user-groups` - Delete multiple user groups
 </details>
 

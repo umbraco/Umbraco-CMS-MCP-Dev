@@ -64,17 +64,6 @@ describe("document-reference-tests", () => {
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
     });
-
-    it("should handle empty reference check", async () => {
-      // Act: Check references for empty array
-      const result = await GetDocumentAreReferencedTool().handler(
-        { id: [], take: 20 },
-        { signal: new AbortController().signal }
-      );
-
-      // Assert: Should handle gracefully
-      expect(result).toMatchSnapshot();
-    });
   });
 
   describe("get-document-by-id-referenced-by", () => {

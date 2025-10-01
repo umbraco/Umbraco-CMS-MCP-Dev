@@ -34,6 +34,9 @@ import { IndexerCollection } from "./indexer/index.js";
 import { ImagingCollection } from "./imaging/index.js";
 import { RelationTypeCollection } from "./relation-type/index.js";
 import { RelationCollection } from "./relation/index.js";
+import { UserCollection } from "./user/index.js";
+import { UserDataCollection } from "./user-data/index.js";
+import { StaticFileCollection } from "./static-file/index.js";
 
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -76,7 +79,10 @@ const availableCollections: ToolCollectionExport[] = [
   IndexerCollection,
   ImagingCollection,
   RelationTypeCollection,
-  RelationCollection
+  RelationCollection,
+  UserCollection,
+  UserDataCollection,
+  StaticFileCollection
 ];
 
 // Enhanced mapTools with collection filtering (existing function signature)
