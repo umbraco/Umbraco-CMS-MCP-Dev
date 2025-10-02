@@ -89,16 +89,16 @@ Some collections have dependencies that are automatically resolved:
 
 ### Configuration Loading
 
-Configuration is loaded from environment variables with automatic parsing:
+Configuration is loaded from the server config object:
 
 ```typescript
 export class CollectionConfigLoader {
-  static loadFromEnv(): CollectionConfiguration {
+  static loadFromConfig(config: UmbracoServerConfig): CollectionConfiguration {
     return {
-      enabledCollections: env.UMBRACO_INCLUDE_TOOL_COLLECTIONS ?? DEFAULT_COLLECTION_CONFIG.enabledCollections,
-      disabledCollections: env.UMBRACO_EXCLUDE_TOOL_COLLECTIONS ?? DEFAULT_COLLECTION_CONFIG.disabledCollections,
-      enabledTools: env.UMBRACO_INCLUDE_TOOLS ?? DEFAULT_COLLECTION_CONFIG.enabledTools,
-      disabledTools: env.UMBRACO_EXCLUDE_TOOLS ?? DEFAULT_COLLECTION_CONFIG.disabledTools,
+      enabledCollections: config.includeToolCollections ?? DEFAULT_COLLECTION_CONFIG.enabledCollections,
+      disabledCollections: config.excludeToolCollections ?? DEFAULT_COLLECTION_CONFIG.disabledCollections,
+      enabledTools: config.includeTools ?? DEFAULT_COLLECTION_CONFIG.enabledTools,
+      disabledTools: config.excludeTools ?? DEFAULT_COLLECTION_CONFIG.disabledTools,
     };
   }
 }
@@ -108,7 +108,7 @@ export class CollectionConfigLoader {
 
 The `UmbracoToolFactory` processes configuration and loads tools:
 
-1. Load configuration from environment variables
+1. Load configuration from server config
 2. Validate collection names and dependencies
 3. Resolve collection dependencies automatically
 4. Filter collections based on configuration

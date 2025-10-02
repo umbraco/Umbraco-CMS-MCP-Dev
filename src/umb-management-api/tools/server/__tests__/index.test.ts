@@ -16,7 +16,7 @@ describe("server-tool-index", () => {
     it("should have all tools when user is admin", () => {
         const userMock = {
             allowedSections: [],
-            userGroupIds: [{ id: AdminGroupKeyString.toLowerCase(), name: "Administrators" }]
+            userGroupIds: [{ id: AdminGroupKeyString.toLowerCase() }]
         } as Partial<CurrentUserResponseModel>;
 
         const tools = ServerTools(userMock as CurrentUserResponseModel);

@@ -71,3 +71,25 @@ exports[`create-document should create a document with additional properties 2`]
   ],
 }
 `;
+
+exports[`create-document should create a document with empty cultures array (null culture) 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-document should create a document with specific cultures 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;

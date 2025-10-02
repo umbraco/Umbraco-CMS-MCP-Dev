@@ -43,7 +43,7 @@ import { ToolDefinition } from "types/tool-definition.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
 import { CollectionConfigLoader } from "@/helpers/config/collection-config-loader.js";
 import { CollectionConfiguration } from "../../types/collection-configuration.js";
-import env from "@/helpers/config/env.js";
+import type { UmbracoServerConfig } from "../../config.js";
 
 // Available collections (converted to new format)
 const availableCollections: ToolCollectionExport[] = [
@@ -85,19 +85,22 @@ const availableCollections: ToolCollectionExport[] = [
   StaticFileCollection
 ];
 
-// Enhanced mapTools with collection filtering (existing function signature)
-const mapTools = (server: McpServer,
+// Enhanced mapTools with collection filtering
+const mapTools = (
+  server: McpServer,
   user: CurrentUserResponseModel,
-  tools: ToolDefinition<any>[]) => {
+  tools: ToolDefinition<any>[],
+  config: CollectionConfiguration
+) => {
   return tools.forEach(tool => {
     // Check if user has permission for this tool
     const userHasPermission = (tool.enabled === undefined || tool.enabled(user));
     if (!userHasPermission) return;
-    
-    // Apply existing tool-level filtering (preserves current behavior)
-    if (env.UMBRACO_EXCLUDE_TOOLS?.includes(tool.name)) return;
-    if (env.UMBRACO_INCLUDE_TOOLS?.length && !env.UMBRACO_INCLUDE_TOOLS.includes(tool.name)) return;
-    
+
+    // Apply tool-level filtering from configuration
+    if (config.disabledTools?.includes(tool.name)) return;
+    if (config.enabledTools?.length && !config.enabledTools.includes(tool.name)) return;
+
     // Register the tool
     server.tool(tool.name, tool.description, tool.schema, tool.handler);
   })
@@ -165,19 +168,19 @@ function getEnabledCollections(config: CollectionConfiguration): ToolCollectionE
   );
 }
 
-export function UmbracoToolFactory(server: McpServer, user: CurrentUserResponseModel) {
-  // Load collection configuration
-  const config = CollectionConfigLoader.loadFromEnv();
-  
+export function UmbracoToolFactory(server: McpServer, user: CurrentUserResponseModel, serverConfig: UmbracoServerConfig) {
+  // Load collection configuration from server config
+  const config = CollectionConfigLoader.loadFromConfig(serverConfig);
+
   // Validate configuration
   validateConfiguration(config, availableCollections);
-  
+
   // Get enabled collections based on configuration
   const enabledCollections = getEnabledCollections(config);
-  
+
   // Load tools from enabled collections only
   enabledCollections.forEach(collection => {
     const tools = collection.tools(user);
-    mapTools(server, user, tools);
+    mapTools(server, user, tools, config);
   });
 }
