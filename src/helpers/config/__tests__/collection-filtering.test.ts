@@ -436,34 +436,64 @@ describe('Collection Filtering', () => {
     });
   });
 
-  describe('Environment Variable Parsing', () => {
-    it('should parse comma-separated collection names', async () => {
-      process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS = 'culture, data-type , document';
-      
-      // Force re-import of env module after setting environment variables
-      jest.resetModules();
-      const { CollectionConfigLoader } = await import("@/helpers/config/collection-config-loader.js");
-      
-      const config = CollectionConfigLoader.loadFromEnv();
-      
+  describe('Configuration Loading', () => {
+    it('should parse comma-separated collection names', () => {
+      const serverConfig = {
+        auth: { clientId: 'test', clientSecret: 'test', baseUrl: 'http://test' },
+        includeToolCollections: ['culture', 'data-type', 'document'],
+        excludeToolCollections: [],
+        includeTools: [],
+        excludeTools: [],
+        configSources: {
+          clientId: 'env' as const,
+          clientSecret: 'env' as const,
+          baseUrl: 'env' as const,
+          envFile: 'default' as const
+        }
+      };
+
+      const config = CollectionConfigLoader.loadFromConfig(serverConfig);
+
       expect(config.enabledCollections).toEqual(['culture', 'data-type', 'document']);
     });
 
-    it('should handle empty values', async () => {
-      process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS = '';
-      
-      // Force re-import of env module after setting environment variables
-      jest.resetModules();
-      const { CollectionConfigLoader } = await import("@/helpers/config/collection-config-loader.js");
-      
-      const config = CollectionConfigLoader.loadFromEnv();
-      
+    it('should handle empty values', () => {
+      const serverConfig = {
+        auth: { clientId: 'test', clientSecret: 'test', baseUrl: 'http://test' },
+        includeToolCollections: [],
+        excludeToolCollections: [],
+        includeTools: [],
+        excludeTools: [],
+        configSources: {
+          clientId: 'env' as const,
+          clientSecret: 'env' as const,
+          baseUrl: 'env' as const,
+          envFile: 'default' as const
+        }
+      };
+
+      const config = CollectionConfigLoader.loadFromConfig(serverConfig);
+
       expect(config.enabledCollections).toEqual([]);
     });
 
     it('should load configuration structure correctly', () => {
-      const config = CollectionConfigLoader.loadFromEnv();
-      
+      const serverConfig = {
+        auth: { clientId: 'test', clientSecret: 'test', baseUrl: 'http://test' },
+        includeToolCollections: undefined,
+        excludeToolCollections: undefined,
+        includeTools: undefined,
+        excludeTools: undefined,
+        configSources: {
+          clientId: 'env' as const,
+          clientSecret: 'env' as const,
+          baseUrl: 'env' as const,
+          envFile: 'default' as const
+        }
+      };
+
+      const config = CollectionConfigLoader.loadFromConfig(serverConfig);
+
       expect(config).toHaveProperty('enabledCollections');
       expect(config).toHaveProperty('disabledCollections');
       expect(config).toHaveProperty('enabledTools');

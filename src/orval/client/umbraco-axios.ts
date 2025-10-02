@@ -1,36 +1,46 @@
 import qs from "qs";
 import Axios from "axios";
-import env from "@/helpers/config/env.js";
+import type { UmbracoAuthConfig } from "../../config.js";
 
-const client_id = env.UMBRACO_CLIENT_ID;
-const client_secret = env.UMBRACO_CLIENT_SECRET;
+// Module-level variables for configuration
+let authConfig: UmbracoAuthConfig | null = null;
+
+// Initialize the client with configuration
+export function initializeUmbracoAxios(config: UmbracoAuthConfig): void {
+  authConfig = config;
+
+  const { clientId, clientSecret, baseUrl } = config;
+
+  if (!baseUrl)
+    throw new Error("Missing required configuration: baseUrl");
+  if (!clientId)
+    throw new Error("Missing required configuration: clientId");
+  if (!clientSecret && clientId !== "umbraco-swagger")
+    throw new Error("Missing required configuration: clientSecret");
+
+  // Update base URL for existing instance
+  UmbracoAxios.defaults.baseURL = baseUrl;
+}
+
 const grant_type = "client_credentials";
-
-const baseURL = env.UMBRACO_BASE_URL;
-
-if (!baseURL)
-  throw new Error("Missing required environment variable: UMBRACO_BASE_URL");
-if (!client_id)
-  throw new Error("Missing required environment variable: UMBRACO_CLIENT_ID");
-if (!client_secret && client_id !== "umbraco-swagger")
-  throw new Error(
-    "Missing required environment variable: UMBRACO_CLIENT_SECRET"
-  );
-
 const tokenPath = "/umbraco/management/api/v1/security/back-office/token";
 
-export const UmbracoAxios = Axios.create({ baseURL }); // Set base URL from config
+export const UmbracoAxios = Axios.create();
 
 let accessToken: string | null = null;
 let tokenExpiry: number | null = null;
 
 // Function to fetch a new access token
 const fetchAccessToken = async (): Promise<string | null> => {
+  if (!authConfig) {
+    throw new Error("UmbracoAxios not initialized. Call initializeUmbracoAxios first.");
+  }
+
   const response = await Axios.post(
-    `${baseURL}${tokenPath}`,
+    `${authConfig.baseUrl}${tokenPath}`,
     {
-      client_id,
-      client_secret: client_secret ?? "",
+      client_id: authConfig.clientId,
+      client_secret: authConfig.clientSecret ?? "",
       grant_type,
     },
     {

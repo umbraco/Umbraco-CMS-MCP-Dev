@@ -7,8 +7,16 @@ import { UmbracoToolFactory } from "./umb-management-api/tools/tool-factory.js";
 import { ResourceFactory } from "./umb-management-api/resources/resource-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
+import { getServerConfig } from "./config.js";
+import { initializeUmbracoAxios } from "./orval/client/umbraco-axios.js";
 
 const main = async () => {
+  // Load and validate configuration
+  const config = getServerConfig(true); // true = stdio mode (no logging)
+
+  // Initialize Axios client with configuration
+  initializeUmbracoAxios(config.auth);
+
   // Create an MCP server
   const server = UmbracoMcpServer.GetServer();
   const client = UmbracoManagementClient.getClient();
@@ -16,7 +24,7 @@ const main = async () => {
   const user = await client.getUserCurrent();
 
   ResourceFactory(server);
-  UmbracoToolFactory(server, user);
+  UmbracoToolFactory(server, user, config);
 
   // Start receiving messages on stdin and sending messages on stdout
   const transport = new StdioServerTransport();

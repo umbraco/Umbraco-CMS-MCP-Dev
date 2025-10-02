@@ -105,7 +105,9 @@ describe("get-tag", () => {
       { signal: new AbortController().signal }
     );
 
-    expect(result).toMatchSnapshot();
+    // Normalize the result for snapshot testing
+    const normalizedResult = createSnapshotResult(result);
+    expect(normalizedResult).toMatchSnapshot();
   });
 
 });
