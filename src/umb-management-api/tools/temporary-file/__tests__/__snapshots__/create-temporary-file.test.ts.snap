@@ -21,21 +21,11 @@ exports[`create-temporary-file should create a temporary file 2`] = `
 ]
 `;
 
-exports[`create-temporary-file should handle file not found 1`] = `
+exports[`create-temporary-file should handle empty base64 1`] = `
 {
   "content": [
     {
-      "text": "Error using create-temporary-file:
-{
-  "message": "ENOENT: no such file or directory, open <image path>",
-  "cause": {
-    "errno": -2,
-    "code": "ENOENT",
-    "syscall": "open",
-    "path": "<image path>"
-  },
-  "path": "<image path>"
-}",
+      "text": "{"id":"00000000-0000-0000-0000-000000000000"}",
       "type": "text",
     },
   ],
