@@ -34,15 +34,12 @@ describe("copy-document", () => {
       .withRootDocumentType()
       .create();
 
-    // Copy the document to root (no target)
+    // Copy the document to root (no parentId means root)
     const result = await CopyDocumentTool().handler(
       {
-        id: docBuilder.getId(),
-        data: {
-          target: null,
-          relateToOriginal: false,
-          includeDescendants: false,
-        },
+        idToCopy: docBuilder.getId(),
+        relateToOriginal: false,
+        includeDescendants: false,
       },
       { signal: new AbortController().signal }
     );
@@ -73,12 +70,9 @@ describe("copy-document", () => {
   it("should handle non-existent document", async () => {
     const result = await CopyDocumentTool().handler(
       {
-        id: BLANK_UUID,
-        data: {
-          target: null,
-          relateToOriginal: false,
-          includeDescendants: false,
-        },
+        idToCopy: BLANK_UUID,
+        relateToOriginal: false,
+        includeDescendants: false,
       },
       { signal: new AbortController().signal }
     );

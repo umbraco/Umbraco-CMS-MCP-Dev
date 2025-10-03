@@ -1,9 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { postDocumentByIdCopyBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
-import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { CopyDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+
+const copyDocumentSchema = z.object({
+  parentId: z.string().uuid("Must be a valid document UUID of the parent node").optional(),
+  idToCopy: z.string().uuid("Must be a valid document UUID that belongs to the parent document's children"),
+  relateToOriginal: z.boolean().describe("Relate the copy to the original document. This is usually set to false unless specified."),
+  includeDescendants: z.boolean().describe("If true, all descendant documents (children, grandchildren, etc.) will also be copied. This is usually set to false unless specified."),
+});
 
 const CopyDocumentTool = CreateUmbracoTool(
   "copy-document",
@@ -25,13 +31,19 @@ const CopyDocumentTool = CreateUmbracoTool(
     Example workflows:
     1. Copy only: copy-document (creates draft copy)
     2. Copy and update: copy-document → search-document → update-document → publish-document`,
-  {
-    id: z.string().uuid(),
-    data: z.object(postDocumentByIdCopyBody.shape),
-  },
-  async (model: { id: string; data: any }) => {
+    copyDocumentSchema.shape,
+  async (model) => {
     const client = UmbracoManagementClient.getClient();
-    const response = await client.postDocumentByIdCopy(model.id, model.data);
+
+    const payload: CopyDocumentRequestModel = {
+      target: model.parentId ? {
+        id: model.parentId,
+      } : undefined,
+      relateToOriginal: model.relateToOriginal,
+      includeDescendants: model.includeDescendants,
+    };
+
+    const response = await client.postDocumentByIdCopy(model.idToCopy, payload);
     return {
       content: [
         {
