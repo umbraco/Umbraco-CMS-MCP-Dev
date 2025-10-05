@@ -11,12 +11,17 @@ const TEST_MEDIA_NAME_2 = "_Test Media Sort 2";
 describe("sort-media", () => {
   let originalConsoleError: typeof console.error;
   let tempFileBuilder: TemporaryFileBuilder;
+  let tempFileBuilder2: TemporaryFileBuilder;
 
   beforeEach(async () => {
     originalConsoleError = console.error;
     console.error = jest.fn();
 
     tempFileBuilder = await new TemporaryFileBuilder()
+      .withExampleFile()
+      .create();
+
+    tempFileBuilder2 = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
   });
@@ -43,7 +48,7 @@ describe("sort-media", () => {
     const media2Builder = await new MediaBuilder()
       .withName(TEST_MEDIA_NAME_2)
       .withImageMediaType()
-      .withImageValue(tempFileBuilder.getId())
+      .withImageValue(tempFileBuilder2.getId())
       .withParent(folderBuilder.getId())
       .create();
 

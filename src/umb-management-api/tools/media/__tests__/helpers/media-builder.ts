@@ -5,6 +5,7 @@ import {
 } from "@/umb-management-api/schemas/index.js";
 import { postMediaBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { MediaTestHelper } from "./media-test-helper.js";
+import { v4 as uuidv4 } from "uuid";
 import {
   FOLDER_MEDIA_TYPE_ID,
   IMAGE_MEDIA_TYPE_ID,
@@ -46,22 +47,24 @@ export class MediaBuilder {
     return this;
   }
 
-  withImageValue(temporaryFieldId: string): MediaBuilder {
+  withImageValue(temporaryFileId: string): MediaBuilder {
     this.model.values = [
       {
         alias: "umbracoFile",
+        editorAlias: "Umbraco.ImageCropper",
+        entityType: "media-property-value",
         value: {
           crops: [],
           culture: null,
           segment: null,
           focalPoint: {
-            left: 0.5,
+            top: 0.5,
             right: 0.5,
           },
-          temporaryFieldId: temporaryFieldId,
+          temporaryFileId: temporaryFileId,
         },
       },
-    ];
+    ] as any; 
     return this;
   }
 
