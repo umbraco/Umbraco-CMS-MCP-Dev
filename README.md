@@ -80,6 +80,34 @@ claude mcp list
 
 This will add umbraco-mcp to the existing project in the claude.json config file.
 
+#### Configuration via .mcp.json (Project-specific)
+
+For project-specific Claude Code configuration, create a `.mcp.json` file in your project root that references environment variables for sensitive data:
+
+```json
+{
+  "mcpServers": {
+    "umbraco-mcp": {
+      "command": "npx",
+      "args": ["@umbraco-cms/mcp-dev@beta"],
+      "env": {
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0",
+        "UMBRACO_CLIENT_ID": "umbraco-back-office-mcp",
+        "UMBRACO_CLIENT_SECRET": "your-client-secret-here",
+        "UMBRACO_BASE_URL": "https://localhost:44391",
+        "UMBRACO_INCLUDE_TOOL_COLLECTIONS": "culture,document,media",
+        "UMBRACO_EXCLUDE_TOOLS": "delete-document,empty-recycle-bin"
+      }
+    }
+  }
+}
+```
+
+Using the `.mcp.json` file allows you to:
+- Configure MCP servers per project
+- Share configuration with team members (commit to version control)
+- Override global Claude Code MCP settings for specific projects
+- Move the environment varaibles to a .env file to prevent leaking of secrets to your code repo
 
 </details>
 
@@ -142,6 +170,7 @@ Add the following to the config file and update the env variables.
 ```
 </details>
 
+
 #### Authentication Configuration Keys
 
 - `UMBRACO_CLIENT_ID`
@@ -155,6 +184,40 @@ Umbraco API User client secert
 - `UMBRACO_BASE_URL` 
 
 Url of the Umbraco site, it only needs to be the scheme and domain e.g https://<nolink/>example.com
+
+### Environment Configuration Options
+
+The Umbraco MCP server supports environment configuration via:
+1. **Environment variables in MCP client config as above** (Claude Desktop, VS Code, etc.)
+2. **Local `.env` file** for development (see `.env.example`)
+3. **CLI arguments** when running directly
+
+**Configuration precedence:** CLI arguments > Environment variables > `.env` file
+
+#### Using a `.env` file (Development)
+
+For local development, you can create a `.env` file in the project root:
+
+```bash
+# Edit with your values
+UMBRACO_CLIENT_ID=your-api-user-id
+UMBRACO_CLIENT_SECRET=your-api-secret
+UMBRACO_BASE_URL=http://localhost:56472
+```
+
+The `.env` file is gitignored to keep your secrets secure.
+
+#### CLI Arguments
+
+You can also pass configuration via CLI arguments:
+
+```bash
+npx @umbraco-cms/mcp-dev@beta \
+  --umbraco-client-id="your-id" \
+  --umbraco-client-secret="your-secret" \
+  --umbraco-base-url="http://localhost:56472" \
+  --env="/path/to/custom/.env"
+```
 
 ## API Coverage
 

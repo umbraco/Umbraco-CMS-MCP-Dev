@@ -3,9 +3,29 @@ import { jest } from "@jest/globals";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { UmbracoToolFactory } from "../../../umb-management-api/tools/tool-factory.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import type { UmbracoServerConfig } from "../../../config.js";
 
 // Mock environment variables for testing
 const originalEnv = process.env;
+
+// Helper to create mock config from process.env
+const getMockConfig = (): UmbracoServerConfig => ({
+  auth: {
+    clientId: "test-client",
+    clientSecret: "test-secret",
+    baseUrl: "http://localhost:56472"
+  },
+  includeToolCollections: process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS?.split(',').map(c => c.trim()).filter(Boolean),
+  excludeToolCollections: process.env.UMBRACO_EXCLUDE_TOOL_COLLECTIONS?.split(',').map(c => c.trim()).filter(Boolean),
+  includeTools: process.env.UMBRACO_INCLUDE_TOOLS?.split(',').map(t => t.trim()).filter(Boolean),
+  excludeTools: process.env.UMBRACO_EXCLUDE_TOOLS?.split(',').map(t => t.trim()).filter(Boolean),
+  configSources: {
+    clientId: "env",
+    clientSecret: "env",
+    baseUrl: "env",
+    envFile: "default"
+  }
+});
 
 const mockUser: CurrentUserResponseModel = {
   id: "test-user",
@@ -60,7 +80,7 @@ describe('UmbracoToolFactory Integration', () => {
   });
 
   it('should load tools from all collections by default', () => {
-    UmbracoToolFactory(mockServer, mockUser);
+    UmbracoToolFactory(mockServer, mockUser, getMockConfig());
     
     // Verify server.tool was called (should include tools from all collections)
     expect(mockServer.tool).toHaveBeenCalled();
@@ -70,7 +90,7 @@ describe('UmbracoToolFactory Integration', () => {
   it('should only load tools from enabled collections', () => {
     process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS = 'culture,data-type';
     
-    UmbracoToolFactory(mockServer, mockUser);
+    UmbracoToolFactory(mockServer, mockUser, getMockConfig());
     
     // Verify tools were loaded
     expect(mockServer.tool).toHaveBeenCalled();
@@ -86,14 +106,14 @@ describe('UmbracoToolFactory Integration', () => {
   it('should handle empty enabled collections list', () => {
     process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS = '';
     
-    UmbracoToolFactory(mockServer, mockUser);
+    UmbracoToolFactory(mockServer, mockUser, getMockConfig());
     
     // Should still load tools (empty list means load all)
     expect(mockServer.tool).toHaveBeenCalled();
   });
 
   it('should load tools from all converted collections', () => {
-    UmbracoToolFactory(mockServer, mockUser);
+    UmbracoToolFactory(mockServer, mockUser, getMockConfig());
     
     // Should load tools from all converted collections
     const toolCalls = mockServer.tool.mock.calls.map(call => call[0]);
@@ -112,7 +132,7 @@ describe('UmbracoToolFactory Integration', () => {
     jest.resetModules();
     const { UmbracoToolFactory } = await import("../../../umb-management-api/tools/tool-factory.js");
     
-    UmbracoToolFactory(mockServer, mockUser);
+    UmbracoToolFactory(mockServer, mockUser, getMockConfig());
     
     const toolCalls = mockServer.tool.mock.calls.map(call => call[0]);
     // Should not include the culture tool (from the excluded collection)
@@ -132,7 +152,7 @@ describe('UmbracoToolFactory Integration', () => {
     jest.resetModules();
     const { UmbracoToolFactory } = await import("../../../umb-management-api/tools/tool-factory.js");
     
-    UmbracoToolFactory(mockServer, mockUser);
+    UmbracoToolFactory(mockServer, mockUser, getMockConfig());
     
     // Should warn about invalid collection name
     expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('invalid-collection-name'));
@@ -151,7 +171,7 @@ describe('UmbracoToolFactory Integration', () => {
       allowedSections: [] // No access to any sections
     };
     
-    UmbracoToolFactory(mockServer, restrictedUser);
+    UmbracoToolFactory(mockServer, restrictedUser, getMockConfig());
     
     // Verify that tools were registered (the tool enablement logic handles permissions)
     // This test verifies the factory still runs but individual tools check permissions
@@ -162,14 +182,14 @@ describe('UmbracoToolFactory Integration', () => {
     // This test verifies that if collections had dependencies, they would be included
     process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS = 'culture,data-type';
     
-    UmbracoToolFactory(mockServer, mockUser);
+    UmbracoToolFactory(mockServer, mockUser, getMockConfig());
     
     // Should successfully load without errors
     expect(mockServer.tool).toHaveBeenCalled();
   });
 
   it('should maintain tool registration order', () => {
-    UmbracoToolFactory(mockServer, mockUser);
+    UmbracoToolFactory(mockServer, mockUser, getMockConfig());
     
     // Verify tools were registered in some order
     expect(mockServer.tool.mock.calls.length).toBeGreaterThan(0);
@@ -189,7 +209,7 @@ describe('UmbracoToolFactory Integration', () => {
     it('should handle whitespace in collection names', () => {
       process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS = ' culture , data-type , ';
       
-      UmbracoToolFactory(mockServer, mockUser);
+      UmbracoToolFactory(mockServer, mockUser, getMockConfig());
       
       // Should parse correctly despite whitespace
       expect(mockServer.tool).toHaveBeenCalled();
@@ -198,7 +218,7 @@ describe('UmbracoToolFactory Integration', () => {
     it('should handle empty collection names in list', () => {
       process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS = 'culture,,data-type';
       
-      UmbracoToolFactory(mockServer, mockUser);
+      UmbracoToolFactory(mockServer, mockUser, getMockConfig());
       
       // Should handle empty values gracefully
       expect(mockServer.tool).toHaveBeenCalled();

@@ -89,6 +89,13 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
         url.replace(/\/[a-f0-9]{40}\.jpg/, "/NORMALIZED_AVATAR.jpg")
       );
     }
+    // Normalize media URLs that contain dynamic path segments
+    if (item.urlInfos && Array.isArray(item.urlInfos)) {
+      item.urlInfos = item.urlInfos.map((urlInfo: any) => ({
+        ...urlInfo,
+        url: urlInfo.url ? urlInfo.url.replace(/\/media\/[a-z0-9]+\//i, "/media/NORMALIZED_PATH/") : urlInfo.url
+      }));
+    }
     return item;
   }
 
@@ -138,6 +145,13 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
                 url.replace(/\/[a-f0-9]{40}\.jpg/, "/NORMALIZED_AVATAR.jpg")
               );
             }
+            // Normalize media URLs that contain dynamic path segments
+            if (parsed.urlInfos && Array.isArray(parsed.urlInfos)) {
+              parsed.urlInfos = parsed.urlInfos.map((urlInfo: any) => ({
+                ...urlInfo,
+                url: urlInfo.url ? urlInfo.url.replace(/\/media\/[a-z0-9]+\//i, "/media/NORMALIZED_PATH/") : urlInfo.url
+              }));
+            }
             // Normalize document version references
             if (parsed.document) {
               parsed.document = { ...parsed.document, id: BLANK_UUID };
@@ -168,10 +182,11 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
           // For list responses
           const parsed = JSON.parse(item.text);
           if (Array.isArray(parsed)) {
-            // Handle ancestors API response
+            // Handle ancestors API response and other array responses
+            const normalized = parsed.map(normalizeItem);
             return {
               ...item,
-              text: JSON.stringify(parsed.map(normalizeItem)),
+              text: JSON.stringify(normalized),
             };
           }
           // Handle other list responses

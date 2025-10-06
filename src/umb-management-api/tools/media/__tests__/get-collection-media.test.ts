@@ -12,12 +12,17 @@ const TEST_MEDIA_NAME_2 = "_Test Collection Media 2";
 describe("get-collection-media", () => {
   let originalConsoleError: typeof console.error;
   let tempFileBuilder: TemporaryFileBuilder;
+  let tempFileBuilder2: TemporaryFileBuilder;
 
   beforeEach(async () => {
     originalConsoleError = console.error;
     console.error = jest.fn();
 
     tempFileBuilder = await new TemporaryFileBuilder()
+      .withExampleFile()
+      .create();
+
+    tempFileBuilder2 = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
   });
@@ -39,7 +44,7 @@ describe("get-collection-media", () => {
     await new MediaBuilder()
       .withName(TEST_MEDIA_NAME_2)
       .withImageMediaType()
-      .withImageValue(tempFileBuilder.getId())
+      .withImageValue(tempFileBuilder2.getId())
       .create();
 
     const result = await GetCollectionMediaTool().handler(

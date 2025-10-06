@@ -1,56 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`create-media should create a media item 1`] = `
+exports[`create-media should create file media 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "Media "_Test File Upload" created successfully",
       "type": "text",
     },
   ],
 }
 `;
 
-exports[`create-media should create a media item 2`] = `
-{
-  "createDate": "<normalized>",
-  "hasChildren": false,
-  "id": "00000000-0000-0000-0000-000000000000",
-  "isTrashed": false,
-  "mediaType": {
-    "collection": null,
-    "icon": "icon-picture",
-    "id": "cc07b313-0843-4aa8-bbda-871c8da728c8",
-  },
-  "noAccess": false,
-  "parent": null,
-  "variants": [
-    {
-      "culture": null,
-      "name": "_Test Media Created",
-    },
-  ],
-}
-`;
-
-exports[`create-media should create a media item with parent 1`] = `
+exports[`create-media should create image media 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "Media "_Test Image Upload" created successfully",
       "type": "text",
     },
   ],
 }
 `;
 
-exports[`create-media should handle invalid temporary file id 1`] = `
+exports[`create-media should create media from URL 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "Media "_Test URL Image Upload" created successfully",
       "type": "text",
     },
   ],
+}
+`;
+
+exports[`create-media should create media from base64 1`] = `
+{
+  "content": [
+    {
+      "text": "Media "_Test Base64 Image Upload.png" created successfully",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-media should handle invalid media type 1`] = `
+{
+  "content": [
+    {
+      "text": "Error creating media: Media type 'NonExistentMediaType' not found. Available types: None found",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;
+
+exports[`create-media should handle non-existent file path 1`] = `
+{
+  "content": [
+    {
+      "text": "Error creating media: File not found: /non/existent/file.jpg",
+      "type": "text",
+    },
+  ],
+  "isError": true,
 }
 `;

@@ -7,7 +7,7 @@
           "UMBRACO_CLIENT_ID": "umbraco-back-office-mcp",
           "UMBRACO_CLIENT_SECRET": "1234567890",
           "UMBRACO_BASE_URL": "http://localhost:56472",
-          "UMBRACO_INCLUDE_TOOLS": "search-document,get-document-by-id,copy-document,publish-document,delete-document,get-document-root,get-document-children,get-document-publish,get-document-type-by-id,get-all-document-types"
+          "UMBRACO_INCLUDE_TOOLS": "get-document-root,get-document-children,get-document-publish,get-document-by-id,copy-document,publish-document,delete-document,update-document"
         }
       }
     }
