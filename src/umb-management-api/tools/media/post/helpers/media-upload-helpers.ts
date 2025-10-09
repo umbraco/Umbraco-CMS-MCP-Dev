@@ -4,6 +4,7 @@ import * as path from "path";
 import axios from "axios";
 import mime from "mime-types";
 import { STANDARD_MEDIA_TYPES, MEDIA_TYPE_IMAGE, MEDIA_TYPE_VECTOR_GRAPHICS } from "@/constants/constants.js";
+import { validateFilePath } from "./validate-file-path.js";
 
 /**
  * Maps MIME types to file extensions using the mime-types library.
@@ -138,10 +139,9 @@ export async function createFileStream(
       if (!filePath) {
         throw new Error("filePath is required when sourceType is 'filePath'");
       }
-      if (!fs.existsSync(filePath)) {
-        throw new Error(`File not found: ${filePath}`);
-      }
-      readStream = fs.createReadStream(filePath);
+      // Validate file path is within allowed directories (security check)
+      const validatedPath = validateFilePath(filePath);
+      readStream = fs.createReadStream(validatedPath);
       break;
 
     case "url":

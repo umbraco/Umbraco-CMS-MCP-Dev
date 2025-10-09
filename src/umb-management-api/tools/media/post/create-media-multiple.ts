@@ -39,6 +39,9 @@ const CreateMediaMultipleTool = CreateUmbracoTool(
 
   Source Types:
   1. filePath - Most efficient for local files, works with any size
+     SECURITY: Requires UMBRACO_ALLOWED_MEDIA_PATHS environment variable
+     to be configured with comma-separated allowed directories.
+     Example: UMBRACO_ALLOWED_MEDIA_PATHS="/tmp/uploads,/var/media"
   2. url - Fetch from web URL
 
   Note: base64 is not supported for batch uploads due to token usage.

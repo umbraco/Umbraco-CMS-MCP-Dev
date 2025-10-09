@@ -15,6 +15,7 @@ export interface UmbracoServerConfig {
   excludeToolCollections?: string[];
   includeTools?: string[];
   excludeTools?: string[];
+  allowedMediaPaths?: string[];
   configSources: {
     clientId: "cli" | "env";
     clientSecret: "cli" | "env";
@@ -23,6 +24,7 @@ export interface UmbracoServerConfig {
     excludeToolCollections?: "cli" | "env" | "none";
     includeTools?: "cli" | "env" | "none";
     excludeTools?: "cli" | "env" | "none";
+    allowedMediaPaths?: "cli" | "env" | "none";
     envFile: "cli" | "default";
   };
 }
@@ -40,6 +42,7 @@ interface CliArgs {
   "umbraco-exclude-tool-collections"?: string;
   "umbraco-include-tools"?: string;
   "umbraco-exclude-tools"?: string;
+  "umbraco-allowed-media-paths"?: string;
   env?: string;
 }
 
@@ -74,6 +77,10 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
       "umbraco-exclude-tools": {
         type: "string",
         description: "Comma-separated list of tools to exclude",
+      },
+      "umbraco-allowed-media-paths": {
+        type: "string",
+        description: "Comma-separated list of allowed file system paths for media uploads (security: restricts file path access)",
       },
       env: {
         type: "string",
@@ -110,6 +117,7 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
     excludeToolCollections: undefined,
     includeTools: undefined,
     excludeTools: undefined,
+    allowedMediaPaths: undefined,
     configSources: {
       clientId: "env",
       clientSecret: "env",
@@ -118,6 +126,7 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
       excludeToolCollections: "none",
       includeTools: "none",
       excludeTools: "none",
+      allowedMediaPaths: "none",
       envFile: envFileSource,
     },
   };
@@ -209,6 +218,21 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
     config.configSources.excludeTools = "env";
   }
 
+  // Handle UMBRACO_ALLOWED_MEDIA_PATHS
+  if (argv["umbraco-allowed-media-paths"]) {
+    config.allowedMediaPaths = argv["umbraco-allowed-media-paths"]
+      .split(",")
+      .map((p) => resolve(p.trim()))
+      .filter(Boolean);
+    config.configSources.allowedMediaPaths = "cli";
+  } else if (process.env.UMBRACO_ALLOWED_MEDIA_PATHS) {
+    config.allowedMediaPaths = process.env.UMBRACO_ALLOWED_MEDIA_PATHS
+      .split(",")
+      .map((p) => resolve(p.trim()))
+      .filter(Boolean);
+    config.configSources.allowedMediaPaths = "env";
+  }
+
   // Validate configuration
   if (!auth.clientId) {
     console.error(
@@ -266,6 +290,12 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
     if (config.excludeTools) {
       console.log(
         `- UMBRACO_EXCLUDE_TOOLS: ${config.excludeTools.join(", ")} (source: ${config.configSources.excludeTools})`,
+      );
+    }
+
+    if (config.allowedMediaPaths) {
+      console.log(
+        `- UMBRACO_ALLOWED_MEDIA_PATHS: ${config.allowedMediaPaths.join(", ")} (source: ${config.configSources.allowedMediaPaths})`,
       );
     }
 

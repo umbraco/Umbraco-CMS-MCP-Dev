@@ -3,8 +3,13 @@ import * as path from "path";
 import * as os from "os";
 import { jest } from "@jest/globals";
 
-// Import the functions
-import { createFileStream, fetchMediaTypeId } from "../../post/helpers/media-upload-helpers.js";
+// Mock the validate-file-path module to allow testing without config
+jest.unstable_mockModule("../../post/helpers/validate-file-path.js", () => ({
+  validateFilePath: jest.fn((filePath: string) => path.resolve(filePath))
+}));
+
+// Import the functions (after mocking)
+const { createFileStream, fetchMediaTypeId } = await import("../../post/helpers/media-upload-helpers.js");
 
 describe("media-upload-helpers", () => {
   describe("createFileStream - file path source", () => {
