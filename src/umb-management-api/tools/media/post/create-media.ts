@@ -3,11 +3,19 @@ import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
+import {
+  MEDIA_TYPE_IMAGE,
+  MEDIA_TYPE_ARTICLE,
+  MEDIA_TYPE_AUDIO,
+  MEDIA_TYPE_VIDEO,
+  MEDIA_TYPE_VECTOR_GRAPHICS,
+  MEDIA_TYPE_FILE
+} from "@/constants/constants.js";
 
 const createMediaSchema = z.object({
   sourceType: z.enum(["filePath", "url", "base64"]).describe("Media source type: 'filePath' for local files (most efficient), 'url' for web files, 'base64' for embedded data (small files only)"),
   name: z.string().describe("The name of the media item"),
-  mediaTypeName: z.string().describe("Media type: 'Image', 'Article', 'Audio', 'Video', 'Vector Graphic (SVG)', 'File', or custom media type name"),
+  mediaTypeName: z.string().describe(`Media type: '${MEDIA_TYPE_IMAGE}', '${MEDIA_TYPE_ARTICLE}', '${MEDIA_TYPE_AUDIO}', '${MEDIA_TYPE_VIDEO}', '${MEDIA_TYPE_VECTOR_GRAPHICS}', '${MEDIA_TYPE_FILE}', or custom media type name`),
   filePath: z.string().optional().describe("Absolute path to the file (required if sourceType is 'filePath')"),
   fileUrl: z.string().url().optional().describe("URL to fetch the file from (required if sourceType is 'url')"),
   fileAsBase64: z.string().optional().describe("Base64 encoded file data (required if sourceType is 'base64')"),
@@ -21,12 +29,12 @@ const CreateMediaTool = CreateUmbracoTool(
   `Upload any media file to Umbraco (images, documents, audio, video, SVG, or custom types).
 
   Media Types:
-  - Image: jpg, png, gif, webp, etc. (supports cropping)
-  - Article: pdf, docx, doc (documents)
-  - Audio: mp3, wav, etc.
-  - Video: mp4, webm, etc.
-  - Vector Graphic (SVG): svg files only
-  - File: any other file type
+  - ${MEDIA_TYPE_IMAGE}: jpg, png, gif, webp, etc. (supports cropping)
+  - ${MEDIA_TYPE_ARTICLE}: pdf, docx, doc (documents)
+  - ${MEDIA_TYPE_AUDIO}: mp3, wav, etc.
+  - ${MEDIA_TYPE_VIDEO}: mp4, webm, etc.
+  - ${MEDIA_TYPE_VECTOR_GRAPHICS}: svg files only
+  - ${MEDIA_TYPE_FILE}: any other file type
   - Custom: any custom media type created in Umbraco
 
   Source Types:

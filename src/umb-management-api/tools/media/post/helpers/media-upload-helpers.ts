@@ -3,6 +3,7 @@ import * as os from "os";
 import * as path from "path";
 import axios from "axios";
 import mime from "mime-types";
+import { STANDARD_MEDIA_TYPES, MEDIA_TYPE_IMAGE, MEDIA_TYPE_VECTOR_GRAPHICS } from "@/constants/constants.js";
 
 /**
  * Maps MIME types to file extensions using the mime-types library.
@@ -20,7 +21,7 @@ function getExtensionFromMimeType(mimeType: string | undefined): string | undefi
 
 /**
  * Validates and corrects media type for SVG files.
- * SVG files should use "Vector Graphic (SVG)" media type, not "Image".
+ * SVG files should use "Vector Graphics (SVG)" media type, not "Image".
  */
 export function validateMediaTypeForSvg(
   filePath: string | undefined,
@@ -34,9 +35,9 @@ export function validateMediaTypeForSvg(
     fileUrl?.toLowerCase().endsWith('.svg') ||
     fileName.toLowerCase().endsWith('.svg');
 
-  if (isSvg && mediaTypeName === 'Image') {
-    console.warn('SVG detected - using Vector Graphic media type instead of Image');
-    return 'Vector Graphic (SVG)';
+  if (isSvg && mediaTypeName === MEDIA_TYPE_IMAGE) {
+    console.warn(`SVG detected - using ${MEDIA_TYPE_VECTOR_GRAPHICS} media type instead of ${MEDIA_TYPE_IMAGE}`);
+    return MEDIA_TYPE_VECTOR_GRAPHICS;
   }
 
   return mediaTypeName;
@@ -44,9 +45,21 @@ export function validateMediaTypeForSvg(
 
 /**
  * Fetches media type ID from Umbraco API by name.
+ * For standard Umbraco media types, returns the hardcoded GUID immediately.
+ * For custom media types, queries the API.
  * Throws error with helpful message if media type not found.
  */
 export async function fetchMediaTypeId(client: any, mediaTypeName: string): Promise<string> {
+  // Check if this is a standard media type (case-insensitive)
+  const standardTypeKey = Object.keys(STANDARD_MEDIA_TYPES).find(
+    key => key.toLowerCase() === mediaTypeName.toLowerCase()
+  );
+
+  if (standardTypeKey) {
+    return STANDARD_MEDIA_TYPES[standardTypeKey];
+  }
+
+  // Fall back to API search for custom media types
   const response = await client.getItemMediaTypeSearch({ query: mediaTypeName });
 
   const mediaType = response.items.find(
@@ -68,7 +81,7 @@ export async function fetchMediaTypeId(client: any, mediaTypeName: string): Prom
  * Image uses ImageCropper, everything else uses UploadField.
  */
 export function getEditorAlias(mediaTypeName: string): string {
-  return mediaTypeName === 'Image' ? 'Umbraco.ImageCropper' : 'Umbraco.UploadField';
+  return mediaTypeName === MEDIA_TYPE_IMAGE ? 'Umbraco.ImageCropper' : 'Umbraco.UploadField';
 }
 
 /**
@@ -82,7 +95,7 @@ export function buildValueStructure(mediaTypeName: string, temporaryFileId: stri
     entityType: "media-property-value",
   };
 
-  if (mediaTypeName === 'Image') {
+  if (mediaTypeName === MEDIA_TYPE_IMAGE) {
     return {
       ...base,
       value: {
@@ -115,8 +128,7 @@ export async function createFileStream(
   filePath: string | undefined,
   fileUrl: string | undefined,
   fileAsBase64: string | undefined,
-  fileName: string,
-  temporaryFileId: string
+  fileName: string
 ): Promise<{ readStream: fs.ReadStream; tempFilePath: string | null }> {
   let tempFilePath: string | null = null;
   let readStream: fs.ReadStream;
@@ -253,8 +265,7 @@ export async function uploadMediaFile(
       params.filePath,
       params.fileUrl,
       params.fileAsBase64,
-      params.name,
-      params.temporaryFileId
+      params.name
     );
     tempFilePath = createdTempPath;
 

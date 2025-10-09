@@ -3,6 +3,14 @@ import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
+import {
+  MEDIA_TYPE_IMAGE,
+  MEDIA_TYPE_ARTICLE,
+  MEDIA_TYPE_AUDIO,
+  MEDIA_TYPE_VIDEO,
+  MEDIA_TYPE_VECTOR_GRAPHICS,
+  MEDIA_TYPE_FILE
+} from "@/constants/constants.js";
 
 const createMediaMultipleSchema = z.object({
   sourceType: z.enum(["filePath", "url"]).describe("Media source type: 'filePath' for local files (most efficient), 'url' for web files. Base64 not supported for batch uploads due to token usage."),
@@ -10,7 +18,7 @@ const createMediaMultipleSchema = z.object({
     name: z.string().describe("The name of the media item"),
     filePath: z.string().optional().describe("Absolute path to the file (required if sourceType is 'filePath')"),
     fileUrl: z.string().url().optional().describe("URL to fetch the file from (required if sourceType is 'url')"),
-    mediaTypeName: z.string().optional().describe("Optional override: 'Image', 'Article', 'Audio', 'Video', 'Vector Graphic (SVG)', 'File', or custom media type name. If not specified, defaults to 'File'"),
+    mediaTypeName: z.string().optional().describe(`Optional override: '${MEDIA_TYPE_IMAGE}', '${MEDIA_TYPE_ARTICLE}', '${MEDIA_TYPE_AUDIO}', '${MEDIA_TYPE_VIDEO}', '${MEDIA_TYPE_VECTOR_GRAPHICS}', '${MEDIA_TYPE_FILE}', or custom media type name. If not specified, defaults to '${MEDIA_TYPE_FILE}'`),
   })).describe("Array of files to upload (maximum 20 files per batch)"),
   parentId: z.string().uuid().optional().describe("Parent folder ID (defaults to root)"),
 });
@@ -57,7 +65,7 @@ const CreateMediaMultipleTool = CreateUmbracoTool(
     for (const file of model.files) {
       try {
         const temporaryFileId = uuidv4();
-        const defaultMediaType = file.mediaTypeName || 'File';
+        const defaultMediaType = file.mediaTypeName || MEDIA_TYPE_FILE;
 
         const actualName = await uploadMediaFile(client, {
           sourceType: model.sourceType,
