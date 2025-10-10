@@ -5,6 +5,7 @@ const config: import("ts-jest").JestConfigWithTsJest = {
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
     "\\.md$": "<rootDir>/src/__mocks__/markdownMock.js",
+    "^@/config\\.js$": "<rootDir>/src/config.ts",
     "^@/clients/(.*)\\.js$": "<rootDir>/src/clients/$1",
     "^@/helpers/(.*)\\.js$": "<rootDir>/src/helpers/$1",
     "@/test-helpers/(.*)\\.js$": "<rootDir>/src/test-helpers/$1",

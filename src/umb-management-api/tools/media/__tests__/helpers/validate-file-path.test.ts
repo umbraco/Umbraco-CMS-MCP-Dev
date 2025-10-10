@@ -9,8 +9,13 @@ describe("validate-file-path", () => {
   let testSymlink: string;
   let outsideDir: string;
   let outsideFile: string;
+  let originalEnvValue: string | undefined;
 
   beforeEach(() => {
+    // Save and clear UMBRACO_ALLOWED_MEDIA_PATHS for isolated testing
+    originalEnvValue = process.env.UMBRACO_ALLOWED_MEDIA_PATHS;
+    delete process.env.UMBRACO_ALLOWED_MEDIA_PATHS;
+
     // Create temporary test directory structure
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "media-test-"));
     testFile = path.join(tempDir, "test.jpg");
@@ -24,6 +29,13 @@ describe("validate-file-path", () => {
   });
 
   afterEach(() => {
+    // Restore original environment variable
+    if (originalEnvValue !== undefined) {
+      process.env.UMBRACO_ALLOWED_MEDIA_PATHS = originalEnvValue;
+    } else {
+      delete process.env.UMBRACO_ALLOWED_MEDIA_PATHS;
+    }
+
     // Cleanup
     try {
       if (fs.existsSync(testSymlink)) fs.unlinkSync(testSymlink);
