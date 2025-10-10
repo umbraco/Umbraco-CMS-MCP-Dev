@@ -1,9 +1,15 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
+import { jest } from "@jest/globals";
 
-// Import the function
-import { createFileStream } from "../../post/helpers/media-upload-helpers.js";
+// Mock the validate-file-path module to allow testing without config
+jest.unstable_mockModule("../../post/helpers/validate-file-path.js", () => ({
+  validateFilePath: jest.fn((filePath: string) => path.resolve(filePath))
+}));
+
+// Import the functions (after mocking)
+const { createFileStream, fetchMediaTypeId } = await import("../../post/helpers/media-upload-helpers.js");
 
 describe("media-upload-helpers", () => {
   describe("createFileStream - file path source", () => {
@@ -24,8 +30,7 @@ describe("media-upload-helpers", () => {
           testFilePath,
           undefined,
           undefined,
-          testFileName,
-          "test-id"
+          testFileName
         );
 
         // Assert
@@ -59,8 +64,7 @@ describe("media-upload-helpers", () => {
           undefined,
           undefined,
           testBase64,
-          fileName,
-          "test-id"
+          fileName
         );
 
         // Assert
@@ -81,6 +85,64 @@ describe("media-upload-helpers", () => {
         // Ensure cleanup even on error
         throw error;
       }
+    });
+  });
+
+  describe("fetchMediaTypeId", () => {
+
+    describe("custom media types", () => {
+      it("should query API for custom media type", async () => {
+        const customId = "custom-guid-12345";
+        const mockFn: any = jest.fn();
+        mockFn.mockResolvedValue({
+          items: [
+            { name: "Custom Type", id: customId }
+          ]
+        });
+        const mockClient: any = {
+          getItemMediaTypeSearch: mockFn
+        };
+
+        const id = await fetchMediaTypeId(mockClient, "Custom Type");
+
+        expect(id).toBe(customId);
+        expect(mockClient.getItemMediaTypeSearch).toHaveBeenCalledWith({ query: "Custom Type" });
+      });
+
+      it("should throw error for non-existent custom type", async () => {
+        const mockFn: any = jest.fn();
+        mockFn.mockResolvedValue({
+          items: []
+        });
+        const mockClient: any = {
+          getItemMediaTypeSearch: mockFn
+        };
+
+        await expect(
+          fetchMediaTypeId(mockClient, "NonExistent")
+        ).rejects.toThrow("Media type 'NonExistent' not found");
+
+        expect(mockClient.getItemMediaTypeSearch).toHaveBeenCalledWith({ query: "NonExistent" });
+      });
+
+      it("should handle custom type with case-insensitive search", async () => {
+        const customId = "custom-guid-67890";
+        const mockFn: any = jest.fn();
+        mockFn.mockResolvedValue({
+          items: [
+            { name: "My Custom Type", id: customId },
+            { name: "Other Type", id: "other-id" }
+          ]
+        });
+        const mockClient: any = {
+          getItemMediaTypeSearch: mockFn
+        };
+
+        const id = await fetchMediaTypeId(mockClient, "my custom type");
+
+        expect(id).toBe(customId);
+        expect(mockClient.getItemMediaTypeSearch).toHaveBeenCalledWith({ query: "my custom type" });
+      });
     });
   });
 

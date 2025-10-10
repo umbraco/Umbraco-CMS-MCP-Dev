@@ -181,9 +181,27 @@ Umbraco API User name
 
 Umbraco API User client secert
 
-- `UMBRACO_BASE_URL` 
+- `UMBRACO_BASE_URL`
 
 Url of the Umbraco site, it only needs to be the scheme and domain e.g https://<nolink/>example.com
+
+#### Security Configuration Keys
+
+- `UMBRACO_ALLOWED_MEDIA_PATHS` (Optional, Security Feature)
+
+**Required for file path media uploads** - Comma-separated list of absolute directory paths that are allowed for media file uploads via the `filePath` source type.
+
+**Security:** This setting prevents unauthorized file system access by restricting which directories can be read during media uploads.
+
+**Default:** When not configured, all file path uploads are rejected with an error.
+
+**Example:**
+```bash
+# Allow uploads from specific directories only
+UMBRACO_ALLOWED_MEDIA_PATHS="/tmp/uploads,/var/media,/home/user/assets"
+```
+
+**Note:** URL and base64 media uploads work without this configuration. Only the `filePath` source type requires this setting.
 
 ### Environment Configuration Options
 
