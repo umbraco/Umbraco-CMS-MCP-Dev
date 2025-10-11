@@ -22,3 +22,28 @@ exports[`create-data-type should create a data type 2`] = `
   "parent": null,
 }
 `;
+
+exports[`create-data-type should create a data type with parent folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-data-type should create a data type with parent folder 2`] = `
+{
+  "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+  "hasChildren": false,
+  "id": "00000000-0000-0000-0000-000000000000",
+  "isDeletable": true,
+  "isFolder": false,
+  "name": "_Test DataType With Parent",
+  "parent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+}
+`;

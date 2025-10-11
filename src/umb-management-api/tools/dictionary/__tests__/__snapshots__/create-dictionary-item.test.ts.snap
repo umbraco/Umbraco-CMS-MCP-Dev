@@ -24,6 +24,32 @@ exports[`create-dictionary-item should create a dictionary item 2`] = `
 ]
 `;
 
+exports[`create-dictionary-item should create a dictionary item with parent 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-dictionary-item should create a dictionary item with parent 2`] = `
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "_Test Child Dictionary",
+    "parent": {
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "translatedIsoCodes": [
+      "en-US",
+    ],
+  },
+]
+`;
+
 exports[`create-dictionary-item should handle existing dictionary item 1`] = `
 {
   "content": [

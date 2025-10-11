@@ -21,7 +21,7 @@ export class DictionaryBuilder {
     return this;
   }
 
-  withParent(parentId: string): DictionaryBuilder {
+  withParentId(parentId: string): DictionaryBuilder {
     this.model.parent = { id: parentId };
     return this;
   }

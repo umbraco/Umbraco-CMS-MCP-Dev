@@ -44,7 +44,7 @@ export class DataTypeBuilder {
     return this;
   }
 
-  withParent(parentId: string): DataTypeBuilder {
+  withParentId(parentId: string): DataTypeBuilder {
     this.model.parent = { id: parentId };
     return this;
   }
