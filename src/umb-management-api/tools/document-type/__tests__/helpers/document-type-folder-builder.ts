@@ -12,7 +12,7 @@ export class DocumentTypeFolderBuilder {
     this.model.name = name;
   }
 
-  withParent(parentId: string): this {
+  withParentId(parentId: string): this {
     this.model.parent = { id: parentId };
     return this;
   }

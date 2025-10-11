@@ -19,7 +19,7 @@ export class MediaTypeFolderBuilder {
     return this;
   }
 
-  withParent(parentId: string): MediaTypeFolderBuilder {
+  withParentId(parentId: string): MediaTypeFolderBuilder {
     this.model.parent = { id: parentId };
     return this;
   }

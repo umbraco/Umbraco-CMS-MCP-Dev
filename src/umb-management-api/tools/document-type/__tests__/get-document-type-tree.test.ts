@@ -39,7 +39,7 @@ describe("document-type-tree", () => {
       // Create child document type
       await new DocumentTypeBuilder()
         .withName(TEST_CHILD_NAME)
-        .withParent(folderBuilder.getId())
+        .withParentId(folderBuilder.getId())
         .create();
 
       const result = await GetDocumentTypeChildrenTool().handler(
@@ -77,7 +77,7 @@ describe("document-type-tree", () => {
 
       const childBuilder = await new DocumentTypeBuilder()
         .withName(TEST_CHILD_NAME)
-        .withParent(folderBuilder.getId())
+        .withParentId(folderBuilder.getId())
         .create();
 
       const result = await GetDocumentTypeAncestorsTool().handler(
@@ -116,12 +116,12 @@ describe("document-type-tree", () => {
 
       const childFolderBuilder = await new DocumentTypeFolderBuilder(
         TEST_CHILD_NAME
-      ).withParent(rootFolderBuilder.getId())
+      ).withParentId(rootFolderBuilder.getId())
       .create();
 
       const grandchildBuilder = await new DocumentTypeBuilder()
         .withName(TEST_ROOT_NAME)
-        .withParent(childFolderBuilder.getId())
+        .withParentId(childFolderBuilder.getId())
         .create();
 
       const result = await GetAllDocumentTypesTool().handler(

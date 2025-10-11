@@ -51,7 +51,7 @@ describe("MediaTypeFolderBuilder", () => {
     // Then create a child folder
     await builder
       .withName(TEST_MEDIA_TYPE_CHILD_FOLDER_NAME)
-      .withParent(parentId)
+      .withParentId(parentId)
       .create();
 
     expect(builder.getId()).toBeDefined();

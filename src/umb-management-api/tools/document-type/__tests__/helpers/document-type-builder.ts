@@ -69,7 +69,7 @@ export class DocumentTypeBuilder {
     return this;
   }
 
-  withParent(parentId: string): DocumentTypeBuilder {
+  withParentId(parentId: string): DocumentTypeBuilder {
     this.model.parent = { id: parentId };
     return this;
   }

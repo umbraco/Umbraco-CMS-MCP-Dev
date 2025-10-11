@@ -43,7 +43,7 @@ describe("move-media-type", () => {
     // Create a media type in the source folder
     mediaTypeBuilder = await new MediaTypeBuilder()
       .withName(TEST_MEDIATYPE_NAME)
-      .withParent(sourceFolderBuilder.getId())
+      .withParentId(sourceFolderBuilder.getId())
       .create();
 
     // Create a target folder
@@ -86,7 +86,7 @@ describe("move-media-type", () => {
     mediaTypeBuilder = await new MediaTypeBuilder()
       .withName(TEST_MEDIATYPE_NAME)
       .withIcon("icon-folder")
-      .withParent(sourceFolderBuilder.getId())
+      .withParentId(sourceFolderBuilder.getId())
       .create();
 
     // Move the media type to root (no target)
