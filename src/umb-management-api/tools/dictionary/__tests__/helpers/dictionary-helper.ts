@@ -37,6 +37,10 @@ export class DictionaryTestHelper {
       .map((item) => {
         if (forSnapshot) {
           item.id = BLANK_UUID;
+          // Also normalize parent ID for consistent snapshots
+          if (item.parent) {
+            item.parent = { ...item.parent, id: BLANK_UUID };
+          }
         }
         return item;
       });

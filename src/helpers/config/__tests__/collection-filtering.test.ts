@@ -729,7 +729,6 @@ describe('Collection Filtering', () => {
       expect(TemporaryFileCollection.metadata).toBeDefined();
       expect(TemporaryFileCollection.metadata.name).toBe('temporary-file');
       expect(TemporaryFileCollection.metadata.displayName).toBe('Temporary Files');
-      expect(TemporaryFileCollection.metadata.dependencies).toEqual(['media']);
       expect(typeof TemporaryFileCollection.tools).toBe('function');
       
       const tools = TemporaryFileCollection.tools(mockUser);

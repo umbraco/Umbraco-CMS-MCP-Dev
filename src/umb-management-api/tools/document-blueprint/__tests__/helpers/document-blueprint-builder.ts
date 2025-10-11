@@ -35,7 +35,7 @@ export class DocumentBlueprintBuilder {
     return this;
   }
 
-  withParent(parentId: string): DocumentBlueprintBuilder {
+  withParentId(parentId: string): DocumentBlueprintBuilder {
     this.model.parent = { id: parentId };
     return this;
   }

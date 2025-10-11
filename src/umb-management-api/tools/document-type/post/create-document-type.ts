@@ -4,16 +4,16 @@ import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import {
   createContainerHierarchy,
-  type Property,
 } from "./helpers/create-container-hierarchy.js";
 
-// Schema for creating a document type
+// Flattened schema - prevents LLM JSON stringification of parent object
 const createDocumentTypeSchema = z.object({
   name: z.string().min(1, "Name is required"),
   alias: z.string().min(1, "Alias is required"),
   description: z.string().optional(),
   icon: z.string().min(1, "Icon is required"),
   allowedAsRoot: z.boolean().default(false),
+  parentId: z.string().uuid().optional(), 
   compositions: z
     .array(z.string().uuid("Must be a valid document type UUID"))
     .default([]),
@@ -44,16 +44,16 @@ export type { CreateDocumentTypeModel };
 const CreateDocumentTypeTool = CreateUmbracoTool(
   "create-document-type",
   `Creates a new document type in Umbraco.
-  
+
 IMPORTANT: IMPLEMENTATION REQUIREMENTS
 
 1. ALWAYS use the get-icons tool to find a valid icon name
 2. When referencing data types, first find them using find-data-type to get their correct IDs
 3. When adding compositions or allowed document types, first use get-document-type-root to find the actual IDs
 4. The tool will automatically generate UUIDs for properties and containers
-5. Always create new document types in the root before copying to a new folder if required
+5. Document types can be created in folders by specifying a parentId, or at the root level by omitting the parentId
 6. Do not try to add templates to document types they are not currently supported
-6. Property container structure:
+7. Property container structure:
    - Properties can specify a tab and/or group
    - Groups will be created inside their specified tab
    - Properties without a tab/group will be at root level
@@ -127,6 +127,7 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
         sortOrder: index,
       })),
       collection: model.collection ? { id: model.collection } : undefined,
+      parent: model.parentId ? { id: model.parentId } : undefined,
     };
 
     const client = UmbracoManagementClient.getClient();

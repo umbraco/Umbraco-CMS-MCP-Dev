@@ -1,7 +1,22 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
-import { postDataTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { z } from "zod";
+
+// Flattened schema - prevents LLM JSON stringification of parent object
+const createDataTypeSchema = z.object({
+  name: z.string().min(1),
+  editorAlias: z.string().min(1),
+  editorUiAlias: z.string(),
+  values: z.array(z.object({
+    alias: z.string(),
+    value: z.any().nullish()
+  })),
+  id: z.string().uuid().nullish(),
+  parentId: z.string().uuid().optional()  // Flattened parent ID
+});
+
+type CreateDataTypeSchema = z.infer<typeof createDataTypeSchema>;
 
 const CreateDataTypeTool = CreateUmbracoTool(
   "create-data-type",
@@ -173,10 +188,21 @@ const CreateDataTypeTool = CreateUmbracoTool(
   }
 
   `,
-  postDataTypeBody.shape,
-  async (model: CreateDataTypeRequestModel) => {
+  createDataTypeSchema.shape,
+  async (model: CreateDataTypeSchema) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.postDataType(model);
+
+    // Transform: flat parentId -> nested parent object for API
+    const payload: CreateDataTypeRequestModel = {
+      name: model.name,
+      editorAlias: model.editorAlias,
+      editorUiAlias: model.editorUiAlias,
+      values: model.values,
+      id: model.id,
+      parent: model.parentId ? { id: model.parentId } : undefined,
+    };
+
+    const response = await client.postDataType(payload);
 
     return {
       content: [

@@ -35,14 +35,14 @@ describe("dictionary-tree", () => {
     await childHelper
       .withName(CHILD_DICTIONARY_NAME)
       .withTranslation(DEFAULT_ISO_CODE, CHILD_DICTIONARY_TRANSLATION)
-      .withParent(rootHelper.getId())
+      .withParentId(rootHelper.getId())
       .create();
 
     // Create grandchild dictionary under child
     await grandchildHelper
       .withName(GRANDCHILD_DICTIONARY_NAME)
       .withTranslation(DEFAULT_ISO_CODE, GRANDCHILD_DICTIONARY_TRANSLATION)
-      .withParent(childHelper.getId())
+      .withParentId(childHelper.getId())
       .create();
   });
 

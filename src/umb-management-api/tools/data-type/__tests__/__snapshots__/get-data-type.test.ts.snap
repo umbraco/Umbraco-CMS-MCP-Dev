@@ -8,27 +8,7 @@ exports[`get-data-type should get a data type by ID 1`] = `
   "id": "00000000-0000-0000-0000-000000000000",
   "isDeletable": true,
   "name": "_Test Get DataType",
+  "parent": undefined,
   "values": [],
-}
-`;
-
-exports[`get-data-type should handle invalid ID format 1`] = `
-{
-  "canIgnoreStartNodes": true,
-  "editorAlias": "Umbraco.TextBox",
-  "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
-  "id": "00000000-0000-0000-0000-000000000000",
-  "isDeletable": true,
-  "name": "_Test Get DataType",
-  "values": [
-    {
-      "alias": "maxChars",
-      "value": 512,
-    },
-    {
-      "alias": "inputType",
-      "value": "text",
-    },
-  ],
 }
 `;

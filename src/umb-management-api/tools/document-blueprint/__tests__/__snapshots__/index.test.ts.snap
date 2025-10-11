@@ -3,14 +3,20 @@
 exports[`document-blueprint-tool-index should have all blueprint tools when user has document type access 1`] = `
 [
   "get-document-blueprint",
-  "delete-document-blueprint",
-  "update-document-blueprint",
   "create-document-blueprint",
+  "update-document-blueprint",
+  "delete-document-blueprint",
+  "move-document-blueprint",
+  "get-document-blueprint-by-id-array",
+  "get-document-blueprint-scaffold",
+  "create-document-blueprint-from-document",
   "get-document-blueprint-ancestors",
   "get-document-blueprint-children",
   "get-document-blueprint-root",
-  "get-document-blueprint-scaffold",
-  "create-document-blueprint-from-document",
+  "create-document-blueprint-folder",
+  "get-document-blueprint-folder",
+  "update-document-blueprint-folder",
+  "delete-document-blueprint-folder",
 ]
 `;
 

@@ -56,7 +56,7 @@ describe("stylesheet-tree-operations", () => {
       await new StylesheetBuilder()
         .withName(TEST_STYLESHEET_NAME)
         .withContent(TEST_CONTENT)
-        .withParent(`/${TEST_FOLDER_NAME}`)
+        .withPath(`/${TEST_FOLDER_NAME}`)
         .create();
 
       const result = await GetStylesheetChildrenTool().handler(
@@ -83,7 +83,7 @@ describe("stylesheet-tree-operations", () => {
       // Create child folder
       const childFolder = new StylesheetFolderBuilder()
         .withName(TEST_CHILD_NAME)
-        .withParent(parentFolder.getPath());
+        .withPath(parentFolder.getPath());
       await childFolder.create();
 
       const result = await GetStylesheetAncestorsTool().handler(

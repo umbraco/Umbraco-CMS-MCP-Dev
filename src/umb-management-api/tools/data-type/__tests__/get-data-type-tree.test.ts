@@ -41,7 +41,7 @@ describe("data-type-tree", () => {
       await builder
         .withName(TEST_CHILD_NAME)
         .withTextbox()
-        .withParent(folderBuilder.getId())
+        .withParentId(folderBuilder.getId())
         .create();
 
       const result = await GetDataTypeChildrenTool().handler(
@@ -81,7 +81,7 @@ describe("data-type-tree", () => {
       const childBuilder = await builder
         .withName(TEST_CHILD_NAME)
         .withTextbox()
-        .withParent(folderBuilder.getId())
+        .withParentId(folderBuilder.getId())
         .create();
 
       const result = await GetDataTypeAncestorsTool().handler(
@@ -126,7 +126,7 @@ describe("data-type-tree", () => {
       await new DataTypeBuilder()
         .withName(TEST_ROOT_NAME)
         .withTextbox()
-        .withParent(childFolderBuilder.getId())
+        .withParentId(childFolderBuilder.getId())
         .create();
 
       const result = await GetAllDataTypesTool().handler(

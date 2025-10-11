@@ -35,36 +35,6 @@ describe("create-document-blueprint-from-document", () => {
     const result = await CreateDocumentBlueprintFromDocumentTool().handler(
       {
         name: TEST_BLUEPRINT_NAME,
-        parent: null,
-        document: { id: sourceDocument.id }
-      },
-      { signal: new AbortController().signal }
-    );
-
-    // Assert: Verify the response
-    const normalizedResult = createSnapshotResult(result);
-    expect(normalizedResult).toMatchSnapshot();
-
-    // Verify the blueprint was created
-    const createdBlueprint = await DocumentBlueprintTestHelper.findDocumentBlueprint(TEST_BLUEPRINT_NAME);
-    expect(createdBlueprint).toBeDefined();
-    expect(createdBlueprint?.name).toBe(TEST_BLUEPRINT_NAME);
-  });
-
-  it("should handle creating blueprint with parent", async () => {
-    // Arrange: Create a source document
-    const documentBuilder = await new DocumentBuilder()
-      .withName(TEST_DOCUMENT_NAME)
-      .withRootDocumentType()
-      .create();
-
-    const sourceDocument = documentBuilder.getCreatedItem();
-
-    // Act: Create blueprint from document with null parent (root level)
-    const result = await CreateDocumentBlueprintFromDocumentTool().handler(
-      {
-        name: TEST_BLUEPRINT_NAME,
-        parent: { id: "00000000-0000-0000-0000-000000000000" },
         document: { id: sourceDocument.id }
       },
       { signal: new AbortController().signal }
@@ -85,7 +55,6 @@ describe("create-document-blueprint-from-document", () => {
     const result = await CreateDocumentBlueprintFromDocumentTool().handler(
       {
         name: TEST_BLUEPRINT_NAME,
-        parent: null,
         document: { id: "00000000-0000-0000-0000-000000000000" }
       },
       { signal: new AbortController().signal }
@@ -108,7 +77,6 @@ describe("create-document-blueprint-from-document", () => {
     await CreateDocumentBlueprintFromDocumentTool().handler(
       {
         name: TEST_BLUEPRINT_NAME,
-        parent: null,
         document: { id: sourceDocument.id }
       },
       { signal: new AbortController().signal }
@@ -118,7 +86,6 @@ describe("create-document-blueprint-from-document", () => {
     const result = await CreateDocumentBlueprintFromDocumentTool().handler(
       {
         name: TEST_BLUEPRINT_NAME,
-        parent: null,
         document: { id: sourceDocument.id }
       },
       { signal: new AbortController().signal }

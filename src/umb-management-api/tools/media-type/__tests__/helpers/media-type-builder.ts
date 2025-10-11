@@ -33,7 +33,7 @@ export class MediaTypeBuilder {
     return this;
   }
 
-  withParent(parentId: string): MediaTypeBuilder {
+  withParentId(parentId: string): MediaTypeBuilder {
     this.model.parent = { id: parentId };
     return this;
   }

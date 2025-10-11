@@ -23,6 +23,31 @@ exports[`create-document-type should create a document type 2`] = `
 }
 `;
 
+exports[`create-document-type should create a document type with parent folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-document-type should create a document type with parent folder 2`] = `
+{
+  "hasChildren": false,
+  "icon": "icon-document",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "isElement": false,
+  "isFolder": false,
+  "name": "_Test DocumentType With Parent",
+  "parent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+}
+`;
+
 exports[`create-document-type should create a document type with properties 1`] = `
 {
   "content": [

@@ -57,7 +57,7 @@ describe("DocumentBlueprintBuilder", () => {
 
     it("should add parent", () => {
       const parentId = "123-456";
-      builder.withParent(parentId);
+      builder.withParentId(parentId);
       const model = builder.build();
 
       expect(model.parent).toEqual({ id: parentId });
@@ -126,7 +126,7 @@ describe("DocumentBlueprintBuilder", () => {
       const documentTypeId = "789-012";
 
       builder
-        .withParent(parentId)
+        .withParentId(parentId)
         .withDocumentType(documentTypeId)
         .withValue(TEST_VALUE_ALIAS, TEST_VALUE)
         .withVariant(TEST_VARIANT_NAME);
@@ -184,7 +184,7 @@ describe("DocumentBlueprintBuilder", () => {
       // Create child using builder
       const builder = new DocumentBlueprintBuilder(
         TEST_BLUEPRINT_NAME
-      ).withParent(parentBuilder.getId());
+      ).withParentId(parentBuilder.getId());
 
       const created = await builder.create();
 
@@ -209,7 +209,7 @@ describe("DocumentBlueprintBuilder", () => {
     it("should handle invalid parent ID", async () => {
       const builder = new DocumentBlueprintBuilder(
         TEST_BLUEPRINT_NAME
-      ).withParent("invalid-id");
+      ).withParentId("invalid-id");
 
       await expect(builder.create()).rejects.toThrow();
     });
