@@ -11,17 +11,6 @@ exports[`create-document-blueprint-from-document should create document blueprin
 }
 `;
 
-exports[`create-document-blueprint-from-document should handle creating blueprint with parent 1`] = `
-{
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`create-document-blueprint-from-document should handle duplicate blueprint name 1`] = `
 {
   "content": [

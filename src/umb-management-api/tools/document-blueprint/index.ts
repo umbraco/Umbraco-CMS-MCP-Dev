@@ -7,6 +7,12 @@ import GetDocumentBlueprintChildrenTool from "./get/get-children.js";
 import GetDocumentBlueprintRootTool from "./get/get-root.js";
 import GetDocumentBlueprintScaffoldTool from "./get/get-document-blueprint-scaffold.js";
 import CreateDocumentBlueprintFromDocumentTool from "./post/create-document-blueprint-from-document.js";
+import GetDocumentBlueprintByIdArrayTool from "./get/get-document-blueprint-by-id-array.js";
+import MoveDocumentBlueprintTool from "./put/move-blueprint.js";
+import CreateDocumentBlueprintFolderTool from "./folders/post/create-folder.js";
+import GetDocumentBlueprintFolderTool from "./folders/get/get-folder.js";
+import UpdateDocumentBlueprintFolderTool from "./folders/put/update-folder.js";
+import DeleteDocumentBlueprintFolderTool from "./folders/delete/delete-folder.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -23,17 +29,28 @@ export const DocumentBlueprintCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessDocumentTypes(user)) {
-
+      // Blueprint CRUD
       tools.push(GetDocumentBlueprintTool());
-      tools.push(DeleteDocumentBlueprintTool());
-      tools.push(UpdateDocumentBlueprintTool());
       tools.push(CreateDocumentBlueprintTool());
+      tools.push(UpdateDocumentBlueprintTool());
+      tools.push(DeleteDocumentBlueprintTool());
+      tools.push(MoveDocumentBlueprintTool());
 
+      // Blueprint queries
+      tools.push(GetDocumentBlueprintByIdArrayTool());
+      tools.push(GetDocumentBlueprintScaffoldTool());
+      tools.push(CreateDocumentBlueprintFromDocumentTool());
+
+      // Blueprint tree
       tools.push(GetDocumentBlueprintAncestorsTool());
       tools.push(GetDocumentBlueprintChildrenTool());
       tools.push(GetDocumentBlueprintRootTool());
-      tools.push(GetDocumentBlueprintScaffoldTool());
-      tools.push(CreateDocumentBlueprintFromDocumentTool());
+
+      // Folder operations
+      tools.push(CreateDocumentBlueprintFolderTool());
+      tools.push(GetDocumentBlueprintFolderTool());
+      tools.push(UpdateDocumentBlueprintFolderTool());
+      tools.push(DeleteDocumentBlueprintFolderTool());
     }
 
     return tools;
