@@ -115,7 +115,7 @@ Using the `.mcp.json` file allows you to:
 <summary>VS Code</summary>
 
 #### Click the button to install:
-[<img src="https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Server&color=0098FF" alt="Install in VS Code">](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522umbraco-mcp%2522%252C%2522command%2522%253A%2522npx%2522%252C%2522args%2522%253A%255B%2522%2540umbraco-mcp%252Fumbraco-mcp-cms%2540alpha%2522%255D%252C%2522env%2522%253A%257B%2522UMBRACO_CLIENT_ID%2522%253A%2522%253CAPI%2520user%2520name%253E%2522%252C%2522UMBRACO_CLIENT_SECRET%2522%253A%2522%253CAPI%2520client%2520secert%253E%2522%252C%2522UMBRACO_BASE_URL%2522%253A%2522https%253A%252F%252F%253Cdomain%253E%2522%252C%2522UMBRACO_EXCLUDE_TOOLS%2522%253A%2522%253Ctoolname%253E%252C%253Ctoolname%253E%2522%257D%257D)
+[<img src="https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Server&color=0098FF" alt="Install in VS Code">](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22umbraco-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22%40umbraco-cms%2Fmcp-dev%40beta%22%5D%2C%22env%22%3A%7B%22NODE_TLS_REJECT_UNAUTHORIZED%22%3A%220%22%2C%22UMBRACO_CLIENT_ID%22%3A%22%3CAPI%20user%20name%3E%22%2C%22UMBRACO_CLIENT_SECRET%22%3A%22%3CAPI%20client%20secert%3E%22%2C%22UMBRACO_BASE_URL%22%3A%22https%3A%2F%2F%3Cdomain%3E%22%2C%22UMBRACO_EXCLUDE_TOOLS%22%3A%22%3Ctoolname%3E%2C%3Ctoolname%3E%22%7D%7D)
 
 **Requirements:** VS Code 1.101+ with GitHub Copilot Chat extension installed.
 
@@ -127,9 +127,10 @@ Follow the MCP [install guide](https://code.visualstudio.com/docs/copilot/custom
   "servers": {
     "umbraco-mcp": {
       "type": "stdio",
-      "command": "npx", 
+      "command": "npx",
       "args": ["@umbraco-cms/mcp-dev@beta"],
       "env": {
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0",
         "UMBRACO_CLIENT_ID": "<API user name>",
         "UMBRACO_CLIENT_SECRET": "<API client secret>",
         "UMBRACO_BASE_URL": "https://<domain>",
