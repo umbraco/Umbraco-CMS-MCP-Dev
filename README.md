@@ -25,7 +25,7 @@ First, create an Umbraco API user with appropriate permissions. You can find ins
 
 To get started with using the Umbraco MCP with Claude, first download and install the [Claude.ai desktop app](https://claude.ai/download).  
 
-Start up your Umbraco instance (currently working with version **15.latest**) and create new API user credentials. You can see instructions on how to do that on the [Umbraco docs](https://docs.umbraco.com/umbraco-cms/fundamentals/data/users/api-users).
+Start up your Umbraco instance (currently working with version **16.latest**) and create new API user credentials. You can see instructions on how to do that on the [Umbraco docs](https://docs.umbraco.com/umbraco-cms/fundamentals/data/users/api-users).
 
 Once you have this information head back into Claude desktop app and head to Settings > Developer > Edit Config. Open the json file in a text editor of your choice and add the below, replacing the `UMBRACO_CLIENT_ID`, `UMBRACO_CLIENT_SECRET` and `UMBRACO_BASE_URL` with your local connection information. The addition of the `NODE_TLS_REJECT_UNAUTHORIZED` env flag is to allow Claude to connect to the MCP using a self-signed cert.
 
@@ -236,6 +236,25 @@ npx @umbraco-cms/mcp-dev@beta \
   --umbraco-base-url="http://localhost:56472" \
   --env="/path/to/custom/.env"
 ```
+
+## Version Compatibility
+
+The Umbraco MCP Server is designed to work with specific major versions of Umbraco CMS:
+
+| MCP Server Version | Compatible Umbraco Version |
+|--------------------|----------------------------|
+| 16.x.x             | 16.x                       |
+| 17.x.x (future)    | 17.x                       |
+
+### Version Checking
+
+The MCP server automatically checks version compatibility on startup:
+
+- **✅ Version Match**: No message displayed, server functions normally
+- **⚠️ Version Mismatch**: The first tool request will fail with an error message asking you to retry if you want to proceed. After you retry, the warning is displayed once more and then never shown again for that session.
+- **⚠️ API Error**: If the version check API call fails, a warning is displayed once but does not block tool execution.
+
+The version check uses the Umbraco Management API endpoint `/umbraco/management/api/v1/server/information` to detect the connected Umbraco version and compares the major version number.
 
 ## API Coverage
 

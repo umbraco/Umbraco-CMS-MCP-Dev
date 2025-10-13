@@ -11,6 +11,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
+    "resolveJsonModule": true,
     "paths": {
       "@/clients/*": ["./clients/*"],
       "@/helpers/*": ["./helpers/*"],
