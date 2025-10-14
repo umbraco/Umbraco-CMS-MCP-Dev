@@ -3,6 +3,7 @@ import DeleteDataTypeTool from "./delete/delete-data-type.js";
 import FindDataTypeTool from "./get/find-data-type.js";
 import GetDataTypeTool from "./get/get-data-type.js";
 import GetDataTypeConfigurationTool from "./get/get-data-type-configuration.js";
+import GetPropertyEditorTemplateTool from "./get/get-property-editor-template.js";
 import UpdateDataTypeTool from "./put/update-data-type.js";
 import CopyDataTypeTool from "./post/copy-data-type.js";
 import IsUsedDataTypeTool from "./get/is-used-data-type.js";
@@ -37,6 +38,7 @@ export const DataTypeCollection: ToolCollectionExport = {
       tools.push(IsUsedDataTypeTool());
       tools.push(GetDataTypeTool());
       tools.push(GetDataTypeConfigurationTool());
+      tools.push(GetPropertyEditorTemplateTool());
     }
 
     if (AuthorizationPolicies.TreeAccessDataTypes(user)) {

@@ -2,7 +2,7 @@ evals:
   models:
     - "claude-3-5-haiku-20241022"
   timeout: 60000
-  max_steps: 10
+  max_steps: 15
   
   tests:
 
@@ -16,10 +16,13 @@ evals:
         required:
           - "create-data-type"
           - "delete-data-type"
+          - "get-property-editor-template"
         allowed:
           - "get-data-type-root"
-          - "create-data-type"    
+          - "create-data-type"
           - "delete-data-type"
+          - "get-property-editor-template"
+          - "find-data-type"
       response_scorers:
         - type: 'llm-judge'
           criteria: 'Did the last assistant step say "The task has completed sucessfully"'
