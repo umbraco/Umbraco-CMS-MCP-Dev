@@ -32,7 +32,7 @@ const CreateDataTypeTool = CreateUmbracoTool(
   *** PROPERTY EDITOR CONFIGURATION ***
   When creating a new data type you will need to assign a property editor with the correct configuration.
 
-  IMPORTANT: Use the get-property-editor-template tool to:
+  IMPORTANT: Use the get-data-type-property-editor-template tool to:
   - View all available property editors (call without parameters)
   - Get the correct configuration template for a specific property editor (call with editorName parameter)
   - Each template shows the required editorAlias, editorUiAlias, and values configuration

@@ -1,0 +1,38 @@
+evals:
+  models:
+    - "claude-3-5-haiku-20241022"
+  timeout: 120000
+  max_steps: 20
+
+  tests:
+
+    - name: "Create document using property value template"
+      prompt: |
+        Complete these tasks in order:
+        1. Get the list of available property value templates for documents
+        2. Get the property value template for the Textbox editor
+        3. Find the document type called 'blogPost'
+        4. Get the root document of Umbraco
+        5. Find the 'Blogs' document under the root node
+        6. Create a new blog post document under the 'Blogs' document with:
+           - Name: "_Test Document With Template"
+           - Use the textbox template you retrieved for the 'title' property with value "Amazing Test Post"
+           - Use the textbox template for the 'subtitle' property with value "Claude AI"
+        7. Delete the created document
+        8. When successfully completed all tasks, say 'The document creation with template workflow has completed successfully', nothing else
+      expected_tool_calls:
+        required:
+          - "get-document-property-value-template"
+          - "create-document"
+          - "delete-document"
+        allowed:
+          - "get-document-property-value-template"
+          - "get-document-root"
+          - "get-document-children"
+          - "search-document"
+          - "create-document"
+          - "delete-document"
+      response_scorers:
+        - type: 'llm-judge'
+          criteria: 'Did the last assistant step say "The document creation with template workflow has completed successfully"'
+          threshold: 0.8

@@ -9,8 +9,8 @@ const propertyEditorTemplateSchema = z.object({
 
 type PropertyEditorTemplateParams = z.infer<typeof propertyEditorTemplateSchema>;
 
-const GetPropertyEditorTemplateTool = CreateUmbracoTool(
-  "get-property-editor-template",
+const GetDataTypePropertyEditorTemplateTool = CreateUmbracoTool(
+  "get-data-type-property-editor-template",
   `Retrieves property editor templates for creating data types in Umbraco.
 
 IMPORTANT: This tool should be used BEFORE creating data types to understand:
@@ -47,7 +47,7 @@ Note: Some templates (like BlockList, BlockGrid) have _notes indicating you must
           content: [
             {
               type: "text" as const,
-              text: `Available Property Editor Templates:\n\n${availableEditors}\n\nUse get-property-editor-template with a specific editorName to see the full configuration.`,
+              text: `Available Property Editor Templates:\n\n${availableEditors}\n\nUse get-data-type-property-editor-template with a specific editorName to see the full configuration.`,
             },
           ],
         };
@@ -113,4 +113,4 @@ Note: Some templates (like BlockList, BlockGrid) have _notes indicating you must
   }
 );
 
-export default GetPropertyEditorTemplateTool;
+export default GetDataTypePropertyEditorTemplateTool;

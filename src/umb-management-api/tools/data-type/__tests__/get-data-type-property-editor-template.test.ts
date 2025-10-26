@@ -1,7 +1,7 @@
-import GetPropertyEditorTemplateTool from "../get/get-property-editor-template.js";
+import GetDataTypePropertyEditorTemplateTool from "../get/get-data-type-property-editor-template.js";
 import { jest } from "@jest/globals";
 
-describe("get-property-editor-template", () => {
+describe("get-data-type-property-editor-template", () => {
   let originalConsoleError: typeof console.error;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe("get-property-editor-template", () => {
 
   it("should list all available property editors when no editorName is provided", async () => {
     // Act
-    const result = await GetPropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool().handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -28,12 +28,12 @@ describe("get-property-editor-template", () => {
     expect(text).toContain("Textbox");
     expect(text).toContain("Toggle");
     expect(text).toContain("RichTextEditor_TinyMCE");
-    expect(text).toContain("get-property-editor-template with a specific editorName");
+    expect(text).toContain("get-data-type-property-editor-template with a specific editorName");
   });
 
   it("should return template for a specific property editor", async () => {
     // Act
-    const result = await GetPropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool().handler(
       { editorName: "Textbox" },
       { signal: new AbortController().signal }
     );
@@ -52,7 +52,7 @@ describe("get-property-editor-template", () => {
 
   it("should be case-insensitive when finding property editors", async () => {
     // Act
-    const result = await GetPropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool().handler(
       { editorName: "textbox" },
       { signal: new AbortController().signal }
     );
@@ -66,7 +66,7 @@ describe("get-property-editor-template", () => {
 
   it("should include notes for editors that have special requirements", async () => {
     // Act
-    const result = await GetPropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool().handler(
       { editorName: "BlockList" },
       { signal: new AbortController().signal }
     );
@@ -81,7 +81,7 @@ describe("get-property-editor-template", () => {
 
   it("should return error for non-existent property editor", async () => {
     // Act
-    const result = await GetPropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool().handler(
       { editorName: "NonExistentEditor" },
       { signal: new AbortController().signal }
     );
@@ -97,7 +97,7 @@ describe("get-property-editor-template", () => {
 
   it("should include configuration values for editors with settings", async () => {
     // Act
-    const result = await GetPropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool().handler(
       { editorName: "Toggle" },
       { signal: new AbortController().signal }
     );
