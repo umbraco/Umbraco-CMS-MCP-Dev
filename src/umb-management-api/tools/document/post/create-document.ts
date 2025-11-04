@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+import { AxiosResponse } from "axios";
 
 const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
@@ -28,32 +29,56 @@ const CreateDocumentTool = CreateUmbracoTool(
   "create-document",
   `Creates a document with support for multiple cultures.
 
-  If cultures parameter is provided, a variant will be created for each culture code.
-  If cultures parameter is not provided or is an empty array, will create a single variant with null culture (original behavior).
-
   Always follow these requirements when creating documents exactly, do not deviate in any way.
 
-  ## CRITICAL WORKFLOW REQUIREMENTS
-  1. ALWAYS first search for existing documents using search-document to find any documents that use the same document type
-  2. If documents of the same type exist, use copy-document instead to duplicate and modify the existing structure
-  3. ONLY if NO documents of the target document type exist should you analyze the document type structure
-  4. When analyzing document types, use get-document-type-by-id to understand the required properties
-  5. Then create the new document with the proper structure
-  
-  ## CRITICAL FOR DOCUMENT TYPES AND DATA TYPES
-  1. BEFORE creating any new document type or data type, ALWAYS search for existing ones using get-document-type-root, get-document-type-search, or find-data-type
-  2. ONLY create a new document type or data type if NO suitable existing ones are found
-  3. If similar types exist, inform the user and suggest using the existing types instead
-  4. Creation of new types should be a last resort when nothing suitable exists
+  ## COPY-FIRST APPROACH (RECOMMENDED)
 
-  ## CRITICAL: For document types with allowedAsRoot=true, DO NOT include the parentId parameter at all in the function call.
+  **FIRST: Try to copy an existing document**
+  1. Only use this if copy-document and search-document tools are available
+  2. Use search-document to find documents with the same document type
+  3. If similar documents exist AND copy-document tool is available:
+     - Use copy-document to duplicate the existing structure
+     - Use search-document to find the new document (copy returns empty string, not the new ID)
+     - Update with update-document and publish with publish-document as needed
 
-  Values must match the aliases of the document type structure. 
-  Block lists, Block Grids and Rich Text Blocks items and settings must match the defined blocks document type structures.
+  **SECOND: Only create from scratch when:**
+  - No similar documents exist in Umbraco
+  - Copy-document tool doesn't exist
+  - You need to create from scratch with unique structure
 
-  ## CRITICAL: All generated keys must be unique and randomly generated.
+  Benefits: Preserves structure, inherits properties, maintains consistency with existing content.
 
-  ## PROPERTY EDITOR VALUES
+  ## Introduction
+
+  This tool creates documents with multi-culture support:
+  - If cultures parameter is provided, a variant will be created for each culture code
+  - If cultures parameter is not provided or is an empty array, will create a single variant with null culture (original behavior)
+
+  ## Critical Requirements
+
+  ### Document Type Analysis (When Creating from Scratch)
+  1. Use get-document-type-by-id to understand the document type structure and required properties
+  2. Ensure all required properties are included in the values array
+
+  ### Document Types and Data Types
+  1. BEFORE creating any new document type, ALWAYS search for existing ones using get-all-document-types
+  2. BEFORE creating any new data type, ALWAYS search for existing ones using get-all-data-types
+  3. ONLY create a new document type or data type if NO suitable existing ones are found
+  4. If similar types exist, inform the user and suggest using the existing types instead
+  5. Creation of new types should be a last resort when nothing suitable exists
+
+  ### Parent ID Handling
+  For document types with allowedAsRoot=true, DO NOT include the parentId parameter at all in the function call.
+  When adding a parent, first find the parent using get-document-root or get-document-children and then use the id of the parent in the parentId parameter. Alway makes sure that the id is valid.
+
+  ### Values Matching
+  - Values must match the aliases of the document type structure
+  - Block lists, Block Grids and Rich Text Blocks items and settings must match the defined blocks document type structures
+
+  ### Unique Keys
+  All generated keys must be unique and randomly generated.
+
+  ## Property Editor Values Reference
 
   When creating documents, you need to provide property values that match the property editors defined in the document type.
 
@@ -113,15 +138,42 @@ const CreateDocumentTool = CreateUmbracoTool(
       variants,
     };
 
-    const response = await client.postDocument(payload);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+    // Get full response to check status
+    const response = await client.postDocument(payload, {
+      returnFullResponse: true,
+      validateStatus: () => true // Don't throw on any status
+    }) as unknown as AxiosResponse<void>;
+
+    // Check if the document was created successfully (201 Created)
+    if (response.status === 201) {
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({
+              message: "Document created successfully",
+              id: documentId
+            }),
+          },
+        ],
+      };
+    } else {
+      // Document creation failed
+      const errorData = response.data as any;
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({
+              message: "Failed to create document",
+              status: response.status,
+              error: errorData || response.statusText
+            }),
+          },
+        ],
+        isError: true,
+      };
+    }
   },
   (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Create)
 );

@@ -4,7 +4,7 @@ exports[`create-document should create a document 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "{"message":"Document created successfully","id":"00000000-0000-0000-0000-000000000000"}",
       "type": "text",
     },
   ],
@@ -14,7 +14,7 @@ exports[`create-document should create a document 1`] = `
 exports[`create-document should create a document 2`] = `
 {
   "ancestors": [],
-  "createDate": "<normalized>",
+  "createDate": "NORMALIZED_DATE",
   "documentType": {
     "collection": null,
     "icon": "icon-home color-blue",
@@ -40,7 +40,7 @@ exports[`create-document should create a document with additional properties 1`]
 {
   "content": [
     {
-      "text": """",
+      "text": "{"message":"Document created successfully","id":"00000000-0000-0000-0000-000000000000"}",
       "type": "text",
     },
   ],
@@ -50,7 +50,7 @@ exports[`create-document should create a document with additional properties 1`]
 exports[`create-document should create a document with additional properties 2`] = `
 {
   "ancestors": [],
-  "createDate": "<normalized>",
+  "createDate": "NORMALIZED_DATE",
   "documentType": {
     "collection": null,
     "icon": "icon-home color-blue",
@@ -76,7 +76,7 @@ exports[`create-document should create a document with empty cultures array (nul
 {
   "content": [
     {
-      "text": """",
+      "text": "{"message":"Document created successfully","id":"00000000-0000-0000-0000-000000000000"}",
       "type": "text",
     },
   ],
@@ -87,7 +87,7 @@ exports[`create-document should create a document with specific cultures 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "{"message":"Document created successfully","id":"00000000-0000-0000-0000-000000000000"}",
       "type": "text",
     },
   ],

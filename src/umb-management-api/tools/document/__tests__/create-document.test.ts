@@ -1,5 +1,6 @@
 import CreateDocumentTool from "../post/create-document.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
 import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
@@ -32,15 +33,19 @@ describe("create-document", () => {
       signal: new AbortController().signal,
     });
 
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const documentId = responseData.id;
+
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
     const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
     expect(item).toBeDefined();
     const norm = {
       ...DocumentTestHelper.normaliseIds(item!),
-      createDate: "<normalized>",
+      createDate: "NORMALIZED_DATE",
     };
     expect(norm).toMatchSnapshot();
   });
@@ -65,13 +70,18 @@ describe("create-document", () => {
       signal: new AbortController().signal,
     });
 
-    expect(result).toMatchSnapshot();
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const documentId = responseData.id;
+
+    // Verify the handler response using snapshot
+    expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
 
     const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
     expect(item).toBeDefined();
     const norm = {
       ...DocumentTestHelper.normaliseIds(item!),
-      createDate: "<normalized>",
+      createDate: "NORMALIZED_DATE",
     };
     expect(norm).toMatchSnapshot();
   });
@@ -124,7 +134,12 @@ describe("create-document", () => {
         signal: new AbortController().signal,
       });
 
-      expect(result).toMatchSnapshot();
+      // Extract ID for normalization
+      const responseData = JSON.parse(result.content[0].text as string);
+      const documentId = responseData.id;
+
+      // Verify the handler response using snapshot
+      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
 
       const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
       expect(item).toBeDefined();
@@ -174,7 +189,12 @@ describe("create-document", () => {
       signal: new AbortController().signal,
     });
 
-    expect(result).toMatchSnapshot();
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const documentId = responseData.id;
+
+    // Verify the handler response using snapshot
+    expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
 
     const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
     expect(item).toBeDefined();
