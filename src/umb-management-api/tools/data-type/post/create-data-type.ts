@@ -2,6 +2,8 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
+import { AxiosResponse } from "axios";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
 const createDataTypeSchema = z.object({
@@ -12,7 +14,6 @@ const createDataTypeSchema = z.object({
     alias: z.string(),
     value: z.any().nullish()
   })),
-  id: z.string().uuid().nullish(),
   parentId: z.string().uuid().optional()  // Flattened parent ID
 });
 
@@ -47,26 +48,53 @@ const CreateDataTypeTool = CreateUmbracoTool(
   async (model: CreateDataTypeSchema) => {
     const client = UmbracoManagementClient.getClient();
 
+    // Generate UUID for the data type
+    const dataTypeId = uuidv4();
+
     // Transform: flat parentId -> nested parent object for API
     const payload: CreateDataTypeRequestModel = {
       name: model.name,
       editorAlias: model.editorAlias,
       editorUiAlias: model.editorUiAlias,
       values: model.values,
-      id: model.id,
+      id: dataTypeId,
       parent: model.parentId ? { id: model.parentId } : undefined,
     };
 
-    const response = await client.postDataType(payload);
+    const response = await client.postDataType(payload, {
+      returnFullResponse: true,
+      validateStatus: () => true,
+    }) as unknown as AxiosResponse<void>;
 
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+    if (response.status === 201) {
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({
+              message: "Data type created successfully",
+              id: dataTypeId
+            }),
+          },
+        ],
+      };
+    } else {
+      // Handle error
+      const errorData = response.data as any;
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({
+              message: "Failed to create data type",
+              status: response.status,
+              error: errorData || response.statusText
+            }),
+          },
+        ],
+        isError: true,
+      };
+    }
   }
 );
 

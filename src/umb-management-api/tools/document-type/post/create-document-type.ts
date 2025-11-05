@@ -2,6 +2,7 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
+import { AxiosResponse } from "axios";
 import {
   createContainerHierarchy,
 } from "./helpers/create-container-hierarchy.js";
@@ -131,16 +132,40 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
     };
 
     const client = UmbracoManagementClient.getClient();
-    const response = await client.postDocumentType(payload);
+    const response = await client.postDocumentType(payload, {
+      returnFullResponse: true,
+      validateStatus: () => true,
+    }) as unknown as AxiosResponse<void>;
 
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response, null, 2),
-        },
-      ],
-    };
+    if (response.status === 201) {
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({
+              message: "Document type created successfully",
+              id: documentTypeId
+            }),
+          },
+        ],
+      };
+    } else {
+      // Handle error
+      const errorData = response.data as any;
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({
+              message: "Failed to create document type",
+              status: response.status,
+              error: errorData || response.statusText
+            }),
+          },
+        ],
+        isError: true,
+      };
+    }
   }
 );
 

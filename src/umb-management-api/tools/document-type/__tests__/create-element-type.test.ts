@@ -1,4 +1,4 @@
-import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { normalizeErrorResponse, createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import CreateElementTypeTool from "../post/create-element-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { jest } from "@jest/globals";
@@ -36,8 +36,12 @@ describe("create-element-type", () => {
       signal: new AbortController().signal,
     });
 
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const elementTypeId = responseData.id;
+
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, elementTypeId)).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
     const item = await DocumentTypeTestHelper.findDocumentType(
@@ -92,7 +96,12 @@ describe("create-element-type", () => {
       signal: new AbortController().signal,
     });
 
-    expect(result).toMatchSnapshot();
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const elementTypeId = responseData.id;
+
+    // Verify the handler response using snapshot
+    expect(createSnapshotResult(result, elementTypeId)).toMatchSnapshot();
 
     const item = await DocumentTypeTestHelper.findDocumentType(
       TEST_ELEMENT_NAME

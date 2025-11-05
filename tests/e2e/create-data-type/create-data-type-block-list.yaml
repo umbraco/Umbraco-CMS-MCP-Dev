@@ -13,19 +13,19 @@ evals:
         2. Create an element type called '_TestAccordionElement' with properties: title (Textstring), content (Textarea). DO NOT create additonal data types, use the existing ones.
         3. Get the property editor template for BlockList to understand the configuration
         4. Create a block list data type called '_TestBlockList' that uses the '_TestAccordionElement' element type
-        5. Delete the data type called '_TestBlockList'
-        6. Delete the document type called '_TestAccordionElement'
+        5. Delete the created data type
+        6. Delete the created document type
         7. When successfully completed the tasks, say 'The task has completed successfully', nothing else
       expected_tool_calls:
         required:
           - "create-document-type"
-          - "get-property-editor-template"
+          - "get-data-type-property-editor-template"
           - "create-data-type"
           - "delete-data-type"
           - "delete-document-type"
         allowed:
           - "create-document-type"
-          - "get-property-editor-template"
+          - "get-data-type-property-editor-template"
           - "create-data-type"
           - "delete-data-type"
           - "delete-document-type"

@@ -1,5 +1,6 @@
 import CreateDocumentTypeTool from "../post/create-document-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
 import type { CreateDocumentTypeModel } from "../post/create-document-type.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
@@ -40,12 +41,16 @@ describe("create-document-type", () => {
     };
 
     // Create the document type
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, { 
-      signal: new AbortController().signal 
+    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+      signal: new AbortController().signal
     });
 
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const documentTypeId = responseData.id;
+
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, documentTypeId)).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_NAME);
@@ -98,11 +103,16 @@ describe("create-document-type", () => {
       ]
     };
 
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, { 
-      signal: new AbortController().signal 
+    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+      signal: new AbortController().signal
     });
 
-    expect(result).toMatchSnapshot();
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const documentTypeId = responseData.id;
+
+    // Verify the handler response using snapshot
+    expect(createSnapshotResult(result, documentTypeId)).toMatchSnapshot();
 
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_NAME);
     expect(item).toBeDefined();
@@ -132,8 +142,12 @@ describe("create-document-type", () => {
       signal: new AbortController().signal,
     });
 
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const documentTypeId = responseData.id;
+
     // Assert: Verify response
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, documentTypeId)).toMatchSnapshot();
 
     // Assert: Verify the created item exists with correct parent
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_WITH_PARENT_NAME);
