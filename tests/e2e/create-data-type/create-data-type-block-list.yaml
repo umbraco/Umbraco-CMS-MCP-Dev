@@ -1,0 +1,37 @@
+evals:
+  models:
+    - "claude-3-5-haiku-20241022"
+  timeout: 60000
+  max_steps: 15
+  
+  tests:
+
+    - name: "Create block list data type with element type"
+      prompt: |
+        Complete these tasks in order:
+        1. Find the correct data types for Textstring and Textarea..
+        2. Create an element type called '_TestAccordionElement' with properties: title (Textstring), content (Textarea). DO NOT create additonal data types, use the existing ones.
+        3. Get the property editor template for BlockList to understand the configuration
+        4. Create a block list data type called '_TestBlockList' that uses the '_TestAccordionElement' element type
+        5. Delete the created data type
+        6. Delete the created document type
+        7. When successfully completed the tasks, say 'The task has completed successfully', nothing else
+      expected_tool_calls:
+        required:
+          - "create-document-type"
+          - "get-data-type-property-editor-template"
+          - "create-data-type"
+          - "delete-data-type"
+          - "delete-document-type"
+        allowed:
+          - "create-document-type"
+          - "get-data-type-property-editor-template"
+          - "create-data-type"
+          - "delete-data-type"
+          - "delete-document-type"
+          - "get-all-document-types"
+          - "find-data-type"
+      response_scorers:
+        - type: 'llm-judge'
+          criteria: 'Did the last assistant step say "The task has completed successfully"'
+          threshold: 0.8

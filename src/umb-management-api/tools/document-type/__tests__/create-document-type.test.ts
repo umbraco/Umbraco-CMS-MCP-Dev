@@ -1,5 +1,6 @@
 import CreateDocumentTypeTool from "../post/create-document-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
 import type { CreateDocumentTypeModel } from "../post/create-document-type.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
@@ -40,12 +41,16 @@ describe("create-document-type", () => {
     };
 
     // Create the document type
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, { 
-      signal: new AbortController().signal 
+    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+      signal: new AbortController().signal
     });
 
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const documentTypeId = responseData.id;
+
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, documentTypeId)).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_NAME);
@@ -98,11 +103,16 @@ describe("create-document-type", () => {
       ]
     };
 
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, { 
-      signal: new AbortController().signal 
+    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+      signal: new AbortController().signal
     });
 
-    expect(result).toMatchSnapshot();
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const documentTypeId = responseData.id;
+
+    // Verify the handler response using snapshot
+    expect(createSnapshotResult(result, documentTypeId)).toMatchSnapshot();
 
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_NAME);
     expect(item).toBeDefined();
@@ -132,8 +142,12 @@ describe("create-document-type", () => {
       signal: new AbortController().signal,
     });
 
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const documentTypeId = responseData.id;
+
     // Assert: Verify response
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, documentTypeId)).toMatchSnapshot();
 
     // Assert: Verify the created item exists with correct parent
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_WITH_PARENT_NAME);
@@ -146,6 +160,86 @@ describe("create-document-type", () => {
       normalizedItem.parent.id = "00000000-0000-0000-0000-000000000000";
     }
     expect(normalizedItem).toMatchSnapshot();
+  });
+
+  it("should reject property without tab or group", async () => {
+    const docTypeModel: CreateDocumentTypeModel = {
+      name: TEST_DOCTYPE_NAME,
+      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      allowedAsRoot: false,
+      compositions: [],
+      allowedDocumentTypes: [],
+      properties: [
+        {
+          name: "Bad Property",
+          alias: "badProperty",
+          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae"
+          // Missing both tab and group
+        } as any // Need to bypass TypeScript to test runtime validation
+      ]
+    };
+
+    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+      signal: new AbortController().signal
+    });
+
+    // The tool catches validation errors and returns them as error responses
+    const errorText = result.content[0].text as string;
+    expect(errorText).toContain("Property must specify either 'tab' or 'group'");
+    expect(errorText).toContain("Properties without a container are invisible");
+  });
+
+  it("should create separate groups for same group name in different tabs", async () => {
+    const docTypeModel: CreateDocumentTypeModel = {
+      name: TEST_DOCTYPE_NAME,
+      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      allowedAsRoot: false,
+      compositions: [],
+      allowedDocumentTypes: [],
+      properties: [
+        {
+          name: "Prop1",
+          alias: "prop1",
+          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          tab: "Tab1",
+          group: "Settings"
+        },
+        {
+          name: "Prop2",
+          alias: "prop2",
+          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          tab: "Tab2",
+          group: "Settings"
+        }
+      ]
+    };
+
+    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+      signal: new AbortController().signal
+    });
+
+    const responseData = JSON.parse(result.content[0].text as string);
+    const fullDocType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
+
+    // Should have 2 tabs
+    const tabs = fullDocType.containers.filter(c => c.type === "Tab");
+    expect(tabs).toHaveLength(2);
+
+    // Should have 2 separate "Settings" groups
+    const groups = fullDocType.containers.filter(c => c.type === "Group" && c.name === "Settings");
+    expect(groups).toHaveLength(2);
+
+    // Each group should be parented to different tab
+    expect(groups[0].parent?.id).not.toBe(groups[1].parent?.id);
+
+    // Properties should reference different groups
+    expect(fullDocType.properties[0].container?.id).not.toBe(fullDocType.properties[1].container?.id);
+
+    // Verify with snapshot
+    const normalized = DocumentTypeTestHelper.normaliseFullDocumentType(fullDocType);
+    expect(normalized).toMatchSnapshot();
   });
 
 });

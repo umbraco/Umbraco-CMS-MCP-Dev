@@ -2,6 +2,7 @@ import CreateDataTypeTool from "../post/create-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
 
 const TEST_DATATYPE_NAME = "_Test DataType Created";
@@ -39,8 +40,12 @@ describe("create-data-type", () => {
       signal: new AbortController().signal
     });
 
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const dataTypeId = responseData.id;
+
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
     const item = await DataTypeTestHelper.findDataType(TEST_DATATYPE_NAME);
@@ -65,8 +70,12 @@ describe("create-data-type", () => {
       signal: new AbortController().signal,
     });
 
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const dataTypeId = responseData.id;
+
     // Assert: Verify the handler response
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();
 
     // Assert: Verify the created item exists with correct parent
     const item = await DataTypeTestHelper.findDataType(

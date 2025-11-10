@@ -1,4 +1,4 @@
-import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { normalizeErrorResponse, createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import CreateElementTypeTool from "../post/create-element-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { jest } from "@jest/globals";
@@ -36,8 +36,12 @@ describe("create-element-type", () => {
       signal: new AbortController().signal,
     });
 
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const elementTypeId = responseData.id;
+
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, elementTypeId)).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
     const item = await DocumentTypeTestHelper.findDocumentType(
@@ -92,12 +96,93 @@ describe("create-element-type", () => {
       signal: new AbortController().signal,
     });
 
-    expect(result).toMatchSnapshot();
+    // Extract ID for normalization
+    const responseData = JSON.parse(result.content[0].text as string);
+    const elementTypeId = responseData.id;
+
+    // Verify the handler response using snapshot
+    expect(createSnapshotResult(result, elementTypeId)).toMatchSnapshot();
 
     const item = await DocumentTypeTestHelper.findDocumentType(
       TEST_ELEMENT_NAME
     );
     expect(item).toBeDefined();
     expect(DocumentTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+  });
+
+  it("should reject property without tab or group", async () => {
+    const elementModel = {
+      name: TEST_ELEMENT_NAME,
+      alias: TEST_ELEMENT_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      compositions: [],
+      properties: [
+        {
+          name: "Bad Property",
+          alias: "badProperty",
+          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae"
+          // Missing both tab and group
+        } as any // Need to bypass TypeScript to test runtime validation
+      ]
+    };
+
+    const result = await CreateElementTypeTool().handler(elementModel, {
+      signal: new AbortController().signal
+    });
+
+    // The tool catches validation errors and returns them as error responses
+    const errorText = result.content[0].text as string;
+    expect(errorText).toContain("Property must specify either 'tab' or 'group'");
+    expect(errorText).toContain("Properties without a container are invisible");
+  });
+
+  it("should create separate groups for same group name in different tabs", async () => {
+    const elementModel = {
+      name: TEST_ELEMENT_NAME,
+      alias: TEST_ELEMENT_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      compositions: [],
+      properties: [
+        {
+          name: "Prop1",
+          alias: "prop1",
+          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          tab: "Tab1",
+          group: "Settings"
+        },
+        {
+          name: "Prop2",
+          alias: "prop2",
+          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          tab: "Tab2",
+          group: "Settings"
+        }
+      ]
+    };
+
+    const result = await CreateElementTypeTool().handler(elementModel, {
+      signal: new AbortController().signal
+    });
+
+    const responseData = JSON.parse(result.content[0].text as string);
+    const fullElementType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
+
+    // Should have 2 tabs
+    const tabs = fullElementType.containers.filter(c => c.type === "Tab");
+    expect(tabs).toHaveLength(2);
+
+    // Should have 2 separate "Settings" groups
+    const groups = fullElementType.containers.filter(c => c.type === "Group" && c.name === "Settings");
+    expect(groups).toHaveLength(2);
+
+    // Each group should be parented to different tab
+    expect(groups[0].parent?.id).not.toBe(groups[1].parent?.id);
+
+    // Properties should reference different groups
+    expect(fullElementType.properties[0].container?.id).not.toBe(fullElementType.properties[1].container?.id);
+
+    // Verify with snapshot
+    const normalized = DocumentTypeTestHelper.normaliseFullDocumentType(fullElementType);
+    expect(normalized).toMatchSnapshot();
   });
 });
