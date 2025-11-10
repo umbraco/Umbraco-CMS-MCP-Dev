@@ -76,8 +76,9 @@ describe('createContainerHierarchy', () => {
     // Check container IDs map
     expect(result.containerIds.get('Tab 1')).toBeDefined();
     expect(result.containerIds.get('Tab 2')).toBeDefined();
-    expect(result.containerIds.get('Group 1')).toBeDefined();
-    expect(result.containerIds.get('Group 2')).toBeDefined();
+    // Groups are now stored with composite keys: tab::group
+    expect(result.containerIds.get('Tab 1::Group 1')).toBeDefined();
+    expect(result.containerIds.get('Tab 1::Group 2')).toBeDefined();
 
     // Verify group parents point to correct tab
     const tab1Id = result.containerIds.get('Tab 1');
@@ -135,7 +136,8 @@ describe('createContainerHierarchy', () => {
       })
     );
     expect(result.containerIds.size).toBe(1);
-    expect(result.containerIds.get('Group 1')).toBeDefined();
+    // Groups without tabs are stored with key: NO_TAB::groupName
+    expect(result.containerIds.get('NO_TAB::Group 1')).toBeDefined();
   });
 
   it('should handle empty properties array', () => {
@@ -172,8 +174,8 @@ describe('createContainerHierarchy', () => {
 
     // Get container IDs
     const tab1Id = result.containerIds.get('Tab 1');
-    const group1Id = result.containerIds.get('Group 1');
-    const group2Id = result.containerIds.get('Group 2');
+    const group1Id = result.containerIds.get('Tab 1::Group 1');
+    const group2Id = result.containerIds.get('NO_TAB::Group 2');
 
     // Verify container IDs are defined
     expect(tab1Id).toBeDefined();

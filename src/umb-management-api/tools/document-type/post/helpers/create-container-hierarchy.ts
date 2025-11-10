@@ -27,49 +27,66 @@ interface ContainerCreationResult {
 
 /**
  * Creates the container hierarchy for an element type based on property tab and group assignments.
+ * Uses composite keys (tab::group) to support same group name in different tabs.
  * @param properties The properties array from the element type model
- * @returns An object containing the containers array and a map of container names to their IDs
+ * @returns An object containing the containers array and a map of container names/keys to their IDs
  */
 export function createContainerHierarchy(properties: Property[]): ContainerCreationResult {
   const containerIds = new Map<string, string>();
-  
-  // First, collect all unique tab and group names
+
+  // Collect unique tabs
   const tabs = new Set<string>();
-  const groups = new Set<string>();
   properties.forEach(prop => {
     if (prop.tab) tabs.add(prop.tab);
-    if (prop.group) groups.add(prop.group);
   });
 
-  // Create containers array with proper hierarchy
-  const containers = [
-    // Create tabs first
-    ...Array.from(tabs).map((tabName, index) => {
-      const id = uuidv4();
-      containerIds.set(tabName, id);
-      return {
-        id,
-        name: tabName,
-        type: "Tab" as const,
-        parent: null,
-        sortOrder: index
-      };
-    }),
-    // Then create groups, linking to their tabs if specified
-    ...Array.from(groups).map((groupName, index) => {
-      const id = uuidv4();
-      containerIds.set(groupName, id);
-      // Find the first property that uses this group to get its tab
-      const prop = properties.find(p => p.group === groupName);
-      return {
-        id,
-        name: groupName,
-        type: "Group" as const,
-        parent: prop?.tab ? { id: containerIds.get(prop.tab)! } : null,
-        sortOrder: index
-      };
-    })
-  ];
+  // Collect unique tab+group combinations (not just group names)
+  interface GroupKey {
+    groupName: string;
+    tabName: string | undefined;
+  }
+
+  const groupKeys = new Map<string, GroupKey>();
+  properties.forEach(prop => {
+    if (prop.group) {
+      // Create unique key for this tab+group combination
+      const key = `${prop.tab || 'NO_TAB'}::${prop.group}`;
+      if (!groupKeys.has(key)) {
+        groupKeys.set(key, {
+          groupName: prop.group,
+          tabName: prop.tab
+        });
+      }
+    }
+  });
+
+  // Create tab containers first
+  const containers: Container[] = Array.from(tabs).map((tabName, index) => {
+    const id = uuidv4();
+    containerIds.set(tabName, id);
+    return {
+      id,
+      name: tabName,
+      type: "Tab" as const,
+      parent: null,
+      sortOrder: index
+    };
+  });
+
+  // Create group containers with unique IDs per tab+group combination
+  const groupContainers = Array.from(groupKeys.entries()).map(([key, groupKey], index) => {
+    const id = uuidv4();
+    containerIds.set(key, id);  // Store by composite key
+    return {
+      id,
+      name: groupKey.groupName,
+      type: "Group" as const,
+      parent: groupKey.tabName ? { id: containerIds.get(groupKey.tabName)! } : null,
+      sortOrder: index
+    };
+  });
+
+  containers.push(...groupContainers);
 
   return { containers, containerIds };
 } 

@@ -25,7 +25,13 @@ const createElementTypeSchema = z.object({
         dataTypeId: z.string().uuid("Must be a valid data type UUID"),
         tab: z.string().optional(),
         group: z.string().optional(),
-      })
+      }).refine(
+        (data) => data.tab || data.group,
+        {
+          message: "Property must specify either 'tab' or 'group' (or both) to appear in Umbraco UI. Properties without a container are invisible.",
+          path: ["tab"]
+        }
+      )
     )
     .default([]),
 });
@@ -44,12 +50,16 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
 4. The tool will automatically generate UUIDs for properties and containers
 5. Always create new element types in the root before copying to a new folder if required
 6. Property container structure:
-   - Properties can specify a tab and/or group
-   - Groups will be created inside their specified tab
-   - Properties without a tab/group will be at root level
+   - Properties MUST specify either a 'tab' or 'group' (or both) to appear in Umbraco UI
+   - Property with only tab: appears directly in the tab
+   - Property with only group: appears in the group (group has no parent tab)
+   - Property with both tab and group: group is nested inside the tab, property appears in the group
    - The tool will automatically create the container hierarchy`,
   createElementTypeSchema.shape,
-  async (model: CreateElementTypeModel) => {
+  async (rawModel: CreateElementTypeModel) => {
+    // Validate the model with the schema (including refine rules)
+    const model = createElementTypeSchema.parse(rawModel);
+
     // Generate UUIDs for the element type and its components
     const elementTypeId = uuidv4();
 
@@ -63,7 +73,9 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
       // Determine which container to use
       let containerId: string | undefined;
       if (prop.group) {
-        containerId = containerIds.get(prop.group);
+        // Use composite key for group lookup
+        const key = `${prop.tab || 'NO_TAB'}::${prop.group}`;
+        containerId = containerIds.get(key);
       } else if (prop.tab) {
         containerId = containerIds.get(prop.tab);
       }

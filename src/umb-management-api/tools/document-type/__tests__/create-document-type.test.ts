@@ -162,4 +162,84 @@ describe("create-document-type", () => {
     expect(normalizedItem).toMatchSnapshot();
   });
 
+  it("should reject property without tab or group", async () => {
+    const docTypeModel: CreateDocumentTypeModel = {
+      name: TEST_DOCTYPE_NAME,
+      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      allowedAsRoot: false,
+      compositions: [],
+      allowedDocumentTypes: [],
+      properties: [
+        {
+          name: "Bad Property",
+          alias: "badProperty",
+          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae"
+          // Missing both tab and group
+        } as any // Need to bypass TypeScript to test runtime validation
+      ]
+    };
+
+    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+      signal: new AbortController().signal
+    });
+
+    // The tool catches validation errors and returns them as error responses
+    const errorText = result.content[0].text as string;
+    expect(errorText).toContain("Property must specify either 'tab' or 'group'");
+    expect(errorText).toContain("Properties without a container are invisible");
+  });
+
+  it("should create separate groups for same group name in different tabs", async () => {
+    const docTypeModel: CreateDocumentTypeModel = {
+      name: TEST_DOCTYPE_NAME,
+      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      allowedAsRoot: false,
+      compositions: [],
+      allowedDocumentTypes: [],
+      properties: [
+        {
+          name: "Prop1",
+          alias: "prop1",
+          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          tab: "Tab1",
+          group: "Settings"
+        },
+        {
+          name: "Prop2",
+          alias: "prop2",
+          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          tab: "Tab2",
+          group: "Settings"
+        }
+      ]
+    };
+
+    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+      signal: new AbortController().signal
+    });
+
+    const responseData = JSON.parse(result.content[0].text as string);
+    const fullDocType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
+
+    // Should have 2 tabs
+    const tabs = fullDocType.containers.filter(c => c.type === "Tab");
+    expect(tabs).toHaveLength(2);
+
+    // Should have 2 separate "Settings" groups
+    const groups = fullDocType.containers.filter(c => c.type === "Group" && c.name === "Settings");
+    expect(groups).toHaveLength(2);
+
+    // Each group should be parented to different tab
+    expect(groups[0].parent?.id).not.toBe(groups[1].parent?.id);
+
+    // Properties should reference different groups
+    expect(fullDocType.properties[0].container?.id).not.toBe(fullDocType.properties[1].container?.id);
+
+    // Verify with snapshot
+    const normalized = DocumentTypeTestHelper.normaliseFullDocumentType(fullDocType);
+    expect(normalized).toMatchSnapshot();
+  });
+
 });
