@@ -7,7 +7,7 @@ import { jest } from "@jest/globals";
 
 const TEST_DATATYPE_NAME = "_Test DataType Created";
 const EXISTING_DATATYPE_NAME = "_Existing DataType";
-const TEST_FOLDER_NAME = "_Test DataType Folder";
+const TEST_FOLDER_NAME = "_Test DataType Folder For Creation";
 const TEST_DATATYPE_WITH_PARENT_NAME = "_Test DataType With Parent";
 
 describe("create-data-type", () => {
@@ -22,8 +22,8 @@ describe("create-data-type", () => {
     // Clean up any test data types
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(EXISTING_DATATYPE_NAME);
-    await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_WITH_PARENT_NAME);
+    await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     console.error = originalConsoleError;
 
   });
