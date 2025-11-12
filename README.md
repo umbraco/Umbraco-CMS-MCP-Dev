@@ -1,11 +1,10 @@
 # Umbraco MCP ![GitHub License](https://img.shields.io/github/license/umbraco/Umbraco-CMS-MCP-Dev?style=plastic&link=https%3A%2F%2Fgithub.com%2Fumbraco%2FUmbraco-CMS-MCP-Dev%2Fblob%2Fmain%2FLICENSE)
 
-An MCP (Model Context Protocol) server for [Umbraco CMS](https://umbraco.com/)
-it provides developer access to the majority of the Management API enabling you to complete most back office tasks with your agent that you can accomplish using the UI.
+An MCP (Model Context Protocol) server for [Umbraco CMS](https://umbraco.com/) that unlocks AI-powered content management. It provides comprehensive access to the Umbraco Management API, enabling your AI agent to perform back office tasks through natural conversation - freeing you from the UI and making complex, repetitive workflows that would be tedious or impossible manually become effortless.
 
 ## Intro
 
-The MCP server uses an Umbraco API user to access your Umbraco Management API, mean the tools available to the AI can be controlled using normal Umbraco user permissions.
+The MCP server authenticates using an Umbraco API user, ensuring secure, permission-based access to the Umbraco Management API. This means you maintain complete control over what your AI agent can do through Umbraco's standard user permission system - no special security model required.
 
 ## Quick Start
 
@@ -38,7 +37,7 @@ Download and install the [Claude Desktop app](https://claude.ai/download), then 
 }
 ```
 
-3. Fully restart Claude Desktop
+3. Fully restart Claude Desktop (including in the system tray on Windows)
 
 ## Documentation
 
