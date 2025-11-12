@@ -21,7 +21,7 @@ exports[`get-document-urls should get URLs for a valid document 1`] = `
     "urlInfos": [
       {
         "culture": "en-US",
-        "url": "/",
+        "url": "/_test-getdocumenturls/",
       },
     ],
   },

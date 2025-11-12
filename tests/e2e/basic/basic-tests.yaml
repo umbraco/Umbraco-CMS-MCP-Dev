@@ -46,6 +46,7 @@ evals:
           - "get-data-type-root"
           - "move-data-type" 
           - "delete-data-type-folder"
+          - "find-data-type"
       response_scorers:
         - type: 'llm-judge'
           criteria: 'Did the last assistant step say "The task has completed sucessfully"'
