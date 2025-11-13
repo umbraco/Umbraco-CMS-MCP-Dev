@@ -7,6 +7,7 @@ exports[`data-type-tool-index should have tools when user meets TreeAccessDataTy
   "is-used-data-type",
   "get-data-type",
   "get-data-type-configuration",
+  "get-data-type-property-editor-template",
   "get-data-type-root",
   "get-data-type-children",
   "get-data-type-ancestors",
@@ -31,6 +32,7 @@ exports[`data-type-tool-index should have tools when user meets TreeAccessDocume
   "is-used-data-type",
   "get-data-type",
   "get-data-type-configuration",
+  "get-data-type-property-editor-template",
   "find-data-type",
 ]
 `;
@@ -42,6 +44,7 @@ exports[`data-type-tool-index should have tools when user meets multiple policie
   "is-used-data-type",
   "get-data-type",
   "get-data-type-configuration",
+  "get-data-type-property-editor-template",
   "get-data-type-root",
   "get-data-type-children",
   "get-data-type-ancestors",

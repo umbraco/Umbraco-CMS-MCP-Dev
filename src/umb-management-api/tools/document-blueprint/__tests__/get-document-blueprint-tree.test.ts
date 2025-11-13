@@ -35,7 +35,7 @@ describe("document-blueprint-tree", () => {
 
       // Create child blueprint
       await new DocumentBlueprintBuilder(TEST_CHILD_NAME)
-        .withParent(folderBuilder.getId())
+        .withParentId(folderBuilder.getId())
         .create();
 
       const result = await GetDocumentBlueprintChildrenTreeTool().handler(
@@ -72,7 +72,7 @@ describe("document-blueprint-tree", () => {
       ).create();
 
       const childBuilder = await new DocumentBlueprintBuilder(TEST_CHILD_NAME)
-        .withParent(folderBuilder.getId())
+        .withParentId(folderBuilder.getId())
         .create();
 
       const result = await GetDocumentBlueprintAncestorsTreeTool().handler(

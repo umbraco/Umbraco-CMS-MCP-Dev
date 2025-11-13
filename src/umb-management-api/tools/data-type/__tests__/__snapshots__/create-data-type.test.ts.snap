@@ -4,7 +4,7 @@ exports[`create-data-type should create a data type 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "{"message":"Data type created successfully","id":"00000000-0000-0000-0000-000000000000"}",
       "type": "text",
     },
   ],
@@ -20,5 +20,30 @@ exports[`create-data-type should create a data type 2`] = `
   "isFolder": false,
   "name": "_Test DataType Created",
   "parent": null,
+}
+`;
+
+exports[`create-data-type should create a data type with parent folder 1`] = `
+{
+  "content": [
+    {
+      "text": "{"message":"Data type created successfully","id":"00000000-0000-0000-0000-000000000000"}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-data-type should create a data type with parent folder 2`] = `
+{
+  "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+  "hasChildren": false,
+  "id": "00000000-0000-0000-0000-000000000000",
+  "isDeletable": true,
+  "isFolder": false,
+  "name": "_Test DataType With Parent",
+  "parent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
 }
 `;

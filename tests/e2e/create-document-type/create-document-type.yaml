@@ -9,7 +9,7 @@ evals:
     - name: "Create new document type"
       prompt: |
         Complete these tasks in order:
-        1. Create a new document type called '_TestDocumentType', it should have a textstring property called title and a richtext property called content.
+        1. Create a new document type called '_TestDocumentType', it should have a textstring property called title (group :) and a richtext property called content.
         2. Delete the document type called '_TestDocumentType'
         3. When sucessfully completed the tasks, say 'The task has completed sucessfully', nothing else
       expected_tool_calls:

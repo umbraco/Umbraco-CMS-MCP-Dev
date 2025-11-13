@@ -65,15 +65,13 @@ describe("create-stylesheet", () => {
     // Arrange - Create parent folder first using builder
     const folderBuilder = new StylesheetFolderBuilder()
       .withName(TEST_STYLESHEET_PARENT_FOLDER);
-    
+
     await folderBuilder.create();
-    
+
     const params = {
       name: TEST_STYLESHEET_NAME,
       content: TEST_CONTENT,
-      parent: {
-        path: folderBuilder.getPath()
-      }
+      path: folderBuilder.getPath()  // Flattened path parameter
     };
 
     // Act
@@ -82,7 +80,7 @@ describe("create-stylesheet", () => {
     // Assert
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
-    
+
     // Verify that the helper can now find stylesheets in folders
     const foundItem = await StylesheetHelper.findStylesheet(TEST_STYLESHEET_NAME);
     expect(foundItem).toBeDefined();

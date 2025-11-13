@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { DocumentTypeTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
+import { DocumentTypeTreeItemResponseModel, DocumentTypeResponseModel } from "@/umb-management-api/schemas/index.js";
 
 export const BLANK_UUID = "00000000-0000-0000-0000-000000000000";
 
@@ -94,5 +94,28 @@ export class DocumentTypeTestHelper {
       console.error(`Error finding document type ${name}:`, error);
       return undefined;
     }
+  }
+
+  static async getFullDocumentType(id: string): Promise<DocumentTypeResponseModel> {
+    const client = UmbracoManagementClient.getClient();
+    return await client.getDocumentTypeById(id);
+  }
+
+  static normaliseFullDocumentType(docType: DocumentTypeResponseModel): DocumentTypeResponseModel {
+    return {
+      ...docType,
+      id: BLANK_UUID,
+      containers: docType.containers.map(c => ({
+        ...c,
+        id: BLANK_UUID,
+        parent: c.parent ? { id: BLANK_UUID } : undefined
+      })),
+      properties: docType.properties.map(p => ({
+        ...p,
+        id: BLANK_UUID,
+        container: p.container ? { id: BLANK_UUID } : undefined,
+        dataType: { id: BLANK_UUID }
+      }))
+    };
   }
 }

@@ -24,6 +24,12 @@ describe("get-indexer-by-index-name", () => {
       { indexName: TEST_INDEX_NAME },
       { signal: new AbortController().signal }
     );
+
+    // Normalize documentCount which changes as documents are created/deleted
+    const parsed = JSON.parse(result.content[0].text as string);
+    parsed.documentCount = "NORMALIZED_COUNT";
+    result.content[0].text = JSON.stringify(parsed);
+
     // Verify the handler response using snapshot
     expect(result).toMatchSnapshot();
   });

@@ -18,9 +18,17 @@ export class DocumentBlueprintTestHelper {
     | DocumentBlueprintTreeItemResponseModel
     | DocumentBlueprintTreeItemResponseModel[] {
     if (Array.isArray(items)) {
-      return items.map((item) => ({ ...item, id: BLANK_UUID }));
+      return items.map((item) => ({
+        ...item,
+        id: BLANK_UUID,
+        parent: item.parent ? { ...item.parent, id: BLANK_UUID } : item.parent
+      }));
     }
-    return { ...items, id: BLANK_UUID };
+    return {
+      ...items,
+      id: BLANK_UUID,
+      parent: items.parent ? { ...items.parent, id: BLANK_UUID } : items.parent
+    };
   }
 
   static async cleanup(name: string): Promise<void> {

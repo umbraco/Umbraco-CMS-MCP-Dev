@@ -38,7 +38,7 @@ describe("DictionaryBuilder", () => {
     await helper
       .withName("Child Dictionary")
       .withTranslation("en-US", "Child Translation")
-      .withParent(parentId)
+      .withParentId(parentId)
       .create();
 
     expect(helper.getId()).toBeDefined();

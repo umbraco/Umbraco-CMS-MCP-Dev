@@ -12,8 +12,8 @@ export class StylesheetFolderBuilder {
     return this;
   }
 
-  withParent(parentPath: string): StylesheetFolderBuilder {
-    this.model.parent = { path: parentPath };
+  withPath(path: string): StylesheetFolderBuilder {
+    this.model.parent = { path };
     return this;
   }
 

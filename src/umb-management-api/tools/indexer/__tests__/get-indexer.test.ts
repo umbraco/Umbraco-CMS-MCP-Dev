@@ -22,6 +22,17 @@ describe("get-indexer", () => {
       { take: 100 },
       { signal: new AbortController().signal }
     );
+
+    // Normalize documentCount which changes as documents are created/deleted
+    const parsed = JSON.parse(result.content[0].text as string);
+    if (parsed.items && Array.isArray(parsed.items)) {
+      parsed.items = parsed.items.map((item: any) => ({
+        ...item,
+        documentCount: "NORMALIZED_COUNT"
+      }));
+    }
+    result.content[0].text = JSON.stringify(parsed);
+
     // Verify the handler response using snapshot
     expect(result).toMatchSnapshot();
   });

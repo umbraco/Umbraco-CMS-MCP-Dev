@@ -23,7 +23,7 @@ export const UserCollection: ToolCollectionExport = {
     name: 'user',
     displayName: 'Users',
     description: 'User account management and administration',
-    dependencies: []
+    dependencies: ['temporary-file']
   },
   tools: (user: CurrentUserResponseModel) => {
     const tools: ToolDefinition<any>[] = [];

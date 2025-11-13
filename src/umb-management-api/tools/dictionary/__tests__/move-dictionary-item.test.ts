@@ -66,7 +66,7 @@ describe("move-dictionary-item", () => {
     await childHelper
       .withName(CHILD_DICTIONARY_NAME)
       .withTranslation(DEFAULT_ISO_CODE, CHILD_DICTIONARY_TRANSLATION)
-      .withParent(parentHelper.getId())
+      .withParentId(parentHelper.getId())
       .create();
 
     const result = await MoveDictionaryItemTool().handler(

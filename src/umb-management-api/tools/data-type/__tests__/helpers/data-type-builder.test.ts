@@ -76,7 +76,7 @@ describe('DataTypeBuilder', () => {
 
     it('should add parent', () => {
       const parentId = '123-456';
-      builder.withParent(parentId);
+      builder.withParentId(parentId);
       const model = builder.build();
 
       expect(model.parent).toEqual({ id: parentId });
@@ -92,7 +92,7 @@ describe('DataTypeBuilder', () => {
         .withEditorAlias(editorAlias)
         .withEditorUiAlias(editorUiAlias)
         .withValue(TEST_VALUE_ALIAS, TEST_VALUE)
-        .withParent(parentId);
+        .withParentId(parentId);
 
       const model = builder.build();
 
@@ -138,7 +138,7 @@ describe('DataTypeBuilder', () => {
       const builder = new DataTypeBuilder()
         .withName(TEST_DATATYPE_NAME)
         .withTextbox()
-        .withParent('invalid-id');
+        .withParentId('invalid-id');
 
       await expect(builder.create()).rejects.toThrow();
     });

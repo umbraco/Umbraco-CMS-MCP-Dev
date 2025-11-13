@@ -39,7 +39,7 @@ describe("media-type-tree", () => {
       await new MediaTypeBuilder()
         .withName(TEST_CHILD_NAME)
         .withIcon("icon-folder")
-        .withParent(folderBuilder.getId())
+        .withParentId(folderBuilder.getId())
         .create();
 
       const result = await GetMediaTypeChildrenTool().handler(
@@ -77,7 +77,7 @@ describe("media-type-tree", () => {
 
       const childBuilder = await new MediaTypeBuilder()
         .withName(TEST_CHILD_NAME)
-        .withParent(folderBuilder.getId())
+        .withParentId(folderBuilder.getId())
         .create();
 
       const result = await GetMediaTypeAncestorsTool().handler(

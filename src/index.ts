@@ -9,6 +9,7 @@ import { ResourceFactory } from "./umb-management-api/resources/resource-factory
 import { UmbracoManagementClient } from "@umb-management-client";
 import { getServerConfig } from "./config.js";
 import { initializeUmbracoAxios } from "./orval/client/umbraco-axios.js";
+import { checkUmbracoVersion } from "./helpers/version-check/check-umbraco-version.js";
 
 const main = async () => {
   // Load and validate configuration
@@ -22,6 +23,9 @@ const main = async () => {
   const client = UmbracoManagementClient.getClient();
 
   const user = await client.getUserCurrent();
+
+  // Check Umbraco version compatibility (logs result internally)
+  await checkUmbracoVersion(client);
 
   ResourceFactory(server);
   UmbracoToolFactory(server, user, config);

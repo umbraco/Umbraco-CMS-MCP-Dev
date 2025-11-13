@@ -38,7 +38,7 @@ describe('DocumentTypeFolderBuilder', () => {
 
     it('should set parent', () => {
       const parentId = '123-456';
-      builder.withParent(parentId);
+      builder.withParentId(parentId);
       const model = builder.build();
 
       expect(model.parent).toEqual({ id: parentId });
@@ -46,7 +46,7 @@ describe('DocumentTypeFolderBuilder', () => {
 
     it('should chain builder methods', () => {
       const parentId = '123-456';
-      builder.withParent(parentId);
+      builder.withParentId(parentId);
       const model = builder.build();
 
       expect(model).toEqual({
@@ -76,7 +76,7 @@ describe('DocumentTypeFolderBuilder', () => {
 
       // Create child folder
       const builder = await new DocumentTypeFolderBuilder(TEST_CHILD_NAME)
-        .withParent(parentBuilder.getId())
+        .withParentId(parentBuilder.getId())
         .create();
 
       const item = builder.getItem();
@@ -89,7 +89,7 @@ describe('DocumentTypeFolderBuilder', () => {
   describe('error handling', () => {
     it('should handle invalid parent ID', async () => {
       const builder = new DocumentTypeFolderBuilder(TEST_FOLDER_NAME)
-        .withParent('invalid-id');
+        .withParentId('invalid-id');
 
       await expect(builder.create()).rejects.toThrow();
     });

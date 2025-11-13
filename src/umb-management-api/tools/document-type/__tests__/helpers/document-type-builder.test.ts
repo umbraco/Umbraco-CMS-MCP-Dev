@@ -114,7 +114,7 @@ describe('DocumentTypeBuilder', () => {
 
     it('should add parent', () => {
       const parentId = '123-456';
-      builder.withParent(parentId);
+      builder.withParentId(parentId);
       const model = builder.build();
 
       expect(model.parent).toEqual({ id: parentId });
@@ -256,7 +256,7 @@ describe('DocumentTypeBuilder', () => {
         .withIcon(icon)
         .allowAsRoot()
         .variesByCulture()
-        .withParent(parentId);
+        .withParentId(parentId);
 
       const model = builder.build();
 
@@ -322,7 +322,7 @@ describe('DocumentTypeBuilder', () => {
     it('should handle invalid parent ID', async () => {
       const builder = new DocumentTypeBuilder()
         .withName(TEST_DOCTYPE_NAME)
-        .withParent('invalid-id');
+        .withParentId('invalid-id');
 
       await expect(builder.create()).rejects.toThrow();
     });
