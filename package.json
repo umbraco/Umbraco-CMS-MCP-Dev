@@ -4,6 +4,7 @@
   "type": "module",
   "description": "A model context protocol (MCP) server for Umbraco CMS",
   "main": "index.js",
+  "mcpName": "io.github.umbraco/Umbraco-CMS-MCP-Dev",
   "bin": {
     "umbraco": "dist/index.js"
   },
