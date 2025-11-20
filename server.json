@@ -1,18 +1,20 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "io.github.umbraco/Umbraco-CMS-MCP-Dev",
+  "title": "Umbraco CMS Developer MCP",
   "icon": "https://avatars.githubusercontent.com/u/1419552?s=128&v=4",
   "description": "A developer focused model context protocol (MCP) server for Umbraco CMS",
+  "status": "active",
   "repository": {
     "url": "https://github.com/umbraco/Umbraco-CMS-MCP-Dev",
     "source": "github"
   },
-  "version": "16.0.0",
+  "version": "16.0.1",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@umbraco-cms/mcp-dev",
-      "version": "16.0.0",
+      "version": "16.0.1",
       "transport": {
         "type": "stdio"
       },
