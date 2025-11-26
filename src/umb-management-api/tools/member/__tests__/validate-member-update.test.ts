@@ -9,8 +9,15 @@ const TEST_MEMBER_NAME = "_Test Member Update Validation";
 const TEST_MEMBER_EMAIL = "_test_member_update_validation@example.com";
 
 // Helper to build a basic validation model for updates
-function buildUpdateValidationModel() {
+function buildUpdateValidationModel(id: string, username: string) {
   return {
+    id: id,
+    email: TEST_MEMBER_EMAIL,
+    username: username,
+    isApproved: true,
+    isLockedOut: false,
+    isTwoFactorEnabled: false,
+    memberType: { id: Default_Memeber_TYPE_ID },
     values: [],
     variants: [
       {
@@ -19,11 +26,6 @@ function buildUpdateValidationModel() {
         segment: null,
       },
     ],
-    email: TEST_MEMBER_EMAIL,
-    username: TEST_MEMBER_NAME,
-    isApproved: true,
-    isLockedOut: false,
-    isTwoFactorEnabled: false,
   };
 }
 
@@ -52,11 +54,13 @@ describe("validate-member-update", () => {
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
 
-    const model = buildUpdateValidationModel();
+    const memberId = memberBuilder.getId();
+    // Use the same username as the created member, and include the id in the payload
+    const model = buildUpdateValidationModel(memberId, TEST_MEMBER_EMAIL);
 
     // Act - validate the update for the existing member
     const result = await ValidateMemberUpdateTool().handler({
-      id: memberBuilder.getId(),
+      id: memberId,
       data: model
     }, { signal: new AbortController().signal });
 
@@ -96,8 +100,8 @@ describe("validate-member-update", () => {
   });
 
   it("should handle validation for non-existent member", async () => {
-    const nonExistentId = "00000000-0000-0000-0000-000000000000";
-    const model = buildUpdateValidationModel();
+    const nonExistentId = crypto.randomUUID();
+    const model = buildUpdateValidationModel(nonExistentId, TEST_MEMBER_EMAIL);
 
     const result = await ValidateMemberUpdateTool().handler({
       id: nonExistentId,

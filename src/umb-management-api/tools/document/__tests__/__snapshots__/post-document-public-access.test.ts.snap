@@ -18,6 +18,7 @@ exports[`post-document-public-access should add public access for a valid docume
   },
   "groups": [
     {
+      "flags": [],
       "id": "00000000-0000-0000-0000-000000000000",
       "name": "_Test PostPublicAccess MemberGroup",
     },

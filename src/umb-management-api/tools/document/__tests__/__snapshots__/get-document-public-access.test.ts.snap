@@ -4,7 +4,7 @@ exports[`get-document-public-access should get public access for a valid documen
 {
   "content": [
     {
-      "text": "{"members":[],"groups":[{"name":"_Test PublicAccess MemberGroup","id":"00000000-0000-0000-0000-000000000000"}],"loginDocument":{"id":"00000000-0000-0000-0000-000000000000"},"errorDocument":{"id":"00000000-0000-0000-0000-000000000000"}}",
+      "text": "{"members":[],"groups":[{"name":"_Test PublicAccess MemberGroup","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"loginDocument":{"id":"00000000-0000-0000-0000-000000000000"},"errorDocument":{"id":"00000000-0000-0000-0000-000000000000"}}",
       "type": "text",
     },
   ],

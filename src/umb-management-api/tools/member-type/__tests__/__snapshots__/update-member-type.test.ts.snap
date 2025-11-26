@@ -35,6 +35,7 @@ exports[`update-member-type should update a member type 1`] = `
 exports[`update-member-type should update a member type 2`] = `
 [
   {
+    "flags": [],
     "hasChildren": false,
     "icon": "icon-user",
     "id": "00000000-0000-0000-0000-000000000000",

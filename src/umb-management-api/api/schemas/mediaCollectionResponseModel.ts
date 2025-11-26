@@ -7,12 +7,14 @@
  */
 import type { MediaValueResponseModel } from './mediaValueResponseModel.js';
 import type { MediaVariantResponseModel } from './mediaVariantResponseModel.js';
+import type { FlagModel } from './flagModel.js';
 import type { MediaTypeCollectionReferenceResponseModel } from './mediaTypeCollectionReferenceResponseModel.js';
 
 export interface MediaCollectionResponseModel {
   values: MediaValueResponseModel[];
   variants: MediaVariantResponseModel[];
   id: string;
+  flags: FlagModel[];
   /** @nullable */
   creator?: string | null;
   sortOrder: number;

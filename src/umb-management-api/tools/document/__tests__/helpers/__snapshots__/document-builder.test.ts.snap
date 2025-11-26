@@ -19,6 +19,7 @@ exports[`DocumentBuilder should set public access for a document using setPublic
   },
   "groups": [
     {
+      "flags": [],
       "id": "00000000-0000-0000-0000-000000000000",
       "name": "_Test Builder PublicAccess MemberGroup",
     },

@@ -6,6 +6,7 @@
  * OpenAPI spec version: Latest
  */
 import type { DocumentVariantStateModel } from './documentVariantStateModel.js';
+import type { FlagModel } from './flagModel.js';
 
 export interface DocumentVariantResponseModel {
   /** @nullable */
@@ -23,4 +24,6 @@ export interface DocumentVariantResponseModel {
   scheduledPublishDate?: string | null;
   /** @nullable */
   scheduledUnpublishDate?: string | null;
+  readonly id: string;
+  flags: FlagModel[];
 }

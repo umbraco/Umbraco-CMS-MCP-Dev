@@ -6,17 +6,19 @@
  * OpenAPI spec version: Latest
  */
 import type { DocumentTreeItemResponseModelParent } from './documentTreeItemResponseModelParent.js';
+import type { FlagModel } from './flagModel.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { DocumentTypeReferenceResponseModel } from './documentTypeReferenceResponseModel.js';
 import type { DocumentVariantItemResponseModel } from './documentVariantItemResponseModel.js';
 
 export interface DocumentTreeItemResponseModel {
   hasChildren: boolean;
+  id: string;
   /** @nullable */
   parent?: DocumentTreeItemResponseModelParent;
+  flags: FlagModel[];
   noAccess: boolean;
   isTrashed: boolean;
-  id: string;
   createDate: string;
   isProtected: boolean;
   ancestors: ReferenceByIdModel[];

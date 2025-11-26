@@ -7,11 +7,13 @@
  */
 import type { DocumentValueResponseModel } from './documentValueResponseModel.js';
 import type { DocumentVariantResponseModel } from './documentVariantResponseModel.js';
+import type { FlagModel } from './flagModel.js';
 import type { DocumentTypeReferenceResponseModel } from './documentTypeReferenceResponseModel.js';
 
 export interface DocumentBlueprintResponseModel {
   values: DocumentValueResponseModel[];
   variants: DocumentVariantResponseModel[];
   id: string;
+  flags: FlagModel[];
   documentType: DocumentTypeReferenceResponseModel;
 }

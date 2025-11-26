@@ -9,5 +9,9 @@
 export interface DocumentUrlInfoModel {
   /** @nullable */
   culture: string | null;
-  url: string;
+  /** @nullable */
+  url: string | null;
+  /** @nullable */
+  message: string | null;
+  provider: string;
 }

@@ -6,16 +6,18 @@
  * OpenAPI spec version: Latest
  */
 import type { MediaTreeItemResponseModelParent } from './mediaTreeItemResponseModelParent.js';
+import type { FlagModel } from './flagModel.js';
 import type { MediaTypeReferenceResponseModel } from './mediaTypeReferenceResponseModel.js';
 import type { VariantItemResponseModel } from './variantItemResponseModel.js';
 
 export interface MediaTreeItemResponseModel {
   hasChildren: boolean;
+  id: string;
   /** @nullable */
   parent?: MediaTreeItemResponseModelParent;
+  flags: FlagModel[];
   noAccess: boolean;
   isTrashed: boolean;
-  id: string;
   createDate: string;
   mediaType: MediaTypeReferenceResponseModel;
   variants: VariantItemResponseModel[];

@@ -6,12 +6,14 @@
  * OpenAPI spec version: Latest
  */
 import type { MemberTypeTreeItemResponseModelParent } from './memberTypeTreeItemResponseModelParent.js';
+import type { FlagModel } from './flagModel.js';
 
 export interface MemberTypeTreeItemResponseModel {
   hasChildren: boolean;
   id: string;
   /** @nullable */
   parent?: MemberTypeTreeItemResponseModelParent;
+  flags: FlagModel[];
   name: string;
   icon: string;
 }

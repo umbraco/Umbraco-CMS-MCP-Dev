@@ -42,6 +42,7 @@ describe("DocumentBlueprintVerificationHelper", () => {
       documentType: { id: "789-012", icon: "icon-document" },
       isFolder: false,
       hasChildren: false,
+      flags: [],
     };
 
     const mockFolder: DocumentBlueprintTreeItemResponseModel = {
@@ -50,6 +51,7 @@ describe("DocumentBlueprintVerificationHelper", () => {
       documentType: { id: "789-012", icon: "icon-folder" },
       isFolder: true,
       hasChildren: true,
+      flags: [],
     };
 
     it("should normalise a single item by setting id to BLANK_UUID", () => {

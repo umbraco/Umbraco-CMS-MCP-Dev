@@ -4,7 +4,7 @@ exports[`get-media-by-id-array should get media items by id array 1`] = `
 {
   "content": [
     {
-      "text": "[{"isTrashed":false,"parent":null,"hasChildren":false,"mediaType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-picture","collection":null},"variants":[{"name":"_Test Media","culture":null}],"id":"00000000-0000-0000-0000-000000000000"}]",
+      "text": "[{"isTrashed":false,"parent":null,"hasChildren":false,"mediaType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-picture","collection":null},"variants":[{"name":"_Test Media","culture":null}],"id":"00000000-0000-0000-0000-000000000000","flags":[]}]",
       "type": "text",
     },
   ],

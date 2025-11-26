@@ -62,7 +62,20 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
         "Workflow.AlternateVersion.Read",
         "Workflow.AlternateVersion.Update",
         "Workflow.AlternateVersion.Delete",
-        "Workflow.AlternateVersion.Publish"
+        "Workflow.AlternateVersion.Publish",
+        "Workflow.Document.Initiate",
+        "Workflow.AdvancedSearch.Read",
+        "Workflow.ActiveWorkflows.Read",
+        "Workflow.ApprovalGroup.Read",
+        "Workflow.History.Read",
+        "Workflow.ContentReview.Read",
+        "Workflow.AlternateVersion.Promote",
+        "Workflow.Configuration.Read",
+        "Workflow.Configuration.Update",
+        "Workflow.ApprovalGroup.Create",
+        "Workflow.ApprovalGroup.Update",
+        "Workflow.ApprovalGroup.Delete",
+        "Workflow.Document.Unlock"
       ],
       "permissions": []
     },
@@ -112,7 +125,13 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
         "Workflow.AlternateVersion.Read",
         "Workflow.AlternateVersion.Update",
         "Workflow.AlternateVersion.Delete",
-        "Workflow.AlternateVersion.Publish"
+        "Workflow.AlternateVersion.Publish",
+        "Workflow.Document.Initiate",
+        "Workflow.AdvancedSearch.Read",
+        "Workflow.ActiveWorkflows.Read",
+        "Workflow.ApprovalGroup.Read",
+        "Workflow.History.Read",
+        "Workflow.ContentReview.Read"
       ],
       "permissions": []
     },

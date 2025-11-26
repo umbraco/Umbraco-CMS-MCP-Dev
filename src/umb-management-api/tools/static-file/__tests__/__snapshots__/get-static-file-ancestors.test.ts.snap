@@ -4,7 +4,7 @@ exports[`get-static-file-ancestors should get ancestors for a nested file or fol
 {
   "content": [
     {
-      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"App_Plugins","path":"/App_Plugins","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"UmbracoEmbeddedResource","path":"/App_Plugins/UmbracoEmbeddedResource","parent":{"path":"/App_Plugins","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"BackOffice","path":"/App_Plugins/UmbracoEmbeddedResource/BackOffice","parent":{"path":"/App_Plugins/UmbracoEmbeddedResource","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"Default","path":"/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default","parent":{"path":"/App_Plugins/UmbracoEmbeddedResource/BackOffice","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"css","path":"/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default/css","parent":{"path":"/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"application.css","path":"/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default/css/application.css","parent":{"path":"/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default/css","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]",
+      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"bin","path":"/bin","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"Debug","path":"/bin/Debug","parent":{"path":"/bin","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"}]",
       "type": "text",
     },
   ],
@@ -26,7 +26,7 @@ exports[`get-static-file-ancestors should handle invalid descendant path gracefu
 {
   "content": [
     {
-      "text": "[]",
+      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true},{"name":"nonexistent","path":"/nonexistent","parent":{"path":"/"},"isFolder":true,"hasChildren":false},{"name":"invalid","path":"/nonexistent/invalid","parent":{"path":"/nonexistent"},"isFolder":true,"hasChildren":false},{"name":"path","path":"/nonexistent/invalid/path","parent":{"path":"/nonexistent/invalid"},"isFolder":true,"hasChildren":false},{"name":"file.txt","path":"/nonexistent/invalid/path/file.txt","parent":{"path":"/nonexistent/invalid/path"},"isFolder":true,"hasChildren":false}]",
       "type": "text",
     },
   ],
@@ -37,7 +37,7 @@ exports[`get-static-file-ancestors should handle root-level item path gracefully
 {
   "content": [
     {
-      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"App_Plugins","path":"/App_Plugins","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]",
+      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"bin","path":"/bin","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"}]",
       "type": "text",
     },
   ],

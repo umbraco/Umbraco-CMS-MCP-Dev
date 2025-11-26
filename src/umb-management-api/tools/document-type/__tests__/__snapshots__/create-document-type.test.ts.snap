@@ -13,6 +13,7 @@ exports[`create-document-type should create a document type 1`] = `
 
 exports[`create-document-type should create a document type 2`] = `
 {
+  "flags": [],
   "hasChildren": false,
   "icon": "icon-document",
   "id": "00000000-0000-0000-0000-000000000000",
@@ -36,6 +37,7 @@ exports[`create-document-type should create a document type with parent folder 1
 
 exports[`create-document-type should create a document type with parent folder 2`] = `
 {
+  "flags": [],
   "hasChildren": false,
   "icon": "icon-document",
   "id": "00000000-0000-0000-0000-000000000000",
@@ -61,6 +63,7 @@ exports[`create-document-type should create a document type with properties 1`] 
 
 exports[`create-document-type should create a document type with properties 2`] = `
 {
+  "flags": [],
   "hasChildren": false,
   "icon": "icon-document",
   "id": "00000000-0000-0000-0000-000000000000",

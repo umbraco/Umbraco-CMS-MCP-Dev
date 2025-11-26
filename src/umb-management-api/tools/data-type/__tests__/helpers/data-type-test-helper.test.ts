@@ -46,6 +46,7 @@ describe("DataTypeTestHelper", () => {
       hasChildren: false,
       isFolder: false,
       isDeletable: true,
+      flags: [],
     };
 
     const mockFolder: DataTypeTreeItemResponseModel = {
@@ -55,6 +56,7 @@ describe("DataTypeTestHelper", () => {
       hasChildren: true,
       isFolder: true,
       isDeletable: true,
+      flags: [],
     };
 
     it("should normalise a single item by setting id to BLANK_UUID", () => {
