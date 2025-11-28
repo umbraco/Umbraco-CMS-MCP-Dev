@@ -23,21 +23,17 @@ describe("get-indexer", () => {
       { signal: new AbortController().signal }
     );
 
-    // Verify response structure - don't snapshot as indexes vary by environment
-    expect(result.content).toBeDefined();
-    expect(result.content[0].type).toBe("text");
-
+    // Normalize documentCount which changes as documents are created/deleted
     const parsed = JSON.parse(result.content[0].text as string);
-    expect(parsed.total).toBeGreaterThan(0);
-    expect(Array.isArray(parsed.items)).toBe(true);
-    expect(parsed.items.length).toBeGreaterThan(0);
+    if (parsed.items && Array.isArray(parsed.items)) {
+      parsed.items = parsed.items.map((item: any) => ({
+        ...item,
+        documentCount: "NORMALIZED_COUNT"
+      }));
+    }
+    result.content[0].text = JSON.stringify(parsed);
 
-    // Verify index structure
-    const firstIndex = parsed.items[0];
-    expect(firstIndex).toHaveProperty("name");
-    expect(firstIndex).toHaveProperty("healthStatus");
-    expect(firstIndex).toHaveProperty("canRebuild");
-    expect(firstIndex).toHaveProperty("searcherName");
+    // Verify the handler response using snapshot
+    expect(result).toMatchSnapshot();
   });
-
 });
