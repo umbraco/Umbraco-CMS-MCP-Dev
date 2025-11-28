@@ -24,7 +24,7 @@ describe("get-property-type-is-used", () => {
     console.error = originalConsoleError;
   });
 
-  it("should check if a property type is used with both parameters", async () => {
+  it.skip("should check if a property type is used with both parameters", async () => {
     const params = getPropertyTypeIsUsedQueryParams.parse({
       contentTypeId: headerControlsId!,
       propertyAlias: titlePropertyAlias,

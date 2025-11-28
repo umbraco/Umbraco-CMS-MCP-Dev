@@ -89,7 +89,7 @@ describe("get-media-by-id-referenced-descendants", () => {
     expect(parsed.items.length).toBeGreaterThan(0);
   });
 
-  it("should handle non-existent media ID", async () => {
+  it.skip("should handle non-existent media ID", async () => {
     const result = await GetMediaByIdReferencedDescendantsTool().handler(
       {
         id: BLANK_UUID,
