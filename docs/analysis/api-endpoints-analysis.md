@@ -1,56 +1,53 @@
-# Umbraco Management API Endpoints Analysis
+# API Endpoints Analysis
 
-Generated from: `/src/umb-management-api/api/api/umbracoManagementAPI.ts`
+**Last Updated**: 2025-11-13
 
-**Total API Endpoints:** 401
-**Total API Groups:** 45
+## MCP Tools by Collection
 
-## API Groups Overview
+| Collection | Tool Count |
+|------------|------------|
+| .claude | 0 |
+| culture | 1 |
+| data-type | 21 |
+| dictionary | 10 |
+| document | 40 |
+| document-blueprint | 15 |
+| document-type | 26 |
+| document-version | 4 |
+| health | 4 |
+| imaging | 1 |
+| indexer | 3 |
+| language | 6 |
+| log-viewer | 9 |
+| manifest | 3 |
+| media | 27 |
+| media-type | 21 |
+| member | 12 |
+| member-group | 6 |
+| member-type | 11 |
+| models-builder | 3 |
+| partial-view | 14 |
+| property-type | 1 |
+| redirect | 5 |
+| relation | 1 |
+| relation-type | 2 |
+| script | 12 |
+| searcher | 2 |
+| server | 5 |
+| static-file | 4 |
+| stylesheet | 12 |
+| tag | 1 |
+| template | 12 |
+| temporary-file | 4 |
+| user | 15 |
+| user-data | 4 |
+| user-group | 8 |
+| webhook | 9 |
 
-| Group | Endpoints | Description |
-|-------|-----------|-------------|
-| Culture | 1 | Culture and localization management |
-| DataType | 20 | Data type definitions and management |
-| Dictionary | 12 | Dictionary items for translations |
-| Document | 53 | Content documents and blueprints |
-| DocumentType | 24 | Document type definitions |
-| Dynamic | 2 | Dynamic root queries |
-| Health | 4 | Health check operations |
-| Help | 1 | Help documentation |
-| Imaging | 1 | Image resize operations |
-| Import | 1 | Import analysis |
-| Indexer | 3 | Search indexer operations |
-| Install | 3 | Installation and setup |
-| Language | 7 | Language management |
-| LogViewer | 9 | Log viewing and management |
-| Manifest | 3 | Manifest files |
-| Media | 21 | Media files and folders |
-| MediaType | 25 | Media type definitions |
-| Member | 31 | Member, member groups, and member types |
-| ModelsBuilder | 3 | Models builder operations |
-| Object | 1 | Object type information |
-| Oembed | 1 | oEmbed provider |
-| Package | 9 | Package management |
-| PartialView | 14 | Partial view templates |
-| Preview | 2 | Preview operations |
-| Profiling | 2 | Performance profiling |
-| PropertyType | 1 | Property type validation |
-| PublishedCache | 3 | Published content cache |
-| RecycleBin | 14 | Recycle bin operations |
-| RedirectManagement | 5 | URL redirect management |
-| Relation | 1 | Content relations |
-| RelationType | 3 | Relation type definitions |
-| Script | 12 | Script files |
-| Searcher | 2 | Search operations |
-| Security | 4 | Security configuration |
-| Segment | 1 | Content segments |
-| Server | 5 | Server information and status |
-| StaticFile | 4 | Static file management |
-| Stylesheet | 12 | CSS stylesheets |
-| Tag | 1 | Content tagging |
-| Telemetry | 3 | Telemetry data |
-| Template | 12 | Templates (Razor views) |
-| UmbracoManagement | 1 | Management API operations |
-| Upgrade | 2 | Upgrade operations |
-| User | 53 | User and user group management |
-| Webhook | 9 | Webhook management |
+**Total MCP Tools**: 334
+
+## Notes
+
+- This count includes only files that contain `CreateUmbracoTool` or `CreateUmbracoResource`
+- Excludes `index.ts` files and test files (`__tests__` directories)
+- Helper files, constants, and utilities are not counted
