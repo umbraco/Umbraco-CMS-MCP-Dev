@@ -11,6 +11,7 @@ exports[`document-tool-index should have all tools when user meets multiple poli
   "post-document-public-access",
   "delete-document",
   "delete-document-public-access",
+  "delete-document-recycle-bin-item",
   "get-document-urls",
   "get-document-domains",
   "get-document-audit-log",
@@ -34,14 +35,18 @@ exports[`document-tool-index should have all tools when user meets multiple poli
   "search-document",
   "validate-document",
   "get-collection-document-by-id",
+  "get-item-document",
   "get-document-are-referenced",
   "get-document-by-id-referenced-by",
   "get-document-by-id-referenced-descendants",
+  "get-document-available-segment-options",
   "get-recycle-bin-document-original-parent",
   "get-recycle-bin-document-referenced-by",
   "get-document-root",
   "get-document-children",
   "get-document-ancestors",
+  "get-document-siblings",
+  "get-document-recycle-bin-siblings",
 ]
 `;
 
@@ -58,6 +63,7 @@ exports[`document-tool-index should have tools when user meets TreeAccessDocumen
   "post-document-public-access",
   "delete-document",
   "delete-document-public-access",
+  "delete-document-recycle-bin-item",
   "get-document-urls",
   "get-document-domains",
   "get-document-audit-log",
@@ -81,14 +87,18 @@ exports[`document-tool-index should have tools when user meets TreeAccessDocumen
   "search-document",
   "validate-document",
   "get-collection-document-by-id",
+  "get-item-document",
   "get-document-are-referenced",
   "get-document-by-id-referenced-by",
   "get-document-by-id-referenced-descendants",
+  "get-document-available-segment-options",
   "get-recycle-bin-document-original-parent",
   "get-recycle-bin-document-referenced-by",
   "get-document-root",
   "get-document-children",
   "get-document-ancestors",
+  "get-document-siblings",
+  "get-document-recycle-bin-siblings",
 ]
 `;
 
@@ -97,5 +107,7 @@ exports[`document-tool-index should have tree tools when user meets SectionAcces
   "get-document-root",
   "get-document-children",
   "get-document-ancestors",
+  "get-document-siblings",
+  "get-document-recycle-bin-siblings",
 ]
 `;

@@ -24,6 +24,7 @@ exports[`document-type-tool-index should have all management tools when user has
   "get-document-type-root",
   "get-document-type-ancestors",
   "get-document-type-children",
+  "get-document-type-siblings",
 ]
 `;
 
@@ -51,6 +52,7 @@ exports[`document-type-tool-index should have all tools when user has all requir
   "get-document-type-root",
   "get-document-type-ancestors",
   "get-document-type-children",
+  "get-document-type-siblings",
 ]
 `;
 

@@ -4,6 +4,7 @@ exports[`member-group-tool-index should have CRUD tools when user has members se
 [
   "get-member-group",
   "get-member-group-by-id-array",
+  "get-all-member-groups",
   "create-member-group",
   "update-member-group",
   "delete-member-group",
@@ -15,6 +16,7 @@ exports[`member-group-tool-index should have all tools when user has both access
 [
   "get-member-group",
   "get-member-group-by-id-array",
+  "get-all-member-groups",
   "create-member-group",
   "update-member-group",
   "delete-member-group",
@@ -26,6 +28,7 @@ exports[`member-group-tool-index should have basic tools by default 1`] = `
 [
   "get-member-group",
   "get-member-group-by-id-array",
+  "get-all-member-groups",
 ]
 `;
 
@@ -33,5 +36,6 @@ exports[`member-group-tool-index should have tree tools when user has member gro
 [
   "get-member-group",
   "get-member-group-by-id-array",
+  "get-all-member-groups",
 ]
 `;

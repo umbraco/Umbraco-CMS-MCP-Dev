@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-recycle-bin-siblings should get sibling documents in recycle bin 1`] = `
+{
+  "content": [
+    {
+      "text": "{"totalBefore":0,"totalAfter":0,"items":[{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Trashed","name":"_Test RecycleBin Sibling 1","culture":null}],"id":"00000000-0000-0000-0000-000000000000","createDate":"NORMALIZED_DATE","hasChildren":false,"parent":null},{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Trashed","name":"_Test RecycleBin Sibling 2","culture":null}],"id":"00000000-0000-0000-0000-000000000000","createDate":"NORMALIZED_DATE","hasChildren":false,"parent":null},{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Trashed","name":"_Test RecycleBin Siblings Parent","culture":null}],"id":"00000000-0000-0000-0000-000000000000","createDate":"NORMALIZED_DATE","hasChildren":false,"parent":null}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-document-recycle-bin-siblings should handle non-existent target in recycle bin 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-document-recycle-bin-siblings:
+{
+  "message": "Request failed with status code 404",
+  "response": ""
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

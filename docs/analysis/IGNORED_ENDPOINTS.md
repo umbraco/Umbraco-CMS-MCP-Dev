@@ -8,16 +8,12 @@ These endpoints are intentionally not implemented in the MCP server, typically b
 
 ## Ignored by Category
 
-### Data Type (1 endpoints)
-- `getDataTypeByIdReferencedBy` - Get data type by id referenced by
-
 ### Dictionary (2 endpoints)
 - `getDictionaryByIdExport` - Get dictionary by id export
 - `postDictionaryImport` - Create/Execute dictionary import
 
-### Document (3 endpoints)
-- `deleteRecycleBinDocumentById` - Delete recycle bin document by id
-- `getItemDocument` - Get item document
+### Document (2 endpoints)
+- `getDocumentByIdPreviewUrl` - Get document by id preview url
 - `putUmbracoManagementApiV11DocumentByIdValidate11` - Update umbraco management api v11 document by id validate11
 
 ### Document Type (3 endpoints)
@@ -40,34 +36,28 @@ These endpoints are intentionally not implemented in the MCP server, typically b
 - `postInstallSetup` - Create/Execute install setup
 - `postInstallValidateDatabase` - Create/Execute install validate database
 
-### Language (1 endpoints)
-- `getLanguage` - Get language
-
-### Media (3 endpoints)
-- `deleteRecycleBinMediaById` - Delete recycle bin media by id
+### Media (1 endpoints)
 - `getItemMediaSearch` - Get item media search
-- `putMediaByIdValidate` - Update media by id validate
 
-### Media Type (4 endpoints)
-- `getItemMediaType` - Get item media type
+### Media Type (3 endpoints)
 - `getMediaTypeByIdExport` - Get media type by id export
 - `postMediaTypeImport` - Create/Execute media type import
 - `putMediaTypeByIdImport` - Update media type by id import
 
-### Member (1 endpoints)
-- `getItemMemberSearch` - Get item member search
-
-### Member Group (1 endpoints)
-- `getMemberGroup` - Get member group
-
-### Member Type (1 endpoints)
-- `getItemMemberTypeSearch` - Get item member type search
+### Member Type (4 endpoints)
+- `deleteMemberTypeFolderById` - Delete member type folder by id
+- `getMemberTypeFolderById` - Get member type folder by id
+- `postMemberTypeFolder` - Create/Execute member type folder
+- `putMemberTypeFolderById` - Update member type folder by id
 
 ### Object Types (1 endpoints)
 - `getObjectTypes` - Get object types
 
 ### Oembed (1 endpoints)
 - `getOembedQuery` - Get oembed query
+
+### Other (1 endpoints)
+- `getNewsDashboard` - Get news dashboard
 
 ### Package (9 endpoints)
 - `deletePackageCreatedById` - Delete package created by id
@@ -144,7 +134,7 @@ These endpoints are intentionally not implemented in the MCP server, typically b
 - `postUserGroupByIdUsers` - Create/Execute user group by id users
 - `postUserSetUserGroups` - Create/Execute user set user groups
 
-## Total Ignored: 82 endpoints
+## Total Ignored: 74 endpoints
 
 ## Rationale
 
@@ -224,4 +214,10 @@ Object endpoints are excluded because:
 
 Dynamic endpoints are excluded because:
 1. Dynamic root functionality is an advanced configuration feature for creating custom content tree structures
-2. These operations are better compled using the UI
+2. These operations are better completed using the UI
+
+Member Type folder endpoints are excluded because:
+1. The Umbraco v17 Management API does not support member type folders - all folder CRUD operations return 400 errors
+2. Unlike other entity types (Data Types, Document Types, Media Types), Member Types do not have hierarchical folder organization
+3. The API endpoints exist in the OpenAPI specification but are not functional in the current Umbraco implementation
+4. These endpoints may be reserved for future functionality or are legacy artifacts from the API design

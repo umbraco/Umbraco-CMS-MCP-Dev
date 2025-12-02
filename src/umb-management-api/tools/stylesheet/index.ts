@@ -13,6 +13,7 @@ import GetStylesheetAncestorsTool from "./items/get/get-ancestors.js";
 import GetStylesheetChildrenTool from "./items/get/get-children.js";
 import GetStylesheetRootTool from "./items/get/get-root.js";
 import GetStylesheetSearchTool from "./items/get/get-search.js";
+import GetStylesheetSiblingsTool from "./items/get/get-siblings.js";
 
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
@@ -45,6 +46,7 @@ export const StylesheetCollection: ToolCollectionExport = {
       tools.push(GetStylesheetChildrenTool());
       tools.push(GetStylesheetRootTool());
       tools.push(GetStylesheetSearchTool());
+      tools.push(GetStylesheetSiblingsTool());
     }
 
     return tools;

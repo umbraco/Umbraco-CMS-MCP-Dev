@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-language should get all languages 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":3,"items":[{"name":"English (United States)","isDefault":true,"isMandatory":false,"fallbackIsoCode":null,"isoCode":"en-US","id":"00000000-0000-0000-0000-000000000000"},{"name":"_Test Language Get 1","isDefault":false,"isMandatory":false,"fallbackIsoCode":null,"isoCode":"en-AU","id":"00000000-0000-0000-0000-000000000000"},{"name":"_Test Language Get 2","isDefault":false,"isMandatory":false,"fallbackIsoCode":null,"isoCode":"en-NZ","id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-language should get languages with pagination - skip and take 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":4,"items":[{"name":"_Test Language Get 1","isDefault":false,"isMandatory":false,"fallbackIsoCode":null,"isoCode":"en-AU","id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-language should get languages with take parameter only 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":3,"items":[{"name":"English (United States)","isDefault":true,"isMandatory":false,"fallbackIsoCode":null,"isoCode":"en-US","id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;

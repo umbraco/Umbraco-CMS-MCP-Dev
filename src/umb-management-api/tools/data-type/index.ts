@@ -16,6 +16,7 @@ import GetDataTypeSearchTool from "./items/get/get-search.js";
 import UpdateDataTypeFolderTool from "./folders/put/update-folder.js";
 import GetDataTypeRootTool from "./items/get/get-root.js";
 import GetDataTypeChildrenTool from "./items/get/get-children.js";
+import GetDataTypeSiblingsTool from "./items/get/get-siblings.js";
 import GetDataTypeAncestorsTool from "./items/get/get-ancestors.js";
 import GetAllDataTypesTool from "./items/get/get-all.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
@@ -44,6 +45,7 @@ export const DataTypeCollection: ToolCollectionExport = {
     if (AuthorizationPolicies.TreeAccessDataTypes(user)) {
       tools.push(GetDataTypeRootTool());
       tools.push(GetDataTypeChildrenTool());
+      tools.push(GetDataTypeSiblingsTool());
       tools.push(GetDataTypeAncestorsTool());
       tools.push(GetAllDataTypesTool());
 

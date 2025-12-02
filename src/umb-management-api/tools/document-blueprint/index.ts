@@ -5,6 +5,7 @@ import CreateDocumentBlueprintTool from "./post/create-blueprint.js";
 import GetDocumentBlueprintAncestorsTool from "./get/get-ancestors.js";
 import GetDocumentBlueprintChildrenTool from "./get/get-children.js";
 import GetDocumentBlueprintRootTool from "./get/get-root.js";
+import GetDocumentBlueprintSiblingsTool from "./get/get-siblings.js";
 import GetDocumentBlueprintScaffoldTool from "./get/get-document-blueprint-scaffold.js";
 import CreateDocumentBlueprintFromDocumentTool from "./post/create-document-blueprint-from-document.js";
 import GetDocumentBlueprintByIdArrayTool from "./get/get-document-blueprint-by-id-array.js";
@@ -45,6 +46,7 @@ export const DocumentBlueprintCollection: ToolCollectionExport = {
       tools.push(GetDocumentBlueprintAncestorsTool());
       tools.push(GetDocumentBlueprintChildrenTool());
       tools.push(GetDocumentBlueprintRootTool());
+      tools.push(GetDocumentBlueprintSiblingsTool());
 
       // Folder operations
       tools.push(CreateDocumentBlueprintFolderTool());
