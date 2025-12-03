@@ -5,10 +5,12 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { FlagModel } from './flagModel.js';
 import type { UserKindModel } from './userKindModel.js';
 
 export interface UserItemResponseModel {
   id: string;
+  flags: FlagModel[];
   name: string;
   avatarUrls: string[];
   kind: UserKindModel;

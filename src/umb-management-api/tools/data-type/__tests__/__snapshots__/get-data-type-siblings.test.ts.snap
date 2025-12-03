@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-data-type-siblings should get sibling data types 1`] = `
+{
+  "content": [
+    {
+      "text": "{"totalBefore":0,"totalAfter":2,"items":[{"editorUiAlias":"Umb.PropertyEditorUi.TextBox","isDeletable":true,"isFolder":false,"name":"_Test Sibling 1 DataType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-data-type-siblings should handle non-existent target 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-data-type-siblings:
+{
+  "message": "Request failed with status code 404",
+  "response": ""
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

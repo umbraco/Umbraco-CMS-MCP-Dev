@@ -4,7 +4,7 @@ exports[`document-blueprint-tree ancestors should get ancestor items 1`] = `
 {
   "content": [
     {
-      "text": "[{"documentType":null,"isFolder":true,"name":"_Test Folder Blueprint","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":true},{"documentType":null,"isFolder":false,"name":"_Test Child Blueprint","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":false}]",
+      "text": "[{"documentType":null,"isFolder":true,"name":"_Test Folder Blueprint","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"documentType":null,"isFolder":false,"name":"_Test Child Blueprint","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]",
       "type": "text",
     },
   ],
@@ -26,7 +26,7 @@ exports[`document-blueprint-tree children should get child items 1`] = `
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"isFolder":false,"name":"_Test Child Blueprint","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":false}]}",
+      "text": "{"total":1,"items":[{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"isFolder":false,"name":"_Test Child Blueprint","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
       "type": "text",
     },
   ],

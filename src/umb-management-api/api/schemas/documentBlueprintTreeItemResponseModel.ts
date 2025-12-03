@@ -6,6 +6,7 @@
  * OpenAPI spec version: Latest
  */
 import type { DocumentBlueprintTreeItemResponseModelParent } from './documentBlueprintTreeItemResponseModelParent.js';
+import type { FlagModel } from './flagModel.js';
 import type { DocumentBlueprintTreeItemResponseModelDocumentType } from './documentBlueprintTreeItemResponseModelDocumentType.js';
 
 export interface DocumentBlueprintTreeItemResponseModel {
@@ -13,6 +14,7 @@ export interface DocumentBlueprintTreeItemResponseModel {
   id: string;
   /** @nullable */
   parent?: DocumentBlueprintTreeItemResponseModelParent;
+  flags: FlagModel[];
   name: string;
   isFolder: boolean;
   /** @nullable */

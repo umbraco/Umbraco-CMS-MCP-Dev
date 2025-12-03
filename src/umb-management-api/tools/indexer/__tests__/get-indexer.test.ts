@@ -36,5 +36,4 @@ describe("get-indexer", () => {
     // Verify the handler response using snapshot
     expect(result).toMatchSnapshot();
   });
-
 });

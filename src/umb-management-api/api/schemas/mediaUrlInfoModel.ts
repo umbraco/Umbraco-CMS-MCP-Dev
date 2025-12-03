@@ -9,5 +9,6 @@
 export interface MediaUrlInfoModel {
   /** @nullable */
   culture: string | null;
-  url: string;
+  /** @nullable */
+  url: string | null;
 }

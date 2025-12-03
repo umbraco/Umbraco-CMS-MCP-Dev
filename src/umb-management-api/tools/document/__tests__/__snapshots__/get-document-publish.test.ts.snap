@@ -4,7 +4,7 @@ exports[`get-document-publish should get the published state of a published docu
 {
   "content": [
     {
-      "text": "{"urls":[],"template":null,"isTrashed":false,"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"id":"00000000-0000-0000-0000-000000000000","values":[],"variants":[{"state":"Published","publishDate":"NORMALIZED_DATE","scheduledPublishDate":null,"scheduledUnpublishDate":null,"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"_Test GetDocumentPublish"}]}",
+      "text": "{"template":null,"isTrashed":false,"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"id":"00000000-0000-0000-0000-000000000000","flags":[],"values":[],"variants":[{"state":"Published","publishDate":"NORMALIZED_DATE","scheduledPublishDate":null,"scheduledUnpublishDate":null,"id":"00000000-0000-0000-0000-000000000000","flags":[],"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"_Test GetDocumentPublish"}]}",
       "type": "text",
     },
   ],

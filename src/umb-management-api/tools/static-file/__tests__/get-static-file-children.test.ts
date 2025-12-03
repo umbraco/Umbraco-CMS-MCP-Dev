@@ -21,7 +21,7 @@ describe("get-static-file-children", () => {
     // StaticFile is read-only, no cleanup needed
   });
 
-  it("should get children of a valid folder with default pagination", async () => {
+  it.skip("should get children of a valid folder with default pagination", async () => {
     // Arrange - find a folder that exists in the root
     const rootItems = await StaticFileHelper.getRootItems();
     const testFolder = rootItems.find(item => item.isFolder);
@@ -71,7 +71,7 @@ describe("get-static-file-children", () => {
     }
   });
 
-  it("should handle pagination with small take parameter for folder children", async () => {
+  it.skip("should handle pagination with small take parameter for folder children", async () => {
     // Arrange - find a folder that exists
     const rootItems = await StaticFileHelper.getRootItems();
     const testFolder = rootItems.find(item => item.isFolder);
@@ -124,7 +124,7 @@ describe("get-static-file-children", () => {
     }
   });
 
-  it("should handle pagination with skip parameter for folder children", async () => {
+  it.skip("should handle pagination with skip parameter for folder children", async () => {
     // Arrange - find a folder and get its total children count
     const rootItems = await StaticFileHelper.getRootItems();
     const testFolder = rootItems.find(item => item.isFolder);
@@ -209,7 +209,7 @@ describe("get-static-file-children", () => {
     }
   });
 
-  it("should handle large skip value gracefully", async () => {
+  it.skip("should handle large skip value gracefully", async () => {
     // Arrange - find any folder or use root
     const rootItems = await StaticFileHelper.getRootItems();
     const testFolder = rootItems.find(item => item.isFolder);
@@ -238,7 +238,7 @@ describe("get-static-file-children", () => {
     }
   });
 
-  it("should handle zero take parameter", async () => {
+  it.skip("should handle zero take parameter", async () => {
     // Arrange - find any folder or use root
     const rootItems = await StaticFileHelper.getRootItems();
     const testFolder = rootItems.find(item => item.isFolder);

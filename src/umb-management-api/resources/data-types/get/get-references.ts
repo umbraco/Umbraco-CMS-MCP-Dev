@@ -1,6 +1,6 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateUmbracoTemplateResource } from "@/helpers/mcp/create-umbraco-template-resource.js";
-import { getDataTypeByIdReferencesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDataTypeByIdReferencedByParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 const GetDataTypeReferencesResource = CreateUmbracoTemplateResource(
@@ -15,8 +15,8 @@ const GetDataTypeReferencesResource = CreateUmbracoTemplateResource(
   async (uri, variables) => {
     try {
       const client = UmbracoManagementClient.getClient();
-      const params = getDataTypeByIdReferencesParams.parse(variables);
-      const response = await client.getDataTypeByIdReferences(params.id);
+      const params = getDataTypeByIdReferencedByParams.parse(variables);
+      const response = await client.getDataTypeByIdReferencedBy(params.id);
       return {
         contents: [
           {

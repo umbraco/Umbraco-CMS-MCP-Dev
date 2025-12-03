@@ -8,108 +8,133 @@ These endpoints are intentionally not implemented in the MCP server, typically b
 
 ## Ignored by Category
 
-### DocumentType (3 endpoints)
-- `getDocumentTypeByIdExport` - Export functionality
-- `postDocumentTypeImport` - Import functionality
-- `putDocumentTypeByIdImport` - Import functionality
-
 ### Dictionary (2 endpoints)
-- `getDictionaryByIdExport` - Export functionality
-- `postDictionaryImport` - Import functionality
+- `getDictionaryByIdExport` - Get dictionary by id export
+- `postDictionaryImport` - Create/Execute dictionary import
 
-### MediaType (3 endpoints)
-- `getMediaTypeByIdExport` - Export functionality
-- `postMediaTypeImport` - Import functionality
-- `putMediaTypeByIdImport` - Import functionality
+### Document (2 endpoints)
+- `getDocumentByIdPreviewUrl` - Get document by id preview url
+- `putUmbracoManagementApiV11DocumentByIdValidate11` - Update umbraco management api v11 document by id validate11
 
-### Import (1 endpoint)
-- `getImportAnalyze` - Import analysis functionality
+### Document Type (3 endpoints)
+- `getDocumentTypeByIdExport` - Get document type by id export
+- `postDocumentTypeImport` - Create/Execute document type import
+- `putDocumentTypeByIdImport` - Update document type by id import
+
+### Dynamic Root (2 endpoints)
+- `getDynamicRootSteps` - Get dynamic root steps
+- `postDynamicRootQuery` - Create/Execute dynamic root query
+
+### Help (1 endpoints)
+- `getHelp` - Get help
+
+### Import/Export (1 endpoints)
+- `getImportAnalyze` - Get import analyze
 
 ### Install (3 endpoints)
-- `getInstallSettings` - Installation configuration settings (system setup concerns)
-- `postInstallSetup` - System installation functionality (system modification risk)
-- `postInstallValidateDatabase` - Database validation during installation (system setup concerns)
+- `getInstallSettings` - Get install settings
+- `postInstallSetup` - Create/Execute install setup
+- `postInstallValidateDatabase` - Create/Execute install validate database
+
+### Media (1 endpoints)
+- `getItemMediaSearch` - Get item media search
+
+### Media Type (3 endpoints)
+- `getMediaTypeByIdExport` - Get media type by id export
+- `postMediaTypeImport` - Create/Execute media type import
+- `putMediaTypeByIdImport` - Update media type by id import
+
+### Member Type (4 endpoints)
+- `deleteMemberTypeFolderById` - Delete member type folder by id
+- `getMemberTypeFolderById` - Get member type folder by id
+- `postMemberTypeFolder` - Create/Execute member type folder
+- `putMemberTypeFolderById` - Update member type folder by id
+
+### Object Types (1 endpoints)
+- `getObjectTypes` - Get object types
+
+### Oembed (1 endpoints)
+- `getOembedQuery` - Get oembed query
+
+### Other (1 endpoints)
+- `getNewsDashboard` - Get news dashboard
 
 ### Package (9 endpoints)
-- `deletePackageCreatedById` - Delete created package functionality
-- `getPackageConfiguration` - Package configuration settings
-- `getPackageCreated` - List created packages functionality
-- `getPackageCreatedById` - Get created package by ID functionality
-- `getPackageCreatedByIdDownload` - Download package functionality
-- `getPackageMigrationStatus` - Package migration status functionality
-- `postPackageByNameRunMigration` - Run package migration functionality
-- `postPackageCreated` - Create package functionality
-- `putPackageCreatedById` - Update created package functionality
-
-### Security (4 endpoints)
-- `getSecurityConfiguration` - Security configuration settings
-- `postSecurityForgotPassword` - Password reset functionality
-- `postSecurityForgotPasswordReset` - Password reset confirmation functionality
-- `postSecurityForgotPasswordVerify` - Password reset verification functionality
-
-### User Group (3 endpoints)
-- `deleteUserGroupByIdUsers` - Remove users from groups (permission escalation risk)
-- `postUserGroupByIdUsers` - Add users to groups (permission escalation risk)
-- `postUserSetUserGroups` - Set user's group memberships (permission escalation risk)
-
-### Telemetry (3 endpoints)
-- `getTelemetry` - System telemetry data collection (privacy concerns)
-- `getTelemetryLevel` - Telemetry configuration exposure (privacy concerns)
-- `postTelemetryLevel` - Telemetry settings modification (privacy concerns)
-
-### PublishedCache (3 endpoints)
-- `getPublishedCacheRebuildStatus` - Cache rebuild status monitoring (system performance concerns)
-- `postPublishedCacheRebuild` - Cache rebuild operations (system performance/stability risk)
-- `postPublishedCacheReload` - Cache reload operations (system performance/stability risk)
-
-### Upgrade (2 endpoints)
-- `getUpgradeSettings` - System upgrade configuration settings (system setup concerns)
-- `postUpgradeAuthorize` - System upgrade authorization functionality (system modification risk)
-
-### User (22 endpoints)
-- `postUser` - User creation functionality (account proliferation/privilege escalation risk)
-- `deleteUser` - User deletion functionality (denial of service/data loss risk)
-- `deleteUserById` - User deletion by ID functionality (denial of service/data loss risk)
-- `putUserById` - User update functionality (permission escalation/authentication bypass risk)
-- `postUserByIdChangePassword` - Password change functionality (security risk)
-- `postUserByIdResetPassword` - Password reset functionality (security risk)
-- `postUserCurrentChangePassword` - Current user password change (security risk)
-- `postUserByIdClientCredentials` - Client credentials management (security risk)
-- `getUserByIdClientCredentials` - Client credentials exposure (security risk)
-- `deleteUserByIdClientCredentialsByClientId` - Client credentials manipulation (security risk)
-- `getUserById2fa` - 2FA management (security risk)
-- `deleteUserById2faByProviderName` - 2FA bypass risk (security risk)
-- `getUserCurrent2fa` - 2FA exposure (security risk)
-- `deleteUserCurrent2faByProviderName` - 2FA bypass risk (security risk)
-- `postUserCurrent2faByProviderName` - 2FA manipulation (security risk)
-- `getUserCurrent2faByProviderName` - 2FA exposure (security risk)
-- `postUserInvite` - User invitation abuse potential (security risk)
-- `postUserInviteCreatePassword` - Invitation hijacking risk (security risk)
-- `postUserInviteResend` - Spam/abuse potential (security risk)
-- `postUserInviteVerify` - Invitation manipulation (security risk)
-- `postUserDisable` - User account lockout risk (security risk)
-- `postUserEnable` - Compromised account activation risk (security risk)
-- `postUserUnlock` - Account security bypass risk (security risk)
-
-### Profiling (2 endpoints)
-- `getProfilingStatus` - System profiling status monitoring (system performance/debugging concerns)
-- `putProfilingStatus` - System profiling configuration changes (system performance/stability risk)
+- `deletePackageCreatedById` - Delete package created by id
+- `getPackageConfiguration` - Get package configuration
+- `getPackageCreated` - Get package created
+- `getPackageCreatedById` - Get package created by id
+- `getPackageCreatedByIdDownload` - Get package created by id download
+- `getPackageMigrationStatus` - Get package migration status
+- `postPackageByNameRunMigration` - Create/Execute package by name run migration
+- `postPackageCreated` - Create/Execute package created
+- `putPackageCreatedById` - Update package created by id
 
 ### Preview (2 endpoints)
-- `deletePreview` - Content preview deletion (frontend-specific functionality)
-- `postPreview` - Content preview creation (frontend-specific functionality)
+- `deletePreview` - Delete preview
+- `postPreview` - Create/Execute preview
 
-### Oembed (1 endpoint)
-- `getOembedQuery` - oEmbed media embedding functionality (frontend-specific functionality)
+### Profiling (2 endpoints)
+- `getProfilingStatus` - Get profiling status
+- `putProfilingStatus` - Update profiling status
 
-### Object (1 endpoint)
-- `getObjectTypes` - System object type enumeration (internal system functionality)
+### Published Cache (3 endpoints)
+- `getPublishedCacheRebuildStatus` - Get published cache rebuild status
+- `postPublishedCacheRebuild` - Create/Execute published cache rebuild
+- `postPublishedCacheReload` - Create/Execute published cache reload
 
-### Dynamic (2 endpoints)
-- `getDynamicRootSteps` - Dynamic root configuration steps (advanced configuration functionality)
-- `postDynamicRootQuery` - Dynamic root query processing (advanced configuration functionality)
+### Relation Type (1 endpoints)
+- `getItemRelationType` - Get item relation type
 
-## Total Ignored: 69 endpoints
+### Security (4 endpoints)
+- `getSecurityConfiguration` - Get security configuration
+- `postSecurityForgotPassword` - Create/Execute security forgot password
+- `postSecurityForgotPasswordReset` - Create/Execute security forgot password reset
+- `postSecurityForgotPasswordVerify` - Create/Execute security forgot password verify
+
+### Segment (1 endpoints)
+- `getSegment` - Get segment
+
+### Telemetry (3 endpoints)
+- `getTelemetry` - Get telemetry
+- `getTelemetryLevel` - Get telemetry level
+- `postTelemetryLevel` - Create/Execute telemetry level
+
+### Upgrade (2 endpoints)
+- `getUpgradeSettings` - Get upgrade settings
+- `postUpgradeAuthorize` - Create/Execute upgrade authorize
+
+### User (23 endpoints)
+- `deleteUser` - Delete user
+- `deleteUserById` - Delete user by id
+- `deleteUserById2faByProviderName` - Delete user by id2fa by provider name
+- `deleteUserByIdClientCredentialsByClientId` - Delete user by id client credentials by client id
+- `deleteUserCurrent2faByProviderName` - Delete user current2fa by provider name
+- `getUserById2fa` - Get user by id2fa
+- `getUserByIdClientCredentials` - Get user by id client credentials
+- `getUserCurrent2fa` - Get user current2fa
+- `getUserCurrent2faByProviderName` - Get user current2fa by provider name
+- `postUser` - Create/Execute user
+- `postUserByIdChangePassword` - Create/Execute user by id change password
+- `postUserByIdClientCredentials` - Create/Execute user by id client credentials
+- `postUserByIdResetPassword` - Create/Execute user by id reset password
+- `postUserCurrent2faByProviderName` - Create/Execute user current2fa by provider name
+- `postUserCurrentChangePassword` - Create/Execute user current change password
+- `postUserDisable` - Create/Execute user disable
+- `postUserEnable` - Create/Execute user enable
+- `postUserInvite` - Create/Execute user invite
+- `postUserInviteCreatePassword` - Create/Execute user invite create password
+- `postUserInviteResend` - Create/Execute user invite resend
+- `postUserInviteVerify` - Create/Execute user invite verify
+- `postUserUnlock` - Create/Execute user unlock
+- `putUserById` - Update user by id
+
+### User Group (3 endpoints)
+- `deleteUserGroupByIdUsers` - Delete user group by id users
+- `postUserGroupByIdUsers` - Create/Execute user group by id users
+- `postUserSetUserGroups` - Create/Execute user set user groups
+
+## Total Ignored: 78 endpoints
 
 ## Rationale
 
@@ -189,4 +214,10 @@ Object endpoints are excluded because:
 
 Dynamic endpoints are excluded because:
 1. Dynamic root functionality is an advanced configuration feature for creating custom content tree structures
-2. These operations are better compled using the UI
+2. These operations are better completed using the UI
+
+Member Type folder endpoints are excluded because:
+1. The Umbraco v17 Management API does not support member type folders - all folder CRUD operations return 400 errors
+2. Unlike other entity types (Data Types, Document Types, Media Types), Member Types do not have hierarchical folder organization
+3. The API endpoints exist in the OpenAPI specification but are not functional in the current Umbraco implementation
+4. These endpoints may be reserved for future functionality or are legacy artifacts from the API design

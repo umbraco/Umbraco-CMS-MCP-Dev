@@ -15,6 +15,7 @@ exports[`create-template should create a template 2`] = `
 [
   {
     "alias": "_testTemplateCreated",
+    "flags": [],
     "id": "NORMALIZED_ID",
     "name": "_Test Template Created",
   },

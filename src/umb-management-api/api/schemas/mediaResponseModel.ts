@@ -7,15 +7,14 @@
  */
 import type { MediaValueResponseModel } from './mediaValueResponseModel.js';
 import type { MediaVariantResponseModel } from './mediaVariantResponseModel.js';
-import type { MediaUrlInfoModel } from './mediaUrlInfoModel.js';
+import type { FlagModel } from './flagModel.js';
 import type { MediaTypeReferenceResponseModel } from './mediaTypeReferenceResponseModel.js';
 
 export interface MediaResponseModel {
   values: MediaValueResponseModel[];
   variants: MediaVariantResponseModel[];
   id: string;
-  /** @deprecated */
-  urls: MediaUrlInfoModel[];
+  flags: FlagModel[];
   isTrashed: boolean;
   mediaType: MediaTypeReferenceResponseModel;
 }

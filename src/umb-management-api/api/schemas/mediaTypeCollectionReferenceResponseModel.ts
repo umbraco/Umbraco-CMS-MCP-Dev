@@ -5,9 +5,12 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MediaTypeCollectionReferenceResponseModelCollection } from './mediaTypeCollectionReferenceResponseModelCollection.js';
 
 export interface MediaTypeCollectionReferenceResponseModel {
   id: string;
   alias: string;
   icon: string;
+  /** @nullable */
+  collection?: MediaTypeCollectionReferenceResponseModelCollection;
 }

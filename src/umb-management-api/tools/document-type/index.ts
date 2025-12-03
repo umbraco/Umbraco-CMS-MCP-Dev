@@ -7,6 +7,7 @@ import MoveDocumentTypeTool from "./put/move-document-type.js";
 import GetDocumentTypeRootTool from "./items/get/get-root.js";
 import GetDocumentTypeChildrenTool from "./items/get/get-children.js";
 import GetDocumentTypeAncestorsTool from "./items/get/get-ancestors.js";
+import GetDocumentTypeSiblingsTool from "./items/get/get-siblings.js";
 import CreateDocumentTypeFolderTool from "./folders/post/create-folder.js";
 import DeleteDocumentTypeFolderTool from "./folders/delete/delete-folder.js";
 import GetDocumentTypeFolderTool from "./folders/get/get-folder.js";
@@ -64,6 +65,7 @@ export const DocumentTypeCollection: ToolCollectionExport = {
       tools.push(GetDocumentTypeRootTool());
       tools.push(GetDocumentTypeAncestorsTool());
       tools.push(GetDocumentTypeChildrenTool());
+      tools.push(GetDocumentTypeSiblingsTool());
     }
 
     return tools;

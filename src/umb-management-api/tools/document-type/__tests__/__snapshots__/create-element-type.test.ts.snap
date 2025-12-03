@@ -13,6 +13,7 @@ exports[`create-element-type should create an element type 1`] = `
 
 exports[`create-element-type should create an element type 2`] = `
 {
+  "flags": [],
   "hasChildren": false,
   "icon": "icon-document",
   "id": "00000000-0000-0000-0000-000000000000",
@@ -36,6 +37,7 @@ exports[`create-element-type should create an element type with properties 1`] =
 
 exports[`create-element-type should create an element type with properties 2`] = `
 {
+  "flags": [],
   "hasChildren": false,
   "icon": "icon-document",
   "id": "00000000-0000-0000-0000-000000000000",

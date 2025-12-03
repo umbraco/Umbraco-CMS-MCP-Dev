@@ -16,9 +16,8 @@ exports[`partial-view-tool-index should have all tools when user has settings se
   "get-partial-view-children",
   "get-partial-view-root",
   "get-partial-view-search",
+  "get-partial-view-siblings",
 ]
 `;
 
 exports[`partial-view-tool-index should only have no tools when user has no permissions 1`] = `[]`;
-
-exports[`partial-view-tool-index should only have search tool when user has no partial view access 1`] = `[]`;

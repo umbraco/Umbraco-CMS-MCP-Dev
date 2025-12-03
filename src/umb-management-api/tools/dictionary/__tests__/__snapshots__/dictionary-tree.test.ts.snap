@@ -4,7 +4,7 @@ exports[`dictionary-tree get-ancestors should get ancestors of child dictionary 
 {
   "content": [
     {
-      "text": "[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":true},{"name":"_Child Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":true}]",
+      "text": "[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"name":"_Child Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":true}]",
       "type": "text",
     },
   ],
@@ -15,7 +15,7 @@ exports[`dictionary-tree get-ancestors should get ancestors of grandchild dictio
 {
   "content": [
     {
-      "text": "[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":true},{"name":"_Child Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":true},{"name":"_Grandchild Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":false}]",
+      "text": "[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"name":"_Child Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":true},{"name":"_Grandchild Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]",
       "type": "text",
     },
   ],
@@ -26,7 +26,7 @@ exports[`dictionary-tree get-ancestors should get empty ancestors for root dicti
 {
   "content": [
     {
-      "text": "[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":true}]",
+      "text": "[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true}]",
       "type": "text",
     },
   ],
@@ -37,7 +37,7 @@ exports[`dictionary-tree get-children should get children of child dictionary 1`
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"name":"_Grandchild Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":false}]}",
+      "text": "{"total":1,"items":[{"name":"_Grandchild Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
       "type": "text",
     },
   ],
@@ -48,7 +48,7 @@ exports[`dictionary-tree get-children should get children of root dictionary 1`]
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"name":"_Child Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":true}]}",
+      "text": "{"total":1,"items":[{"name":"_Child Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":true}]}",
       "type": "text",
     },
   ],
@@ -70,7 +70,7 @@ exports[`dictionary-tree get-root should get root level dictionary items 1`] = `
 {
   "content": [
     {
-      "text": "{"total":21,"items":[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":true},{"name":"Article.By","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Article.On","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Article.Posted","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"ArticleList.ViewAll","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Author.ReadMore","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"ContactForm.Email","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"ContactForm.Message","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"ContactForm.Name","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"ContactForm.Send","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Footer.CopyrightStatement","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Footer.CopyrightTitle","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Navigation.MenuTitle","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Navigation.SiteName","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Paging.Next","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Paging.Of","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Paging.Page","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Paging.Previous","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Search.Placeholder","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Search.Results","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"name":"Search.SearchButton","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false}]}",
+      "text": "{"total":21,"items":[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"name":"Article.By","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Article.On","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Article.Posted","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ArticleList.ViewAll","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Author.ReadMore","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ContactForm.Email","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ContactForm.Message","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ContactForm.Name","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ContactForm.Send","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Footer.CopyrightStatement","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Footer.CopyrightTitle","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Navigation.MenuTitle","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Navigation.SiteName","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Paging.Next","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Paging.Of","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Paging.Page","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Paging.Previous","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Search.Placeholder","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Search.Results","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Search.SearchButton","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false}]}",
       "type": "text",
     },
   ],

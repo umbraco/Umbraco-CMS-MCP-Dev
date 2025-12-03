@@ -2,6 +2,7 @@ import CreateUserDataTool from "./post/create-user-data.js";
 import UpdateUserDataTool from "./put/update-user-data.js";
 import GetUserDataTool from "./get/get-user-data.js";
 import GetUserDataByIdTool from "./get/get-user-data-by-id.js";
+import DeleteUserDataTool from "./delete/delete-user-data.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
@@ -21,6 +22,7 @@ export const UserDataCollection: ToolCollectionExport = {
     tools.push(UpdateUserDataTool());
     tools.push(GetUserDataTool());
     tools.push(GetUserDataByIdTool());
+    tools.push(DeleteUserDataTool());
 
     return tools;
   }

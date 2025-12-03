@@ -3,10 +3,12 @@
 exports[`get-item-dictionary should get multiple dictionary items by ID 1`] = `
 [
   {
+    "flags": [],
     "id": "00000000-0000-0000-0000-000000000000",
     "name": "_Test Item Dictionary",
   },
   {
+    "flags": [],
     "id": "00000000-0000-0000-0000-000000000000",
     "name": "_Test Item Dictionary2",
   },
@@ -18,6 +20,7 @@ exports[`get-item-dictionary should get no dictionary items for empty request 1`
 exports[`get-item-dictionary should get single dictionary item by ID 1`] = `
 [
   {
+    "flags": [],
     "id": "00000000-0000-0000-0000-000000000000",
     "name": "_Test Item Dictionary",
   },

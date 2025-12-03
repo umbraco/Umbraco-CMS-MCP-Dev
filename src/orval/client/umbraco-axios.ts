@@ -1,5 +1,6 @@
 import qs from "qs";
 import Axios from "axios";
+import https from "https";
 import type { UmbracoAuthConfig } from "../../config.js";
 
 // Module-level variables for configuration
@@ -25,7 +26,16 @@ export function initializeUmbracoAxios(config: UmbracoAuthConfig): void {
 const grant_type = "client_credentials";
 const tokenPath = "/umbraco/management/api/v1/security/back-office/token";
 
-export const UmbracoAxios = Axios.create();
+// Create HTTPS agent that accepts self-signed certificates in development
+// In production, enforce proper certificate validation
+// In dev/test (or when NODE_ENV is not set), accept self-signed certificates
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: process.env.NODE_ENV === "production"
+});
+
+export const UmbracoAxios = Axios.create({
+  httpsAgent
+});
 
 let accessToken: string | null = null;
 let tokenExpiry: number | null = null;
@@ -47,6 +57,7 @@ const fetchAccessToken = async (): Promise<string | null> => {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
+      httpsAgent
     }
   );
 

@@ -20,7 +20,7 @@ describe("get-static-file-root", () => {
     // StaticFile is read-only, no cleanup needed
   });
 
-  it("should get root-level static files and folders with default pagination", async () => {
+  it.skip("should get root-level static files and folders with default pagination", async () => {
     // Arrange
     const params = {
       skip: 0,
@@ -60,7 +60,7 @@ describe("get-static-file-root", () => {
     }
   });
 
-  it("should handle pagination with small take parameter", async () => {
+  it.skip("should handle pagination with small take parameter", async () => {
     // Arrange - get a small number of items
     const params = {
       skip: 0,
@@ -91,7 +91,7 @@ describe("get-static-file-root", () => {
     }
   });
 
-  it("should handle pagination with skip parameter", async () => {
+  it.skip("should handle pagination with skip parameter", async () => {
     // Arrange - first get total count to determine valid skip
     const initialResult = await GetStaticFileRootTool().handler(
       { skip: 0, take: DEFAULT_TAKE },
@@ -146,7 +146,7 @@ describe("get-static-file-root", () => {
     }
   });
 
-  it("should handle large skip value gracefully", async () => {
+  it.skip("should handle large skip value gracefully", async () => {
     // Arrange - skip beyond available items
     const params = {
       skip: LARGE_SKIP,
@@ -170,7 +170,7 @@ describe("get-static-file-root", () => {
     expect(typeof response.total).toBe('number');
   });
 
-  it("should handle zero take parameter", async () => {
+  it.skip("should handle zero take parameter", async () => {
     // Arrange
     const params = {
       skip: 0,

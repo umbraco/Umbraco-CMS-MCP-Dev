@@ -38,6 +38,7 @@ exports[`put-document-public-access should update public access for a valid docu
   },
   "groups": [
     {
+      "flags": [],
       "id": "00000000-0000-0000-0000-000000000000",
       "name": "_Test PutPublicAccess MemberGroup2",
     },

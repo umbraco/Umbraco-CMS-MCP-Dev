@@ -6,11 +6,13 @@
  * OpenAPI spec version: Latest
  */
 import type { NamedEntityTreeItemResponseModelParent } from './namedEntityTreeItemResponseModelParent.js';
+import type { FlagModel } from './flagModel.js';
 
 export interface NamedEntityTreeItemResponseModel {
   hasChildren: boolean;
   id: string;
   /** @nullable */
   parent?: NamedEntityTreeItemResponseModelParent;
+  flags: FlagModel[];
   name: string;
 }

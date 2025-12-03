@@ -35,6 +35,5 @@ evals:
           - "delete-document"
           - "update-document"
       response_scorers:
-        - type: 'llm-judge'
-          criteria: 'Did the last assistant step say "The blog post workflow has completed successfully"'
-          threshold: 0.8
+        - type: 'regex'
+          pattern: 'The blog post workflow has completed successfully'

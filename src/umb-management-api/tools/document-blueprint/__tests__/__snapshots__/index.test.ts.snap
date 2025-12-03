@@ -13,6 +13,7 @@ exports[`document-blueprint-tool-index should have all blueprint tools when user
   "get-document-blueprint-ancestors",
   "get-document-blueprint-children",
   "get-document-blueprint-root",
+  "get-document-blueprint-siblings",
   "create-document-blueprint-folder",
   "get-document-blueprint-folder",
   "update-document-blueprint-folder",

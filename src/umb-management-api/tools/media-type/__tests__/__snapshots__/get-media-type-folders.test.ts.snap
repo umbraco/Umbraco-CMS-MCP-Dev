@@ -26,7 +26,7 @@ exports[`get-media-type-folders edge cases should handle pagination with skip an
 {
   "content": [
     {
-      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000"}],"total":1}",
+      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
       "type": "text",
     },
   ],
@@ -48,7 +48,7 @@ exports[`get-media-type-folders successful retrieval should get media type folde
 {
   "content": [
     {
-      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000"}],"total":1}",
+      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
       "type": "text",
     },
   ],
@@ -59,7 +59,7 @@ exports[`get-media-type-folders successful retrieval should get media type folde
 {
   "content": [
     {
-      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000"}],"total":1}",
+      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
       "type": "text",
     },
   ],
@@ -81,7 +81,7 @@ exports[`get-media-type-folders successful retrieval should handle large paginat
 {
   "content": [
     {
-      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000"}],"total":1}",
+      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
       "type": "text",
     },
   ],

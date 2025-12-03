@@ -20,6 +20,7 @@ exports[`create-document should create a document 2`] = `
     "icon": "icon-home color-blue",
     "id": "a95360e8-ff04-40b1-8f46-7aa4b5983096",
   },
+  "flags": [],
   "hasChildren": false,
   "id": "00000000-0000-0000-0000-000000000000",
   "isProtected": false,
@@ -29,6 +30,8 @@ exports[`create-document should create a document 2`] = `
   "variants": [
     {
       "culture": null,
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
       "name": "_Test Document Created",
       "state": "Draft",
     },
@@ -56,6 +59,7 @@ exports[`create-document should create a document with additional properties 2`]
     "icon": "icon-home color-blue",
     "id": "a95360e8-ff04-40b1-8f46-7aa4b5983096",
   },
+  "flags": [],
   "hasChildren": false,
   "id": "00000000-0000-0000-0000-000000000000",
   "isProtected": false,
@@ -65,6 +69,8 @@ exports[`create-document should create a document with additional properties 2`]
   "variants": [
     {
       "culture": null,
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
       "name": "_Test Document Created",
       "state": "Draft",
     },

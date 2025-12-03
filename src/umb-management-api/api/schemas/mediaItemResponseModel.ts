@@ -5,12 +5,14 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { FlagModel } from './flagModel.js';
 import type { MediaItemResponseModelParent } from './mediaItemResponseModelParent.js';
 import type { MediaTypeReferenceResponseModel } from './mediaTypeReferenceResponseModel.js';
 import type { VariantItemResponseModel } from './variantItemResponseModel.js';
 
 export interface MediaItemResponseModel {
   id: string;
+  flags: FlagModel[];
   isTrashed: boolean;
   /** @nullable */
   parent?: MediaItemResponseModelParent;

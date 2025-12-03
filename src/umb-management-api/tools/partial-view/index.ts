@@ -17,6 +17,7 @@ import GetPartialViewAncestorsTool from "./items/get/get-ancestors.js";
 import GetPartialViewChildrenTool from "./items/get/get-children.js";
 import GetPartialViewRootTool from "./items/get/get-root.js";
 import GetPartialViewSearchTool from "./items/get/get-search.js";
+import GetPartialViewSiblingsTool from "./items/get/get-siblings.js";
 
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
@@ -53,6 +54,7 @@ export const PartialViewCollection: ToolCollectionExport = {
       tools.push(GetPartialViewChildrenTool());
       tools.push(GetPartialViewRootTool());
       tools.push(GetPartialViewSearchTool());
+      tools.push(GetPartialViewSiblingsTool());
     }
 
     return tools;

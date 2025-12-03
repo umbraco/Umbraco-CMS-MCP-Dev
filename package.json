@@ -1,6 +1,6 @@
 {
   "name": "@umbraco-cms/mcp-dev",
-  "version": "16.0.1",
+  "version": "17.0.0",
   "type": "module",
   "description": "A model context protocol (MCP) server for Umbraco CMS",
   "main": "index.js",
@@ -19,7 +19,7 @@
     "patch-publish-alpha": "npm version prerelease --preid=alpha && npm publish --tag alpha --access public",
     "eval-mcp:basic": "npx mcp-server-tester@1.4.0 evals tests/e2e/basic/basic-tests.yaml --server-config tests/e2e/basic/basic-tests-config.json",
     "eval-mcp:create-data-type-text-box": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-data-type/create-data-type-text-box.yaml --server-config tests/e2e/create-data-type/create-data-type-config.json",
-    "eval-mcp:create-data-type-block-list": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-data-type/create-data-type-block-list.yaml --server-config tests/e2e/create-data-type/create-data-type-config.json --debug",
+    "eval-mcp:create-data-type-block-list": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-data-type/create-data-type-block-list.yaml --server-config tests/e2e/create-data-type/create-data-type-config.json",
     "eval-mcp:create-document-type": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-document-type/create-document-type.yaml --server-config tests/e2e/create-document-type/create-document-type-config.json",
     "eval-mcp:create-document-copy": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-document-copy/create-document-copy.yaml --server-config tests/e2e/create-document-copy/create-document-copy-config.json",
     "eval-mcp:create-document-with-template": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-document-with-template/create-document-with-template.yaml --server-config tests/e2e/create-document-with-template/create-document-with-template-config.json",
