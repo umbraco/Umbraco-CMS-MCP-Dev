@@ -4,12 +4,14 @@ exports[`get-user-group-by-id-array should get multiple user groups by ID 1`] = 
 [
   {
     "alias": "testUserGroup1",
+    "flags": [],
     "icon": null,
     "id": "00000000-0000-0000-0000-000000000000",
     "name": "_Test User Group 1",
   },
   {
     "alias": "testUserGroup2",
+    "flags": [],
     "icon": null,
     "id": "00000000-0000-0000-0000-000000000000",
     "name": "_Test User Group 2",
@@ -21,6 +23,7 @@ exports[`get-user-group-by-id-array should get single user group by ID 1`] = `
 [
   {
     "alias": "testUserGroup1",
+    "flags": [],
     "icon": null,
     "id": "00000000-0000-0000-0000-000000000000",
     "name": "_Test User Group 1",

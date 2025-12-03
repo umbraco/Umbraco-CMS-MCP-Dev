@@ -1,6 +1,7 @@
 import GetLanguageItemsTool from "./get/get-language-items.js";
 import GetDefaultLanguageTool from "./get/get-default-language.js";
 import GetLanguageByIsoCodeTool from "./get/get-language-by-iso-code.js";
+import GetLanguageTool from "./get/get-language.js";
 import CreateLanguageTool from "./post/create-language.js";
 import UpdateLanguageTool from "./put/update-language.js";
 import DeleteLanguageTool from "./delete/delete-language.js";
@@ -21,6 +22,7 @@ export const LanguageCollection: ToolCollectionExport = {
 
     tools.push(GetLanguageItemsTool());
     tools.push(GetDefaultLanguageTool());
+    tools.push(GetLanguageTool());
 
     if (AuthorizationPolicies.TreeAccessLanguages(user)) {
       tools.push(CreateLanguageTool());

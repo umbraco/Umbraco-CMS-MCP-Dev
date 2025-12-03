@@ -4,7 +4,7 @@ exports[`get-document-type-blueprint should get blueprints for a document type 1
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"name":"_Test Blueprint For DocumentType","id":"00000000-0000-0000-0000-000000000000"}]}",
+      "text": "{"total":1,"items":[{"name":"_Test Blueprint For DocumentType","id":"00000000-0000-0000-0000-000000000000","flags":[]}]}",
       "type": "text",
     },
   ],

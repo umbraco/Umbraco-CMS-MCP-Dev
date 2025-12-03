@@ -6,12 +6,14 @@
  * OpenAPI spec version: Latest
  */
 import type { DataTypeTreeItemResponseModelParent } from './dataTypeTreeItemResponseModelParent.js';
+import type { FlagModel } from './flagModel.js';
 
 export interface DataTypeTreeItemResponseModel {
   hasChildren: boolean;
   id: string;
   /** @nullable */
   parent?: DataTypeTreeItemResponseModelParent;
+  flags: FlagModel[];
   name: string;
   isFolder: boolean;
   /** @nullable */

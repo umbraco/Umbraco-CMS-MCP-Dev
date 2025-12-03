@@ -14,4 +14,5 @@ skip?: number;
 take?: number;
 parentId?: string;
 allowedMediaTypes?: string[];
+dataTypeId?: string;
 };

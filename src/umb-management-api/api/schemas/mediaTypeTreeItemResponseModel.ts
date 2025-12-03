@@ -6,12 +6,14 @@
  * OpenAPI spec version: Latest
  */
 import type { MediaTypeTreeItemResponseModelParent } from './mediaTypeTreeItemResponseModelParent.js';
+import type { FlagModel } from './flagModel.js';
 
 export interface MediaTypeTreeItemResponseModel {
   hasChildren: boolean;
   id: string;
   /** @nullable */
   parent?: MediaTypeTreeItemResponseModelParent;
+  flags: FlagModel[];
   name: string;
   isFolder: boolean;
   icon: string;

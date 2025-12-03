@@ -4,7 +4,7 @@ exports[`get-references-data-type should get references for a data type used in 
 {
   "content": [
     {
-      "text": "[{"contentType":{"id":"BLANK_UUID","type":"document-type","name":"_Test DocType For References","icon":"icon-document"},"properties":[{"name":"Test Property","alias":"testProperty"}]}]",
+      "text": "{"total":1,"items":[{"$type":"DocumentTypePropertyTypeReferenceResponseModel","documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document","alias":"testdoctypeforreferences","name":"_Test DocType For References"},"alias":"testProperty","id":"00000000-0000-0000-0000-000000000000","name":"Test Property"}]}",
       "type": "text",
     },
   ],
@@ -15,16 +15,7 @@ exports[`get-references-data-type should handle non-existent data type 1`] = `
 {
   "content": [
     {
-      "text": "Error using get-references-data-type:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The data type could not be found",
-    "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
+      "text": "{"total":0,"items":[]}",
       "type": "text",
     },
   ],
@@ -35,7 +26,7 @@ exports[`get-references-data-type should return empty array for unreferenced dat
 {
   "content": [
     {
-      "text": "[]",
+      "text": "{"total":0,"items":[]}",
       "type": "text",
     },
   ],

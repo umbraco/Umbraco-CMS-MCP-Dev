@@ -15,7 +15,7 @@ exports[`search-document-type should handle pagination 1`] = `
 {
   "content": [
     {
-      "text": "{"items":[{"isElement":false,"icon":"icon-document","description":null,"name":"_Test DocumentType Search 2","id":"00000000-0000-0000-0000-000000000000"}],"total":2}",
+      "text": "{"items":[{"isElement":false,"icon":"icon-document","description":null,"name":"_Test DocumentType Search 2","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":2}",
       "type": "text",
     },
   ],
@@ -26,7 +26,7 @@ exports[`search-document-type should search for document types 1`] = `
 {
   "content": [
     {
-      "text": "{"items":[{"isElement":false,"icon":"icon-document","description":null,"name":"_Test DocumentType Search","id":"00000000-0000-0000-0000-000000000000"},{"isElement":false,"icon":"icon-document","description":null,"name":"_Test DocumentType Search 2","id":"00000000-0000-0000-0000-000000000000"}],"total":2}",
+      "text": "{"items":[{"isElement":false,"icon":"icon-document","description":null,"name":"_Test DocumentType Search","id":"00000000-0000-0000-0000-000000000000","flags":[]},{"isElement":false,"icon":"icon-document","description":null,"name":"_Test DocumentType Search 2","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":2}",
       "type": "text",
     },
   ],

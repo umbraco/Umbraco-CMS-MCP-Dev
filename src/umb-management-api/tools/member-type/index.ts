@@ -8,6 +8,8 @@ import GetMemberTypeAvailableCompositionsTool from "./post/get-member-type-avail
 import GetMemberTypeCompositionReferencesTool from "./get/get-member-type-composition-references.js";
 import GetMemberTypeConfigurationTool from "./get/get-member-type-configuration.js";
 import GetMemberTypeRootTool from "./items/get/get-root.js";
+import GetMemberTypeSiblingsTool from "./items/get/get-siblings.js";
+import SearchMemberTypeItemsTool from "./get/get-item-member-type-search.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
@@ -35,6 +37,8 @@ export const MemberTypeCollection: ToolCollectionExport = {
       tools.push(GetMemberTypeCompositionReferencesTool());
       tools.push(GetMemberTypeConfigurationTool());
       tools.push(GetMemberTypeRootTool());
+      tools.push(GetMemberTypeSiblingsTool());
+      tools.push(SearchMemberTypeItemsTool());
     }
 
     return tools;

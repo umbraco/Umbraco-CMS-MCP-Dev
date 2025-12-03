@@ -9,4 +9,5 @@
 export type GetTreeMemberTypeRootParams = {
 skip?: number;
 take?: number;
+foldersOnly?: boolean;
 };

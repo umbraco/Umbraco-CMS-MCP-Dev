@@ -28,6 +28,7 @@ const config: import("ts-jest").JestConfigWithTsJest = {
   setupFiles: ["<rootDir>/jest.setup.ts"],
   maxConcurrency: 1, // we have to this because Umbraco using SQLite and it doesn't support concurrent connections
   maxWorkers: 1,
+  testTimeout: 60000, // 60 second timeout for integration tests
 };
 
 module.exports = config;

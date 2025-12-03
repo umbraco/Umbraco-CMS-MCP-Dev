@@ -76,14 +76,3 @@ exports[`document-reference-tests get-document-by-id-referenced-descendants shou
   ],
 }
 `;
-
-exports[`document-reference-tests get-document-by-id-referenced-descendants should handle non-existent document 1`] = `
-{
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
-}
-`;

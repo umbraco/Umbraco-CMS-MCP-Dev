@@ -27,6 +27,7 @@ describe("DocumentTypeTestHelper", () => {
           isFolder: false,
           isElement: false,
           icon: "icon-test",
+          flags: [],
         },
         {
           name: TEST_DOCTYPE_NAME,
@@ -35,6 +36,7 @@ describe("DocumentTypeTestHelper", () => {
           isFolder: false,
           isElement: false,
           icon: "icon-test",
+          flags: [],
         },
         {
           name: "Test3",
@@ -43,6 +45,7 @@ describe("DocumentTypeTestHelper", () => {
           isFolder: false,
           isElement: false,
           icon: "icon-test",
+          flags: [],
         },
       ];
 
@@ -64,6 +67,7 @@ describe("DocumentTypeTestHelper", () => {
           isFolder: false,
           isElement: false,
           icon: "icon-test",
+          flags: [],
         },
         {
           name: "Test2",
@@ -72,6 +76,7 @@ describe("DocumentTypeTestHelper", () => {
           isFolder: false,
           isElement: false,
           icon: "icon-test",
+          flags: [],
         },
       ];
 
@@ -97,6 +102,7 @@ describe("DocumentTypeTestHelper", () => {
         isFolder: false,
         isElement: false,
         icon: "icon-test",
+        flags: [],
       };
 
       const result = DocumentTypeTestHelper.normaliseIds(item);
@@ -115,6 +121,7 @@ describe("DocumentTypeTestHelper", () => {
           isFolder: false,
           isElement: false,
           icon: "icon-test",
+          flags: [],
         },
         {
           name: "Test2",
@@ -123,6 +130,7 @@ describe("DocumentTypeTestHelper", () => {
           isFolder: false,
           isElement: false,
           icon: "icon-test",
+          flags: [],
         },
       ];
 

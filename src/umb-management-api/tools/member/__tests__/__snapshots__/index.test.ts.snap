@@ -12,11 +12,13 @@ exports[`member-tool-index should have all tools when user has members section a
   "get-member-by-id-referenced-by",
   "get-member-by-id-referenced-descendants",
   "find-member",
+  "get-item-member-search",
 ]
 `;
 
 exports[`member-tool-index should only have find member tool when user meets no policies 1`] = `
 [
   "find-member",
+  "get-item-member-search",
 ]
 `;

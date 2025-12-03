@@ -15,4 +15,5 @@ export const DocumentVariantStateModel = {
   Draft: 'Draft',
   Published: 'Published',
   PublishedPendingChanges: 'PublishedPendingChanges',
+  Trashed: 'Trashed',
 } as const;

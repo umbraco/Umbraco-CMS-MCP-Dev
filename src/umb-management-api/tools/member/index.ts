@@ -8,6 +8,7 @@ import FindMemberTool from "./get/find-member.js";
 import GetMemberAreReferencedTool from "./get/get-member-are-referenced.js";
 import GetMemberByIdReferencedByTool from "./get/get-member-by-id-referenced-by.js";
 import GetMemberByIdReferencedDescendantsTool from "./get/get-member-by-id-referenced-descendants.js";
+import GetItemMemberSearchTool from "./get/get-item-member-search.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -35,6 +36,7 @@ export const MemberCollection: ToolCollectionExport = {
       tools.push(GetMemberByIdReferencedDescendantsTool());
     }
     tools.push(FindMemberTool());
+    tools.push(GetItemMemberSearchTool());
 
     return tools;
   }

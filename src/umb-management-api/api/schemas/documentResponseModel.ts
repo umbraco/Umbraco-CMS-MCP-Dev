@@ -7,17 +7,16 @@
  */
 import type { DocumentValueResponseModel } from './documentValueResponseModel.js';
 import type { DocumentVariantResponseModel } from './documentVariantResponseModel.js';
+import type { FlagModel } from './flagModel.js';
 import type { DocumentTypeReferenceResponseModel } from './documentTypeReferenceResponseModel.js';
-import type { DocumentUrlInfoModel } from './documentUrlInfoModel.js';
 import type { DocumentResponseModelTemplate } from './documentResponseModelTemplate.js';
 
 export interface DocumentResponseModel {
   values: DocumentValueResponseModel[];
   variants: DocumentVariantResponseModel[];
   id: string;
+  flags: FlagModel[];
   documentType: DocumentTypeReferenceResponseModel;
-  /** @deprecated */
-  urls: DocumentUrlInfoModel[];
   /** @nullable */
   template?: DocumentResponseModelTemplate;
   isTrashed: boolean;

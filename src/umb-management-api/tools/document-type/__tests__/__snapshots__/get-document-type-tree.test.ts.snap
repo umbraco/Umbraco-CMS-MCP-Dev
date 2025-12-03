@@ -4,7 +4,7 @@ exports[`document-type-tree ancestors should get ancestor items 1`] = `
 {
   "content": [
     {
-      "text": "[{"isElement":false,"icon":"","isFolder":true,"name":"_Test Folder DocumentType","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":true},{"isElement":false,"icon":"","isFolder":false,"name":"_Test Child DocumentType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":false}]",
+      "text": "[{"isElement":false,"icon":"","isFolder":true,"name":"_Test Folder DocumentType","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"isElement":false,"icon":"","isFolder":false,"name":"_Test Child DocumentType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]",
       "type": "text",
     },
   ],
@@ -26,7 +26,7 @@ exports[`document-type-tree children should get child items 1`] = `
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"isElement":false,"icon":"icon-document","isFolder":false,"name":"_Test Child DocumentType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"hasChildren":false}]}",
+      "text": "{"total":1,"items":[{"isElement":false,"icon":"icon-document","isFolder":false,"name":"_Test Child DocumentType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
       "type": "text",
     },
   ],

@@ -7,6 +7,7 @@
  */
 import type { MemberValueResponseModel } from './memberValueResponseModel.js';
 import type { MemberVariantResponseModel } from './memberVariantResponseModel.js';
+import type { FlagModel } from './flagModel.js';
 import type { MemberTypeReferenceResponseModel } from './memberTypeReferenceResponseModel.js';
 import type { MemberKindModel } from './memberKindModel.js';
 
@@ -14,6 +15,7 @@ export interface MemberResponseModel {
   values: MemberValueResponseModel[];
   variants: MemberVariantResponseModel[];
   id: string;
+  flags: FlagModel[];
   email: string;
   username: string;
   memberType: MemberTypeReferenceResponseModel;

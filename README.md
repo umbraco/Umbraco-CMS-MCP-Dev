@@ -24,7 +24,7 @@ Download and install the [Claude Desktop app](https://claude.ai/download), then 
   "mcpServers": {
     "umbraco-mcp": {
       "command": "npx",
-      "args": ["@umbraco-cms/mcp-dev@16"],
+      "args": ["@umbraco-cms/mcp-dev@17"],
       "env": {
         "NODE_TLS_REJECT_UNAUTHORIZED": "0",
         "UMBRACO_CLIENT_ID": "your-api-user-id",

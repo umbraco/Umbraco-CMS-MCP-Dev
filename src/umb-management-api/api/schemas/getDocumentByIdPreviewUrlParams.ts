@@ -6,7 +6,8 @@
  * OpenAPI spec version: Latest
  */
 
-export interface DataTypePropertyReferenceModel {
-  name: string;
-  alias: string;
-}
+export type GetDocumentByIdPreviewUrlParams = {
+providerAlias?: string;
+culture?: string;
+segment?: string;
+};

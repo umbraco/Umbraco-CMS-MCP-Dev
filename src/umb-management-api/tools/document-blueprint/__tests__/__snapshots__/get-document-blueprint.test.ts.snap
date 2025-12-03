@@ -4,7 +4,7 @@ exports[`get-document-blueprint should get a document blueprint by id 1`] = `
 {
   "content": [
     {
-      "text": "{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"id":"00000000-0000-0000-0000-000000000000","values":[],"variants":[{"state":"Draft","publishDate":null,"scheduledPublishDate":null,"scheduledUnpublishDate":null,"createDate":"2000-01-01T00:00:00.000Z","updateDate":"2000-01-01T00:00:00.000Z","culture":null,"segment":null,"name":"_Test Blueprint Get"}]}",
+      "text": "{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"id":"00000000-0000-0000-0000-000000000000","flags":[],"values":[],"variants":[{"state":"Draft","publishDate":null,"scheduledPublishDate":null,"scheduledUnpublishDate":null,"id":"00000000-0000-0000-0000-000000000000","flags":[],"createDate":"2000-01-01T00:00:00.000Z","updateDate":"2000-01-01T00:00:00.000Z","culture":null,"segment":null,"name":"_Test Blueprint Get"}]}",
       "type": "text",
     },
   ],

@@ -4,6 +4,7 @@ import GetScriptItemsTool from "./get/get-script-items.js";
 import GetScriptTreeAncestorsTool from "./get/get-script-tree-ancestors.js";
 import GetScriptTreeChildrenTool from "./get/get-script-tree-children.js";
 import GetScriptTreeRootTool from "./get/get-script-tree-root.js";
+import GetScriptTreeSiblingsTool from "./get/get-script-tree-siblings.js";
 import CreateScriptTool from "./post/create-script.js";
 import CreateScriptFolderTool from "./post/create-script-folder.js";
 import UpdateScriptTool from "./put/update-script.js";
@@ -32,6 +33,7 @@ export const ScriptCollection: ToolCollectionExport = {
       tools.push(GetScriptTreeAncestorsTool());
       tools.push(GetScriptTreeChildrenTool());
       tools.push(GetScriptTreeRootTool());
+      tools.push(GetScriptTreeSiblingsTool());
       tools.push(CreateScriptTool());
       tools.push(CreateScriptFolderTool());
       tools.push(UpdateScriptTool());

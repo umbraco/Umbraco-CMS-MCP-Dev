@@ -9,4 +9,9 @@
 export interface SegmentResponseModel {
   name: string;
   alias: string;
+  /**
+   * @deprecated
+   * @nullable
+   */
+  cultures?: string[] | null;
 }

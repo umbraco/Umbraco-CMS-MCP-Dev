@@ -4,6 +4,7 @@ exports[`get-item-document-type should get multiple document types by ID 1`] = `
 [
   {
     "description": null,
+    "flags": [],
     "icon": "icon-document",
     "id": "00000000-0000-0000-0000-000000000000",
     "isElement": false,
@@ -11,6 +12,7 @@ exports[`get-item-document-type should get multiple document types by ID 1`] = `
   },
   {
     "description": null,
+    "flags": [],
     "icon": "icon-document",
     "id": "00000000-0000-0000-0000-000000000000",
     "isElement": false,
@@ -25,6 +27,7 @@ exports[`get-item-document-type should get single document type by ID 1`] = `
 [
   {
     "description": null,
+    "flags": [],
     "icon": "icon-document",
     "id": "00000000-0000-0000-0000-000000000000",
     "isElement": false,

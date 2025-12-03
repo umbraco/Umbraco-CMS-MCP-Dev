@@ -7,6 +7,7 @@
  */
 import type { DocumentValueResponseModel } from './documentValueResponseModel.js';
 import type { DocumentVariantResponseModel } from './documentVariantResponseModel.js';
+import type { FlagModel } from './flagModel.js';
 import type { DocumentTypeCollectionReferenceResponseModel } from './documentTypeCollectionReferenceResponseModel.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
@@ -14,6 +15,7 @@ export interface DocumentCollectionResponseModel {
   values: DocumentValueResponseModel[];
   variants: DocumentVariantResponseModel[];
   id: string;
+  flags: FlagModel[];
   /** @nullable */
   creator?: string | null;
   sortOrder: number;

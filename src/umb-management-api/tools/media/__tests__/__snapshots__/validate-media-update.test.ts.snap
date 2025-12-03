@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate-media-update should handle validation for non-existent media 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using validate-media-update:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The content could not be found",
+    "status": 404,
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`validate-media-update should validate a valid media update 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;

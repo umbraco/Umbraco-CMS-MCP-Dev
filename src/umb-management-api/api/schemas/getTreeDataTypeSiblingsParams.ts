@@ -6,12 +6,9 @@
  * OpenAPI spec version: Latest
  */
 
-export interface DataTypeContentTypeReferenceModel {
-  id: string;
-  /** @nullable */
-  type: string | null;
-  /** @nullable */
-  name: string | null;
-  /** @nullable */
-  icon: string | null;
-}
+export type GetTreeDataTypeSiblingsParams = {
+target?: string;
+before?: number;
+after?: number;
+foldersOnly?: boolean;
+};

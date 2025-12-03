@@ -4,7 +4,7 @@ exports[`member-type-tree root should get root items 1`] = `
 {
   "content": [
     {
-      "text": "{"total":2,"items":[{"icon":"icon-user","name":"_Test Root MemberType","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false},{"icon":"icon-user","name":"Member","id":"00000000-0000-0000-0000-000000000000","parent":null,"hasChildren":false}]}",
+      "text": "{"total":2,"items":[{"icon":"icon-user","name":"_Test Root MemberType","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"icon":"icon-user","name":"Member","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false}]}",
       "type": "text",
     },
   ],

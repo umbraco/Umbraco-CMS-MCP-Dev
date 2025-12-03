@@ -12,6 +12,8 @@ exports[`member-type-tool-index should have all tools when user has member type 
   "get-member-type-composition-references",
   "get-member-type-configuration",
   "get-member-type-root",
+  "get-member-type-siblings",
+  "search-member-type-items",
 ]
 `;
 

@@ -5,6 +5,7 @@ exports[`get-webhook-item should get multiple webhooks by ID 1`] = `
   {
     "enabled": true,
     "events": "content.published",
+    "flags": [],
     "id": "00000000-0000-0000-0000-000000000000",
     "name": "_Test Item Webhook",
     "types": "",
@@ -13,6 +14,7 @@ exports[`get-webhook-item should get multiple webhooks by ID 1`] = `
   {
     "enabled": true,
     "events": "content.deleted",
+    "flags": [],
     "id": "00000000-0000-0000-0000-000000000000",
     "name": "_Test Item Webhook2",
     "types": "",
@@ -28,6 +30,7 @@ exports[`get-webhook-item should get single webhook by ID 1`] = `
   {
     "enabled": true,
     "events": "content.published",
+    "flags": [],
     "id": "00000000-0000-0000-0000-000000000000",
     "name": "_Test Item Webhook",
     "types": "",

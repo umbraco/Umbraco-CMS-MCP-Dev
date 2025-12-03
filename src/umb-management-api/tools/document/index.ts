@@ -1,6 +1,7 @@
 import DeleteDocumentTool from "./delete/delete-document.js";
 import DeleteFromRecycleBinTool from "./delete/delete-from-recycle-bin.js";
 import DeleteDocumentPublicAccessTool from "./delete/delete-document-public-access.js";
+import DeleteDocumentRecycleBinItemTool from "./delete/delete-recycle-bin-item.js";
 import GetDocumentByIdTool from "./get/get-document-by-id.js";
 import GetDocumentDomainsTool from "./get/get-document-domains.js";
 import GetDocumentNotificationsTool from "./get/get-document-notifications.js";
@@ -12,9 +13,11 @@ import GetDocumentUrlsTool from "./get/get-document-urls.js";
 import GetDocumentPropertyValueTemplateTool from "./get/get-document-property-value-template.js";
 import SearchDocumentTool from "./get/search-document.js";
 import GetCollectionDocumentByIdTool from "./get/get-collection-document-by-id.js";
+import GetItemDocumentTool from "./get/get-item-document.js";
 import GetDocumentAreReferencedTool from "./get/get-document-are-referenced.js";
 import GetDocumentByIdReferencedByTool from "./get/get-document-by-id-referenced-by.js";
 import GetDocumentByIdReferencedDescendantsTool from "./get/get-document-by-id-referenced-descendants.js";
+import GetDocumentAvailableSegmentOptionsTool from "./get/get-document-available-segment-options.js";
 import GetRecycleBinDocumentOriginalParentTool from "./get/get-recycle-bin-document-original-parent.js";
 import GetRecycleBinDocumentReferencedByTool from "./get/get-recycle-bin-document-referenced-by.js";
 import PostDocumentPublicAccessTool from "./post/post-document-public-access.js";
@@ -36,8 +39,10 @@ import UpdateDocumentTool from "./put/update-document.js";
 import GetDocumentRootTool from "./items/get/get-root.js";
 import GetDocumentChildrenTool from "./items/get/get-children.js";
 import GetDocumentAncestorsTool from "./items/get/get-ancestors.js";
+import GetDocumentSiblingsTool from "./items/get/get-siblings.js";
 import GetRecycleBinRootTool from "./items/get/get-recycle-bin-root.js";
 import GetRecycleBinChildrenTool from "./items/get/get-recycle-bin-children.js";
+import GetDocumentRecycleBinSiblingsTool from "./items/get/get-recycle-bin-siblings.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
@@ -63,6 +68,7 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(PostDocumentPublicAccessTool());
     tools.push(DeleteDocumentTool());
     tools.push(DeleteDocumentPublicAccessTool());
+    tools.push(DeleteDocumentRecycleBinItemTool());
     tools.push(GetDocumentUrlsTool());
     tools.push(GetDocumentDomainsTool());
     tools.push(GetDocumentAuditLogTool());
@@ -86,9 +92,11 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(SearchDocumentTool());
     tools.push(ValidateDocumentTool());
     tools.push(GetCollectionDocumentByIdTool());
+    tools.push(GetItemDocumentTool());
     tools.push(GetDocumentAreReferencedTool());
     tools.push(GetDocumentByIdReferencedByTool());
     tools.push(GetDocumentByIdReferencedDescendantsTool());
+    tools.push(GetDocumentAvailableSegmentOptionsTool());
     tools.push(GetRecycleBinDocumentOriginalParentTool());
     tools.push(GetRecycleBinDocumentReferencedByTool());
   }
@@ -97,6 +105,8 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(GetDocumentRootTool());
     tools.push(GetDocumentChildrenTool());
     tools.push(GetDocumentAncestorsTool());
+    tools.push(GetDocumentSiblingsTool());
+    tools.push(GetDocumentRecycleBinSiblingsTool());
   }
 
   return tools;

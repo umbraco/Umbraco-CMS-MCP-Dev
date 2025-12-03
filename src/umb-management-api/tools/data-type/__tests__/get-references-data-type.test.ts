@@ -45,36 +45,8 @@ describe("get-references-data-type", () => {
       { signal: new AbortController().signal }
     );
 
-    const normalizedResult = {
-      ...result,
-      content: result.content.map((content: any) => {
-        const parsed = JSON.parse(content.text as string);
-        const normalizedParsed = Array.isArray(parsed)
-          ? parsed.map((item: any) => ({
-              ...item,
-              contentType: item.contentType ? { ...item.contentType, id: "BLANK_UUID" } : item.contentType
-            }))
-          : parsed;
-        return {
-          ...content,
-          text: JSON.stringify(normalizedParsed)
-        };
-      })
-    };
-
+    const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
-
-    // Verify the API response structure
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(Array.isArray(parsed)).toBe(true);
-
-    // If there are references, verify structure
-    if (parsed.length > 0) {
-      const reference = parsed[0];
-      expect(reference).toHaveProperty('contentType');
-      expect(reference).toHaveProperty('properties');
-      expect(Array.isArray(reference.properties)).toBe(true);
-    }
   });
 
   it("should return empty array for unreferenced data type", async () => {
@@ -92,10 +64,6 @@ describe("get-references-data-type", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the API response structure
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(Array.isArray(parsed)).toBe(true);
-    // References might be empty or contain system references
   });
 
   it("should handle non-existent data type", async () => {

@@ -26,7 +26,7 @@ exports[`recycle-bin-tree root should get recycle bin root items 1`] = `
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"variants":[{"state":"Draft","name":"_Test RecycleBin Root","culture":null}],"id":"00000000-0000-0000-0000-000000000000","createDate":"NORMALIZED_DATE","hasChildren":false,"parent":null}]}",
+      "text": "{"total":1,"items":[{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Trashed","name":"_Test RecycleBin Root","culture":null}],"id":"00000000-0000-0000-0000-000000000000","createDate":"NORMALIZED_DATE","hasChildren":false,"parent":null}]}",
       "type": "text",
     },
   ],
