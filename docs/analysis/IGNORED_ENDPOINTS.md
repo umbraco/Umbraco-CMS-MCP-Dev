@@ -134,7 +134,7 @@ These endpoints are intentionally not implemented in the MCP server, typically b
 - `postUserGroupByIdUsers` - Create/Execute user group by id users
 - `postUserSetUserGroups` - Create/Execute user set user groups
 
-## Total Ignored: 74 endpoints
+## Total Ignored: 78 endpoints
 
 ## Rationale
 

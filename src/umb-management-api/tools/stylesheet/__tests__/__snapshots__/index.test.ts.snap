@@ -14,6 +14,7 @@ exports[`stylesheet-tool-index should have all tools when user has settings sect
   "get-stylesheet-children",
   "get-stylesheet-root",
   "get-stylesheet-search",
+  "get-stylesheet-siblings",
 ]
 `;
 

@@ -29,11 +29,26 @@ Or without saving to file:
 TOOLS_DIR=src/umb-management-api/tools npx ts-node .claude/skills/count-mcp-tools/scripts/count-tools.ts
 ```
 
+To also show all tool names in the console output:
+
+```bash
+TOOLS_DIR=src/umb-management-api/tools SHOW_TOOLS=true npx ts-node .claude/skills/count-mcp-tools/scripts/count-tools.ts
+```
+
 2. Present results showing:
    - Total tool count
    - Breakdown by collection (sorted alphabetically)
+   - List of individual tool names per collection (when SHOW_TOOLS=true or in markdown output)
    - Highlight the largest collections (top 5-8)
-   - If OUTPUT_FILE is set, also saves to markdown file
+   - If OUTPUT_FILE is set, saves to markdown file with full tool listing
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `TOOLS_DIR` | Path to the tools directory (default: `.`) |
+| `OUTPUT_FILE` | Optional path to save markdown analysis report |
+| `SHOW_TOOLS` | Set to `true` to show individual tool names in console output |
 
 ## Supporting Files
 
