@@ -86,6 +86,88 @@ export class DocumentTestHelper {
     }
   }
 
+  private static matchByPattern<
+    T extends { variants?: DocumentVariantItemResponseModel[] }
+  >(items: T[], pattern: RegExp): T | undefined {
+    return items.find(
+      (item) =>
+        Array.isArray(item.variants) &&
+        item.variants.some(
+          (variant: DocumentVariantItemResponseModel) => pattern.test(variant.name)
+        )
+    );
+  }
+
+  static async findDocumentMatching(
+    pattern: RegExp,
+    parentId?: string
+  ): Promise<DocumentTreeItemResponseModel | undefined> {
+    try {
+      const client = UmbracoManagementClient.getClient();
+
+      // If parentId is specified, search under that parent
+      if (parentId) {
+        const childrenResponse = await client.getTreeDocumentChildren({
+          parentId,
+        });
+        const match = this.matchByPattern(childrenResponse.items, pattern);
+        if (match) {
+          return match;
+        }
+        // Check grandchildren
+        for (const item of childrenResponse.items) {
+          if (item.hasChildren) {
+            try {
+              const grandchildrenResponse = await client.getTreeDocumentChildren({
+                parentId: item.id,
+              });
+              const grandchildMatch = this.matchByPattern(grandchildrenResponse.items, pattern);
+              if (grandchildMatch) {
+                return grandchildMatch;
+              }
+            } catch (error) {
+              console.log(
+                `Error getting children for document ${item.id}:`,
+                error
+              );
+            }
+          }
+        }
+        return undefined;
+      }
+
+      // First check root level
+      const rootResponse = await client.getTreeDocumentRoot({});
+      const rootMatch = this.matchByPattern(rootResponse.items, pattern);
+      if (rootMatch) {
+        return rootMatch;
+      }
+      // Check children
+      for (const item of rootResponse.items) {
+        if (item.hasChildren) {
+          try {
+            const childrenResponse = await client.getTreeDocumentChildren({
+              parentId: item.id,
+            });
+            const childMatch = this.matchByPattern(childrenResponse.items, pattern);
+            if (childMatch) {
+              return childMatch;
+            }
+          } catch (error) {
+            console.log(
+              `Error getting children for document ${item.id}:`,
+              error
+            );
+          }
+        }
+      }
+      return undefined;
+    } catch (error) {
+      console.log(`Error finding documents matching pattern:`, error);
+      return undefined;
+    }
+  }
+
   static async findDocumentInRecycleBin(
     name: string
   ): Promise<DocumentRecycleBinItemResponseModel | undefined> {
