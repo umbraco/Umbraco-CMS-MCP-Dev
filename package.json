@@ -23,6 +23,8 @@
     "eval-mcp:create-document-type": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-document-type/create-document-type.yaml --server-config tests/e2e/create-document-type/create-document-type-config.json",
     "eval-mcp:create-document-copy": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-document-copy/create-document-copy.yaml --server-config tests/e2e/create-document-copy/create-document-copy-config.json",
     "eval-mcp:create-document-with-template": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-document-with-template/create-document-with-template.yaml --server-config tests/e2e/create-document-with-template/create-document-with-template-config.json",
+    "eval-mcp:update-document-properties": "npx mcp-server-tester@1.4.0 evals tests/e2e/update-document-properties/update-document-properties.yaml --server-config tests/e2e/update-document-properties/update-document-properties-config.json",
+    "eval-mcp:update-block-property": "npx mcp-server-tester@1.4.0 evals tests/e2e/update-block-property/update-block-property.yaml --server-config tests/e2e/update-block-property/update-block-property-config.json",
     "eval-mcp:all": "npm run eval-mcp:basic && npm run eval-mcp:create-data-type && npm run eval-mcp:create-document-type && npm run eval-mcp:create-blog-post"
   },
   "engines": {

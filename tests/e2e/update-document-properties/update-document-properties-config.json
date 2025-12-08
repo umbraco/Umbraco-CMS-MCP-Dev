@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "umbraco-mcp-local": {
+      "command": "node",
+      "args": ["/Users/philw/Projects/umbraco-mcp/dist/index.js"],
+      "env": {
+        "UMBRACO_CLIENT_ID": "umbraco-back-office-mcp",
+        "UMBRACO_CLIENT_SECRET": "1234567890",
+        "UMBRACO_BASE_URL": "http://localhost:56472",
+        "UMBRACO_INCLUDE_TOOLS": "get-document-root,get-document-children,get-document-by-id,update-document-properties"
+      }
+    }
+  }
+}
