@@ -5,6 +5,7 @@ import { jest } from "@jest/globals";
 import type { CreateDocumentTypeModel } from "../post/create-document-type.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import type { DocumentTypeTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
+import { TextString_DATA_TYPE_ID } from "@/constants/constants.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Created";
 const EXISTING_DOCTYPE_NAME = "_Existing DocumentType";
@@ -96,7 +97,7 @@ describe("create-document-type", () => {
         {
           name: "Property 1",
           alias: "property1",
-          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          dataTypeId: TextString_DATA_TYPE_ID,
           tab: "Tab 1",
           group: "Group 1"
         }
@@ -174,7 +175,7 @@ describe("create-document-type", () => {
         {
           name: "Bad Property",
           alias: "badProperty",
-          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae"
+          dataTypeId: TextString_DATA_TYPE_ID,
           // Missing both tab and group
         } as any // Need to bypass TypeScript to test runtime validation
       ]
@@ -202,14 +203,14 @@ describe("create-document-type", () => {
         {
           name: "Prop1",
           alias: "prop1",
-          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          dataTypeId: TextString_DATA_TYPE_ID,
           tab: "Tab1",
           group: "Settings"
         },
         {
           name: "Prop2",
           alias: "prop2",
-          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          dataTypeId: TextString_DATA_TYPE_ID,
           tab: "Tab2",
           group: "Settings"
         }

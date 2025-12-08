@@ -1,5 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`update-block-property BlockGrid integration tests should batch update multiple BlockGrid blocks in single call 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 2 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(gridBlocks)",
+      "updatedCount": 1
+    },
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(gridBlocks)",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property BlockGrid integration tests should return error when property not found in BlockGrid block and not on Element Type 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": false,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "No properties were processed in block at property(gridBlocks)",
+      "errors": [
+        "Property 'nonExistentPropertyAlias' does not exist on Element Type"
+      ]
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property BlockGrid integration tests should return error with available blocks when BlockGrid block not found 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": false,
+  "error": "Blocks not found",
+  "message": "None of the specified blocks were found in the document",
+  "notFoundBlocks": [
+    {
+      "contentKey": "00000000-0000-0000-0000-000000000001",
+      "blockType": "content"
+    }
+  ],
+  "availableBlocks": [
+    {
+      "key": "00000000-0000-0000-0000-000000000000",
+      "type": "content",
+      "path": "property(gridBlocks)"
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property BlockGrid integration tests should update property in BlockGrid content block 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(gridBlocks)",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
 exports[`update-block-property BlockList integration tests should batch update multiple blocks in single call 1`] = `
 {
   "content": [
@@ -11,12 +113,38 @@ exports[`update-block-property BlockList integration tests should batch update m
     {
       "success": true,
       "contentKey": "00000000-0000-0000-0000-000000000000",
-      "message": "Updated 1 of 1 properties in block at property(blocks)"
+      "message": "Updated 1 properties in block at property(blocks)",
+      "updatedCount": 1
     },
     {
       "success": true,
       "contentKey": "00000000-0000-0000-0000-000000000000",
-      "message": "Updated 1 of 1 properties in block at property(blocks)"
+      "message": "Updated 1 properties in block at property(blocks)",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property BlockList integration tests should return error when property not found in block and not on Element Type 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": false,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "No properties were processed in block at property(blocks)",
+      "errors": [
+        "Property 'nonExistentPropertyAlias' does not exist on Element Type"
+      ]
     }
   ]
 }",
@@ -54,30 +182,6 @@ exports[`update-block-property BlockList integration tests should return error w
 }
 `;
 
-exports[`update-block-property BlockList integration tests should return warning when property not found in block 1`] = `
-{
-  "content": [
-    {
-      "text": "{
-  "success": true,
-  "message": "Successfully processed 1 block update(s)",
-  "results": [
-    {
-      "success": false,
-      "contentKey": "00000000-0000-0000-0000-000000000000",
-      "message": "Updated 0 of 1 properties in block at property(blocks)",
-      "warnings": [
-        "Property 'nonExistentPropertyAlias' not found in block"
-      ]
-    }
-  ]
-}",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`update-block-property BlockList integration tests should update property in BlockList content block 1`] = `
 {
   "content": [
@@ -89,7 +193,359 @@ exports[`update-block-property BlockList integration tests should update propert
     {
       "success": true,
       "contentKey": "00000000-0000-0000-0000-000000000000",
-      "message": "Updated 1 of 1 properties in block at property(blocks)"
+      "message": "Updated 1 properties in block at property(blocks)",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property Nested BlockList within BlockGrid integration tests should update both grid block and nested block in same call 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 2 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(nestedGridBlocks)",
+      "updatedCount": 1
+    },
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(nestedGridBlocks).contentData[0].values[1](nestedBlocks)",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property Nested BlockList within BlockGrid integration tests should update multiple nested blocks across different grid blocks 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 2 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(nestedGridBlocks).contentData[0].values[1](nestedBlocks)",
+      "updatedCount": 1
+    },
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(nestedGridBlocks).contentData[1].values[1](nestedBlocks)",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property Nested BlockList within BlockGrid integration tests should update property in nested BlockList block within BlockGrid 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(nestedGridBlocks).contentData[0].values[1](nestedBlocks)",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property RTE inside BlockGrid integration tests should return error when property not found in nested RTE block and not on Element Type 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": false,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "No properties were processed in block at property(gridWithRte).contentData[0].values[1](richTextContent).blocks",
+      "errors": [
+        "Property 'nonExistentPropertyAlias' does not exist on Element Type"
+      ]
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property RTE inside BlockGrid integration tests should update both grid block and nested RTE block in same call 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 2 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(gridWithRte)",
+      "updatedCount": 1
+    },
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(gridWithRte).contentData[0].values[1](richTextContent).blocks",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property RTE inside BlockGrid integration tests should update multiple RTE blocks across different grid blocks 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 2 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(gridWithRte).contentData[0].values[1](richTextContent).blocks",
+      "updatedCount": 1
+    },
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(gridWithRte).contentData[1].values[1](richTextContent).blocks",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property RTE inside BlockGrid integration tests should update property in RTE block nested within BlockGrid 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(gridWithRte).contentData[0].values[1](richTextContent).blocks",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property RichText Editor (RTE) integration tests should batch update multiple RTE blocks in single call 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 2 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(richContent).blocks",
+      "updatedCount": 1
+    },
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(richContent).blocks",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property RichText Editor (RTE) integration tests should return error when property not found in RTE block and not on Element Type 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": false,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "No properties were processed in block at property(richContent).blocks",
+      "errors": [
+        "Property 'nonExistentPropertyAlias' does not exist on Element Type"
+      ]
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property RichText Editor (RTE) integration tests should return error with available blocks when RTE block not found 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": false,
+  "error": "Blocks not found",
+  "message": "None of the specified blocks were found in the document",
+  "notFoundBlocks": [
+    {
+      "contentKey": "00000000-0000-0000-0000-000000000001",
+      "blockType": "content"
+    }
+  ],
+  "availableBlocks": [
+    {
+      "key": "00000000-0000-0000-0000-000000000000",
+      "type": "content",
+      "path": "property(richContent).blocks"
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property RichText Editor (RTE) integration tests should update property in RTE block content 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 properties in block at property(richContent).blocks",
+      "updatedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property add new properties to blocks should add new property that exists on Element Type but not on block 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Added 1 properties in block at property(blocks)",
+      "addedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property add new properties to blocks should mix update and add in single block call 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": true,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "Updated 1 and added 1 properties in block at property(blocks)",
+      "updatedCount": 1,
+      "addedCount": 1
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-block-property add new properties to blocks should return error when property does not exist on Element Type 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "success": true,
+  "message": "Successfully processed 1 block update(s)",
+  "results": [
+    {
+      "success": false,
+      "contentKey": "00000000-0000-0000-0000-000000000000",
+      "message": "No properties were processed in block at property(blocks)",
+      "errors": [
+        "Property 'nonExistentOnElementType' does not exist on Element Type"
+      ]
     }
   ]
 }",

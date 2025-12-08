@@ -27,16 +27,70 @@ exports[`update-document-properties should return error on invalid alias 1`] = `
       "text": "{
   "success": false,
   "error": "Invalid property aliases",
-  "message": "The following properties do not exist on this document: nonExistentProperty",
+  "message": "The following properties do not exist on this document type: nonExistentProperty",
   "invalidAliases": [
     "nonExistentProperty"
   ],
-  "availableAliases": [
+  "availableProperties": [
+    {
+      "alias": "mainImage",
+      "name": "Main Image",
+      "variesByCulture": false,
+      "variesBySegment": false
+    },
     {
       "alias": "title",
-      "culture": null,
-      "segment": null,
-      "editorAlias": "Umbraco.TextBox"
+      "name": "Title",
+      "variesByCulture": false,
+      "variesBySegment": false
+    },
+    {
+      "alias": "subtitle",
+      "name": "Subtitle",
+      "variesByCulture": false,
+      "variesBySegment": false
+    },
+    {
+      "alias": "contentRows",
+      "name": "Content Rows",
+      "variesByCulture": false,
+      "variesBySegment": false
+    },
+    {
+      "alias": "socialIconLinks",
+      "name": "Social Icon Links",
+      "variesByCulture": false,
+      "variesBySegment": false
+    },
+    {
+      "alias": "metaName",
+      "name": "Meta Name",
+      "variesByCulture": false,
+      "variesBySegment": false
+    },
+    {
+      "alias": "metaDescription",
+      "name": "Meta Description",
+      "variesByCulture": false,
+      "variesBySegment": false
+    },
+    {
+      "alias": "metaKeywords",
+      "name": "Meta Keywords",
+      "variesByCulture": false,
+      "variesBySegment": false
+    },
+    {
+      "alias": "isIndexable",
+      "name": "Is Indexable",
+      "variesByCulture": false,
+      "variesBySegment": false
+    },
+    {
+      "alias": "isFollowable",
+      "name": "Is Followable",
+      "variesByCulture": false,
+      "variesBySegment": false
     }
   ]
 }",
@@ -56,6 +110,7 @@ exports[`update-document-properties should update property and preserve initial 
   "updatedProperties": [
     "title"
   ],
+  "addedProperties": [],
   "document": {
     "template": {
       "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6"
@@ -110,6 +165,7 @@ exports[`update-document-properties should update property value twice 1`] = `
   "updatedProperties": [
     "title"
   ],
+  "addedProperties": [],
   "document": {
     "template": {
       "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6"
@@ -164,6 +220,7 @@ exports[`update-document-properties should update single property value 1`] = `
   "updatedProperties": [
     "title"
   ],
+  "addedProperties": [],
   "document": {
     "template": {
       "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6"

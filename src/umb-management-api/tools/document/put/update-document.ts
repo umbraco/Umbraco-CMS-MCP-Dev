@@ -10,9 +10,19 @@ import { UmbracoDocumentPermissions } from "../constants.js";
 
 const UpdateDocumentTool = CreateUmbracoTool(
   "update-document",
-  `Updates a document by Id
-  Always read the current document value first and only update the required values.
-  Don't miss any properties from the original document that you are updating`,
+  `Updates a document by Id. USE AS LAST RESORT ONLY.
+
+  IMPORTANT: Prefer these specialized tools instead:
+  - update-document-properties: For updating individual property values (simpler, safer)
+  - update-block-property: For updating properties within BlockList/BlockGrid/RichText blocks
+
+  Only use this tool when you need to update document-level metadata (template, variants)
+  or when the specialized tools cannot handle your specific use case.
+
+  If you must use this tool:
+  - Always read the current document value first
+  - Only update the required values
+  - Don't miss any properties from the original document`,
   {
     id: putDocumentByIdParams.shape.id,
     data: z.object(putDocumentByIdBody.shape),

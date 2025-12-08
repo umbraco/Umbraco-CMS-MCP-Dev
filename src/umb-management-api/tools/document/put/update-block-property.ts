@@ -8,6 +8,18 @@ import type {
   DocumentVariantRequestModel,
   UpdateDocumentRequestModel
 } from "@/umb-management-api/schemas/index.js";
+import {
+  getAllDocumentTypeProperties,
+  validateCultureSegment,
+  type ResolvedProperty
+} from "./helpers/document-type-properties-resolver.js";
+import { validatePropertiesBeforeSave } from "./helpers/property-value-validator.js";
+import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
+import {
+  discoverAllBlockArrays,
+  findBlockByKey,
+  type BlockDataItem
+} from "./helpers/block-discovery.js";
 
 // Schema definitions
 const blockPropertyUpdateSchema = z.object({
@@ -48,148 +60,26 @@ type UpdateBlockPropertyModel = {
   }>;
 };
 
-// Interface for block data items
-interface BlockDataItem {
-  key: string;
-  contentTypeKey: string;
-  values: Array<{
-    alias: string;
-    culture?: string | null;
-    segment?: string | null;
-    value?: any;
-    editorAlias?: string;
-  }>;
-}
-
-// Interface for discovered block arrays
-export interface DiscoveredBlockArrays {
-  contentData: BlockDataItem[];
-  settingsData: BlockDataItem[];
-  path: string;
-}
-
-/**
- * Helper to match a property by alias, culture, and segment
- */
-function matchesProperty(
-  value: { alias: string; culture?: string | null; segment?: string | null },
-  alias: string,
-  culture?: string | null,
-  segment?: string | null
-): boolean {
-  return value.alias === alias &&
-    (value.culture ?? null) === (culture ?? null) &&
-    (value.segment ?? null) === (segment ?? null);
-}
-
-/**
- * Helper to create a property key for error reporting
- */
-function getPropertyKey(alias: string, culture?: string | null, segment?: string | null): string {
-  let key = alias;
-  if (culture) key += `[${culture}]`;
-  if (segment) key += `[${segment}]`;
-  return key;
-}
-
-/**
- * Recursively discovers all block arrays (contentData and settingsData) in a value structure.
- * This handles nested blocks in RichText editors and deeply nested block structures.
- *
- * @param value - The value to search within
- * @param path - The current path (for debugging/error messages)
- * @returns Array of discovered block arrays with their paths
- */
-export function discoverAllBlockArrays(value: any, path: string = "root"): DiscoveredBlockArrays[] {
-  const results: DiscoveredBlockArrays[] = [];
-
-  // Base case: null, undefined, or not an object
-  if (!value || typeof value !== "object") {
-    return results;
-  }
-
-  // Check if this value has contentData and settingsData arrays
-  if (Array.isArray(value.contentData) && Array.isArray(value.settingsData)) {
-    results.push({
-      contentData: value.contentData,
-      settingsData: value.settingsData,
-      path
-    });
-
-    // Now recursively check each block in contentData for nested structures
-    value.contentData.forEach((block: BlockDataItem, index: number) => {
-      if (block.values && Array.isArray(block.values)) {
-        block.values.forEach((prop: any, propIndex: number) => {
-          const propPath = `${path}.contentData[${index}].values[${propIndex}](${prop.alias})`;
-
-          // Check for RichText blocks structure
-          if (prop.value && typeof prop.value === "object" && prop.value.blocks) {
-            const nestedResults = discoverAllBlockArrays(prop.value.blocks, `${propPath}.blocks`);
-            results.push(...nestedResults);
-          }
-
-          // Check for direct nested block structures
-          if (prop.value && typeof prop.value === "object") {
-            const nestedResults = discoverAllBlockArrays(prop.value, propPath);
-            results.push(...nestedResults);
-          }
-        });
-      }
-    });
-
-    // Check settingsData blocks too
-    value.settingsData.forEach((block: BlockDataItem, index: number) => {
-      if (block.values && Array.isArray(block.values)) {
-        block.values.forEach((prop: any, propIndex: number) => {
-          const propPath = `${path}.settingsData[${index}].values[${propIndex}](${prop.alias})`;
-
-          // Check for nested structures in settings
-          if (prop.value && typeof prop.value === "object") {
-            const nestedResults = discoverAllBlockArrays(prop.value, propPath);
-            results.push(...nestedResults);
-          }
-        });
-      }
-    });
-  }
-
-  return results;
-}
-
-/**
- * Find a block by contentKey across all discovered block arrays
- */
-function findBlockByKey(
-  discoveredArrays: DiscoveredBlockArrays[],
-  contentKey: string,
-  blockType: "content" | "settings"
-): { block: BlockDataItem; arrayRef: BlockDataItem[]; path: string } | null {
-  for (const discovered of discoveredArrays) {
-    const array = blockType === "content" ? discovered.contentData : discovered.settingsData;
-    const block = array.find((b: BlockDataItem) => b.key === contentKey);
-    if (block) {
-      return { block, arrayRef: array, path: discovered.path };
-    }
-  }
-  return null;
-}
-
 const UpdateBlockPropertyTool = CreateUmbracoTool(
   "update-block-property",
-  `Updates specific property values within BlockList, BlockGrid, or RichText block content.
+  `Updates or adds property values within BlockList, BlockGrid, or RichText block content.
 
   This tool enables targeted updates to individual block properties without sending the entire JSON payload.
+  You can update existing properties, add new properties, or do both in a single call.
   It automatically handles deep traversal of nested block structures (e.g., RichText blocks containing nested blocks).
 
   Key features:
-  - Update properties in specific blocks by contentKey (UUID)
+  - Update existing properties or add new ones to blocks
+  - Property must exist on the Element Type (including compositions)
   - Support for both content and settings blocks
   - Batch updates to multiple blocks in a single call
   - Deep traversal of nested block structures
   - Full i18n support with culture and segment parameters
+  - Culture/segment requirements validated against property variance flags
 
   Example usage:
   - Update a block property: { documentId: "...", propertyAlias: "mainContent", updates: [{ contentKey: "block-uuid", blockType: "content", properties: [{ alias: "title", value: "New Title" }] }] }
+  - Add a new property to block: { documentId: "...", propertyAlias: "mainContent", updates: [{ contentKey: "block-uuid", blockType: "content", properties: [{ alias: "newProp", value: "Value" }] }] }
   - Update with culture: { documentId: "...", propertyAlias: "mainContent", culture: "es-ES", updates: [...] }
   - Batch update multiple blocks: { documentId: "...", propertyAlias: "mainContent", updates: [{ contentKey: "uuid1", ... }, { contentKey: "uuid2", ... }] }`,
   updateBlockPropertySchema,
@@ -243,8 +133,31 @@ const UpdateBlockPropertyTool = CreateUmbracoTool(
     }
 
     // Step 4: Process updates
-    const results: Array<{ success: boolean; contentKey: string; message: string; warnings?: string[] }> = [];
+    const results: Array<{
+      success: boolean;
+      contentKey: string;
+      message: string;
+      updatedCount?: number;
+      addedCount?: number;
+      warnings?: string[];
+      errors?: string[];
+    }> = [];
     const notFoundBlocks: Array<{ contentKey: string; blockType: string }> = [];
+
+    // Cache for Element Type properties (lazy-loaded per contentTypeKey)
+    const elementTypePropertiesCache = new Map<string, ResolvedProperty[]>();
+    const getElementTypeProperties = async (contentTypeKey: string): Promise<ResolvedProperty[]> => {
+      if (!elementTypePropertiesCache.has(contentTypeKey)) {
+        try {
+          const properties = await getAllDocumentTypeProperties(contentTypeKey);
+          elementTypePropertiesCache.set(contentTypeKey, properties);
+        } catch (error) {
+          console.error(`Failed to fetch Element Type properties for ${contentTypeKey}:`, error);
+          elementTypePropertiesCache.set(contentTypeKey, []);
+        }
+      }
+      return elementTypePropertiesCache.get(contentTypeKey)!;
+    };
 
     for (const update of model.updates) {
       const foundBlock = findBlockByKey(discoveredArrays, update.contentKey, update.blockType);
@@ -259,32 +172,95 @@ const UpdateBlockPropertyTool = CreateUmbracoTool(
         continue;
       }
 
-      // Update properties within the block
+      // Process properties within the block
       const warnings: string[] = [];
+      const errors: string[] = [];
       let updatedCount = 0;
+      let addedCount = 0;
+
+      // Load Element Type properties for validation
+      const elementTypeProperties = await getElementTypeProperties(foundBlock.block.contentTypeKey);
+
+      // Validate property values against Data Type configuration before processing
+      if (elementTypeProperties.length > 0) {
+        const propsToValidate = update.properties
+          .map(p => {
+            const def = elementTypeProperties.find(d => d.alias === p.alias);
+            return { alias: p.alias, value: p.value, dataTypeId: def?.dataTypeId ?? '' };
+          })
+          .filter(p => p.dataTypeId);
+
+        if (propsToValidate.length > 0) {
+          const valueValidation = await validatePropertiesBeforeSave(propsToValidate);
+          if (!valueValidation.isValid) {
+            errors.push(...valueValidation.errors);
+          }
+        }
+      }
 
       for (const propUpdate of update.properties) {
         const blockProperty = foundBlock.block.values.find(v =>
           matchesProperty(v, propUpdate.alias, propUpdate.culture, propUpdate.segment)
         );
 
-        if (!blockProperty) {
-          warnings.push(
-            `Property '${getPropertyKey(propUpdate.alias, propUpdate.culture, propUpdate.segment)}' not found in block`
-          );
-          continue;
-        }
+        if (blockProperty) {
+          // Property exists - update it
+          blockProperty.value = propUpdate.value;
+          updatedCount++;
+        } else {
+          // Property doesn't exist on block - check if it's valid on Element Type
+          // Note: elementTypeProperties is already loaded for value validation above
+          const propertyDef = elementTypeProperties.find(p => p.alias === propUpdate.alias);
 
-        // Update the property value
-        blockProperty.value = propUpdate.value;
-        updatedCount++;
+          if (propertyDef) {
+            // Property exists on Element Type - validate culture/segment
+            const validationError = validateCultureSegment(propUpdate, propertyDef);
+            if (validationError) {
+              errors.push(validationError);
+            } else {
+              // Valid new property - add to block's values
+              foundBlock.block.values.push({
+                alias: propUpdate.alias,
+                culture: propUpdate.culture ?? null,
+                segment: propUpdate.segment ?? null,
+                value: propUpdate.value
+              });
+              addedCount++;
+            }
+          } else if (elementTypeProperties.length > 0) {
+            // Property doesn't exist on Element Type
+            errors.push(
+              `Property '${getPropertyKey(propUpdate.alias, propUpdate.culture, propUpdate.segment)}' does not exist on Element Type`
+            );
+          } else {
+            // Couldn't fetch Element Type - fall back to warning
+            warnings.push(
+              `Property '${getPropertyKey(propUpdate.alias, propUpdate.culture, propUpdate.segment)}' not found in block (could not validate against Element Type)`
+            );
+          }
+        }
+      }
+
+      const totalProcessed = updatedCount + addedCount;
+      let message: string;
+      if (updatedCount > 0 && addedCount > 0) {
+        message = `Updated ${updatedCount} and added ${addedCount} properties in block at ${foundBlock.path}`;
+      } else if (addedCount > 0) {
+        message = `Added ${addedCount} properties in block at ${foundBlock.path}`;
+      } else if (updatedCount > 0) {
+        message = `Updated ${updatedCount} properties in block at ${foundBlock.path}`;
+      } else {
+        message = `No properties were processed in block at ${foundBlock.path}`;
       }
 
       results.push({
-        success: updatedCount > 0,
+        success: totalProcessed > 0 || errors.length === 0,
         contentKey: update.contentKey,
-        message: `Updated ${updatedCount} of ${update.properties.length} properties in block at ${foundBlock.path}`,
-        warnings: warnings.length > 0 ? warnings : undefined
+        message,
+        updatedCount: updatedCount > 0 ? updatedCount : undefined,
+        addedCount: addedCount > 0 ? addedCount : undefined,
+        warnings: warnings.length > 0 ? warnings : undefined,
+        errors: errors.length > 0 ? errors : undefined
       });
     }
 
