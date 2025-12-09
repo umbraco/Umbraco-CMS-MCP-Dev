@@ -152,9 +152,37 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
                 url: urlInfo.url ? urlInfo.url.replace(/\/media\/[a-z0-9]+\//i, "/media/NORMALIZED_PATH/") : urlInfo.url
               }));
             }
+            // Normalize block update results
+            if (parsed.results && Array.isArray(parsed.results)) {
+              parsed.results = parsed.results.map((r: any) => ({
+                ...r,
+                contentKey: r.contentKey ? BLANK_UUID : undefined
+              }));
+            }
+            // Normalize availableBlocks
+            if (parsed.availableBlocks && Array.isArray(parsed.availableBlocks)) {
+              parsed.availableBlocks = parsed.availableBlocks.map((b: any) => ({
+                ...b,
+                key: BLANK_UUID
+              }));
+            }
             // Normalize document version references
             if (parsed.document) {
               parsed.document = { ...parsed.document, id: BLANK_UUID };
+              // Normalize nested variants in document
+              if (parsed.document.variants && Array.isArray(parsed.document.variants)) {
+                parsed.document.variants = parsed.document.variants.map((variant: any) => {
+                  if (variant.createDate) variant.createDate = "NORMALIZED_DATE";
+                  if (variant.publishDate) variant.publishDate = "NORMALIZED_DATE";
+                  if (variant.updateDate) variant.updateDate = "NORMALIZED_DATE";
+                  if (variant.versionDate) variant.versionDate = "NORMALIZED_DATE";
+                  return variant;
+                });
+              }
+              // Normalize documentType within document
+              if (parsed.document.documentType) {
+                parsed.document.documentType = { ...parsed.document.documentType, id: BLANK_UUID };
+              }
             }
             if (parsed.documentType) {
               parsed.documentType = { ...parsed.documentType, id: BLANK_UUID };
@@ -172,7 +200,7 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
                 return variant;
               });
             }
-            text = JSON.stringify(parsed);
+            text = JSON.stringify(parsed, null, 2);
           } catch {}
           return {
             ...item,

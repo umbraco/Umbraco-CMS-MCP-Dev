@@ -36,6 +36,8 @@ import EmptyRecycleBinTool from "./put/empty-recycle-bin.js";
 import RestoreFromRecycleBinTool from "./put/restore-from-recycle-bin.js";
 import MoveToRecycleBinTool from "./put/move-to-recycle-bin.js";
 import UpdateDocumentTool from "./put/update-document.js";
+import UpdateDocumentPropertiesTool from "./put/update-document-properties.js";
+import UpdateBlockPropertyTool from "./put/update-block-property.js";
 import GetDocumentRootTool from "./items/get/get-root.js";
 import GetDocumentChildrenTool from "./items/get/get-children.js";
 import GetDocumentAncestorsTool from "./items/get/get-ancestors.js";
@@ -81,6 +83,8 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(SortDocumentTool());
     tools.push(UnpublishDocumentTool());
     tools.push(UpdateDocumentTool());
+    tools.push(UpdateDocumentPropertiesTool());
+    tools.push(UpdateBlockPropertyTool());
     tools.push(PutDocumentDomainsTool());
     tools.push(PutDocumentNotificationsTool());
     tools.push(PutDocumentPublicAccessTool());
