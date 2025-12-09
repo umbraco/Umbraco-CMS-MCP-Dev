@@ -3,6 +3,7 @@ import CreateElementTypeTool from "../post/create-element-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { jest } from "@jest/globals";
 import { v4 as uuidv4 } from "uuid";
+import { TextString_DATA_TYPE_ID } from "@/constants/constants.js";
 
 const TEST_ELEMENT_NAME = "_Test ElementType Created";
 const EXISTING_ELEMENT_NAME = "_Existing ElementType";
@@ -85,7 +86,7 @@ describe("create-element-type", () => {
         {
           name: "Test Property",
           alias: "testProperty",
-          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          dataTypeId: TextString_DATA_TYPE_ID,
           tab: "Content",
           group: "General",
         },
@@ -120,7 +121,7 @@ describe("create-element-type", () => {
         {
           name: "Bad Property",
           alias: "badProperty",
-          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae"
+          dataTypeId: TextString_DATA_TYPE_ID,
           // Missing both tab and group
         } as any // Need to bypass TypeScript to test runtime validation
       ]
@@ -146,14 +147,14 @@ describe("create-element-type", () => {
         {
           name: "Prop1",
           alias: "prop1",
-          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          dataTypeId: TextString_DATA_TYPE_ID,
           tab: "Tab1",
           group: "Settings"
         },
         {
           name: "Prop2",
           alias: "prop2",
-          dataTypeId: "0cc0eba1-9960-42c9-bf9b-60e150b429ae",
+          dataTypeId: TextString_DATA_TYPE_ID,
           tab: "Tab2",
           group: "Settings"
         }

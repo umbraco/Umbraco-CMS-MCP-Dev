@@ -4,7 +4,10 @@ exports[`create-element-type should create an element type 1`] = `
 {
   "content": [
     {
-      "text": "{"message":"Element type created successfully","id":"00000000-0000-0000-0000-000000000000"}",
+      "text": "{
+  "message": "Element type created successfully",
+  "id": "00000000-0000-0000-0000-000000000000"
+}",
       "type": "text",
     },
   ],
@@ -28,7 +31,10 @@ exports[`create-element-type should create an element type with properties 1`] =
 {
   "content": [
     {
-      "text": "{"message":"Element type created successfully","id":"00000000-0000-0000-0000-000000000000"}",
+      "text": "{
+  "message": "Element type created successfully",
+  "id": "00000000-0000-0000-0000-000000000000"
+}",
       "type": "text",
     },
   ],
