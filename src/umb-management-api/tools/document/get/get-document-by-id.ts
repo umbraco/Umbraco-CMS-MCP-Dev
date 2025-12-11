@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const GetDocumentByIdTool = CreateUmbracoTool(
+const GetDocumentByIdTool = CreateUmbracoReadTool(
   "get-document-by-id",
   `Gets a document by id
   Use this to retrieve existing documents. When creating new documents, 

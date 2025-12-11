@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeMediaTypeRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeMediaTypeRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMediaTypeRootTool = CreateUmbracoTool(
+const GetMediaTypeRootTool = CreateUmbracoReadTool(
   "get-media-type-root",
   "Gets the root level of the media type tree",
   getTreeMediaTypeRootQueryParams.shape,

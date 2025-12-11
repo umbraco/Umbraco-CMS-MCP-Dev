@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetServerTroubleshootingTool = CreateUmbracoTool(
+const GetServerTroubleshootingTool = CreateUmbracoReadTool(
   "get-server-troubleshooting",
   `Gets server troubleshooting information.
   Returns an array of diagnostic items, where each item contains:

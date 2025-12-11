@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeStylesheetSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetStylesheetSiblingsTool = CreateUmbracoTool(
+const GetStylesheetSiblingsTool = CreateUmbracoReadTool(
   "get-stylesheet-siblings",
   "Gets sibling stylesheets for a given descendant path",
   getTreeStylesheetSiblingsQueryParams.shape,

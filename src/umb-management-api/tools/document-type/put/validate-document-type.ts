@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putDocumentTypeByIdParams,
   putDocumentTypeByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const ValidateDocumentTypeTool = CreateUmbracoTool(
+const ValidateDocumentTypeTool = CreateUmbracoReadTool(
   "validate-document-type",
   "Validates a document type using the Umbraco API (PUT, does not persist changes).",
   {

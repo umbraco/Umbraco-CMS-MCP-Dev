@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putDataTypeFolderByIdParams,
   putDataTypeFolderByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateDataTypeFolderTool = CreateUmbracoTool(
+const UpdateDataTypeFolderTool = CreateUmbracoWriteTool(
   "update-data-type-folder",
   "Updates a data type folder by Id",
   {

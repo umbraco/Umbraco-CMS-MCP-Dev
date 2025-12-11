@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteDocumentBlueprintByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteDocumentBlueprintTool = CreateUmbracoTool(
+const DeleteDocumentBlueprintTool = CreateUmbracoWriteTool(
   "delete-document-blueprint",
   "Deletes a document blueprint by Id",
   deleteDocumentBlueprintByIdParams.shape,

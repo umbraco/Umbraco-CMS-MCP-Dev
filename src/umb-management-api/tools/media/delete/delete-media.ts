@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteMediaByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteMediaTool = CreateUmbracoTool(
+const DeleteMediaTool = CreateUmbracoWriteTool(
   "delete-media",
   "Deletes a media item by Id",
   deleteMediaByIdParams.shape,

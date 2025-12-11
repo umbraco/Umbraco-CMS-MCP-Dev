@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemMemberTypeSearchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const SearchMemberTypeItemsTool = CreateUmbracoTool(
+const SearchMemberTypeItemsTool = CreateUmbracoReadTool(
   "search-member-type-items",
   "Searches for member type items",
   getItemMemberTypeSearchQueryParams.shape,

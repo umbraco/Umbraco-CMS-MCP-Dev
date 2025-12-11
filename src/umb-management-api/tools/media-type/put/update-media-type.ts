@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateMediaTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putMediaTypeByIdParams,
@@ -7,7 +7,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateMediaTypeTool = CreateUmbracoTool(
+const UpdateMediaTypeTool = CreateUmbracoWriteTool(
   "update-media-type",
   "Updates a media type by Id",
   {

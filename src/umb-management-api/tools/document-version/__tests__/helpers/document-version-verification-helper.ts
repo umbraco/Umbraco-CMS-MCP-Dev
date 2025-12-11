@@ -5,20 +5,21 @@ import { DocumentTestHelper } from "../../../document/__tests__/helpers/document
 export class DocumentVersionVerificationHelper {
   static async findDocumentVersions(
     documentId: string,
-    forSnapshot: boolean = false
+    forSnapshot: boolean = false,
+    culture?: string
   ) {
     const client = UmbracoManagementClient.getClient();
-    const response = await client.getDocumentVersion({ documentId });
+    const response = await client.getDocumentVersion({ documentId, culture });
     // Skip Zod validation for now due to datetime format issues
     const result = response as any;
-    
+
     if (forSnapshot) {
       return result.items.map((item: any) => ({
         ...item,
         id: BLANK_UUID,
       }));
     }
-    
+
     return result.items;
   }
 

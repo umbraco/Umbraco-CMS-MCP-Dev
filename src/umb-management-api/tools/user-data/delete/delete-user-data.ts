@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteUserDataByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteUserDataTool = CreateUmbracoTool(
+const DeleteUserDataTool = CreateUmbracoWriteTool(
   "delete-user-data",
   "Deletes user data by its id",
   deleteUserDataByIdParams.shape,

@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteLanguageByIsoCodeParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteLanguageTool = CreateUmbracoTool(
+const DeleteLanguageTool = CreateUmbracoWriteTool(
   "delete-language",
   "Deletes a language by ISO code",
   deleteLanguageByIsoCodeParams.shape,

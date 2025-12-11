@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMediaByIdTool = CreateUmbracoTool(
+const GetMediaByIdTool = CreateUmbracoReadTool(
   "get-media-by-id",
   `Gets a media item by id
   Use this to retrieve existing media items.`,

@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getMediaTypeByIdAllowedChildrenParams,
   getMediaTypeByIdAllowedChildrenQueryParams,
@@ -10,7 +10,7 @@ const paramSchema = getMediaTypeByIdAllowedChildrenParams.merge(
   getMediaTypeByIdAllowedChildrenQueryParams
 );
 
-const GetMediaTypeAllowedChildrenTool = CreateUmbracoTool(
+const GetMediaTypeAllowedChildrenTool = CreateUmbracoReadTool(
   "get-media-type-allowed-children",
   "Gets the media types that are allowed as children of a media type",
   paramSchema.shape,

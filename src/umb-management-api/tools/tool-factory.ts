@@ -85,17 +85,25 @@ const availableCollections: ToolCollectionExport[] = [
   StaticFileCollection
 ];
 
-// Enhanced mapTools with collection filtering
+// Enhanced mapTools with collection filtering and readonly support
 const mapTools = (
   server: McpServer,
   user: CurrentUserResponseModel,
   tools: ToolDefinition<any>[],
-  config: CollectionConfiguration
+  config: CollectionConfiguration,
+  readonlyMode: boolean,
+  filteredTools: string[]
 ) => {
   return tools.forEach(tool => {
     // Check if user has permission for this tool
     const userHasPermission = (tool.enabled === undefined || tool.enabled(user));
     if (!userHasPermission) return;
+
+    // Readonly mode filter - skip write tools
+    if (readonlyMode && !tool.isReadOnly) {
+      filteredTools.push(tool.name);
+      return;
+    }
 
     // Apply tool-level filtering from configuration
     if (config.disabledTools?.includes(tool.name)) return;
@@ -171,6 +179,8 @@ function getEnabledCollections(config: CollectionConfiguration): ToolCollectionE
 export function UmbracoToolFactory(server: McpServer, user: CurrentUserResponseModel, serverConfig: UmbracoServerConfig) {
   // Load collection configuration from server config
   const config = CollectionConfigLoader.loadFromConfig(serverConfig);
+  const readonlyMode = serverConfig.readonly ?? false;
+  const filteredTools: string[] = [];
 
   // Validate configuration
   validateConfiguration(config, availableCollections);
@@ -181,6 +191,12 @@ export function UmbracoToolFactory(server: McpServer, user: CurrentUserResponseM
   // Load tools from enabled collections only
   enabledCollections.forEach(collection => {
     const tools = collection.tools(user);
-    mapTools(server, user, tools, config);
+    mapTools(server, user, tools, config, readonlyMode, filteredTools);
   });
+
+  // Log filtered tools in readonly mode
+  if (readonlyMode && filteredTools.length > 0) {
+    console.log(`\nReadonly mode: Disabled ${filteredTools.length} write tools:`);
+    console.log(`  ${filteredTools.join(', ')}`);
+  }
 }

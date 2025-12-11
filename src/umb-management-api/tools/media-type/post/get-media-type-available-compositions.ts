@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postMediaTypeAvailableCompositionsBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMediaTypeAvailableCompositionsTool = CreateUmbracoTool(
+const GetMediaTypeAvailableCompositionsTool = CreateUmbracoReadTool(
   "get-media-type-available-compositions",
   "Gets the available compositions for a media type",
   postMediaTypeAvailableCompositionsBody.shape,

@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetMemberTypeConfigurationTool = CreateUmbracoTool(
+const GetMemberTypeConfigurationTool = CreateUmbracoReadTool(
   "get-member-type-configuration",
   "Gets the configuration for member types",
   {},

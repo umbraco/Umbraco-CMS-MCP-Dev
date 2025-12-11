@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetAllRedirectsTool = CreateUmbracoTool(
+const GetAllRedirectsTool = CreateUmbracoReadTool(
   "get-all-redirects",
   `Gets all redirects from the Umbraco server.
   Returns a list of redirects with their details.

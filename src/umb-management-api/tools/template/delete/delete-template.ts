@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteTemplateByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteTemplateTool = CreateUmbracoTool(
+const DeleteTemplateTool = CreateUmbracoWriteTool(
   "delete-template",
   "Deletes a template by Id",
   deleteTemplateByIdParams.shape,

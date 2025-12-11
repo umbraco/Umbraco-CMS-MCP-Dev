@@ -8,19 +8,21 @@ import {
   isToolExecutionBlocked
 } from "../version-check/check-umbraco-version.js";
 
-export const CreateUmbracoTool =
-  <Args extends undefined | ZodRawShape = any>(
-    name: string,
-    description: string,
-    schema: Args,
-    handler: ToolCallback<Args>,
-    enabled?: (user: CurrentUserResponseModel) => boolean
-  ): (() => ToolDefinition<Args>) =>
+// Internal base implementation
+const createTool = <Args extends undefined | ZodRawShape = any>(
+  name: string,
+  description: string,
+  schema: Args,
+  handler: ToolCallback<Args>,
+  isReadOnly: boolean,
+  enabled?: (user: CurrentUserResponseModel) => boolean
+): (() => ToolDefinition<Args>) =>
   () => ({
     name: name,
     description: description,
     enabled: enabled,
     schema: schema,
+    isReadOnly: isReadOnly,
     handler: (async (args: any, context: any) => {
       // If blocked, show warning and clear for next attempt
       if (isToolExecutionBlocked()) {
@@ -53,3 +55,33 @@ export const CreateUmbracoTool =
       }
     }) as ToolCallback<Args>,
   });
+
+/**
+ * Creates a read-only tool that retrieves data without modifying the CMS.
+ * Use for GET operations, searches, queries, and validation tools.
+ */
+export const CreateUmbracoReadTool = <Args extends undefined | ZodRawShape = any>(
+  name: string,
+  description: string,
+  schema: Args,
+  handler: ToolCallback<Args>,
+  enabled?: (user: CurrentUserResponseModel) => boolean
+) => createTool(name, description, schema, handler, true, enabled);
+
+/**
+ * Creates a write tool that modifies the CMS.
+ * Use for POST, PUT, DELETE operations that create, update, or delete data.
+ */
+export const CreateUmbracoWriteTool = <Args extends undefined | ZodRawShape = any>(
+  name: string,
+  description: string,
+  schema: Args,
+  handler: ToolCallback<Args>,
+  enabled?: (user: CurrentUserResponseModel) => boolean
+) => createTool(name, description, schema, handler, false, enabled);
+
+/**
+ * @deprecated Use CreateUmbracoReadTool or CreateUmbracoWriteTool instead.
+ * This alias defaults to write tool behavior for backwards compatibility.
+ */
+export const CreateUmbracoTool = CreateUmbracoWriteTool;

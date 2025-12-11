@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 
-const GetUserConfigurationTool = CreateUmbracoTool(
+const GetUserConfigurationTool = CreateUmbracoReadTool(
   "get-user-configuration",
   "Gets user configuration settings including user invitation settings and password requirements",
   {},

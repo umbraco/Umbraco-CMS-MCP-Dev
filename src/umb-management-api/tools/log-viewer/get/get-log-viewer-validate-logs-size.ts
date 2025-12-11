@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { getLogViewerValidateLogsSizeQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetLogViewerValidateLogsSizeParams } from "@/umb-management-api/schemas/index.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetLogViewerValidateLogsSizeTool = CreateUmbracoTool(
+const GetLogViewerValidateLogsSizeTool = CreateUmbracoReadTool(
   "get-log-viewer-validate-logs-size",
   "Validates the size of the logs, for the given start and end date, or the lase day if not provided",
   getLogViewerValidateLogsSizeQueryParams.shape,

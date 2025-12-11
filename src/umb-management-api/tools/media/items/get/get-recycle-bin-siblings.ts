@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinMediaSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMediaRecycleBinSiblingsTool = CreateUmbracoTool(
+const GetMediaRecycleBinSiblingsTool = CreateUmbracoReadTool(
   "get-media-recycle-bin-siblings",
   "Gets sibling media items in the recycle bin for a given descendant id",
   getRecycleBinMediaSiblingsQueryParams.shape,

@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDataTypeSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDataTypeSiblingsTool = CreateUmbracoTool(
+const GetDataTypeSiblingsTool = CreateUmbracoReadTool(
   "get-data-type-siblings",
   "Gets sibling data types or data type folders for a given descendant id",
   getTreeDataTypeSiblingsQueryParams.shape,

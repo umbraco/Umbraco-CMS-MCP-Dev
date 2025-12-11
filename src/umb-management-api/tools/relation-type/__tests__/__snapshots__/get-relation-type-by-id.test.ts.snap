@@ -4,7 +4,21 @@ exports[`get-relation-type-by-id should get relation type by ID 1`] = `
 {
   "content": [
     {
-      "text": "{"id":"00000000-0000-0000-0000-000000000000","alias":"relateDocumentOnCopy","parentObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"childObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"name":"Relate Document On Copy","isBidirectional":true,"isDependency":false}",
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "alias": "relateDocumentOnCopy",
+  "parentObject": {
+    "name": "Document",
+    "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972"
+  },
+  "childObject": {
+    "name": "Document",
+    "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972"
+  },
+  "name": "Relate Document On Copy",
+  "isBidirectional": true,
+  "isDependency": false
+}",
       "type": "text",
     },
   ],

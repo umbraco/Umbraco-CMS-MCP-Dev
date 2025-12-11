@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { putRecycleBinMediaByIdRestoreParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const RestoreFromRecycleBinTool = CreateUmbracoTool(
+const RestoreFromRecycleBinTool = CreateUmbracoWriteTool(
   "restore-media-from-recycle-bin",
   "Restores a media item from the recycle bin.",
   putRecycleBinMediaByIdRestoreParams.shape,

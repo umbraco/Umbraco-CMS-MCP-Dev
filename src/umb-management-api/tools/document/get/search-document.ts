@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemDocumentSearchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const SearchDocumentTool = CreateUmbracoTool(
+const SearchDocumentTool = CreateUmbracoReadTool(
   "search-document",
   "Searches for documents by query, skip, and take.",
   getItemDocumentSearchQueryParams.shape,

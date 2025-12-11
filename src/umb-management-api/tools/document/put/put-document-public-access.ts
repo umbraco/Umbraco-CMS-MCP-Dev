@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putDocumentByIdPublicAccessParams,
   putDocumentByIdPublicAccessBody,
@@ -8,7 +8,7 @@ import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const PutDocumentPublicAccessTool = CreateUmbracoTool(
+const PutDocumentPublicAccessTool = CreateUmbracoWriteTool(
   "put-document-public-access",
   "Updates public access settings for a document by Id.",
   {

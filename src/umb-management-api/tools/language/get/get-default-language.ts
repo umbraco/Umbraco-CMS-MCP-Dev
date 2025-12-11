@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemLanguageDefaultResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDefaultLanguageTool = CreateUmbracoTool(
+const GetDefaultLanguageTool = CreateUmbracoReadTool(
   "get-default-language",
   "Gets the default language",
   {}, // No params required

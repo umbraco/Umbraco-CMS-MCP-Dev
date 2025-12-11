@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const EmptyRecycleBinTool = CreateUmbracoTool(
+const EmptyRecycleBinTool = CreateUmbracoWriteTool(
   "empty-media-recycle-bin",
   "Empties the media recycle bin.",
   {},

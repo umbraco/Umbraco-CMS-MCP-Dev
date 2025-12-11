@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTemplateByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetTemplateTool = CreateUmbracoTool(
+const GetTemplateTool = CreateUmbracoReadTool(
   "get-template",
   "Gets a template by Id",
   getTemplateByIdParams.shape,

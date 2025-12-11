@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { putMediaByIdMoveToRecycleBinParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const MoveMediaToRecycleBinTool = CreateUmbracoTool(
+const MoveMediaToRecycleBinTool = CreateUmbracoWriteTool(
   "move-media-to-recycle-bin",
   "Move a media item to the recycle bin",
   putMediaByIdMoveToRecycleBinParams.shape,

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaByIdReferencedByParams, getMediaByIdReferencedByQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetMediaByIdReferencedByTool = CreateUmbracoTool(
+const GetMediaByIdReferencedByTool = CreateUmbracoReadTool(
   "get-media-by-id-referenced-by",
   `Get items that reference a specific media item
   Use this to find all content, documents, or other items that are currently referencing a specific media item.`,

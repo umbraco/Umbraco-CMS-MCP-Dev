@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putDataTypeByIdBody,
@@ -8,7 +8,7 @@ import {
 
 import { z } from "zod";
 
-const UpdateDataTypeTool = CreateUmbracoTool(
+const UpdateDataTypeTool = CreateUmbracoWriteTool(
   "update-data-type",
   "Updates a data type by Id",
   {

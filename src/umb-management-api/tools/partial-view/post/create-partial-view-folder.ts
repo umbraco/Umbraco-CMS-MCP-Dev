@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreatePartialViewFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postPartialViewFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const CreatePartialViewFolderTool = CreateUmbracoTool(
+const CreatePartialViewFolderTool = CreateUmbracoWriteTool(
   "create-partial-view-folder",
   "Creates a new partial view folder",
   postPartialViewFolderBody.shape,

@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemDictionaryQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDictionaryByIdArrayTool = CreateUmbracoTool(
+const GetDictionaryByIdArrayTool = CreateUmbracoReadTool(
   "get-dictionary-by-id-array",
   "Gets dictionary items by IDs (or empty array if no IDs are provided)",
   getItemDictionaryQueryParams.shape,

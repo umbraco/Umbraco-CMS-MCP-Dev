@@ -10,6 +10,7 @@ export interface ToolDefinition<
   schema: Args;
   handler: ToolCallback<Args>;
   enabled?: (user: CurrentUserResponseModel) => boolean;
+  isReadOnly: boolean;
 }
 
 

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdAvailableSegmentOptionsParams, getDocumentByIdAvailableSegmentOptionsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetDocumentAvailableSegmentOptionsTool = CreateUmbracoTool(
+const GetDocumentAvailableSegmentOptionsTool = CreateUmbracoReadTool(
   "get-document-available-segment-options",
   `Gets available segment options for a document by its id
 

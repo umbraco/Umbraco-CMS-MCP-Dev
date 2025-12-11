@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinMediaRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetRecycleBinMediaRootTool = CreateUmbracoTool(
+const GetRecycleBinMediaRootTool = CreateUmbracoReadTool(
   "get-recycle-bin-media-root",
   "Gets root items for the media recycle bin.",
   getRecycleBinMediaRootQueryParams.shape,

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getCollectionDocumentByIdParams, getCollectionDocumentByIdQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetCollectionDocumentByIdTool = CreateUmbracoTool(
+const GetCollectionDocumentByIdTool = CreateUmbracoReadTool(
   "get-collection-document-by-id",
   `Get a collection of document items
   Use this to retrieve a filtered and paginated collection of document items based on various criteria like data type, ordering, and filtering.`,

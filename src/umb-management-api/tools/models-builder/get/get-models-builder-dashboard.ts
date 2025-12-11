@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetModelsBuilderDashboardTool = CreateUmbracoTool(
+const GetModelsBuilderDashboardTool = CreateUmbracoReadTool(
   "get-models-builder-dashboard",
   `Gets Models Builder dashboard information and current status.
   Returns an object containing:

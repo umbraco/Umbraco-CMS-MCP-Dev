@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteMemberGroupByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteMemberGroupTool = CreateUmbracoTool(
+const DeleteMemberGroupTool = CreateUmbracoWriteTool(
   "delete-member-group",
   "Deletes a member group by Id",
   deleteMemberGroupByIdParams.shape,

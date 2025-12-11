@@ -1,4 +1,4 @@
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { propertyEditorTemplates, type PropertyEditorTemplate } from "../post/property-editor-templates.js";
 
@@ -9,7 +9,7 @@ const propertyEditorTemplateSchema = z.object({
 
 type PropertyEditorTemplateParams = z.infer<typeof propertyEditorTemplateSchema>;
 
-const GetDataTypePropertyEditorTemplateTool = CreateUmbracoTool(
+const GetDataTypePropertyEditorTemplateTool = CreateUmbracoReadTool(
   "get-data-type-property-editor-template",
   `Retrieves property editor templates for creating data types in Umbraco.
 

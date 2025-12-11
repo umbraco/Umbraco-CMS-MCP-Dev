@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putMemberByIdValidateBody,
   putMemberByIdValidateParams,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const ValidateMemberUpdateTool = CreateUmbracoTool(
+const ValidateMemberUpdateTool = CreateUmbracoReadTool(
   "validate-member-update",
   `Validates member data before updating using the Umbraco API.
   Use this endpoint to validate member data structure, properties, and business rules before attempting to update an existing member.`,

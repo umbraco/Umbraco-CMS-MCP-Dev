@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaUrlsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMediaUrlsTool = CreateUmbracoTool(
+const GetMediaUrlsTool = CreateUmbracoReadTool(
   "get-media-urls",
   "Gets the URLs for a media item.",
   getMediaUrlsQueryParams.shape,

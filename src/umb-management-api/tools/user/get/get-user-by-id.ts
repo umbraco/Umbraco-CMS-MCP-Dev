@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetUserByIdTool = CreateUmbracoTool(
+const GetUserByIdTool = CreateUmbracoReadTool(
   "get-user-by-id",
   "Gets a user by their unique identifier",
   getUserByIdParams.shape,

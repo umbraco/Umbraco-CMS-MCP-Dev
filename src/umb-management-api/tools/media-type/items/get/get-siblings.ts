@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeMediaTypeSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMediaTypeSiblingsTool = CreateUmbracoTool(
+const GetMediaTypeSiblingsTool = CreateUmbracoReadTool(
   "get-media-type-siblings",
   "Gets sibling media types or media type folders for a given descendant id",
   getTreeMediaTypeSiblingsQueryParams.shape,

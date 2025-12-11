@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateDocumentRequestModel } from "@/umb-management-api/schemas/createDocumentRequestModel.js";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
@@ -25,7 +25,7 @@ const createDocumentSchema = z.object({
     .default([]),
 });
 
-const CreateDocumentTool = CreateUmbracoTool(
+const CreateDocumentTool = CreateUmbracoWriteTool(
   "create-document",
   `Creates a document with support for multiple cultures.
 

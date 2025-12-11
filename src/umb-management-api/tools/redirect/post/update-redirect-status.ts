@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postRedirectManagementStatusQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const UpdateRedirectStatusTool = CreateUmbracoTool(
+const UpdateRedirectStatusTool = CreateUmbracoWriteTool(
   "update-redirect-status",
   `Updates the status of redirect management.
   Parameters:

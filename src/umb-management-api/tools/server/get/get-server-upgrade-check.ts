@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetServerUpgradeCheckTool = CreateUmbracoTool(
+const GetServerUpgradeCheckTool = CreateUmbracoReadTool(
   "get-server-upgrade-check",
   `Checks the server upgrade status and requirements.
   Returns an object containing:

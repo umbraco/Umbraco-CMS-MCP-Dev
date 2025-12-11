@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserDataQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetUserDataTool = CreateUmbracoTool(
+const GetUserDataTool = CreateUmbracoReadTool(
   "get-user-data",
   "Retrieves user data records with pagination and filtering",
   getUserDataQueryParams.shape,

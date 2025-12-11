@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDictionaryRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDictionaryRootTool = CreateUmbracoTool(
+const GetDictionaryRootTool = CreateUmbracoReadTool(
   "get-dictionary-root",
   "Gets the root level of the dictionary tree",
   getTreeDictionaryRootQueryParams.shape,

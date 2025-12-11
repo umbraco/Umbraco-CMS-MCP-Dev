@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinMediaReferencedByQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetRecycleBinMediaReferencedByTool = CreateUmbracoTool(
+const GetRecycleBinMediaReferencedByTool = CreateUmbracoReadTool(
   "get-recycle-bin-media-referenced-by",
   `Get references to deleted media items in the recycle bin
   Use this to find content that still references deleted media items before permanently deleting them.`,

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeScriptAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeScriptAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetScriptTreeAncestorsTool = CreateUmbracoTool(
+const GetScriptTreeAncestorsTool = CreateUmbracoReadTool(
   "get-script-tree-ancestors",
   "Gets script tree ancestors",
   getTreeScriptAncestorsQueryParams.shape,

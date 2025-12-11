@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateMediaTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postMediaTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
@@ -32,7 +32,7 @@ const createMediaTypeSchema = z.object({
 
 type CreateMediaTypeSchema = z.infer<typeof createMediaTypeSchema>;
 
-const CreateMediaTypeTool = CreateUmbracoTool(
+const CreateMediaTypeTool = CreateUmbracoWriteTool(
   "create-media-type",
   "Creates a new media type",
   createMediaTypeSchema.shape,

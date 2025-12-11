@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdReferencedByParams, getDocumentByIdReferencedByQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetDocumentByIdReferencedByTool = CreateUmbracoTool(
+const GetDocumentByIdReferencedByTool = CreateUmbracoReadTool(
   "get-document-by-id-referenced-by",
   `Get items that reference a specific document item
   Use this to find all content, documents, or other items that are currently referencing a specific document item.`,

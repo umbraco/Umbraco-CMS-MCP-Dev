@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postMemberBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const CreateMemberTool = CreateUmbracoTool(
+const CreateMemberTool = CreateUmbracoWriteTool(
   "create-member",
   `Creates a member in Umbraco.
   Use this endpoint to create new members with the specified properties and groups.`,

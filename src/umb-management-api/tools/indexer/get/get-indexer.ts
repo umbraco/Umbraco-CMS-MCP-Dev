@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getIndexerQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetIndexerParams } from "@/umb-management-api/schemas/index.js";
 
-const GetIndexerTool = CreateUmbracoTool(
+const GetIndexerTool = CreateUmbracoReadTool(
   "get-indexer",
   `Lists all indexes with pagination support.
   Returns an object containing:

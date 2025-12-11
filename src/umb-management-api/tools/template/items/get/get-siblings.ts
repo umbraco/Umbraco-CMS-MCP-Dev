@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeTemplateSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetTemplateSiblingsTool = CreateUmbracoTool(
+const GetTemplateSiblingsTool = CreateUmbracoReadTool(
   "get-template-siblings",
   "Gets sibling templates for a given descendant id",
   getTreeTemplateSiblingsQueryParams.shape,

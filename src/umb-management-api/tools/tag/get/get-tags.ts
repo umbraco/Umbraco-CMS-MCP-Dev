@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTagParams } from "@/umb-management-api/schemas/index.js";
 import { getTagQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetTagsTool = CreateUmbracoTool(
+const GetTagsTool = CreateUmbracoReadTool(
   "get-tags",
   "Retrieves a paginated list of tags used in the Umbraco instance",
   getTagQueryParams.shape,

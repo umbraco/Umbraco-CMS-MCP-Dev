@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetMemberConfigurationTool = CreateUmbracoTool(
+const GetMemberConfigurationTool = CreateUmbracoReadTool(
   "get-member-configuration",
   "Gets member configuration including reserved field names",
   {},

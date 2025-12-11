@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetTemplateQuerySettingsTool = CreateUmbracoTool(
+const GetTemplateQuerySettingsTool = CreateUmbracoReadTool(
   "get-template-query-settings",
   "Returns schema for template queries: available document types, properties, and operators",
   {},

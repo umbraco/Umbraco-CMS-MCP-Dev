@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdReferencedDescendantsParams, getDocumentByIdReferencedDescendantsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetDocumentByIdReferencedDescendantsTool = CreateUmbracoTool(
+const GetDocumentByIdReferencedDescendantsTool = CreateUmbracoReadTool(
   "get-document-by-id-referenced-descendants",
   `Get descendant references for a document item
   Use this to find all descendant references (child items) that are being referenced for a specific document item.

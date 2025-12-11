@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDataTypeByIdReferencedByParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetReferencesDataTypeTool = CreateUmbracoTool(
+const GetReferencesDataTypeTool = CreateUmbracoReadTool(
   "get-references-data-type",
   `Gets the document types and properties that use a specific data type.
 

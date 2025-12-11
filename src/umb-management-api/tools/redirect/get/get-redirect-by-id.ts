@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRedirectManagementByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetRedirectByIdTool = CreateUmbracoTool(
+const GetRedirectByIdTool = CreateUmbracoReadTool(
   "get-redirect-by-id",
   `Gets a specific redirect by its ID.
   Parameters:

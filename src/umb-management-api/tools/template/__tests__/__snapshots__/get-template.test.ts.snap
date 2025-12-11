@@ -4,7 +4,13 @@ exports[`get-template should get a template by id 1`] = `
 {
   "content": [
     {
-      "text": "{"id":"00000000-0000-0000-0000-000000000000","masterTemplate":null,"name":"_Test Template Get","alias":"_testTemplateGet","content":"@using Umbraco.Cms.Web.Common.PublishedModels;\\n@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage\\n@{\\n\\tLayout = null;\\n}"}",
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "masterTemplate": null,
+  "name": "_Test Template Get",
+  "alias": "_testTemplateGet",
+  "content": "@using Umbraco.Cms.Web.Common.PublishedModels;\\n@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage\\n@{\\n\\tLayout = null;\\n}"
+}",
       "type": "text",
     },
   ],

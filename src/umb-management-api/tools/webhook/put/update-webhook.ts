@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateWebhookRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putWebhookByIdBody,
@@ -7,7 +7,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateWebhookTool = CreateUmbracoTool(
+const UpdateWebhookTool = CreateUmbracoWriteTool(
   "update-webhook",
   "Updates a webhook by id",
   {

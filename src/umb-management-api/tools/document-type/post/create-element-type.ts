@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
@@ -38,7 +38,7 @@ const createElementTypeSchema = z.object({
 
 type CreateElementTypeModel = z.infer<typeof createElementTypeSchema>;
 
-const CreateElementTypeTool = CreateUmbracoTool(
+const CreateElementTypeTool = CreateUmbracoWriteTool(
   "create-element-type",
   `Creates a new element type in Umbraco.
   

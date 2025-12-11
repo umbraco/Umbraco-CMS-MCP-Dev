@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetFilterDataTypeParams } from "@/umb-management-api/schemas/index.js";
 import { getFilterDataTypeQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const FindDataTypeTool = CreateUmbracoTool(
+const FindDataTypeTool = CreateUmbracoReadTool(
   "find-data-type",
   "Finds a data type by Id or Name",
   getFilterDataTypeQueryParams.shape,

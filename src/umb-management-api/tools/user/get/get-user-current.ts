@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 
-const GetUserCurrentTool = CreateUmbracoTool(
+const GetUserCurrentTool = CreateUmbracoReadTool(
   "get-user-current",
   "Gets the current authenticated user's information",
   {}, // No parameters required

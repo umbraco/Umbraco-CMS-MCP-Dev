@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { RenameStylesheetRequestModel } from "@/umb-management-api/schemas/index.js";
 import { putStylesheetByPathRenameParams, putStylesheetByPathRenameBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const RenameStylesheetTool = CreateUmbracoTool(
+const RenameStylesheetTool = CreateUmbracoWriteTool(
   "rename-stylesheet",
   `Renames a stylesheet`,
   z.object({

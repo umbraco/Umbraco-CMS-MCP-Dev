@@ -16,6 +16,7 @@ export interface UmbracoServerConfig {
   includeTools?: string[];
   excludeTools?: string[];
   allowedMediaPaths?: string[];
+  readonly?: boolean;
   configSources: {
     clientId: "cli" | "env";
     clientSecret: "cli" | "env";
@@ -25,6 +26,7 @@ export interface UmbracoServerConfig {
     includeTools?: "cli" | "env" | "none";
     excludeTools?: "cli" | "env" | "none";
     allowedMediaPaths?: "cli" | "env" | "none";
+    readonly?: "cli" | "env" | "none";
     envFile: "cli" | "default";
   };
 }
@@ -43,6 +45,7 @@ interface CliArgs {
   "umbraco-include-tools"?: string;
   "umbraco-exclude-tools"?: string;
   "umbraco-allowed-media-paths"?: string;
+  "umbraco-readonly"?: boolean;
   env?: string;
 }
 
@@ -82,6 +85,11 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
         type: "string",
         description: "Comma-separated list of allowed file system paths for media uploads (security: restricts file path access)",
       },
+      "umbraco-readonly": {
+        type: "boolean",
+        description: "Enable readonly mode - disables all write operations (create, update, delete)",
+        default: false,
+      },
       env: {
         type: "string",
         description: "Path to custom .env file to load environment variables from",
@@ -118,6 +126,7 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
     includeTools: undefined,
     excludeTools: undefined,
     allowedMediaPaths: undefined,
+    readonly: undefined,
     configSources: {
       clientId: "env",
       clientSecret: "env",
@@ -127,6 +136,7 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
       includeTools: "none",
       excludeTools: "none",
       allowedMediaPaths: "none",
+      readonly: "none",
       envFile: envFileSource,
     },
   };
@@ -233,6 +243,15 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
     config.configSources.allowedMediaPaths = "env";
   }
 
+  // Handle UMBRACO_READONLY
+  if (argv["umbraco-readonly"]) {
+    config.readonly = true;
+    config.configSources.readonly = "cli";
+  } else if (process.env.UMBRACO_READONLY?.toLowerCase() === "true") {
+    config.readonly = true;
+    config.configSources.readonly = "env";
+  }
+
   // Validate configuration
   if (!auth.clientId) {
     console.error(
@@ -296,6 +315,12 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
     if (config.allowedMediaPaths) {
       console.log(
         `- UMBRACO_ALLOWED_MEDIA_PATHS: ${config.allowedMediaPaths.join(", ")} (source: ${config.configSources.allowedMediaPaths})`,
+      );
+    }
+
+    if (config.readonly) {
+      console.log(
+        `- UMBRACO_READONLY: true (source: ${config.configSources.readonly})`,
       );
     }
 

@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { CopyDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
@@ -11,7 +11,7 @@ const copyDocumentSchema = z.object({
   includeDescendants: z.boolean().describe("If true, all descendant documents (children, grandchildren, etc.) will also be copied. This is usually set to false unless specified."),
 });
 
-const CopyDocumentTool = CreateUmbracoTool(
+const CopyDocumentTool = CreateUmbracoWriteTool(
   "copy-document",
   `Copy a document to a new location. This is also the recommended way to create new documents. 
   Copy an existing document to preserve the complex JSON structure, then modify specific fields as needed.

@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getMediaByIdAuditLogParams,
   getMediaByIdAuditLogQueryParams,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetMediaAuditLogTool = CreateUmbracoTool(
+const GetMediaAuditLogTool = CreateUmbracoReadTool(
   "get-media-audit-log",
   "Fetches the audit log for a media item by Id.",
   {

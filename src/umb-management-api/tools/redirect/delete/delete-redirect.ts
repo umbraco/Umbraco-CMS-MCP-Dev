@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteRedirectManagementByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteRedirectTool = CreateUmbracoTool(
+const DeleteRedirectTool = CreateUmbracoWriteTool(
   "delete-redirect",
   `Deletes a specific redirect by its ID.
   Parameters:

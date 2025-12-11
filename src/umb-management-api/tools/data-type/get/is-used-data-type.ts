@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDataTypeByIdIsUsedParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const IsUsedDataTypeTool = CreateUmbracoTool(
+const IsUsedDataTypeTool = CreateUmbracoReadTool(
   "is-used-data-type",
   "Checks if a data type is used within Umbraco",
   getDataTypeByIdIsUsedParams.shape,

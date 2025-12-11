@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { postDocumentTypeByIdCopyBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { CopyDocumentTypeRequestModel } from "@/umb-management-api/schemas/copyDocumentTypeRequestModel.js";
 
-const CopyDocumentTypeTool = CreateUmbracoTool(
+const CopyDocumentTypeTool = CreateUmbracoWriteTool(
   "copy-document-type",
   "Copy a document type to a new location",
   {

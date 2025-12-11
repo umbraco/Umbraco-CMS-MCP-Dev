@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMemberByIdReferencedDescendantsParams, getMemberByIdReferencedDescendantsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetMemberByIdReferencedDescendantsTool = CreateUmbracoTool(
+const GetMemberByIdReferencedDescendantsTool = CreateUmbracoReadTool(
   "get-member-by-id-referenced-descendants",
   `Get descendant references for a member
   Use this to find all descendant references that are being referenced for a specific member account.`,

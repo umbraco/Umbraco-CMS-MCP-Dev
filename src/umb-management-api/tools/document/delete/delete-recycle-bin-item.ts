@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteRecycleBinDocumentByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteDocumentRecycleBinItemTool = CreateUmbracoTool(
+const DeleteDocumentRecycleBinItemTool = CreateUmbracoWriteTool(
   "delete-document-recycle-bin-item",
   "Permanently deletes a document from the recycle bin by its id",
   deleteRecycleBinDocumentByIdParams.shape,

@@ -1,4 +1,4 @@
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { propertyValueTemplates, type PropertyValueTemplate } from "../post/property-value-templates.js";
 
@@ -9,7 +9,7 @@ const propertyValueTemplateSchema = z.object({
 
 type PropertyValueTemplateParams = z.infer<typeof propertyValueTemplateSchema>;
 
-const GetDocumentPropertyValueTemplateTool = CreateUmbracoTool(
+const GetDocumentPropertyValueTemplateTool = CreateUmbracoReadTool(
   "get-document-property-value-template",
   `Retrieves property value templates for creating documents in Umbraco.
 

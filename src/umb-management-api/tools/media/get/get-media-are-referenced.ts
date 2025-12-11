@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaAreReferencedQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMediaAreReferencedTool = CreateUmbracoTool(
+const GetMediaAreReferencedTool = CreateUmbracoReadTool(
   "get-media-are-referenced",
   `Check if media items are referenced
   Use this to verify if specific media items are being referenced by other content before deletion or modification.`,

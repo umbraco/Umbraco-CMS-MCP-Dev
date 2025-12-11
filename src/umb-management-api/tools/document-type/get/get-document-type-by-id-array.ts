@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemDocumentTypeQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentTypesByIdArrayTool = CreateUmbracoTool(
+const GetDocumentTypesByIdArrayTool = CreateUmbracoReadTool(
   "get-document-types-by-id-array",
   "Gets document types by IDs (or empty array if no IDs are provided)",
   getItemDocumentTypeQueryParams.shape,

@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { MoveDocumentBlueprintRequestModel } from "@/umb-management-api/schemas/moveDocumentBlueprintRequestModel.js";
 import {
   putDocumentBlueprintByIdMoveParams,
@@ -7,7 +7,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const MoveDocumentBlueprintTool = CreateUmbracoTool(
+const MoveDocumentBlueprintTool = CreateUmbracoWriteTool(
   "move-document-blueprint",
   "Moves a document blueprint by Id",
   {

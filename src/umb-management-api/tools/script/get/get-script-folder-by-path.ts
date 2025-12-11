@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getScriptFolderByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetScriptFolderByPathTool = CreateUmbracoTool(
+const GetScriptFolderByPathTool = CreateUmbracoReadTool(
   "get-script-folder-by-path",
   "Gets a script folder by path",
   getScriptFolderByPathParams.shape,

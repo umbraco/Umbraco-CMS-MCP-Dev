@@ -1,11 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getItemLanguageQueryParams,
   getItemLanguageResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetLanguageItemsTool = CreateUmbracoTool(
+const GetLanguageItemsTool = CreateUmbracoReadTool(
   "get-language-items",
   "Gets language items (optionally filtered by isoCode)",
   getItemLanguageQueryParams.shape,

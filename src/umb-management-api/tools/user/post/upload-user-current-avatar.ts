@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postUserCurrentAvatarBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const UploadUserCurrentAvatarTool = CreateUmbracoTool(
+const UploadUserCurrentAvatarTool = CreateUmbracoWriteTool(
   "upload-user-current-avatar",
   "Uploads an avatar for the current authenticated user",
   postUserCurrentAvatarBody.shape,

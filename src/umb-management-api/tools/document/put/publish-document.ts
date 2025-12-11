@@ -1,11 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { putDocumentByIdPublishBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const PublishDocumentTool = CreateUmbracoTool(
+const PublishDocumentTool = CreateUmbracoWriteTool(
   "publish-document",
   `Publishes a document by Id. IMPORTANT: If workflow approval is required, use the initiate-workflow-action function instead. 
   This function bypasses approval workflows and publishes directly to the live site. 

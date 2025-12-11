@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateStylesheetRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 
@@ -12,7 +12,7 @@ const createStylesheetSchema = z.object({
 
 type CreateStylesheetSchema = z.infer<typeof createStylesheetSchema>;
 
-const CreateStylesheetTool = CreateUmbracoTool(
+const CreateStylesheetTool = CreateUmbracoWriteTool(
   "create-stylesheet",
   `Creates a new stylesheet.`,
   createStylesheetSchema.shape,

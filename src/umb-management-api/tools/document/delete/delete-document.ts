@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteDocumentByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const DeleteDocumentTool = CreateUmbracoTool(
+const DeleteDocumentTool = CreateUmbracoWriteTool(
   "delete-document",
   "Deletes a document by Id",
   deleteDocumentByIdParams.shape,

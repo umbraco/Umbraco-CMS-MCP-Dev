@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postHealthCheckGroupByNameCheckParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const RunHealthCheckGroupTool = CreateUmbracoTool(
+const RunHealthCheckGroupTool = CreateUmbracoReadTool(
   "run-health-check-group",
   "Executes health checks for a specific group. WARNING: This will run system diagnostics which may take time and could temporarily affect system performance.",
   postHealthCheckGroupByNameCheckParams.shape,

@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CurrentUserResponseModel, CreateDocumentBlueprintRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 
@@ -25,7 +25,7 @@ const createDocumentBlueprintSchema = z.object({
 
 type CreateDocumentBlueprintSchema = z.infer<typeof createDocumentBlueprintSchema>;
 
-const CreateDocumentBlueprintTool = CreateUmbracoTool(
+const CreateDocumentBlueprintTool = CreateUmbracoWriteTool(
   "create-document-blueprint",
   `Creates a new document blueprint.`,
   createDocumentBlueprintSchema.shape,

@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
@@ -60,7 +60,7 @@ type UpdateBlockPropertyModel = {
   }>;
 };
 
-const UpdateBlockPropertyTool = CreateUmbracoTool(
+const UpdateBlockPropertyTool = CreateUmbracoWriteTool(
   "update-block-property",
   `Updates or adds property values within BlockList, BlockGrid, or RichText block content.
 

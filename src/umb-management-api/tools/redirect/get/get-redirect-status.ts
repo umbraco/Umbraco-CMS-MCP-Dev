@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetRedirectStatusTool = CreateUmbracoTool(
+const GetRedirectStatusTool = CreateUmbracoReadTool(
   "get-redirect-status",
   `Gets the current status of redirect management.
   Returns information about whether redirects are enabled and other status details.

@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 
-const CopyMemberTypeTool = CreateUmbracoTool(
+const CopyMemberTypeTool = CreateUmbracoWriteTool(
   "copy-member-type",
   "Copy a member type to a new location",
   {

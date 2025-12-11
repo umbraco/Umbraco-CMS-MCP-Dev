@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDocumentBlueprintSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentBlueprintSiblingsTool = CreateUmbracoTool(
+const GetDocumentBlueprintSiblingsTool = CreateUmbracoReadTool(
   "get-document-blueprint-siblings",
   "Gets sibling document blueprints for a given descendant id",
   getTreeDocumentBlueprintSiblingsQueryParams.shape,

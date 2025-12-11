@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const EmptyRecycleBinTool = CreateUmbracoTool(
+const EmptyRecycleBinTool = CreateUmbracoWriteTool(
   "empty-recycle-bin",
   "Empties the document recycle bin.",
   {},

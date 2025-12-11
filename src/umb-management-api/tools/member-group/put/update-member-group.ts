@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateMemberGroupRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putMemberGroupByIdBody,
@@ -7,7 +7,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateMemberGroupTool = CreateUmbracoTool(
+const UpdateMemberGroupTool = CreateUmbracoWriteTool(
   "update-member-group",
   "Updates a member group by Id",
   {

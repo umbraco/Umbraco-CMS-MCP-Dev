@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { MoveDictionaryRequestModel } from "@/umb-management-api/schemas/moveDictionaryRequestModel.js";
 import {
   putDictionaryByIdMoveParams,
@@ -7,7 +7,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const MoveDictionaryItemTool = CreateUmbracoTool(
+const MoveDictionaryItemTool = CreateUmbracoWriteTool(
   "move-dictionary-item",
   "Moves a dictionary item by Id",
   {

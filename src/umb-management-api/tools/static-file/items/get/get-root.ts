@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeStaticFileRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetStaticFileRootTool = CreateUmbracoTool(
+const GetStaticFileRootTool = CreateUmbracoReadTool(
   "get-static-file-root",
   "Gets root-level static files and folders in the Umbraco file system",
   getTreeStaticFileRootQueryParams.shape,

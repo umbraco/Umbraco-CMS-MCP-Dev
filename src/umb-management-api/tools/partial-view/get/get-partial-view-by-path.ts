@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getPartialViewByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetPartialViewByPathTool = CreateUmbracoTool(
+const GetPartialViewByPathTool = CreateUmbracoReadTool(
   "get-partial-view-by-path",
   "Gets a partial view by its path",
   getPartialViewByPathParams.shape,

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreePartialViewRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreePartialViewRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetPartialViewRootTool = CreateUmbracoTool(
+const GetPartialViewRootTool = CreateUmbracoReadTool(
   "get-partial-view-root",
   "Gets the root partial views in the tree structure",
   getTreePartialViewRootQueryParams.shape,

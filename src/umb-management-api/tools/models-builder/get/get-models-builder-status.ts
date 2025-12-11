@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetModelsBuilderStatusTool = CreateUmbracoTool(
+const GetModelsBuilderStatusTool = CreateUmbracoReadTool(
   "get-models-builder-status",
   `Gets the out-of-date status of Models Builder models.
   Returns an object containing:

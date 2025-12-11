@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinDocumentRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetRecycleBinDocumentRootTool = CreateUmbracoTool(
+const GetRecycleBinDocumentRootTool = CreateUmbracoReadTool(
   "get-recycle-bin-document-root",
   "Gets root items for the document recycle bin.",
   getRecycleBinDocumentRootQueryParams.shape,

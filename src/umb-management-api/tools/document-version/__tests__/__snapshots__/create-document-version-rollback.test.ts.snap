@@ -26,3 +26,13 @@ exports[`create-document-version-rollback should rollback document to a specific
 }
 `;
 
+exports[`create-document-version-rollback should rollback document to a specific version with culture 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;

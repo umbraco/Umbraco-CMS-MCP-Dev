@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentUrlsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentUrlsTool = CreateUmbracoTool(
+const GetDocumentUrlsTool = CreateUmbracoReadTool(
   "get-document-urls",
   "Gets the URLs for a document.",
   getDocumentUrlsQueryParams.shape,

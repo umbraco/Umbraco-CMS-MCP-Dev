@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdatePartialViewRequestModel } from "@/umb-management-api/schemas/index.js";
 import { putPartialViewByPathParams, putPartialViewByPathBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdatePartialViewTool = CreateUmbracoTool(
+const UpdatePartialViewTool = CreateUmbracoWriteTool(
   "update-partial-view",
   "Updates a partial view",
   z.object({

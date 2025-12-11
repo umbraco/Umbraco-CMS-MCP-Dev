@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getHealthCheckGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetHealthCheckGroupsTool = CreateUmbracoTool(
+const GetHealthCheckGroupsTool = CreateUmbracoReadTool(
   "get-health-check-groups",
   "Gets a paged list of health check groups for system monitoring",
   getHealthCheckGroupQueryParams.shape,

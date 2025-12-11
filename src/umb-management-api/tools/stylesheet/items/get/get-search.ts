@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetItemStylesheetParams } from "@/umb-management-api/schemas/index.js";
 import { getItemStylesheetQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetStylesheetSearchTool = CreateUmbracoTool(
+const GetStylesheetSearchTool = CreateUmbracoReadTool(
   "get-stylesheet-search",
   "Searches for stylesheets by name or path",
   getItemStylesheetQueryParams.shape,

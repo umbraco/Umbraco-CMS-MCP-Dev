@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getPartialViewSnippetByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetPartialViewSnippetByIdTool = CreateUmbracoTool(
+const GetPartialViewSnippetByIdTool = CreateUmbracoReadTool(
   "get-partial-view-snippet-by-id",
   "Gets a specific partial view snippet by its ID",
   getPartialViewSnippetByIdParams.shape,

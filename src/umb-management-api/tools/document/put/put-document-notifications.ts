@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putDocumentByIdNotificationsParams,
   putDocumentByIdNotificationsBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const PutDocumentNotificationsTool = CreateUmbracoTool(
+const PutDocumentNotificationsTool = CreateUmbracoWriteTool(
   "put-document-notifications",
   "Updates the notifications for a document by Id.",
   {

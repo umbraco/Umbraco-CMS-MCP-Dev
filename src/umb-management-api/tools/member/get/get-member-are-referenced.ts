@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMemberAreReferencedQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMemberAreReferencedTool = CreateUmbracoTool(
+const GetMemberAreReferencedTool = CreateUmbracoReadTool(
   "get-member-are-referenced",
   `Check if member accounts are referenced
   Use this to verify if specific member accounts are being referenced by content.`,

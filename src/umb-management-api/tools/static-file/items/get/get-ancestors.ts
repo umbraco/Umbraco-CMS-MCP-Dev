@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeStaticFileAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetStaticFileAncestorsTool = CreateUmbracoTool(
+const GetStaticFileAncestorsTool = CreateUmbracoReadTool(
   "get-static-file-ancestors",
   "Gets ancestor folders for navigation breadcrumbs by descendant path",
   getTreeStaticFileAncestorsQueryParams.shape,

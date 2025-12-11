@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeMemberTypeRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeMemberTypeRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMemberTypeRootTool = CreateUmbracoTool(
+const GetMemberTypeRootTool = CreateUmbracoReadTool(
   "get-member-type-root",
   "Gets the root level of the member type tree",
   getTreeMemberTypeRootQueryParams.shape,

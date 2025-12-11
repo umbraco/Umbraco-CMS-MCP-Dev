@@ -1,11 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { putDocumentByIdPublishWithDescendantsBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const PublishDocumentWithDescendantsTool = CreateUmbracoTool(
+const PublishDocumentWithDescendantsTool = CreateUmbracoWriteTool(
   "publish-document-with-descendants",
   `Publishes a document and its descendants by Id. This is an asynchronous operation that may take time for large document trees. 
   The tool will poll for completion and return the final result when finished.`,

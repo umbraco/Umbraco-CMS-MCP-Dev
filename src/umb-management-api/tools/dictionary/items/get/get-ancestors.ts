@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDictionaryAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDictionaryAncestorsTool = CreateUmbracoTool(
+const GetDictionaryAncestorsTool = CreateUmbracoReadTool(
   "get-dictionary-ancestors",
   "Gets the ancestors of a dictionary item by Id",
   getTreeDictionaryAncestorsQueryParams.shape,

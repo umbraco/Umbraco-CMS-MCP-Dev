@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getSearcherQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetSearcherParams } from "@/umb-management-api/schemas/index.js";
 
-const GetSearcherTool = CreateUmbracoTool(
+const GetSearcherTool = CreateUmbracoReadTool(
   "get-searcher",
   `Lists all searchers with pagination support.
   Returns an object containing:
