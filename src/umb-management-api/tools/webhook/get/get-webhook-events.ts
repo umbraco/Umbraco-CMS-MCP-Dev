@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetWebhookEventsTool = CreateUmbracoTool(
+const GetWebhookEventsTool = CreateUmbracoReadTool(
   "get-webhook-events",
   "Gets a list of available webhook events",
   {},

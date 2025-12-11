@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentVersionByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentVersionByIdTool = CreateUmbracoTool(
+const GetDocumentVersionByIdTool = CreateUmbracoReadTool(
   "get-document-version-by-id",
   "Get specific document version by ID",
   getDocumentVersionByIdParams.shape,

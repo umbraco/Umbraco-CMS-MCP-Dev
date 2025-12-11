@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putMediaTypeFolderByIdParams,
   putMediaTypeFolderByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateMediaTypeFolderTool = CreateUmbracoTool(
+const UpdateMediaTypeFolderTool = CreateUmbracoWriteTool(
   "update-media-type-folder",
   "Updates a media type folder by Id",
   {

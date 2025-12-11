@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetFilterMemberParams } from "@/umb-management-api/schemas/index.js";
 import { getFilterMemberQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const FindMemberTool = CreateUmbracoTool(
+const FindMemberTool = CreateUmbracoReadTool(
   "find-member",
   `Finds members by various filter criteria`,
   getFilterMemberQueryParams.shape,

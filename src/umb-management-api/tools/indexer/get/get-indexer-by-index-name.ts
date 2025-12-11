@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getIndexerByIndexNameParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetIndexerByIndexNameTool = CreateUmbracoTool(
+const GetIndexerByIndexNameTool = CreateUmbracoReadTool(
   "get-indexer-by-index-name",
   `Gets a specific index by its name.
   Returns detailed information about the index including its configuration and status.`,

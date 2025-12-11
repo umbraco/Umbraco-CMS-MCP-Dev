@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { putDocumentByIdMoveToRecycleBinParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const MoveDocumentToRecycleBinTool = CreateUmbracoTool(
+const MoveDocumentToRecycleBinTool = CreateUmbracoWriteTool(
   "move-document-to-recycle-bin",
   "Move a document to the recycle bin",
   putDocumentByIdMoveToRecycleBinParams.shape,

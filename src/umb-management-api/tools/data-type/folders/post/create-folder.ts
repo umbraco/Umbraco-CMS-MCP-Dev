@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postDataTypeFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const CreateDataTypeFolderTool = CreateUmbracoTool(
+const CreateDataTypeFolderTool = CreateUmbracoWriteTool(
   "create-data-type-folder",
   "Creates a new data type folder",
   postDataTypeFolderBody.shape,

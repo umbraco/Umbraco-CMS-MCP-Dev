@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdNotificationsParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 
-const GetDocumentNotificationsTool = CreateUmbracoTool(
+const GetDocumentNotificationsTool = CreateUmbracoReadTool(
   "get-document-notifications",
   "Gets the notifications for a document by Id.",
   getDocumentByIdNotificationsParams.shape,

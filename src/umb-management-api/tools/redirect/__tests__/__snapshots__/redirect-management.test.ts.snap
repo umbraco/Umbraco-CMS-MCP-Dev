@@ -15,7 +15,10 @@ exports[`Redirect Management Tools DeleteRedirectTool should delete a redirect 2
 {
   "content": [
     {
-      "text": "{"total":0,"items":[]}",
+      "text": "{
+  "total": 0,
+  "items": []
+}",
       "type": "text",
     },
   ],

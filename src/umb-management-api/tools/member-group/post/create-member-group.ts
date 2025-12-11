@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateMemberGroupRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postMemberGroupBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const CreateMemberGroupTool = CreateUmbracoTool(
+const CreateMemberGroupTool = CreateUmbracoWriteTool(
   "create-member-group",
   "Creates a new member group",
   postMemberGroupBody.shape,

@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetUserCurrentLoginProvidersTool = CreateUmbracoTool(
+const GetUserCurrentLoginProvidersTool = CreateUmbracoReadTool(
   "get-user-current-login-providers",
   "Gets the current user's available login providers",
   {}, // No parameters required

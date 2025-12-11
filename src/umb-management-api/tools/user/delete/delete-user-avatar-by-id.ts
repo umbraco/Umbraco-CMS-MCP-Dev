@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteUserAvatarByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteUserAvatarByIdTool = CreateUmbracoTool(
+const DeleteUserAvatarByIdTool = CreateUmbracoWriteTool(
   "delete-user-avatar-by-id",
   "Deletes an avatar for a specific user by ID (admin only or self-service)",
   deleteUserAvatarByIdParams.shape,

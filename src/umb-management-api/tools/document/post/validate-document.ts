@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postDocumentValidateBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const ValidateDocumentTool = CreateUmbracoTool(
+const ValidateDocumentTool = CreateUmbracoReadTool(
   "validate-document",
   "Validates a create document model, using the Umbraco API.",
   postDocumentValidateBody.shape,

@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
@@ -48,7 +48,7 @@ type CreateDocumentTypeModel = z.infer<typeof createDocumentTypeSchema>;
 
 export type { CreateDocumentTypeModel };
 
-const CreateDocumentTypeTool = CreateUmbracoTool(
+const CreateDocumentTypeTool = CreateUmbracoWriteTool(
   "create-document-type",
   `Creates a new document type in Umbraco.
 

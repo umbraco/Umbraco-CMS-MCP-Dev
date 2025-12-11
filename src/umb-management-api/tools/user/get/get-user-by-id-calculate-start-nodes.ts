@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserByIdCalculateStartNodesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetUserByIdCalculateStartNodesTool = CreateUmbracoTool(
+const GetUserByIdCalculateStartNodesTool = CreateUmbracoReadTool(
   "get-user-by-id-calculate-start-nodes",
   "Calculates start nodes for a user by their ID based on permissions",
   getUserByIdCalculateStartNodesParams.shape,

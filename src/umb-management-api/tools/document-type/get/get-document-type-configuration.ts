@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetDocumentTypeConfigurationTool = CreateUmbracoTool(
+const GetDocumentTypeConfigurationTool = CreateUmbracoReadTool(
   "get-document-type-configuration",
   "Gets the global configuration for document types",
   {},

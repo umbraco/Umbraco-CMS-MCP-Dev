@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { putRecycleBinDocumentByIdRestoreParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const RestoreFromRecycleBinTool = CreateUmbracoTool(
+const RestoreFromRecycleBinTool = CreateUmbracoWriteTool(
   "restore-document-from-recycle-bin",
   "Restores a document from the recycle bin.",
   putRecycleBinDocumentByIdRestoreParams.shape,

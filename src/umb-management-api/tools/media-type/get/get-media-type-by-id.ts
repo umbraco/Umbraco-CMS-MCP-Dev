@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaTypeByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMediaTypeByIdTool = CreateUmbracoTool(
+const GetMediaTypeByIdTool = CreateUmbracoReadTool(
   "get-media-type-by-id",
   "Gets a media type by id",
   getMediaTypeByIdParams.shape,

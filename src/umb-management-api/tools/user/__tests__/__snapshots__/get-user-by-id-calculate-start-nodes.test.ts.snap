@@ -4,7 +4,13 @@ exports[`get-user-by-id-calculate-start-nodes should calculate start nodes for a
 {
   "content": [
     {
-      "text": "{"id":"00000000-0000-0000-0000-000000000000","documentStartNodeIds":[],"hasDocumentRootAccess":true,"mediaStartNodeIds":[],"hasMediaRootAccess":true}",
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "documentStartNodeIds": [],
+  "hasDocumentRootAccess": true,
+  "mediaStartNodeIds": [],
+  "hasMediaRootAccess": true
+}",
       "type": "text",
     },
   ],

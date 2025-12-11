@@ -1,11 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getLanguageByIsoCodeParams,
   getLanguageByIsoCodeResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetLanguageByIsoCodeTool = CreateUmbracoTool(
+const GetLanguageByIsoCodeTool = CreateUmbracoReadTool(
   "get-language-by-iso-code",
   "Gets a language by ISO code",
   getLanguageByIsoCodeParams.shape,

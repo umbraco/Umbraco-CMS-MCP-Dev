@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postIndexerByIndexNameRebuildParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const PostIndexerByIndexNameRebuildTool = CreateUmbracoTool(
+const PostIndexerByIndexNameRebuildTool = CreateUmbracoWriteTool(
   "post-indexer-by-index-name-rebuild",
   `Rebuilds a specific index by name.
   This operation will trigger a full rebuild of the index, which may take some time depending on the amount of content.

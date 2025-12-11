@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteWebhookByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteWebhookTool = CreateUmbracoTool(
+const DeleteWebhookTool = CreateUmbracoWriteTool(
   "delete-webhook",
   "Deletes a webhook by id",
   deleteWebhookByIdParams.shape,

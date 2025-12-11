@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CurrentUserResponseModel, CreateDocumentBlueprintFromDocumentRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 
@@ -16,7 +16,7 @@ const createDocumentBlueprintFromDocumentSchema = z.object({
 
 type CreateDocumentBlueprintFromDocumentModel = z.infer<typeof createDocumentBlueprintFromDocumentSchema>;
 
-const CreateDocumentBlueprintFromDocumentTool = CreateUmbracoTool(
+const CreateDocumentBlueprintFromDocumentTool = CreateUmbracoWriteTool(
   "create-document-blueprint-from-document",
   `Create a new document blueprint from an existing document
   Use this to create a blueprint template based on an existing document, preserving its structure and content for reuse.

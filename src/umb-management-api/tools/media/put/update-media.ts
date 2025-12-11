@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putMediaByIdParams,
   putMediaByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateMediaTool = CreateUmbracoTool(
+const UpdateMediaTool = CreateUmbracoWriteTool(
   "update-media",
   `Updates a media item by Id
   Always read the current media value first and only update the required values.

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateStylesheetFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postStylesheetFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const CreateStylesheetFolderTool = CreateUmbracoTool(
+const CreateStylesheetFolderTool = CreateUmbracoWriteTool(
   "create-stylesheet-folder",
   "Creates a new stylesheet folder",
   postStylesheetFolderBody.shape,

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeStylesheetAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeStylesheetAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetStylesheetAncestorsTool = CreateUmbracoTool(
+const GetStylesheetAncestorsTool = CreateUmbracoReadTool(
   "get-stylesheet-ancestors",
   "Gets the ancestors of a stylesheet in the tree structure",
   getTreeStylesheetAncestorsQueryParams.shape,

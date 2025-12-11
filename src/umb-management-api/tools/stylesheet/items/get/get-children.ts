@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeStylesheetChildrenParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeStylesheetChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetStylesheetChildrenTool = CreateUmbracoTool(
+const GetStylesheetChildrenTool = CreateUmbracoReadTool(
   "get-stylesheet-children",
   "Gets the children of a stylesheet in the tree structure",
   getTreeStylesheetChildrenQueryParams.shape,

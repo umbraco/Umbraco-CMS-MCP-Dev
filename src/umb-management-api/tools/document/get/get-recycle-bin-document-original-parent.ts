@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinDocumentByIdOriginalParentParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetRecycleBinDocumentOriginalParentTool = CreateUmbracoTool(
+const GetRecycleBinDocumentOriginalParentTool = CreateUmbracoReadTool(
   "get-recycle-bin-document-original-parent",
   `Get the original parent location of a document item in the recycle bin
   Returns information about where the document item was located before deletion.`,

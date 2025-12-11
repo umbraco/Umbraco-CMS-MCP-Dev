@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { putMediaTypeByIdMoveBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { MoveMediaTypeRequestModel } from "@/umb-management-api/schemas/moveMediaTypeRequestModel.js";
 import { z } from "zod";
 
-const MoveMediaTypeTool = CreateUmbracoTool(
+const MoveMediaTypeTool = CreateUmbracoWriteTool(
   "move-media-type",
   "Move a media type to a new location",
   {

@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteLogViewerSavedSearchByNameParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteLogViewerSavedSearchByNameTool = CreateUmbracoTool(
+const DeleteLogViewerSavedSearchByNameTool = CreateUmbracoWriteTool(
   "delete-log-viewer-saved-search-by-name",
   "Deletes a saved search by name",
   deleteLogViewerSavedSearchByNameParams.shape,

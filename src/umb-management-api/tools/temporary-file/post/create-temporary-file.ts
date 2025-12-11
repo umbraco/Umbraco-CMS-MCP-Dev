@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import * as fs from "fs";
 import * as os from "os";
@@ -14,7 +14,7 @@ const createTemporaryFileSchema = z.object({
 
 type CreateTemporaryFileParams = z.infer<typeof createTemporaryFileSchema>;
 
-const CreateTemporaryFileTool = CreateUmbracoTool(
+const CreateTemporaryFileTool = CreateUmbracoWriteTool(
   "create-temporary-file",
   `Creates a new temporary file. The file will be deleted after 10 minutes.
   The temporary file id is used when uploading media files to Umbraco.

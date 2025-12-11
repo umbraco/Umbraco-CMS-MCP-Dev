@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemMediaTypeAllowedQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetAllowedMediaTypeTool = CreateUmbracoTool(
+const GetAllowedMediaTypeTool = CreateUmbracoReadTool(
   "get-allowed-media-type",
   "Gets allowed file extensions for media types",
   getItemMediaTypeAllowedQueryParams.shape,

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeScriptRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeScriptRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetScriptTreeRootTool = CreateUmbracoTool(
+const GetScriptTreeRootTool = CreateUmbracoReadTool(
   "get-script-tree-root",
   "Gets script tree root",
   getTreeScriptRootQueryParams.shape,

@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getDocumentByIdAuditLogParams,
   getDocumentByIdAuditLogQueryParams,
@@ -8,7 +8,7 @@ import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const GetDocumentAuditLogTool = CreateUmbracoTool(
+const GetDocumentAuditLogTool = CreateUmbracoReadTool(
   "get-document-audit-log",
   "Fetches the audit log for a document by Id.",
   {

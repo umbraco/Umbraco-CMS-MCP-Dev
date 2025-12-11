@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { postLogViewerSavedSearchBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { SavedLogSearchRequestModel } from "@/umb-management-api/schemas/index.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const PostLogViewerSavedSearchTool = CreateUmbracoTool(
+const PostLogViewerSavedSearchTool = CreateUmbracoWriteTool(
   "post-log-viewer-saved-search",
   "Create a new log viewer saved search",
   postLogViewerSavedSearchBody.shape,

@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeMediaAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMediaAncestorsTool = CreateUmbracoTool(
+const GetMediaAncestorsTool = CreateUmbracoReadTool(
   "get-media-ancestors",
   "Gets ancestor items for a media.",
   getTreeMediaAncestorsQueryParams.shape,

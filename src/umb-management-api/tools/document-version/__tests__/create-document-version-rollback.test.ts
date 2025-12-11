@@ -51,7 +51,7 @@ describe("create-document-version-rollback", () => {
     expect(normalizedResult).toMatchSnapshot();
   });
 
-  it.skip("should rollback document to a specific version with culture", async () => {
+  it("should rollback document to a specific version with culture", async () => {
     // Arrange
     documentBuilder = new DocumentVersionBuilder()
       .withName(TEST_DOCUMENT_NAME + " With Culture")

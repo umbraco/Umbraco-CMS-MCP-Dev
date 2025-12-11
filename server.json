@@ -46,6 +46,13 @@
           "format": "string",
           "isSecret": false,
           "name": "UMBRACO_INCLUDE_TOOL_COLLECTIONS"
+        },
+        {
+          "description": "Enable readonly mode to disable all write operations (create, update, delete). Only read and query tools remain available.",
+          "isRequired": false,
+          "format": "boolean",
+          "isSecret": false,
+          "name": "UMBRACO_READONLY"
         }
       ]
     }

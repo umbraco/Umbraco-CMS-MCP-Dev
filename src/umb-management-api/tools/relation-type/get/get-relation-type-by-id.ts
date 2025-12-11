@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRelationTypeByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetRelationTypeByIdTool = CreateUmbracoTool(
+const GetRelationTypeByIdTool = CreateUmbracoReadTool(
   "get-relation-type-by-id",
   "Gets a relation type by Id",
   getRelationTypeByIdParams.shape,

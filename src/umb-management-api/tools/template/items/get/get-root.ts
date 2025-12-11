@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeTemplateRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetTemplateRootTool = CreateUmbracoTool(
+const GetTemplateRootTool = CreateUmbracoReadTool(
   "get-template-root",
   "Gets root items for templates.",
   getTreeTemplateRootQueryParams.shape,

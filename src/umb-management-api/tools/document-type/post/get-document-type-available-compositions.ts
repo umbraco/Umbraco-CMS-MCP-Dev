@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postDocumentTypeAvailableCompositionsBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentTypeAvailableCompositionsTool = CreateUmbracoTool(
+const GetDocumentTypeAvailableCompositionsTool = CreateUmbracoReadTool(
   "get-document-type-available-compositions",
   "Gets the available compositions for a document type",
   postDocumentTypeAvailableCompositionsBody.shape,

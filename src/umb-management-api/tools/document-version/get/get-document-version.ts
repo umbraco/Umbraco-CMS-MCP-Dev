@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { getDocumentVersionQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetDocumentVersionParams } from "@/umb-management-api/schemas/index.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetDocumentVersionTool = CreateUmbracoTool(
+const GetDocumentVersionTool = CreateUmbracoReadTool(
   "get-document-version",
   "List document versions with pagination",
   getDocumentVersionQueryParams.shape,

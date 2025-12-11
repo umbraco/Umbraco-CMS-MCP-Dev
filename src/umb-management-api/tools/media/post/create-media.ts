@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
@@ -24,7 +24,7 @@ const createMediaSchema = z.object({
 
 type CreateMediaParams = z.infer<typeof createMediaSchema>;
 
-const CreateMediaTool = CreateUmbracoTool(
+const CreateMediaTool = CreateUmbracoWriteTool(
   "create-media",
   `Upload any media file to Umbraco (images, documents, audio, video, SVG, or custom types).
 

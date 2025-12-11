@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateDocumentTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putDocumentTypeByIdParams,
@@ -7,7 +7,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateDocumentTypeTool = CreateUmbracoTool(
+const UpdateDocumentTypeTool = CreateUmbracoWriteTool(
   "update-document-type",
   "Updates a document type by Id",
   {

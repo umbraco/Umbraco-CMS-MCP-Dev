@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getCollectionMediaQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetCollectionMediaTool = CreateUmbracoTool(
+const GetCollectionMediaTool = CreateUmbracoReadTool(
   "get-collection-media",
   `Get a collection of media items
   Use this to retrieve a filtered and paginated collection of media items based on various criteria like data type, ordering, and filtering.`,

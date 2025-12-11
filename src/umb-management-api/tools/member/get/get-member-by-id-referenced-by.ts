@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMemberByIdReferencedByParams, getMemberByIdReferencedByQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const GetMemberByIdReferencedByTool = CreateUmbracoTool(
+const GetMemberByIdReferencedByTool = CreateUmbracoReadTool(
   "get-member-by-id-referenced-by",
   `Get items that reference a specific member
   Use this to find all content, documents, or other items that are currently referencing a specific member account.`,

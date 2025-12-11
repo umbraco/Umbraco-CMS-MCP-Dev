@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeDataTypeRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDataTypeRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDataTypeRootTool = CreateUmbracoTool(
+const GetDataTypeRootTool = CreateUmbracoReadTool(
   "get-data-type-root",
   "Gets the root level of the data type and data type folders in the tree.",
   getTreeDataTypeRootQueryParams.shape,

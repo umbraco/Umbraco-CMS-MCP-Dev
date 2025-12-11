@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getDocumentTypeByIdAllowedChildrenParams,
   getDocumentTypeByIdAllowedChildrenQueryParams,
@@ -10,7 +10,7 @@ const paramSchema = getDocumentTypeByIdAllowedChildrenParams.merge(
   getDocumentTypeByIdAllowedChildrenQueryParams
 );
 
-const GetDocumentTypeAllowedChildrenTool = CreateUmbracoTool(
+const GetDocumentTypeAllowedChildrenTool = CreateUmbracoReadTool(
   "get-document-type-allowed-children",
   "Gets the document types that are allowed as children of a document type",
   paramSchema.shape,

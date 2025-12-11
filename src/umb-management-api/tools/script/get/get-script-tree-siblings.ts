@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeScriptSiblingsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeScriptSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetScriptTreeSiblingsTool = CreateUmbracoTool(
+const GetScriptTreeSiblingsTool = CreateUmbracoReadTool(
   "get-script-tree-siblings",
   "Gets sibling scripts for a given descendant path",
   getTreeScriptSiblingsQueryParams.shape,

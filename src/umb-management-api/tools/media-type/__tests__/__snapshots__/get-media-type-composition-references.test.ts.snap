@@ -4,7 +4,13 @@ exports[`get-media-type-composition-references should get composition references
 {
   "content": [
     {
-      "text": "[{"id":"00000000-0000-0000-0000-000000000000","name":"_Test MediaType Composition","icon":"icon-folder"}]",
+      "text": "[
+  {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "_Test MediaType Composition",
+    "icon": "icon-folder"
+  }
+]",
       "type": "text",
     },
   ],

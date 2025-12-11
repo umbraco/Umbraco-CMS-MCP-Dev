@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putMediaByIdValidateParams,
   putMediaByIdValidateBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const ValidateMediaUpdateTool = CreateUmbracoTool(
+const ValidateMediaUpdateTool = CreateUmbracoReadTool(
   "validate-media-update",
   "Validates media data before updating an existing media item by Id",
   {

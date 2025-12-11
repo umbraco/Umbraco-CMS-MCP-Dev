@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinDocumentReferencedByQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetRecycleBinDocumentReferencedByTool = CreateUmbracoTool(
+const GetRecycleBinDocumentReferencedByTool = CreateUmbracoReadTool(
   "get-recycle-bin-document-referenced-by",
   `Get references to deleted document items in the recycle bin
   Use this to find content that still references deleted document items before permanently deleting them.`,

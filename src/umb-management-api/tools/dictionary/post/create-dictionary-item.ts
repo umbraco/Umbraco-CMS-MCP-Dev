@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateDictionaryItemRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 
@@ -15,7 +15,7 @@ const createDictionarySchema = z.object({
 
 type CreateDictionarySchema = z.infer<typeof createDictionarySchema>;
 
-const CreateDictionaryItemTool = CreateUmbracoTool(
+const CreateDictionaryItemTool = CreateUmbracoWriteTool(
   "create-dictionary",
   `Creates a new dictionary item.`,
   createDictionarySchema.shape,

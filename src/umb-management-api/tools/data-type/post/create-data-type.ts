@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
@@ -19,7 +19,7 @@ const createDataTypeSchema = z.object({
 
 type CreateDataTypeSchema = z.infer<typeof createDataTypeSchema>;
 
-const CreateDataTypeTool = CreateUmbracoTool(
+const CreateDataTypeTool = CreateUmbracoWriteTool(
   "create-data-type",
   `Creates a new data type
   

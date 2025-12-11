@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateTemplateRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postTemplateBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const CreateTemplateTool = CreateUmbracoTool(
+const CreateTemplateTool = CreateUmbracoWriteTool(
   "create-template",
   "Creates a new template",
   postTemplateBody.shape,

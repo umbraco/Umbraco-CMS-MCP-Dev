@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postLanguageBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const CreateLanguageTool = CreateUmbracoTool(
+const CreateLanguageTool = CreateUmbracoWriteTool(
   "create-language",
   "Creates a new language",
   postLanguageBody.shape,

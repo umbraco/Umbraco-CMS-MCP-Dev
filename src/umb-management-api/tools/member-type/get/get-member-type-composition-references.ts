@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMemberTypeByIdCompositionReferencesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMemberTypeCompositionReferencesTool = CreateUmbracoTool(
+const GetMemberTypeCompositionReferencesTool = CreateUmbracoReadTool(
   "get-member-type-composition-references",
   "Gets the composition references for a member type",
   getMemberTypeByIdCompositionReferencesParams.shape,

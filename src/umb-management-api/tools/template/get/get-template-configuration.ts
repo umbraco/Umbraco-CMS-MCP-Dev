@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 
-const GetTemplateConfigurationTool = CreateUmbracoTool(
+const GetTemplateConfigurationTool = CreateUmbracoReadTool(
   "get-template-configuration",
   "Gets template configuration settings including whether templates are disabled system-wide",
   {},

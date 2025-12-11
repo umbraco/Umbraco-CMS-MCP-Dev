@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetMemberGroupParams } from "@/umb-management-api/schemas/index.js";
 import { getMemberGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetAllMemberGroupsTool = CreateUmbracoTool(
+const GetAllMemberGroupsTool = CreateUmbracoReadTool(
   "get-all-member-groups",
   `Gets all member groups with optional pagination`,
   getMemberGroupQueryParams.shape,

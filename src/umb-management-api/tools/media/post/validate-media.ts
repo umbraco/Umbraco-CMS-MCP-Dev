@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postMediaValidateBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const ValidateMediaTool = CreateUmbracoTool(
+const ValidateMediaTool = CreateUmbracoReadTool(
   "validate-media",
   "Validates a media item using the Umbraco API.",
   postMediaValidateBody.shape,

@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinMediaByIdOriginalParentParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetRecycleBinMediaOriginalParentTool = CreateUmbracoTool(
+const GetRecycleBinMediaOriginalParentTool = CreateUmbracoReadTool(
   "get-recycle-bin-media-original-parent",
   `Get the original parent location of a media item in the recycle bin
   Returns information about where the media item was located before deletion.`,

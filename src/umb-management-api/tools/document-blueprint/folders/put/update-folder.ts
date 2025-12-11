@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putDocumentBlueprintFolderByIdParams,
   putDocumentBlueprintFolderByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateDocumentBlueprintFolderTool = CreateUmbracoTool(
+const UpdateDocumentBlueprintFolderTool = CreateUmbracoWriteTool(
   "update-document-blueprint-folder",
   "Updates a document blueprint folder",
   {

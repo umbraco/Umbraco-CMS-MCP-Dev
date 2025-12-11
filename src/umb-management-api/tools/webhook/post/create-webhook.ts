@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateWebhookRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postWebhookBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const CreateWebhookTool = CreateUmbracoTool(
+const CreateWebhookTool = CreateUmbracoWriteTool(
   "create-webhook",
   `Creates a new webhook
   Must contain at least one event from the events listed at /umbraco/management/api/v1/webhook/events endpoint.

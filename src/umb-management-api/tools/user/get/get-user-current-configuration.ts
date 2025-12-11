@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 
-const GetUserCurrentConfigurationTool = CreateUmbracoTool(
+const GetUserCurrentConfigurationTool = CreateUmbracoReadTool(
   "get-user-current-configuration",
   "Gets current user configuration settings including login preferences and password requirements",
   {},

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeDocumentTypeRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDocumentTypeRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentTypeRootTool = CreateUmbracoTool(
+const GetDocumentTypeRootTool = CreateUmbracoReadTool(
   "get-document-type-root",
   "Gets the root level of the document type tree. Use get-all-document-types instead unless you specifically need only root level items.",
   getTreeDocumentTypeRootQueryParams.shape,

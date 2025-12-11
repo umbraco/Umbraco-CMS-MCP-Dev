@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
@@ -31,7 +31,7 @@ interface UploadResult {
   error?: string;
 }
 
-const CreateMediaMultipleTool = CreateUmbracoTool(
+const CreateMediaMultipleTool = CreateUmbracoWriteTool(
   "create-media-multiple",
   `Batch upload multiple media files to Umbraco (maximum 20 files per batch).
 

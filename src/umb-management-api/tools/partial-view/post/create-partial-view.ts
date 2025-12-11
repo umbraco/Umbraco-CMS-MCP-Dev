@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreatePartialViewRequestModel } from "@/umb-management-api/schemas/index.js";
 import z from "zod";
 
@@ -11,7 +11,7 @@ const createPartialViewSchema = z.object({
 
 type CreatePartialViewSchema = z.infer<typeof createPartialViewSchema>;
 
-const CreatePartialViewTool = CreateUmbracoTool(
+const CreatePartialViewTool = CreateUmbracoWriteTool(
   "create-partial-view",
   "Creates a new partial view",
   createPartialViewSchema.shape,

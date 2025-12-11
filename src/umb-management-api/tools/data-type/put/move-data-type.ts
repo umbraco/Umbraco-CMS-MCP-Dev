@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { MoveDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putDataTypeByIdMoveParams,
@@ -8,7 +8,7 @@ import {
 
 import { z } from "zod";
 
-const MoveDataTypeTool = CreateUmbracoTool(
+const MoveDataTypeTool = CreateUmbracoWriteTool(
   "move-data-type",
   "Move a data type by Id",
   {

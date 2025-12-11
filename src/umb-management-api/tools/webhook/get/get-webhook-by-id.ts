@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getWebhookByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetWebhookByIdTool = CreateUmbracoTool(
+const GetWebhookByIdTool = CreateUmbracoReadTool(
   "get-webhook-by-id",
   "Gets a webhook by id",
   getWebhookByIdParams.shape,

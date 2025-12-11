@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemStaticFileQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetStaticFilesTool = CreateUmbracoTool(
+const GetStaticFilesTool = CreateUmbracoReadTool(
   "get-static-files",
   "Lists static files with optional path filtering for browsing the file system",
   getItemStaticFileQueryParams.shape,

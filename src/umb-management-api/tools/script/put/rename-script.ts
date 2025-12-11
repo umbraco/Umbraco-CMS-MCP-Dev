@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { RenameScriptRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 
@@ -11,7 +11,7 @@ const renameScriptSchema = z.object({
 
 type RenameScriptSchema = z.infer<typeof renameScriptSchema>;
 
-const RenameScriptTool = CreateUmbracoTool(
+const RenameScriptTool = CreateUmbracoWriteTool(
   "rename-script",
   "Renames a script by name and folder path",
   renameScriptSchema.shape,

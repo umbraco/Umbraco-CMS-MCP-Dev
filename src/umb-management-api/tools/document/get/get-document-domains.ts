@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdDomainsParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentDomainsTool = CreateUmbracoTool(
+const GetDocumentDomainsTool = CreateUmbracoReadTool(
   "get-document-domains",
   "Gets the domains assigned to a document by Id.",
   getDocumentByIdDomainsParams.shape,

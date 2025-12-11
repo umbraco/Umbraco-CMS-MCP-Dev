@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDataTypeChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDataTypeChildrenTool = CreateUmbracoTool(
+const GetDataTypeChildrenTool = CreateUmbracoReadTool(
   "get-data-type-children",
   "Gets the children data types or data type folders by the parent id",
   getTreeDataTypeChildrenQueryParams.shape,

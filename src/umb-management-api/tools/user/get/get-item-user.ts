@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetItemUserTool = CreateUmbracoTool(
+const GetItemUserTool = CreateUmbracoReadTool(
   "get-item-user",
   "Gets user items for selection lists and pickers",
   getItemUserQueryParams.shape,

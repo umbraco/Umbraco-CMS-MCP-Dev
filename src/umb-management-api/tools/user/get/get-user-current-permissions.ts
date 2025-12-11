@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserCurrentPermissionsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetUserCurrentPermissionsTool = CreateUmbracoTool(
+const GetUserCurrentPermissionsTool = CreateUmbracoReadTool(
   "get-user-current-permissions",
   "Gets the current user's permissions for the specified entity",
   getUserCurrentPermissionsQueryParams.shape,

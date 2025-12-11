@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
@@ -40,7 +40,7 @@ type UpdateDocumentPropertiesModel = {
   }>;
 };
 
-const UpdateDocumentPropertiesTool = CreateUmbracoTool(
+const UpdateDocumentPropertiesTool = CreateUmbracoWriteTool(
   "update-document-properties",
   `Updates or adds property values on a document without requiring the full document JSON payload.
 

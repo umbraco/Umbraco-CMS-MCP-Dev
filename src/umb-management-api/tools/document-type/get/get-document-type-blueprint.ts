@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentTypeByIdBlueprintParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentTypeBlueprintTool = CreateUmbracoTool(
+const GetDocumentTypeBlueprintTool = CreateUmbracoReadTool(
   "get-document-type-blueprint",
   "Gets the blueprints for a document type",
   getDocumentTypeByIdBlueprintParams.shape,

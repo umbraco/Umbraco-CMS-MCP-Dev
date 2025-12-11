@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putDocumentByIdDomainsParams,
   putDocumentByIdDomainsBody,
@@ -8,7 +8,7 @@ import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const PutDocumentDomainsTool = CreateUmbracoTool(
+const PutDocumentDomainsTool = CreateUmbracoWriteTool(
   "put-document-domains",
   `Updates the domains assigned to a document by Id. Default value of the defaultIsoCode is null. 
   Domain isoCode in the domains array should be in the format of 'en-US' amd be a valid domain name from the Umbraco instance.`,

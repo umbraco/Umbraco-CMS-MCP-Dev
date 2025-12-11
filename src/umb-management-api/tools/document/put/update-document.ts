@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putDocumentByIdParams,
   putDocumentByIdBody,
@@ -8,7 +8,7 @@ import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const UpdateDocumentTool = CreateUmbracoTool(
+const UpdateDocumentTool = CreateUmbracoWriteTool(
   "update-document",
   `Updates a document by Id. USE AS LAST RESORT ONLY.
 

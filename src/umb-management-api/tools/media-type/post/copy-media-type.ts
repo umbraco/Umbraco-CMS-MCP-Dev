@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { postMediaTypeByIdCopyBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { CopyMediaTypeRequestModel } from "@/umb-management-api/schemas/copyMediaTypeRequestModel.js";
 
-const CopyMediaTypeTool = CreateUmbracoTool(
+const CopyMediaTypeTool = CreateUmbracoWriteTool(
   "copy-media-type",
   "Copy a media type to a new location",
   {

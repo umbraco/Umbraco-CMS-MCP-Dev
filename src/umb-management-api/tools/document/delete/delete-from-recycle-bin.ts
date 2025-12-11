@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteDocumentByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const DeleteFromRecycleBinTool = CreateUmbracoTool(
+const DeleteFromRecycleBinTool = CreateUmbracoWriteTool(
   "delete-from-recycle-bin",
   "Deletes a document from the recycle bin by Id.",
   deleteDocumentByIdParams.shape,

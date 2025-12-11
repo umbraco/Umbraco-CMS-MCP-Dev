@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemTemplateSearchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetTemplateSearchTool = CreateUmbracoTool(
+const GetTemplateSearchTool = CreateUmbracoReadTool(
   "get-template-search",
   "Searches the template tree for a template by name. It does NOT allow for searching for template folders.",
   getItemTemplateSearchQueryParams.shape,

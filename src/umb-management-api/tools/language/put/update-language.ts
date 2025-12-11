@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putLanguageByIsoCodeParams,
   putLanguageByIsoCodeBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateLanguageTool = CreateUmbracoTool(
+const UpdateLanguageTool = CreateUmbracoWriteTool(
   "update-language",
   "Updates an existing language by ISO code",
   {

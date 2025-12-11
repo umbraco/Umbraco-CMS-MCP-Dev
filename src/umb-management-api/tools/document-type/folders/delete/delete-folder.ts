@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteDocumentTypeFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteDocumentTypeFolderTool = CreateUmbracoTool(
+const DeleteDocumentTypeFolderTool = CreateUmbracoWriteTool(
   "delete-document-type-folder",
   "Deletes a document type folder by Id",
   deleteDocumentTypeFolderByIdParams.shape,

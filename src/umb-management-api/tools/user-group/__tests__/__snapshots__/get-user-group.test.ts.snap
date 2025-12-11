@@ -4,7 +4,25 @@ exports[`get-user-group should get a user group by id 1`] = `
 {
   "content": [
     {
-      "text": "{"id":"00000000-0000-0000-0000-000000000000","isDeletable":true,"aliasCanBeChanged":true,"name":"_Test User Group Get","alias":"testUserGroupGet","icon":null,"sections":["Umb.Section.Content"],"languages":[],"hasAccessToAllLanguages":true,"documentStartNode":null,"documentRootAccess":false,"mediaStartNode":null,"mediaRootAccess":false,"fallbackPermissions":[],"permissions":[]}",
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "isDeletable": true,
+  "aliasCanBeChanged": true,
+  "name": "_Test User Group Get",
+  "alias": "testUserGroupGet",
+  "icon": null,
+  "sections": [
+    "Umb.Section.Content"
+  ],
+  "languages": [],
+  "hasAccessToAllLanguages": true,
+  "documentStartNode": null,
+  "documentRootAccess": false,
+  "mediaStartNode": null,
+  "mediaRootAccess": false,
+  "fallbackPermissions": [],
+  "permissions": []
+}",
       "type": "text",
     },
   ],

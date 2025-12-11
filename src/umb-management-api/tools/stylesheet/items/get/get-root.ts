@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeStylesheetRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeStylesheetRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetStylesheetRootTool = CreateUmbracoTool(
+const GetStylesheetRootTool = CreateUmbracoReadTool(
   "get-stylesheet-root",
   "Gets the root stylesheets in the tree structure",
   getTreeStylesheetRootQueryParams.shape,

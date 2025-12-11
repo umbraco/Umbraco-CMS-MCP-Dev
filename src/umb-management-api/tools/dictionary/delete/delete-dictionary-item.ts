@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteDictionaryByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteDictionaryItemTool = CreateUmbracoTool(
+const DeleteDictionaryItemTool = CreateUmbracoWriteTool(
   "delete-dictionary-item",
   "Deletes a dictionary item by Id",
   deleteDictionaryByIdParams.shape,

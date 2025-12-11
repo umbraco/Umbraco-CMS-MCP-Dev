@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateDictionaryItemRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putDictionaryByIdBody,
@@ -8,7 +8,7 @@ import {
 
 import { z } from "zod";
 
-const UpdateDictionaryItemTool = CreateUmbracoTool(
+const UpdateDictionaryItemTool = CreateUmbracoWriteTool(
   "update-dictionary-item",
   "Updates a dictionary item by Id",
   {

@@ -4,7 +4,11 @@ exports[`get-temporary-file should get a temporary file by id 1`] = `
 {
   "content": [
     {
-      "text": "{"id":"00000000-0000-0000-0000-000000000000","availableUntil":"NORMALIZED_DATE","fileName":"example.jpg"}",
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "availableUntil": "NORMALIZED_DATE",
+  "fileName": "example.jpg"
+}",
       "type": "text",
     },
   ],

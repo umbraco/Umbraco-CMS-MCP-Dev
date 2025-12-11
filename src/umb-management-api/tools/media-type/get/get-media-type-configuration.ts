@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetMediaTypeConfigurationTool = CreateUmbracoTool(
+const GetMediaTypeConfigurationTool = CreateUmbracoReadTool(
   "get-media-type-configuration",
   "Gets the configuration for media types",
   {},

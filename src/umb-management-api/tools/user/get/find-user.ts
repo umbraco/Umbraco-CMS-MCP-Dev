@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getFilterUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const FindUserTool = CreateUmbracoTool(
+const FindUserTool = CreateUmbracoReadTool(
   "find-user",
   "Finds users by filtering with name, email, or other criteria",
   getFilterUserQueryParams.shape,

@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteDocumentByIdPublicAccessParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const DeleteDocumentPublicAccessTool = CreateUmbracoTool(
+const DeleteDocumentPublicAccessTool = CreateUmbracoWriteTool(
   "delete-document-public-access",
   "Removes public access settings from a document by Id.",
   deleteDocumentByIdPublicAccessParams.shape,

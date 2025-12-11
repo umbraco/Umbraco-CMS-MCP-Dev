@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdPublicAccessParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const GetDocumentPublicAccessTool = CreateUmbracoTool(
+const GetDocumentPublicAccessTool = CreateUmbracoReadTool(
   "get-document-public-access",
   "Gets the public access settings for a document by Id.",
   getDocumentByIdPublicAccessParams.shape,

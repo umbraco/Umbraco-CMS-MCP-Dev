@@ -1,11 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { putDocumentByIdMoveBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
-const MoveDocumentTool = CreateUmbracoTool(
+const MoveDocumentTool = CreateUmbracoWriteTool(
   "move-document",
   "Move a document to a new location",
   {

@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetRelationTypeParams } from "@/umb-management-api/schemas/index.js";
 import { getRelationTypeQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetRelationTypeTool = CreateUmbracoTool(
+const GetRelationTypeTool = CreateUmbracoReadTool(
   "get-relation-type",
   "Gets all relation types with pagination",
   getRelationTypeQueryParams.shape,

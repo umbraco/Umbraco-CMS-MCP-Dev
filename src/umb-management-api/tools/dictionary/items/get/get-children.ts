@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDictionaryChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDictionaryChildrenTool = CreateUmbracoTool(
+const GetDictionaryChildrenTool = CreateUmbracoReadTool(
   "get-dictionary-children",
   "Gets the children of a dictionary item by Id",
   getTreeDictionaryChildrenQueryParams.shape,

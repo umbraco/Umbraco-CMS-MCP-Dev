@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemDocumentBlueprintQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentBlueprintByIdArrayTool = CreateUmbracoTool(
+const GetDocumentBlueprintByIdArrayTool = CreateUmbracoReadTool(
   "get-document-blueprint-by-id-array",
   "Gets document blueprints by IDs (or empty array if no IDs are provided)",
   getItemDocumentBlueprintQueryParams.shape,

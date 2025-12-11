@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateScriptRequestModel } from "@/umb-management-api/schemas/index.js";
 import z from "zod";
 
@@ -11,7 +11,7 @@ const createScriptSchema = z.object({
 
 type CreateScriptSchema = z.infer<typeof createScriptSchema>;
 
-const CreateScriptTool = CreateUmbracoTool(
+const CreateScriptTool = CreateUmbracoWriteTool(
   "create-script",
   "Creates a new script",
   createScriptSchema.shape,

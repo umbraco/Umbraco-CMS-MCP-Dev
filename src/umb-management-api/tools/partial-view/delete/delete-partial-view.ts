@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deletePartialViewByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeletePartialViewTool = CreateUmbracoTool(
+const DeletePartialViewTool = CreateUmbracoWriteTool(
   "delete-partial-view",
   "Deletes a partial view by its path",
   deletePartialViewByPathParams.shape,

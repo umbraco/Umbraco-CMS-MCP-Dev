@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetItemPartialViewParams } from "@/umb-management-api/schemas/index.js";
 import { getItemPartialViewQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetPartialViewSearchTool = CreateUmbracoTool(
+const GetPartialViewSearchTool = CreateUmbracoReadTool(
   "get-partial-view-search",
   "Searches for partial views by name or path",
   getItemPartialViewQueryParams.shape,

@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserGroupByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetUserGroupTool = CreateUmbracoTool(
+const GetUserGroupTool = CreateUmbracoReadTool(
   "get-user-group",
   "Gets a user group by Id",
   getUserGroupByIdParams.shape,

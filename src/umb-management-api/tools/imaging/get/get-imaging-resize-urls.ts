@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getImagingResizeUrlsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetImagingResizeUrlsParams } from "@/umb-management-api/schemas/index.js";
 
-const GetImagingResizeUrlsTool = CreateUmbracoTool(
+const GetImagingResizeUrlsTool = CreateUmbracoReadTool(
   "get-imaging-resize-urls",
   `Generates resized image URLs for media items.
   Takes media item IDs and resize parameters to generate optimized image URLs.

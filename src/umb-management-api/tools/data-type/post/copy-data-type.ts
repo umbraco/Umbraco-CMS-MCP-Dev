@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CopyDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   postDataTypeByIdCopyParams,
@@ -7,7 +7,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const CopyDataTypeTool = CreateUmbracoTool(
+const CopyDataTypeTool = CreateUmbracoWriteTool(
   "copy-data-type",
   "Copy a data type by Id",
   {

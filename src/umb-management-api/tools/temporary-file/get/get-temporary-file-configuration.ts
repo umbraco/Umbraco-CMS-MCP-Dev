@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetTemporaryFileConfigurationTool = CreateUmbracoTool(
+const GetTemporaryFileConfigurationTool = CreateUmbracoReadTool(
   "get-temporary-file-configuration",
   `Gets the global configuration for temporary files
   This endpoint tells you the following

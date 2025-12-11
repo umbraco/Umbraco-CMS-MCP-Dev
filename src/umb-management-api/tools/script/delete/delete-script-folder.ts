@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteScriptFolderByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteScriptFolderTool = CreateUmbracoTool(
+const DeleteScriptFolderTool = CreateUmbracoWriteTool(
   "delete-script-folder",
   "Deletes a script folder by path",
   deleteScriptFolderByPathParams.shape,

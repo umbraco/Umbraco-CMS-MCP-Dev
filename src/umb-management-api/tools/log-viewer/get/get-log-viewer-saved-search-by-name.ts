@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getLogViewerSavedSearchByNameParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetLogViewerSavedSearchByNameTool = CreateUmbracoTool(
+const GetLogViewerSavedSearchByNameTool = CreateUmbracoReadTool(
   "get-log-viewer-saved-search-by-name",
   "Gets a saved search by name",
   getLogViewerSavedSearchByNameParams.shape,

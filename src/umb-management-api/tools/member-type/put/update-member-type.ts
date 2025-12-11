@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateMemberTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putMemberTypeByIdBody,
@@ -7,7 +7,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateMemberTypeTool = CreateUmbracoTool(
+const UpdateMemberTypeTool = CreateUmbracoWriteTool(
   "update-member-type",
   "Updates a member type by id",
   {

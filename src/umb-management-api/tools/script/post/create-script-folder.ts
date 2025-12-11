@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateScriptFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postScriptFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const CreateScriptFolderTool = CreateUmbracoTool(
+const CreateScriptFolderTool = CreateUmbracoWriteTool(
   "create-script-folder",
   "Creates a new script folder",
   postScriptFolderBody.shape,

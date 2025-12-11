@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeStaticFileChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetStaticFileChildrenTool = CreateUmbracoTool(
+const GetStaticFileChildrenTool = CreateUmbracoReadTool(
   "get-static-file-children",
   "Lists child files and folders in a static file directory by parent path",
   getTreeStaticFileChildrenQueryParams.shape,

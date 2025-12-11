@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteStylesheetByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteStylesheetTool = CreateUmbracoTool(
+const DeleteStylesheetTool = CreateUmbracoWriteTool(
   "delete-stylesheet",
   "Deletes a stylesheet by its path",
   deleteStylesheetByPathParams.shape,

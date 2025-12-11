@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateScriptRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putScriptByPathBody,
@@ -8,7 +8,7 @@ import {
 
 import { z } from "zod";
 
-const UpdateScriptTool = CreateUmbracoTool(
+const UpdateScriptTool = CreateUmbracoWriteTool(
   "update-script",
   "Updates a script by path",
   {

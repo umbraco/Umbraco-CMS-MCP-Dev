@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getWebhookQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetWebhookTool = CreateUmbracoTool(
+const GetWebhookTool = CreateUmbracoReadTool(
   "get-webhook",
   "Gets a paged list of webhooks",
   getWebhookQueryParams.shape,

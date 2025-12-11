@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDocumentRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentRootTool = CreateUmbracoTool(
+const GetDocumentRootTool = CreateUmbracoReadTool(
   "get-document-root",
   "Gets root items for documents.",
   getTreeDocumentRootQueryParams.shape,

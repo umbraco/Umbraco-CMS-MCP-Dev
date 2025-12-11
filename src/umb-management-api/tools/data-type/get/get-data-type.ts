@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDataTypeByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDataTypeTool = CreateUmbracoTool(
+const GetDataTypeTool = CreateUmbracoReadTool(
   "get-data-type",
   "Gets a data type by Id",
   getDataTypeByIdParams.shape,

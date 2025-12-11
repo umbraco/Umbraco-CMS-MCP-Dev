@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getFilterUserGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetFilterUserGroupTool = CreateUmbracoTool(
+const GetFilterUserGroupTool = CreateUmbracoReadTool(
   "get-filter-user-group",
   "Gets filtered user groups",
   getFilterUserGroupQueryParams.shape,

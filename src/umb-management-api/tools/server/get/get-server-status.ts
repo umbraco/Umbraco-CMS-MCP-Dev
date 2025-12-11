@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetServerStatusTool = CreateUmbracoTool(
+const GetServerStatusTool = CreateUmbracoReadTool(
   "get-server-status",
   `Gets the current status of the Umbraco server.
   Returns the server status (serverStatus) which can be one of:

@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemMemberQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetMembersByIdArrayTool = CreateUmbracoTool(
+const GetMembersByIdArrayTool = CreateUmbracoReadTool(
   "get-members-by-id-array",
   "Gets members by IDs (or empty array if no IDs are provided)",
   getItemMemberQueryParams.shape,

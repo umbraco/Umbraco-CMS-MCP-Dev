@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const PostModelsBuilderBuildTool = CreateUmbracoTool(
+const PostModelsBuilderBuildTool = CreateUmbracoWriteTool(
   "post-models-builder-build",
   `Triggers the generation/build of Models Builder models.
   This endpoint initiates the process of generating strongly-typed models from Umbraco content types.

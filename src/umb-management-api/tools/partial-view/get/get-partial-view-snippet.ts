@@ -1,9 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetPartialViewSnippetParams } from "@/umb-management-api/schemas/index.js";
 import { getPartialViewSnippetQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetPartialViewSnippetTool = CreateUmbracoTool(
+const GetPartialViewSnippetTool = CreateUmbracoReadTool(
   "get-partial-view-snippet",
   "Gets partial view snippets with optional filtering",
   getPartialViewSnippetQueryParams.shape,

@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postDocumentVersionByIdRollbackParams, postDocumentVersionByIdRollbackQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 // Combined schema for both path params and query params
@@ -7,7 +7,7 @@ const createDocumentVersionRollbackSchema = postDocumentVersionByIdRollbackParam
   postDocumentVersionByIdRollbackQueryParams
 );
 
-const CreateDocumentVersionRollbackTool = CreateUmbracoTool(
+const CreateDocumentVersionRollbackTool = CreateUmbracoWriteTool(
   "create-document-version-rollback",
   "Rollback document to a specific version",
   createDocumentVersionRollbackSchema.shape,

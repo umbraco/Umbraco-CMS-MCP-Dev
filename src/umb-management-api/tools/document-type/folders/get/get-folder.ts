@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentTypeFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentTypeFolderTool = CreateUmbracoTool(
+const GetDocumentTypeFolderTool = CreateUmbracoReadTool(
   "get-document-type-folder",
   "Gets a document type folder by Id",
   getDocumentTypeFolderByIdParams.shape,

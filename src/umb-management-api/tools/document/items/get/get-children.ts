@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDocumentChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentChildrenTool = CreateUmbracoTool(
+const GetDocumentChildrenTool = CreateUmbracoReadTool(
   "get-document-children",
   "Gets child items for a document.",
   getTreeDocumentChildrenQueryParams.shape,

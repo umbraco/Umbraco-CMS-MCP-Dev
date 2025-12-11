@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getPropertyTypeIsUsedQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetPropertyTypeIsUsedTool = CreateUmbracoTool(
+const GetPropertyTypeIsUsedTool = CreateUmbracoReadTool(
   "get-property-type-is-used",
   "Checks if a property type is used within Umbraco",
   getPropertyTypeIsUsedQueryParams.shape,
