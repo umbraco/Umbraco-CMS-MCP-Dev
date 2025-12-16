@@ -43,7 +43,7 @@ describe("create-media-multiple", () => {
   });
 
   it("should create multiple images in batch", async () => {
-    const result = await CreateMediaMultipleTool().handler(
+    const result = await CreateMediaMultipleTool.handler(
       {
         sourceType: "filePath",
         files: [
@@ -74,7 +74,7 @@ describe("create-media-multiple", () => {
   });
 
   it("should create multiple files with mixed media types", async () => {
-    const result = await CreateMediaMultipleTool().handler(
+    const result = await CreateMediaMultipleTool.handler(
       {
         sourceType: "filePath",
         files: [
@@ -105,7 +105,7 @@ describe("create-media-multiple", () => {
   });
 
   it("should use default File media type when not specified", async () => {
-    const result = await CreateMediaMultipleTool().handler(
+    const result = await CreateMediaMultipleTool.handler(
       {
         sourceType: "filePath",
         files: [
@@ -134,7 +134,7 @@ describe("create-media-multiple", () => {
       mediaTypeName: "Image",
     }));
 
-    const result = await CreateMediaMultipleTool().handler(
+    const result = await CreateMediaMultipleTool.handler(
       {
         sourceType: "filePath",
         files,
@@ -147,7 +147,7 @@ describe("create-media-multiple", () => {
   });
 
   it("should continue processing on individual file errors", async () => {
-    const result = await CreateMediaMultipleTool().handler(
+    const result = await CreateMediaMultipleTool.handler(
       {
         sourceType: "filePath",
         files: [
@@ -179,7 +179,7 @@ describe("create-media-multiple", () => {
   });
 
   it("should create multiple media from URLs", async () => {
-    const result = await CreateMediaMultipleTool().handler(
+    const result = await CreateMediaMultipleTool.handler(
       {
         sourceType: "url",
         files: [

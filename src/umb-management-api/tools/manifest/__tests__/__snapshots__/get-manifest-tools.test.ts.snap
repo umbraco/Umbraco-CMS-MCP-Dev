@@ -15,7 +15,7 @@ exports[`manifest tools get-manifest-manifest-private should get private manifes
 {
   "content": [
     {
-      "text": "[{"name":"@umbraco-cms/backoffice","id":"00000000-0000-0000-0000-000000000000","version":"17.0.0-rc4","extensions":[]},{"name":"Clean","id":"00000000-0000-0000-0000-000000000000","version":"7.0.0","extensions":[{}]}]",
+      "text": "[{"name":"@umbraco-cms/backoffice","id":"00000000-0000-0000-0000-000000000000","version":"17.0.0","extensions":[]},{"name":"Clean","id":"00000000-0000-0000-0000-000000000000","version":"7.0.1","extensions":[{}]}]",
       "type": "text",
     },
   ],

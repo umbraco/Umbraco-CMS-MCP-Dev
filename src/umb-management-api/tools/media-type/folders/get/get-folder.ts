@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaTypeFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaTypeFolderTool = CreateUmbracoReadTool(
-  "get-media-type-folder",
-  "Gets a media type folder by Id",
-  getMediaTypeFolderByIdParams.shape,
-  async ({ id }) => {
+const GetMediaTypeFolderTool = {
+  name: "get-media-type-folder",
+  description: "Gets a media type folder by Id",
+  schema: getMediaTypeFolderByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read', 'folders'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaTypeFolderById(id);
 
@@ -18,7 +21,7 @@ const GetMediaTypeFolderTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMediaTypeFolderByIdParams.shape>;
 
-export default GetMediaTypeFolderTool;
+export default withStandardDecorators(GetMediaTypeFolderTool);

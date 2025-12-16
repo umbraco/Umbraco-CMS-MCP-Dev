@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getPartialViewByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetPartialViewByPathTool = CreateUmbracoReadTool(
-  "get-partial-view-by-path",
-  "Gets a partial view by its path",
-  getPartialViewByPathParams.shape,
-  async (model: { path: string }) => {
+const GetPartialViewByPathTool = {
+  name: "get-partial-view-by-path",
+  description: "Gets a partial view by its path",
+  schema: getPartialViewByPathParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (model: { path: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getPartialViewByPath(model.path);
 
@@ -18,7 +21,7 @@ const GetPartialViewByPathTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getPartialViewByPathParams.shape>;
 
-export default GetPartialViewByPathTool;
+export default withStandardDecorators(GetPartialViewByPathTool);

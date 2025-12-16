@@ -1,11 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetRedirectStatusTool = CreateUmbracoReadTool(
-  "get-redirect-status",
-  `Gets the current status of redirect management.
+const GetRedirectStatusTool = {
+  name: "get-redirect-status",
+  description: `Gets the current status of redirect management.
   Returns information about whether redirects are enabled and other status details.
-  
+
   Example response:
   {
     "isEnabled": true,
@@ -13,8 +14,10 @@ const GetRedirectStatusTool = CreateUmbracoReadTool(
     "totalRedirects": 42,
     "status": "Active"
   }`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getRedirectManagementStatus();
 
@@ -26,7 +29,7 @@ const GetRedirectStatusTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetRedirectStatusTool;
+export default withStandardDecorators(GetRedirectStatusTool);

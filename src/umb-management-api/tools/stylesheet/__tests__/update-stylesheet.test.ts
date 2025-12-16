@@ -32,7 +32,7 @@ describe("update-stylesheet", () => {
     const stylesheetPath = stylesheetBuilder.getPath();
 
     // Act
-    const result = await UpdateStylesheetTool().handler({ 
+    const result = await UpdateStylesheetTool.handler({ 
       path: stylesheetPath, 
       content: UPDATED_CONTENT 
     }, { signal: new AbortController().signal });
@@ -50,7 +50,7 @@ describe("update-stylesheet", () => {
 
   it("should handle non-existent stylesheet", async () => {
     // Act
-    const result = await UpdateStylesheetTool().handler({ 
+    const result = await UpdateStylesheetTool.handler({ 
       path: NON_EXISTENT_STYLESHEET_PATH, 
       content: UPDATED_CONTENT 
     }, { signal: new AbortController().signal });

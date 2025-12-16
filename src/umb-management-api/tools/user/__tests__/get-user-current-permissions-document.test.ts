@@ -17,7 +17,7 @@ describe("get-user-current-permissions-document", () => {
 
   it("should get current user document permissions", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsDocumentTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetUserCurrentPermissionsDocumentTool.handler({}, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -26,7 +26,7 @@ describe("get-user-current-permissions-document", () => {
 
   it("should handle non-existent document ID", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsDocumentTool().handler({
+    const result = await GetUserCurrentPermissionsDocumentTool.handler({
       id: [BLANK_UUID]
     }, { signal: new AbortController().signal });
 

@@ -34,7 +34,7 @@ describe("search-document-type", () => {
       .create();
 
     // Search for document types
-    const result = await SearchDocumentTypeTool().handler({
+    const result = await SearchDocumentTypeTool.handler({
       query: TEST_DOCTYPE_NAME,
       skip: 0,
       take: 10
@@ -60,7 +60,7 @@ describe("search-document-type", () => {
   });
 
   it("should handle empty search results", async () => {
-    const result = await SearchDocumentTypeTool().handler({
+    const result = await SearchDocumentTypeTool.handler({
       query: "NonExistentDocumentType",
       skip: 0,
       take: 10
@@ -83,7 +83,7 @@ describe("search-document-type", () => {
       .create();
 
     // Search with pagination
-    const result = await SearchDocumentTypeTool().handler({
+    const result = await SearchDocumentTypeTool.handler({
       query: TEST_DOCTYPE_NAME,
       skip: 1,
       take: 1

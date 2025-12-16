@@ -43,7 +43,7 @@ describe("update-document-properties", () => {
       .create();
 
     // Act - Update the title property
-    const result = await UpdateDocumentPropertiesTool().handler(
+    const result = await UpdateDocumentPropertiesTool.handler(
       {
         id: builder.getId(),
         properties: [
@@ -77,7 +77,7 @@ describe("update-document-properties", () => {
       .create();
 
     // Act - Update the title property once
-    await UpdateDocumentPropertiesTool().handler(
+    await UpdateDocumentPropertiesTool.handler(
       {
         id: builder.getId(),
         properties: [
@@ -91,7 +91,7 @@ describe("update-document-properties", () => {
     );
 
     // Act - Update the title property again to a different value
-    const result = await UpdateDocumentPropertiesTool().handler(
+    const result = await UpdateDocumentPropertiesTool.handler(
       {
         id: builder.getId(),
         properties: [
@@ -124,7 +124,7 @@ describe("update-document-properties", () => {
       .create();
 
     // Act - Try to update with a non-existent property alias
-    const result = await UpdateDocumentPropertiesTool().handler(
+    const result = await UpdateDocumentPropertiesTool.handler(
       {
         id: builder.getId(),
         properties: [
@@ -154,7 +154,7 @@ describe("update-document-properties", () => {
 
   it("should handle non-existent document", async () => {
     // Act - Try to update properties on a document that doesn't exist
-    const result = await UpdateDocumentPropertiesTool().handler(
+    const result = await UpdateDocumentPropertiesTool.handler(
       {
         id: BLANK_UUID,
         properties: [
@@ -188,7 +188,7 @@ describe("update-document-properties", () => {
     expect(initialTitle?.value).toBe(INITIAL_TITLE);
 
     // Act - Update the title property to a new value
-    const result = await UpdateDocumentPropertiesTool().handler(
+    const result = await UpdateDocumentPropertiesTool.handler(
       {
         id: builder.getId(),
         properties: [
@@ -289,7 +289,7 @@ describe("update-document-properties", () => {
       const docTypeId = await createMultiCultureDocType();
 
       // Create a multi-culture document with culture-specific title values
-      const createResult = await CreateDocumentTool().handler(
+      const createResult = await CreateDocumentTool.handler(
         {
           documentTypeId: docTypeId,
           name: MULTI_CULTURE_DOC_NAME,
@@ -314,7 +314,7 @@ describe("update-document-properties", () => {
       const documentId = createResponse.id;
 
       // Act - Update only the English title
-      const result = await UpdateDocumentPropertiesTool().handler(
+      const result = await UpdateDocumentPropertiesTool.handler(
         {
           id: documentId,
           properties: [
@@ -359,7 +359,7 @@ describe("update-document-properties", () => {
       const docTypeId = await createMultiCultureDocType();
 
       // Create a multi-culture document with culture-specific values
-      const createResult = await CreateDocumentTool().handler(
+      const createResult = await CreateDocumentTool.handler(
         {
           documentTypeId: docTypeId,
           name: MULTI_CULTURE_DOC_NAME,
@@ -384,7 +384,7 @@ describe("update-document-properties", () => {
       const documentId = createResponse.id;
 
       // Act - Update both culture titles in a single call
-      const result = await UpdateDocumentPropertiesTool().handler(
+      const result = await UpdateDocumentPropertiesTool.handler(
         {
           id: documentId,
           properties: [
@@ -435,7 +435,7 @@ describe("update-document-properties", () => {
       const docTypeId = await createMultiCultureDocType();
 
       // Create a document with only English culture (no Danish)
-      const createResult = await CreateDocumentTool().handler(
+      const createResult = await CreateDocumentTool.handler(
         {
           documentTypeId: docTypeId,
           name: MULTI_CULTURE_DOC_NAME,
@@ -459,7 +459,7 @@ describe("update-document-properties", () => {
       const documentId = createResponse.id;
 
       // Act - Add the Danish title property (didn't exist on document before but exists on doc type)
-      const result = await UpdateDocumentPropertiesTool().handler(
+      const result = await UpdateDocumentPropertiesTool.handler(
         {
           id: documentId,
           properties: [
@@ -549,7 +549,7 @@ describe("update-document-properties", () => {
       expect(initialDoc.values).toHaveLength(0);
 
       // Act - Add the author property
-      const result = await UpdateDocumentPropertiesTool().handler(
+      const result = await UpdateDocumentPropertiesTool.handler(
         {
           id: documentId,
           properties: [
@@ -602,7 +602,7 @@ describe("update-document-properties", () => {
       const documentId = docBuilder.getId();
 
       // Act - Add the subtitle property from composition
-      const result = await UpdateDocumentPropertiesTool().handler(
+      const result = await UpdateDocumentPropertiesTool.handler(
         {
           id: documentId,
           properties: [
@@ -657,7 +657,7 @@ describe("update-document-properties", () => {
       const documentId = docBuilder.getId();
 
       // Act - Update title AND add author in single call
-      const result = await UpdateDocumentPropertiesTool().handler(
+      const result = await UpdateDocumentPropertiesTool.handler(
         {
           id: documentId,
           properties: [
@@ -705,7 +705,7 @@ describe("update-document-properties", () => {
       const documentId = docBuilder.getId();
 
       // Act - Try to add author with a culture (should fail - invariant property)
-      const result = await UpdateDocumentPropertiesTool().handler(
+      const result = await UpdateDocumentPropertiesTool.handler(
         {
           id: documentId,
           properties: [
@@ -749,7 +749,7 @@ describe("update-document-properties", () => {
       const documentId = docBuilder.getId();
 
       // Act - Try to add author without a culture (should fail - variant property)
-      const result = await UpdateDocumentPropertiesTool().handler(
+      const result = await UpdateDocumentPropertiesTool.handler(
         {
           id: documentId,
           properties: [
@@ -792,7 +792,7 @@ describe("update-document-properties", () => {
       const documentId = docBuilder.getId();
 
       // Act - Try to add property that doesn't exist on document type
-      const result = await UpdateDocumentPropertiesTool().handler(
+      const result = await UpdateDocumentPropertiesTool.handler(
         {
           id: documentId,
           properties: [

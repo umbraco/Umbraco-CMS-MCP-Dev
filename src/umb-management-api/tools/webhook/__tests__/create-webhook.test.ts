@@ -25,7 +25,7 @@ describe("create-webhook", () => {
       .withUrl(TEST_WEBHOOOK_URL)
       .withEvents([CONTENT_PUBLISHED_EVENT]);
 
-    const result = await CreateWebhookTool().handler(builder.build(), {
+    const result = await CreateWebhookTool.handler(builder.build(), {
       signal: new AbortController().signal,
     });
 
@@ -44,7 +44,7 @@ describe("create-webhook", () => {
       // Missing required URL field
     };
 
-    const result = await CreateWebhookTool().handler(invalidModel as any, {
+    const result = await CreateWebhookTool.handler(invalidModel as any, {
       signal: new AbortController().signal,
     });
 

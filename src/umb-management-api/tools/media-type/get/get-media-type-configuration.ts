@@ -1,11 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaTypeConfigurationTool = CreateUmbracoReadTool(
-  "get-media-type-configuration",
-  "Gets the configuration for media types",
-  {},
-  async () => {
+const emptySchema = z.object({});
+
+const GetMediaTypeConfigurationTool = {
+  name: "get-media-type-configuration",
+  description: "Gets the configuration for media types",
+  schema: emptySchema.shape,
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaTypeConfiguration();
 
@@ -17,7 +23,7 @@ const GetMediaTypeConfigurationTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof emptySchema.shape>;
 
-export default GetMediaTypeConfigurationTool;
+export default withStandardDecorators(GetMediaTypeConfigurationTool);

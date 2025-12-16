@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetItemUserParams } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetItemUserTool = CreateUmbracoReadTool(
-  "get-item-user",
-  "Gets user items for selection lists and pickers",
-  getItemUserQueryParams.shape,
-  async (params) => {
+const GetItemUserTool = {
+  name: "get-item-user",
+  description: "Gets user items for selection lists and pickers",
+  schema: getItemUserQueryParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (params: GetItemUserParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemUser(params);
 
@@ -18,7 +22,7 @@ const GetItemUserTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemUserQueryParams.shape>;
 
-export default GetItemUserTool;
+export default withStandardDecorators(GetItemUserTool);

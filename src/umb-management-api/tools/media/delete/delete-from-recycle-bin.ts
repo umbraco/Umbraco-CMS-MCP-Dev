@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteMediaByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteFromRecycleBinTool = CreateUmbracoWriteTool(
-  "delete-media-from-recycle-bin",
-  "Deletes a media item from the recycle bin by Id.",
-  deleteMediaByIdParams.shape,
-  async ({ id }) => {
+const DeleteFromRecycleBinTool = {
+  name: "delete-media-from-recycle-bin",
+  description: "Deletes a media item from the recycle bin by Id.",
+  schema: deleteMediaByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete', 'recycle-bin'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteMediaById(id);
     return {
@@ -17,7 +20,7 @@ const DeleteFromRecycleBinTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteMediaByIdParams.shape>;
 
-export default DeleteFromRecycleBinTool;
+export default withStandardDecorators(DeleteFromRecycleBinTool);

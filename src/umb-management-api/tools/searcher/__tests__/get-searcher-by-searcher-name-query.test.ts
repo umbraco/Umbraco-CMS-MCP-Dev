@@ -20,7 +20,7 @@ describe("get-searcher-by-searcher-name-query", () => {
   });
 
   it("should get searcher query results by searcher name", async () => {
-    const result = await GetSearcherBySearcherNameQueryTool().handler(
+    const result = await GetSearcherBySearcherNameQueryTool.handler(
       { searcherName: TEST_SEARCHER_NAME, take: 100 },
       { signal: new AbortController().signal }
     );

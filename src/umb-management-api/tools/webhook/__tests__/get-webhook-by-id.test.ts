@@ -32,7 +32,7 @@ describe("get-webhook-by-id", () => {
       .withEvents([CONTENT_PUBLISHED_EVENT, CONTENT_DELETED_EVENT])
       .create();
 
-    const result = await GetWebhookByIdTool().handler(
+    const result = await GetWebhookByIdTool.handler(
       {
         id: builder.getId(),
       },
@@ -49,7 +49,7 @@ describe("get-webhook-by-id", () => {
   });
 
   it("should handle non-existent webhook", async () => {
-    const result = await GetWebhookByIdTool().handler(
+    const result = await GetWebhookByIdTool.handler(
       {
         id: BLANK_UUID,
       },

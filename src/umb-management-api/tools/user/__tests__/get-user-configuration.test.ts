@@ -16,7 +16,7 @@ describe("get-user-configuration", () => {
 
   it("should get the user configuration", async () => {
     // Act
-    const result = await GetUserConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetUserConfigurationTool.handler({ signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

@@ -29,7 +29,7 @@ describe("unpublish-document", () => {
     const item = builder.getCreatedItem();
 
     // Unpublish the document
-    const result = await UnpublishDocumentTool().handler(
+    const result = await UnpublishDocumentTool.handler(
       {
         id: item.id,
         data: { cultures: null },
@@ -49,7 +49,7 @@ describe("unpublish-document", () => {
   });
 
   it("should handle unpublishing a non-existent document", async () => {
-    const result = await UnpublishDocumentTool().handler(
+    const result = await UnpublishDocumentTool.handler(
       {
         id: BLANK_UUID,
         data: { cultures: [] },

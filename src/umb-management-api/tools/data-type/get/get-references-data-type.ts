@@ -1,10 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDataTypeByIdReferencedByParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetReferencesDataTypeTool = CreateUmbracoReadTool(
-  "get-references-data-type",
-  `Gets the document types and properties that use a specific data type.
+const GetReferencesDataTypeTool = {
+  name: "get-references-data-type",
+  description: `Gets the document types and properties that use a specific data type.
 
   This is the recommended method to find all document types that reference a particular data type.
 
@@ -16,10 +17,12 @@ const GetReferencesDataTypeTool = CreateUmbracoReadTool(
   Returns a detailed list with content type information (id, type, name, icon) and all properties
   (name, alias) that use the specified data type.
   `,
-  getDataTypeByIdReferencedByParams.shape,
-  async ({ id }) => {
+  schema: getDataTypeByIdReferencedByParams.shape,
+  isReadOnly: true,
+  slices: ['references'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getDataTypeByIdReferencedBy(id);
+    const response = await client.getDataTypeByIdReferencedBy(id);
 
     return {
       content: [
@@ -29,7 +32,7 @@ const GetReferencesDataTypeTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getDataTypeByIdReferencedByParams.shape>;
 
-export default GetReferencesDataTypeTool;
+export default withStandardDecorators(GetReferencesDataTypeTool);

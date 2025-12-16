@@ -37,7 +37,7 @@ describe("get-script", () => {
         .withContent(TEST_SCRIPT_CONTENT)
         .create();
 
-      const result = await GetScriptByPathTool().handler({
+      const result = await GetScriptByPathTool.handler({
         path: scriptBuilder.getPath(),
       }, {
         signal: new AbortController().signal,
@@ -47,7 +47,7 @@ describe("get-script", () => {
     });
 
     it("should handle non-existent script", async () => {
-      const result = await GetScriptByPathTool().handler({
+      const result = await GetScriptByPathTool.handler({
         path: NONEXISTENT_SCRIPT_PATH,
       }, {
         signal: new AbortController().signal,
@@ -64,7 +64,7 @@ describe("get-script", () => {
         .withName(TEST_FOLDER_NAME)
         .create();
 
-      const result = await GetScriptFolderByPathTool().handler({
+      const result = await GetScriptFolderByPathTool.handler({
         path: folderBuilder.getPath(),
       }, {
         signal: new AbortController().signal,
@@ -74,7 +74,7 @@ describe("get-script", () => {
     });
 
     it("should handle non-existent script folder", async () => {
-      const result = await GetScriptFolderByPathTool().handler({
+      const result = await GetScriptFolderByPathTool.handler({
         path: NONEXISTENT_FOLDER_PATH,
       }, {
         signal: new AbortController().signal,

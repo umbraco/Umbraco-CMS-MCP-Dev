@@ -32,7 +32,7 @@ describe("find-user", () => {
     await userBuilder.create();
 
     // Act
-    const result = await FindUserTool().handler({
+    const result = await FindUserTool.handler({
       filter: TEST_USER_NAME,
       skip: 0,
       take: 10
@@ -55,7 +55,7 @@ describe("find-user", () => {
 
   it("should return empty results for non-existent user", async () => {
     // Act
-    const result = await FindUserTool().handler({
+    const result = await FindUserTool.handler({
       filter: "NonExistentUser123",
       skip: 0,
       take: 10

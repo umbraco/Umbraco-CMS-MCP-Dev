@@ -1,14 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteDataTypeByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteDataTypeTool = CreateUmbracoWriteTool(
-  "delete-data-type",
-  "Deletes a data type by Id",
-  deleteDataTypeByIdParams.shape,
-  async ({ id }) => {
+const DeleteDataTypeTool = {
+  name: "delete-data-type",
+  description: "Deletes a data type by Id",
+  schema: deleteDataTypeByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.deleteDataTypeById(id);
+    const response = await client.deleteDataTypeById(id);
 
     return {
       content: [
@@ -18,7 +21,7 @@ const DeleteDataTypeTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteDataTypeByIdParams.shape>;
 
-export default DeleteDataTypeTool;
+export default withStandardDecorators(DeleteDataTypeTool);

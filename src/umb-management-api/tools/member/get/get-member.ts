@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMemberByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMemberTool = CreateUmbracoReadTool(
-  "get-member",
-  "Gets a member by Id",
-  getMemberByIdParams.shape,
-  async ({ id }) => {
+const GetMemberTool = {
+  name: "get-member",
+  description: "Gets a member by Id",
+  schema: getMemberByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMemberById(id);
 
@@ -18,7 +21,7 @@ const GetMemberTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMemberByIdParams.shape>;
 
-export default GetMemberTool;
+export default withStandardDecorators(GetMemberTool);

@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getWebhookLogsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetAllWebhookLogsTool = CreateUmbracoReadTool(
-  "get-all-webhook-logs",
-  "Gets logs for all webhooks",
-  getWebhookLogsQueryParams.shape,
-  async (params: { skip?: number; take?: number }) => {
+const GetAllWebhookLogsTool = {
+  name: "get-all-webhook-logs",
+  description: "Gets logs for all webhooks",
+  schema: getWebhookLogsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: { skip?: number; take?: number }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getWebhookLogs(params);
 
@@ -18,7 +21,7 @@ const GetAllWebhookLogsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getWebhookLogsQueryParams.shape>;
 
-export default GetAllWebhookLogsTool;
+export default withStandardDecorators(GetAllWebhookLogsTool);

@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserByIdTool = CreateUmbracoReadTool(
-  "get-user-by-id",
-  "Gets a user by their unique identifier",
-  getUserByIdParams.shape,
-  async ({ id }) => {
+const GetUserByIdTool = {
+  name: "get-user-by-id",
+  description: "Gets a user by their unique identifier",
+  schema: getUserByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getUserById(id);
 
@@ -18,7 +21,7 @@ const GetUserByIdTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getUserByIdParams.shape>;
 
-export default GetUserByIdTool;
+export default withStandardDecorators(GetUserByIdTool);

@@ -1,11 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getImagingResizeUrlsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetImagingResizeUrlsParams } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetImagingResizeUrlsTool = CreateUmbracoReadTool(
-  "get-imaging-resize-urls",
-  `Generates resized image URLs for media items.
+const GetImagingResizeUrlsTool = {
+  name: "get-imaging-resize-urls",
+  description: `Generates resized image URLs for media items.
   Takes media item IDs and resize parameters to generate optimized image URLs.
   Returns an object containing:
   - Array of media items with their resize URL information
@@ -16,8 +17,10 @@ const GetImagingResizeUrlsTool = CreateUmbracoReadTool(
   - height: Target height in pixels (default: 200)
   - width: Target width in pixels (default: 200)
   - mode: Resize mode (Crop, Max, Stretch, Pad, BoxPad, Min)`,
-  getImagingResizeUrlsQueryParams.shape,
-  async (model: GetImagingResizeUrlsParams) => {
+  schema: getImagingResizeUrlsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (model: GetImagingResizeUrlsParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getImagingResizeUrls(model);
 
@@ -30,6 +33,6 @@ const GetImagingResizeUrlsTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getImagingResizeUrlsQueryParams.shape>;
 
-export default GetImagingResizeUrlsTool;
+export default withStandardDecorators(GetImagingResizeUrlsTool);

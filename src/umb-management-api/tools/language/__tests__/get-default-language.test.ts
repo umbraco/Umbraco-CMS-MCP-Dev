@@ -18,7 +18,7 @@ describe("get-default-language", () => {
   });
 
   it("should get the default language", async () => {
-    const result = await GetDefaultLanguageTool().handler(
+    const result = await GetDefaultLanguageTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -34,7 +34,7 @@ describe("get-default-language", () => {
           throw new Error("Simulated error");
         },
       } as any);
-    const result = await GetDefaultLanguageTool().handler(
+    const result = await GetDefaultLanguageTool.handler(
       {},
       { signal: new AbortController().signal }
     );

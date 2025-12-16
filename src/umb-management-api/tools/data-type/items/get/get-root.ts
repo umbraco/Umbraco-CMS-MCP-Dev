@@ -1,15 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeDataTypeRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDataTypeRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDataTypeRootTool = CreateUmbracoReadTool(
-  "get-data-type-root",
-  "Gets the root level of the data type and data type folders in the tree.",
-  getTreeDataTypeRootQueryParams.shape,
-  async (params: GetTreeDataTypeRootParams) => {
+const GetDataTypeRootTool = {
+  name: "get-data-type-root",
+  description: "Gets the root level of the data type and data type folders in the tree.",
+  schema: getTreeDataTypeRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetTreeDataTypeRootParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getTreeDataTypeRoot(params);
+    const response = await client.getTreeDataTypeRoot(params);
     return {
       content: [
         {
@@ -18,7 +21,7 @@ const GetDataTypeRootTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeDataTypeRootQueryParams.shape>;
 
-export default GetDataTypeRootTool;
+export default withStandardDecorators(GetDataTypeRootTool);

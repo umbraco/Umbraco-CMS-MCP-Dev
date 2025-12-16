@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteMediaTypeByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteMediaTypeTool = CreateUmbracoWriteTool(
-  "delete-media-type",
-  "Deletes a media type by Id",
-  deleteMediaTypeByIdParams.shape,
-  async ({ id }) => {
+const DeleteMediaTypeTool = {
+  name: "delete-media-type",
+  description: "Deletes a media type by Id",
+  schema: deleteMediaTypeByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteMediaTypeById(id);
 
@@ -18,7 +21,7 @@ const DeleteMediaTypeTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteMediaTypeByIdParams.shape>;
 
-export default DeleteMediaTypeTool;
+export default withStandardDecorators(DeleteMediaTypeTool);

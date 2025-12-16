@@ -11,7 +11,7 @@ export const PropertyTypeCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [GetPropertyTypeIsUsedTool()];
+    const tools: ToolDefinition<any>[] = [GetPropertyTypeIsUsedTool];
     return tools
   }
 };

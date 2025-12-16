@@ -1,15 +1,22 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getLanguageByIsoCodeParams,
   getLanguageByIsoCodeResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetLanguageByIsoCodeTool = CreateUmbracoReadTool(
-  "get-language-by-iso-code",
-  "Gets a language by ISO code",
-  getLanguageByIsoCodeParams.shape,
-  async (model) => {
+type GetLanguageByIsoCodeModel = {
+  isoCode: string;
+};
+
+const GetLanguageByIsoCodeTool = {
+  name: "get-language-by-iso-code",
+  description: "Gets a language by ISO code",
+  schema: getLanguageByIsoCodeParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (model: GetLanguageByIsoCodeModel) => {
     const client = UmbracoManagementClient.getClient();
     const params = getLanguageByIsoCodeParams.parse(model);
     const response = await client.getLanguageByIsoCode(params.isoCode);
@@ -22,7 +29,7 @@ const GetLanguageByIsoCodeTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getLanguageByIsoCodeParams.shape>;
 
-export default GetLanguageByIsoCodeTool;
+export default withStandardDecorators(GetLanguageByIsoCodeTool);

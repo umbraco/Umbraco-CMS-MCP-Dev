@@ -33,7 +33,7 @@ describe("find-member", () => {
       .create();
 
     // Use the tool to find by username
-    const result = await FindMemberTool().handler(
+    const result = await FindMemberTool.handler(
       { filter: TEST_MEMBER_USERNAME, orderBy: "username", take: 100 },
       { signal: new AbortController().signal }
     );
@@ -47,7 +47,7 @@ describe("find-member", () => {
   });
 
   it("should return no results for a non-existent filter", async () => {
-    const result = await FindMemberTool().handler(
+    const result = await FindMemberTool.handler(
       {
         filter: "nonexistentuser_" + Date.now(),
         orderBy: "username",
@@ -78,7 +78,7 @@ describe("find-member", () => {
       .create();
 
     // Use the tool to get only one result
-    const result = await FindMemberTool().handler(
+    const result = await FindMemberTool.handler(
       { filter: "findmember@example.com", orderBy: "username", take: 1 },
       { signal: new AbortController().signal }
     );

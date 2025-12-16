@@ -1,15 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetCultureParams } from "@/umb-management-api/schemas/index.js";
 import { getCultureQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetCulturesTool = CreateUmbracoTool(
-  "get-culture",
-  "Retrieves a paginated list of cultures that Umbraco can be configured to use",
-  getCultureQueryParams.shape,
-  async (params: GetCultureParams) => {
+const GetCulturesTool = {
+  name: "get-culture",
+  description: "Retrieves a paginated list of cultures that Umbraco can be configured to use",
+  schema: getCultureQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: GetCultureParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getCulture(params);
+    const response = await client.getCulture(params);
     return {
       content: [
         {
@@ -18,7 +21,7 @@ const GetCulturesTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getCultureQueryParams.shape>;
 
-export default GetCulturesTool;
+export default withStandardDecorators(GetCulturesTool);

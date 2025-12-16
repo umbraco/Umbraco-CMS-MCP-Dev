@@ -15,7 +15,7 @@ describe("get-data-type-property-editor-template", () => {
 
   it("should list all available property editors when no editorName is provided", async () => {
     // Act
-    const result = await GetDataTypePropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -33,7 +33,7 @@ describe("get-data-type-property-editor-template", () => {
 
   it("should return template for a specific property editor", async () => {
     // Act
-    const result = await GetDataTypePropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "Textbox" },
       { signal: new AbortController().signal }
     );
@@ -52,7 +52,7 @@ describe("get-data-type-property-editor-template", () => {
 
   it("should be case-insensitive when finding property editors", async () => {
     // Act
-    const result = await GetDataTypePropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "textbox" },
       { signal: new AbortController().signal }
     );
@@ -66,7 +66,7 @@ describe("get-data-type-property-editor-template", () => {
 
   it("should include notes for editors that have special requirements", async () => {
     // Act
-    const result = await GetDataTypePropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "BlockList" },
       { signal: new AbortController().signal }
     );
@@ -81,7 +81,7 @@ describe("get-data-type-property-editor-template", () => {
 
   it("should return error for non-existent property editor", async () => {
     // Act
-    const result = await GetDataTypePropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "NonExistentEditor" },
       { signal: new AbortController().signal }
     );
@@ -97,7 +97,7 @@ describe("get-data-type-property-editor-template", () => {
 
   it("should include configuration values for editors with settings", async () => {
     // Act
-    const result = await GetDataTypePropertyEditorTemplateTool().handler(
+    const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "Toggle" },
       { signal: new AbortController().signal }
     );

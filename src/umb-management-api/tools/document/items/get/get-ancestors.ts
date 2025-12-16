@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDocumentAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetDocumentAncestorsTool = CreateUmbracoReadTool(
-  "get-document-ancestors",
-  "Gets ancestor items for a document.",
-  getTreeDocumentAncestorsQueryParams.shape,
-  async (params) => {
+const GetDocumentAncestorsTool = {
+  name: "get-document-ancestors",
+  description: "Gets ancestor items for a document.",
+  schema: getTreeDocumentAncestorsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: z.infer<typeof getTreeDocumentAncestorsQueryParams>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeDocumentAncestors(params);
     return {
@@ -17,7 +21,7 @@ const GetDocumentAncestorsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeDocumentAncestorsQueryParams.shape>;
 
-export default GetDocumentAncestorsTool;
+export default withStandardDecorators(GetDocumentAncestorsTool);

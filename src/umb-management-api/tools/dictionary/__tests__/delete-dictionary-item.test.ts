@@ -31,7 +31,7 @@ describe("delete-dictionary-item", () => {
       .withTranslation(DEFAULT_ISO_CODE, TEST_DICTIONARY_TRANSLATION)
       .create();
 
-    const result = await DeleteDictionaryItemTool().handler(
+    const result = await DeleteDictionaryItemTool.handler(
       {
         id: builder.getId(),
       },
@@ -49,7 +49,7 @@ describe("delete-dictionary-item", () => {
   });
 
   it("should handle non-existent dictionary item", async () => {
-    const result = await DeleteDictionaryItemTool().handler(
+    const result = await DeleteDictionaryItemTool.handler(
       {
         id: BLANK_UUID,
       },

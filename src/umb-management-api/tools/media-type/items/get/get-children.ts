@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeMediaTypeChildrenParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeMediaTypeChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaTypeChildrenTool = CreateUmbracoReadTool(
-  "get-media-type-children",
-  "Gets the children of a media type",
-  getTreeMediaTypeChildrenQueryParams.shape,
-  async (params: GetTreeMediaTypeChildrenParams) => {
+const GetMediaTypeChildrenTool = {
+  name: "get-media-type-children",
+  description: "Gets the children of a media type",
+  schema: getTreeMediaTypeChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetTreeMediaTypeChildrenParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeMediaTypeChildren(params);
 
@@ -19,7 +22,7 @@ const GetMediaTypeChildrenTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeMediaTypeChildrenQueryParams.shape>;
 
-export default GetMediaTypeChildrenTool;
+export default withStandardDecorators(GetMediaTypeChildrenTool);

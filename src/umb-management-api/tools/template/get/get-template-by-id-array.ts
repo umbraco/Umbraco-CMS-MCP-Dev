@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemTemplateQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetTemplatesByIdArrayTool = CreateUmbracoReadTool(
-  "get-templates-by-id-array",
-  "Gets templates by IDs (or empty array if no IDs are provided)",
-  getItemTemplateQueryParams.shape,
-  async (params: { id?: string[] }) => {
+const GetTemplatesByIdArrayTool = {
+  name: "get-templates-by-id-array",
+  description: "Gets templates by IDs (or empty array if no IDs are provided)",
+  schema: getItemTemplateQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: { id?: string[] }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemTemplate(params);
 
@@ -18,7 +21,7 @@ const GetTemplatesByIdArrayTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemTemplateQueryParams.shape>;
 
-export default GetTemplatesByIdArrayTool;
+export default withStandardDecorators(GetTemplatesByIdArrayTool);

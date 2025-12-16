@@ -27,7 +27,7 @@ describe("document-type-folder", () => {
 
   describe("create", () => {
     it("should create a folder", async () => {
-      const result = await CreateDocumentTypeFolderTool().handler(
+      const result = await CreateDocumentTypeFolderTool.handler(
         {
           name: TEST_FOLDER_NAME,
         },
@@ -51,7 +51,7 @@ describe("document-type-folder", () => {
       ).create();
       expect(parentBuilder).toBeDefined();
 
-      const result = await CreateDocumentTypeFolderTool().handler(
+      const result = await CreateDocumentTypeFolderTool.handler(
         {
           name: TEST_FOLDER_NAME,
           parent: { id: parentBuilder.getId() },
@@ -78,7 +78,7 @@ describe("document-type-folder", () => {
       ).create();
       expect(builder).toBeDefined();
 
-      const result = await UpdateDocumentTypeFolderTool().handler(
+      const result = await UpdateDocumentTypeFolderTool.handler(
         {
           id: builder.getId(),
           data: {
@@ -100,7 +100,7 @@ describe("document-type-folder", () => {
     });
 
     it("should handle non-existent folder", async () => {
-      const result = await UpdateDocumentTypeFolderTool().handler(
+      const result = await UpdateDocumentTypeFolderTool.handler(
         {
           id: BLANK_UUID,
           data: {
@@ -122,7 +122,7 @@ describe("document-type-folder", () => {
       ).create();
       expect(builder).toBeDefined();
 
-      const result = await DeleteDocumentTypeFolderTool().handler(
+      const result = await DeleteDocumentTypeFolderTool.handler(
         {
           id: builder.getId(),
         },
@@ -139,7 +139,7 @@ describe("document-type-folder", () => {
     });
 
     it("should handle non-existent folder", async () => {
-      const result = await DeleteDocumentTypeFolderTool().handler(
+      const result = await DeleteDocumentTypeFolderTool.handler(
         {
           id: BLANK_UUID,
         },

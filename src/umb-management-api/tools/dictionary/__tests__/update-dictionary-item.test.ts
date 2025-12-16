@@ -36,7 +36,7 @@ describe("update-dictionary-item", () => {
       .withTranslation(DEFAULT_ISO_CODE, TEST_DICTIONARY_TRANSLATION)
       .create();
 
-    const result = await UpdateDictionaryItemTool().handler(
+    const result = await UpdateDictionaryItemTool.handler(
       {
         id: helper.getId(),
         data: {
@@ -64,7 +64,7 @@ describe("update-dictionary-item", () => {
   });
 
   it("should handle non-existent dictionary item", async () => {
-    const result = await UpdateDictionaryItemTool().handler(
+    const result = await UpdateDictionaryItemTool.handler(
       {
         id: BLANK_UUID,
         data: {

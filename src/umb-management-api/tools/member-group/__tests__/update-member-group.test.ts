@@ -26,7 +26,7 @@ describe("update-member-group", () => {
 
   it("should update a member group", async () => {
     await builder.withName(TEST_GROUP_NAME).create();
-    const result = await UpdateMemberGroupTool().handler(
+    const result = await UpdateMemberGroupTool.handler(
       {
         id: builder.getId(),
         data: { name: UPDATED_GROUP_NAME },
@@ -42,7 +42,7 @@ describe("update-member-group", () => {
   });
 
   it("should handle non-existent member group", async () => {
-    const result = await UpdateMemberGroupTool().handler(
+    const result = await UpdateMemberGroupTool.handler(
       {
         id: BLANK_UUID,
         data: { name: NON_EXISTENT_GROUP_NAME },

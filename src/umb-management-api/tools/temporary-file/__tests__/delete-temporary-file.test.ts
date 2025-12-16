@@ -21,7 +21,7 @@ describe("delete-temporary-file", () => {
   it("should delete a temporary file", async () => {
     await builder.withExampleFile().create();
 
-    const result = await DeleteTemporaryFileTool().handler(
+    const result = await DeleteTemporaryFileTool.handler(
       {
         id: builder.getId(),
       },
@@ -36,7 +36,7 @@ describe("delete-temporary-file", () => {
   });
 
   it("should handle non-existent temporary file", async () => {
-    const result = await DeleteTemporaryFileTool().handler(
+    const result = await DeleteTemporaryFileTool.handler(
       {
         id: BLANK_UUID,
       },

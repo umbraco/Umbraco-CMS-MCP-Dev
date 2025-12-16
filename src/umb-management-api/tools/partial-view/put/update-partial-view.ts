@@ -1,17 +1,22 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdatePartialViewRequestModel } from "@/umb-management-api/schemas/index.js";
 import { putPartialViewByPathParams, putPartialViewByPathBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UpdatePartialViewTool = CreateUmbracoWriteTool(
-  "update-partial-view",
-  "Updates a partial view",
-  z.object({
-    ...putPartialViewByPathParams.shape,
-    ...putPartialViewByPathBody.shape,
-  }).shape,
-  async (model: { path: string } & UpdatePartialViewRequestModel) => {
+const updatePartialViewSchema = z.object({
+  ...putPartialViewByPathParams.shape,
+  ...putPartialViewByPathBody.shape,
+});
+
+const UpdatePartialViewTool = {
+  name: "update-partial-view",
+  description: "Updates a partial view",
+  schema: updatePartialViewSchema.shape,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async (model: { path: string } & UpdatePartialViewRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     const { path, ...updateModel } = model;
     var response = await client.putPartialViewByPath(path, updateModel);
@@ -24,7 +29,7 @@ const UpdatePartialViewTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof updatePartialViewSchema.shape>;
 
-export default UpdatePartialViewTool;
+export default withStandardDecorators(UpdatePartialViewTool);

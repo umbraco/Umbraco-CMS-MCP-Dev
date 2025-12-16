@@ -29,7 +29,7 @@ describe("update-member-type", () => {
 
     const model = builder.withName(UPDATED_MEMBER_TYPE_NAME).build();
 
-    const result = await UpdateMemberTypeTool().handler(
+    const result = await UpdateMemberTypeTool.handler(
       {
         id: builder.getId(),
         data: model,
@@ -51,7 +51,7 @@ describe("update-member-type", () => {
       .withIsElement(false)
       .build();
 
-    const result = await UpdateMemberTypeTool().handler(
+    const result = await UpdateMemberTypeTool.handler(
       {
         id: BLANK_UUID,
         data: model,

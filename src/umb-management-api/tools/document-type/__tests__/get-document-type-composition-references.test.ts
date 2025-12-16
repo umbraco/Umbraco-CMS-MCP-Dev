@@ -30,7 +30,7 @@ describe("get-document-type-composition-references", () => {
 
 
     // Get the composition references
-    const result = await GetDocumentTypeCompositionReferencesTool().handler({
+    const result = await GetDocumentTypeCompositionReferencesTool.handler({
       id: compositionBuilder.getId()
     }, { signal: new AbortController().signal });
 
@@ -58,7 +58,7 @@ describe("get-document-type-composition-references", () => {
       .create();
 
     // Get the composition references
-    const result = await GetDocumentTypeCompositionReferencesTool().handler({
+    const result = await GetDocumentTypeCompositionReferencesTool.handler({
       id: docTypeBuilder.getId()
     }, { signal: new AbortController().signal });
 

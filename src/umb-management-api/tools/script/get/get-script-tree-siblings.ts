@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeScriptSiblingsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeScriptSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetScriptTreeSiblingsTool = CreateUmbracoReadTool(
-  "get-script-tree-siblings",
-  "Gets sibling scripts for a given descendant path",
-  getTreeScriptSiblingsQueryParams.shape,
-  async (model: GetTreeScriptSiblingsParams) => {
+const GetScriptTreeSiblingsTool = {
+  name: "get-script-tree-siblings",
+  description: "Gets sibling scripts for a given descendant path",
+  schema: getTreeScriptSiblingsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (model: GetTreeScriptSiblingsParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeScriptSiblings(model);
 
@@ -19,7 +22,7 @@ const GetScriptTreeSiblingsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeScriptSiblingsQueryParams.shape>;
 
-export default GetScriptTreeSiblingsTool;
+export default withStandardDecorators(GetScriptTreeSiblingsTool);

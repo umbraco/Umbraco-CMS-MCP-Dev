@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteUserAvatarByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteUserAvatarByIdTool = CreateUmbracoWriteTool(
-  "delete-user-avatar-by-id",
-  "Deletes an avatar for a specific user by ID (admin only or self-service)",
-  deleteUserAvatarByIdParams.shape,
-  async ({ id }) => {
+const DeleteUserAvatarByIdTool = {
+  name: "delete-user-avatar-by-id",
+  description: "Deletes an avatar for a specific user by ID (admin only or self-service)",
+  schema: deleteUserAvatarByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteUserAvatarById(id);
 
@@ -18,7 +21,7 @@ const DeleteUserAvatarByIdTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteUserAvatarByIdParams.shape>;
 
-export default DeleteUserAvatarByIdTool;
+export default withStandardDecorators(DeleteUserAvatarByIdTool);

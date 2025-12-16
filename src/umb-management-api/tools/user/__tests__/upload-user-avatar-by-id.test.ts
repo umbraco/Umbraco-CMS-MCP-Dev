@@ -55,7 +55,7 @@ describe("upload-user-avatar-by-id", () => {
     const temporaryFileId = tempFileBuilder.getId();
 
     // Act
-    const result = await UploadUserAvatarByIdTool().handler({
+    const result = await UploadUserAvatarByIdTool.handler({
       id: userId,
       file: { id: temporaryFileId }
     }, { signal: new AbortController().signal });
@@ -82,7 +82,7 @@ describe("upload-user-avatar-by-id", () => {
     const temporaryFileId = tempFileBuilder.getId();
 
     // Act
-    const result = await UploadUserAvatarByIdTool().handler({
+    const result = await UploadUserAvatarByIdTool.handler({
       id: BLANK_UUID,
       file: { id: temporaryFileId }
     }, { signal: new AbortController().signal });
@@ -104,7 +104,7 @@ describe("upload-user-avatar-by-id", () => {
     const userId = userBuilder.getId();
 
     // Act - use non-existent temporary file id
-    const result = await UploadUserAvatarByIdTool().handler({
+    const result = await UploadUserAvatarByIdTool.handler({
       id: userId,
       file: { id: BLANK_UUID }
     }, { signal: new AbortController().signal });

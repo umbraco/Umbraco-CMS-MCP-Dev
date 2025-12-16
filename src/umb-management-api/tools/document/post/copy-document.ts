@@ -1,8 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
-import { CopyDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { UmbracoDocumentPermissions } from "../constants.js";
+import { CopyDocumentRequestModel } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 const copyDocumentSchema = z.object({
   parentId: z.string().uuid("Must be a valid document UUID of the parent node").optional(),
@@ -11,9 +11,9 @@ const copyDocumentSchema = z.object({
   includeDescendants: z.boolean().describe("If true, all descendant documents (children, grandchildren, etc.) will also be copied. This is usually set to false unless specified."),
 });
 
-const CopyDocumentTool = CreateUmbracoWriteTool(
-  "copy-document",
-  `Copy a document to a new location. This is also the recommended way to create new documents. 
+const CopyDocumentTool = {
+  name: "copy-document",
+  description: `Copy a document to a new location. This is also the recommended way to create new documents. 
   Copy an existing document to preserve the complex JSON structure, then modify specific fields as needed.
   
   IMPORTANT WORKFLOW NOTES:
@@ -31,8 +31,10 @@ const CopyDocumentTool = CreateUmbracoWriteTool(
     Example workflows:
     1. Copy only: copy-document (creates draft copy)
     2. Copy and update: copy-document → search-document → update-document → publish-document`,
-    copyDocumentSchema.shape,
-  async (model) => {
+  schema: copyDocumentSchema.shape,
+  isReadOnly: false,
+  slices: ['copy'],
+  handler: async (model: z.infer<typeof copyDocumentSchema>) => {
     const client = UmbracoManagementClient.getClient();
 
     const payload: CopyDocumentRequestModel = {
@@ -53,7 +55,6 @@ const CopyDocumentTool = CreateUmbracoWriteTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Duplicate)
-);
+} satisfies ToolDefinition<typeof copyDocumentSchema.shape>;
 
-export default CopyDocumentTool;
+export default withStandardDecorators(CopyDocumentTool);

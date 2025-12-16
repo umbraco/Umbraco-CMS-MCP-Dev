@@ -35,7 +35,7 @@ describe("copy-document", () => {
       .create();
 
     // Copy the document to root (no parentId means root)
-    const result = await CopyDocumentTool().handler(
+    const result = await CopyDocumentTool.handler(
       {
         idToCopy: docBuilder.getId(),
         relateToOriginal: false,
@@ -68,7 +68,7 @@ describe("copy-document", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const result = await CopyDocumentTool().handler(
+    const result = await CopyDocumentTool.handler(
       {
         idToCopy: BLANK_UUID,
         relateToOriginal: false,

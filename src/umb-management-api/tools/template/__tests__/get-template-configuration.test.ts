@@ -16,7 +16,7 @@ describe("get-template-configuration", () => {
 
   it("should get the template configuration", async () => {
     // Act
-    const result = await GetTemplateConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetTemplateConfigurationTool.handler({}, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

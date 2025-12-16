@@ -48,7 +48,7 @@ describe("validate-media-update", () => {
       .build();
 
     // Act: Validate the media update
-    const result = await ValidateMediaUpdateTool().handler(
+    const result = await ValidateMediaUpdateTool.handler(
       {
         id: builder.getId(),
         data: updateModel,
@@ -73,7 +73,7 @@ describe("validate-media-update", () => {
       .build();
 
     // Act: Try to validate update for non-existent media
-    const result = await ValidateMediaUpdateTool().handler(
+    const result = await ValidateMediaUpdateTool.handler(
       {
         id: BLANK_UUID,
         data: updateModel,

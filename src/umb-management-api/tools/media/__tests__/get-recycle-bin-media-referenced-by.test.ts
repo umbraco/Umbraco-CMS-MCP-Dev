@@ -43,7 +43,7 @@ describe("get-recycle-bin-media-referenced-by", () => {
   }, 15000); // Increase timeout for cleanup
 
   it("should return empty when no deleted media has references", async () => {
-    const result = await GetRecycleBinMediaReferencedByTool().handler(
+    const result = await GetRecycleBinMediaReferencedByTool.handler(
       {
         skip: 0,
         take: 10
@@ -99,7 +99,7 @@ describe("get-recycle-bin-media-referenced-by", () => {
       .create();
 
     // Move media to recycle bin
-    await MoveMediaToRecycleBinTool().handler(
+    await MoveMediaToRecycleBinTool.handler(
       {
         id: mediaBuilder.getId()
       },
@@ -107,7 +107,7 @@ describe("get-recycle-bin-media-referenced-by", () => {
     );
 
     // Check for references to deleted media
-    const result = await GetRecycleBinMediaReferencedByTool().handler(
+    const result = await GetRecycleBinMediaReferencedByTool.handler(
       {
         skip: 0,
         take: 10
@@ -126,7 +126,7 @@ describe("get-recycle-bin-media-referenced-by", () => {
 
   it("should handle pagination parameters correctly", async () => {
     // Simple pagination test - just test the API accepts the parameters
-    const result = await GetRecycleBinMediaReferencedByTool().handler(
+    const result = await GetRecycleBinMediaReferencedByTool.handler(
       {
         skip: 5,
         take: 5
@@ -146,7 +146,7 @@ describe("get-recycle-bin-media-referenced-by", () => {
 
   it("should handle default pagination parameters", async () => {
     // Test with only required parameters
-    const result = await GetRecycleBinMediaReferencedByTool().handler(
+    const result = await GetRecycleBinMediaReferencedByTool.handler(
       {
         take: 20
       },

@@ -1,11 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetWebhookEventsTool = CreateUmbracoReadTool(
-  "get-webhook-events",
-  "Gets a list of available webhook events",
-  {},
-  async () => {
+const GetWebhookEventsTool = {
+  name: "get-webhook-events",
+  description: "Gets a list of available webhook events",
+  schema: {},
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getWebhookEvents();
 
@@ -17,7 +20,7 @@ const GetWebhookEventsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetWebhookEventsTool;
+export default withStandardDecorators(GetWebhookEventsTool);

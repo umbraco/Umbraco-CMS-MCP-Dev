@@ -28,7 +28,7 @@ describe("create-partial-view-folder", () => {
     };
 
     // Act
-    const result = await CreatePartialViewFolderTool().handler(params, { signal: new AbortController().signal });
+    const result = await CreatePartialViewFolderTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -46,12 +46,12 @@ describe("create-partial-view-folder", () => {
 
   it("should handle existing folder name", async () => {
     // Arrange - First create the folder
-    await CreatePartialViewFolderTool().handler({
+    await CreatePartialViewFolderTool.handler({
       name: EXISTING_FOLDER_NAME
     }, { signal: new AbortController().signal });
 
     // Act - Try to create it again
-    const result = await CreatePartialViewFolderTool().handler({
+    const result = await CreatePartialViewFolderTool.handler({
       name: EXISTING_FOLDER_NAME
     }, { signal: new AbortController().signal });
 

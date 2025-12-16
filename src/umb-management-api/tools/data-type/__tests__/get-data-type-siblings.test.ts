@@ -51,7 +51,7 @@ describe("get-data-type-siblings", () => {
       .create();
 
     // Act - Get siblings using one of the items as target
-    const result = await GetDataTypeSiblingsTool().handler(
+    const result = await GetDataTypeSiblingsTool.handler(
       {
         target: sibling1Builder.getId(),
       },
@@ -65,7 +65,7 @@ describe("get-data-type-siblings", () => {
 
   it("should handle non-existent target", async () => {
     // Act - Try to get siblings for non-existent item
-    const result = await GetDataTypeSiblingsTool().handler(
+    const result = await GetDataTypeSiblingsTool.handler(
       {
         target: BLANK_UUID,
       },

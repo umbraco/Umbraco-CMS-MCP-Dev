@@ -44,7 +44,7 @@ describe("media-tree", () => {
         .withParent(parentBuilder.getId())
         .create();
 
-      const result = await GetMediaChildrenTool().handler(
+      const result = await GetMediaChildrenTool.handler(
         {
           take: 100,
           parentId: parentBuilder.getId(),
@@ -57,7 +57,7 @@ describe("media-tree", () => {
     });
 
     it("should handle non-existent parent", async () => {
-      const result = await GetMediaChildrenTool().handler(
+      const result = await GetMediaChildrenTool.handler(
         {
           take: 100,
           parentId: BLANK_UUID,
@@ -85,7 +85,7 @@ describe("media-tree", () => {
         .withParent(parentBuilder.getId())
         .create();
 
-      const result = await GetMediaAncestorsTool().handler(
+      const result = await GetMediaAncestorsTool.handler(
         {
           descendantId: childBuilder.getId(),
         },
@@ -97,7 +97,7 @@ describe("media-tree", () => {
     });
 
     it("should handle non-existent item", async () => {
-      const result = await GetMediaAncestorsTool().handler(
+      const result = await GetMediaAncestorsTool.handler(
         {
           descendantId: BLANK_UUID,
         },

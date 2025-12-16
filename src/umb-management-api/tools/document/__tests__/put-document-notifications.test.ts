@@ -30,7 +30,7 @@ describe("put-document-notifications", () => {
 
   it("should add a notification for a valid document", async () => {
     // Add notification
-    const result = await PutDocumentNotificationsTool().handler(
+    const result = await PutDocumentNotificationsTool.handler(
       {
         id: docId,
         data: { subscribedActionIds: [TEST_NOTIFICATION] },
@@ -40,7 +40,7 @@ describe("put-document-notifications", () => {
     expect(result).toMatchSnapshot();
 
     // Get notifications to verify
-    const getResult = await GetDocumentNotificationsTool().handler(
+    const getResult = await GetDocumentNotificationsTool.handler(
       {
         id: docId,
       },
@@ -50,7 +50,7 @@ describe("put-document-notifications", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const result = await PutDocumentNotificationsTool().handler(
+    const result = await PutDocumentNotificationsTool.handler(
       {
         id: BLANK_UUID,
         data: { subscribedActionIds: [TEST_NOTIFICATION] },

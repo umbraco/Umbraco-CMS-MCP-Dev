@@ -49,7 +49,7 @@ describe("get-document-blueprint-siblings", () => {
       .create();
 
     // Act: Get siblings of blueprint1
-    const result = await GetDocumentBlueprintSiblingsTool().handler(
+    const result = await GetDocumentBlueprintSiblingsTool.handler(
       {
         target: blueprint1.getId(),
       },
@@ -63,7 +63,7 @@ describe("get-document-blueprint-siblings", () => {
 
   it("should handle non-existent target", async () => {
     // Act: Try to get siblings of non-existent item
-    const result = await GetDocumentBlueprintSiblingsTool().handler(
+    const result = await GetDocumentBlueprintSiblingsTool.handler(
       {
         target: BLANK_UUID,
       },

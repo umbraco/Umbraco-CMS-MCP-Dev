@@ -51,7 +51,7 @@ describe("get-document-type-siblings", () => {
       .create();
 
     // Act: Get siblings for the target document type
-    const result = await GetDocumentTypeSiblingsTool().handler(
+    const result = await GetDocumentTypeSiblingsTool.handler(
       {
         target: targetBuilder.getId(),
       },
@@ -68,7 +68,7 @@ describe("get-document-type-siblings", () => {
     const nonExistentId = BLANK_UUID;
 
     // Act: Try to get siblings for non-existent document type
-    const result = await GetDocumentTypeSiblingsTool().handler(
+    const result = await GetDocumentTypeSiblingsTool.handler(
       {
         target: nonExistentId,
       },

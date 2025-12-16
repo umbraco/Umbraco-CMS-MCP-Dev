@@ -65,7 +65,7 @@ describe("get-member-by-id-array", () => {
     const memberIds = [member1.getId(), member2.getId()];
 
     // Get members by IDs
-    const result = await GetMembersByIdArrayTool().handler(
+    const result = await GetMembersByIdArrayTool.handler(
       { id: memberIds },
       {
         signal: new AbortController().signal,
@@ -79,7 +79,7 @@ describe("get-member-by-id-array", () => {
   });
 
   it("should return empty array when no IDs are provided", async () => {
-    const result = await GetMembersByIdArrayTool().handler(
+    const result = await GetMembersByIdArrayTool.handler(
       { id: [] },
       {
         signal: new AbortController().signal,
@@ -92,7 +92,7 @@ describe("get-member-by-id-array", () => {
   });
 
   it("should handle non-existent member IDs gracefully", async () => {
-    const result = await GetMembersByIdArrayTool().handler(
+    const result = await GetMembersByIdArrayTool.handler(
       { id: [BLANK_UUID] },
       {
         signal: new AbortController().signal,
@@ -117,7 +117,7 @@ describe("get-member-by-id-array", () => {
 
     const memberIds = [member.getId(), BLANK_UUID];
 
-    const result = await GetMembersByIdArrayTool().handler(
+    const result = await GetMembersByIdArrayTool.handler(
       { id: memberIds },
       {
         signal: new AbortController().signal,

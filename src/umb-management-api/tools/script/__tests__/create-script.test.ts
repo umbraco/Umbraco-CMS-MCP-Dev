@@ -29,7 +29,7 @@ describe("create-script", () => {
 
   describe("create-script", () => {
     it("should create a script", async () => {
-      const result = await CreateScriptTool().handler({
+      const result = await CreateScriptTool.handler({
         name: TEST_SCRIPT_NAME + ".js",
         content: TEST_SCRIPT_CONTENT
       }, { signal: new AbortController().signal });
@@ -46,13 +46,13 @@ describe("create-script", () => {
 
     it("should handle existing script", async () => {
       // First create the script
-      await CreateScriptTool().handler({
+      await CreateScriptTool.handler({
         name: EXISTING_SCRIPT_NAME + ".js",
         content: EXISTING_SCRIPT_CONTENT
       }, { signal: new AbortController().signal });
 
       // Try to create it again
-      const result = await CreateScriptTool().handler({
+      const result = await CreateScriptTool.handler({
         name: EXISTING_SCRIPT_NAME + ".js",
         content: EXISTING_SCRIPT_CONTENT
       }, { signal: new AbortController().signal });
@@ -64,7 +64,7 @@ describe("create-script", () => {
 
   describe("create-script-folder", () => {
     it("should create a script folder", async () => {
-      const result = await CreateScriptFolderTool().handler({
+      const result = await CreateScriptFolderTool.handler({
         name: TEST_FOLDER_NAME
       }, { signal: new AbortController().signal });
 
@@ -80,12 +80,12 @@ describe("create-script", () => {
 
     it("should handle existing script folder", async () => {
       // First create the folder
-      await CreateScriptFolderTool().handler({
+      await CreateScriptFolderTool.handler({
         name: EXISTING_FOLDER_NAME
       }, { signal: new AbortController().signal });
 
       // Try to create it again
-      const result = await CreateScriptFolderTool().handler({
+      const result = await CreateScriptFolderTool.handler({
         name: EXISTING_FOLDER_NAME
       }, { signal: new AbortController().signal });
 

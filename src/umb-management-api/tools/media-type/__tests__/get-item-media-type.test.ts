@@ -36,7 +36,7 @@ describe("get-item-media-type", () => {
       .create();
 
     // Act: Get items by their IDs
-    const result = await GetItemMediaTypeTool().handler(
+    const result = await GetItemMediaTypeTool.handler(
       {
         id: [builder1.getId(), builder2.getId()],
       },
@@ -53,7 +53,7 @@ describe("get-item-media-type", () => {
     const nonExistentId = BLANK_UUID;
 
     // Act: Try to get item for non-existent media type
-    const result = await GetItemMediaTypeTool().handler(
+    const result = await GetItemMediaTypeTool.handler(
       {
         id: [nonExistentId],
       },

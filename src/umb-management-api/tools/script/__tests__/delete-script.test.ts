@@ -34,7 +34,7 @@ describe("delete-script", () => {
         .withContent(TEST_SCRIPT_CONTENT)
         .create();
 
-      const result = await DeleteScriptTool().handler(
+      const result = await DeleteScriptTool.handler(
         {
           path: scriptBuilder.getPath(),
         },
@@ -50,7 +50,7 @@ describe("delete-script", () => {
     });
 
     it("should handle non-existent script", async () => {
-      const result = await DeleteScriptTool().handler(
+      const result = await DeleteScriptTool.handler(
         {
           path: NONEXISTENT_PATH,
         },
@@ -69,7 +69,7 @@ describe("delete-script", () => {
         .withName(TEST_FOLDER_NAME)
         .create();
 
-      const result = await DeleteScriptFolderTool().handler(
+      const result = await DeleteScriptFolderTool.handler(
         {
           path: folderBuilder.getPath(),
         },
@@ -85,7 +85,7 @@ describe("delete-script", () => {
     });
 
     it("should handle non-existent script folder", async () => {
-      const result = await DeleteScriptFolderTool().handler(
+      const result = await DeleteScriptFolderTool.handler(
         {
           path: "/NonExistentFolder",
         },

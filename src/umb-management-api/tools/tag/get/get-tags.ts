@@ -1,15 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTagParams } from "@/umb-management-api/schemas/index.js";
 import { getTagQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetTagsTool = CreateUmbracoReadTool(
-  "get-tags",
-  "Retrieves a paginated list of tags used in the Umbraco instance",
-  getTagQueryParams.shape,
-  async (params: GetTagParams) => {
+const GetTagsTool = {
+  name: "get-tags",
+  description: "Retrieves a paginated list of tags used in the Umbraco instance",
+  schema: getTagQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: GetTagParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getTag(params);
+    const response = await client.getTag(params);
+
     return {
       content: [
         {
@@ -18,7 +22,7 @@ const GetTagsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTagQueryParams.shape>;
 
-export default GetTagsTool;
+export default withStandardDecorators(GetTagsTool);

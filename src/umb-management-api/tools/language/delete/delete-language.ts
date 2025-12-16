@@ -1,12 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteLanguageByIsoCodeParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteLanguageTool = CreateUmbracoWriteTool(
-  "delete-language",
-  "Deletes a language by ISO code",
-  deleteLanguageByIsoCodeParams.shape,
-  async ({ isoCode }: { isoCode: string }) => {
+type DeleteLanguageModel = {
+  isoCode: string;
+};
+
+const DeleteLanguageTool = {
+  name: "delete-language",
+  description: "Deletes a language by ISO code",
+  schema: deleteLanguageByIsoCodeParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ isoCode }: DeleteLanguageModel) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteLanguageByIsoCode(isoCode);
     return {
@@ -17,7 +24,7 @@ const DeleteLanguageTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteLanguageByIsoCodeParams.shape>;
 
-export default DeleteLanguageTool;
+export default withStandardDecorators(DeleteLanguageTool);

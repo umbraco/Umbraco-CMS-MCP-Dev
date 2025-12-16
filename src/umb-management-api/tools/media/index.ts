@@ -44,42 +44,42 @@ export const MediaCollection: ToolCollectionExport = {
   tools: (user: CurrentUserResponseModel) => {
     const tools: ToolDefinition<any>[] = [];
 
-    tools.push(GetMediaByIdTool());
+    tools.push(GetMediaByIdTool);
 
     if (AuthorizationPolicies.SectionAccessForMediaTree(user)) {
-      tools.push(GetMediaAncestorsTool());
-      tools.push(GetMediaChildrenTool());
-      tools.push(GetMediaSiblingsTool());
-      tools.push(GetMediaRootTool());
+      tools.push(GetMediaAncestorsTool);
+      tools.push(GetMediaChildrenTool);
+      tools.push(GetMediaSiblingsTool);
+      tools.push(GetMediaRootTool);
     }
 
     if (AuthorizationPolicies.SectionAccessMedia(user)) {
-      tools.push(CreateMediaTool());
-      tools.push(CreateMediaMultipleTool());
-      tools.push(DeleteMediaTool());
-      tools.push(UpdateMediaTool());
-      tools.push(GetMediaConfigurationTool());
-      tools.push(GetMediaUrlsTool());
-      tools.push(ValidateMediaTool());
-      tools.push(ValidateMediaUpdateTool());
-      tools.push(SortMediaTool());
-      tools.push(GetMediaByIdArrayTool());
-      tools.push(MoveMediaTool());
-      tools.push(GetMediaAuditLogTool());
-      tools.push(GetMediaRecycleBinRootTool());
-      tools.push(GetMediaRecycleBinChildrenTool());
-      tools.push(GetMediaRecycleBinSiblingsTool());
-      tools.push(EmptyRecycleBinTool());
-      tools.push(RestoreFromRecycleBinTool());
-      tools.push(MoveMediaToRecycleBinTool());
-      tools.push(DeleteFromRecycleBinTool());
-      tools.push(DeleteMediaRecycleBinItemTool());
-      tools.push(GetMediaAreReferencedTool());
-      tools.push(GetMediaByIdReferencedByTool());
-      tools.push(GetMediaByIdReferencedDescendantsTool());
-      tools.push(GetCollectionMediaTool());
-      tools.push(GetRecycleBinMediaReferencedByTool());
-      tools.push(GetRecycleBinMediaOriginalParentTool());
+      tools.push(CreateMediaTool);
+      tools.push(CreateMediaMultipleTool);
+      tools.push(DeleteMediaTool);
+      tools.push(UpdateMediaTool);
+      tools.push(GetMediaConfigurationTool);
+      tools.push(GetMediaUrlsTool);
+      tools.push(ValidateMediaTool);
+      tools.push(ValidateMediaUpdateTool);
+      tools.push(SortMediaTool);
+      tools.push(GetMediaByIdArrayTool);
+      tools.push(MoveMediaTool);
+      tools.push(GetMediaAuditLogTool);
+      tools.push(GetMediaRecycleBinRootTool);
+      tools.push(GetMediaRecycleBinChildrenTool);
+      tools.push(GetMediaRecycleBinSiblingsTool);
+      tools.push(EmptyRecycleBinTool);
+      tools.push(RestoreFromRecycleBinTool);
+      tools.push(MoveMediaToRecycleBinTool);
+      tools.push(DeleteFromRecycleBinTool);
+      tools.push(DeleteMediaRecycleBinItemTool);
+      tools.push(GetMediaAreReferencedTool);
+      tools.push(GetMediaByIdReferencedByTool);
+      tools.push(GetMediaByIdReferencedDescendantsTool);
+      tools.push(GetCollectionMediaTool);
+      tools.push(GetRecycleBinMediaReferencedByTool);
+      tools.push(GetRecycleBinMediaOriginalParentTool);
     }
 
     return tools;

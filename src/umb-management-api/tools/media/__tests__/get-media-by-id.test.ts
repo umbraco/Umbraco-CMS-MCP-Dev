@@ -35,7 +35,7 @@ describe("get-media-by-id", () => {
     const id = builder.getId();
 
     // Get by ID
-    const result = await GetMediaByIdTool().handler(
+    const result = await GetMediaByIdTool.handler(
       { id },
       { signal: new AbortController().signal }
     );
@@ -45,7 +45,7 @@ describe("get-media-by-id", () => {
   });
 
   it("should return error for non-existent ID", async () => {
-    const result = await GetMediaByIdTool().handler(
+    const result = await GetMediaByIdTool.handler(
       { id: BLANK_UUID },
       { signal: new AbortController().signal }
     );

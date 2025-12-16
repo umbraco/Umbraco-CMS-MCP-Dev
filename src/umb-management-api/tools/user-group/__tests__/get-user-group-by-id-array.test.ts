@@ -30,7 +30,7 @@ describe("get-user-group-by-id-array", () => {
     const builder = await new UserGroupBuilder()
       .withName(TEST_GROUP_NAME_1)
       .create();
-    const result = await GetUserGroupByIdArrayTool().handler(
+    const result = await GetUserGroupByIdArrayTool.handler(
       { id: [builder.getId()] },
       { signal: new AbortController().signal }
     );
@@ -48,7 +48,7 @@ describe("get-user-group-by-id-array", () => {
     const builder2 = await new UserGroupBuilder()
       .withName(TEST_GROUP_NAME_2)
       .create();
-    const result = await GetUserGroupByIdArrayTool().handler(
+    const result = await GetUserGroupByIdArrayTool.handler(
       { id: [builder1.getId(), builder2.getId()] },
       { signal: new AbortController().signal }
     );

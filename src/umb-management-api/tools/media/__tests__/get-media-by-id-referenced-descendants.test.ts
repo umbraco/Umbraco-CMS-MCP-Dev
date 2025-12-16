@@ -71,7 +71,7 @@ describe("get-media-by-id-referenced-descendants", () => {
       .create();
 
     // Get references to descendants of the parent folder
-    const result = await GetMediaByIdReferencedDescendantsTool().handler(
+    const result = await GetMediaByIdReferencedDescendantsTool.handler(
       {
         id: parentFolder.getId(),
         skip: 0,
@@ -90,7 +90,7 @@ describe("get-media-by-id-referenced-descendants", () => {
   });
 
   it.skip("should handle non-existent media ID", async () => {
-    const result = await GetMediaByIdReferencedDescendantsTool().handler(
+    const result = await GetMediaByIdReferencedDescendantsTool.handler(
       {
         id: BLANK_UUID,
         skip: 0,
@@ -117,7 +117,7 @@ describe("get-media-by-id-referenced-descendants", () => {
       .withParent(parentFolder.getId())
       .create();
 
-    const result = await GetMediaByIdReferencedDescendantsTool().handler(
+    const result = await GetMediaByIdReferencedDescendantsTool.handler(
       {
         id: parentFolder.getId(),
         skip: 0,
@@ -143,7 +143,7 @@ describe("get-media-by-id-referenced-descendants", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetMediaByIdReferencedDescendantsTool().handler(
+    const result = await GetMediaByIdReferencedDescendantsTool.handler(
       {
         id: singleMedia.getId(),
         skip: 0,

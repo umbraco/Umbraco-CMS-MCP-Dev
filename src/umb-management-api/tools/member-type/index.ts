@@ -25,20 +25,20 @@ export const MemberTypeCollection: ToolCollectionExport = {
   tools: (user: CurrentUserResponseModel) => {
     const tools: ToolDefinition<any>[] = [];
 
-    tools.push(GetMemberTypeByIdTool());
+    tools.push(GetMemberTypeByIdTool);
 
     if (AuthorizationPolicies.TreeAccessMembersOrMemberTypes(user)) {
-      tools.push(CreateMemberTypeTool());
-      tools.push(GetMemberTypesByIdArrayTool());
-      tools.push(DeleteMemberTypeTool());
-      tools.push(UpdateMemberTypeTool());
-      tools.push(CopyMemberTypeTool());
-      tools.push(GetMemberTypeAvailableCompositionsTool());
-      tools.push(GetMemberTypeCompositionReferencesTool());
-      tools.push(GetMemberTypeConfigurationTool());
-      tools.push(GetMemberTypeRootTool());
-      tools.push(GetMemberTypeSiblingsTool());
-      tools.push(SearchMemberTypeItemsTool());
+      tools.push(CreateMemberTypeTool);
+      tools.push(GetMemberTypesByIdArrayTool);
+      tools.push(DeleteMemberTypeTool);
+      tools.push(UpdateMemberTypeTool);
+      tools.push(CopyMemberTypeTool);
+      tools.push(GetMemberTypeAvailableCompositionsTool);
+      tools.push(GetMemberTypeCompositionReferencesTool);
+      tools.push(GetMemberTypeConfigurationTool);
+      tools.push(GetMemberTypeRootTool);
+      tools.push(GetMemberTypeSiblingsTool);
+      tools.push(SearchMemberTypeItemsTool);
     }
 
     return tools;

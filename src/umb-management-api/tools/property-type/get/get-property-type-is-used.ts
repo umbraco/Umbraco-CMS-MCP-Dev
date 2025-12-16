@@ -1,12 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getPropertyTypeIsUsedQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetPropertyTypeIsUsedTool = CreateUmbracoReadTool(
-  "get-property-type-is-used",
-  "Checks if a property type is used within Umbraco",
-  getPropertyTypeIsUsedQueryParams.shape,
-  async ({ contentTypeId, propertyAlias }) => {
+type SchemaParams = z.infer<typeof getPropertyTypeIsUsedQueryParams>;
+
+const GetPropertyTypeIsUsedTool = {
+  name: "get-property-type-is-used",
+  description: "Checks if a property type is used within Umbraco",
+  schema: getPropertyTypeIsUsedQueryParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async ({ contentTypeId, propertyAlias }: SchemaParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getPropertyTypeIsUsed({
       contentTypeId,
@@ -22,6 +28,6 @@ const GetPropertyTypeIsUsedTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getPropertyTypeIsUsedQueryParams.shape>;
 
-export default GetPropertyTypeIsUsedTool;
+export default withStandardDecorators(GetPropertyTypeIsUsedTool);

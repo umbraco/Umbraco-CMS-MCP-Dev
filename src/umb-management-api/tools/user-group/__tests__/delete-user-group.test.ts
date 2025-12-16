@@ -22,7 +22,7 @@ describe("delete-user-group", () => {
     const builder = await new UserGroupBuilder()
       .withName(TEST_GROUP_NAME)
       .create();
-    const result = await DeleteUserGroupTool().handler(
+    const result = await DeleteUserGroupTool.handler(
       {
         id: builder.getId(),
       },
@@ -34,7 +34,7 @@ describe("delete-user-group", () => {
   });
 
   it("should handle non-existent user group", async () => {
-    const result = await DeleteUserGroupTool().handler(
+    const result = await DeleteUserGroupTool.handler(
       {
         id: BLANK_UUID,
       },

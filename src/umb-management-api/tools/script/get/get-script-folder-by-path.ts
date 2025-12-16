@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getScriptFolderByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetScriptFolderByPathTool = CreateUmbracoReadTool(
-  "get-script-folder-by-path",
-  "Gets a script folder by path",
-  getScriptFolderByPathParams.shape,
-  async ({ path }) => {
+const GetScriptFolderByPathTool = {
+  name: "get-script-folder-by-path",
+  description: "Gets a script folder by path",
+  schema: getScriptFolderByPathParams.shape,
+  isReadOnly: true,
+  slices: ['read', 'folders'],
+  handler: async ({ path }: { path: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getScriptFolderByPath(path);
 
@@ -18,7 +21,7 @@ const GetScriptFolderByPathTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getScriptFolderByPathParams.shape>;
 
-export default GetScriptFolderByPathTool;
+export default withStandardDecorators(GetScriptFolderByPathTool);

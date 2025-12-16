@@ -1,8 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateMediaTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postMediaTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Extract the property and container schemas from the generated schema
 const propertySchema = postMediaTypeBody.shape.properties;
@@ -32,11 +33,13 @@ const createMediaTypeSchema = z.object({
 
 type CreateMediaTypeSchema = z.infer<typeof createMediaTypeSchema>;
 
-const CreateMediaTypeTool = CreateUmbracoWriteTool(
-  "create-media-type",
-  "Creates a new media type",
-  createMediaTypeSchema.shape,
-  async (model: CreateMediaTypeSchema) => {
+const CreateMediaTypeTool = {
+  name: "create-media-type",
+  description: "Creates a new media type",
+  schema: createMediaTypeSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateMediaTypeSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     // Transform: flat parentId -> nested parent object for API
@@ -68,7 +71,7 @@ const CreateMediaTypeTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof createMediaTypeSchema.shape>;
 
-export default CreateMediaTypeTool;
+export default withStandardDecorators(CreateMediaTypeTool);

@@ -37,7 +37,7 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Check if documents are referenced
-      const result = await GetDocumentAreReferencedTool().handler(
+      const result = await GetDocumentAreReferencedTool.handler(
         { id: [builder1.getId(), builder2.getId()], take: 20 },
         { signal: new AbortController().signal }
       );
@@ -55,7 +55,7 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Check if single document is referenced
-      const result = await GetDocumentAreReferencedTool().handler(
+      const result = await GetDocumentAreReferencedTool.handler(
         { id: [builder.getId()], skip: 0, take: 10 },
         { signal: new AbortController().signal }
       );
@@ -75,7 +75,7 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Get documents that reference this document
-      const result = await GetDocumentByIdReferencedByTool().handler(
+      const result = await GetDocumentByIdReferencedByTool.handler(
         { id: builder.getId(), take: 20 },
         { signal: new AbortController().signal }
       );
@@ -93,7 +93,7 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Get references with pagination
-      const result = await GetDocumentByIdReferencedByTool().handler(
+      const result = await GetDocumentByIdReferencedByTool.handler(
         { id: builder.getId(), skip: 0, take: 10 },
         { signal: new AbortController().signal }
       );
@@ -105,7 +105,7 @@ describe("document-reference-tests", () => {
 
     it("should handle non-existent document", async () => {
       // Act: Try to get references for non-existent document
-      const result = await GetDocumentByIdReferencedByTool().handler(
+      const result = await GetDocumentByIdReferencedByTool.handler(
         { id: "00000000-0000-0000-0000-000000000000", take: 20 },
         { signal: new AbortController().signal }
       );
@@ -124,7 +124,7 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Get referenced descendants
-      const result = await GetDocumentByIdReferencedDescendantsTool().handler(
+      const result = await GetDocumentByIdReferencedDescendantsTool.handler(
         { id: builder.getId(), take: 20 },
         { signal: new AbortController().signal }
       );
@@ -142,7 +142,7 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Get referenced descendants with pagination
-      const result = await GetDocumentByIdReferencedDescendantsTool().handler(
+      const result = await GetDocumentByIdReferencedDescendantsTool.handler(
         { id: builder.getId(), skip: 0, take: 10 },
         { signal: new AbortController().signal }
       );
@@ -155,7 +155,7 @@ describe("document-reference-tests", () => {
     it("should handle non-existent document", async () => {
       // Act: Try to get referenced descendants for non-existent document
       // Using a random UUID that doesn't exist
-      const result = await GetDocumentByIdReferencedDescendantsTool().handler(
+      const result = await GetDocumentByIdReferencedDescendantsTool.handler(
         { id: crypto.randomUUID(), take: 20 },
         { signal: new AbortController().signal }
       );

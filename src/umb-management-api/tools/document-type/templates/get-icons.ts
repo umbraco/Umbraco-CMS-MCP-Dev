@@ -1,12 +1,15 @@
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-//TODO: THhis really should be an endpoint
+//TODO: This really should be an endpoint
 
-const GetIconsTool = CreateUmbracoTool(
-  "get-icons",
-  "Returns a list of all available Umbraco icons that can be used in document types and element types",
-  {},
-  async () => {
+const GetIconsTool = {
+  name: "get-icons",
+  description: "Returns a list of all available Umbraco icons that can be used in document types and element types",
+  schema: {},
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async () => {
     const icons = [
       "icon-activity",
       "icon-add",
@@ -524,7 +527,7 @@ const GetIconsTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetIconsTool;
+export default withStandardDecorators(GetIconsTool);

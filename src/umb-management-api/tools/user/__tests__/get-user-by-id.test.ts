@@ -34,7 +34,7 @@ describe("get-user-by-id", () => {
     const userId = userBuilder.getId();
 
     // Act
-    const result = await GetUserByIdTool().handler({ id: userId }, { signal: new AbortController().signal });
+    const result = await GetUserByIdTool.handler({ id: userId }, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result, userId);
@@ -43,7 +43,7 @@ describe("get-user-by-id", () => {
 
   it("should handle non-existent user id", async () => {
     // Act
-    const result = await GetUserByIdTool().handler({ id: BLANK_UUID }, { signal: new AbortController().signal });
+    const result = await GetUserByIdTool.handler({ id: BLANK_UUID }, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = normalizeErrorResponse(result);

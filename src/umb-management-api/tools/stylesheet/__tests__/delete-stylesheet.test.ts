@@ -34,7 +34,7 @@ describe("delete-stylesheet", () => {
     expect(existsBefore).toBe(true);
 
     // Act
-    const result = await DeleteStylesheetTool().handler({ path: stylesheetPath }, { signal: new AbortController().signal });
+    const result = await DeleteStylesheetTool.handler({ path: stylesheetPath }, { signal: new AbortController().signal });
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -46,7 +46,7 @@ describe("delete-stylesheet", () => {
 
   it("should handle non-existent stylesheet", async () => {
     // Act
-    const result = await DeleteStylesheetTool().handler({ path: NON_EXISTENT_STYLESHEET_PATH }, { signal: new AbortController().signal });
+    const result = await DeleteStylesheetTool.handler({ path: NON_EXISTENT_STYLESHEET_PATH }, { signal: new AbortController().signal });
 
     // Assert
     expect(result).toMatchSnapshot();

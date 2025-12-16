@@ -32,7 +32,7 @@ describe("get-document-version", () => {
     await documentBuilder.updateContent(); // Create another version
 
     // Act
-    const result = await GetDocumentVersionTool().handler({
+    const result = await GetDocumentVersionTool.handler({
       documentId: documentBuilder.getId(),
       skip: 0,
       take: 10
@@ -54,7 +54,7 @@ describe("get-document-version", () => {
     await documentBuilder.updateContent(); // Create another version
 
     // Act
-    const result = await GetDocumentVersionTool().handler({
+    const result = await GetDocumentVersionTool.handler({
       documentId: documentBuilder.getId(),
       skip: 1,
       take: 1
@@ -67,7 +67,7 @@ describe("get-document-version", () => {
 
   it("should handle non-existent document", async () => {
     // Act
-    const result = await GetDocumentVersionTool().handler({
+    const result = await GetDocumentVersionTool.handler({
       documentId: "non-existent-id",
       skip: 0,
       take: 10

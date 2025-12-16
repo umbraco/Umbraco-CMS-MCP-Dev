@@ -20,7 +20,7 @@ describe("delete-user-data", () => {
   afterEach(async () => {
     // Clean up any remaining test user data
     try {
-      const result = await GetUserDataTool().handler(
+      const result = await GetUserDataTool.handler(
         { groups: [TEST_USER_DATA_GROUP], take: 100 },
         { signal: new AbortController().signal }
       );
@@ -45,7 +45,7 @@ describe("delete-user-data", () => {
 
   it("should delete user data", async () => {
     // Create user data to delete
-    await CreateUserDataTool().handler(
+    await CreateUserDataTool.handler(
       {
         group: TEST_USER_DATA_GROUP,
         identifier: TEST_USER_DATA_IDENTIFIER,
@@ -55,7 +55,7 @@ describe("delete-user-data", () => {
     );
 
     // Get the created user data to obtain its ID
-    const getUserDataResult = await GetUserDataTool().handler(
+    const getUserDataResult = await GetUserDataTool.handler(
       { groups: [TEST_USER_DATA_GROUP], take: 100 },
       { signal: new AbortController().signal }
     );
@@ -67,7 +67,7 @@ describe("delete-user-data", () => {
     const createdData = getUserDataContent.items![0];
 
     // Delete the user data
-    const result = await DeleteUserDataTool().handler(
+    const result = await DeleteUserDataTool.handler(
       {
         id: createdData.key,
       },
@@ -78,7 +78,7 @@ describe("delete-user-data", () => {
     expect(result).toMatchSnapshot();
 
     // Verify the user data no longer exists
-    const findResult = await GetUserDataTool().handler(
+    const findResult = await GetUserDataTool.handler(
       { groups: [TEST_USER_DATA_GROUP], take: 100 },
       { signal: new AbortController().signal }
     );
@@ -89,7 +89,7 @@ describe("delete-user-data", () => {
   });
 
   it("should handle non-existent user data", async () => {
-    const result = await DeleteUserDataTool().handler(
+    const result = await DeleteUserDataTool.handler(
       {
         id: BLANK_UUID,
       },

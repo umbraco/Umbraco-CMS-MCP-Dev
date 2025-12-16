@@ -38,7 +38,7 @@ describe("copy-document-type", () => {
     ).create();
 
     // Copy the document type
-    const result = await CopyDocumentTypeTool().handler(
+    const result = await CopyDocumentTypeTool.handler(
       {
         id: docTypeBuilder.getId(),
         data: {
@@ -81,7 +81,7 @@ describe("copy-document-type", () => {
       .create();
 
     // Copy the document type to root (no target)
-    const result = await CopyDocumentTypeTool().handler(
+    const result = await CopyDocumentTypeTool.handler(
       {
         id: docTypeBuilder.getId(),
         data: {
@@ -115,7 +115,7 @@ describe("copy-document-type", () => {
   });
 
   it("should handle non-existent document type", async () => {
-    const result = await CopyDocumentTypeTool().handler(
+    const result = await CopyDocumentTypeTool.handler(
       {
         id: BLANK_UUID,
         data: {

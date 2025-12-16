@@ -1,14 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { GetTreeDictionaryChildrenParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDictionaryChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDictionaryChildrenTool = CreateUmbracoReadTool(
-  "get-dictionary-children",
-  "Gets the children of a dictionary item by Id",
-  getTreeDictionaryChildrenQueryParams.shape,
-  async (params) => {
+const GetDictionaryChildrenTool = {
+  name: "get-dictionary-children",
+  description: "Gets the children of a dictionary item by Id",
+  schema: getTreeDictionaryChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetTreeDictionaryChildrenParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getTreeDictionaryChildren(params);
+    const response = await client.getTreeDictionaryChildren(params);
     return {
       content: [
         {
@@ -17,7 +21,7 @@ const GetDictionaryChildrenTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeDictionaryChildrenQueryParams.shape>;
 
-export default GetDictionaryChildrenTool;
+export default withStandardDecorators(GetDictionaryChildrenTool);

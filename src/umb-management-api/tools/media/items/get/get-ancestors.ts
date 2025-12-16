@@ -1,12 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeMediaAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetMediaAncestorsTool = CreateUmbracoReadTool(
-  "get-media-ancestors",
-  "Gets ancestor items for a media.",
-  getTreeMediaAncestorsQueryParams.shape,
-  async (params) => {
+type GetTreeMediaAncestorsParams = z.infer<typeof getTreeMediaAncestorsQueryParams>;
+
+const GetMediaAncestorsTool = {
+  name: "get-media-ancestors",
+  description: "Gets ancestor items for a media.",
+  schema: getTreeMediaAncestorsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetTreeMediaAncestorsParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeMediaAncestors(params);
     return {
@@ -17,7 +23,7 @@ const GetMediaAncestorsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeMediaAncestorsQueryParams.shape>;
 
-export default GetMediaAncestorsTool;
+export default withStandardDecorators(GetMediaAncestorsTool);

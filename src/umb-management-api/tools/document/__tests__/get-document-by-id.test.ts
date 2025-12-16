@@ -28,7 +28,7 @@ describe("get-document-by-id", () => {
       .create();
     const id = builder.getId();
     // Get by ID
-    const result = await GetDocumentByIdTool().handler(
+    const result = await GetDocumentByIdTool.handler(
       { id },
       { signal: new AbortController().signal }
     );
@@ -38,7 +38,7 @@ describe("get-document-by-id", () => {
   });
 
   it("should return error for non-existent ID", async () => {
-    const result = await GetDocumentByIdTool().handler(
+    const result = await GetDocumentByIdTool.handler(
       { id: BLANK_UUID },
       { signal: new AbortController().signal }
     );

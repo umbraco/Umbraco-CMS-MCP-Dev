@@ -31,7 +31,7 @@ describe("recycle-bin-tree", () => {
         .create();
       await builder.moveToRecycleBin();
 
-      const result = await GetRecycleBinDocumentRootTool().handler(
+      const result = await GetRecycleBinDocumentRootTool.handler(
         { take: 100 },
         { signal: new AbortController().signal }
       );
@@ -61,7 +61,7 @@ describe("recycle-bin-tree", () => {
       );
       expect(parentInBin).toBeDefined();
 
-      const result = await GetRecycleBinDocumentChildrenTool().handler(
+      const result = await GetRecycleBinDocumentChildrenTool.handler(
         {
           take: 100,
           parentId: parentInBin!.id,
@@ -73,7 +73,7 @@ describe("recycle-bin-tree", () => {
     });
 
     it("should handle non-existent parent in recycle bin", async () => {
-      const result = await GetRecycleBinDocumentChildrenTool().handler(
+      const result = await GetRecycleBinDocumentChildrenTool.handler(
         {
           take: 100,
           parentId: BLANK_UUID,

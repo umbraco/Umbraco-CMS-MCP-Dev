@@ -1,12 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
-import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetTemplateConfigurationTool = CreateUmbracoReadTool(
-  "get-template-configuration",
-  "Gets template configuration settings including whether templates are disabled system-wide",
-  {},
-  async () => {
+const GetTemplateConfigurationTool = {
+  name: "get-template-configuration",
+  description: "Gets template configuration settings including whether templates are disabled system-wide",
+  schema: {},
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTemplateConfiguration();
 
@@ -18,7 +20,7 @@ const GetTemplateConfigurationTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetTemplateConfigurationTool;
+export default withStandardDecorators(GetTemplateConfigurationTool);

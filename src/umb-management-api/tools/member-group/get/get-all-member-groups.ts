@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetMemberGroupParams } from "@/umb-management-api/schemas/index.js";
 import { getMemberGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetAllMemberGroupsTool = CreateUmbracoReadTool(
-  "get-all-member-groups",
-  `Gets all member groups with optional pagination`,
-  getMemberGroupQueryParams.shape,
-  async (model: GetMemberGroupParams) => {
+const GetAllMemberGroupsTool = {
+  name: "get-all-member-groups",
+  description: `Gets all member groups with optional pagination`,
+  schema: getMemberGroupQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (model: GetMemberGroupParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getMemberGroup(model);
 
@@ -19,7 +22,7 @@ const GetAllMemberGroupsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMemberGroupQueryParams.shape>;
 
-export default GetAllMemberGroupsTool;
+export default withStandardDecorators(GetAllMemberGroupsTool);

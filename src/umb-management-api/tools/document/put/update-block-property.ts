@@ -1,5 +1,4 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
@@ -20,6 +19,8 @@ import {
   findBlockByKey,
   type BlockDataItem
 } from "./helpers/block-discovery.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Schema definitions
 const blockPropertyUpdateSchema = z.object({
@@ -60,9 +61,9 @@ type UpdateBlockPropertyModel = {
   }>;
 };
 
-const UpdateBlockPropertyTool = CreateUmbracoWriteTool(
-  "update-block-property",
-  `Updates or adds property values within BlockList, BlockGrid, or RichText block content.
+const UpdateBlockPropertyTool = {
+  name: "update-block-property",
+  description: `Updates or adds property values within BlockList, BlockGrid, or RichText block content.
 
   This tool enables targeted updates to individual block properties without sending the entire JSON payload.
   You can update existing properties, add new properties, or do both in a single call.
@@ -82,8 +83,11 @@ const UpdateBlockPropertyTool = CreateUmbracoWriteTool(
   - Add a new property to block: { documentId: "...", propertyAlias: "mainContent", updates: [{ contentKey: "block-uuid", blockType: "content", properties: [{ alias: "newProp", value: "Value" }] }] }
   - Update with culture: { documentId: "...", propertyAlias: "mainContent", culture: "es-ES", updates: [...] }
   - Batch update multiple blocks: { documentId: "...", propertyAlias: "mainContent", updates: [{ contentKey: "uuid1", ... }, { contentKey: "uuid2", ... }] }`,
-  updateBlockPropertySchema,
-  async (model: UpdateBlockPropertyModel) => {
+  schema: updateBlockPropertySchema,
+  isReadOnly: false,
+  slices: ['update'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Update),
+  handler: async (model: UpdateBlockPropertyModel) => {
     const client = UmbracoManagementClient.getClient();
 
     // Step 1: Fetch the current document
@@ -321,7 +325,6 @@ const UpdateBlockPropertyTool = CreateUmbracoWriteTool(
       }]
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Update)
-);
+} satisfies ToolDefinition<typeof updateBlockPropertySchema>;
 
-export default UpdateBlockPropertyTool;
+export default withStandardDecorators(UpdateBlockPropertyTool);

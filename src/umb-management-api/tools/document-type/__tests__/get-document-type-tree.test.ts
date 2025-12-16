@@ -42,7 +42,7 @@ describe("document-type-tree", () => {
         .withParentId(folderBuilder.getId())
         .create();
 
-      const result = await GetDocumentTypeChildrenTool().handler(
+      const result = await GetDocumentTypeChildrenTool.handler(
         {
           take: 100,
           parentId: folderBuilder.getId(),
@@ -56,7 +56,7 @@ describe("document-type-tree", () => {
     });
 
     it("should handle non-existent parent", async () => {
-      const result = await GetDocumentTypeChildrenTool().handler(
+      const result = await GetDocumentTypeChildrenTool.handler(
         {
           take: 100,
           parentId: BLANK_UUID,
@@ -80,7 +80,7 @@ describe("document-type-tree", () => {
         .withParentId(folderBuilder.getId())
         .create();
 
-      const result = await GetDocumentTypeAncestorsTool().handler(
+      const result = await GetDocumentTypeAncestorsTool.handler(
         {
           descendantId: childBuilder.getId(),
         },
@@ -93,7 +93,7 @@ describe("document-type-tree", () => {
     });
 
     it("should handle non-existent item", async () => {
-      const result = await GetDocumentTypeAncestorsTool().handler(
+      const result = await GetDocumentTypeAncestorsTool.handler(
         {
           descendantId: BLANK_UUID,
         },
@@ -124,7 +124,7 @@ describe("document-type-tree", () => {
         .withParentId(childFolderBuilder.getId())
         .create();
 
-      const result = await GetAllDocumentTypesTool().handler(
+      const result = await GetAllDocumentTypesTool.handler(
         {},
         { signal: new AbortController().signal }
       );

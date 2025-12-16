@@ -30,7 +30,7 @@ describe("get-document-type-allowed-at-root", () => {
       .create();
 
     // Get document types allowed at root
-    const result = await GetDocumentTypeAllowedAtRootTool().handler(
+    const result = await GetDocumentTypeAllowedAtRootTool.handler(
       {
         skip: 0,
         take: 10,

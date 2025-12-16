@@ -25,7 +25,7 @@ describe("delete-document-blueprint", () => {
     ).create();
 
     // Delete the blueprint
-    const result = await DeleteDocumentBlueprintTool().handler(
+    const result = await DeleteDocumentBlueprintTool.handler(
       {
         id: builder.getId(),
       },
@@ -43,7 +43,7 @@ describe("delete-document-blueprint", () => {
   });
 
   it("should handle non-existent document blueprint", async () => {
-    const result = await DeleteDocumentBlueprintTool().handler(
+    const result = await DeleteDocumentBlueprintTool.handler(
       {
         id: BLANK_UUID,
       },

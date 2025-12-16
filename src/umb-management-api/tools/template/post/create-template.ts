@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateTemplateRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postTemplateBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const CreateTemplateTool = CreateUmbracoWriteTool(
-  "create-template",
-  "Creates a new template",
-  postTemplateBody.shape,
-  async (model: CreateTemplateRequestModel) => {
+const CreateTemplateTool = {
+  name: "create-template",
+  description: "Creates a new template",
+  schema: postTemplateBody.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateTemplateRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.postTemplate(model);
 
@@ -19,7 +22,7 @@ const CreateTemplateTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postTemplateBody.shape>;
 
-export default CreateTemplateTool;
+export default withStandardDecorators(CreateTemplateTool);

@@ -85,7 +85,7 @@ describe("script-tree", () => {
 
   describe("get-script-tree-root", () => {
     it("should get root level script items", async () => {
-      const result = await GetScriptTreeRootTool().handler(
+      const result = await GetScriptTreeRootTool.handler(
         {
           take: 100,
         },
@@ -97,7 +97,7 @@ describe("script-tree", () => {
 
   describe("get-script-tree-children", () => {
     it("should get children of root folder", async () => {
-      const result = await GetScriptTreeChildrenTool().handler(
+      const result = await GetScriptTreeChildrenTool.handler(
         {
           parentPath: rootFolderBuilder.getPath(),
           take: 100,
@@ -108,7 +108,7 @@ describe("script-tree", () => {
     });
 
     it("should get children of child folder", async () => {
-      const result = await GetScriptTreeChildrenTool().handler(
+      const result = await GetScriptTreeChildrenTool.handler(
         {
           parentPath: childFolderBuilder.getPath(),
           take: 100,
@@ -119,7 +119,7 @@ describe("script-tree", () => {
     });
 
     it("should get empty children for non-folder script", async () => {
-      const result = await GetScriptTreeChildrenTool().handler(
+      const result = await GetScriptTreeChildrenTool.handler(
         {
           parentPath: grandchildScriptBuilder.getPath(),
           take: 100,
@@ -132,7 +132,7 @@ describe("script-tree", () => {
 
   describe("get-script-tree-ancestors", () => {
     it("should get ancestors of grandchild script", async () => {
-      const result = await GetScriptTreeAncestorsTool().handler(
+      const result = await GetScriptTreeAncestorsTool.handler(
         {
           descendantPath: grandchildScriptBuilder.getPath(),
         },
@@ -142,7 +142,7 @@ describe("script-tree", () => {
     });
 
     it("should get ancestors of child script", async () => {
-      const result = await GetScriptTreeAncestorsTool().handler(
+      const result = await GetScriptTreeAncestorsTool.handler(
         {
           descendantPath: childScriptBuilder.getPath(),
         },
@@ -152,7 +152,7 @@ describe("script-tree", () => {
     });
 
     it("should get empty ancestors for root script", async () => {
-      const result = await GetScriptTreeAncestorsTool().handler(
+      const result = await GetScriptTreeAncestorsTool.handler(
         {
           descendantPath: rootScriptBuilder.getPath(),
         },

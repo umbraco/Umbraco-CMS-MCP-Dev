@@ -25,7 +25,7 @@ describe("get-document-blueprint", () => {
     ).create();
 
     // Get the blueprint
-    const result = await GetDocumentBlueprintTool().handler(
+    const result = await GetDocumentBlueprintTool.handler(
       {
         id: builder.getId(),
       },
@@ -61,7 +61,7 @@ describe("get-document-blueprint", () => {
   });
 
   it("should handle non-existent document blueprint", async () => {
-    const result = await GetDocumentBlueprintTool().handler(
+    const result = await GetDocumentBlueprintTool.handler(
       {
         id: BLANK_UUID,
       },

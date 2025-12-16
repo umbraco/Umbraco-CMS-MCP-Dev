@@ -31,7 +31,7 @@ describe("update-script", () => {
       .withContent(TEST_SCRIPT_CONTENT)
       .create();
 
-    const result = await UpdateScriptTool().handler(
+    const result = await UpdateScriptTool.handler(
       {
         path: scriptBuilder.getPath(),
         data: {
@@ -51,7 +51,7 @@ describe("update-script", () => {
   });
 
   it("should handle non-existent script", async () => {
-    const result = await UpdateScriptTool().handler(
+    const result = await UpdateScriptTool.handler(
       {
         path: NONEXISTENT_SCRIPT_PATH,
         data: {

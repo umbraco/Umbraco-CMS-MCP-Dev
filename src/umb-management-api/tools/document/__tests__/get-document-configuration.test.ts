@@ -14,7 +14,7 @@ describe("get-document-configuration", () => {
   });
 
   it("should get the document configuration", async () => {
-    const result = await GetDocumentConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetDocumentConfigurationTool.handler({}, { signal: new AbortController().signal });
     expect(result).toMatchSnapshot();
     const parsed = JSON.parse(result.content[0].text as string);
     expect(parsed).toHaveProperty("disableDeleteWhenReferenced");

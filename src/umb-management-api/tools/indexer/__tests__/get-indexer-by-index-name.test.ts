@@ -20,7 +20,7 @@ describe("get-indexer-by-index-name", () => {
   });
 
   it("should get index by name", async () => {
-    const result = await GetIndexerByIndexNameTool().handler(
+    const result = await GetIndexerByIndexNameTool.handler(
       { indexName: TEST_INDEX_NAME },
       { signal: new AbortController().signal }
     );

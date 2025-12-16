@@ -28,7 +28,7 @@ describe("search-member-type-items", () => {
       .create();
 
     // Act - Search for the member type
-    const result = await SearchMemberTypeItemsTool().handler(
+    const result = await SearchMemberTypeItemsTool.handler(
       { query: TEST_MEMBER_TYPE_NAME, take: 100 },
       { signal: new AbortController().signal }
     );
@@ -40,7 +40,7 @@ describe("search-member-type-items", () => {
 
   it("should return empty results for non-existent search query", async () => {
     // Act - Search for a member type that doesn't exist
-    const result = await SearchMemberTypeItemsTool().handler(
+    const result = await SearchMemberTypeItemsTool.handler(
       { query: "nonexistent_member_type_" + Date.now(), take: 100 },
       { signal: new AbortController().signal }
     );

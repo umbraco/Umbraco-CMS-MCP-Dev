@@ -2,9 +2,11 @@
 
 ## Overview
 
-The Umbraco MCP Server implements a flexible tool and collection filtering system that allows fine-grained control over which MCP tools are available to AI assistants. This system operates at two levels:
+The Umbraco MCP Server implements a flexible tool and collection filtering system that allows fine-grained control over which MCP tools are available to AI assistants. This system operates at four levels:
 
+- **Mode-level filtering**: Use semantic presets that bundle related collections (e.g., `editor`, `developer`)
 - **Collection-level filtering**: Enable/disable entire groups of related tools
+- **Slice-level filtering**: Filter tools by operation type (e.g., `create`, `read`, `tree`) - see [tool-slice-filtering.md](tool-slice-filtering.md)
 - **Tool-level filtering**: Include/exclude specific individual tools
 
 ## Environment Variables
@@ -16,6 +18,9 @@ The system uses consistent `UMBRACO_*` naming for all environment variables:
 - `UMBRACO_CLIENT_SECRET` - API user secret
 - `UMBRACO_BASE_URL` - Umbraco instance URL
 
+### Tool Mode Variables
+- `UMBRACO_TOOL_MODES` - Comma-separated list of tool modes (e.g., `editor`, `developer`, `content`)
+
 ### Tool Filtering Variables
 - `UMBRACO_INCLUDE_TOOLS` - Comma-separated list of specific tools to include
 - `UMBRACO_EXCLUDE_TOOLS` - Comma-separated list of specific tools to exclude
@@ -23,6 +28,120 @@ The system uses consistent `UMBRACO_*` naming for all environment variables:
 ### Collection Filtering Variables
 - `UMBRACO_INCLUDE_TOOL_COLLECTIONS` - Comma-separated list of collections to include
 - `UMBRACO_EXCLUDE_TOOL_COLLECTIONS` - Comma-separated list of collections to exclude
+
+### Slice Filtering Variables
+- `UMBRACO_INCLUDE_SLICES` - Comma-separated list of slices to include (e.g., `create,read,tree`)
+- `UMBRACO_EXCLUDE_SLICES` - Comma-separated list of slices to exclude (e.g., `delete,recycle-bin`)
+
+## Tool Modes
+
+Tool modes provide a higher-level abstraction over collection filtering. Instead of specifying individual collections, you can use semantic modes that bundle related collections together.
+
+### Why Use Modes?
+
+- **Simpler configuration** - One mode name instead of listing multiple collections
+- **Semantic clarity** - Express intent ("I want content editing tools") rather than technical details
+- **Persona-based presets** - Compound modes like `editor`, `developer`, `admin` match common use cases
+- **Reduced errors** - No need to remember exact collection names
+
+### Base Modes
+
+| Mode | Collections | Description |
+|------|-------------|-------------|
+| `content` | document, document-version, document-blueprint | Content editing, versioning, and blueprints |
+| `content-modeling` | document, document-type, data-type, media, media-type | Document and media structure with content output |
+| `front-end` | template, partial-view, stylesheet, script, static-file | Templates, views, and assets |
+| `media` | media, imaging, temporary-file | Media library and file uploads |
+| `search` | indexer, searcher | Examine indexes and search |
+| `users` | user, user-group, user-data | Back office user management |
+| `members` | member, member-type, member-group | Front-end member management |
+| `health` | health, log-viewer | Health checks and diagnostics |
+| `translation` | culture, language, dictionary | Localization and translations |
+| `system` | server, manifest, models-builder | Server info and code generation |
+| `integrations` | webhook, redirect, relation, relation-type, tag | External integrations |
+
+### Compound Modes
+
+Compound modes expand to multiple base modes for common personas:
+
+| Mode | Expands To | Use Case |
+|------|------------|----------|
+| `editor` | content, media, translation | Content editors working with documents and media |
+| `developer` | content-modeling, front-end, system | Developers building templates and schemas |
+| `admin` | users, members, health, system | Administrators managing users and monitoring |
+| `full` | (all base modes) | Full access to all tools |
+
+### Mode Usage Examples
+
+#### Single Mode
+```bash
+# Content editor - just document and media tools
+export UMBRACO_TOOL_MODES="content"
+```
+
+#### Multiple Modes
+```bash
+# Content editor with translation support
+export UMBRACO_TOOL_MODES="content,media,translation"
+```
+
+#### Compound Mode
+```bash
+# Full editor preset (content + media + translation)
+export UMBRACO_TOOL_MODES="editor"
+```
+
+#### Mode with Exclusions
+```bash
+# Editor mode but exclude version history
+export UMBRACO_TOOL_MODES="editor"
+export UMBRACO_EXCLUDE_TOOL_COLLECTIONS="document-version"
+```
+
+#### Mode with Additional Collections
+```bash
+# Front-end development plus webhooks
+export UMBRACO_TOOL_MODES="front-end"
+export UMBRACO_INCLUDE_TOOL_COLLECTIONS="webhook"
+```
+
+### Mode Expansion Logic
+
+When modes are specified, the system processes them as follows:
+
+```
+UMBRACO_TOOL_MODES="editor"
+         ↓
+1. Compound expansion: editor → [content, media, translation]
+         ↓
+2. Base expansion:
+   content → [document, document-version, document-blueprint]
+   media → [media, imaging, temporary-file]
+   translation → [culture, language, dictionary]
+         ↓
+3. Final collections: [document, document-version, document-blueprint,
+                      media, imaging, temporary-file,
+                      culture, language, dictionary]
+         ↓
+4. Merge with UMBRACO_INCLUDE_TOOL_COLLECTIONS (if set)
+         ↓
+5. Apply UMBRACO_EXCLUDE_TOOL_COLLECTIONS (if set)
+         ↓
+6. Resolve collection dependencies
+```
+
+### Mode Validation
+
+- Invalid mode names generate a console warning but don't fail
+- Valid modes in the list are still processed
+- Unknown names are ignored (not treated as collection names)
+
+Example:
+```bash
+export UMBRACO_TOOL_MODES="content,invalid-mode,media"
+# Warning: Unknown tool modes (ignored): invalid-mode
+# Result: content and media modes are loaded
+```
 
 ## Collection Structure
 
@@ -148,10 +267,13 @@ export UMBRACO_EXCLUDE_TOOLS="delete-document,delete-media"
 
 The filtering system follows this precedence:
 
-1. **Collection filtering** - Determines which collections are available
-2. **Dependency resolution** - Automatically includes required collections
-3. **User permissions** - Tools are filtered by Umbraco user permissions
-4. **Tool-level filtering** - Individual tools can be included/excluded
+1. **Mode expansion** - Tool modes are expanded to their constituent collections
+2. **Collection merging** - Mode collections are merged with explicit `INCLUDE_TOOL_COLLECTIONS`
+3. **Collection filtering** - `EXCLUDE_TOOL_COLLECTIONS` is applied
+4. **Dependency resolution** - Automatically includes required collections
+5. **User permissions** - Tools are filtered by Umbraco user permissions
+6. **Slice filtering** - Tools are filtered by operation type (see [tool-slice-filtering.md](tool-slice-filtering.md))
+7. **Tool-level filtering** - Individual tools can be included/excluded
 
 ### Default Behavior
 - If no filtering is specified, all collections and tools are loaded
@@ -159,9 +281,10 @@ The filtering system follows this precedence:
 - User permissions are always enforced
 
 ### Include vs Exclude Mode
-- **Include mode**: Only specified collections/tools are loaded
+- **Include mode**: Only specified collections/tools are loaded (via modes or explicit includes)
 - **Exclude mode**: All collections/tools are loaded except those specified
 - Tool-level include/exclude can override collection-level decisions
+- Modes and explicit collection includes are merged (union)
 
 ## Implementation Details
 

@@ -24,7 +24,7 @@ describe("get-temporary-file", () => {
     await builder.withExampleFile().create();
 
     const params = getTemporaryFileByIdParams.parse({ id: builder.getId() });
-    const result = await GetTemporaryFileTool().handler(params, {
+    const result = await GetTemporaryFileTool.handler(params, {
       signal: new AbortController().signal,
     });
 
@@ -34,7 +34,7 @@ describe("get-temporary-file", () => {
 
   it("should handle non-existent temporary file", async () => {
     const params = getTemporaryFileByIdParams.parse({ id: BLANK_UUID });
-    const result = await GetTemporaryFileTool().handler(params, {
+    const result = await GetTemporaryFileTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(result).toMatchSnapshot();

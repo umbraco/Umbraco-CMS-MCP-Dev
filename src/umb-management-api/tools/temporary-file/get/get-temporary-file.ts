@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTemporaryFileByIdParams } from "@/umb-management-api/temporary-file/types.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetTemporaryFileTool = CreateUmbracoReadTool(
-  "get-temporary-file",
-  "Gets a temporary file by id",
-  getTemporaryFileByIdParams.shape,
-  async (params) => {
+const GetTemporaryFileTool = {
+  name: "get-temporary-file",
+  description: "Gets a temporary file by id",
+  schema: getTemporaryFileByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (params: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTemporaryFileById(params.id);
 
@@ -19,6 +22,6 @@ const GetTemporaryFileTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getTemporaryFileByIdParams.shape>;
 
-export default GetTemporaryFileTool;
+export default withStandardDecorators(GetTemporaryFileTool);

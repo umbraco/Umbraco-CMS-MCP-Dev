@@ -1,17 +1,23 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { putDocumentVersionByIdPreventCleanupParams, putDocumentVersionByIdPreventCleanupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
 // Combined schema for both path params and query params
 const updateDocumentVersionPreventCleanupSchema = putDocumentVersionByIdPreventCleanupParams.merge(
   putDocumentVersionByIdPreventCleanupQueryParams
 );
 
-const UpdateDocumentVersionPreventCleanupTool = CreateUmbracoWriteTool(
-  "update-document-version-prevent-cleanup",
-  "Prevent cleanup for a specific document version",
-  updateDocumentVersionPreventCleanupSchema.shape,
-  async ({ id, preventCleanup }) => {
+type SchemaParams = z.infer<typeof updateDocumentVersionPreventCleanupSchema>;
+
+const UpdateDocumentVersionPreventCleanupTool = {
+  name: "update-document-version-prevent-cleanup",
+  description: "Prevent cleanup for a specific document version",
+  schema: updateDocumentVersionPreventCleanupSchema.shape,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async ({ id, preventCleanup }: SchemaParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putDocumentVersionByIdPreventCleanup(id, { preventCleanup });
 
@@ -23,7 +29,7 @@ const UpdateDocumentVersionPreventCleanupTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof updateDocumentVersionPreventCleanupSchema.shape>;
 
-export default UpdateDocumentVersionPreventCleanupTool;
+export default withStandardDecorators(UpdateDocumentVersionPreventCleanupTool);

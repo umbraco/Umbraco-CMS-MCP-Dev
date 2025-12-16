@@ -44,7 +44,7 @@ describe("get-document-siblings", () => {
       .create();
 
     // Act - Get siblings of first sibling
-    const result = await GetDocumentSiblingsTool().handler(
+    const result = await GetDocumentSiblingsTool.handler(
       {
         target: sibling1Builder.getId(),
         after: 100,
@@ -59,7 +59,7 @@ describe("get-document-siblings", () => {
 
   it("should handle non-existent target", async () => {
     // Act
-    const result = await GetDocumentSiblingsTool().handler(
+    const result = await GetDocumentSiblingsTool.handler(
       {
         target: BLANK_UUID,
         after: 100,

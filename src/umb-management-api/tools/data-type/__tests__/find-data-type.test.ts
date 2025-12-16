@@ -28,7 +28,7 @@ describe("find-data-type", () => {
       .create();
 
     // Use the tool to find by name
-    const result = await FindDataTypeTool().handler(
+    const result = await FindDataTypeTool.handler(
       { name: TEST_DATATYPE_NAME, take: 100 },
       { signal: new AbortController().signal }
     );
@@ -43,7 +43,7 @@ describe("find-data-type", () => {
   });
 
   it("should return no results for a non-existent name", async () => {
-    const result = await FindDataTypeTool().handler(
+    const result = await FindDataTypeTool.handler(
       {
         name: "nonexistentdatatype_" + Date.now(),
         take: 100,

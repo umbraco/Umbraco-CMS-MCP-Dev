@@ -1,15 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getItemLanguageQueryParams,
   getItemLanguageResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { GetItemLanguageParams } from "@/umb-management-api/schemas/index.js";
 
-const GetLanguageItemsTool = CreateUmbracoReadTool(
-  "get-language-items",
-  "Gets language items (optionally filtered by isoCode)",
-  getItemLanguageQueryParams.shape,
-  async (params) => {
+const GetLanguageItemsTool = {
+  name: "get-language-items",
+  description: "Gets language items (optionally filtered by isoCode)",
+  schema: getItemLanguageQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: GetItemLanguageParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemLanguage(params);
     const validated = getItemLanguageResponse.parse(response);
@@ -21,7 +25,7 @@ const GetLanguageItemsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemLanguageQueryParams.shape>;
 
-export default GetLanguageItemsTool;
+export default withStandardDecorators(GetLanguageItemsTool);

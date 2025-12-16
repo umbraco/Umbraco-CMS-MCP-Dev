@@ -56,13 +56,13 @@ describe("delete-user-avatar-by-id", () => {
     const temporaryFileId = tempFileBuilder.getId();
 
     // Upload avatar first
-    await UploadUserAvatarByIdTool().handler({
+    await UploadUserAvatarByIdTool.handler({
       id: userId,
       file: { id: temporaryFileId }
     }, { signal: new AbortController().signal });
 
     // Act - Delete the avatar
-    const result = await DeleteUserAvatarByIdTool().handler({
+    const result = await DeleteUserAvatarByIdTool.handler({
       id: userId
     }, { signal: new AbortController().signal });
 
@@ -76,7 +76,7 @@ describe("delete-user-avatar-by-id", () => {
 
   it("should handle non-existent user id", async () => {
     // Act
-    const result = await DeleteUserAvatarByIdTool().handler({
+    const result = await DeleteUserAvatarByIdTool.handler({
       id: "00000000-0000-0000-0000-000000000000"
     }, { signal: new AbortController().signal });
 
@@ -97,7 +97,7 @@ describe("delete-user-avatar-by-id", () => {
     const userId = userBuilder.getId();
 
     // Act - Try to delete avatar from user who doesn't have one
-    const result = await DeleteUserAvatarByIdTool().handler({
+    const result = await DeleteUserAvatarByIdTool.handler({
       id: userId
     }, { signal: new AbortController().signal });
 

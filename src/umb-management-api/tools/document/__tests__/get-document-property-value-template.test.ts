@@ -15,7 +15,7 @@ describe("get-document-property-value-template", () => {
 
   it("should list all available property value templates when no editorAlias is provided", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -34,7 +34,7 @@ describe("get-document-property-value-template", () => {
 
   it("should return template for a specific property editor by editorAlias", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.TextBox" },
       { signal: new AbortController().signal }
     );
@@ -55,7 +55,7 @@ describe("get-document-property-value-template", () => {
 
   it("should return template by friendly name", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Textbox" },
       { signal: new AbortController().signal }
     );
@@ -70,7 +70,7 @@ describe("get-document-property-value-template", () => {
 
   it("should be case-insensitive when finding property editors", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "umbraco.textbox" },
       { signal: new AbortController().signal }
     );
@@ -84,7 +84,7 @@ describe("get-document-property-value-template", () => {
 
   it("should include notes for editors with special requirements", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.BlockList" },
       { signal: new AbortController().signal }
     );
@@ -99,7 +99,7 @@ describe("get-document-property-value-template", () => {
 
   it("should return error for non-existent property editor", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "NonExistent.Editor" },
       { signal: new AbortController().signal }
     );
@@ -115,7 +115,7 @@ describe("get-document-property-value-template", () => {
 
   it("should return complex value structures for BlockGrid", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.BlockGrid" },
       { signal: new AbortController().signal }
     );
@@ -134,7 +134,7 @@ describe("get-document-property-value-template", () => {
 
   it("should return complex value structures for RichTextEditor", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.RichText" },
       { signal: new AbortController().signal }
     );
@@ -150,7 +150,7 @@ describe("get-document-property-value-template", () => {
 
   it("should include notes for ImageCropper requiring temporary file", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.ImageCropper" },
       { signal: new AbortController().signal }
     );
@@ -166,7 +166,7 @@ describe("get-document-property-value-template", () => {
 
   it("should include notes for MediaPicker3 with key information", async () => {
     // Act
-    const result = await GetDocumentPropertyValueTemplateTool().handler(
+    const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.MediaPicker3" },
       { signal: new AbortController().signal }
     );

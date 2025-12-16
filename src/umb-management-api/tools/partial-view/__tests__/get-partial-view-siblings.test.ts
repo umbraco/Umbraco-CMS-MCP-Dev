@@ -54,7 +54,7 @@ describe("get-partial-view-siblings", () => {
       .create();
 
     // Act: Get siblings for the target partial view
-    const result = await GetPartialViewSiblingsTool().handler(
+    const result = await GetPartialViewSiblingsTool.handler(
       {
         path: targetBuilder.getPath(),
       },
@@ -71,7 +71,7 @@ describe("get-partial-view-siblings", () => {
     const nonExistentPath = "non-existent-path.cshtml";
 
     // Act: Try to get siblings for non-existent partial view
-    const result = await GetPartialViewSiblingsTool().handler(
+    const result = await GetPartialViewSiblingsTool.handler(
       {
         path: nonExistentPath,
       },

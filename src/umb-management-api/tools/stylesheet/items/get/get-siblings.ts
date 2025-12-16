@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeStylesheetSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetStylesheetSiblingsTool = CreateUmbracoReadTool(
-  "get-stylesheet-siblings",
-  "Gets sibling stylesheets for a given descendant path",
-  getTreeStylesheetSiblingsQueryParams.shape,
-  async (params) => {
+const GetStylesheetSiblingsTool = {
+  name: "get-stylesheet-siblings",
+  description: "Gets sibling stylesheets for a given descendant path",
+  schema: getTreeStylesheetSiblingsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreeStylesheetSiblings(params);
 
@@ -19,6 +22,6 @@ const GetStylesheetSiblingsTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getTreeStylesheetSiblingsQueryParams.shape>;
 
-export default GetStylesheetSiblingsTool;
+export default withStandardDecorators(GetStylesheetSiblingsTool);

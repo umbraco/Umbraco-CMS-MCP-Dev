@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetItemMediaTypeFoldersParams } from "@/umb-management-api/schemas/index.js";
 import { getItemMediaTypeFoldersQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaTypeFoldersTool = CreateUmbracoReadTool(
-  "get-media-type-folders",
-  "Lists media type folders with pagination support",
-  getItemMediaTypeFoldersQueryParams.shape,
-  async (params: GetItemMediaTypeFoldersParams) => {
+const GetMediaTypeFoldersTool = {
+  name: "get-media-type-folders",
+  description: "Lists media type folders with pagination support",
+  schema: getItemMediaTypeFoldersQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list', 'folders'],
+  handler: async (params: GetItemMediaTypeFoldersParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemMediaTypeFolders(params);
 
@@ -19,7 +22,7 @@ const GetMediaTypeFoldersTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemMediaTypeFoldersQueryParams.shape>;
 
-export default GetMediaTypeFoldersTool;
+export default withStandardDecorators(GetMediaTypeFoldersTool);

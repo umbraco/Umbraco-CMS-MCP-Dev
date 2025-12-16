@@ -19,10 +19,10 @@ export const HealthCollection: ToolCollectionExport = {
 
     // Health checks are system-level operations requiring settings access
     if (AuthorizationPolicies.SectionAccessSettings(user)) {
-      tools.push(GetHealthCheckGroupsTool());
-      tools.push(GetHealthCheckGroupByNameTool());
-      tools.push(RunHealthCheckGroupTool());
-      tools.push(ExecuteHealthCheckActionTool());
+      tools.push(GetHealthCheckGroupsTool);
+      tools.push(GetHealthCheckGroupByNameTool);
+      tools.push(RunHealthCheckGroupTool);
+      tools.push(ExecuteHealthCheckActionTool);
     }
 
     return tools;

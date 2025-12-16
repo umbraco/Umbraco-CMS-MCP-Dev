@@ -1,14 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdPublishedParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { UmbracoDocumentPermissions } from "../constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentPublishTool = CreateUmbracoReadTool(
-  "get-document-publish",
-  "Gets the published state of a document by Id.",
-  getDocumentByIdPublishedParams.shape,
-  async ({ id }) => {
+const GetDocumentPublishTool = {
+  name: "get-document-publish",
+  description: "Gets the published state of a document by Id.",
+  schema: getDocumentByIdPublishedParams.shape,
+  isReadOnly: true,
+  slices: ['publish'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentByIdPublished(id);
     return {
@@ -20,7 +21,6 @@ const GetDocumentPublishTool = CreateUmbracoReadTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Read)
-);
+} satisfies ToolDefinition<typeof getDocumentByIdPublishedParams.shape>;
 
-export default GetDocumentPublishTool;
+export default withStandardDecorators(GetDocumentPublishTool);

@@ -34,7 +34,7 @@ describe("move-media-to-recycle-bin", () => {
       .create();
 
     // Move to recycle bin
-    const result = await MoveMediaToRecycleBinTool().handler(
+    const result = await MoveMediaToRecycleBinTool.handler(
       {
         id: builder.getId(),
       },
@@ -50,7 +50,7 @@ describe("move-media-to-recycle-bin", () => {
   });
 
   it("should handle non-existent media", async () => {
-    const result = await MoveMediaToRecycleBinTool().handler(
+    const result = await MoveMediaToRecycleBinTool.handler(
       {
         id: BLANK_UUID,
       },

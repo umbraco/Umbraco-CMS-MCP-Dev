@@ -46,7 +46,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -84,7 +84,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -111,7 +111,7 @@ describe("rename-script", () => {
     };
 
     // Act - This should likely error since we're trying to rename a folder as if it's a script
-    const result = await RenameScriptTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
 
     // Assert - This will likely be an error since script rename tool expects scripts, not folders
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
@@ -125,7 +125,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
 
     // Assert - Error responses use normalizeErrorResponse
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
@@ -150,7 +150,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
 
     // Assert - This should work due to proper path construction
     try {
@@ -174,7 +174,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
 
     // Assert - Same name rename might be success or error
     try {

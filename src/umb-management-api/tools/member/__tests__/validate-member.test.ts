@@ -41,7 +41,7 @@ describe("validate-member", () => {
 
   it("should validate a member successfully", async () => {
     const model = buildValidationModel();
-    const result = await ValidateMemberTool().handler(model, {
+    const result = await ValidateMemberTool.handler(model, {
       signal: new AbortController().signal,
     });
     expect(result).toMatchSnapshot();
@@ -56,7 +56,7 @@ describe("validate-member", () => {
       email: "invalid-email",
       username: "",
     };
-    const result = await ValidateMemberTool().handler(invalidModel as any, {
+    const result = await ValidateMemberTool.handler(invalidModel as any, {
       signal: new AbortController().signal,
     });
     expect(normalizeErrorResponse(result)).toMatchSnapshot();

@@ -1,11 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetManifestManifestTool = CreateUmbracoReadTool(
-  "get-manifest-manifest",
-  "Gets all manifests (both public and private) from the Umbraco installation. Each manifest contains an extensions property showing what the package exposes to Umbraco. Use to see which packages are installed, troubleshoot package issues, or list available extensions.",
-  {},
-  async () => {
+const GetManifestManifestTool = {
+  name: "get-manifest-manifest",
+  description: "Gets all manifests (both public and private) from the Umbraco installation. Each manifest contains an extensions property showing what the package exposes to Umbraco. Use to see which packages are installed, troubleshoot package issues, or list available extensions.",
+  schema: {},
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getManifestManifest();
 
@@ -18,6 +21,6 @@ const GetManifestManifestTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<{}>;
 
-export default GetManifestManifestTool;
+export default withStandardDecorators(GetManifestManifestTool);

@@ -14,7 +14,7 @@ describe("get-log-viewer-level-count", () => {
   });
 
   it("should get log viewer level counts with default parameters", async () => {
-    const result = await GetLogViewerLevelCountTool().handler(
+    const result = await GetLogViewerLevelCountTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -35,7 +35,7 @@ describe("get-log-viewer-level-count", () => {
   });
 
   it("should get log viewer level counts with date range", async () => {
-    const result = await GetLogViewerLevelCountTool().handler(
+    const result = await GetLogViewerLevelCountTool.handler(
       {
         startDate: "2024-01-01T00:00:00Z",
         endDate: "2024-12-31T23:59:59Z",

@@ -28,7 +28,7 @@ describe("get-member-types-by-id-array", () => {
 
   it("should get no member types for empty request", async () => {
     // Get all member types
-    const result = await GetMemberTypesByIdArrayTool().handler(
+    const result = await GetMemberTypesByIdArrayTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -44,7 +44,7 @@ describe("get-member-types-by-id-array", () => {
       .create();
 
     // Get by ID
-    const result = await GetMemberTypesByIdArrayTool().handler(
+    const result = await GetMemberTypesByIdArrayTool.handler(
       { id: [builder.getId()] },
       { signal: new AbortController().signal }
     );
@@ -68,7 +68,7 @@ describe("get-member-types-by-id-array", () => {
       .create();
 
     // Get by IDs
-    const result = await GetMemberTypesByIdArrayTool().handler(
+    const result = await GetMemberTypesByIdArrayTool.handler(
       {
         id: [builder1.getId(), builder2.getId()],
       },

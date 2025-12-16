@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { postDocumentTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { CreateDocumentTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 
-const ValidateDocumentTypePostTool = CreateUmbracoReadTool(
-  "validate-document-type-post",
-  "Validates a document type using the Umbraco API (POST, does not persist changes).",
-  postDocumentTypeBody.shape,
-  async (model) => {
+const ValidateDocumentTypePostTool = {
+  name: "validate-document-type-post",
+  description: "Validates a document type using the Umbraco API (POST, does not persist changes).",
+  schema: postDocumentTypeBody.shape,
+  isReadOnly: true,
+  slices: ['validate'],
+  handler: async (model: CreateDocumentTypeRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postDocumentType(model);
     return {
@@ -18,6 +22,6 @@ const ValidateDocumentTypePostTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof postDocumentTypeBody.shape>;
 
-export default ValidateDocumentTypePostTool;
+export default withStandardDecorators(ValidateDocumentTypePostTool);

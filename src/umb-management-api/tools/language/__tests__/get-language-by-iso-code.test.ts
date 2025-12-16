@@ -40,13 +40,13 @@ describe("get-language-by-iso-code", () => {
       .withIsMandatory(false)
       .create();
     const params = getLanguageByIsoCodeParams.parse({ isoCode: builder.getIsoCode() });
-    const result = await GetLanguageByIsoCodeTool().handler(params, { signal: new AbortController().signal });
+    const result = await GetLanguageByIsoCodeTool.handler(params, { signal: new AbortController().signal });
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should handle non-existent language", async () => {
     const params = getLanguageByIsoCodeParams.parse({ isoCode: "does-not-exist" });
-    const result = await GetLanguageByIsoCodeTool().handler(params, { signal: new AbortController().signal });
+    const result = await GetLanguageByIsoCodeTool.handler(params, { signal: new AbortController().signal });
     expect(result).toMatchSnapshot();
   });
 }); 

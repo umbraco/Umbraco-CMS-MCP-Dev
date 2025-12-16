@@ -33,7 +33,7 @@ describe("create-stylesheet", () => {
     };
 
     // Act
-    const result = await CreateStylesheetTool().handler(params, { signal: new AbortController().signal });
+    const result = await CreateStylesheetTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -46,13 +46,13 @@ describe("create-stylesheet", () => {
 
   it("should handle existing stylesheet name", async () => {
     // Arrange - First create the stylesheet
-    await CreateStylesheetTool().handler({
+    await CreateStylesheetTool.handler({
       name: EXISTING_STYLESHEET_NAME,
       content: EXISTING_CONTENT
     }, { signal: new AbortController().signal });
 
     // Act - Try to create it again with same name
-    const result = await CreateStylesheetTool().handler({
+    const result = await CreateStylesheetTool.handler({
       name: EXISTING_STYLESHEET_NAME,
       content: TEST_CONTENT
     }, { signal: new AbortController().signal });
@@ -75,7 +75,7 @@ describe("create-stylesheet", () => {
     };
 
     // Act
-    const result = await CreateStylesheetTool().handler(params, { signal: new AbortController().signal });
+    const result = await CreateStylesheetTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

@@ -28,7 +28,7 @@ describe("get-item-document-type", () => {
 
   it("should get no document types for empty request", async () => {
     // Get all document types
-    const result = await GetDocumentTypesByIdArrayTool().handler(
+    const result = await GetDocumentTypesByIdArrayTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -45,7 +45,7 @@ describe("get-item-document-type", () => {
       .create();
 
     // Get by ID
-    const result = await GetDocumentTypesByIdArrayTool().handler(
+    const result = await GetDocumentTypesByIdArrayTool.handler(
       { id: [builder.getId()] },
       { signal: new AbortController().signal }
     );
@@ -71,7 +71,7 @@ describe("get-item-document-type", () => {
       .create();
 
     // Get by IDs
-    const result = await GetDocumentTypesByIdArrayTool().handler(
+    const result = await GetDocumentTypesByIdArrayTool.handler(
       {
         id: [builder1.getId(), builder2.getId()],
       },

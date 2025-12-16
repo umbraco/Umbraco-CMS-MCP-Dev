@@ -45,7 +45,7 @@ describe("rename-partial-view", () => {
     };
 
     // Act
-    const result = await RenamePartialViewTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenamePartialViewTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -82,7 +82,7 @@ describe("rename-partial-view", () => {
     };
 
     // Act
-    const result = await RenamePartialViewTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenamePartialViewTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -109,7 +109,7 @@ describe("rename-partial-view", () => {
     };
 
     // Act
-    const result = await RenamePartialViewTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenamePartialViewTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -123,7 +123,7 @@ describe("rename-partial-view", () => {
     };
 
     // Act
-    const result = await RenamePartialViewTool().handler(params, { signal: new AbortController().signal });
+    const result = await RenamePartialViewTool.handler(params, { signal: new AbortController().signal });
 
     // Assert - Error responses don't use createSnapshotResult
     expect(result).toMatchSnapshot();

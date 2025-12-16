@@ -1,9 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const PostModelsBuilderBuildTool = CreateUmbracoWriteTool(
-  "post-models-builder-build",
-  `Triggers the generation/build of Models Builder models.
+const PostModelsBuilderBuildTool = {
+  name: "post-models-builder-build",
+  description: `Triggers the generation/build of Models Builder models.
   This endpoint initiates the process of generating strongly-typed models from Umbraco content types.
   The operation runs asynchronously and does not return any response data.
 
@@ -14,8 +15,10 @@ const PostModelsBuilderBuildTool = CreateUmbracoWriteTool(
 
   Note: This operation may take some time to complete depending on the number of content types.
   Use get-models-builder-dashboard or get-models-builder-status to check the current state and if new models need to be generated.`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: false,
+  slices: ['diagnostics'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     await client.postModelsBuilderBuild();
 
@@ -28,6 +31,6 @@ const PostModelsBuilderBuildTool = CreateUmbracoWriteTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<{}>;
 
-export default PostModelsBuilderBuildTool;
+export default withStandardDecorators(PostModelsBuilderBuildTool);

@@ -46,7 +46,7 @@ describe("get-static-file-ancestors", () => {
     };
 
     // Act
-    const result = await GetStaticFileAncestorsTool().handler(
+    const result = await GetStaticFileAncestorsTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -99,7 +99,7 @@ describe("get-static-file-ancestors", () => {
       // Use a fallback root-level path
       const params = { descendantPath: "/App_Plugins" };
 
-      const result = await GetStaticFileAncestorsTool().handler(
+      const result = await GetStaticFileAncestorsTool.handler(
         params,
         { signal: new AbortController().signal }
       );
@@ -113,7 +113,7 @@ describe("get-static-file-ancestors", () => {
     };
 
     // Act
-    const result = await GetStaticFileAncestorsTool().handler(
+    const result = await GetStaticFileAncestorsTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -137,7 +137,7 @@ describe("get-static-file-ancestors", () => {
     };
 
     // Act
-    const result = await GetStaticFileAncestorsTool().handler(
+    const result = await GetStaticFileAncestorsTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -175,7 +175,7 @@ describe("get-static-file-ancestors", () => {
     };
 
     // Act
-    const result = await GetStaticFileAncestorsTool().handler(
+    const result = await GetStaticFileAncestorsTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -220,7 +220,7 @@ describe("get-static-file-ancestors", () => {
     };
 
     // Act
-    const result = await GetStaticFileAncestorsTool().handler(
+    const result = await GetStaticFileAncestorsTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -255,7 +255,7 @@ describe("get-static-file-ancestors", () => {
     const params = { descendantPath: testPath };
 
     // Act - get results from both tool and helper
-    const toolResult = await GetStaticFileAncestorsTool().handler(
+    const toolResult = await GetStaticFileAncestorsTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -288,7 +288,7 @@ describe("get-static-file-ancestors", () => {
     };
 
     // Act
-    const result = await GetStaticFileAncestorsTool().handler(
+    const result = await GetStaticFileAncestorsTool.handler(
       params,
       { signal: new AbortController().signal }
     );

@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreePartialViewRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreePartialViewRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetPartialViewRootTool = CreateUmbracoReadTool(
-  "get-partial-view-root",
-  "Gets the root partial views in the tree structure",
-  getTreePartialViewRootQueryParams.shape,
-  async (model: GetTreePartialViewRootParams) => {
+const GetPartialViewRootTool = {
+  name: "get-partial-view-root",
+  description: "Gets the root partial views in the tree structure",
+  schema: getTreePartialViewRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (model: GetTreePartialViewRootParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreePartialViewRoot(model);
 
@@ -19,7 +22,7 @@ const GetPartialViewRootTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreePartialViewRootQueryParams.shape>;
 
-export default GetPartialViewRootTool;
+export default withStandardDecorators(GetPartialViewRootTool);

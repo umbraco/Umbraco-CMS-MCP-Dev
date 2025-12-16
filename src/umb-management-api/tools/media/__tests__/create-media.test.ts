@@ -40,7 +40,7 @@ describe("create-media", () => {
   });
 
   it("should create image media", async () => {
-    const result = await CreateMediaTool().handler(
+    const result = await CreateMediaTool.handler(
       {
         sourceType: "filePath",
         name: TEST_IMAGE_NAME,
@@ -58,7 +58,7 @@ describe("create-media", () => {
   });
 
   it("should create file media", async () => {
-    const result = await CreateMediaTool().handler(
+    const result = await CreateMediaTool.handler(
       {
         sourceType: "filePath",
         name: TEST_FILE_NAME,
@@ -76,7 +76,7 @@ describe("create-media", () => {
   });
 
   it("should handle non-existent file path", async () => {
-    const result = await CreateMediaTool().handler(
+    const result = await CreateMediaTool.handler(
       {
         sourceType: "filePath",
         name: TEST_IMAGE_NAME,
@@ -91,7 +91,7 @@ describe("create-media", () => {
   });
 
   it("should handle invalid media type", async () => {
-    const result = await CreateMediaTool().handler(
+    const result = await CreateMediaTool.handler(
       {
         sourceType: "filePath",
         name: TEST_IMAGE_NAME,
@@ -106,7 +106,7 @@ describe("create-media", () => {
   });
 
   it("should create media from URL", async () => {
-    const result = await CreateMediaTool().handler(
+    const result = await CreateMediaTool.handler(
       {
         sourceType: "url",
         name: `${TEST_URL_IMAGE_NAME}`,
@@ -125,7 +125,7 @@ describe("create-media", () => {
   });
 
   it("should create media from base64", async () => {
-    const result = await CreateMediaTool().handler(
+    const result = await CreateMediaTool.handler(
       {
         sourceType: "base64",
         name: `${TEST_BASE64_IMAGE_NAME}.png`,

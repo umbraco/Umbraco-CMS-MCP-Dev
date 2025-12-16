@@ -1,14 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { GetUserGroupParams } from "@/umb-management-api/schemas/index.js";
 import { getUserGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserGroupsTool = CreateUmbracoReadTool(
-  "get-user-groups",
-  "Gets all user groups",
-  getUserGroupQueryParams.shape,
-  async ({ skip, take }) => {
+const GetUserGroupsTool = {
+  name: "get-user-groups",
+  description: "Gets all user groups",
+  schema: getUserGroupQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (model: GetUserGroupParams) => {
     const client = UmbracoManagementClient.getClient();
-    const response = await client.getUserGroup({ skip, take });
+    const response = await client.getUserGroup(model);
 
     return {
       content: [
@@ -18,7 +22,7 @@ const GetUserGroupsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getUserGroupQueryParams.shape>;
 
-export default GetUserGroupsTool;
+export default withStandardDecorators(GetUserGroupsTool);

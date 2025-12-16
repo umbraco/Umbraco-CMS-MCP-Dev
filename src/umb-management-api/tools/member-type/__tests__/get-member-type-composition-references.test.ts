@@ -35,7 +35,7 @@ describe("get-member-type-composition-references", () => {
       .create();
 
     // Get the composition references
-    const result = await GetMemberTypeCompositionReferencesTool().handler({
+    const result = await GetMemberTypeCompositionReferencesTool.handler({
       id: compositionBuilder.getId()
     }, { signal: new AbortController().signal });
 
@@ -57,7 +57,7 @@ describe("get-member-type-composition-references", () => {
       .create();
 
     // Get the composition references
-    const result = await GetMemberTypeCompositionReferencesTool().handler({
+    const result = await GetMemberTypeCompositionReferencesTool.handler({
       id: memberTypeBuilder.getId()
     }, { signal: new AbortController().signal });
 

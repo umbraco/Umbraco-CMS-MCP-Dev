@@ -15,7 +15,7 @@ describe("get-log-viewer-log", () => {
   });
 
   it("should get log viewer logs with default parameters", async () => {
-    const result = await GetLogViewerLogTool().handler(
+    const result = await GetLogViewerLogTool.handler(
       { take: 100 },
       { signal: new AbortController().signal }
     );
@@ -31,7 +31,7 @@ describe("get-log-viewer-log", () => {
     const oneMonthAgo = new Date(now);
     oneMonthAgo.setMonth(now.getMonth() - 1);
 
-    const result = await GetLogViewerLogTool().handler(
+    const result = await GetLogViewerLogTool.handler(
       {
         skip: 0, // Start from the beginning
         take: 10, // Get more items to increase chances of finding matches

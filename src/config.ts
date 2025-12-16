@@ -11,8 +11,11 @@ export interface UmbracoAuthConfig {
 
 export interface UmbracoServerConfig {
   auth: UmbracoAuthConfig;
+  toolModes?: string[];
   includeToolCollections?: string[];
   excludeToolCollections?: string[];
+  includeSlices?: string[];
+  excludeSlices?: string[];
   includeTools?: string[];
   excludeTools?: string[];
   allowedMediaPaths?: string[];
@@ -21,8 +24,11 @@ export interface UmbracoServerConfig {
     clientId: "cli" | "env";
     clientSecret: "cli" | "env";
     baseUrl: "cli" | "env";
+    toolModes?: "cli" | "env" | "none";
     includeToolCollections?: "cli" | "env" | "none";
     excludeToolCollections?: "cli" | "env" | "none";
+    includeSlices?: "cli" | "env" | "none";
+    excludeSlices?: "cli" | "env" | "none";
     includeTools?: "cli" | "env" | "none";
     excludeTools?: "cli" | "env" | "none";
     allowedMediaPaths?: "cli" | "env" | "none";
@@ -40,8 +46,11 @@ interface CliArgs {
   "umbraco-client-id"?: string;
   "umbraco-client-secret"?: string;
   "umbraco-base-url"?: string;
+  "umbraco-tool-modes"?: string;
   "umbraco-include-tool-collections"?: string;
   "umbraco-exclude-tool-collections"?: string;
+  "umbraco-include-slices"?: string;
+  "umbraco-exclude-slices"?: string;
   "umbraco-include-tools"?: string;
   "umbraco-exclude-tools"?: string;
   "umbraco-allowed-media-paths"?: string;
@@ -65,6 +74,10 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
         type: "string",
         description: "Umbraco base URL (e.g., https://localhost:44391)",
       },
+      "umbraco-tool-modes": {
+        type: "string",
+        description: "Comma-separated list of tool modes (e.g., content,media,editor)",
+      },
       "umbraco-include-tool-collections": {
         type: "string",
         description: "Comma-separated list of tool collections to include",
@@ -72,6 +85,14 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
       "umbraco-exclude-tool-collections": {
         type: "string",
         description: "Comma-separated list of tool collections to exclude",
+      },
+      "umbraco-include-slices": {
+        type: "string",
+        description: "Comma-separated list of tool slices to include (e.g., create,read,tree)",
+      },
+      "umbraco-exclude-slices": {
+        type: "string",
+        description: "Comma-separated list of tool slices to exclude (e.g., delete,recycle-bin)",
       },
       "umbraco-include-tools": {
         type: "string",
@@ -121,8 +142,11 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
   };
 
   const config: Omit<UmbracoServerConfig, "auth"> = {
+    toolModes: undefined,
     includeToolCollections: undefined,
     excludeToolCollections: undefined,
+    includeSlices: undefined,
+    excludeSlices: undefined,
     includeTools: undefined,
     excludeTools: undefined,
     allowedMediaPaths: undefined,
@@ -131,8 +155,11 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
       clientId: "env",
       clientSecret: "env",
       baseUrl: "env",
+      toolModes: "none",
       includeToolCollections: "none",
       excludeToolCollections: "none",
+      includeSlices: "none",
+      excludeSlices: "none",
       includeTools: "none",
       excludeTools: "none",
       allowedMediaPaths: "none",
@@ -168,6 +195,21 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
     config.configSources.baseUrl = "env";
   }
 
+  // Handle UMBRACO_TOOL_MODES
+  if (argv["umbraco-tool-modes"]) {
+    config.toolModes = argv["umbraco-tool-modes"]
+      .split(",")
+      .map((m) => m.trim())
+      .filter(Boolean);
+    config.configSources.toolModes = "cli";
+  } else if (process.env.UMBRACO_TOOL_MODES) {
+    config.toolModes = process.env.UMBRACO_TOOL_MODES
+      .split(",")
+      .map((m) => m.trim())
+      .filter(Boolean);
+    config.configSources.toolModes = "env";
+  }
+
   // Handle UMBRACO_INCLUDE_TOOL_COLLECTIONS
   if (argv["umbraco-include-tool-collections"]) {
     config.includeToolCollections = argv["umbraco-include-tool-collections"]
@@ -196,6 +238,36 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
       .map((c) => c.trim())
       .filter(Boolean);
     config.configSources.excludeToolCollections = "env";
+  }
+
+  // Handle UMBRACO_INCLUDE_SLICES
+  if (argv["umbraco-include-slices"]) {
+    config.includeSlices = argv["umbraco-include-slices"]
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    config.configSources.includeSlices = "cli";
+  } else if (process.env.UMBRACO_INCLUDE_SLICES) {
+    config.includeSlices = process.env.UMBRACO_INCLUDE_SLICES
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    config.configSources.includeSlices = "env";
+  }
+
+  // Handle UMBRACO_EXCLUDE_SLICES
+  if (argv["umbraco-exclude-slices"]) {
+    config.excludeSlices = argv["umbraco-exclude-slices"]
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    config.configSources.excludeSlices = "cli";
+  } else if (process.env.UMBRACO_EXCLUDE_SLICES) {
+    config.excludeSlices = process.env.UMBRACO_EXCLUDE_SLICES
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    config.configSources.excludeSlices = "env";
   }
 
   // Handle UMBRACO_INCLUDE_TOOLS
@@ -288,6 +360,12 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
       `- UMBRACO_BASE_URL: ${auth.baseUrl} (source: ${config.configSources.baseUrl})`,
     );
 
+    if (config.toolModes) {
+      console.log(
+        `- UMBRACO_TOOL_MODES: ${config.toolModes.join(", ")} (source: ${config.configSources.toolModes})`,
+      );
+    }
+
     if (config.includeToolCollections) {
       console.log(
         `- UMBRACO_INCLUDE_TOOL_COLLECTIONS: ${config.includeToolCollections.join(", ")} (source: ${config.configSources.includeToolCollections})`,
@@ -297,6 +375,18 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
     if (config.excludeToolCollections) {
       console.log(
         `- UMBRACO_EXCLUDE_TOOL_COLLECTIONS: ${config.excludeToolCollections.join(", ")} (source: ${config.configSources.excludeToolCollections})`,
+      );
+    }
+
+    if (config.includeSlices) {
+      console.log(
+        `- UMBRACO_INCLUDE_SLICES: ${config.includeSlices.join(", ")} (source: ${config.configSources.includeSlices})`,
+      );
+    }
+
+    if (config.excludeSlices) {
+      console.log(
+        `- UMBRACO_EXCLUDE_SLICES: ${config.excludeSlices.join(", ")} (source: ${config.configSources.excludeSlices})`,
       );
     }
 

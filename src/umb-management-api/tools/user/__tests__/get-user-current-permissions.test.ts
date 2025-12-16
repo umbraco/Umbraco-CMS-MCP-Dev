@@ -17,7 +17,7 @@ describe("get-user-current-permissions", () => {
 
   it("should get current user permissions", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetUserCurrentPermissionsTool.handler({}, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -26,8 +26,8 @@ describe("get-user-current-permissions", () => {
 
   it("should return consistent permissions on multiple calls", async () => {
     // Act
-    const result1 = await GetUserCurrentPermissionsTool().handler({}, { signal: new AbortController().signal });
-    const result2 = await GetUserCurrentPermissionsTool().handler({}, { signal: new AbortController().signal });
+    const result1 = await GetUserCurrentPermissionsTool.handler({}, { signal: new AbortController().signal });
+    const result2 = await GetUserCurrentPermissionsTool.handler({}, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult1 = createSnapshotResult(result1);
@@ -38,7 +38,7 @@ describe("get-user-current-permissions", () => {
 
   it("should handle non-existent ID", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsTool().handler({
+    const result = await GetUserCurrentPermissionsTool.handler({
       id: [BLANK_UUID]
     }, { signal: new AbortController().signal });
 

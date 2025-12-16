@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getWebhookQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetWebhookTool = CreateUmbracoReadTool(
-  "get-webhook",
-  "Gets a paged list of webhooks",
-  getWebhookQueryParams.shape,
-  async (params: { skip?: number; take?: number }) => {
+const GetWebhookTool = {
+  name: "get-webhook",
+  description: "Gets a paged list of webhooks",
+  schema: getWebhookQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: { skip?: number; take?: number }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getWebhook(params);
 
@@ -18,7 +21,7 @@ const GetWebhookTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getWebhookQueryParams.shape>;
 
-export default GetWebhookTool;
+export default withStandardDecorators(GetWebhookTool);

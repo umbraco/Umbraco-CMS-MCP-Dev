@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getPartialViewSnippetByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetPartialViewSnippetByIdTool = CreateUmbracoReadTool(
-  "get-partial-view-snippet-by-id",
-  "Gets a specific partial view snippet by its ID",
-  getPartialViewSnippetByIdParams.shape,
-  async (model: { id: string }) => {
+const GetPartialViewSnippetByIdTool = {
+  name: "get-partial-view-snippet-by-id",
+  description: "Gets a specific partial view snippet by its ID",
+  schema: getPartialViewSnippetByIdParams.shape,
+  isReadOnly: true,
+  slices: ['templates'],
+  handler: async (model: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getPartialViewSnippetById(model.id);
 
@@ -18,7 +21,7 @@ const GetPartialViewSnippetByIdTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getPartialViewSnippetByIdParams.shape>;
 
-export default GetPartialViewSnippetByIdTool;
+export default withStandardDecorators(GetPartialViewSnippetByIdTool);

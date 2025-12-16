@@ -1,15 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getItemMemberGroupQueryParams,
   getItemMemberGroupResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { GetItemMemberGroupParams } from "@/umb-management-api/schemas/index.js";
 
-const GetMemberGroupByIdArrayTool = CreateUmbracoReadTool(
-  "get-member-group-by-id-array",
-  "Gets member groups by an array of IDs",
-  getItemMemberGroupQueryParams.shape,
-  async (params) => {
+const GetMemberGroupByIdArrayTool = {
+  name: "get-member-group-by-id-array",
+  description: "Gets member groups by an array of IDs",
+  schema: getItemMemberGroupQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: GetItemMemberGroupParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemMemberGroup(params);
     // Validate response shape
@@ -22,7 +26,7 @@ const GetMemberGroupByIdArrayTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemMemberGroupQueryParams.shape>;
 
-export default GetMemberGroupByIdArrayTool;
+export default withStandardDecorators(GetMemberGroupByIdArrayTool);

@@ -28,7 +28,7 @@ describe("create-temporary-file", () => {
     );
     const fileAsBase64 = fileBuffer.toString('base64');
 
-    const result = await CreateTemporaryFileTool().handler(
+    const result = await CreateTemporaryFileTool.handler(
       {
         id: testId,
         fileName: "example.jpg",
@@ -47,7 +47,7 @@ describe("create-temporary-file", () => {
   });
 
   it("should handle empty base64", async () => {
-    const result = await CreateTemporaryFileTool().handler(
+    const result = await CreateTemporaryFileTool.handler(
       {
         id: testId,
         fileName: "test.jpg",

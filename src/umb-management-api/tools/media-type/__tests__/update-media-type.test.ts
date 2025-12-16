@@ -34,7 +34,7 @@ describe("update-media-type", () => {
       .withDescription(UPDATED_DESCRIPTION)
       .withAllowedAsRoot(true);
 
-    const result = await UpdateMediaTypeTool().handler(
+    const result = await UpdateMediaTypeTool.handler(
       {
         id: builder.getId(),
         data: updateBuilder.build(),
@@ -60,7 +60,7 @@ describe("update-media-type", () => {
       .withDescription(UPDATED_DESCRIPTION)
       .withAllowedAsRoot(true);
 
-    const result = await UpdateMediaTypeTool().handler(
+    const result = await UpdateMediaTypeTool.handler(
       {
         id: BLANK_UUID,
         data: updateBuilder.build(),

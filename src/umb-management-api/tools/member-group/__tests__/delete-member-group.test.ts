@@ -22,7 +22,7 @@ describe("delete-member-group", () => {
     const builder = await new MemberGroupBuilder()
       .withName(TEST_GROUP_NAME)
       .create();
-    const result = await DeleteMemberGroupTool().handler(
+    const result = await DeleteMemberGroupTool.handler(
       {
         id: builder.getId(),
       },
@@ -34,7 +34,7 @@ describe("delete-member-group", () => {
   });
 
   it("should handle non-existent member group", async () => {
-    const result = await DeleteMemberGroupTool().handler(
+    const result = await DeleteMemberGroupTool.handler(
       {
         id: BLANK_UUID,
       },

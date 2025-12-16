@@ -43,7 +43,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewByPathTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewByPathTool.handler(params, { signal: new AbortController().signal });
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
@@ -73,7 +73,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewByPathTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewByPathTool.handler(params, { signal: new AbortController().signal });
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
@@ -93,7 +93,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewByPathTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewByPathTool.handler(params, { signal: new AbortController().signal });
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -106,7 +106,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewByPathTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewByPathTool.handler(params, { signal: new AbortController().signal });
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -125,7 +125,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewFolderByPathTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewFolderByPathTool.handler(params, { signal: new AbortController().signal });
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
@@ -144,7 +144,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewFolderByPathTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewFolderByPathTool.handler(params, { signal: new AbortController().signal });
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -162,7 +162,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewFolderByPathTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewFolderByPathTool.handler(params, { signal: new AbortController().signal });
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();

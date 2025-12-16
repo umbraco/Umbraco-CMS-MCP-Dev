@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetItemPartialViewParams } from "@/umb-management-api/schemas/index.js";
 import { getItemPartialViewQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetPartialViewSearchTool = CreateUmbracoReadTool(
-  "get-partial-view-search",
-  "Searches for partial views by name or path",
-  getItemPartialViewQueryParams.shape,
-  async (model: GetItemPartialViewParams) => {
+const GetPartialViewSearchTool = {
+  name: "get-partial-view-search",
+  description: "Searches for partial views by name or path",
+  schema: getItemPartialViewQueryParams.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async (model: GetItemPartialViewParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getItemPartialView(model);
 
@@ -19,7 +22,7 @@ const GetPartialViewSearchTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemPartialViewQueryParams.shape>;
 
-export default GetPartialViewSearchTool;
+export default withStandardDecorators(GetPartialViewSearchTool);

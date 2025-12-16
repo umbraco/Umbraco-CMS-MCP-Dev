@@ -1,14 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdPublicAccessParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { UmbracoDocumentPermissions } from "../constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentPublicAccessTool = CreateUmbracoReadTool(
-  "get-document-public-access",
-  "Gets the public access settings for a document by Id.",
-  getDocumentByIdPublicAccessParams.shape,
-  async ({ id }) => {
+const GetDocumentPublicAccessTool = {
+  name: "get-document-public-access",
+  description: "Gets the public access settings for a document by Id.",
+  schema: getDocumentByIdPublicAccessParams.shape,
+  isReadOnly: true,
+  slices: ['public-access'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentByIdPublicAccess(id);
     return {
@@ -20,7 +21,6 @@ const GetDocumentPublicAccessTool = CreateUmbracoReadTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.PublicAccess)
-);
+} satisfies ToolDefinition<typeof getDocumentByIdPublicAccessParams.shape>;
 
-export default GetDocumentPublicAccessTool;
+export default withStandardDecorators(GetDocumentPublicAccessTool);

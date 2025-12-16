@@ -32,7 +32,7 @@ describe("get-item-user", () => {
     await userBuilder.create();
 
     // Act
-    const result = await GetItemUserTool().handler({
+    const result = await GetItemUserTool.handler({
     }, { signal: new AbortController().signal });
 
     // Assert
@@ -63,7 +63,7 @@ describe("get-item-user", () => {
     const userId = userBuilder.getId();
 
     // Act
-    const result = await GetItemUserTool().handler({
+    const result = await GetItemUserTool.handler({
       id: [userId]
     }, { signal: new AbortController().signal });
 
@@ -79,7 +79,7 @@ describe("get-item-user", () => {
 
   it("should return empty array for non-existent user IDs", async () => {
     // Act
-    const result = await GetItemUserTool().handler({
+    const result = await GetItemUserTool.handler({
       id: ["00000000-0000-0000-0000-000000000000"]
     }, { signal: new AbortController().signal });
 

@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { getDocumentTypeByIdCompositionReferencesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentTypeCompositionReferencesTool = CreateUmbracoReadTool(
-  "get-document-type-composition-references",
-  "Gets the composition references for a document type",
-  getDocumentTypeByIdCompositionReferencesParams.shape,
-  async ({ id }) => {
+const GetDocumentTypeCompositionReferencesTool = {
+  name: "get-document-type-composition-references",
+  description: "Gets the composition references for a document type",
+  schema: getDocumentTypeByIdCompositionReferencesParams.shape,
+  isReadOnly: true,
+  slices: ['references'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentTypeByIdCompositionReferences(id);
 
@@ -19,6 +22,6 @@ const GetDocumentTypeCompositionReferencesTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getDocumentTypeByIdCompositionReferencesParams.shape>;
 
-export default GetDocumentTypeCompositionReferencesTool;
+export default withStandardDecorators(GetDocumentTypeCompositionReferencesTool);

@@ -16,11 +16,11 @@ export const IndexerCollection: ToolCollectionExport = {
   tools: (user: CurrentUserResponseModel) => {
 
     const tools: ToolDefinition<any>[] = [];
-    
+
     if (AuthorizationPolicies.SectionAccessSettings(user)) {
-      tools.push(GetIndexerTool());
-      tools.push(GetIndexerByIndexNameTool());
-      tools.push(PostIndexerByIndexNameRebuildTool());
+      tools.push(GetIndexerTool);
+      tools.push(GetIndexerByIndexNameTool);
+      tools.push(PostIndexerByIndexNameRebuildTool);
     }
 
     return tools;

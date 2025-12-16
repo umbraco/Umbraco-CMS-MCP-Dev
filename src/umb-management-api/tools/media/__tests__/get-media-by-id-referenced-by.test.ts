@@ -64,7 +64,7 @@ describe("get-media-by-id-referenced-by", () => {
       .create();
 
     // Get items that reference the media
-    const result = await GetMediaByIdReferencedByTool().handler(
+    const result = await GetMediaByIdReferencedByTool.handler(
       {
         id: referencedMedia.getId(),
         skip: 0,
@@ -83,7 +83,7 @@ describe("get-media-by-id-referenced-by", () => {
   });
 
   it("should handle non-existent media ID", async () => {
-    const result = await GetMediaByIdReferencedByTool().handler(
+    const result = await GetMediaByIdReferencedByTool.handler(
       {
         id: BLANK_UUID,
         skip: 0,
@@ -103,7 +103,7 @@ describe("get-media-by-id-referenced-by", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetMediaByIdReferencedByTool().handler(
+    const result = await GetMediaByIdReferencedByTool.handler(
       {
         id: unreferencedMedia.getId(),
         skip: 0,

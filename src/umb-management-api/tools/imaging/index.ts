@@ -16,7 +16,7 @@ export const ImagingCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessContentOrMedia(user)) {
-      tools.push(GetImagingResizeUrlsTool());
+      tools.push(GetImagingResizeUrlsTool);
     }
 
     return tools;

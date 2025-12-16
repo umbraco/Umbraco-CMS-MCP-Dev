@@ -1,5 +1,4 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
@@ -11,6 +10,8 @@ import {
   MEDIA_TYPE_VECTOR_GRAPHICS,
   MEDIA_TYPE_FILE
 } from "@/constants/constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 const createMediaSchema = z.object({
   sourceType: z.enum(["filePath", "url", "base64"]).describe("Media source type: 'filePath' for local files (most efficient), 'url' for web files, 'base64' for embedded data (small files only)"),
@@ -24,9 +25,9 @@ const createMediaSchema = z.object({
 
 type CreateMediaParams = z.infer<typeof createMediaSchema>;
 
-const CreateMediaTool = CreateUmbracoWriteTool(
-  "create-media",
-  `Upload any media file to Umbraco (images, documents, audio, video, SVG, or custom types).
+const CreateMediaTool = {
+  name: "create-media",
+  description: `Upload any media file to Umbraco (images, documents, audio, video, SVG, or custom types).
 
   Media Types:
   - ${MEDIA_TYPE_IMAGE}: jpg, png, gif, webp, etc. (supports cropping)
@@ -50,8 +51,10 @@ const CreateMediaTool = CreateUmbracoWriteTool(
   - Detects and validates media types (auto-corrects SVG vs Image)
   - Configures correct property editors (ImageCropper vs UploadField)
   - Cleans up temporary files`,
-  createMediaSchema.shape,
-  async (model: CreateMediaParams) => {
+  schema: createMediaSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateMediaParams) => {
     try {
       const client = UmbracoManagementClient.getClient();
       const temporaryFileId = uuidv4();
@@ -86,7 +89,7 @@ const CreateMediaTool = CreateUmbracoWriteTool(
         isError: true,
       };
     }
-  }
-);
+  },
+} satisfies ToolDefinition<typeof createMediaSchema.shape>;
 
-export default CreateMediaTool;
+export default withStandardDecorators(CreateMediaTool);

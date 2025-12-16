@@ -1,11 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserCurrentLoginProvidersTool = CreateUmbracoReadTool(
-  "get-user-current-login-providers",
-  "Gets the current user's available login providers",
-  {}, // No parameters required
-  async () => {
+const GetUserCurrentLoginProvidersTool = {
+  name: "get-user-current-login-providers",
+  description: "Gets the current user's available login providers",
+  schema: undefined,
+  isReadOnly: true,
+  slices: ['current-user'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getUserCurrentLoginProviders();
 
@@ -17,7 +20,7 @@ const GetUserCurrentLoginProvidersTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<undefined>;
 
-export default GetUserCurrentLoginProvidersTool;
+export default withStandardDecorators(GetUserCurrentLoginProvidersTool);

@@ -28,7 +28,7 @@ describe("get-document-domains", () => {
   });
 
   it("should add and then get domains for a valid document", async () => {
-    const result = await GetDocumentDomainsTool().handler(
+    const result = await GetDocumentDomainsTool.handler(
       {
         id: docId,
       },
@@ -47,7 +47,7 @@ describe("get-document-domains", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const result = await GetDocumentDomainsTool().handler(
+    const result = await GetDocumentDomainsTool.handler(
       {
         id: BLANK_UUID,
       },

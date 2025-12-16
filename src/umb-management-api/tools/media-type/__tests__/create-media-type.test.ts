@@ -32,7 +32,7 @@ describe("create-media-type", () => {
       .withDescription("Test media type description")
       .withAllowedAsRoot(true);
 
-    const result = await CreateMediaTypeTool().handler(builder.build(), {
+    const result = await CreateMediaTypeTool.handler(builder.build(), {
       signal: new AbortController().signal,
     });
 
@@ -54,7 +54,7 @@ describe("create-media-type", () => {
       // Missing required fields
     };
 
-    const result = await CreateMediaTypeTool().handler(invalidModel as any, {
+    const result = await CreateMediaTypeTool.handler(invalidModel as any, {
       signal: new AbortController().signal,
     });
 
@@ -68,7 +68,7 @@ describe("create-media-type", () => {
       .create();
 
     // Arrange: Create media type with flattened parentId for tool
-    const result = await CreateMediaTypeTool().handler({
+    const result = await CreateMediaTypeTool.handler({
       alias: TEST_MEDIA_TYPE_WITH_PARENT_NAME.toLowerCase().replace(/\s+/g, ""),
       name: TEST_MEDIA_TYPE_WITH_PARENT_NAME,
       description: "Test media type in folder",

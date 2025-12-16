@@ -47,7 +47,7 @@ describe("create-document-version-rollback", () => {
     const versionId = versions[0].id;
 
     // Act
-    const result = await CreateDocumentVersionRollbackTool().handler({
+    const result = await CreateDocumentVersionRollbackTool.handler({
       id: versionId,
       culture: undefined
     }, { signal: new AbortController().signal });
@@ -91,7 +91,7 @@ describe("create-document-version-rollback", () => {
     const versionId = versions[0].id;
 
     // Act
-    const result = await CreateDocumentVersionRollbackTool().handler({
+    const result = await CreateDocumentVersionRollbackTool.handler({
       id: versionId,
       culture: "en-US"
     }, { signal: new AbortController().signal });
@@ -103,7 +103,7 @@ describe("create-document-version-rollback", () => {
 
   it("should handle non-existent version ID", async () => {
     // Act
-    const result = await CreateDocumentVersionRollbackTool().handler({
+    const result = await CreateDocumentVersionRollbackTool.handler({
       id: "non-existent-version-id",
       culture: undefined
     }, { signal: new AbortController().signal });

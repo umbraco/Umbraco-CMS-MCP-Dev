@@ -37,7 +37,7 @@ describe("get-document-type-available-compositions", () => {
       .create();
 
     // Get the available compositions
-    const result = await GetDocumentTypeAvailableCompositionsTool().handler(
+    const result = await GetDocumentTypeAvailableCompositionsTool.handler(
       {
         id: docTypeBuilder.getId(),
         currentPropertyAliases: [],

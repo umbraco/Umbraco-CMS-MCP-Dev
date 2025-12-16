@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetItemScriptParams } from "@/umb-management-api/schemas/index.js";
 import { getItemScriptQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetScriptItemsTool = CreateUmbracoReadTool(
-  "get-script-items",
-  "Gets script items",
-  getItemScriptQueryParams.shape,
-  async (model: GetItemScriptParams) => {
+const GetScriptItemsTool = {
+  name: "get-script-items",
+  description: "Gets script items",
+  schema: getItemScriptQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (model: GetItemScriptParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemScript(model);
 
@@ -19,7 +22,7 @@ const GetScriptItemsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemScriptQueryParams.shape>;
 
-export default GetScriptItemsTool;
+export default withStandardDecorators(GetScriptItemsTool);

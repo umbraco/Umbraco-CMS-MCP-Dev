@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postMediaTypeFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const CreateMediaTypeFolderTool = CreateUmbracoWriteTool(
-  "create-media-type-folder",
-  "Creates a new media type folder",
-  postMediaTypeFolderBody.shape,
-  async (model: CreateFolderRequestModel) => {
+const CreateMediaTypeFolderTool = {
+  name: "create-media-type-folder",
+  description: "Creates a new media type folder",
+  schema: postMediaTypeFolderBody.shape,
+  isReadOnly: false,
+  slices: ['create', 'folders'],
+  handler: async (model: CreateFolderRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postMediaTypeFolder(model);
 
@@ -19,7 +22,7 @@ const CreateMediaTypeFolderTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postMediaTypeFolderBody.shape>;
 
-export default CreateMediaTypeFolderTool;
+export default withStandardDecorators(CreateMediaTypeFolderTool);

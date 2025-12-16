@@ -1,18 +1,24 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { putDocumentByIdUnpublishBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UnpublishDocumentTool = CreateUmbracoWriteTool(
-  "unpublish-document",
-  "Unpublishes a document by Id.",
-  {
-    id: z.string().uuid(),
-    data: z.object(putDocumentByIdUnpublishBody.shape),
-  },
-  async (model: {
+const unpublishDocumentSchema = {
+  id: z.string().uuid(),
+  data: z.object(putDocumentByIdUnpublishBody.shape),
+};
+
+const UnpublishDocumentTool = {
+  name: "unpublish-document",
+  description: "Unpublishes a document by Id.",
+  schema: unpublishDocumentSchema,
+  isReadOnly: false,
+  slices: ['publish'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Unpublish),
+  handler: async (model: {
     id: string;
     data: z.infer<typeof putDocumentByIdUnpublishBody>;
   }) => {
@@ -31,7 +37,6 @@ const UnpublishDocumentTool = CreateUmbracoWriteTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Unpublish)
-);
+} satisfies ToolDefinition<typeof unpublishDocumentSchema>;
 
-export default UnpublishDocumentTool;
+export default withStandardDecorators(UnpublishDocumentTool);

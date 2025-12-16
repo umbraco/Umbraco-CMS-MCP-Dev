@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateStylesheetFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postStylesheetFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const CreateStylesheetFolderTool = CreateUmbracoWriteTool(
-  "create-stylesheet-folder",
-  "Creates a new stylesheet folder",
-  postStylesheetFolderBody.shape,
-  async (model: CreateStylesheetFolderRequestModel) => {
+const CreateStylesheetFolderTool = {
+  name: "create-stylesheet-folder",
+  description: "Creates a new stylesheet folder",
+  schema: postStylesheetFolderBody.shape,
+  isReadOnly: false,
+  slices: ['create', 'folders'],
+  handler: async (model: CreateStylesheetFolderRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.postStylesheetFolder(model);
 
@@ -20,6 +23,6 @@ const CreateStylesheetFolderTool = CreateUmbracoWriteTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof postStylesheetFolderBody.shape>;
 
-export default CreateStylesheetFolderTool;
+export default withStandardDecorators(CreateStylesheetFolderTool);

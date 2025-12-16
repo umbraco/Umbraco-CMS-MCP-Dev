@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreatePartialViewFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postPartialViewFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const CreatePartialViewFolderTool = CreateUmbracoWriteTool(
-  "create-partial-view-folder",
-  "Creates a new partial view folder",
-  postPartialViewFolderBody.shape,
-  async (model: CreatePartialViewFolderRequestModel) => {
+const CreatePartialViewFolderTool = {
+  name: "create-partial-view-folder",
+  description: "Creates a new partial view folder",
+  schema: postPartialViewFolderBody.shape,
+  isReadOnly: false,
+  slices: ['create', 'folders'],
+  handler: async (model: CreatePartialViewFolderRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.postPartialViewFolder(model);
 
@@ -19,7 +22,7 @@ const CreatePartialViewFolderTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postPartialViewFolderBody.shape>;
 
-export default CreatePartialViewFolderTool;
+export default withStandardDecorators(CreatePartialViewFolderTool);

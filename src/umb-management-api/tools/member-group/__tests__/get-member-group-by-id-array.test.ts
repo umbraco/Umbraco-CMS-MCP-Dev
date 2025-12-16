@@ -27,7 +27,7 @@ describe("get-item-member-group", () => {
   });
 
   it("should get no member groups for empty request", async () => {
-    const result = await GetMemberGroupByIdArrayTool().handler(
+    const result = await GetMemberGroupByIdArrayTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -39,7 +39,7 @@ describe("get-item-member-group", () => {
     const builder = await new MemberGroupBuilder()
       .withName(TEST_GROUP_NAME_1)
       .create();
-    const result = await GetMemberGroupByIdArrayTool().handler(
+    const result = await GetMemberGroupByIdArrayTool.handler(
       { id: [builder.getId()] },
       { signal: new AbortController().signal }
     );
@@ -57,7 +57,7 @@ describe("get-item-member-group", () => {
     const builder2 = await new MemberGroupBuilder()
       .withName(TEST_GROUP_NAME_2)
       .create();
-    const result = await GetMemberGroupByIdArrayTool().handler(
+    const result = await GetMemberGroupByIdArrayTool.handler(
       { id: [builder1.getId(), builder2.getId()] },
       { signal: new AbortController().signal }
     );

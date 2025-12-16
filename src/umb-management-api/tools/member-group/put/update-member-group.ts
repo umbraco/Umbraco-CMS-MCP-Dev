@@ -1,20 +1,25 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateMemberGroupRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putMemberGroupByIdBody,
   putMemberGroupByIdParams,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UpdateMemberGroupTool = CreateUmbracoWriteTool(
-  "update-member-group",
-  "Updates a member group by Id",
-  {
-    id: putMemberGroupByIdParams.shape.id,
-    data: z.object(putMemberGroupByIdBody.shape),
-  },
-  async (model: { id: string; data: UpdateMemberGroupRequestModel }) => {
+const updateMemberGroupSchema = {
+  id: putMemberGroupByIdParams.shape.id,
+  data: z.object(putMemberGroupByIdBody.shape),
+};
+
+const UpdateMemberGroupTool = {
+  name: "update-member-group",
+  description: "Updates a member group by Id",
+  schema: updateMemberGroupSchema,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async (model: { id: string; data: UpdateMemberGroupRequestModel }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.putMemberGroupById(model.id, model.data);
 
@@ -26,7 +31,7 @@ const UpdateMemberGroupTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof updateMemberGroupSchema>;
 
-export default UpdateMemberGroupTool;
+export default withStandardDecorators(UpdateMemberGroupTool);

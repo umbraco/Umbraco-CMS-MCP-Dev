@@ -1,9 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetModelsBuilderDashboardTool = CreateUmbracoReadTool(
-  "get-models-builder-dashboard",
-  `Gets Models Builder dashboard information and current status.
+const GetModelsBuilderDashboardTool = {
+  name: "get-models-builder-dashboard",
+  description: `Gets Models Builder dashboard information and current status.
   Returns an object containing:
   - mode: The Models Builder mode, one of: 'Nothing', 'InMemoryAuto', 'SourceCodeManual', 'SourceCodeAuto' (string)
   - canGenerate: Whether models can be generated (boolean)
@@ -12,8 +13,10 @@ const GetModelsBuilderDashboardTool = CreateUmbracoReadTool(
   - version: Version information (string | null)
   - modelsNamespace: Namespace for generated models (string | null)
   - trackingOutOfDateModels: Whether tracking is enabled (boolean)`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: true,
+  slices: ['diagnostics'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getModelsBuilderDashboard();
 
@@ -26,6 +29,6 @@ const GetModelsBuilderDashboardTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<{}>;
 
-export default GetModelsBuilderDashboardTool;
+export default withStandardDecorators(GetModelsBuilderDashboardTool);

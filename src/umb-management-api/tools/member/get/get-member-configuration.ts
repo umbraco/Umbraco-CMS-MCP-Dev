@@ -1,11 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMemberConfigurationTool = CreateUmbracoReadTool(
-  "get-member-configuration",
-  "Gets member configuration including reserved field names",
-  {},
-  async () => {
+const emptySchema = {};
+
+const GetMemberConfigurationTool = {
+  name: "get-member-configuration",
+  description: "Gets member configuration including reserved field names",
+  schema: emptySchema,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMemberConfiguration();
     return {
@@ -16,7 +21,7 @@ const GetMemberConfigurationTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof emptySchema>;
 
-export default GetMemberConfigurationTool;
+export default withStandardDecorators(GetMemberConfigurationTool);

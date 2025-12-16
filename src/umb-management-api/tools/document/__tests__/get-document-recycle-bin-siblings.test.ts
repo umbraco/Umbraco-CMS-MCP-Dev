@@ -54,7 +54,7 @@ describe("get-document-recycle-bin-siblings", () => {
     expect(sibling1InBin).toBeDefined();
 
     // Act - Get siblings of first sibling in recycle bin
-    const result = await GetDocumentRecycleBinSiblingsTool().handler(
+    const result = await GetDocumentRecycleBinSiblingsTool.handler(
       {
         target: sibling1InBin!.id,
         after: 100,
@@ -69,7 +69,7 @@ describe("get-document-recycle-bin-siblings", () => {
 
   it("should handle non-existent target in recycle bin", async () => {
     // Act
-    const result = await GetDocumentRecycleBinSiblingsTool().handler(
+    const result = await GetDocumentRecycleBinSiblingsTool.handler(
       {
         target: BLANK_UUID,
         after: 100,
