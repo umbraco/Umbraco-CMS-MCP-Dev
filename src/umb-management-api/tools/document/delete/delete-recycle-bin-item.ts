@@ -3,6 +3,8 @@ import { deleteRecycleBinDocumentByIdParams } from "@/umb-management-api/umbraco
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { UmbracoDocumentPermissions } from "../constants.js";
 
 const DeleteDocumentRecycleBinItemTool = {
   name: "delete-document-recycle-bin-item",
@@ -10,6 +12,7 @@ const DeleteDocumentRecycleBinItemTool = {
   schema: deleteRecycleBinDocumentByIdParams.shape,
   isReadOnly: false,
   slices: ['delete', 'recycle-bin'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Delete),
   handler: async (params: z.infer<typeof deleteRecycleBinDocumentByIdParams>) => {
     const client = UmbracoManagementClient.getClient();
     await client.deleteRecycleBinDocumentById(params.id);

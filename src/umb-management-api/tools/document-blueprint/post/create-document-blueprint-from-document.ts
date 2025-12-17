@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateDocumentBlueprintFromDocumentRequestModel } from "@/umb-management-api/schemas/index.js";
+import { CreateDocumentBlueprintFromDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
@@ -26,6 +26,7 @@ const CreateDocumentBlueprintFromDocumentTool = {
   schema: createDocumentBlueprintFromDocumentSchema.shape,
   isReadOnly: false,
   slices: ['create'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes("Umb.Document.CreateBlueprint"),
   handler: async (model: CreateDocumentBlueprintFromDocumentModel) => {
     const client = UmbracoManagementClient.getClient();
 

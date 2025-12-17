@@ -1,10 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateDocumentRequestModel } from "@/umb-management-api/schemas/createDocumentRequestModel.js";
+import { CreateDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { AxiosResponse } from "axios";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoDocumentPermissions } from "../constants.js";
 
 const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
@@ -101,6 +102,7 @@ const CreateDocumentTool = {
   schema: createDocumentSchema.shape,
   isReadOnly: false,
   slices: ['create'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Create),
   handler: async (model: z.infer<typeof createDocumentSchema>) => {
     const client = UmbracoManagementClient.getClient();
 

@@ -3,6 +3,8 @@ import { postDocumentValidateBody } from "@/umb-management-api/umbracoManagement
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { UmbracoDocumentPermissions } from "../constants.js";
 
 const ValidateDocumentTool = {
   name: "validate-document",
@@ -10,6 +12,7 @@ const ValidateDocumentTool = {
   schema: postDocumentValidateBody.shape,
   isReadOnly: true,
   slices: ['validate'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Create),
   handler: async (model: z.infer<typeof postDocumentValidateBody>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postDocumentValidate(model);

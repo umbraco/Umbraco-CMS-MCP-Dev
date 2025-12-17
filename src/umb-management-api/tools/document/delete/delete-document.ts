@@ -2,6 +2,8 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { deleteDocumentByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { UmbracoDocumentPermissions } from "../constants.js";
 
 const DeleteDocumentTool = {
   name: "delete-document",
@@ -9,6 +11,7 @@ const DeleteDocumentTool = {
   schema: deleteDocumentByIdParams.shape,
   isReadOnly: false,
   slices: ['delete'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Delete),
   handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteDocumentById(id);

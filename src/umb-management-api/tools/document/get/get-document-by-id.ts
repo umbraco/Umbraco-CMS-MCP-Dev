@@ -2,6 +2,8 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { getDocumentByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { UmbracoDocumentPermissions } from "../constants.js";
 
 const GetDocumentByIdTool = {
   name: "get-document-by-id",
@@ -11,6 +13,7 @@ const GetDocumentByIdTool = {
   schema: getDocumentByIdParams.shape,
   isReadOnly: true,
   slices: ['read'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Read),
   handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentById(id);
