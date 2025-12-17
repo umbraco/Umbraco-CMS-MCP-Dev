@@ -29,7 +29,6 @@ export function validateModeNames(modeNames: string[]): ModeValidationResult {
 
 /**
  * Expand modes to their constituent collections.
- * Handles compound modes by recursively expanding them first.
  *
  * @param modeNames - Array of mode names to expand
  * @param modeRegistry - Optional custom mode registry (defaults to allModes)
@@ -40,39 +39,18 @@ export function expandModesToCollections(
   modeRegistry: ToolModeDefinition[] = allModes
 ): string[] {
   const collections = new Set<string>();
-  const expandedModes = new Set<string>();
 
-  function expandMode(modeName: string): void {
-    // Prevent infinite loops from circular references
-    if (expandedModes.has(modeName)) {
-      return;
-    }
-    expandedModes.add(modeName);
-
+  for (const modeName of modeNames) {
     const mode = modeRegistry.find(m => m.name === modeName);
     if (!mode) {
       // Unknown mode - skip (validation should have caught this)
-      return;
-    }
-
-    // If this is a compound mode, expand its child modes first
-    if (mode.modes && mode.modes.length > 0) {
-      for (const childModeName of mode.modes) {
-        expandMode(childModeName);
-      }
+      continue;
     }
 
     // Add all collections from this mode
-    if (mode.collections && mode.collections.length > 0) {
-      for (const collection of mode.collections) {
-        collections.add(collection);
-      }
+    for (const collection of mode.collections) {
+      collections.add(collection);
     }
-  }
-
-  // Expand each requested mode
-  for (const modeName of modeNames) {
-    expandMode(modeName);
   }
 
   return Array.from(collections);

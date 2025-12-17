@@ -6,7 +6,6 @@ import {
 } from "../mode-expander.js";
 import {
   baseModes,
-  compoundModes,
   allModes,
   allModeNames
 } from "../mode-registry.js";
@@ -35,12 +34,6 @@ describe('Mode Expander', () => {
     it('should handle empty array', () => {
       const result = validateModeNames([]);
       expect(result.validModes).toEqual([]);
-      expect(result.invalidModes).toEqual([]);
-    });
-
-    it('should validate compound mode names', () => {
-      const result = validateModeNames(['publisher', 'developer', 'admin', 'full']);
-      expect(result.validModes).toEqual(['publisher', 'developer', 'admin', 'full']);
       expect(result.invalidModes).toEqual([]);
     });
 
@@ -147,92 +140,6 @@ describe('Mode Expander', () => {
       });
     });
 
-    describe('compound modes', () => {
-      it('should expand publisher mode to content, media, and translation', () => {
-        const result = expandModesToCollections(['publisher']);
-
-        // Content collections
-        expect(result).toContain('document');
-        expect(result).toContain('document-version');
-        expect(result).toContain('document-blueprint');
-
-        // Media collections
-        expect(result).toContain('media');
-        expect(result).toContain('imaging');
-        expect(result).toContain('temporary-file');
-
-        // Translation collections
-        expect(result).toContain('culture');
-        expect(result).toContain('language');
-        expect(result).toContain('dictionary');
-
-        expect(result).toHaveLength(9);
-      });
-
-      it('should expand developer mode to content-modeling, front-end, and system', () => {
-        const result = expandModesToCollections(['developer']);
-
-        // Content-modeling collections
-        expect(result).toContain('document');
-        expect(result).toContain('document-type');
-        expect(result).toContain('data-type');
-        expect(result).toContain('media');
-        expect(result).toContain('media-type');
-
-        // Front-end collections
-        expect(result).toContain('template');
-        expect(result).toContain('partial-view');
-        expect(result).toContain('stylesheet');
-        expect(result).toContain('script');
-        expect(result).toContain('static-file');
-
-        // System collections
-        expect(result).toContain('server');
-        expect(result).toContain('manifest');
-        expect(result).toContain('models-builder');
-
-        expect(result).toHaveLength(13);
-      });
-
-      it('should expand admin mode to users, members, health, and system', () => {
-        const result = expandModesToCollections(['admin']);
-
-        // Users collections
-        expect(result).toContain('user');
-        expect(result).toContain('user-group');
-        expect(result).toContain('user-data');
-
-        // Members collections
-        expect(result).toContain('member');
-        expect(result).toContain('member-type');
-        expect(result).toContain('member-group');
-
-        // Health collections
-        expect(result).toContain('health');
-        expect(result).toContain('log-viewer');
-
-        // System collections
-        expect(result).toContain('server');
-        expect(result).toContain('manifest');
-        expect(result).toContain('models-builder');
-
-        expect(result).toHaveLength(11);
-      });
-
-      it('should expand full mode to all collections', () => {
-        const result = expandModesToCollections(['full']);
-
-        // Should include all collections from all base modes
-        const allBaseCollections = baseModes.flatMap(m => m.collections);
-        const uniqueCollections = [...new Set(allBaseCollections)];
-
-        expect(result).toHaveLength(uniqueCollections.length);
-        uniqueCollections.forEach(collection => {
-          expect(result).toContain(collection);
-        });
-      });
-    });
-
     describe('multiple modes', () => {
       it('should combine multiple base modes', () => {
         const result = expandModesToCollections(['content', 'media']);
@@ -247,25 +154,17 @@ describe('Mode Expander', () => {
       });
 
       it('should deduplicate collections when modes overlap', () => {
-        // publisher includes media, so adding media explicitly shouldn't duplicate
-        const publisherResult = expandModesToCollections(['publisher']);
-        const combinedResult = expandModesToCollections(['publisher', 'media']);
+        // content-modeling includes media, so adding media explicitly shouldn't duplicate
+        const contentModelingResult = expandModesToCollections(['content-modeling']);
+        const combinedResult = expandModesToCollections(['content-modeling', 'media']);
 
-        expect(combinedResult).toHaveLength(publisherResult.length);
-      });
-
-      it('should combine base and compound modes', () => {
-        const result = expandModesToCollections(['publisher', 'integrations']);
-
-        // Publisher collections
-        expect(result).toContain('document');
-        expect(result).toContain('media');
-        expect(result).toContain('culture');
-
-        // Integrations collections
-        expect(result).toContain('webhook');
-        expect(result).toContain('redirect');
-        expect(result).toContain('tag');
+        // content-modeling has: document, document-type, data-type, media, media-type (5)
+        // media mode has: media, imaging, temporary-file
+        // Combined should be 7 (media is shared)
+        expect(combinedResult).toHaveLength(7);
+        expect(combinedResult).toContain('media');
+        expect(combinedResult).toContain('imaging');
+        expect(combinedResult).toContain('temporary-file');
       });
     });
 
@@ -288,10 +187,9 @@ describe('Mode Expander', () => {
         expect(result).toHaveLength(3);
       });
 
-      it('should prevent infinite loops from circular references', () => {
-        // Even if we somehow had circular mode references, it should not loop forever
-        const result = expandModesToCollections(['publisher', 'publisher']);
-        expect(result).toHaveLength(9); // Same as single publisher
+      it('should handle duplicate mode names', () => {
+        const result = expandModesToCollections(['content', 'content']);
+        expect(result).toHaveLength(3); // Same as single content mode
       });
     });
   });
@@ -311,11 +209,6 @@ describe('Mode Expander', () => {
       expect(summary).toContain('6 collections');
     });
 
-    it('should generate summary for compound mode', () => {
-      const summary = getModeExpansionSummary(['publisher']);
-      expect(summary).toContain('publisher');
-      expect(summary).toContain('9 collections');
-    });
   });
 
   describe('Mode Registry', () => {
@@ -323,27 +216,14 @@ describe('Mode Expander', () => {
       expect(baseModes).toHaveLength(11);
     });
 
-    it('should have 4 compound modes', () => {
-      expect(compoundModes).toHaveLength(4);
+    it('should have 11 total modes (no compound modes)', () => {
+      expect(allModes).toHaveLength(11);
+      expect(allModeNames).toHaveLength(11);
     });
 
-    it('should have 15 total modes', () => {
-      expect(allModes).toHaveLength(15);
-      expect(allModeNames).toHaveLength(15);
-    });
-
-    it('should have all base modes with collections defined', () => {
-      baseModes.forEach(mode => {
+    it('should have all modes with collections defined', () => {
+      allModes.forEach(mode => {
         expect(mode.collections.length).toBeGreaterThan(0);
-        expect(mode.modes).toBeUndefined();
-      });
-    });
-
-    it('should have all compound modes with modes defined', () => {
-      compoundModes.forEach(mode => {
-        expect(mode.modes).toBeDefined();
-        expect(mode.modes!.length).toBeGreaterThan(0);
-        expect(mode.collections).toEqual([]);
       });
     });
 
@@ -351,16 +231,6 @@ describe('Mode Expander', () => {
       const names = allModes.map(m => m.name);
       const uniqueNames = [...new Set(names)];
       expect(names).toHaveLength(uniqueNames.length);
-    });
-
-    it('should have full mode reference all base modes', () => {
-      const fullMode = compoundModes.find(m => m.name === 'full');
-      expect(fullMode).toBeDefined();
-
-      const baseModeNames = baseModes.map(m => m.name);
-      baseModeNames.forEach(name => {
-        expect(fullMode!.modes).toContain(name);
-      });
     });
   });
 });

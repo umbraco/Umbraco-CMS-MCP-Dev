@@ -73,43 +73,9 @@ export const baseModes: ToolModeDefinition[] = [
 ];
 
 /**
- * Compound modes - expand to other modes
+ * All modes - just base modes (compound modes removed for simplicity)
  */
-export const compoundModes: ToolModeDefinition[] = [
-  {
-    name: 'publisher',
-    displayName: 'Publisher',
-    description: 'Preset for publishers: content, media, and translation tools',
-    collections: [],
-    modes: ['content', 'media', 'translation']
-  },
-  {
-    name: 'developer',
-    displayName: 'Developer',
-    description: 'Preset for developers: content modeling, front-end, and system tools',
-    collections: [],
-    modes: ['content-modeling', 'front-end', 'system']
-  },
-  {
-    name: 'admin',
-    displayName: 'Administrator',
-    description: 'Preset for administrators: users, members, health, and system tools',
-    collections: [],
-    modes: ['users', 'members', 'health', 'system']
-  },
-  {
-    name: 'full',
-    displayName: 'Full Access',
-    description: 'All available tools',
-    collections: [],
-    modes: baseModes.map(m => m.name)
-  }
-];
-
-/**
- * All modes combined
- */
-export const allModes: ToolModeDefinition[] = [...baseModes, ...compoundModes];
+export const allModes: ToolModeDefinition[] = [...baseModes];
 
 /**
  * Get all mode names for validation

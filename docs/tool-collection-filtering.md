@@ -4,7 +4,7 @@
 
 The Umbraco MCP Server implements a flexible tool and collection filtering system that allows fine-grained control over which MCP tools are available to AI assistants. This system operates at four levels:
 
-- **Mode-level filtering**: Use semantic presets that bundle related collections (e.g., `editor`, `developer`)
+- **Mode-level filtering**: Use semantic presets that bundle related collections (e.g., `content`, `media`)
 - **Collection-level filtering**: Enable/disable entire groups of related tools
 - **Slice-level filtering**: Filter tools by operation type (e.g., `create`, `read`, `tree`) - see [tool-slice-filtering.md](tool-slice-filtering.md)
 - **Tool-level filtering**: Include/exclude specific individual tools
@@ -19,7 +19,7 @@ The system uses consistent `UMBRACO_*` naming for all environment variables:
 - `UMBRACO_BASE_URL` - Umbraco instance URL
 
 ### Tool Mode Variables
-- `UMBRACO_TOOL_MODES` - Comma-separated list of tool modes (e.g., `editor`, `developer`, `content`)
+- `UMBRACO_TOOL_MODES` - Comma-separated list of tool modes (e.g., `content`, `media`, `translation`)
 
 ### Tool Filtering Variables
 - `UMBRACO_INCLUDE_TOOLS` - Comma-separated list of specific tools to include
@@ -41,7 +41,6 @@ Tool modes provide a higher-level abstraction over collection filtering. Instead
 
 - **Simpler configuration** - One mode name instead of listing multiple collections
 - **Semantic clarity** - Express intent ("I want content editing tools") rather than technical details
-- **Persona-based presets** - Compound modes like `editor`, `developer`, `admin` match common use cases
 - **Reduced errors** - No need to remember exact collection names
 
 ### Base Modes
@@ -60,17 +59,6 @@ Tool modes provide a higher-level abstraction over collection filtering. Instead
 | `system` | server, manifest, models-builder | Server info and code generation |
 | `integrations` | webhook, redirect, relation, relation-type, tag | External integrations |
 
-### Compound Modes
-
-Compound modes expand to multiple base modes for common personas:
-
-| Mode | Expands To | Use Case |
-|------|------------|----------|
-| `editor` | content, media, translation | Content editors working with documents and media |
-| `developer` | content-modeling, front-end, system | Developers building templates and schemas |
-| `admin` | users, members, health, system | Administrators managing users and monitoring |
-| `full` | (all base modes) | Full access to all tools |
-
 ### Mode Usage Examples
 
 #### Single Mode
@@ -85,16 +73,10 @@ export UMBRACO_TOOL_MODES="content"
 export UMBRACO_TOOL_MODES="content,media,translation"
 ```
 
-#### Compound Mode
-```bash
-# Full editor preset (content + media + translation)
-export UMBRACO_TOOL_MODES="editor"
-```
-
 #### Mode with Exclusions
 ```bash
-# Editor mode but exclude version history
-export UMBRACO_TOOL_MODES="editor"
+# Content mode but exclude version history
+export UMBRACO_TOOL_MODES="content"
 export UMBRACO_EXCLUDE_TOOL_COLLECTIONS="document-version"
 ```
 
@@ -110,24 +92,20 @@ export UMBRACO_INCLUDE_TOOL_COLLECTIONS="webhook"
 When modes are specified, the system processes them as follows:
 
 ```
-UMBRACO_TOOL_MODES="editor"
+UMBRACO_TOOL_MODES="content,media"
          ↓
-1. Compound expansion: editor → [content, media, translation]
-         ↓
-2. Base expansion:
+1. Mode expansion:
    content → [document, document-version, document-blueprint]
    media → [media, imaging, temporary-file]
-   translation → [culture, language, dictionary]
          ↓
-3. Final collections: [document, document-version, document-blueprint,
-                      media, imaging, temporary-file,
-                      culture, language, dictionary]
+2. Final collections: [document, document-version, document-blueprint,
+                      media, imaging, temporary-file]
          ↓
-4. Merge with UMBRACO_INCLUDE_TOOL_COLLECTIONS (if set)
+3. Merge with UMBRACO_INCLUDE_TOOL_COLLECTIONS (if set)
          ↓
-5. Apply UMBRACO_EXCLUDE_TOOL_COLLECTIONS (if set)
+4. Apply UMBRACO_EXCLUDE_TOOL_COLLECTIONS (if set)
          ↓
-6. Resolve collection dependencies
+5. Resolve collection dependencies
 ```
 
 ### Mode Validation

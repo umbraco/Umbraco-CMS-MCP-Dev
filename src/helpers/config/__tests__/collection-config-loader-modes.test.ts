@@ -59,31 +59,6 @@ describe('CollectionConfigLoader with Modes', () => {
       expect(config.enabledCollections).toHaveLength(6);
     });
 
-    it('should expand compound mode to collections', () => {
-      const serverConfig = {
-        ...baseServerConfig,
-        toolModes: ['publisher']
-      };
-
-      const config = CollectionConfigLoader.loadFromConfig(serverConfig);
-
-      // Content collections
-      expect(config.enabledCollections).toContain('document');
-      expect(config.enabledCollections).toContain('document-version');
-      expect(config.enabledCollections).toContain('document-blueprint');
-
-      // Media collections
-      expect(config.enabledCollections).toContain('media');
-      expect(config.enabledCollections).toContain('imaging');
-      expect(config.enabledCollections).toContain('temporary-file');
-
-      // Translation collections
-      expect(config.enabledCollections).toContain('culture');
-      expect(config.enabledCollections).toContain('language');
-      expect(config.enabledCollections).toContain('dictionary');
-
-      expect(config.enabledCollections).toHaveLength(9);
-    });
   });
 
   describe('mode validation', () => {
@@ -200,44 +175,6 @@ describe('CollectionConfigLoader with Modes', () => {
       const config = CollectionConfigLoader.loadFromConfig(serverConfig);
 
       expect(config.enabledCollections).toEqual([]);
-    });
-  });
-
-  describe('full mode', () => {
-    it('should expand full mode to all base mode collections', () => {
-      const serverConfig = {
-        ...baseServerConfig,
-        toolModes: ['full']
-      };
-
-      const config = CollectionConfigLoader.loadFromConfig(serverConfig);
-
-      // Should include collections from all base modes
-      // Content
-      expect(config.enabledCollections).toContain('document');
-      // Media
-      expect(config.enabledCollections).toContain('media');
-      // Translation
-      expect(config.enabledCollections).toContain('dictionary');
-      // Users
-      expect(config.enabledCollections).toContain('user');
-      // Members
-      expect(config.enabledCollections).toContain('member');
-      // Health
-      expect(config.enabledCollections).toContain('health');
-      // System
-      expect(config.enabledCollections).toContain('server');
-      // Integrations
-      expect(config.enabledCollections).toContain('webhook');
-      // Front-end
-      expect(config.enabledCollections).toContain('template');
-      // Search
-      expect(config.enabledCollections).toContain('indexer');
-      // Content-modeling
-      expect(config.enabledCollections).toContain('document-type');
-
-      // Total should be 36 (all collections)
-      expect(config.enabledCollections.length).toBeGreaterThanOrEqual(30);
     });
   });
 

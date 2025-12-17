@@ -448,19 +448,5 @@ describe('UmbracoToolFactory Integration', () => {
       expect(toolNames).toContain('get-server-information'); // from direct include
     });
 
-    it('should expand compound modes to nested base modes', () => {
-      const config = getMockConfig({
-        toolModes: ['publisher'] // publisher = content + media + translation
-      });
-
-      UmbracoToolFactory(mockServer, mockUser, config);
-
-      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
-      // Publisher mode expands to content, media, and translation modes
-      // Translation mode includes culture, language, dictionary
-      expect(toolNames).toContain('get-culture');
-      // Media mode includes media collection
-      expect(toolNames).toContain('get-media-by-id');
-    });
   });
 });
