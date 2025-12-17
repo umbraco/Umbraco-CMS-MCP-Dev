@@ -1,5 +1,6 @@
 import CreateMediaTool from "./post/create-media.js";
 import CreateMediaMultipleTool from "./post/create-media-multiple.js";
+import CreateMediaFolderTool from "./post/create-media-folder.js";
 import DeleteMediaTool from "./delete/delete-media.js";
 import GetMediaByIdTool from "./get/get-media-by-id.js";
 import UpdateMediaTool from "./put/update-media.js";
@@ -56,6 +57,7 @@ export const MediaCollection: ToolCollectionExport = {
     if (AuthorizationPolicies.SectionAccessMedia(user)) {
       tools.push(CreateMediaTool);
       tools.push(CreateMediaMultipleTool);
+      tools.push(CreateMediaFolderTool);
       tools.push(DeleteMediaTool);
       tools.push(UpdateMediaTool);
       tools.push(GetMediaConfigurationTool);

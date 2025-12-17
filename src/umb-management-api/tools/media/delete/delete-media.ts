@@ -5,7 +5,7 @@ import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 const DeleteMediaTool = {
   name: "delete-media",
-  description: "Deletes a media item by Id",
+  description: "Deletes a media item by Id. Works for all media types including folders, images, files, videos, etc.",
   schema: deleteMediaByIdParams.shape,
   isReadOnly: false,
   slices: ['delete'],
