@@ -28,7 +28,7 @@ describe("put-document-domains", () => {
   });
 
   it("should add a domain for a valid document", async () => {
-    const result = await PutDocumentDomainsTool().handler(
+    const result = await PutDocumentDomainsTool.handler(
       {
         id: docId,
         data: { defaultIsoCode: null, domains: [TEST_DOMAIN] },
@@ -42,7 +42,7 @@ describe("put-document-domains", () => {
     expect(text).not.toContain("Error:");
 
     // Get the domains back to verify
-    const getResult = await GetDocumentDomainsTool().handler(
+    const getResult = await GetDocumentDomainsTool.handler(
       {
         id: docId,
       },
@@ -56,7 +56,7 @@ describe("put-document-domains", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const result = await PutDocumentDomainsTool().handler(
+    const result = await PutDocumentDomainsTool.handler(
       {
         id: BLANK_UUID,
         data: { defaultIsoCode: "en", domains: [TEST_DOMAIN] },

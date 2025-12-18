@@ -1,22 +1,25 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetServerUpgradeCheckTool = CreateUmbracoTool(
-  "get-server-upgrade-check",
-  `Checks the server upgrade status and requirements.
+const GetServerUpgradeCheckTool = {
+  name: "get-server-upgrade-check",
+  description: `Checks the server upgrade status and requirements.
   Returns an object containing:
   - type: The type of upgrade information (string)
   - comment: A description or message about the upgrade (string)
   - url: A URL with more information about the upgrade (string)
-  
+
   Example response:
   {
     "type": "UpgradeAvailable",
     "comment": "A new version of Umbraco is available",
     "url": "https://our.umbraco.com/download/releases/15.3.2"
   }`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: true,
+  slices: ['server-info'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getServerUpgradeCheck();
 
@@ -28,7 +31,7 @@ const GetServerUpgradeCheckTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetServerUpgradeCheckTool;
+export default withStandardDecorators(GetServerUpgradeCheckTool);

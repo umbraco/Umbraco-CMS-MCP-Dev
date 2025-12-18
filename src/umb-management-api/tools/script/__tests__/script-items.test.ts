@@ -42,7 +42,7 @@ describe("script-items", () => {
       .withContent(TEST_SCRIPT_CONTENT_2)
       .create();
 
-    const result = await GetScriptItemsTool().handler({
+    const result = await GetScriptItemsTool.handler({
       path: [scriptBuilder1.getPath(), scriptBuilder2.getPath()]
     }, {
       signal: new AbortController().signal,
@@ -58,7 +58,7 @@ describe("script-items", () => {
       .withContent(TEST_SCRIPT_CONTENT_1)
       .create();
 
-    const result = await GetScriptItemsTool().handler({
+    const result = await GetScriptItemsTool.handler({
       path: [scriptBuilder1.getPath()]
     }, {
       signal: new AbortController().signal,
@@ -73,7 +73,7 @@ describe("script-items", () => {
       .withName(TEST_FOLDER_NAME)
       .create();
 
-    const result = await GetScriptItemsTool().handler({
+    const result = await GetScriptItemsTool.handler({
       path: [folderBuilder.getPath()]
     }, {
       signal: new AbortController().signal,
@@ -84,7 +84,7 @@ describe("script-items", () => {
   });
 
   it("should handle empty array", async () => {
-    const result = await GetScriptItemsTool().handler({
+    const result = await GetScriptItemsTool.handler({
       path: []
     }, {
       signal: new AbortController().signal,
@@ -94,7 +94,7 @@ describe("script-items", () => {
   });
 
   it("should handle non-existent script path", async () => {
-    const result = await GetScriptItemsTool().handler({
+    const result = await GetScriptItemsTool.handler({
       path: [NONEXISTENT_PATH]
     }, {
       signal: new AbortController().signal,
@@ -104,7 +104,7 @@ describe("script-items", () => {
   });
 
   it("should handle no path parameter", async () => {
-    const result = await GetScriptItemsTool().handler({}, {
+    const result = await GetScriptItemsTool.handler({}, {
       signal: new AbortController().signal,
     });
 

@@ -67,7 +67,7 @@ describe("get-media-recycle-bin-siblings", () => {
     const sibling1InRecycleBin = await MediaTestHelper.findMediaInRecycleBin(TEST_SIBLING1_NAME);
 
     // Act: Get siblings of the first child in recycle bin
-    const result = await GetMediaRecycleBinSiblingsTool().handler(
+    const result = await GetMediaRecycleBinSiblingsTool.handler(
       {
         target: sibling1InRecycleBin?.id,
       },
@@ -81,7 +81,7 @@ describe("get-media-recycle-bin-siblings", () => {
 
   it("should handle non-existent target in recycle bin", async () => {
     // Act: Try to get siblings for non-existent media item in recycle bin
-    const result = await GetMediaRecycleBinSiblingsTool().handler(
+    const result = await GetMediaRecycleBinSiblingsTool.handler(
       {
         target: BLANK_UUID,
       },

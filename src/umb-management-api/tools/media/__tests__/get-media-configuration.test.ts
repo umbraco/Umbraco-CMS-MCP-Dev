@@ -14,7 +14,7 @@ describe("get-media-configuration", () => {
   });
 
   it("should get media configuration", async () => {
-    const result = await GetMediaConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetMediaConfigurationTool.handler({}, { signal: new AbortController().signal });
     expect(result).toBeDefined();
     expect(result.content).toBeDefined();
     expect(result.content.length).toBeGreaterThan(0);

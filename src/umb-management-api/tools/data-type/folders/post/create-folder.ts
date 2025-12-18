@@ -1,15 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postDataTypeFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const CreateDataTypeFolderTool = CreateUmbracoTool(
-  "create-data-type-folder",
-  "Creates a new data type folder",
-  postDataTypeFolderBody.shape,
-  async (model: CreateFolderRequestModel) => {
+const CreateDataTypeFolderTool = {
+  name: "create-data-type-folder",
+  description: "Creates a new data type folder",
+  schema: postDataTypeFolderBody.shape,
+  isReadOnly: false,
+  slices: ['create', 'folders'],
+  handler: async (model: CreateFolderRequestModel) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.postDataTypeFolder(model);
+    const response = await client.postDataTypeFolder(model);
 
     return {
       content: [
@@ -19,7 +22,7 @@ const CreateDataTypeFolderTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postDataTypeFolderBody.shape>;
 
-export default CreateDataTypeFolderTool;
+export default withStandardDecorators(CreateDataTypeFolderTool);

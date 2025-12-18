@@ -1,6 +1,6 @@
 {
   "name": "@umbraco-cms/mcp-dev",
-  "version": "17.0.1-beta.1",
+  "version": "17.0.1-beta.2",
   "type": "module",
   "description": "A model context protocol (MCP) server for Umbraco CMS",
   "main": "index.js",

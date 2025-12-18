@@ -19,11 +19,11 @@ export const RedirectCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessContent(user)) {
-      tools.push(GetAllRedirectsTool());
-      tools.push(GetRedirectByIdTool());
-      tools.push(DeleteRedirectTool());
-      tools.push(GetRedirectStatusTool());
-      tools.push(UpdateRedirectStatusTool());
+      tools.push(GetAllRedirectsTool);
+      tools.push(GetRedirectByIdTool);
+      tools.push(DeleteRedirectTool);
+      tools.push(GetRedirectStatusTool);
+      tools.push(UpdateRedirectStatusTool);
     }
 
     return tools;

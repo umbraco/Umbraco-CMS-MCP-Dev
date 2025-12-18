@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getStylesheetFolderByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetStylesheetFolderByPathTool = CreateUmbracoTool(
-  "get-stylesheet-folder-by-path",
-  "Gets a stylesheet folder by its path",
-  getStylesheetFolderByPathParams.shape,
-  async (model: { path: string }) => {
+const GetStylesheetFolderByPathTool = {
+  name: "get-stylesheet-folder-by-path",
+  description: "Gets a stylesheet folder by its path",
+  schema: getStylesheetFolderByPathParams.shape,
+  isReadOnly: true,
+  slices: ['read', 'folders'],
+  handler: async (model: { path: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getStylesheetFolderByPath(model.path);
 
@@ -19,6 +22,6 @@ const GetStylesheetFolderByPathTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getStylesheetFolderByPathParams.shape>;
 
-export default GetStylesheetFolderByPathTool;
+export default withStandardDecorators(GetStylesheetFolderByPathTool);

@@ -1,15 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getLanguageQueryParams,
   getLanguageResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { GetLanguageParams } from "@/umb-management-api/schemas/index.js";
 
-const GetLanguageTool = CreateUmbracoTool(
-  "get-language",
-  "Gets all languages with optional pagination",
-  getLanguageQueryParams.shape,
-  async (params) => {
+const GetLanguageTool = {
+  name: "get-language",
+  description: "Gets all languages with optional pagination",
+  schema: getLanguageQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: GetLanguageParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getLanguage(params);
     const validated = getLanguageResponse.parse(response);
@@ -21,7 +25,7 @@ const GetLanguageTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getLanguageQueryParams.shape>;
 
-export default GetLanguageTool;
+export default withStandardDecorators(GetLanguageTool);

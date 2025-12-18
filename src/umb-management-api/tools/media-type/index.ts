@@ -37,34 +37,34 @@ export const MediaTypeCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessMediaTypes(user)) {
-      tools.push(GetMediaTypeFolderTool());
-      tools.push(CreateMediaTypeFolderTool());
-      tools.push(DeleteMediaTypeFolderTool());
-      tools.push(UpdateMediaTypeFolderTool());
+      tools.push(GetMediaTypeFolderTool);
+      tools.push(CreateMediaTypeFolderTool);
+      tools.push(DeleteMediaTypeFolderTool);
+      tools.push(UpdateMediaTypeFolderTool);
 
-      tools.push(CreateMediaTypeTool());
-      tools.push(CopyMediaTypeTool());
-      tools.push(GetMediaTypeAvailableCompositionsTool());
-      tools.push(UpdateMediaTypeTool());
-      tools.push(MoveMediaTypeTool());
-      tools.push(DeleteMediaTypeTool());
+      tools.push(CreateMediaTypeTool);
+      tools.push(CopyMediaTypeTool);
+      tools.push(GetMediaTypeAvailableCompositionsTool);
+      tools.push(UpdateMediaTypeTool);
+      tools.push(MoveMediaTypeTool);
+      tools.push(DeleteMediaTypeTool);
 
-      tools.push(GetMediaTypeRootTool());
-      tools.push(GetMediaTypeChildrenTool());
-      tools.push(GetMediaTypeSiblingsTool());
-      tools.push(GetMediaTypeAncestorsTool());
-      tools.push(GetMediaTypeFoldersTool());
+      tools.push(GetMediaTypeRootTool);
+      tools.push(GetMediaTypeChildrenTool);
+      tools.push(GetMediaTypeSiblingsTool);
+      tools.push(GetMediaTypeAncestorsTool);
+      tools.push(GetMediaTypeFoldersTool);
     }
 
     if (AuthorizationPolicies.TreeAccessMediaOrMediaTypes(user)) {
-      tools.push(GetMediaTypeByIdTool());
-      tools.push(GetMediaTypeByIdsTool());
-      tools.push(GetItemMediaTypeTool());
-      tools.push(GetMediaTypeConfigurationTool());
-      tools.push(GetAllowedMediaTypeTool());
-      tools.push(GetMediaTypeAllowedAtRootTool());
-      tools.push(GetMediaTypeAllowedChildrenTool());
-      tools.push(GetMediaTypeCompositionReferencesTool());
+      tools.push(GetMediaTypeByIdTool);
+      tools.push(GetMediaTypeByIdsTool);
+      tools.push(GetItemMediaTypeTool);
+      tools.push(GetMediaTypeConfigurationTool);
+      tools.push(GetAllowedMediaTypeTool);
+      tools.push(GetMediaTypeAllowedAtRootTool);
+      tools.push(GetMediaTypeAllowedChildrenTool);
+      tools.push(GetMediaTypeCompositionReferencesTool);
     }
 
     return tools;

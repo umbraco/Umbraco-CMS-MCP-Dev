@@ -1,14 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { DeleteUserGroupsRequestModel } from "@/umb-management-api/schemas/index.js";
 import { deleteUserGroupBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteUserGroupsTool = CreateUmbracoTool(
-  "delete-user-groups",
-  "Deletes all user groups",
-  deleteUserGroupBody.shape,
-  async ({ userGroupIds }) => {
+const DeleteUserGroupsTool = {
+  name: "delete-user-groups",
+  description: "Deletes all user groups",
+  schema: deleteUserGroupBody.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async (model: DeleteUserGroupsRequestModel) => {
     const client = UmbracoManagementClient.getClient();
-    const response = await client.deleteUserGroup({ userGroupIds });
+    const response = await client.deleteUserGroup(model);
 
     return {
       content: [
@@ -18,7 +22,7 @@ const DeleteUserGroupsTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteUserGroupBody.shape>;
 
-export default DeleteUserGroupsTool;
+export default withStandardDecorators(DeleteUserGroupsTool);

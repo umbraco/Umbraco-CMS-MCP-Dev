@@ -1,14 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getIndexerByIndexNameParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetIndexerByIndexNameTool = CreateUmbracoTool(
-  "get-indexer-by-index-name",
-  `Gets a specific index by its name.
+const GetIndexerByIndexNameTool = {
+  name: "get-indexer-by-index-name",
+  description: `Gets a specific index by its name.
   Returns detailed information about the index including its configuration and status.`,
-  getIndexerByIndexNameParams.shape,
-  async (model: { indexName: string }) => {
+  schema: getIndexerByIndexNameParams.shape,
+  isReadOnly: true,
+  slices: ['diagnostics'],
+  handler: async (model: { indexName: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getIndexerByIndexName(model.indexName);
 
@@ -20,7 +22,7 @@ const GetIndexerByIndexNameTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getIndexerByIndexNameParams.shape>;
 
-export default GetIndexerByIndexNameTool;
+export default withStandardDecorators(GetIndexerByIndexNameTool);

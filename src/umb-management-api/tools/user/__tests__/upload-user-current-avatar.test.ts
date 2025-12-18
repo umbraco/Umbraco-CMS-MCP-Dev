@@ -37,7 +37,7 @@ describe("upload-user-current-avatar", () => {
     const temporaryFileId = tempFileBuilder.getId();
 
     // Act
-    const result = await UploadUserCurrentAvatarTool().handler({
+    const result = await UploadUserCurrentAvatarTool.handler({
       file: { id: temporaryFileId }
     }, { signal: new AbortController().signal });
 
@@ -48,7 +48,7 @@ describe("upload-user-current-avatar", () => {
 
   it("should handle non-existent temporary file id", async () => {
     // Act - use non-existent temporary file id
-    const result = await UploadUserCurrentAvatarTool().handler({
+    const result = await UploadUserCurrentAvatarTool.handler({
       file: { id: BLANK_UUID }
     }, { signal: new AbortController().signal });
 

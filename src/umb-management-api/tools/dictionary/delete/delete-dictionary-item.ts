@@ -1,14 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteDictionaryByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteDictionaryItemTool = CreateUmbracoTool(
-  "delete-dictionary-item",
-  "Deletes a dictionary item by Id",
-  deleteDictionaryByIdParams.shape,
-  async ({ id }) => {
+const DeleteDictionaryItemTool = {
+  name: "delete-dictionary-item",
+  description: "Deletes a dictionary item by Id",
+  schema: deleteDictionaryByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.deleteDictionaryById(id);
+    const response = await client.deleteDictionaryById(id);
 
     return {
       content: [
@@ -18,7 +21,7 @@ const DeleteDictionaryItemTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteDictionaryByIdParams.shape>;
 
-export default DeleteDictionaryItemTool;
+export default withStandardDecorators(DeleteDictionaryItemTool);

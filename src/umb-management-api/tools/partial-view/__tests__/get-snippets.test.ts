@@ -23,7 +23,7 @@ describe("get-snippets", () => {
       const params = { take: 10 };
 
       // Act
-      const result = await GetPartialViewSnippetTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetTool.handler(params, { signal: new AbortController().signal });
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
@@ -45,7 +45,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetTool.handler(params, { signal: new AbortController().signal });
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
@@ -66,7 +66,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetTool.handler(params, { signal: new AbortController().signal });
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
@@ -86,7 +86,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetTool.handler(params, { signal: new AbortController().signal });
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
@@ -103,7 +103,7 @@ describe("get-snippets", () => {
   describe("GetPartialViewSnippetByIdTool", () => {
     it("should get a specific partial view snippet by ID", async () => {
       // Arrange - First get available snippets to find a valid ID
-      const listResult = await GetPartialViewSnippetTool().handler({ take: 10 }, { signal: new AbortController().signal });
+      const listResult = await GetPartialViewSnippetTool.handler({ take: 10 }, { signal: new AbortController().signal });
       const listResponseData = JSON.parse(String(listResult.content[0].text));
       
       // Skip this test if no snippets are available
@@ -121,7 +121,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetByIdTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetByIdTool.handler(params, { signal: new AbortController().signal });
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
@@ -140,7 +140,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetByIdTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetByIdTool.handler(params, { signal: new AbortController().signal });
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -153,7 +153,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetByIdTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetByIdTool.handler(params, { signal: new AbortController().signal });
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -166,7 +166,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetByIdTool().handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetByIdTool.handler(params, { signal: new AbortController().signal });
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();

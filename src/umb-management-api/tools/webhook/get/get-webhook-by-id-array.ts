@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemWebhookQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetWebhookItemTool = CreateUmbracoTool(
-  "get-webhook-item",
-  "Gets webhooks by IDs (or empty array if no IDs are provided)",
-  getItemWebhookQueryParams.shape,
-  async (params: { id?: string[] }) => {
+const GetWebhookItemTool = {
+  name: "get-webhook-item",
+  description: "Gets webhooks by IDs (or empty array if no IDs are provided)",
+  schema: getItemWebhookQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: { id?: string[] }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemWebhook(params);
 
@@ -18,7 +21,7 @@ const GetWebhookItemTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemWebhookQueryParams.shape>;
 
-export default GetWebhookItemTool;
+export default withStandardDecorators(GetWebhookItemTool);

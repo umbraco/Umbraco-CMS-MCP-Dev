@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeStaticFileChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetTreeStaticFileChildrenParams } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetStaticFileChildrenTool = CreateUmbracoTool(
-  "get-static-file-children",
-  "Lists child files and folders in a static file directory by parent path",
-  getTreeStaticFileChildrenQueryParams.shape,
-  async (params) => {
+const GetStaticFileChildrenTool = {
+  name: "get-static-file-children",
+  description: "Lists child files and folders in a static file directory by parent path",
+  schema: getTreeStaticFileChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetTreeStaticFileChildrenParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeStaticFileChildren(params);
     return {
@@ -18,6 +22,6 @@ const GetStaticFileChildrenTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getTreeStaticFileChildrenQueryParams.shape>;
 
-export default GetStaticFileChildrenTool;
+export default withStandardDecorators(GetStaticFileChildrenTool);

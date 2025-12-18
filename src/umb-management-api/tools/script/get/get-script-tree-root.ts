@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeScriptRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeScriptRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetScriptTreeRootTool = CreateUmbracoTool(
-  "get-script-tree-root",
-  "Gets script tree root",
-  getTreeScriptRootQueryParams.shape,
-  async (model: GetTreeScriptRootParams) => {
+const GetScriptTreeRootTool = {
+  name: "get-script-tree-root",
+  description: "Gets script tree root",
+  schema: getTreeScriptRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (model: GetTreeScriptRootParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeScriptRoot(model);
 
@@ -19,7 +22,7 @@ const GetScriptTreeRootTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeScriptRootQueryParams.shape>;
 
-export default GetScriptTreeRootTool;
+export default withStandardDecorators(GetScriptTreeRootTool);

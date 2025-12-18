@@ -1,6 +1,7 @@
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { propertyValueTemplates, type PropertyValueTemplate } from "../post/property-value-templates.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Zod schema for the tool parameters
 const propertyValueTemplateSchema = z.object({
@@ -9,9 +10,9 @@ const propertyValueTemplateSchema = z.object({
 
 type PropertyValueTemplateParams = z.infer<typeof propertyValueTemplateSchema>;
 
-const GetDocumentPropertyValueTemplateTool = CreateUmbracoTool(
-  "get-document-property-value-template",
-  `Retrieves property value templates for creating documents in Umbraco.
+const GetDocumentPropertyValueTemplateTool = {
+  name: "get-document-property-value-template",
+  description: `Retrieves property value templates for creating documents in Umbraco.
 
 IMPORTANT: This tool should be used BEFORE creating documents to understand:
 - What property editors are available
@@ -34,8 +35,10 @@ IMPORTANT: Templates only provide editorAlias and value structure. When using wi
 - alias: The property alias from your document type
 
 Note: Some templates (BlockList, BlockGrid, ImageCropper, UploadField) have special requirements indicated in their _notes.`,
-  propertyValueTemplateSchema.shape,
-  async (model: PropertyValueTemplateParams) => {
+  schema: propertyValueTemplateSchema.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (model: PropertyValueTemplateParams) => {
     try {
       // If no editorAlias provided, return list of available editors
       if (!model.editorAlias) {
@@ -104,8 +107,8 @@ Note: Some templates (BlockList, BlockGrid, ImageCropper, UploadField) have spec
         isError: true,
       };
     }
-  }
-);
+  },
+} satisfies ToolDefinition<typeof propertyValueTemplateSchema.shape>;
 
 function buildTemplateResponse(editorKey: string, template: PropertyValueTemplate) {
   let response = `Property Value Template: ${editorKey}\n\n`;
@@ -137,4 +140,4 @@ function buildTemplateResponse(editorKey: string, template: PropertyValueTemplat
   };
 }
 
-export default GetDocumentPropertyValueTemplateTool;
+export default withStandardDecorators(GetDocumentPropertyValueTemplateTool);

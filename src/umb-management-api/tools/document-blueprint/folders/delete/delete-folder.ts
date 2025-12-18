@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteDocumentBlueprintFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteDocumentBlueprintFolderTool = CreateUmbracoTool(
-  "delete-document-blueprint-folder",
-  "Deletes a document blueprint folder by Id",
-  deleteDocumentBlueprintFolderByIdParams.shape,
-  async ({ id }) => {
+const DeleteDocumentBlueprintFolderTool = {
+  name: "delete-document-blueprint-folder",
+  description: "Deletes a document blueprint folder by Id",
+  schema: deleteDocumentBlueprintFolderByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete', 'folders'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.deleteDocumentBlueprintFolderById(id);
     return {
@@ -17,7 +20,7 @@ const DeleteDocumentBlueprintFolderTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteDocumentBlueprintFolderByIdParams.shape>;
 
-export default DeleteDocumentBlueprintFolderTool;
+export default withStandardDecorators(DeleteDocumentBlueprintFolderTool);

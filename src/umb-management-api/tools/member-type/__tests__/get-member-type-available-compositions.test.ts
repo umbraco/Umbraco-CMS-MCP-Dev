@@ -33,7 +33,7 @@ describe("get-member-type-available-compositions", () => {
       .create();
 
     // Get the available compositions
-    const result = await GetMemberTypeAvailableCompositionsTool().handler(
+    const result = await GetMemberTypeAvailableCompositionsTool.handler(
       {
         id: memberTypeBuilder.getId(),
         currentPropertyAliases: [],

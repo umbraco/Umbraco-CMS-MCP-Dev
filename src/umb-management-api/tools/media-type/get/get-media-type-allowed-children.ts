@@ -1,20 +1,23 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getMediaTypeByIdAllowedChildrenParams,
   getMediaTypeByIdAllowedChildrenQueryParams,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Combine both parameter schemas
 const paramSchema = getMediaTypeByIdAllowedChildrenParams.merge(
   getMediaTypeByIdAllowedChildrenQueryParams
 );
 
-const GetMediaTypeAllowedChildrenTool = CreateUmbracoTool(
-  "get-media-type-allowed-children",
-  "Gets the media types that are allowed as children of a media type",
-  paramSchema.shape,
-  async (model) => {
+const GetMediaTypeAllowedChildrenTool = {
+  name: "get-media-type-allowed-children",
+  description: "Gets the media types that are allowed as children of a media type",
+  schema: paramSchema.shape,
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async (model) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaTypeByIdAllowedChildren(model.id, {
       skip: model.skip,
@@ -29,7 +32,7 @@ const GetMediaTypeAllowedChildrenTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof paramSchema.shape>;
 
-export default GetMediaTypeAllowedChildrenTool;
+export default withStandardDecorators(GetMediaTypeAllowedChildrenTool);

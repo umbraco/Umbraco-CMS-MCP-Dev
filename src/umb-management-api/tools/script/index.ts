@@ -25,21 +25,21 @@ export const ScriptCollection: ToolCollectionExport = {
   },
   tools: (user: CurrentUserResponseModel) => {
     const tools: ToolDefinition<any>[] = [];
-    
+
     if (AuthorizationPolicies.TreeAccessScripts(user)) {
-      tools.push(GetScriptByPathTool());
-      tools.push(GetScriptFolderByPathTool());
-      tools.push(GetScriptItemsTool());
-      tools.push(GetScriptTreeAncestorsTool());
-      tools.push(GetScriptTreeChildrenTool());
-      tools.push(GetScriptTreeRootTool());
-      tools.push(GetScriptTreeSiblingsTool());
-      tools.push(CreateScriptTool());
-      tools.push(CreateScriptFolderTool());
-      tools.push(UpdateScriptTool());
-      tools.push(RenameScriptTool());
-      tools.push(DeleteScriptTool());
-      tools.push(DeleteScriptFolderTool());
+      tools.push(GetScriptByPathTool);
+      tools.push(GetScriptFolderByPathTool);
+      tools.push(GetScriptItemsTool);
+      tools.push(GetScriptTreeAncestorsTool);
+      tools.push(GetScriptTreeChildrenTool);
+      tools.push(GetScriptTreeRootTool);
+      tools.push(GetScriptTreeSiblingsTool);
+      tools.push(CreateScriptTool);
+      tools.push(CreateScriptFolderTool);
+      tools.push(UpdateScriptTool);
+      tools.push(RenameScriptTool);
+      tools.push(DeleteScriptTool);
+      tools.push(DeleteScriptFolderTool);
     }
 
     return tools;

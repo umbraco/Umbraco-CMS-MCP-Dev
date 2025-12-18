@@ -16,7 +16,7 @@ describe("allowed-media-type", () => {
 
   describe("get allowed", () => {
     it("should filter by file extension", async () => {
-      const result = await GetAllowedMediaTypeTool().handler({
+      const result = await GetAllowedMediaTypeTool.handler({
         take: 100,
         fileExtension: 'jpg'
       }, { signal: new AbortController().signal });

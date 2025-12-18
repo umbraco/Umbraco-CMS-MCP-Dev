@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { getDocumentTypeFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const GetDocumentTypeFolderTool = CreateUmbracoTool(
-  "get-document-type-folder",
-  "Gets a document type folder by Id",
-  getDocumentTypeFolderByIdParams.shape,
-  async ({ id }) => {
+const GetDocumentTypeFolderTool = {
+  name: "get-document-type-folder",
+  description: "Gets a document type folder by Id",
+  schema: getDocumentTypeFolderByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read', 'folders'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentTypeFolderById(id);
 
@@ -19,6 +22,6 @@ const GetDocumentTypeFolderTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getDocumentTypeFolderByIdParams.shape>;
 
-export default GetDocumentTypeFolderTool;
+export default withStandardDecorators(GetDocumentTypeFolderTool);

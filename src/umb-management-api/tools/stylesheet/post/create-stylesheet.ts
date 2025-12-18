@@ -1,6 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateStylesheetRequestModel } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
@@ -12,11 +13,13 @@ const createStylesheetSchema = z.object({
 
 type CreateStylesheetSchema = z.infer<typeof createStylesheetSchema>;
 
-const CreateStylesheetTool = CreateUmbracoTool(
-  "create-stylesheet",
-  `Creates a new stylesheet.`,
-  createStylesheetSchema.shape,
-  async (model: CreateStylesheetSchema) => {
+const CreateStylesheetTool = {
+  name: "create-stylesheet",
+  description: `Creates a new stylesheet.`,
+  schema: createStylesheetSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateStylesheetSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     // Normalize path to ensure it starts with /
@@ -47,6 +50,6 @@ const CreateStylesheetTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof createStylesheetSchema.shape>;
 
-export default CreateStylesheetTool;
+export default withStandardDecorators(CreateStylesheetTool);

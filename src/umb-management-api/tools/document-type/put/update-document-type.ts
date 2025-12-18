@@ -1,5 +1,6 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { UpdateDocumentTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putDocumentTypeByIdParams,
@@ -7,14 +8,18 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-const UpdateDocumentTypeTool = CreateUmbracoTool(
-  "update-document-type",
-  "Updates a document type by Id",
-  {
-    id: putDocumentTypeByIdParams.shape.id,
-    data: z.object(putDocumentTypeByIdBody.shape),
-  },
-  async (model: { id: string; data: UpdateDocumentTypeRequestModel }) => {
+const updateDocumentTypeSchema = {
+  id: putDocumentTypeByIdParams.shape.id,
+  data: z.object(putDocumentTypeByIdBody.shape),
+};
+
+const UpdateDocumentTypeTool = {
+  name: "update-document-type",
+  description: "Updates a document type by Id",
+  schema: updateDocumentTypeSchema,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async (model: { id: string; data: UpdateDocumentTypeRequestModel }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putDocumentTypeById(model.id, model.data);
 
@@ -27,6 +32,6 @@ const UpdateDocumentTypeTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof updateDocumentTypeSchema>;
 
-export default UpdateDocumentTypeTool;
+export default withStandardDecorators(UpdateDocumentTypeTool);

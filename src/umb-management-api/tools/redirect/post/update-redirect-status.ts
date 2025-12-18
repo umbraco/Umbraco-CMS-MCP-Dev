@@ -1,16 +1,22 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postRedirectManagementStatusQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const UpdateRedirectStatusTool = CreateUmbracoTool(
-  "update-redirect-status",
-  `Updates the status of redirect management.
+type SchemaParams = z.infer<typeof postRedirectManagementStatusQueryParams>;
+
+const UpdateRedirectStatusTool = {
+  name: "update-redirect-status",
+  description: `Updates the status of redirect management.
   Parameters:
   - status: The new status, either "Enabled" or "Disabled" (string)
-  
+
   Returns no content on success.`,
-  postRedirectManagementStatusQueryParams.shape,
-  async ({ status }) => {
+  schema: postRedirectManagementStatusQueryParams.shape,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async ({ status }: SchemaParams) => {
     const client = UmbracoManagementClient.getClient();
     await client.postRedirectManagementStatus({ status });
 
@@ -22,7 +28,7 @@ const UpdateRedirectStatusTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postRedirectManagementStatusQueryParams.shape>;
 
-export default UpdateRedirectStatusTool;
+export default withStandardDecorators(UpdateRedirectStatusTool);

@@ -29,7 +29,7 @@ describe("get-property-type-is-used", () => {
       contentTypeId: headerControlsId!,
       propertyAlias: titlePropertyAlias,
     });
-    const result = await GetPropertyTypeIsUsedTool().handler(params, {
+    const result = await GetPropertyTypeIsUsedTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -37,7 +37,7 @@ describe("get-property-type-is-used", () => {
 
   it("should handle empty parameters", async () => {
     const params = getPropertyTypeIsUsedQueryParams.parse({});
-    const result = await GetPropertyTypeIsUsedTool().handler(params, {
+    const result = await GetPropertyTypeIsUsedTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(normalizeErrorResponse(result)).toMatchSnapshot();

@@ -44,7 +44,7 @@ describe("data-type-tree", () => {
         .withParentId(folderBuilder.getId())
         .create();
 
-      const result = await GetDataTypeChildrenTool().handler(
+      const result = await GetDataTypeChildrenTool.handler(
         {
           take: 100,
           parentId: folderBuilder.getId(),
@@ -58,7 +58,7 @@ describe("data-type-tree", () => {
     });
 
     it("should handle non-existent parent", async () => {
-      const result = await GetDataTypeChildrenTool().handler(
+      const result = await GetDataTypeChildrenTool.handler(
         {
           take: 100,
           parentId: BLANK_UUID,
@@ -84,7 +84,7 @@ describe("data-type-tree", () => {
         .withParentId(folderBuilder.getId())
         .create();
 
-      const result = await GetDataTypeAncestorsTool().handler(
+      const result = await GetDataTypeAncestorsTool.handler(
         {
           descendantId: childBuilder.getId(),
         },
@@ -97,7 +97,7 @@ describe("data-type-tree", () => {
     });
 
     it("should handle non-existent item", async () => {
-      const result = await GetDataTypeAncestorsTool().handler(
+      const result = await GetDataTypeAncestorsTool.handler(
         {
           descendantId: BLANK_UUID,
         },
@@ -129,7 +129,7 @@ describe("data-type-tree", () => {
         .withParentId(childFolderBuilder.getId())
         .create();
 
-      const result = await GetAllDataTypesTool().handler(
+      const result = await GetAllDataTypesTool.handler(
         {},
         { signal: new AbortController().signal }
       );

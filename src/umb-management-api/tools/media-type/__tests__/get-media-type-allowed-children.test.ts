@@ -37,7 +37,7 @@ describe("get-media-type-allowed-children", () => {
       .create();
 
     // Get allowed children
-    const result = await GetMediaTypeAllowedChildrenTool().handler(
+    const result = await GetMediaTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
         skip: 0,
@@ -65,7 +65,7 @@ describe("get-media-type-allowed-children", () => {
   });
 
   it("should handle non-existent media type", async () => {
-    const result = await GetMediaTypeAllowedChildrenTool().handler(
+    const result = await GetMediaTypeAllowedChildrenTool.handler(
       {
         id: BLANK_UUID,
         skip: 0,
@@ -83,7 +83,7 @@ describe("get-media-type-allowed-children", () => {
       .withName(TEST_PARENT_NAME)
       .create();
 
-    const result = await GetMediaTypeAllowedChildrenTool().handler(
+    const result = await GetMediaTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
         skip: 0,

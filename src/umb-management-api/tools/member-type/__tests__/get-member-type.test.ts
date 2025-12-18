@@ -27,7 +27,7 @@ describe("get-member-type", () => {
       .withAllowedAsRoot(true)
       .create();
 
-    const result = await GetMemberTypeTool().handler(
+    const result = await GetMemberTypeTool.handler(
       {
         id: builder.getId(),
       },
@@ -44,7 +44,7 @@ describe("get-member-type", () => {
   });
 
   it("should handle non-existent member type", async () => {
-    const result = await GetMemberTypeTool().handler(
+    const result = await GetMemberTypeTool.handler(
       {
         id: BLANK_UUID,
       },

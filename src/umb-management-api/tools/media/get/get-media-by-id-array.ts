@@ -1,15 +1,21 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getItemMediaQueryParams,
   getItemMediaResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetMediaByIdArrayTool = CreateUmbracoTool(
-  "get-media-by-id-array",
-  "Gets media items by an array of IDs",
-  getItemMediaQueryParams.shape,
-  async (params) => {
+type GetItemMediaParams = z.infer<typeof getItemMediaQueryParams>;
+
+const GetMediaByIdArrayTool = {
+  name: "get-media-by-id-array",
+  description: "Gets media items by an array of IDs",
+  schema: getItemMediaQueryParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (params: GetItemMediaParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemMedia(params);
     // Validate response shape
@@ -22,7 +28,7 @@ const GetMediaByIdArrayTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemMediaQueryParams.shape>;
 
-export default GetMediaByIdArrayTool;
+export default withStandardDecorators(GetMediaByIdArrayTool);

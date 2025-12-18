@@ -22,7 +22,7 @@ describe("validate-document-type-post", () => {
 
   it("should validate a valid document type (POST)", async () => {
     const model = new DocumentTypeBuilder().withName(TEST_DOCTYPE_NAME).build();
-    const result = await ValidateDocumentTypePostTool().handler(model, {
+    const result = await ValidateDocumentTypePostTool.handler(model, {
       signal: new AbortController().signal,
     });
     expect(result).toMatchSnapshot();
@@ -45,7 +45,7 @@ describe("validate-document-type-post", () => {
       allowedDocumentTypes: [],
       compositions: [],
     };
-    const result = await ValidateDocumentTypePostTool().handler(invalidModel, {
+    const result = await ValidateDocumentTypePostTool.handler(invalidModel, {
       signal: new AbortController().signal,
     });
     expect(normalizeErrorResponse(result)).toMatchSnapshot();

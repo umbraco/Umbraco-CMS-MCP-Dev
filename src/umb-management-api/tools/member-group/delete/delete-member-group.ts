@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteMemberGroupByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteMemberGroupTool = CreateUmbracoTool(
-  "delete-member-group",
-  "Deletes a member group by Id",
-  deleteMemberGroupByIdParams.shape,
-  async ({ id }) => {
+const DeleteMemberGroupTool = {
+  name: "delete-member-group",
+  description: "Deletes a member group by Id",
+  schema: deleteMemberGroupByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.deleteMemberGroupById(id);
 
@@ -18,7 +21,7 @@ const DeleteMemberGroupTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteMemberGroupByIdParams.shape>;
 
-export default DeleteMemberGroupTool;
+export default withStandardDecorators(DeleteMemberGroupTool);

@@ -27,7 +27,7 @@ describe("delete-media-type", () => {
       .withAllowedAsRoot(true)
       .create();
 
-    const result = await DeleteMediaTypeTool().handler(
+    const result = await DeleteMediaTypeTool.handler(
       {
         id: builder.getId(),
       },
@@ -46,7 +46,7 @@ describe("delete-media-type", () => {
   });
 
   it("should handle non-existent media type", async () => {
-    const result = await DeleteMediaTypeTool().handler(
+    const result = await DeleteMediaTypeTool.handler(
       {
         id: BLANK_UUID,
       },

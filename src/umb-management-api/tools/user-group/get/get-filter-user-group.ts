@@ -1,14 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { GetFilterUserGroupParams } from "@/umb-management-api/schemas/index.js";
 import { getFilterUserGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetFilterUserGroupTool = CreateUmbracoTool(
-  "get-filter-user-group",
-  "Gets filtered user groups",
-  getFilterUserGroupQueryParams.shape,
-  async ({ skip, take, filter }) => {
+const GetFilterUserGroupTool = {
+  name: "get-filter-user-group",
+  description: "Gets filtered user groups",
+  schema: getFilterUserGroupQueryParams.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async (model: GetFilterUserGroupParams) => {
     const client = UmbracoManagementClient.getClient();
-    const response = await client.getFilterUserGroup({ skip, take, filter });
+    const response = await client.getFilterUserGroup(model);
 
     return {
       content: [
@@ -18,7 +22,7 @@ const GetFilterUserGroupTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getFilterUserGroupQueryParams.shape>;
 
-export default GetFilterUserGroupTool;
+export default withStandardDecorators(GetFilterUserGroupTool);

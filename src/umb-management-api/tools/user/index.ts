@@ -29,24 +29,24 @@ export const UserCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     // Self-service tools (available to all authenticated users)
-    tools.push(GetUserCurrentTool());
-    tools.push(GetUserCurrentConfigurationTool());
-    tools.push(GetUserCurrentLoginProvidersTool());
-    tools.push(GetUserCurrentPermissionsTool());
-    tools.push(GetUserCurrentPermissionsDocumentTool());
-    tools.push(GetUserCurrentPermissionsMediaTool());
-    tools.push(UploadUserCurrentAvatarTool());
+    tools.push(GetUserCurrentTool);
+    tools.push(GetUserCurrentConfigurationTool);
+    tools.push(GetUserCurrentLoginProvidersTool);
+    tools.push(GetUserCurrentPermissionsTool);
+    tools.push(GetUserCurrentPermissionsDocumentTool);
+    tools.push(GetUserCurrentPermissionsMediaTool);
+    tools.push(UploadUserCurrentAvatarTool);
 
     // Administrative tools (require SectionAccessUsers permission)
     if (AuthorizationPolicies.SectionAccessUsers(user)) {
-      tools.push(GetUserTool());
-      tools.push(GetUserByIdTool());
-      tools.push(FindUserTool());
-      tools.push(GetItemUserTool());
-      tools.push(GetUserConfigurationTool());
-      tools.push(GetUserByIdCalculateStartNodesTool());
-      tools.push(UploadUserAvatarByIdTool());
-      tools.push(DeleteUserAvatarByIdTool());
+      tools.push(GetUserTool);
+      tools.push(GetUserByIdTool);
+      tools.push(FindUserTool);
+      tools.push(GetItemUserTool);
+      tools.push(GetUserConfigurationTool);
+      tools.push(GetUserByIdCalculateStartNodesTool);
+      tools.push(UploadUserAvatarByIdTool);
+      tools.push(DeleteUserAvatarByIdTool);
     }
 
     return tools;

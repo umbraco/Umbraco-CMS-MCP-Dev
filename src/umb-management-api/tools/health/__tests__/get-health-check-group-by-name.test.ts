@@ -19,7 +19,7 @@ describe("get-health-check-group-by-name", () => {
   });
 
   it("should get health check group by valid name", async () => {
-    const result = await GetHealthCheckGroupByNameTool().handler({
+    const result = await GetHealthCheckGroupByNameTool.handler({
       name: TEST_VALID_GROUP_NAME
     }, { signal: new AbortController().signal });
 
@@ -27,7 +27,7 @@ describe("get-health-check-group-by-name", () => {
   });
 
   it("should handle non-existent health check group", async () => {
-    const result = await GetHealthCheckGroupByNameTool().handler({
+    const result = await GetHealthCheckGroupByNameTool.handler({
       name: TEST_INVALID_GROUP_NAME
     }, { signal: new AbortController().signal });
 
@@ -35,7 +35,7 @@ describe("get-health-check-group-by-name", () => {
   });
 
   it("should handle empty group name", async () => {
-    const result = await GetHealthCheckGroupByNameTool().handler({
+    const result = await GetHealthCheckGroupByNameTool.handler({
       name: TEST_EMPTY_GROUP_NAME
     }, { signal: new AbortController().signal });
 

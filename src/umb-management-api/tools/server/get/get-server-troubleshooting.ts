@@ -1,13 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetServerTroubleshootingTool = CreateUmbracoTool(
-  "get-server-troubleshooting",
-  `Gets server troubleshooting information.
+const GetServerTroubleshootingTool = {
+  name: "get-server-troubleshooting",
+  description: `Gets server troubleshooting information.
   Returns an array of diagnostic items, where each item contains:
   - name: The name/identifier of the diagnostic check (string)
   - data: The diagnostic data or result for that check (string)
-  
+
   Example response:
   {
     "items": [
@@ -61,8 +62,10 @@ const GetServerTroubleshootingTool = CreateUmbracoTool(
       }
     ]
   }`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: true,
+  slices: ['server-info'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getServerTroubleshooting();
 
@@ -74,7 +77,7 @@ const GetServerTroubleshootingTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetServerTroubleshootingTool;
+export default withStandardDecorators(GetServerTroubleshootingTool);

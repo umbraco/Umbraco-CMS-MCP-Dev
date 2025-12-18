@@ -27,7 +27,7 @@ describe("partial-view-tree-operations", () => {
 
   describe("get-root", () => {
     it("should get root level partial views", async () => {
-      const result = await GetPartialViewRootTool().handler(
+      const result = await GetPartialViewRootTool.handler(
         {
           skip: 0,
           take: 100
@@ -54,7 +54,7 @@ describe("partial-view-tree-operations", () => {
         .withParent(TEST_FOLDER_NAME)
         .create();
 
-      const result = await GetPartialViewChildrenTool().handler(
+      const result = await GetPartialViewChildrenTool.handler(
         {
           parentPath: TEST_FOLDER_NAME,
           take: 100,
@@ -68,7 +68,7 @@ describe("partial-view-tree-operations", () => {
     });
 
     it("should handle non-existent parent path", async () => {
-      const result = await GetPartialViewChildrenTool().handler(
+      const result = await GetPartialViewChildrenTool.handler(
         {
           parentPath: "_NonExistentFolder",
           take: 100,
@@ -93,7 +93,7 @@ describe("partial-view-tree-operations", () => {
         .withParent(TEST_PARENT_NAME)
         .create();
 
-      const result = await GetPartialViewAncestorsTool().handler(
+      const result = await GetPartialViewAncestorsTool.handler(
         {
           descendantPath: childBuilder.getPath(),
         },
@@ -106,7 +106,7 @@ describe("partial-view-tree-operations", () => {
     });
 
     it("should handle non-existent descendant path", async () => {
-      const result = await GetPartialViewAncestorsTool().handler(
+      const result = await GetPartialViewAncestorsTool.handler(
         {
           descendantPath: "_NonExistent/test.cshtml",
         },

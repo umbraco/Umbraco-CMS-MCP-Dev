@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinDocumentRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetRecycleBinDocumentRootTool = CreateUmbracoTool(
-  "get-recycle-bin-document-root",
-  "Gets root items for the document recycle bin.",
-  getRecycleBinDocumentRootQueryParams.shape,
-  async (params) => {
+const GetRecycleBinDocumentRootTool = {
+  name: "get-recycle-bin-document-root",
+  description: "Gets root items for the document recycle bin.",
+  schema: getRecycleBinDocumentRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree', 'recycle-bin'],
+  handler: async (params: z.infer<typeof getRecycleBinDocumentRootQueryParams>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getRecycleBinDocumentRoot(params);
     return {
@@ -17,7 +21,7 @@ const GetRecycleBinDocumentRootTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getRecycleBinDocumentRootQueryParams.shape>;
 
-export default GetRecycleBinDocumentRootTool;
+export default withStandardDecorators(GetRecycleBinDocumentRootTool);

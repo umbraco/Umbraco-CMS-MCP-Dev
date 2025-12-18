@@ -1,12 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
-import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserCurrentConfigurationTool = CreateUmbracoTool(
-  "get-user-current-configuration",
-  "Gets current user configuration settings including login preferences and password requirements",
-  {},
-  async () => {
+const GetUserCurrentConfigurationTool = {
+  name: "get-user-current-configuration",
+  description: "Gets current user configuration settings including login preferences and password requirements",
+  schema: undefined,
+  isReadOnly: true,
+  slices: ['current-user'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getUserCurrentConfiguration();
 
@@ -18,7 +20,7 @@ const GetUserCurrentConfigurationTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<undefined>;
 
-export default GetUserCurrentConfigurationTool;
+export default withStandardDecorators(GetUserCurrentConfigurationTool);

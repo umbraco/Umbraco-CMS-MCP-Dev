@@ -40,7 +40,7 @@ describe("get-document-type-allowed-children", () => {
     await parentBuilder.update();
 
     // Get allowed children
-    const result = await GetDocumentTypeAllowedChildrenTool().handler(
+    const result = await GetDocumentTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
         skip: 0,
@@ -68,7 +68,7 @@ describe("get-document-type-allowed-children", () => {
   });
 
   it("should handle non-existent document type", async () => {
-    const result = await GetDocumentTypeAllowedChildrenTool().handler(
+    const result = await GetDocumentTypeAllowedChildrenTool.handler(
       {
         id: BLANK_UUID,
         skip: 0,
@@ -87,7 +87,7 @@ describe("get-document-type-allowed-children", () => {
       .withIcon("icon-document")
       .create();
 
-    const result = await GetDocumentTypeAllowedChildrenTool().handler(
+    const result = await GetDocumentTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
         skip: 0,

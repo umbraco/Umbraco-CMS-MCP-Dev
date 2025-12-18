@@ -35,7 +35,9 @@ exports[`get-recycle-bin-media-original-parent should return original parent inf
 {
   "content": [
     {
-      "text": "{"id":"00000000-0000-0000-0000-000000000000"}",
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000"
+}",
       "type": "text",
     },
   ],

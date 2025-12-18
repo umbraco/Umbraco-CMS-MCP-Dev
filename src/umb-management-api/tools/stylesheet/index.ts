@@ -32,21 +32,21 @@ export const StylesheetCollection: ToolCollectionExport = {
 
     if (AuthorizationPolicies.TreeAccessStylesheets(user)) {
       // Basic CRUD operations
-      tools.push(CreateStylesheetTool());
-      tools.push(CreateStylesheetFolderTool());
-      tools.push(GetStylesheetByPathTool());
-      tools.push(GetStylesheetFolderByPathTool());
-      tools.push(UpdateStylesheetTool());
-      tools.push(RenameStylesheetTool());
-      tools.push(DeleteStylesheetTool());
-      tools.push(DeleteStylesheetFolderTool());
+      tools.push(CreateStylesheetTool);
+      tools.push(CreateStylesheetFolderTool);
+      tools.push(GetStylesheetByPathTool);
+      tools.push(GetStylesheetFolderByPathTool);
+      tools.push(UpdateStylesheetTool);
+      tools.push(RenameStylesheetTool);
+      tools.push(DeleteStylesheetTool);
+      tools.push(DeleteStylesheetFolderTool);
 
       // Tree operations
-      tools.push(GetStylesheetAncestorsTool());
-      tools.push(GetStylesheetChildrenTool());
-      tools.push(GetStylesheetRootTool());
-      tools.push(GetStylesheetSearchTool());
-      tools.push(GetStylesheetSiblingsTool());
+      tools.push(GetStylesheetAncestorsTool);
+      tools.push(GetStylesheetChildrenTool);
+      tools.push(GetStylesheetRootTool);
+      tools.push(GetStylesheetSearchTool);
+      tools.push(GetStylesheetSiblingsTool);
     }
 
     return tools;

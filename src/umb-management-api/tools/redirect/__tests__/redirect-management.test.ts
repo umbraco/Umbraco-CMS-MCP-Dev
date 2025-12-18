@@ -27,7 +27,7 @@ describe("Redirect Management Tools", () => {
     documentId = builder.getId();
 
     // Get the redirect ID
-    const result = await GetAllRedirectsTool().handler(
+    const result = await GetAllRedirectsTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -41,13 +41,13 @@ describe("Redirect Management Tools", () => {
 
   afterEach(async () => {
     // Clean up all redirects
-    const result = await GetAllRedirectsTool().handler(
+    const result = await GetAllRedirectsTool.handler(
       {},
       { signal: new AbortController().signal }
     );
     const data = JSON.parse(result.content[0].text as string);
     for (const redirect of data.items) {
-      await DeleteRedirectTool().handler(
+      await DeleteRedirectTool.handler(
         { id: redirect.id },
         { signal: new AbortController().signal }
       );
@@ -60,7 +60,7 @@ describe("Redirect Management Tools", () => {
 
   describe("GetRedirectByIdTool", () => {
     it("should get a redirect by ID", async () => {
-      const result = await GetRedirectByIdTool().handler(
+      const result = await GetRedirectByIdTool.handler(
         { id: documentId },
         { signal: new AbortController().signal }
       );
@@ -79,7 +79,7 @@ describe("Redirect Management Tools", () => {
 
   describe("DeleteRedirectTool", () => {
     it("should delete a redirect", async () => {
-      const result = await DeleteRedirectTool().handler(
+      const result = await DeleteRedirectTool.handler(
         { id: redirectId },
         { signal: new AbortController().signal }
       );
@@ -87,7 +87,7 @@ describe("Redirect Management Tools", () => {
       expect(result).toMatchSnapshot();
 
       // Verify the redirect is deleted
-      const getResult = await GetRedirectByIdTool().handler(
+      const getResult = await GetRedirectByIdTool.handler(
         { id: documentId },
         { signal: new AbortController().signal }
       );

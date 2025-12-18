@@ -1,12 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
-import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDataTypeConfigurationTool = CreateUmbracoTool(
-  "get-data-type-configuration",
-  "Gets global data type configuration settings including change permissions and default list view IDs",
-  {},
-  async () => {
+const GetDataTypeConfigurationTool = {
+  name: "get-data-type-configuration",
+  description: "Gets global data type configuration settings including change permissions and default list view IDs",
+  schema: {},
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDataTypeConfiguration();
 
@@ -18,7 +20,7 @@ const GetDataTypeConfigurationTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetDataTypeConfigurationTool;
+export default withStandardDecorators(GetDataTypeConfigurationTool);

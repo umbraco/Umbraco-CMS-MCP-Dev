@@ -27,7 +27,7 @@ describe("delete-data-type", () => {
       .create();
 
     // Delete the data type
-    const result = await DeleteDataTypeTool().handler(
+    const result = await DeleteDataTypeTool.handler(
       {
         id: builder.getId(),
       },
@@ -43,7 +43,7 @@ describe("delete-data-type", () => {
   });
 
   it("should handle non-existent data type", async () => {
-    const result = await DeleteDataTypeTool().handler(
+    const result = await DeleteDataTypeTool.handler(
       {
         id: BLANK_UUID,
       },

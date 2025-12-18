@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemDocumentQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetItemDocumentTool = CreateUmbracoTool(
-  "get-item-document",
-  "Gets document items by their ids",
-  getItemDocumentQueryParams.shape,
-  async (params) => {
+const GetItemDocumentTool = {
+  name: "get-item-document",
+  description: "Gets document items by their ids",
+  schema: getItemDocumentQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: z.infer<typeof getItemDocumentQueryParams>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemDocument(params);
 
@@ -18,7 +22,7 @@ const GetItemDocumentTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemDocumentQueryParams.shape>;
 
-export default GetItemDocumentTool;
+export default withStandardDecorators(GetItemDocumentTool);

@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemMemberQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetItemMemberParams } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMembersByIdArrayTool = CreateUmbracoTool(
-  "get-members-by-id-array",
-  "Gets members by IDs (or empty array if no IDs are provided)",
-  getItemMemberQueryParams.shape,
-  async (params) => {
+const GetMembersByIdArrayTool = {
+  name: "get-members-by-id-array",
+  description: "Gets members by IDs (or empty array if no IDs are provided)",
+  schema: getItemMemberQueryParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (params: GetItemMemberParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemMember(params);
     return {
@@ -17,7 +21,7 @@ const GetMembersByIdArrayTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemMemberQueryParams.shape>;
 
-export default GetMembersByIdArrayTool;
+export default withStandardDecorators(GetMembersByIdArrayTool);

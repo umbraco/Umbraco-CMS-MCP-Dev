@@ -27,7 +27,7 @@ describe("delete-member-type", () => {
       .withAllowedAsRoot(true)
       .create();
 
-    const result = await DeleteMemberTypeTool().handler(
+    const result = await DeleteMemberTypeTool.handler(
       {
         id: builder.getId(),
       },
@@ -46,7 +46,7 @@ describe("delete-member-type", () => {
   });
 
   it("should handle non-existent member type", async () => {
-    const result = await DeleteMemberTypeTool().handler(
+    const result = await DeleteMemberTypeTool.handler(
       {
         id: BLANK_UUID,
       },

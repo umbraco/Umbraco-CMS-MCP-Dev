@@ -30,7 +30,7 @@ describe("get-item-dictionary", () => {
 
   it("should get no dictionary items for empty request", async () => {
     // Get all dictionary items
-    const result = await GetDictionaryByIdArrayTool().handler(
+    const result = await GetDictionaryByIdArrayTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -46,7 +46,7 @@ describe("get-item-dictionary", () => {
       .create();
 
     // Get by ID
-    const result = await GetDictionaryByIdArrayTool().handler(
+    const result = await GetDictionaryByIdArrayTool.handler(
       { id: [builder.getId()] },
       { signal: new AbortController().signal }
     );
@@ -72,7 +72,7 @@ describe("get-item-dictionary", () => {
       .create();
 
     // Get by IDs
-    const result = await GetDictionaryByIdArrayTool().handler(
+    const result = await GetDictionaryByIdArrayTool.handler(
       {
         id: [builder1.getId(), builder2.getId()],
       },

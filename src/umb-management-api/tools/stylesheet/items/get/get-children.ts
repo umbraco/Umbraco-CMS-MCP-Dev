@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeStylesheetChildrenParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeStylesheetChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetStylesheetChildrenTool = CreateUmbracoTool(
-  "get-stylesheet-children",
-  "Gets the children of a stylesheet in the tree structure",
-  getTreeStylesheetChildrenQueryParams.shape,
-  async (model: GetTreeStylesheetChildrenParams) => {
+const GetStylesheetChildrenTool = {
+  name: "get-stylesheet-children",
+  description: "Gets the children of a stylesheet in the tree structure",
+  schema: getTreeStylesheetChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (model: GetTreeStylesheetChildrenParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreeStylesheetChildren(model);
 
@@ -20,6 +23,6 @@ const GetStylesheetChildrenTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getTreeStylesheetChildrenQueryParams.shape>;
 
-export default GetStylesheetChildrenTool;
+export default withStandardDecorators(GetStylesheetChildrenTool);

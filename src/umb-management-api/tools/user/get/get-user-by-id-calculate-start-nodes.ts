@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserByIdCalculateStartNodesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserByIdCalculateStartNodesTool = CreateUmbracoTool(
-  "get-user-by-id-calculate-start-nodes",
-  "Calculates start nodes for a user by their ID based on permissions",
-  getUserByIdCalculateStartNodesParams.shape,
-  async ({ id }) => {
+const GetUserByIdCalculateStartNodesTool = {
+  name: "get-user-by-id-calculate-start-nodes",
+  description: "Calculates start nodes for a user by their ID based on permissions",
+  schema: getUserByIdCalculateStartNodesParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getUserByIdCalculateStartNodes(id);
 
@@ -18,7 +21,7 @@ const GetUserByIdCalculateStartNodesTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getUserByIdCalculateStartNodesParams.shape>;
 
-export default GetUserByIdCalculateStartNodesTool;
+export default withStandardDecorators(GetUserByIdCalculateStartNodesTool);

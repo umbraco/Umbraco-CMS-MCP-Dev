@@ -1,13 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getCollectionMediaQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetCollectionMediaTool = CreateUmbracoTool(
-  "get-collection-media",
-  `Get a collection of media items
+type GetCollectionMediaParams = z.infer<typeof getCollectionMediaQueryParams>;
+
+const GetCollectionMediaTool = {
+  name: "get-collection-media",
+  description: `Get a collection of media items
   Use this to retrieve a filtered and paginated collection of media items based on various criteria like data type, ordering, and filtering.`,
-  getCollectionMediaQueryParams.shape,
-  async ({ id, dataTypeId, orderBy, orderDirection, filter, skip, take }) => {
+  schema: getCollectionMediaQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async ({ id, dataTypeId, orderBy, orderDirection, filter, skip, take }: GetCollectionMediaParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getCollectionMedia({
       id,
@@ -26,7 +32,7 @@ const GetCollectionMediaTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getCollectionMediaQueryParams.shape>;
 
-export default GetCollectionMediaTool;
+export default withStandardDecorators(GetCollectionMediaTool);

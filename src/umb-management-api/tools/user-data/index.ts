@@ -18,11 +18,11 @@ export const UserDataCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     // User Data is scoped to the authenticated user, available to all authenticated users
-    tools.push(CreateUserDataTool());
-    tools.push(UpdateUserDataTool());
-    tools.push(GetUserDataTool());
-    tools.push(GetUserDataByIdTool());
-    tools.push(DeleteUserDataTool());
+    tools.push(CreateUserDataTool);
+    tools.push(UpdateUserDataTool);
+    tools.push(GetUserDataTool);
+    tools.push(GetUserDataByIdTool);
+    tools.push(DeleteUserDataTool);
 
     return tools;
   }

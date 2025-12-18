@@ -1,15 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetItemDataTypeSearchParams } from "@/umb-management-api/schemas/index.js";
 import { getItemDataTypeSearchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDataTypeSearchTool = CreateUmbracoTool(
-  "get-data-type-search",
-  "Searches the data type tree for a data type by name. It does NOT allow for searching for data type folders.",
-  getItemDataTypeSearchQueryParams.shape,
-  async (params: GetItemDataTypeSearchParams) => {
+const GetDataTypeSearchTool = {
+  name: "get-data-type-search",
+  description: "Searches the data type tree for a data type by name. It does NOT allow for searching for data type folders.",
+  schema: getItemDataTypeSearchQueryParams.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async (params: GetItemDataTypeSearchParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getItemDataTypeSearch(params);
+    const response = await client.getItemDataTypeSearch(params);
 
     return {
       content: [
@@ -19,7 +22,7 @@ const GetDataTypeSearchTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemDataTypeSearchQueryParams.shape>;
 
-export default GetDataTypeSearchTool;
+export default withStandardDecorators(GetDataTypeSearchTool);

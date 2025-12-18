@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteStylesheetFolderByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteStylesheetFolderTool = CreateUmbracoTool(
-  "delete-stylesheet-folder",
-  "Deletes a stylesheet folder by its path",
-  deleteStylesheetFolderByPathParams.shape,
-  async (model: { path: string }) => {
+const DeleteStylesheetFolderTool = {
+  name: "delete-stylesheet-folder",
+  description: "Deletes a stylesheet folder by its path",
+  schema: deleteStylesheetFolderByPathParams.shape,
+  isReadOnly: false,
+  slices: ['delete', 'folders'],
+  handler: async (model: { path: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.deleteStylesheetFolderByPath(model.path);
 
@@ -19,6 +22,6 @@ const DeleteStylesheetFolderTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof deleteStylesheetFolderByPathParams.shape>;
 
-export default DeleteStylesheetFolderTool;
+export default withStandardDecorators(DeleteStylesheetFolderTool);

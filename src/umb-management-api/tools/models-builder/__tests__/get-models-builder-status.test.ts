@@ -18,7 +18,7 @@ describe("get-models-builder-status", () => {
   });
 
   it("should get the models builder status", async () => {
-    const result = await GetModelsBuilderStatusTool().handler(
+    const result = await GetModelsBuilderStatusTool.handler(
       {},
       { signal: new AbortController().signal }
     );

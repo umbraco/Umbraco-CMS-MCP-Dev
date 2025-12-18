@@ -1,13 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const EmptyRecycleBinTool = CreateUmbracoTool(
-  "empty-recycle-bin",
-  "Empties the document recycle bin.",
-  {},
-  async () => {
+const EmptyRecycleBinTool = {
+  name: "empty-recycle-bin",
+  description: "Empties the document recycle bin.",
+  schema: {},
+  isReadOnly: false,
+  slices: ['delete', 'recycle-bin'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Delete),
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteRecycleBinDocument();
     return {
@@ -19,7 +23,6 @@ const EmptyRecycleBinTool = CreateUmbracoTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Delete)
-);
+} satisfies ToolDefinition<Record<string, never>>;
 
-export default EmptyRecycleBinTool;
+export default withStandardDecorators(EmptyRecycleBinTool);

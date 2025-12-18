@@ -25,7 +25,7 @@ describe("get-template", () => {
   it("should get a template by id", async () => {
     await builder.withName(TEST_TEMPLATE_NAME).create();
     const params = getTemplateByIdParams.parse({ id: builder.getId() });
-    const result = await GetTemplateTool().handler(params, {
+    const result = await GetTemplateTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
@@ -33,7 +33,7 @@ describe("get-template", () => {
 
   it("should handle non-existent template", async () => {
     const params = getTemplateByIdParams.parse({ id: BLANK_UUID });
-    const result = await GetTemplateTool().handler(params, {
+    const result = await GetTemplateTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(result).toMatchSnapshot();

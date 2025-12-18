@@ -17,9 +17,9 @@ export const ManifestCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessSettings(user)) {
-      tools.push(GetManifestManifestTool());
-      tools.push(GetManifestManifestPrivateTool());
-      tools.push(GetManifestManifestPublicTool());
+      tools.push(GetManifestManifestTool);
+      tools.push(GetManifestManifestPrivateTool);
+      tools.push(GetManifestManifestPublicTool);
     }
 
     return tools;

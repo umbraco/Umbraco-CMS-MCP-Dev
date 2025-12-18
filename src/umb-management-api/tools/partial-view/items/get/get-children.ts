@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreePartialViewChildrenParams } from "@/umb-management-api/schemas/index.js";
 import { getTreePartialViewChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetPartialViewChildrenTool = CreateUmbracoTool(
-  "get-partial-view-children",
-  "Gets the children of a partial view in the tree structure",
-  getTreePartialViewChildrenQueryParams.shape,
-  async (model: GetTreePartialViewChildrenParams) => {
+const GetPartialViewChildrenTool = {
+  name: "get-partial-view-children",
+  description: "Gets the children of a partial view in the tree structure",
+  schema: getTreePartialViewChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (model: GetTreePartialViewChildrenParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreePartialViewChildren(model);
 
@@ -19,7 +22,7 @@ const GetPartialViewChildrenTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreePartialViewChildrenQueryParams.shape>;
 
-export default GetPartialViewChildrenTool;
+export default withStandardDecorators(GetPartialViewChildrenTool);

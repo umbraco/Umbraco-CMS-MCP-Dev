@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinDocumentByIdOriginalParentParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetRecycleBinDocumentOriginalParentTool = CreateUmbracoTool(
-  "get-recycle-bin-document-original-parent",
-  `Get the original parent location of a document item in the recycle bin
+const GetRecycleBinDocumentOriginalParentTool = {
+  name: "get-recycle-bin-document-original-parent",
+  description: `Get the original parent location of a document item in the recycle bin
   Returns information about where the document item was located before deletion.`,
-  getRecycleBinDocumentByIdOriginalParentParams.shape,
-  async ({ id }) => {
+  schema: getRecycleBinDocumentByIdOriginalParentParams.shape,
+  isReadOnly: true,
+  slices: ['read', 'recycle-bin'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getRecycleBinDocumentByIdOriginalParent(id);
     return {
@@ -18,7 +21,7 @@ const GetRecycleBinDocumentOriginalParentTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getRecycleBinDocumentByIdOriginalParentParams.shape>;
 
-export default GetRecycleBinDocumentOriginalParentTool;
+export default withStandardDecorators(GetRecycleBinDocumentOriginalParentTool);

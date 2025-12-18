@@ -1,5 +1,4 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
@@ -11,6 +10,8 @@ import {
   MEDIA_TYPE_VECTOR_GRAPHICS,
   MEDIA_TYPE_FILE
 } from "@/constants/constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 const createMediaMultipleSchema = z.object({
   sourceType: z.enum(["filePath", "url"]).describe("Media source type: 'filePath' for local files (most efficient), 'url' for web files. Base64 not supported for batch uploads due to token usage."),
@@ -31,9 +32,9 @@ interface UploadResult {
   error?: string;
 }
 
-const CreateMediaMultipleTool = CreateUmbracoTool(
-  "create-media-multiple",
-  `Batch upload multiple media files to Umbraco (maximum 20 files per batch).
+const CreateMediaMultipleTool = {
+  name: "create-media-multiple",
+  description: `Batch upload multiple media files to Umbraco (maximum 20 files per batch).
 
   Supports any file type: images, documents, audio, video, SVG, or custom types.
 
@@ -48,8 +49,10 @@ const CreateMediaMultipleTool = CreateUmbracoTool(
 
   The tool processes files sequentially and returns detailed results for each file.
   If some files fail, others will continue processing (continue-on-error strategy).`,
-  createMediaMultipleSchema.shape,
-  async (model: CreateMediaMultipleParams) => {
+  schema: createMediaMultipleSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateMediaMultipleParams) => {
     // Validate batch size
     if (model.files.length > 20) {
       return {
@@ -109,7 +112,7 @@ const CreateMediaMultipleTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof createMediaMultipleSchema.shape>;
 
-export default CreateMediaMultipleTool;
+export default withStandardDecorators(CreateMediaMultipleTool);

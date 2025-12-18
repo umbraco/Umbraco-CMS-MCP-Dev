@@ -4,7 +4,9 @@ exports[`delete-temporary-file should delete a temporary file 1`] = `
 {
   "content": [
     {
-      "text": "{"id":"00000000-0000-0000-0000-000000000000"}",
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000"
+}",
       "type": "text",
     },
   ],

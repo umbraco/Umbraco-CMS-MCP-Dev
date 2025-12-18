@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteMediaTypeFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteMediaTypeFolderTool = CreateUmbracoTool(
-  "delete-media-type-folder",
-  "Deletes a media type folder by Id",
-  deleteMediaTypeFolderByIdParams.shape,
-  async ({ id }) => {
+const DeleteMediaTypeFolderTool = {
+  name: "delete-media-type-folder",
+  description: "Deletes a media type folder by Id",
+  schema: deleteMediaTypeFolderByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete', 'folders'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteMediaTypeFolderById(id);
 
@@ -18,7 +21,7 @@ const DeleteMediaTypeFolderTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteMediaTypeFolderByIdParams.shape>;
 
-export default DeleteMediaTypeFolderTool;
+export default withStandardDecorators(DeleteMediaTypeFolderTool);

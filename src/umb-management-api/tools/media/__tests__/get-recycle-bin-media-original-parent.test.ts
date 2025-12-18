@@ -47,7 +47,7 @@ describe("get-recycle-bin-media-original-parent", () => {
       .create();
 
     // Move child media to recycle bin
-    await MoveMediaToRecycleBinTool().handler(
+    await MoveMediaToRecycleBinTool.handler(
       {
         id: childMediaBuilder.getId()
       },
@@ -55,7 +55,7 @@ describe("get-recycle-bin-media-original-parent", () => {
     );
 
     // Get original parent information
-    const result = await GetRecycleBinMediaOriginalParentTool().handler(
+    const result = await GetRecycleBinMediaOriginalParentTool.handler(
       {
         id: childMediaBuilder.getId()
       },
@@ -82,7 +82,7 @@ describe("get-recycle-bin-media-original-parent", () => {
       .create();
 
     // Move media to recycle bin
-    await MoveMediaToRecycleBinTool().handler(
+    await MoveMediaToRecycleBinTool.handler(
       {
         id: mediaBuilder.getId()
       },
@@ -90,7 +90,7 @@ describe("get-recycle-bin-media-original-parent", () => {
     );
 
     // Get original parent information
-    const result = await GetRecycleBinMediaOriginalParentTool().handler(
+    const result = await GetRecycleBinMediaOriginalParentTool.handler(
       {
         id: mediaBuilder.getId()
       },
@@ -107,7 +107,7 @@ describe("get-recycle-bin-media-original-parent", () => {
 
   it("should handle invalid media id", async () => {
     // Test with non-existent ID - this should return an error
-    const result = await GetRecycleBinMediaOriginalParentTool().handler(
+    const result = await GetRecycleBinMediaOriginalParentTool.handler(
       {
         id: "00000000-0000-0000-0000-000000000000"
       },

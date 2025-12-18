@@ -1,15 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetServerInformationTool = CreateUmbracoTool(
-  "get-server-information",
-  `Gets information about the Umbraco server.
+const GetServerInformationTool = {
+  name: "get-server-information",
+  description: `Gets information about the Umbraco server.
   Returns an object containing:
   - version: The Umbraco version (string)
   - assemblyVersion: The assembly version (string)
   - baseUtcOffset: The server's UTC offset (string)
   - runtimeMode: The server's runtime mode, one of: 'BackofficeDevelopment', 'Development', 'Production' (string)
-  
+
   Example response:
   {
     "version": "15.3.1",
@@ -17,8 +18,10 @@ const GetServerInformationTool = CreateUmbracoTool(
     "baseUtcOffset": "-07:00:00",
     "runtimeMode": "BackofficeDevelopment"
   }`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: true,
+  slices: ['server-info'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getServerInformation();
 
@@ -30,7 +33,7 @@ const GetServerInformationTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetServerInformationTool;
+export default withStandardDecorators(GetServerInformationTool);

@@ -43,7 +43,7 @@ describe("update-webhook", () => {
       .withEvents([CONTENT_UNPUBLISHED_EVENT])
       .build();
 
-    const result = await UpdateWebhookTool().handler(
+    const result = await UpdateWebhookTool.handler(
       {
         id: builder.getId(),
         data: model,
@@ -74,7 +74,7 @@ describe("update-webhook", () => {
       .withEvents([CONTENT_PUBLISHED_EVENT])
       .build();
 
-    const result = await UpdateWebhookTool().handler(
+    const result = await UpdateWebhookTool.handler(
       {
         id: BLANK_UUID,
         data: model,

@@ -40,7 +40,7 @@ describe("get-document-version-by-id", () => {
     const versionId = versions[0].id;
 
     // Act
-    const result = await GetDocumentVersionByIdTool().handler({
+    const result = await GetDocumentVersionByIdTool.handler({
       id: versionId
     }, { signal: new AbortController().signal });
 
@@ -51,7 +51,7 @@ describe("get-document-version-by-id", () => {
 
   it("should handle non-existent version ID", async () => {
     // Act
-    const result = await GetDocumentVersionByIdTool().handler({
+    const result = await GetDocumentVersionByIdTool.handler({
       id: "non-existent-version-id"
     }, { signal: new AbortController().signal });
 

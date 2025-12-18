@@ -23,16 +23,16 @@ export const LogViewerCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessSettings(user)) {
-      tools.push(GetLogViewerSavedSearchByNameTool());
-      tools.push(GetLogViewerLevelCountTool());
-      tools.push(PostLogViewerSavedSearchTool());
-      tools.push(DeleteLogViewerSavedSearchByNameTool());
+      tools.push(GetLogViewerSavedSearchByNameTool);
+      tools.push(GetLogViewerLevelCountTool);
+      tools.push(PostLogViewerSavedSearchTool);
+      tools.push(DeleteLogViewerSavedSearchByNameTool);
 
-      tools.push(GetLogViewerTool())
-      tools.push(GetLogViewerLevelTool());
-      tools.push(GetLogViewerSearchTool());
-      tools.push(GetLogViewerValidateLogsTool());
-      tools.push(GetLogViewerMessageTemplateTool());
+      tools.push(GetLogViewerTool)
+      tools.push(GetLogViewerLevelTool);
+      tools.push(GetLogViewerSearchTool);
+      tools.push(GetLogViewerValidateLogsTool);
+      tools.push(GetLogViewerMessageTemplateTool);
     }
 
     return tools;

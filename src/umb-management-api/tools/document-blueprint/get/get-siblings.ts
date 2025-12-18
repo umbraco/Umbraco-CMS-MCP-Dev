@@ -1,12 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDocumentBlueprintSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetDocumentBlueprintSiblingsTool = CreateUmbracoTool(
-  "get-document-blueprint-siblings",
-  "Gets sibling document blueprints for a given descendant id",
-  getTreeDocumentBlueprintSiblingsQueryParams.shape,
-  async (params) => {
+type SchemaParams = z.infer<typeof getTreeDocumentBlueprintSiblingsQueryParams>;
+
+const GetDocumentBlueprintSiblingsTool = {
+  name: "get-document-blueprint-siblings",
+  description: "Gets sibling document blueprints for a given descendant id",
+  schema: getTreeDocumentBlueprintSiblingsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: SchemaParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeDocumentBlueprintSiblings(params);
     return {
@@ -17,7 +23,7 @@ const GetDocumentBlueprintSiblingsTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeDocumentBlueprintSiblingsQueryParams.shape>;
 
-export default GetDocumentBlueprintSiblingsTool;
+export default withStandardDecorators(GetDocumentBlueprintSiblingsTool);

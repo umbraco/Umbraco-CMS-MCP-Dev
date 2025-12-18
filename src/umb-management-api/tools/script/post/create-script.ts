@@ -1,7 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateScriptRequestModel } from "@/umb-management-api/schemas/index.js";
 import z from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 const createScriptSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -11,11 +12,13 @@ const createScriptSchema = z.object({
 
 type CreateScriptSchema = z.infer<typeof createScriptSchema>;
 
-const CreateScriptTool = CreateUmbracoTool(
-  "create-script",
-  "Creates a new script",
-  createScriptSchema.shape,
-  async (model: CreateScriptSchema) => {
+const CreateScriptTool = {
+  name: "create-script",
+  description: "Creates a new script",
+  schema: createScriptSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateScriptSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     const normalizedPath = model.path && !model.path.startsWith('/')
@@ -31,7 +34,7 @@ const CreateScriptTool = CreateUmbracoTool(
       content: model.content,
       parent: normalizedPath ? { path: normalizedPath } : undefined,
     };
-    
+
     const response = await client.postScript(payload);
 
     return {
@@ -42,7 +45,7 @@ const CreateScriptTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof createScriptSchema.shape>;
 
-export default CreateScriptTool;
+export default withStandardDecorators(CreateScriptTool);

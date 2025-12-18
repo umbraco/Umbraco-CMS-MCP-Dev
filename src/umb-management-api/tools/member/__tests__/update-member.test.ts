@@ -53,7 +53,7 @@ describe("update-member", () => {
       isTwoFactorEnabled: false,
     };
 
-    const result = await UpdateMemberTool().handler(
+    const result = await UpdateMemberTool.handler(
       { id, data: updateData },
       { signal: new AbortController().signal }
     );
@@ -84,7 +84,7 @@ describe("update-member", () => {
       isTwoFactorEnabled: false,
     };
 
-    const result = await UpdateMemberTool().handler(
+    const result = await UpdateMemberTool.handler(
       { id: BLANK_UUID, data: updateData },
       { signal: new AbortController().signal }
     );

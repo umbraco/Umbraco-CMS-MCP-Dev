@@ -51,7 +51,7 @@ describe("is-used-data-type", () => {
 
     await documentBuilder.publish();
 
-    const result = await IsUsedDataTypeTool().handler(
+    const result = await IsUsedDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
       { signal: new AbortController().signal }
     );
@@ -74,7 +74,7 @@ describe("is-used-data-type", () => {
       .withProperty("testProperty", "Test Property", dataTypeBuilder.getId())
       .create();
 
-    const result = await IsUsedDataTypeTool().handler(
+    const result = await IsUsedDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
       { signal: new AbortController().signal }
     );
@@ -90,7 +90,7 @@ describe("is-used-data-type", () => {
       .withTextbox()
       .create();
 
-    const result = await IsUsedDataTypeTool().handler(
+    const result = await IsUsedDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
       { signal: new AbortController().signal }
     );
@@ -100,7 +100,7 @@ describe("is-used-data-type", () => {
   });
 
   it("should handle non-existent data type", async () => {
-    const result = await IsUsedDataTypeTool().handler(
+    const result = await IsUsedDataTypeTool.handler(
       { id: BLANK_UUID },
       { signal: new AbortController().signal }
     );

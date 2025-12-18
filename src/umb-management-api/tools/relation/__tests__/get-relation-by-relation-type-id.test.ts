@@ -19,7 +19,7 @@ describe("get-relation-by-relation-type-id", () => {
   });
 
   it("should get relations by relation type ID", async () => {
-    const result = await GetRelationByRelationTypeIdTool().handler({
+    const result = await GetRelationByRelationTypeIdTool.handler({
       id: TEST_RELATION_TYPE_ID,
       skip: TEST_SKIP_VALUE,
       take: TEST_TAKE_VALUE
@@ -38,7 +38,7 @@ describe("get-relation-by-relation-type-id", () => {
   });
 
   it("should handle invalid relation type ID", async () => {
-    const result = await GetRelationByRelationTypeIdTool().handler({
+    const result = await GetRelationByRelationTypeIdTool.handler({
       id: "00000000-0000-0000-0000-000000000000",
       skip: TEST_SKIP_VALUE,
       take: TEST_TAKE_VALUE

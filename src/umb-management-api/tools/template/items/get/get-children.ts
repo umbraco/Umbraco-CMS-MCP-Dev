@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeTemplateChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetTemplateChildrenTool = CreateUmbracoTool(
-  "get-template-children",
-  "Gets the children templates or template folders by the parent id",
-  getTreeTemplateChildrenQueryParams.shape,
-  async (params) => {
+const GetTemplateChildrenTool = {
+  name: "get-template-children",
+  description: "Gets the children templates or template folders by the parent id",
+  schema: getTreeTemplateChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: any) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreeTemplateChildren(params);
 
@@ -18,7 +21,7 @@ const GetTemplateChildrenTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeTemplateChildrenQueryParams.shape>;
 
-export default GetTemplateChildrenTool;
+export default withStandardDecorators(GetTemplateChildrenTool);

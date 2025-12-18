@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeMemberGroupRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { GetTreeMemberGroupRootParams } from "@/umb-management-api/schemas/index.js";
 
-const GetMemberGroupRootTool = CreateUmbracoTool(
-  "get-member-group-root",
-  "Gets the root level of the member group tree",
-  getTreeMemberGroupRootQueryParams.shape,
-  async (params) => {
+const GetMemberGroupRootTool = {
+  name: "get-member-group-root",
+  description: "Gets the root level of the member group tree",
+  schema: getTreeMemberGroupRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetTreeMemberGroupRootParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreeMemberGroupRoot(params);
     return {
@@ -17,7 +21,7 @@ const GetMemberGroupRootTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeMemberGroupRootQueryParams.shape>;
 
-export default GetMemberGroupRootTool;
+export default withStandardDecorators(GetMemberGroupRootTool);

@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentConfigurationTool = CreateUmbracoTool(
-  "get-document-configuration",
-  "Gets the document configuration for the Umbraco instance.",
-  {},
-  async () => {
+const GetDocumentConfigurationTool = {
+  name: "get-document-configuration",
+  description: "Gets the document configuration for the Umbraco instance.",
+  schema: {},
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentConfiguration();
 
@@ -19,7 +22,7 @@ const GetDocumentConfigurationTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetDocumentConfigurationTool;
+export default withStandardDecorators(GetDocumentConfigurationTool);

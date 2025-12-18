@@ -22,7 +22,7 @@ describe("get-document-notifications", () => {
       .create();
     docId = builder.getId();
     // Add a notification
-    await PutDocumentNotificationsTool().handler(
+    await PutDocumentNotificationsTool.handler(
       {
         id: docId,
         data: { subscribedActionIds: [TEST_NOTIFICATION] },
@@ -37,7 +37,7 @@ describe("get-document-notifications", () => {
   });
 
   it("should add and then get notifications for a valid document", async () => {
-    const result = await GetDocumentNotificationsTool().handler(
+    const result = await GetDocumentNotificationsTool.handler(
       {
         id: docId,
       },
@@ -47,7 +47,7 @@ describe("get-document-notifications", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const result = await GetDocumentNotificationsTool().handler(
+    const result = await GetDocumentNotificationsTool.handler(
       {
         id: BLANK_UUID,
       },

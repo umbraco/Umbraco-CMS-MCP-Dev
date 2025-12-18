@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { getItemDocumentTypeSearchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { GetItemDocumentTypeSearchParams } from "@/umb-management-api/schemas/index.js";
 
-const SearchDocumentTypeTool = CreateUmbracoTool(
-  "search-document-type",
-  "Search for document types by name",
-  getItemDocumentTypeSearchQueryParams.shape,
-  async (model) => {
+const SearchDocumentTypeTool = {
+  name: "search-document-type",
+  description: "Search for document types by name",
+  schema: getItemDocumentTypeSearchQueryParams.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async (model: GetItemDocumentTypeSearchParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemDocumentTypeSearch(model);
 
@@ -19,6 +23,6 @@ const SearchDocumentTypeTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getItemDocumentTypeSearchQueryParams.shape>;
 
-export default SearchDocumentTypeTool;
+export default withStandardDecorators(SearchDocumentTypeTool);

@@ -1,7 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
-import { CurrentUserResponseModel, CreateDocumentBlueprintRequestModel } from "@/umb-management-api/schemas/index.js";
+import { CreateDocumentBlueprintRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
 const createDocumentBlueprintSchema = z.object({
@@ -25,11 +26,14 @@ const createDocumentBlueprintSchema = z.object({
 
 type CreateDocumentBlueprintSchema = z.infer<typeof createDocumentBlueprintSchema>;
 
-const CreateDocumentBlueprintTool = CreateUmbracoTool(
-  "create-document-blueprint",
-  `Creates a new document blueprint.`,
-  createDocumentBlueprintSchema.shape,
-  async (model: CreateDocumentBlueprintSchema) => {
+const CreateDocumentBlueprintTool = {
+  name: "create-document-blueprint",
+  description: `Creates a new document blueprint.`,
+  schema: createDocumentBlueprintSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes("Umb.Document.CreateBlueprint"),
+  handler: async (model: CreateDocumentBlueprintSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     // Transform: flat parentId -> nested parent object for API
@@ -51,7 +55,6 @@ const CreateDocumentBlueprintTool = CreateUmbracoTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes("Umb.Document.CreateBlueprint")
-);
+} satisfies ToolDefinition<typeof createDocumentBlueprintSchema.shape>;
 
-export default CreateDocumentBlueprintTool;
+export default withStandardDecorators(CreateDocumentBlueprintTool);

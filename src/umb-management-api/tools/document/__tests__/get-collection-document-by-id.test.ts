@@ -27,7 +27,7 @@ describe("get-collection-document-by-id", () => {
       .create();
 
     // Act: Get collection for the document
-    const result = await GetCollectionDocumentByIdTool().handler(
+    const result = await GetCollectionDocumentByIdTool.handler(
       { id: builder.getId(), take: 10, orderBy: "name" },
       { signal: new AbortController().signal }
     );
@@ -52,7 +52,7 @@ describe("get-collection-document-by-id", () => {
       .create();
 
     // Act: Get collection with filter parameters
-    const result = await GetCollectionDocumentByIdTool().handler(
+    const result = await GetCollectionDocumentByIdTool.handler(
       {
         id: builder.getId(),
         filter: "",
@@ -77,7 +77,7 @@ describe("get-collection-document-by-id", () => {
 
   it("should handle non-existent document", async () => {
     // Act: Try to get collection for non-existent document
-    const result = await GetCollectionDocumentByIdTool().handler(
+    const result = await GetCollectionDocumentByIdTool.handler(
       { id: "00000000-0000-0000-0000-000000000000", take: 10, orderBy: "name" },
       { signal: new AbortController().signal }
     );

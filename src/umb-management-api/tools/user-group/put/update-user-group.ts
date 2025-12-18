@@ -1,22 +1,27 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateUserGroupRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putUserGroupByIdBody,
   putUserGroupByIdParams,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UpdateUserGroupTool = CreateUmbracoTool(
-  "update-user-group",
-  "Updates a user group by Id",
-  {
-    id: putUserGroupByIdParams.shape.id,
-    data: z.object(putUserGroupByIdBody.shape),
-  },
-  async (model: { id: string; data: UpdateUserGroupRequestModel }) => {
+const updateUserGroupSchema = z.object({
+  id: putUserGroupByIdParams.shape.id,
+  data: z.object(putUserGroupByIdBody.shape),
+});
+
+const UpdateUserGroupTool = {
+  name: "update-user-group",
+  description: "Updates a user group by Id",
+  schema: updateUserGroupSchema.shape,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async (model: { id: string; data: UpdateUserGroupRequestModel }) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.putUserGroupById(model.id, model.data);
+    const response = await client.putUserGroupById(model.id, model.data);
 
     return {
       content: [
@@ -26,7 +31,7 @@ const UpdateUserGroupTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof updateUserGroupSchema.shape>;
 
-export default UpdateUserGroupTool;
+export default withStandardDecorators(UpdateUserGroupTool);

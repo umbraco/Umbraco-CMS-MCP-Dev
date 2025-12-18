@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { getMediaTypeAllowedAtRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetMediaTypeAllowedAtRootParams } from "@/umb-management-api/schemas/index.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaTypeAllowedAtRootTool = CreateUmbracoTool(
-  "get-media-type-allowed-at-root",
-  "Get media types that are allowed at root level",
-  getMediaTypeAllowedAtRootQueryParams.shape,
-  async (model: GetMediaTypeAllowedAtRootParams) => {
+const GetMediaTypeAllowedAtRootTool = {
+  name: "get-media-type-allowed-at-root",
+  description: "Get media types that are allowed at root level",
+  schema: getMediaTypeAllowedAtRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async (model: GetMediaTypeAllowedAtRootParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaTypeAllowedAtRoot(model);
 
@@ -19,7 +22,7 @@ const GetMediaTypeAllowedAtRootTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMediaTypeAllowedAtRootQueryParams.shape>;
 
-export default GetMediaTypeAllowedAtRootTool;
+export default withStandardDecorators(GetMediaTypeAllowedAtRootTool);

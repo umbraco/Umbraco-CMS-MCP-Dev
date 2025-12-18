@@ -37,7 +37,7 @@ describe("get-recycle-bin-media-root", () => {
     await builder.moveToRecycleBin();
 
     // Get root items
-    const result = await GetRecycleBinMediaRootTool().handler({
+    const result = await GetRecycleBinMediaRootTool.handler({
       take: 10
     }, { signal: new AbortController().signal });
 

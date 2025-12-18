@@ -20,7 +20,7 @@ describe("create-member-group", () => {
   });
 
   it("should create a member group", async () => {
-    const result = await CreateMemberGroupTool().handler({
+    const result = await CreateMemberGroupTool.handler({
       name: TEST_GROUP_NAME
     }, { signal: new AbortController().signal });
 
@@ -35,12 +35,12 @@ describe("create-member-group", () => {
 
   it("should handle existing member group", async () => {
     // First create the group
-    await CreateMemberGroupTool().handler({
+    await CreateMemberGroupTool.handler({
       name: EXISTING_GROUP_NAME
     }, { signal: new AbortController().signal });
 
     // Try to create it again
-    const result = await CreateMemberGroupTool().handler({
+    const result = await CreateMemberGroupTool.handler({
       name: EXISTING_GROUP_NAME
     }, { signal: new AbortController().signal });
 

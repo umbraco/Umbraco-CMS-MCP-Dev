@@ -1,23 +1,28 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { RenameStylesheetRequestModel } from "@/umb-management-api/schemas/index.js";
 import { putStylesheetByPathRenameParams, putStylesheetByPathRenameBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 
-const RenameStylesheetTool = CreateUmbracoTool(
-  "rename-stylesheet",
-  `Renames a stylesheet`,
-  z.object({
-    ...putStylesheetByPathRenameParams.shape,
-    ...putStylesheetByPathRenameBody.shape,
-  }).shape,
-  async (model: { path: string } & RenameStylesheetRequestModel) => {
+const renameStylesheetSchema = z.object({
+  ...putStylesheetByPathRenameParams.shape,
+  ...putStylesheetByPathRenameBody.shape,
+});
+
+const RenameStylesheetTool = {
+  name: "rename-stylesheet",
+  description: `Renames a stylesheet`,
+  schema: renameStylesheetSchema.shape,
+  isReadOnly: false,
+  slices: ['rename'],
+  handler: async (model: { path: string } & RenameStylesheetRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     const { path, ...renameModel } = model;
-    
+
     // URL encode the path to handle forward slashes properly
     const normalizedPath = encodeURIComponent(path);
-    
+
     var response = await client.putStylesheetByPathRename(normalizedPath, renameModel);
 
     return {
@@ -29,6 +34,6 @@ const RenameStylesheetTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof renameStylesheetSchema.shape>;
 
-export default RenameStylesheetTool;
+export default withStandardDecorators(RenameStylesheetTool);

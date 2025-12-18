@@ -1,14 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const CopyMemberTypeTool = CreateUmbracoTool(
-  "copy-member-type",
-  "Copy a member type to a new location",
-  {
+const CopyMemberTypeTool = {
+  name: "copy-member-type",
+  description: "Copy a member type to a new location",
+  schema: {
     id: z.string().uuid(),
   },
-  async (model: { id: string }) => {
+  isReadOnly: false,
+  slices: ['copy'],
+  handler: async (model: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postMemberTypeByIdCopy(model.id);
 
@@ -20,7 +23,9 @@ const CopyMemberTypeTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{
+  id: ReturnType<typeof z.string>;
+}>;
 
-export default CopyMemberTypeTool;
+export default withStandardDecorators(CopyMemberTypeTool);

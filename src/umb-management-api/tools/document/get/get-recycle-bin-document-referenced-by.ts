@@ -1,13 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinDocumentReferencedByQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetRecycleBinDocumentReferencedByTool = CreateUmbracoTool(
-  "get-recycle-bin-document-referenced-by",
-  `Get references to deleted document items in the recycle bin
+const GetRecycleBinDocumentReferencedByTool = {
+  name: "get-recycle-bin-document-referenced-by",
+  description: `Get references to deleted document items in the recycle bin
   Use this to find content that still references deleted document items before permanently deleting them.`,
-  getRecycleBinDocumentReferencedByQueryParams.shape,
-  async ({ skip, take }) => {
+  schema: getRecycleBinDocumentReferencedByQueryParams.shape,
+  isReadOnly: true,
+  slices: ['references', 'recycle-bin'],
+  handler: async ({ skip, take }: z.infer<typeof getRecycleBinDocumentReferencedByQueryParams>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getRecycleBinDocumentReferencedBy({ skip, take });
     return {
@@ -18,7 +22,7 @@ const GetRecycleBinDocumentReferencedByTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getRecycleBinDocumentReferencedByQueryParams.shape>;
 
-export default GetRecycleBinDocumentReferencedByTool;
+export default withStandardDecorators(GetRecycleBinDocumentReferencedByTool);

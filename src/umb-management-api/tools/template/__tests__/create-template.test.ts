@@ -20,7 +20,7 @@ describe("create-template", () => {
   });
 
   it("should create a template", async () => {
-    const result = await CreateTemplateTool().handler({
+    const result = await CreateTemplateTool.handler({
       name: TEST_TEMPLATE_NAME,
       alias: TEST_TEMPLATE_NAME.toLowerCase().replace(/\s+/g, "-"),
       content: "<h1>@Model.Title</h1>"
@@ -35,14 +35,14 @@ describe("create-template", () => {
 
   it("should handle existing template", async () => {
     // First create the template
-    await CreateTemplateTool().handler({
+    await CreateTemplateTool.handler({
       name: EXISTING_TEMPLATE_NAME,
       alias: EXISTING_TEMPLATE_NAME.toLowerCase().replace(/\s+/g, "-"),
       content: "<h1>@Model.Title</h1>"
     }, { signal: new AbortController().signal });
 
     // Try to create it again
-    const result = await CreateTemplateTool().handler({
+    const result = await CreateTemplateTool.handler({
       name: EXISTING_TEMPLATE_NAME,
       alias: EXISTING_TEMPLATE_NAME.toLowerCase().replace(/\s+/g, "-"),
       content: "<h1>@Model.Title</h1>"

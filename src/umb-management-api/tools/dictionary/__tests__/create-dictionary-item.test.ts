@@ -27,7 +27,7 @@ describe("create-dictionary-item", () => {
   });
 
   it("should create a dictionary item", async () => {
-    const result = await CreateDictionaryItemTool().handler({
+    const result = await CreateDictionaryItemTool.handler({
       name: TEST_DICTIONARY_NAME,
       translations: [{ isoCode: DEFAULT_ISO_CODE, translation: TEST_DICTIONARY_TRANSLATION }]
     }, { signal: new AbortController().signal });
@@ -42,13 +42,13 @@ describe("create-dictionary-item", () => {
 
   it("should handle existing dictionary item", async () => {
     // First create the item
-    await CreateDictionaryItemTool().handler({
+    await CreateDictionaryItemTool.handler({
       name: EXISTING_DICTIONARY_NAME,
       translations: [{ isoCode: DEFAULT_ISO_CODE, translation: EXISTING_DICTIONARY_TRANSLATION }]
     }, { signal: new AbortController().signal });
 
     // Try to create it again
-    const result = await CreateDictionaryItemTool().handler({
+    const result = await CreateDictionaryItemTool.handler({
       name: EXISTING_DICTIONARY_NAME,
       translations: [{ isoCode: DEFAULT_ISO_CODE, translation: EXISTING_DICTIONARY_TRANSLATION }]
     }, { signal: new AbortController().signal });
@@ -68,7 +68,7 @@ describe("create-dictionary-item", () => {
       .create();
 
     // Create child dictionary with parentId (flattened parameter)
-    const result = await CreateDictionaryItemTool().handler({
+    const result = await CreateDictionaryItemTool.handler({
       name: "_Test Child Dictionary",
       parentId: parentBuilder.getId(),
       translations: [{ isoCode: DEFAULT_ISO_CODE, translation: "_Child Translation" }]

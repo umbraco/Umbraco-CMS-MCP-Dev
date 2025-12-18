@@ -1,17 +1,22 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMemberByIdReferencedByParams, getMemberByIdReferencedByQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMemberByIdReferencedByTool = CreateUmbracoTool(
-  "get-member-by-id-referenced-by",
-  `Get items that reference a specific member
+const getMemberByIdReferencedBySchema = z.object({
+  ...getMemberByIdReferencedByParams.shape,
+  ...getMemberByIdReferencedByQueryParams.shape,
+}).shape;
+
+const GetMemberByIdReferencedByTool = {
+  name: "get-member-by-id-referenced-by",
+  description: `Get items that reference a specific member
   Use this to find all content, documents, or other items that are currently referencing a specific member account.`,
-  z.object({
-    ...getMemberByIdReferencedByParams.shape,
-    ...getMemberByIdReferencedByQueryParams.shape,
-  }).shape,
-  async ({ id, skip, take }) => {
+  schema: getMemberByIdReferencedBySchema,
+  isReadOnly: true,
+  slices: ['references'],
+  handler: async ({ id, skip, take }: { id: string; skip?: number; take?: number }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMemberByIdReferencedBy(id, { skip, take });
     return {
@@ -22,7 +27,7 @@ const GetMemberByIdReferencedByTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMemberByIdReferencedBySchema>;
 
-export default GetMemberByIdReferencedByTool;
+export default withStandardDecorators(GetMemberByIdReferencedByTool);

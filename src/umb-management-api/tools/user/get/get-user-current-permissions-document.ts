@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserCurrentPermissionsDocumentQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetUserCurrentPermissionsDocumentParams } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserCurrentPermissionsDocumentTool = CreateUmbracoTool(
-  "get-user-current-permissions-document",
-  "Gets the current user's document permissions for specific documents",
-  getUserCurrentPermissionsDocumentQueryParams.shape,
-  async (params) => {
+const GetUserCurrentPermissionsDocumentTool = {
+  name: "get-user-current-permissions-document",
+  description: "Gets the current user's document permissions for specific documents",
+  schema: getUserCurrentPermissionsDocumentQueryParams.shape,
+  isReadOnly: true,
+  slices: ['permissions'],
+  handler: async (params: GetUserCurrentPermissionsDocumentParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getUserCurrentPermissionsDocument(params);
 
@@ -18,7 +22,7 @@ const GetUserCurrentPermissionsDocumentTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getUserCurrentPermissionsDocumentQueryParams.shape>;
 
-export default GetUserCurrentPermissionsDocumentTool;
+export default withStandardDecorators(GetUserCurrentPermissionsDocumentTool);

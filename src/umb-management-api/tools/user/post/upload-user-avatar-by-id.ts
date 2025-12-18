@@ -1,16 +1,21 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postUserAvatarByIdParams, postUserAvatarByIdBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UploadUserAvatarByIdTool = CreateUmbracoTool(
-  "upload-user-avatar-by-id",
-  "Uploads an avatar for a specific user by ID (admin only or self-service)",
-  {
-    ...postUserAvatarByIdParams.shape,
-    ...postUserAvatarByIdBody.shape
-  },
-  async ({ id, file }) => {
+const uploadUserAvatarByIdSchema = {
+  ...postUserAvatarByIdParams.shape,
+  ...postUserAvatarByIdBody.shape
+};
+
+const UploadUserAvatarByIdTool = {
+  name: "upload-user-avatar-by-id",
+  description: "Uploads an avatar for a specific user by ID (admin only or self-service)",
+  schema: uploadUserAvatarByIdSchema,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async ({ id, file }: { id: string; file: { id: string } }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postUserAvatarById(id, { file });
 
@@ -22,7 +27,7 @@ const UploadUserAvatarByIdTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof uploadUserAvatarByIdSchema>;
 
-export default UploadUserAvatarByIdTool;
+export default withStandardDecorators(UploadUserAvatarByIdTool);

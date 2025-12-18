@@ -1,13 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentAreReferencedQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetDocumentAreReferencedTool = CreateUmbracoTool(
-  "get-document-are-referenced",
-  `Check if document items are referenced
+const GetDocumentAreReferencedTool = {
+  name: "get-document-are-referenced",
+  description: `Check if document items are referenced
   Use this to verify if specific document items are being referenced by other content before deletion or modification.`,
-  getDocumentAreReferencedQueryParams.shape,
-  async ({ id, skip, take }) => {
+  schema: getDocumentAreReferencedQueryParams.shape,
+  isReadOnly: true,
+  slices: ['references'],
+  handler: async ({ id, skip, take }: z.infer<typeof getDocumentAreReferencedQueryParams>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentAreReferenced({ id, skip, take });
     return {
@@ -18,7 +22,7 @@ const GetDocumentAreReferencedTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getDocumentAreReferencedQueryParams.shape>;
 
-export default GetDocumentAreReferencedTool;
+export default withStandardDecorators(GetDocumentAreReferencedTool);

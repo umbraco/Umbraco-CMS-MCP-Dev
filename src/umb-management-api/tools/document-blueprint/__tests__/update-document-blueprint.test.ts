@@ -33,7 +33,7 @@ describe("update-document-blueprint", () => {
     ).build();
 
     // Update the blueprint
-    const result = await UpdateDocumentBlueprintTool().handler(
+    const result = await UpdateDocumentBlueprintTool.handler(
       {
         id: builder.getId(),
         data: {
@@ -60,7 +60,7 @@ describe("update-document-blueprint", () => {
       .withValue("testAlias", "updatedValue")
       .build();
 
-    const result = await UpdateDocumentBlueprintTool().handler(
+    const result = await UpdateDocumentBlueprintTool.handler(
       {
         id: BLANK_UUID,
         data: {

@@ -29,7 +29,7 @@ describe("get-stylesheet-folder-by-path", () => {
     const folderPath = folderBuilder.getPath();
 
     // Act
-    const result = await GetStylesheetFolderByPathTool().handler({ path: folderPath }, { signal: new AbortController().signal });
+    const result = await GetStylesheetFolderByPathTool.handler({ path: folderPath }, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -43,7 +43,7 @@ describe("get-stylesheet-folder-by-path", () => {
 
   it("should handle non-existent folder", async () => {
     // Act
-    const result = await GetStylesheetFolderByPathTool().handler({ path: NON_EXISTENT_FOLDER_PATH }, { signal: new AbortController().signal });
+    const result = await GetStylesheetFolderByPathTool.handler({ path: NON_EXISTENT_FOLDER_PATH }, { signal: new AbortController().signal });
 
     // Assert
     expect(result).toMatchSnapshot();

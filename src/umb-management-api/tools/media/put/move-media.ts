@@ -1,16 +1,21 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { putMediaByIdMoveBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const MoveMediaTool = CreateUmbracoTool(
-  "move-media",
-  "Move a media item to a new location",
-  {
-    id: z.string().uuid(),
-    data: z.object(putMediaByIdMoveBody.shape),
-  },
-  async (model: { id: string; data: any }) => {
+const schema = {
+  id: z.string().uuid(),
+  data: z.object(putMediaByIdMoveBody.shape),
+};
+
+const MoveMediaTool = {
+  name: "move-media",
+  description: "Move a media item to a new location",
+  schema,
+  isReadOnly: false,
+  slices: ['move'],
+  handler: async (model: { id: string; data: any }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putMediaByIdMove(model.id, model.data);
     return {
@@ -21,7 +26,7 @@ const MoveMediaTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof schema>;
 
-export default MoveMediaTool;
+export default withStandardDecorators(MoveMediaTool);

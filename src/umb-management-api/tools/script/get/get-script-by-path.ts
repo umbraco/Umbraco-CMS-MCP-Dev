@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getScriptByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetScriptByPathTool = CreateUmbracoTool(
-  "get-script-by-path",
-  "Gets a script by path",
-  getScriptByPathParams.shape,
-  async ({ path }) => {
+const GetScriptByPathTool = {
+  name: "get-script-by-path",
+  description: "Gets a script by path",
+  schema: getScriptByPathParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async ({ path }: { path: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getScriptByPath(path);
 
@@ -18,7 +21,7 @@ const GetScriptByPathTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getScriptByPathParams.shape>;
 
-export default GetScriptByPathTool;
+export default withStandardDecorators(GetScriptByPathTool);

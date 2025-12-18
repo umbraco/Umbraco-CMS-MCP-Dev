@@ -1,23 +1,27 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putDataTypeByIdBody,
   putDataTypeByIdParams,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UpdateDataTypeTool = CreateUmbracoTool(
-  "update-data-type",
-  "Updates a data type by Id",
-  {
-    id: putDataTypeByIdParams.shape.id,
-    data: z.object(putDataTypeByIdBody.shape),
-  },
-  async (model: { id: string; data: UpdateDataTypeRequestModel }) => {
+const updateDataTypeSchema = {
+  id: putDataTypeByIdParams.shape.id,
+  data: z.object(putDataTypeByIdBody.shape),
+};
+
+const UpdateDataTypeTool = {
+  name: "update-data-type",
+  description: "Updates a data type by Id",
+  schema: updateDataTypeSchema,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async (model: { id: string; data: UpdateDataTypeRequestModel }) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.putDataTypeById(model.id, model.data);
+    const response = await client.putDataTypeById(model.id, model.data);
 
     return {
       content: [
@@ -27,7 +31,7 @@ const UpdateDataTypeTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof updateDataTypeSchema>;
 
-export default UpdateDataTypeTool;
+export default withStandardDecorators(UpdateDataTypeTool);

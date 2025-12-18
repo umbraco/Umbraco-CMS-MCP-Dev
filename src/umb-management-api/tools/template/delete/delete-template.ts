@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteTemplateByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteTemplateTool = CreateUmbracoTool(
-  "delete-template",
-  "Deletes a template by Id",
-  deleteTemplateByIdParams.shape,
-  async ({ id }) => {
+const DeleteTemplateTool = {
+  name: "delete-template",
+  description: "Deletes a template by Id",
+  schema: deleteTemplateByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.deleteTemplateById(id);
 
@@ -18,7 +21,7 @@ const DeleteTemplateTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteTemplateByIdParams.shape>;
 
-export default DeleteTemplateTool;
+export default withStandardDecorators(DeleteTemplateTool);

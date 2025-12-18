@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaByIdTool = CreateUmbracoTool(
-  "get-media-by-id",
-  `Gets a media item by id
+const GetMediaByIdTool = {
+  name: "get-media-by-id",
+  description: `Gets a media item by id
   Use this to retrieve existing media items.`,
-  getMediaByIdParams.shape,
-  async ({ id }) => {
+  schema: getMediaByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaById(id);
     return {
@@ -18,7 +21,7 @@ const GetMediaByIdTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMediaByIdParams.shape>;
 
-export default GetMediaByIdTool;
+export default withStandardDecorators(GetMediaByIdTool);

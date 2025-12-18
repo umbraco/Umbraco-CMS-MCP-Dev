@@ -25,7 +25,7 @@ describe("get-member-group", () => {
   it("should get a member group by id", async () => {
     await builder.withName(TEST_GROUP_NAME).create();
     const params = getMemberGroupByIdParams.parse({ id: builder.getId() });
-    const result = await GetMemberGroupTool().handler(params, {
+    const result = await GetMemberGroupTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
@@ -33,7 +33,7 @@ describe("get-member-group", () => {
 
   it("should handle non-existent member group", async () => {
     const params = getMemberGroupByIdParams.parse({ id: BLANK_UUID });
-    const result = await GetMemberGroupTool().handler(params, {
+    const result = await GetMemberGroupTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(result).toMatchSnapshot();

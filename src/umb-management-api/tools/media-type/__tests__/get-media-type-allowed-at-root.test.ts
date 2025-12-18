@@ -29,7 +29,7 @@ describe("get-media-type-allowed-at-root", () => {
       .create();
 
     // Get media types allowed at root
-    const result = await GetMediaTypeAllowedAtRootTool().handler(
+    const result = await GetMediaTypeAllowedAtRootTool.handler(
       {
         skip: 0,
         take: 10,

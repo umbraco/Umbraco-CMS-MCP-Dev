@@ -52,7 +52,7 @@ describe("get-language", () => {
       .create();
 
     // Act - Get all languages (take parameter has default, so empty object is valid)
-    const result = await GetLanguageTool().handler({ take: 100 }, { signal: new AbortController().signal });
+    const result = await GetLanguageTool.handler({ take: 100 }, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -83,7 +83,7 @@ describe("get-language", () => {
       .create();
 
     // Act - Get languages with skip=1 and take=1
-    const result = await GetLanguageTool().handler(
+    const result = await GetLanguageTool.handler(
       { skip: 1, take: 1 },
       { signal: new AbortController().signal }
     );
@@ -110,7 +110,7 @@ describe("get-language", () => {
       .create();
 
     // Act - Get languages with take=1
-    const result = await GetLanguageTool().handler(
+    const result = await GetLanguageTool.handler(
       { take: 1 },
       { signal: new AbortController().signal }
     );

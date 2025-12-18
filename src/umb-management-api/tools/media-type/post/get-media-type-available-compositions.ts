@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postMediaTypeAvailableCompositionsBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaTypeAvailableCompositionsTool = CreateUmbracoTool(
-  "get-media-type-available-compositions",
-  "Gets the available compositions for a media type",
-  postMediaTypeAvailableCompositionsBody.shape,
-  async (model) => {
+const GetMediaTypeAvailableCompositionsTool = {
+  name: "get-media-type-available-compositions",
+  description: "Gets the available compositions for a media type",
+  schema: postMediaTypeAvailableCompositionsBody.shape,
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async (model) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postMediaTypeAvailableCompositions(model);
 
@@ -18,7 +21,7 @@ const GetMediaTypeAvailableCompositionsTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postMediaTypeAvailableCompositionsBody.shape>;
 
-export default GetMediaTypeAvailableCompositionsTool;
+export default withStandardDecorators(GetMediaTypeAvailableCompositionsTool);

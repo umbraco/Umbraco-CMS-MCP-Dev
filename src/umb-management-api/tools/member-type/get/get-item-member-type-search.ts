@@ -1,14 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemMemberTypeSearchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const SearchMemberTypeItemsTool = CreateUmbracoTool(
-  "search-member-type-items",
-  "Searches for member type items",
-  getItemMemberTypeSearchQueryParams.shape,
-  async (params) => {
+const SearchMemberTypeItemsTool = {
+  name: "search-member-type-items",
+  description: "Searches for member type items",
+  schema: getItemMemberTypeSearchQueryParams.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async (params: any) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getItemMemberTypeSearch(params);
+    const response = await client.getItemMemberTypeSearch(params);
 
     return {
       content: [
@@ -18,7 +21,7 @@ const SearchMemberTypeItemsTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemMemberTypeSearchQueryParams.shape>;
 
-export default SearchMemberTypeItemsTool;
+export default withStandardDecorators(SearchMemberTypeItemsTool);

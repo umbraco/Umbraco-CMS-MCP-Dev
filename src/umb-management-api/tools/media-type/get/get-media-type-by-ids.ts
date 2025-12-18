@@ -1,15 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
-import { getMediaTypeByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaTypeByIdsTool = CreateUmbracoTool(
-  "get-media-type-by-ids",
-  "Gets media types by ids",
-  {
-    ids: z.array(z.string()),
-  },
-  async ({ ids }: { ids: string[] }) => {
+const getMediaTypeByIdsSchema = z.object({
+  ids: z.array(z.string()),
+});
+
+const GetMediaTypeByIdsTool = {
+  name: "get-media-type-by-ids",
+  description: "Gets media types by ids",
+  schema: getMediaTypeByIdsSchema.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async ({ ids }: { ids: string[] }) => {
     const client = UmbracoManagementClient.getClient();
     const responses = await Promise.all(
       ids.map((id: string) => client.getMediaTypeById(id))
@@ -23,7 +27,7 @@ const GetMediaTypeByIdsTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMediaTypeByIdsSchema.shape>;
 
-export default GetMediaTypeByIdsTool;
+export default withStandardDecorators(GetMediaTypeByIdsTool);

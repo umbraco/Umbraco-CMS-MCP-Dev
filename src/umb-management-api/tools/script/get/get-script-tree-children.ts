@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeScriptChildrenParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeScriptChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetScriptTreeChildrenTool = CreateUmbracoTool(
-  "get-script-tree-children",
-  "Gets script tree children",
-  getTreeScriptChildrenQueryParams.shape,
-  async (model: GetTreeScriptChildrenParams) => {
+const GetScriptTreeChildrenTool = {
+  name: "get-script-tree-children",
+  description: "Gets script tree children",
+  schema: getTreeScriptChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (model: GetTreeScriptChildrenParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeScriptChildren(model);
 
@@ -19,7 +22,7 @@ const GetScriptTreeChildrenTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeScriptChildrenQueryParams.shape>;
 
-export default GetScriptTreeChildrenTool;
+export default withStandardDecorators(GetScriptTreeChildrenTool);

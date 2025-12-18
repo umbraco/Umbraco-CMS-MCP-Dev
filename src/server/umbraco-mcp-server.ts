@@ -1,4 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import packageJson from "../../package.json" with { type: "json" };
 
 export class UmbracoMcpServer {
   private static instance: McpServer | null = null;
@@ -9,7 +10,7 @@ export class UmbracoMcpServer {
     if (UmbracoMcpServer.instance === null) {
       UmbracoMcpServer.instance = new McpServer({
         name: "Umbraco Server",
-        version: "1.0.0",
+        version: packageJson.version,
         capabilities: {
           tools: {},
         },

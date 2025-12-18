@@ -16,7 +16,7 @@ describe("get-user-current-configuration", () => {
 
   it("should get the current user configuration", async () => {
     // Act
-    const result = await GetUserCurrentConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetUserCurrentConfigurationTool.handler({ signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

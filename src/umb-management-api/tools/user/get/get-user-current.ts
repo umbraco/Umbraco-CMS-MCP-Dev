@@ -1,12 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
-import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserCurrentTool = CreateUmbracoTool(
-  "get-user-current",
-  "Gets the current authenticated user's information",
-  {}, // No parameters required
-  async () => {
+const GetUserCurrentTool = {
+  name: "get-user-current",
+  description: "Gets the current authenticated user's information",
+  schema: undefined,
+  isReadOnly: true,
+  slices: ['current-user'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getUserCurrent();
 
@@ -18,7 +20,7 @@ const GetUserCurrentTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<undefined>;
 
-export default GetUserCurrentTool;
+export default withStandardDecorators(GetUserCurrentTool);

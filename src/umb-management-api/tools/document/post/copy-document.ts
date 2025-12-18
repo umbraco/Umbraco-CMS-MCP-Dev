@@ -1,7 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { CopyDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
 const copyDocumentSchema = z.object({
@@ -11,28 +12,31 @@ const copyDocumentSchema = z.object({
   includeDescendants: z.boolean().describe("If true, all descendant documents (children, grandchildren, etc.) will also be copied. This is usually set to false unless specified."),
 });
 
-const CopyDocumentTool = CreateUmbracoTool(
-  "copy-document",
-  `Copy a document to a new location. This is also the recommended way to create new documents. 
+const CopyDocumentTool = {
+  name: "copy-document",
+  description: `Copy a document to a new location. This is also the recommended way to create new documents.
   Copy an existing document to preserve the complex JSON structure, then modify specific fields as needed.
-  
+
   IMPORTANT WORKFLOW NOTES:
   - This function returns an empty string ("") on success, not the new document ID
   - If you need to update the copied document:
     1. After copying, search for the new document using search-document with appropriate query parameters
     2. Look for the most recent document with the target name pattern (e.g., "Original Name (1)")
     3. Use the retrieved ID for subsequent update and publish operations
-  
+
   - If you only need to create a copy without updates:
     1. The copy is created as a draft with the naming pattern "Original Name (N)" where N is a number
     2. No further action is required if you only want to keep it as a draft copy
     3. To publish the copy as-is, you'll still need to find its ID using search-document first
-  
+
     Example workflows:
     1. Copy only: copy-document (creates draft copy)
     2. Copy and update: copy-document → search-document → update-document → publish-document`,
-    copyDocumentSchema.shape,
-  async (model) => {
+  schema: copyDocumentSchema.shape,
+  isReadOnly: false,
+  slices: ['copy'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Duplicate),
+  handler: async (model: z.infer<typeof copyDocumentSchema>) => {
     const client = UmbracoManagementClient.getClient();
 
     const payload: CopyDocumentRequestModel = {
@@ -53,7 +57,6 @@ const CopyDocumentTool = CreateUmbracoTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Duplicate)
-);
+} satisfies ToolDefinition<typeof copyDocumentSchema.shape>;
 
-export default CopyDocumentTool;
+export default withStandardDecorators(CopyDocumentTool);

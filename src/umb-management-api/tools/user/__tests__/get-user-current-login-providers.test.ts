@@ -16,7 +16,7 @@ describe("get-user-current-login-providers", () => {
 
   it("should get current user's login providers", async () => {
     // Act
-    const result = await GetUserCurrentLoginProvidersTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetUserCurrentLoginProvidersTool.handler({ signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

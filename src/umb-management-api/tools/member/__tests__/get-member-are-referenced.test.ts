@@ -58,7 +58,7 @@ describe("get-member-are-referenced", () => {
       .withValue("memberPicker", memberBuilder.getId())
       .create();
 
-    const result = await GetMemberAreReferencedTool().handler(
+    const result = await GetMemberAreReferencedTool.handler(
       { id: [memberBuilder.getId()], skip: 0, take: 10 },
       { signal: new AbortController().signal }
     );
@@ -92,7 +92,7 @@ describe("get-member-are-referenced", () => {
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
 
-    const result = await GetMemberAreReferencedTool().handler(
+    const result = await GetMemberAreReferencedTool.handler(
       { id: [builder1.getId(), builder2.getId()], skip: 0, take: 10 },
       { signal: new AbortController().signal }
     );

@@ -17,8 +17,8 @@ export const SearcherCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessSettings(user)) {
-      tools.push(GetSearcherTool());
-      tools.push(GetSearcherBySearcherNameQueryTool());
+      tools.push(GetSearcherTool);
+      tools.push(GetSearcherBySearcherNameQueryTool);
     }
 
     return tools;

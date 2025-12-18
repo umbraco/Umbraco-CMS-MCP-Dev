@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetUserParams } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserTool = CreateUmbracoTool(
-  "get-user",
-  "Lists users with pagination and filtering options",
-  getUserQueryParams.shape,
-  async (params) => {
+const GetUserTool = {
+  name: "get-user",
+  description: "Lists users with pagination and filtering options",
+  schema: getUserQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (params: GetUserParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getUser(params);
 
@@ -18,7 +22,7 @@ const GetUserTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getUserQueryParams.shape>;
 
-export default GetUserTool;
+export default withStandardDecorators(GetUserTool);

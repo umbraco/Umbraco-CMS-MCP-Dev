@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeTemplateRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetTemplateRootTool = CreateUmbracoTool(
-  "get-template-root",
-  "Gets root items for templates.",
-  getTreeTemplateRootQueryParams.shape,
-  async (params) => {
+const GetTemplateRootTool = {
+  name: "get-template-root",
+  description: "Gets root items for templates.",
+  schema: getTreeTemplateRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: any) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeTemplateRoot(params);
     return {
@@ -17,7 +20,7 @@ const GetTemplateRootTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeTemplateRootQueryParams.shape>;
 
-export default GetTemplateRootTool;
+export default withStandardDecorators(GetTemplateRootTool);

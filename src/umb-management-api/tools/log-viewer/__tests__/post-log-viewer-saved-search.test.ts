@@ -29,7 +29,7 @@ describe("post-log-viewer-saved-search", () => {
       .build();
 
     // Create the saved search
-    const result = await PostLogViewerSavedSearchTool().handler(searchModel, {
+    const result = await PostLogViewerSavedSearchTool.handler(searchModel, {
       signal: new AbortController().signal,
     });
 
@@ -51,12 +51,12 @@ describe("post-log-viewer-saved-search", () => {
       .build();
 
     // First create the saved search
-    await PostLogViewerSavedSearchTool().handler(searchModel, {
+    await PostLogViewerSavedSearchTool.handler(searchModel, {
       signal: new AbortController().signal,
     });
 
     // Try to create it again
-    const result = await PostLogViewerSavedSearchTool().handler(searchModel, {
+    const result = await PostLogViewerSavedSearchTool.handler(searchModel, {
       signal: new AbortController().signal,
     });
 
@@ -71,7 +71,7 @@ describe("post-log-viewer-saved-search", () => {
       .withQuery("level:Error AND message:test")
       .build();
 
-    const result = await PostLogViewerSavedSearchTool().handler(searchModel, {
+    const result = await PostLogViewerSavedSearchTool.handler(searchModel, {
       signal: new AbortController().signal,
     });
 

@@ -52,7 +52,7 @@ describe("move-media-type", () => {
       .create();
 
     // Move the media type
-    const result = await MoveMediaTypeTool().handler(
+    const result = await MoveMediaTypeTool.handler(
       {
         id: mediaTypeBuilder.getId(),
         data: {
@@ -90,7 +90,7 @@ describe("move-media-type", () => {
       .create();
 
     // Move the media type to root (no target)
-    const result = await MoveMediaTypeTool().handler(
+    const result = await MoveMediaTypeTool.handler(
       {
         id: mediaTypeBuilder.getId(),
         data: {
@@ -113,7 +113,7 @@ describe("move-media-type", () => {
   });
 
   it("should handle non-existent media type", async () => {
-    const result = await MoveMediaTypeTool().handler(
+    const result = await MoveMediaTypeTool.handler(
       {
         id: BLANK_UUID,
         data: {

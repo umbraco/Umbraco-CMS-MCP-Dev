@@ -1,22 +1,27 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaByIdReferencedDescendantsParams, getMediaByIdReferencedDescendantsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaByIdReferencedDescendantsTool = CreateUmbracoTool(
-  "get-media-by-id-referenced-descendants",
-  `Get descendant references for a media item
+const schema = z.object({
+  ...getMediaByIdReferencedDescendantsParams.shape,
+  ...getMediaByIdReferencedDescendantsQueryParams.shape,
+}).shape;
+
+const GetMediaByIdReferencedDescendantsTool = {
+  name: "get-media-by-id-referenced-descendants",
+  description: `Get descendant references for a media item
   Use this to find all descendant references (child items) that are being referenced for a specific media item.
 
   Useful for:
   • Impact analysis: Before deleting a media folder, see what content would be affected
   • Dependency tracking: Find all content using media from a specific folder hierarchy
   • Content auditing: Identify which descendant media items are actually being used`,
-  z.object({
-    ...getMediaByIdReferencedDescendantsParams.shape,
-    ...getMediaByIdReferencedDescendantsQueryParams.shape,
-  }).shape,
-  async ({ id, skip, take }) => {
+  schema,
+  isReadOnly: true,
+  slices: ['references'],
+  handler: async ({ id, skip, take }: { id: string; skip?: number; take?: number }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaByIdReferencedDescendants(id, { skip, take });
     return {
@@ -27,7 +32,7 @@ const GetMediaByIdReferencedDescendantsTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof schema>;
 
-export default GetMediaByIdReferencedDescendantsTool;
+export default withStandardDecorators(GetMediaByIdReferencedDescendantsTool);

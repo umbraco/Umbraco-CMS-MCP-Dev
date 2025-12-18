@@ -31,7 +31,7 @@ describe("delete-webhook", () => {
       .withEvents([CONTENT_PUBLISHED_EVENT])
       .create();
 
-    const result = await DeleteWebhookTool().handler(
+    const result = await DeleteWebhookTool.handler(
       {
         id: builder.getId(),
       },
@@ -48,7 +48,7 @@ describe("delete-webhook", () => {
   });
 
   it("should handle non-existent webhook", async () => {
-    const result = await DeleteWebhookTool().handler(
+    const result = await DeleteWebhookTool.handler(
       {
         id: BLANK_UUID,
       },

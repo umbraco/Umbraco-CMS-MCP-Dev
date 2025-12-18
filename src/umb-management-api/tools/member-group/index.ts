@@ -20,18 +20,18 @@ export const MemberGroupCollection: ToolCollectionExport = {
   tools: (user: CurrentUserResponseModel) => {
     const tools: ToolDefinition<any>[] = [];
 
-    tools.push(GetMemberGroupTool());
-    tools.push(GetMemberGroupByIdArrayTool());
-    tools.push(GetAllMemberGroupsTool());
+    tools.push(GetMemberGroupTool);
+    tools.push(GetMemberGroupByIdArrayTool);
+    tools.push(GetAllMemberGroupsTool);
 
     if (AuthorizationPolicies.SectionAccessMembers(user)) {
-      tools.push(CreateMemberGroupTool());
-      tools.push(UpdateMemberGroupTool());
-      tools.push(DeleteMemberGroupTool());
+      tools.push(CreateMemberGroupTool);
+      tools.push(UpdateMemberGroupTool);
+      tools.push(DeleteMemberGroupTool);
     }
 
     if (AuthorizationPolicies.TreeAccessMemberGroups(user)) {
-      tools.push(GetMemberGroupRootTool());
+      tools.push(GetMemberGroupRootTool);
     }
 
     return tools;

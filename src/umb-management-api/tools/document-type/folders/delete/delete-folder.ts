@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { deleteDocumentTypeFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
-const DeleteDocumentTypeFolderTool = CreateUmbracoTool(
-  "delete-document-type-folder",
-  "Deletes a document type folder by Id",
-  deleteDocumentTypeFolderByIdParams.shape,
-  async ({ id }) => {
+const DeleteDocumentTypeFolderTool = {
+  name: "delete-document-type-folder",
+  description: "Deletes a document type folder by Id",
+  schema: deleteDocumentTypeFolderByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete', 'folders'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteDocumentTypeFolderById(id);
 
@@ -19,6 +22,6 @@ const DeleteDocumentTypeFolderTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof deleteDocumentTypeFolderByIdParams.shape>;
 
-export default DeleteDocumentTypeFolderTool;
+export default withStandardDecorators(DeleteDocumentTypeFolderTool);

@@ -30,7 +30,7 @@ describe("copy-member-type", () => {
       .create();
 
     // Copy the member type
-    const result = await CopyMemberTypeTool().handler(
+    const result = await CopyMemberTypeTool.handler(
       {
         id: memberTypeBuilder.getId(),
       },
@@ -48,7 +48,7 @@ describe("copy-member-type", () => {
   });
 
   it("should handle non-existent member type", async () => {
-    const result = await CopyMemberTypeTool().handler(
+    const result = await CopyMemberTypeTool.handler(
       {
         id: BLANK_UUID,
       },

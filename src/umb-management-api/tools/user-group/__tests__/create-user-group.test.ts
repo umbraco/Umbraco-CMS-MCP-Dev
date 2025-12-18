@@ -20,7 +20,7 @@ describe("create-user-group", () => {
   });
 
   it("should create a user group", async () => {
-    const result = await CreateUserGroupTool().handler({
+    const result = await CreateUserGroupTool.handler({
       name: TEST_GROUP_NAME,
       alias: TEST_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
       sections: ["content"],
@@ -41,7 +41,7 @@ describe("create-user-group", () => {
 
   it("should handle existing user group", async () => {
     // First create the group
-    await CreateUserGroupTool().handler({
+    await CreateUserGroupTool.handler({
       name: EXISTING_GROUP_NAME,
       alias: EXISTING_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
       sections: ["content"],
@@ -54,7 +54,7 @@ describe("create-user-group", () => {
     }, { signal: new AbortController().signal });
 
     // Try to create it again
-    const result = await CreateUserGroupTool().handler({
+    const result = await CreateUserGroupTool.handler({
       name: EXISTING_GROUP_NAME,
       alias: EXISTING_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
       sections: ["content"],

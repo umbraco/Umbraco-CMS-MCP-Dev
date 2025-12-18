@@ -1,13 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaAreReferencedQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetMediaAreReferencedTool = CreateUmbracoTool(
-  "get-media-are-referenced",
-  `Check if media items are referenced
+type SchemaParams = z.infer<typeof getMediaAreReferencedQueryParams>;
+
+const GetMediaAreReferencedTool = {
+  name: "get-media-are-referenced",
+  description: `Check if media items are referenced
   Use this to verify if specific media items are being referenced by other content before deletion or modification.`,
-  getMediaAreReferencedQueryParams.shape,
-  async ({ id, skip, take }) => {
+  schema: getMediaAreReferencedQueryParams.shape,
+  isReadOnly: true,
+  slices: ['references'],
+  handler: async ({ id, skip, take }: SchemaParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaAreReferenced({ id, skip, take });
     return {
@@ -18,7 +24,7 @@ const GetMediaAreReferencedTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMediaAreReferencedQueryParams.shape>;
 
-export default GetMediaAreReferencedTool;
+export default withStandardDecorators(GetMediaAreReferencedTool);

@@ -27,7 +27,7 @@ describe("create-member-type", () => {
       .withDescription("Test member type description")
       .withAllowedAsRoot(true);
 
-    const result = await CreateMemberTypeTool().handler(builder.build(), {
+    const result = await CreateMemberTypeTool.handler(builder.build(), {
       signal: new AbortController().signal,
     });
 
@@ -49,7 +49,7 @@ describe("create-member-type", () => {
       // Missing required fields
     };
 
-    const result = await CreateMemberTypeTool().handler(invalidModel as any, {
+    const result = await CreateMemberTypeTool.handler(invalidModel as any, {
       signal: new AbortController().signal,
     });
 

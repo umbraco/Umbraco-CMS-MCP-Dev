@@ -36,36 +36,36 @@ export const DocumentTypeCollection: ToolCollectionExport = {
   tools: (user: CurrentUserResponseModel) => {
     const tools: ToolDefinition<any>[] = [];
 
-    tools.push(GetDocumentTypeTool());
+    tools.push(GetDocumentTypeTool);
 
     if (AuthorizationPolicies.TreeAccessDocumentsOrDocumentTypes(user)) {
-      tools.push(GetDocumentTypeConfigurationTool());
-      tools.push(GetDocumentTypeBlueprintTool());
-      tools.push(GetDocumentTypesByIdArrayTool());
+      tools.push(GetDocumentTypeConfigurationTool);
+      tools.push(GetDocumentTypeBlueprintTool);
+      tools.push(GetDocumentTypesByIdArrayTool);
     }
 
     if (AuthorizationPolicies.TreeAccessDocumentTypes(user)) {
-      tools.push(GetDocumentTypeAvailableCompositionsTool());
-      tools.push(GetDocumentTypeCompositionReferencesTool());
-      tools.push(UpdateDocumentTypeTool());
-      tools.push(CopyDocumentTypeTool());
-      tools.push(MoveDocumentTypeTool());
-      tools.push(CreateDocumentTypeTool());
-      tools.push(DeleteDocumentTypeTool());
-      tools.push(CreateElementTypeTool());
-      tools.push(GetIconsTool());
-      tools.push(GetDocumentTypeAllowedChildrenTool());
-      tools.push(GetAllDocumentTypesTool());
+      tools.push(GetDocumentTypeAvailableCompositionsTool);
+      tools.push(GetDocumentTypeCompositionReferencesTool);
+      tools.push(UpdateDocumentTypeTool);
+      tools.push(CopyDocumentTypeTool);
+      tools.push(MoveDocumentTypeTool);
+      tools.push(CreateDocumentTypeTool);
+      tools.push(DeleteDocumentTypeTool);
+      tools.push(CreateElementTypeTool);
+      tools.push(GetIconsTool);
+      tools.push(GetDocumentTypeAllowedChildrenTool);
+      tools.push(GetAllDocumentTypesTool);
 
-      tools.push(CreateDocumentTypeFolderTool());
-      tools.push(DeleteDocumentTypeFolderTool());
-      tools.push(GetDocumentTypeFolderTool());
-      tools.push(UpdateDocumentTypeFolderTool());
+      tools.push(CreateDocumentTypeFolderTool);
+      tools.push(DeleteDocumentTypeFolderTool);
+      tools.push(GetDocumentTypeFolderTool);
+      tools.push(UpdateDocumentTypeFolderTool);
 
-      tools.push(GetDocumentTypeRootTool());
-      tools.push(GetDocumentTypeAncestorsTool());
-      tools.push(GetDocumentTypeChildrenTool());
-      tools.push(GetDocumentTypeSiblingsTool());
+      tools.push(GetDocumentTypeRootTool);
+      tools.push(GetDocumentTypeAncestorsTool);
+      tools.push(GetDocumentTypeChildrenTool);
+      tools.push(GetDocumentTypeSiblingsTool);
     }
 
     return tools;

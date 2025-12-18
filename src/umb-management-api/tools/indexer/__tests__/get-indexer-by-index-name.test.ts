@@ -20,14 +20,15 @@ describe("get-indexer-by-index-name", () => {
   });
 
   it("should get index by name", async () => {
-    const result = await GetIndexerByIndexNameTool().handler(
+    const result = await GetIndexerByIndexNameTool.handler(
       { indexName: TEST_INDEX_NAME },
       { signal: new AbortController().signal }
     );
 
-    // Normalize documentCount which changes as documents are created/deleted
+    // Normalize documentCount and fieldCount which change based on index state
     const parsed = JSON.parse(result.content[0].text as string);
     parsed.documentCount = "NORMALIZED_COUNT";
+    parsed.fieldCount = "NORMALIZED_FIELD_COUNT";
     result.content[0].text = JSON.stringify(parsed);
 
     // Verify the handler response using snapshot

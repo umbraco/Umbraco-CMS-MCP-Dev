@@ -28,7 +28,7 @@ describe("get-document-available-segment-options", () => {
       .create();
 
     // Act - Get available segment options
-    const result = await GetDocumentAvailableSegmentOptionsTool().handler(
+    const result = await GetDocumentAvailableSegmentOptionsTool.handler(
       {
         id: builder.getId(),
         skip: 0,
@@ -44,7 +44,7 @@ describe("get-document-available-segment-options", () => {
 
   it("should handle non-existent document", async () => {
     // Act
-    const result = await GetDocumentAvailableSegmentOptionsTool().handler(
+    const result = await GetDocumentAvailableSegmentOptionsTool.handler(
       {
         id: BLANK_UUID,
         skip: 0,

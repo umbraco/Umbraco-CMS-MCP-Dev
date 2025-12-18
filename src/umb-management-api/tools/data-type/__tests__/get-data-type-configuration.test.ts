@@ -16,7 +16,7 @@ describe("get-data-type-configuration", () => {
 
   it("should get the data type configuration", async () => {
     // Act
-    const result = await GetDataTypeConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetDataTypeConfigurationTool.handler({}, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

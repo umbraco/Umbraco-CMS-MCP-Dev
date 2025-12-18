@@ -51,7 +51,7 @@ describe("move-media", () => {
       .create();
 
     // Move the media item to be a child of the target folder
-    const result = await MoveMediaTool().handler(
+    const result = await MoveMediaTool.handler(
       {
         id: contentBuilder.getId(),
         data: {
@@ -86,7 +86,7 @@ describe("move-media", () => {
       .withParent(folderSourceBuilder.getId())
       .create();
 
-    const result = await MoveMediaTool().handler(
+    const result = await MoveMediaTool.handler(
       {
         id: contentBuilder.getId(),
         data: {
@@ -103,7 +103,7 @@ describe("move-media", () => {
   });
 
   it("should handle moving non-existent media", async () => {
-    const result = await MoveMediaTool().handler(
+    const result = await MoveMediaTool.handler(
       {
         id: BLANK_UUID,
         data: {

@@ -36,7 +36,7 @@ describe("delete-document-recycle-bin-item", () => {
     expect(documentInBin).toBeDefined();
 
     // Act - Permanently delete from recycle bin
-    const result = await DeleteDocumentRecycleBinItemTool().handler(
+    const result = await DeleteDocumentRecycleBinItemTool.handler(
       {
         id: documentInBin!.id,
       },
@@ -55,7 +55,7 @@ describe("delete-document-recycle-bin-item", () => {
 
   it("should handle non-existent document in recycle bin", async () => {
     // Act
-    const result = await DeleteDocumentRecycleBinItemTool().handler(
+    const result = await DeleteDocumentRecycleBinItemTool.handler(
       {
         id: BLANK_UUID,
       },

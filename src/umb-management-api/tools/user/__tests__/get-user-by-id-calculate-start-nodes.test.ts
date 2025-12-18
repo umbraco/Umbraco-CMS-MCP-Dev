@@ -33,7 +33,7 @@ describe("get-user-by-id-calculate-start-nodes", () => {
     const userId = userBuilder.getId();
 
     // Act
-    const result = await GetUserByIdCalculateStartNodesTool().handler({
+    const result = await GetUserByIdCalculateStartNodesTool.handler({
       id: userId
     }, { signal: new AbortController().signal });
 
@@ -44,7 +44,7 @@ describe("get-user-by-id-calculate-start-nodes", () => {
 
   it("should handle non-existent user ID", async () => {
     // Act
-    const result = await GetUserByIdCalculateStartNodesTool().handler({
+    const result = await GetUserByIdCalculateStartNodesTool.handler({
       id: "00000000-0000-0000-0000-000000000000"
     }, { signal: new AbortController().signal });
 
@@ -64,10 +64,10 @@ describe("get-user-by-id-calculate-start-nodes", () => {
     const userId = userBuilder.getId();
 
     // Act
-    const result1 = await GetUserByIdCalculateStartNodesTool().handler({
+    const result1 = await GetUserByIdCalculateStartNodesTool.handler({
       id: userId
     }, { signal: new AbortController().signal });
-    const result2 = await GetUserByIdCalculateStartNodesTool().handler({
+    const result2 = await GetUserByIdCalculateStartNodesTool.handler({
       id: userId
     }, { signal: new AbortController().signal });
 

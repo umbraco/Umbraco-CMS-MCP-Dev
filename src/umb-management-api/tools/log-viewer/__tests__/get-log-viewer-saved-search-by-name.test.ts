@@ -28,7 +28,7 @@ describe("get-log-viewer-saved-search-by-name", () => {
       .withQuery("level:Error")
       .create();
 
-    const result = await GetLogViewerSavedSearchByNameTool().handler(
+    const result = await GetLogViewerSavedSearchByNameTool.handler(
       { name: TEST_SEARCH_NAME },
       { signal: new AbortController().signal }
     );
@@ -44,7 +44,7 @@ describe("get-log-viewer-saved-search-by-name", () => {
   });
 
   it("should handle non-existent saved search", async () => {
-    const result = await GetLogViewerSavedSearchByNameTool().handler(
+    const result = await GetLogViewerSavedSearchByNameTool.handler(
       { name: "NonExistentSearch" },
       { signal: new AbortController().signal }
     );
@@ -54,7 +54,7 @@ describe("get-log-viewer-saved-search-by-name", () => {
   });
 
   it("should handle empty name parameter", async () => {
-    const result = await GetLogViewerSavedSearchByNameTool().handler(
+    const result = await GetLogViewerSavedSearchByNameTool.handler(
       { name: "" },
       { signal: new AbortController().signal }
     );

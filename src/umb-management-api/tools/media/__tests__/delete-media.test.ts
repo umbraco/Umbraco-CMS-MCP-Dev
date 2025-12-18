@@ -35,7 +35,7 @@ describe("delete-media", () => {
       .create();
 
     // Delete the media
-    const result = await DeleteMediaTool().handler(
+    const result = await DeleteMediaTool.handler(
       {
         id: builder.getId(),
       },
@@ -51,7 +51,7 @@ describe("delete-media", () => {
   });
 
   it("should handle non-existent media", async () => {
-    const result = await DeleteMediaTool().handler(
+    const result = await DeleteMediaTool.handler(
       {
         id: BLANK_UUID,
       },

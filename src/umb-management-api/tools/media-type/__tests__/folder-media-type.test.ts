@@ -37,7 +37,7 @@ describe("media-type-folder", () => {
 
   describe("create", () => {
     it("should create a folder", async () => {
-      const result = await CreateMediaTypeFolderTool().handler(
+      const result = await CreateMediaTypeFolderTool.handler(
         {
           name: TEST_FOLDER_NAME,
         },
@@ -59,7 +59,7 @@ describe("media-type-folder", () => {
         .create();
       expect(parentBuilder).toBeDefined();
 
-      const result = await CreateMediaTypeFolderTool().handler(
+      const result = await CreateMediaTypeFolderTool.handler(
         {
           name: TEST_FOLDER_NAME,
           parent: { id: parentBuilder.getId() },
@@ -85,7 +85,7 @@ describe("media-type-folder", () => {
         .create();
       expect(builder).toBeDefined();
 
-      const result = await UpdateMediaTypeFolderTool().handler(
+      const result = await UpdateMediaTypeFolderTool.handler(
         {
           id: builder.getId(),
           data: {
@@ -107,7 +107,7 @@ describe("media-type-folder", () => {
     });
 
     it("should handle non-existent folder", async () => {
-      const result = await UpdateMediaTypeFolderTool().handler(
+      const result = await UpdateMediaTypeFolderTool.handler(
         {
           id: BLANK_UUID,
           data: {
@@ -129,7 +129,7 @@ describe("media-type-folder", () => {
         .create();
       expect(builder).toBeDefined();
 
-      const result = await DeleteMediaTypeFolderTool().handler(
+      const result = await DeleteMediaTypeFolderTool.handler(
         {
           id: builder.getId(),
         },
@@ -144,7 +144,7 @@ describe("media-type-folder", () => {
     });
 
     it("should handle non-existent folder", async () => {
-      const result = await DeleteMediaTypeFolderTool().handler(
+      const result = await DeleteMediaTypeFolderTool.handler(
         {
           id: BLANK_UUID,
         },

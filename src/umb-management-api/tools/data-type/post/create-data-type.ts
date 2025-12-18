@@ -1,9 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
 const createDataTypeSchema = z.object({
@@ -19,10 +20,10 @@ const createDataTypeSchema = z.object({
 
 type CreateDataTypeSchema = z.infer<typeof createDataTypeSchema>;
 
-const CreateDataTypeTool = CreateUmbracoTool(
-  "create-data-type",
-  `Creates a new data type
-  
+const CreateDataTypeTool = {
+  name: "create-data-type",
+  description: `Creates a new data type
+
   *** CRITICAL WORKFLOW REQUIREMENT ***
   BEFORE creating any new data type, you MUST perform the following steps:
   1. First use the find-data-type function to search for existing data types with similar names and/or property editors
@@ -44,8 +45,10 @@ const CreateDataTypeTool = CreateUmbracoTool(
   If you are asked to create a data type for a property that already exists, then stop and ask the user to provide a unique name.
 
   `,
-  createDataTypeSchema.shape,
-  async (model: CreateDataTypeSchema) => {
+  schema: createDataTypeSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateDataTypeSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     // Generate UUID for the data type
@@ -95,7 +98,7 @@ const CreateDataTypeTool = CreateUmbracoTool(
         isError: true,
       };
     }
-  }
-);
+  },
+} satisfies ToolDefinition<typeof createDataTypeSchema.shape>;
 
-export default CreateDataTypeTool;
+export default withStandardDecorators(CreateDataTypeTool);

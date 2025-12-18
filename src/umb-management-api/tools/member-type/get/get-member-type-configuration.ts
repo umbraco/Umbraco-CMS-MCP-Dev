@@ -1,11 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMemberTypeConfigurationTool = CreateUmbracoTool(
-  "get-member-type-configuration",
-  "Gets the configuration for member types",
-  {},
-  async () => {
+const GetMemberTypeConfigurationTool = {
+  name: "get-member-type-configuration",
+  description: "Gets the configuration for member types",
+  schema: {},
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMemberTypeConfiguration();
 
@@ -17,7 +20,7 @@ const GetMemberTypeConfigurationTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetMemberTypeConfigurationTool;
+export default withStandardDecorators(GetMemberTypeConfigurationTool);

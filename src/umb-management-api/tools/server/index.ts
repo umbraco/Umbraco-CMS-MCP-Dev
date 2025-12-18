@@ -19,16 +19,16 @@ export const ServerCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     // Always available (AllowAnonymous in Umbraco, available to all authenticated users in MCP)
-    tools.push(GetServerStatusTool());
-    tools.push(GetServerConfigurationTool());
+    tools.push(GetServerStatusTool);
+    tools.push(GetServerConfigurationTool);
 
     // Available to all authenticated users (BackOfficeAccess)
-    tools.push(GetServerInformationTool());
-    tools.push(GetServerTroubleshootingTool());
+    tools.push(GetServerInformationTool);
+    tools.push(GetServerTroubleshootingTool);
 
     // Admin only (RequireAdminAccess)
     if (AuthorizationPolicies.RequireAdminAccess(user)) {
-      tools.push(GetServerUpgradeCheckTool());
+      tools.push(GetServerUpgradeCheckTool);
     }
 
     return tools;

@@ -1,5 +1,6 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
@@ -38,10 +39,10 @@ const createElementTypeSchema = z.object({
 
 type CreateElementTypeModel = z.infer<typeof createElementTypeSchema>;
 
-const CreateElementTypeTool = CreateUmbracoTool(
-  "create-element-type",
-  `Creates a new element type in Umbraco.
-  
+const CreateElementTypeTool = {
+  name: "create-element-type",
+  description: `Creates a new element type in Umbraco.
+
 IMPORTANT: IMPLEMENTATION REQUIREMENTS
 
 1. ALWAYS use the get-icons tool to find a valid icon name
@@ -55,8 +56,10 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
    - Property with only group: appears in the group (group has no parent tab)
    - Property with both tab and group: group is nested inside the tab, property appears in the group
    - The tool will automatically create the container hierarchy`,
-  createElementTypeSchema.shape,
-  async (rawModel: CreateElementTypeModel) => {
+  schema: createElementTypeSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (rawModel: CreateElementTypeModel) => {
     // Validate the model with the schema (including refine rules)
     const model = createElementTypeSchema.parse(rawModel);
 
@@ -163,6 +166,6 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
       };
     }
   }
-);
+} satisfies ToolDefinition<typeof createElementTypeSchema.shape>;
 
-export default CreateElementTypeTool;
+export default withStandardDecorators(CreateElementTypeTool);

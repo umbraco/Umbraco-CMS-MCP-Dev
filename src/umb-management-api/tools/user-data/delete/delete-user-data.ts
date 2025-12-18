@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteUserDataByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteUserDataTool = CreateUmbracoTool(
-  "delete-user-data",
-  "Deletes user data by its id",
-  deleteUserDataByIdParams.shape,
-  async ({ id }) => {
+const DeleteUserDataTool = {
+  name: "delete-user-data",
+  description: "Deletes user data by its id",
+  schema: deleteUserDataByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.deleteUserDataById(id);
 
@@ -19,6 +22,6 @@ const DeleteUserDataTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof deleteUserDataByIdParams.shape>;
 
-export default DeleteUserDataTool;
+export default withStandardDecorators(DeleteUserDataTool);

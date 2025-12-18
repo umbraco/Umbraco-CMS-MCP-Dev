@@ -1,14 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeMemberTypeSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMemberTypeSiblingsTool = CreateUmbracoTool(
-  "get-member-type-siblings",
-  "Gets sibling member types or member type folders for a given descendant id",
-  getTreeMemberTypeSiblingsQueryParams.shape,
-  async (params) => {
+const GetMemberTypeSiblingsTool = {
+  name: "get-member-type-siblings",
+  description: "Gets sibling member types or member type folders for a given descendant id",
+  schema: getTreeMemberTypeSiblingsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: any) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getTreeMemberTypeSiblings(params);
+    const response = await client.getTreeMemberTypeSiblings(params);
 
     return {
       content: [
@@ -18,7 +21,7 @@ const GetMemberTypeSiblingsTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeMemberTypeSiblingsQueryParams.shape>;
 
-export default GetMemberTypeSiblingsTool;
+export default withStandardDecorators(GetMemberTypeSiblingsTool);

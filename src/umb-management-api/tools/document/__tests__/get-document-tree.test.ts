@@ -38,7 +38,7 @@ describe("document-tree", () => {
         .withParent(parentBuilder.getId())
         .create();
 
-      const result = await GetDocumentChildrenTool().handler(
+      const result = await GetDocumentChildrenTool.handler(
         {
           take: 100,
           parentId: parentBuilder.getId(),
@@ -51,7 +51,7 @@ describe("document-tree", () => {
     });
 
     it("should handle non-existent parent", async () => {
-      const result = await GetDocumentChildrenTool().handler(
+      const result = await GetDocumentChildrenTool.handler(
         {
           take: 100,
           parentId: BLANK_UUID,
@@ -78,7 +78,7 @@ describe("document-tree", () => {
         .withParent(parentBuilder.getId())
         .create();
 
-      const result = await GetDocumentAncestorsTool().handler(
+      const result = await GetDocumentAncestorsTool.handler(
         {
           descendantId: childBuilder.getId(),
         },
@@ -90,7 +90,7 @@ describe("document-tree", () => {
     });
 
     it("should handle non-existent item", async () => {
-      const result = await GetDocumentAncestorsTool().handler(
+      const result = await GetDocumentAncestorsTool.handler(
         {
           descendantId: BLANK_UUID,
         },

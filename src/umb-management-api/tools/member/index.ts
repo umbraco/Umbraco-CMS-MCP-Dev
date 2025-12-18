@@ -25,18 +25,18 @@ export const MemberCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
     if (AuthorizationPolicies.SectionAccessMembers(user)) {
 
-      tools.push(GetMemberTool());
-      tools.push(CreateMemberTool());
-      tools.push(ValidateMemberTool());
-      tools.push(DeleteMemberTool());
-      tools.push(UpdateMemberTool());
-      tools.push(ValidateMemberUpdateTool());
-      tools.push(GetMemberAreReferencedTool());
-      tools.push(GetMemberByIdReferencedByTool());
-      tools.push(GetMemberByIdReferencedDescendantsTool());
+      tools.push(GetMemberTool);
+      tools.push(CreateMemberTool);
+      tools.push(ValidateMemberTool);
+      tools.push(DeleteMemberTool);
+      tools.push(UpdateMemberTool);
+      tools.push(ValidateMemberUpdateTool);
+      tools.push(GetMemberAreReferencedTool);
+      tools.push(GetMemberByIdReferencedByTool);
+      tools.push(GetMemberByIdReferencedDescendantsTool);
     }
-    tools.push(FindMemberTool());
-    tools.push(GetItemMemberSearchTool());
+    tools.push(FindMemberTool);
+    tools.push(GetItemMemberSearchTool);
 
     return tools;
   }

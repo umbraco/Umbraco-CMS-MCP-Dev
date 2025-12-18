@@ -26,7 +26,7 @@ describe("publish-document", () => {
       .create();
     const item = builder.getCreatedItem();
 
-    const result = await PublishDocumentTool().handler(
+    const result = await PublishDocumentTool.handler(
       {
         id: item.id,
         data: { publishSchedules: [{ culture: null }] },
@@ -46,7 +46,7 @@ describe("publish-document", () => {
   });
 
   it("should handle publishing a non-existent document", async () => {
-    const result = await PublishDocumentTool().handler(
+    const result = await PublishDocumentTool.handler(
       {
         id: BLANK_UUID,
         data: { publishSchedules: [] },

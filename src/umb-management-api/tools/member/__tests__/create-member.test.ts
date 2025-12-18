@@ -34,7 +34,7 @@ describe("create-member", () => {
       .build();
 
     // Create the member
-    const result = await CreateMemberTool().handler(memberModel, {
+    const result = await CreateMemberTool.handler(memberModel, {
       signal: new AbortController().signal,
     });
 
@@ -63,7 +63,7 @@ describe("create-member", () => {
       .withValue("customfield", "customValue")
       .build();
 
-    const result = await CreateMemberTool().handler(memberModel, {
+    const result = await CreateMemberTool.handler(memberModel, {
       signal: new AbortController().signal,
     });
 

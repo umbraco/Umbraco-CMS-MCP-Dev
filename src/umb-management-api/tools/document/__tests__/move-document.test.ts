@@ -48,7 +48,7 @@ describe("move-document", () => {
       .create();
 
     // Move the document to be a child of the target
-    const result = await MoveDocumentTool().handler(
+    const result = await MoveDocumentTool.handler(
       {
         id: contentBuilder.getId(),
         data: {
@@ -84,7 +84,7 @@ describe("move-document", () => {
       .withParent(rootSourceBuilder.getId())
       .create();
 
-    const result = await MoveDocumentTool().handler(
+    const result = await MoveDocumentTool.handler(
       {
         id: rootSourceBuilder.getId(),
         data: {
@@ -101,7 +101,7 @@ describe("move-document", () => {
   });
 
   it("should handle moving non-existent document", async () => {
-    const result = await MoveDocumentTool().handler(
+    const result = await MoveDocumentTool.handler(
       {
         id: BLANK_UUID,
         data: {

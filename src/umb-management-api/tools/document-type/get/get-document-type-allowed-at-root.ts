@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { getDocumentTypeAllowedAtRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetDocumentTypeAllowedAtRootParams } from "@/umb-management-api/schemas/index.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 
-const GetDocumentTypeAllowedAtRootTool = CreateUmbracoTool(
-  "get-document-type-allowed-at-root",
-  "Get document types that are allowed at root level",
-  getDocumentTypeAllowedAtRootQueryParams.shape,
-  async (model: GetDocumentTypeAllowedAtRootParams) => {
+const GetDocumentTypeAllowedAtRootTool = {
+  name: "get-document-type-allowed-at-root",
+  description: "Get document types that are allowed at root level",
+  schema: getDocumentTypeAllowedAtRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async (model: GetDocumentTypeAllowedAtRootParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentTypeAllowedAtRoot(model);
 
@@ -20,6 +23,6 @@ const GetDocumentTypeAllowedAtRootTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getDocumentTypeAllowedAtRootQueryParams.shape>;
 
-export default GetDocumentTypeAllowedAtRootTool;
+export default withStandardDecorators(GetDocumentTypeAllowedAtRootTool);

@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeStaticFileAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetTreeStaticFileAncestorsParams } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetStaticFileAncestorsTool = CreateUmbracoTool(
-  "get-static-file-ancestors",
-  "Gets ancestor folders for navigation breadcrumbs by descendant path",
-  getTreeStaticFileAncestorsQueryParams.shape,
-  async (params) => {
+const GetStaticFileAncestorsTool = {
+  name: "get-static-file-ancestors",
+  description: "Gets ancestor folders for navigation breadcrumbs by descendant path",
+  schema: getTreeStaticFileAncestorsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetTreeStaticFileAncestorsParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeStaticFileAncestors(params);
     return {
@@ -18,6 +22,6 @@ const GetStaticFileAncestorsTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getTreeStaticFileAncestorsQueryParams.shape>;
 
-export default GetStaticFileAncestorsTool;
+export default withStandardDecorators(GetStaticFileAncestorsTool);

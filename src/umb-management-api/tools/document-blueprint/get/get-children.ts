@@ -1,12 +1,22 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDocumentBlueprintChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentBlueprintChildrenTool = CreateUmbracoTool(
-  "get-document-blueprint-children",
-  "Gets the children of a document blueprint by Id",
-  getTreeDocumentBlueprintChildrenQueryParams.shape,
-  async (params) => {
+type GetDocumentBlueprintChildrenParams = {
+  parentId?: string;
+  skip?: number;
+  take?: number;
+  dataTypeId?: string;
+};
+
+const GetDocumentBlueprintChildrenTool = {
+  name: "get-document-blueprint-children",
+  description: "Gets the children of a document blueprint by Id",
+  schema: getTreeDocumentBlueprintChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetDocumentBlueprintChildrenParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreeDocumentBlueprintChildren(params);
     return {
@@ -17,7 +27,7 @@ const GetDocumentBlueprintChildrenTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeDocumentBlueprintChildrenQueryParams.shape>;
 
-export default GetDocumentBlueprintChildrenTool;
+export default withStandardDecorators(GetDocumentBlueprintChildrenTool);

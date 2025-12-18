@@ -30,12 +30,12 @@ describe("get-language-items", () => {
       .withIsMandatory(false)
       .create();
 
-    const result = await GetLanguageItemsTool().handler({ isoCode: [TEST_LANGUAGE_ISO] }, { signal: new AbortController().signal });
+    const result = await GetLanguageItemsTool.handler({ isoCode: [TEST_LANGUAGE_ISO] }, { signal: new AbortController().signal });
     expect(result).toMatchSnapshot();
   });
 
   it("should handle non-existent isoCode", async () => {
-    const result = await GetLanguageItemsTool().handler({ isoCode: ["xx-NOTFOUND"] }, { signal: new AbortController().signal });
+    const result = await GetLanguageItemsTool.handler({ isoCode: ["xx-NOTFOUND"] }, { signal: new AbortController().signal });
     expect(result).toMatchSnapshot();
   });
 }); 

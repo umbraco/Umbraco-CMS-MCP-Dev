@@ -9,12 +9,12 @@
     "url": "https://github.com/umbraco/Umbraco-CMS-MCP-Dev",
     "source": "github"
   },
-  "version": "17.0.1-beta.1",
+  "version": "17.0.1-beta.2",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@umbraco-cms/mcp-dev",
-      "version": "17.0.1-beta.1",
+      "version": "17.0.1-beta.2",
       "transport": {
         "type": "stdio"
       },
@@ -46,6 +46,13 @@
           "format": "string",
           "isSecret": false,
           "name": "UMBRACO_INCLUDE_TOOL_COLLECTIONS"
+        },
+        {
+          "description": "Enable readonly mode to disable all write operations (create, update, delete). Only read and query tools remain available.",
+          "isRequired": false,
+          "format": "boolean",
+          "isSecret": false,
+          "name": "UMBRACO_READONLY"
         }
       ]
     }

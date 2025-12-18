@@ -1,12 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeMediaRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetMediaRootTool = CreateUmbracoTool(
-  "get-media-root",
-  "Gets root items for media.",
-  getTreeMediaRootQueryParams.shape,
-  async (params) => {
+type GetTreeMediaRootParams = z.infer<typeof getTreeMediaRootQueryParams>;
+
+const GetMediaRootTool = {
+  name: "get-media-root",
+  description: "Gets root items for media.",
+  schema: getTreeMediaRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetTreeMediaRootParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeMediaRoot(params);
     return {
@@ -17,7 +23,7 @@ const GetMediaRootTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeMediaRootQueryParams.shape>;
 
-export default GetMediaRootTool;
+export default withStandardDecorators(GetMediaRootTool);

@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deletePartialViewByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeletePartialViewTool = CreateUmbracoTool(
-  "delete-partial-view",
-  "Deletes a partial view by its path",
-  deletePartialViewByPathParams.shape,
-  async (model: { path: string }) => {
+const DeletePartialViewTool = {
+  name: "delete-partial-view",
+  description: "Deletes a partial view by its path",
+  schema: deletePartialViewByPathParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async (model: { path: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.deletePartialViewByPath(model.path);
 
@@ -18,7 +21,7 @@ const DeletePartialViewTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deletePartialViewByPathParams.shape>;
 
-export default DeletePartialViewTool;
+export default withStandardDecorators(DeletePartialViewTool);

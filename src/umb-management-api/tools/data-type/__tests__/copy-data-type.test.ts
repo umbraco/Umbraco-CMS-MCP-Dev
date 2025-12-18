@@ -38,7 +38,7 @@ describe("copy-data-type", () => {
     ).create();
 
     // Copy the data type
-    const result = await CopyDataTypeTool().handler(
+    const result = await CopyDataTypeTool.handler(
       {
         id: dataTypeBuilder.getId(),
         body: {
@@ -81,7 +81,7 @@ describe("copy-data-type", () => {
       .create();
 
     // Copy the data type to root (no target)
-    const result = await CopyDataTypeTool().handler(
+    const result = await CopyDataTypeTool.handler(
       {
         id: dataTypeBuilder.getId(),
         body: {
@@ -115,7 +115,7 @@ describe("copy-data-type", () => {
   });
 
   it("should handle non-existent data type", async () => {
-    const result = await CopyDataTypeTool().handler(
+    const result = await CopyDataTypeTool.handler(
       {
         id: BLANK_UUID,
         body: {

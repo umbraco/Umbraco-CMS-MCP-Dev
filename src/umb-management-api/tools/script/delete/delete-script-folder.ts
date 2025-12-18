@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteScriptFolderByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteScriptFolderTool = CreateUmbracoTool(
-  "delete-script-folder",
-  "Deletes a script folder by path",
-  deleteScriptFolderByPathParams.shape,
-  async ({ path }) => {
+const DeleteScriptFolderTool = {
+  name: "delete-script-folder",
+  description: "Deletes a script folder by path",
+  schema: deleteScriptFolderByPathParams.shape,
+  isReadOnly: false,
+  slices: ['delete', 'folders'],
+  handler: async ({ path }: { path: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteScriptFolderByPath(path);
 
@@ -18,7 +21,7 @@ const DeleteScriptFolderTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteScriptFolderByPathParams.shape>;
 
-export default DeleteScriptFolderTool;
+export default withStandardDecorators(DeleteScriptFolderTool);

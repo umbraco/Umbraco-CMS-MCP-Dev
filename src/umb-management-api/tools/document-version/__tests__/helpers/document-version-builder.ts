@@ -14,15 +14,29 @@ export class DocumentVersionBuilder {
   };
 
   private createdItem: any = null;
+  private culture: string | null = null;
 
   withName(name: string): DocumentVersionBuilder {
+    // Use existing culture if set, otherwise null
     this.model.variants = [
       {
-        culture: null,
+        culture: this.culture,
         segment: null,
         name: name,
       },
     ];
+    return this;
+  }
+
+  withCulture(culture: string): DocumentVersionBuilder {
+    this.culture = culture;
+    // Update existing variants if any
+    if (this.model.variants && this.model.variants.length > 0) {
+      this.model.variants = this.model.variants.map(v => ({
+        ...v,
+        culture: culture,
+      }));
+    }
     return this;
   }
 
@@ -86,7 +100,7 @@ export class DocumentVersionBuilder {
     }
     const client = UmbracoManagementClient.getClient();
     await client.putDocumentByIdPublish(this.createdItem.id, {
-      publishSchedules: [{ culture: null }],
+      publishSchedules: [{ culture: this.culture }],
     });
     return this;
   }

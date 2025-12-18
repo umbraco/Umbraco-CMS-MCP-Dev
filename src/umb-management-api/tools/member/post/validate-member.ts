@@ -1,13 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postMemberValidateBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const ValidateMemberTool = CreateUmbracoTool(
-  "validate-member",
-  `Validates member data before creation using the Umbraco API.
+type SchemaParams = z.infer<typeof postMemberValidateBody>;
+
+const ValidateMemberTool = {
+  name: "validate-member",
+  description: `Validates member data before creation using the Umbraco API.
   Use this endpoint to validate member data structure, properties, and business rules before attempting to create a new member.`,
-  postMemberValidateBody.shape,
-  async (model) => {
+  schema: postMemberValidateBody.shape,
+  isReadOnly: true,
+  slices: ['validate'],
+  handler: async (model: SchemaParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postMemberValidate(model);
     return {
@@ -18,7 +24,7 @@ const ValidateMemberTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postMemberValidateBody.shape>;
 
-export default ValidateMemberTool;
+export default withStandardDecorators(ValidateMemberTool);

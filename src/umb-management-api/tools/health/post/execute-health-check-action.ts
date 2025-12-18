@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { HealthCheckActionRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postHealthCheckExecuteActionBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const ExecuteHealthCheckActionTool = CreateUmbracoTool(
-  "execute-health-check-action",
-  "Executes remedial actions for health issues. WARNING: This performs system remedial actions that may modify system configuration, files, or database content. Use with caution.",
-  postHealthCheckExecuteActionBody.shape,
-  async (model: HealthCheckActionRequestModel) => {
+const ExecuteHealthCheckActionTool = {
+  name: "execute-health-check-action",
+  description: "Executes remedial actions for health issues. WARNING: This performs system remedial actions that may modify system configuration, files, or database content. Use with caution.",
+  schema: postHealthCheckExecuteActionBody.shape,
+  isReadOnly: false,
+  slices: ['diagnostics'],
+  handler: async (model: HealthCheckActionRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postHealthCheckExecuteAction(model);
 
@@ -20,6 +23,6 @@ const ExecuteHealthCheckActionTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof postHealthCheckExecuteActionBody.shape>;
 
-export default ExecuteHealthCheckActionTool;
+export default withStandardDecorators(ExecuteHealthCheckActionTool);

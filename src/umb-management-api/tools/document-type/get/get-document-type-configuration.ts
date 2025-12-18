@@ -1,11 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentTypeConfigurationTool = CreateUmbracoTool(
-  "get-document-type-configuration",
-  "Gets the global configuration for document types",
-  {},
-  async () => {
+const GetDocumentTypeConfigurationTool = {
+  name: "get-document-type-configuration",
+  description: "Gets the global configuration for document types",
+  schema: {},
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentTypeConfiguration();
     return {
@@ -17,6 +20,6 @@ const GetDocumentTypeConfigurationTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<{}>;
 
-export default GetDocumentTypeConfigurationTool;
+export default withStandardDecorators(GetDocumentTypeConfigurationTool);

@@ -50,7 +50,7 @@ describe("sort-document", () => {
     // Reverse the order
     const newOrder = [...childIds].reverse();
     const sorting = newOrder.map((id, idx) => ({ id, sortOrder: idx }));
-    const sortResult = await SortDocumentTool().handler({
+    const sortResult = await SortDocumentTool.handler({
       parent: { id: rootId },
       sorting
     }, { signal: new AbortController().signal });

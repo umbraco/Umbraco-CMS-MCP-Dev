@@ -1,19 +1,24 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   getMediaByIdAuditLogParams,
   getMediaByIdAuditLogQueryParams,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaAuditLogTool = CreateUmbracoTool(
-  "get-media-audit-log",
-  "Fetches the audit log for a media item by Id.",
-  {
-    id: getMediaByIdAuditLogParams.shape.id,
-    data: z.object(getMediaByIdAuditLogQueryParams.shape),
-  },
-  async (model: { id: string; data: any }) => {
+const schema = {
+  id: getMediaByIdAuditLogParams.shape.id,
+  data: z.object(getMediaByIdAuditLogQueryParams.shape),
+};
+
+const GetMediaAuditLogTool = {
+  name: "get-media-audit-log",
+  description: "Fetches the audit log for a media item by Id.",
+  schema,
+  isReadOnly: true,
+  slices: ['audit'],
+  handler: async (model: { id: string; data: any }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaByIdAuditLog(model.id, model.data);
     return {
@@ -24,7 +29,7 @@ const GetMediaAuditLogTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof schema>;
 
-export default GetMediaAuditLogTool;
+export default withStandardDecorators(GetMediaAuditLogTool);

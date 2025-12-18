@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemStaticFileQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetItemStaticFileParams } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetStaticFilesTool = CreateUmbracoTool(
-  "get-static-files",
-  "Lists static files with optional path filtering for browsing the file system",
-  getItemStaticFileQueryParams.shape,
-  async (params) => {
+const GetStaticFilesTool = {
+  name: "get-static-files",
+  description: "Lists static files with optional path filtering for browsing the file system",
+  schema: getItemStaticFileQueryParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (params: GetItemStaticFileParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemStaticFile(params);
     return {
@@ -18,6 +22,6 @@ const GetStaticFilesTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getItemStaticFileQueryParams.shape>;
 
-export default GetStaticFilesTool;
+export default withStandardDecorators(GetStaticFilesTool);

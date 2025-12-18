@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postHealthCheckGroupByNameCheckParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const RunHealthCheckGroupTool = CreateUmbracoTool(
-  "run-health-check-group",
-  "Executes health checks for a specific group. WARNING: This will run system diagnostics which may take time and could temporarily affect system performance.",
-  postHealthCheckGroupByNameCheckParams.shape,
-  async (params: { name: string }) => {
+const RunHealthCheckGroupTool = {
+  name: "run-health-check-group",
+  description: "Executes health checks for a specific group. WARNING: This will run system diagnostics which may take time and could temporarily affect system performance.",
+  schema: postHealthCheckGroupByNameCheckParams.shape,
+  isReadOnly: true,
+  slices: ['diagnostics'],
+  handler: async (params: { name: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postHealthCheckGroupByNameCheck(params.name);
 
@@ -19,6 +22,6 @@ const RunHealthCheckGroupTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof postHealthCheckGroupByNameCheckParams.shape>;
 
-export default RunHealthCheckGroupTool;
+export default withStandardDecorators(RunHealthCheckGroupTool);

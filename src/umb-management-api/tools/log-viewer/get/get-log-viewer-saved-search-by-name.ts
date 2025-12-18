@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getLogViewerSavedSearchByNameParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetLogViewerSavedSearchByNameTool = CreateUmbracoTool(
-  "get-log-viewer-saved-search-by-name",
-  "Gets a saved search by name",
-  getLogViewerSavedSearchByNameParams.shape,
-  async ({ name }) => {
+const GetLogViewerSavedSearchByNameTool = {
+  name: "get-log-viewer-saved-search-by-name",
+  description: "Gets a saved search by name",
+  schema: getLogViewerSavedSearchByNameParams.shape,
+  isReadOnly: true,
+  slices: ['diagnostics'],
+  handler: async ({ name }: { name: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getLogViewerSavedSearchByName(name);
 
@@ -19,6 +22,6 @@ const GetLogViewerSavedSearchByNameTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getLogViewerSavedSearchByNameParams.shape>;
 
-export default GetLogViewerSavedSearchByNameTool;
+export default withStandardDecorators(GetLogViewerSavedSearchByNameTool);

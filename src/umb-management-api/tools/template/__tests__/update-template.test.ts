@@ -26,7 +26,7 @@ describe("update-template", () => {
 
   it("should update a template", async () => {
     await builder.withName(TEST_TEMPLATE_NAME).create();
-    const result = await UpdateTemplateTool().handler(
+    const result = await UpdateTemplateTool.handler(
       {
         id: builder.getId(),
         data: {
@@ -44,7 +44,7 @@ describe("update-template", () => {
   });
 
   it("should handle non-existent template", async () => {
-    const result = await UpdateTemplateTool().handler(
+    const result = await UpdateTemplateTool.handler(
       {
         id: BLANK_UUID,
         data: {

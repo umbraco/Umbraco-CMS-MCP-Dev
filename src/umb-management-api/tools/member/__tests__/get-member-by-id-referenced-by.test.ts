@@ -56,7 +56,7 @@ describe("get-member-by-id-referenced-by", () => {
       .withValue("memberPicker", memberBuilder.getId())
       .create();
 
-    const result = await GetMemberByIdReferencedByTool().handler(
+    const result = await GetMemberByIdReferencedByTool.handler(
       { id: memberBuilder.getId(), skip: 0, take: 10 },
       { signal: new AbortController().signal }
     );
@@ -82,7 +82,7 @@ describe("get-member-by-id-referenced-by", () => {
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
 
-    const result = await GetMemberByIdReferencedByTool().handler(
+    const result = await GetMemberByIdReferencedByTool.handler(
       { id: memberBuilder.getId(), skip: 0, take: 10 },
       { signal: new AbortController().signal }
     );

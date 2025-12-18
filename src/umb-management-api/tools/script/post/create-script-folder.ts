@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateScriptFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postScriptFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const CreateScriptFolderTool = CreateUmbracoTool(
-  "create-script-folder",
-  "Creates a new script folder",
-  postScriptFolderBody.shape,
-  async (model: CreateScriptFolderRequestModel) => {
+const CreateScriptFolderTool = {
+  name: "create-script-folder",
+  description: "Creates a new script folder",
+  schema: postScriptFolderBody.shape,
+  isReadOnly: false,
+  slices: ['create', 'folders'],
+  handler: async (model: CreateScriptFolderRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postScriptFolder(model);
 
@@ -19,7 +22,7 @@ const CreateScriptFolderTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postScriptFolderBody.shape>;
 
-export default CreateScriptFolderTool;
+export default withStandardDecorators(CreateScriptFolderTool);

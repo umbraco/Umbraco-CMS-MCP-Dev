@@ -33,7 +33,7 @@ describe("get-dictionary-item", () => {
 
     const params = getDictionaryByIdParams.parse({ id: helper.getId() });
 
-    const result = await GetDictionaryItemTool().handler(params, {
+    const result = await GetDictionaryItemTool.handler(params, {
       signal: new AbortController().signal,
     });
 
@@ -44,7 +44,7 @@ describe("get-dictionary-item", () => {
     const nonExistentId = BLANK_UUID;
     const params = getDictionaryByIdParams.parse({ id: nonExistentId });
 
-    const result = await GetDictionaryItemTool().handler(params, {
+    const result = await GetDictionaryItemTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(result).toMatchSnapshot();

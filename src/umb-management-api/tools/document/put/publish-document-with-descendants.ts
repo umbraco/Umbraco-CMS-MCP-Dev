@@ -1,27 +1,33 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { putDocumentByIdPublishWithDescendantsBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const PublishDocumentWithDescendantsTool = CreateUmbracoTool(
-  "publish-document-with-descendants",
-  `Publishes a document and its descendants by Id. This is an asynchronous operation that may take time for large document trees. 
+const publishDocumentWithDescendantsSchema = {
+  id: z.string().uuid(),
+  data: z.object(putDocumentByIdPublishWithDescendantsBody.shape),
+};
+
+const PublishDocumentWithDescendantsTool = {
+  name: "publish-document-with-descendants",
+  description: `Publishes a document and its descendants by Id. This is an asynchronous operation that may take time for large document trees.
   The tool will poll for completion and return the final result when finished.`,
-  {
-    id: z.string().uuid(),
-    data: z.object(putDocumentByIdPublishWithDescendantsBody.shape),
-  },
-  async (model: { id: string; data: any }) => {
+  schema: publishDocumentWithDescendantsSchema,
+  isReadOnly: false,
+  slices: ['publish'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Publish),
+  handler: async (model: { id: string; data: any }) => {
     const client = UmbracoManagementClient.getClient();
-    
+
     // Start the async publish operation
     const initialResponse = await client.putDocumentByIdPublishWithDescendants(
       model.id,
       model.data
     );
-    
+
     // If already complete, return immediately
     if (initialResponse.isComplete) {
       return {
@@ -33,24 +39,24 @@ const PublishDocumentWithDescendantsTool = CreateUmbracoTool(
         ],
       };
     }
-    
+
     // Poll for completion with timeout (max 1 minute)
     const maxAttempts = 60; // 1 minutes with 1-second intervals
     const pollInterval = 1000; // 1 seconds
     let attempts = 0;
-    
+
     while (attempts < maxAttempts) {
       attempts++;
-      
+
       // Wait before polling
       await new Promise(resolve => setTimeout(resolve, pollInterval));
-      
+
       try {
         const statusResponse = await client.getDocumentByIdPublishWithDescendantsResultByTaskId(
           model.id,
           initialResponse.taskId
         );
-        
+
         if (statusResponse.isComplete) {
           return {
             content: [
@@ -77,7 +83,7 @@ const PublishDocumentWithDescendantsTool = CreateUmbracoTool(
         };
       }
     }
-    
+
     // Timeout reached
     return {
       content: [
@@ -92,7 +98,6 @@ const PublishDocumentWithDescendantsTool = CreateUmbracoTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Publish)
-);
+} satisfies ToolDefinition<typeof publishDocumentWithDescendantsSchema>;
 
-export default PublishDocumentWithDescendantsTool;
+export default withStandardDecorators(PublishDocumentWithDescendantsTool);

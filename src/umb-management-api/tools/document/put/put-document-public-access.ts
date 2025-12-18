@@ -1,5 +1,4 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putDocumentByIdPublicAccessParams,
   putDocumentByIdPublicAccessBody,
@@ -7,14 +6,22 @@ import {
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const PutDocumentPublicAccessTool = CreateUmbracoTool(
-  "put-document-public-access",
-  "Updates public access settings for a document by Id.",
-  {
-    id: putDocumentByIdPublicAccessParams.shape.id,
-    data: z.object(putDocumentByIdPublicAccessBody.shape),
-  }, async (model: { id: string; data: any }) => {
+const putDocumentPublicAccessSchema = {
+  id: putDocumentByIdPublicAccessParams.shape.id,
+  data: z.object(putDocumentByIdPublicAccessBody.shape),
+};
+
+const PutDocumentPublicAccessTool = {
+  name: "put-document-public-access",
+  description: "Updates public access settings for a document by Id.",
+  schema: putDocumentPublicAccessSchema,
+  isReadOnly: false,
+  slices: ['public-access'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.PublicAccess),
+  handler: async (model: { id: string; data: any }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putDocumentByIdPublicAccess(
       model.id,
@@ -29,7 +36,6 @@ const PutDocumentPublicAccessTool = CreateUmbracoTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.PublicAccess)
-);
+} satisfies ToolDefinition<typeof putDocumentPublicAccessSchema>;
 
-export default PutDocumentPublicAccessTool;
+export default withStandardDecorators(PutDocumentPublicAccessTool);

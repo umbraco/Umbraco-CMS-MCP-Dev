@@ -14,7 +14,7 @@ describe("get-log-viewer-validate-logs-size", () => {
   });
 
   it("should validate logs size with default parameters", async () => {
-    const result = await GetLogViewerValidateLogsSizeTool().handler(
+    const result = await GetLogViewerValidateLogsSizeTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -30,7 +30,7 @@ describe("get-log-viewer-validate-logs-size", () => {
     const oneMonthAgo = new Date(now);
     oneMonthAgo.setMonth(now.getMonth() - 1);
 
-    const result = await GetLogViewerValidateLogsSizeTool().handler(
+    const result = await GetLogViewerValidateLogsSizeTool.handler(
       {
         startDate: oneMonthAgo.toISOString(),
         endDate: now.toISOString(),

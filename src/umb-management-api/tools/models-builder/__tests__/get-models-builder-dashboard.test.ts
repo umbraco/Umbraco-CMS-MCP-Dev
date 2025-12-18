@@ -18,7 +18,7 @@ describe("get-models-builder-dashboard", () => {
   });
 
   it("should get the models builder dashboard", async () => {
-    const result = await GetModelsBuilderDashboardTool().handler(
+    const result = await GetModelsBuilderDashboardTool.handler(
       {},
       { signal: new AbortController().signal }
     );

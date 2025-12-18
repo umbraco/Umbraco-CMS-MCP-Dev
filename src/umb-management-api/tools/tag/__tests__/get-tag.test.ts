@@ -42,7 +42,7 @@ describe("get-tag", () => {
     await documentBuilder.publish();
 
     // Test the get-tags tool with a common search term
-    const result = await GetTagsTool().handler(
+    const result = await GetTagsTool.handler(
       {
         take: 50,
       },
@@ -70,7 +70,7 @@ describe("get-tag", () => {
 
     await documentBuilder.publish();
 
-    const result = await GetTagsTool().handler(
+    const result = await GetTagsTool.handler(
       {
         query: NON_EXISTENT_TAG,
         take: 100,
@@ -97,7 +97,7 @@ describe("get-tag", () => {
 
     await documentBuilder.publish();
 
-    const result = await GetTagsTool().handler(
+    const result = await GetTagsTool.handler(
       {
         query: "test",
         take: 100,

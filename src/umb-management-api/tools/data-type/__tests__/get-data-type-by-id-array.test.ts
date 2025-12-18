@@ -28,7 +28,7 @@ describe("get-item-data-type", () => {
 
   it("should get no data types for empty request", async () => {
     // Get all data types
-    const result = await GetDataTypesByIdArrayTool().handler(
+    const result = await GetDataTypesByIdArrayTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -44,7 +44,7 @@ describe("get-item-data-type", () => {
       .create();
 
     // Get by ID
-    const result = await GetDataTypesByIdArrayTool().handler(
+    const result = await GetDataTypesByIdArrayTool.handler(
       { id: [builder.getId()] },
       { signal: new AbortController().signal }
     );
@@ -70,7 +70,7 @@ describe("get-item-data-type", () => {
       .create();
 
     // Get by IDs
-    const result = await GetDataTypesByIdArrayTool().handler(
+    const result = await GetDataTypesByIdArrayTool.handler(
       {
         id: [builder1.getId(), builder2.getId()],
       },

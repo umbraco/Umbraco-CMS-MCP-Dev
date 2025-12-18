@@ -1,15 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateMemberTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postMemberTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const CreateMemberTypeTool = CreateUmbracoTool(
-  "create-member-type",
-  "Creates a new member type",
-  postMemberTypeBody.shape,
-  async (model: CreateMemberTypeRequestModel) => {
+const CreateMemberTypeTool = {
+  name: "create-member-type",
+  description: "Creates a new member type",
+  schema: postMemberTypeBody.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateMemberTypeRequestModel) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.postMemberType(model);
+    const response = await client.postMemberType(model);
 
     return {
       content: [
@@ -19,7 +22,7 @@ const CreateMemberTypeTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postMemberTypeBody.shape>;
 
-export default CreateMemberTypeTool;
+export default withStandardDecorators(CreateMemberTypeTool);

@@ -15,10 +15,10 @@ export const TemporaryFileCollection: ToolCollectionExport = {
   },
   tools: (user: CurrentUserResponseModel) => {
     const tools: ToolDefinition<any>[] = [];
-    tools.push(CreateTemporaryFileTool());
-    tools.push(GetTemporaryFileTool());
-    tools.push(DeleteTemporaryFileTool());
-    tools.push(GetTemporaryFileConfigurationTool());
+    tools.push(CreateTemporaryFileTool);
+    tools.push(GetTemporaryFileTool);
+    tools.push(DeleteTemporaryFileTool);
+    tools.push(GetTemporaryFileConfigurationTool);
     return tools;
   }
 };

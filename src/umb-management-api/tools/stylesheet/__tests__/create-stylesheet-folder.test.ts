@@ -30,7 +30,7 @@ describe("create-stylesheet-folder", () => {
     };
 
     // Act
-    const result = await CreateStylesheetFolderTool().handler(params, { signal: new AbortController().signal });
+    const result = await CreateStylesheetFolderTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -43,12 +43,12 @@ describe("create-stylesheet-folder", () => {
 
   it("should handle existing folder name", async () => {
     // Arrange - First create the folder
-    await CreateStylesheetFolderTool().handler({
+    await CreateStylesheetFolderTool.handler({
       name: EXISTING_FOLDER_NAME
     }, { signal: new AbortController().signal });
 
     // Act - Try to create it again with same name
-    const result = await CreateStylesheetFolderTool().handler({
+    const result = await CreateStylesheetFolderTool.handler({
       name: EXISTING_FOLDER_NAME
     }, { signal: new AbortController().signal });
 
@@ -71,7 +71,7 @@ describe("create-stylesheet-folder", () => {
     };
 
     // Act
-    const result = await CreateStylesheetFolderTool().handler(params, { signal: new AbortController().signal });
+    const result = await CreateStylesheetFolderTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

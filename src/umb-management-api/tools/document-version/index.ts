@@ -18,10 +18,10 @@ export const DocumentVersionCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessContent(user)) {
-      tools.push(GetDocumentVersionTool());
-      tools.push(GetDocumentVersionByIdTool());
-      tools.push(UpdateDocumentVersionPreventCleanupTool());
-      tools.push(CreateDocumentVersionRollbackTool());
+      tools.push(GetDocumentVersionTool);
+      tools.push(GetDocumentVersionByIdTool);
+      tools.push(UpdateDocumentVersionPreventCleanupTool);
+      tools.push(CreateDocumentVersionRollbackTool);
     }
 
     return tools;

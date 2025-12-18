@@ -35,7 +35,7 @@ describe("get-media-audit-log", () => {
   });
 
   it("should return audit logs for a valid media item", async () => {
-    const result = await GetMediaAuditLogTool().handler(
+    const result = await GetMediaAuditLogTool.handler(
       {
         id: mediaId,
         data: {
@@ -53,7 +53,7 @@ describe("get-media-audit-log", () => {
   });
 
   it("should handle non-existent media", async () => {
-    const result = await GetMediaAuditLogTool().handler(
+    const result = await GetMediaAuditLogTool.handler(
       {
         id: BLANK_UUID,
         data: {

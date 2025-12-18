@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetItemStylesheetParams } from "@/umb-management-api/schemas/index.js";
 import { getItemStylesheetQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetStylesheetSearchTool = CreateUmbracoTool(
-  "get-stylesheet-search",
-  "Searches for stylesheets by name or path",
-  getItemStylesheetQueryParams.shape,
-  async (model: GetItemStylesheetParams) => {
+const GetStylesheetSearchTool = {
+  name: "get-stylesheet-search",
+  description: "Searches for stylesheets by name or path",
+  schema: getItemStylesheetQueryParams.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async (model: GetItemStylesheetParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getItemStylesheet(model);
 
@@ -20,6 +23,6 @@ const GetStylesheetSearchTool = CreateUmbracoTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getItemStylesheetQueryParams.shape>;
 
-export default GetStylesheetSearchTool;
+export default withStandardDecorators(GetStylesheetSearchTool);

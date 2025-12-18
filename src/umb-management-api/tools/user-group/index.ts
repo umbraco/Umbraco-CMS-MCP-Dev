@@ -22,16 +22,16 @@ export const UserGroupCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessUsers(user)) {
-      tools.push(GetUserGroupByIdArrayTool());
-      tools.push(GetUserGroupsTool());
-      tools.push(GetFilterUserGroupTool());
-      tools.push(CreateUserGroupTool());
-      tools.push(UpdateUserGroupTool());
-      tools.push(DeleteUserGroupTool());
-      tools.push(DeleteUserGroupsTool());
+      tools.push(GetUserGroupByIdArrayTool);
+      tools.push(GetUserGroupsTool);
+      tools.push(GetFilterUserGroupTool);
+      tools.push(CreateUserGroupTool);
+      tools.push(UpdateUserGroupTool);
+      tools.push(DeleteUserGroupTool);
+      tools.push(DeleteUserGroupsTool);
     }
 
-    tools.push(GetUserGroupTool());
+    tools.push(GetUserGroupTool);
     return tools;
   }
 };

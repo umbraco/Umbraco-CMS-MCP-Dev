@@ -33,7 +33,7 @@ describe("create-element-type", () => {
     };
 
     // Create the element type
-    const result = await CreateElementTypeTool().handler(elementModel, {
+    const result = await CreateElementTypeTool.handler(elementModel, {
       signal: new AbortController().signal,
     });
 
@@ -62,12 +62,12 @@ describe("create-element-type", () => {
     };
 
     // First create the element type
-    const rsp = await CreateElementTypeTool().handler(elementModel, {
+    const rsp = await CreateElementTypeTool.handler(elementModel, {
       signal: new AbortController().signal,
     });
 
     // Try to create it again
-    const result = await CreateElementTypeTool().handler(elementModel, {
+    const result = await CreateElementTypeTool.handler(elementModel, {
       signal: new AbortController().signal,
     });
 
@@ -93,7 +93,7 @@ describe("create-element-type", () => {
       ],
     };
 
-    const result = await CreateElementTypeTool().handler(elementModel, {
+    const result = await CreateElementTypeTool.handler(elementModel, {
       signal: new AbortController().signal,
     });
 
@@ -127,7 +127,7 @@ describe("create-element-type", () => {
       ]
     };
 
-    const result = await CreateElementTypeTool().handler(elementModel, {
+    const result = await CreateElementTypeTool.handler(elementModel, {
       signal: new AbortController().signal
     });
 
@@ -161,7 +161,7 @@ describe("create-element-type", () => {
       ]
     };
 
-    const result = await CreateElementTypeTool().handler(elementModel, {
+    const result = await CreateElementTypeTool.handler(elementModel, {
       signal: new AbortController().signal
     });
 

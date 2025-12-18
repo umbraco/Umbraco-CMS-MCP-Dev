@@ -14,14 +14,14 @@ describe("get-all-webhook-logs", () => {
   });
 
   it("should get logs for all webhooks", async () => {
-    const result = await GetAllWebhookLogsTool().handler({
+    const result = await GetAllWebhookLogsTool.handler({
       take: 100
     }, { signal: new AbortController().signal });
     expect(result).toMatchSnapshot();
   });
 
   it("should handle pagination parameters", async () => {
-    const result = await GetAllWebhookLogsTool().handler({
+    const result = await GetAllWebhookLogsTool.handler({
       skip: 0,
       take: 10
     }, { signal: new AbortController().signal });

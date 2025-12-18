@@ -1,7 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreateDictionaryItemRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 const createDictionarySchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -15,11 +16,13 @@ const createDictionarySchema = z.object({
 
 type CreateDictionarySchema = z.infer<typeof createDictionarySchema>;
 
-const CreateDictionaryItemTool = CreateUmbracoTool(
-  "create-dictionary",
-  `Creates a new dictionary item.`,
-  createDictionarySchema.shape,
-  async (model: CreateDictionarySchema) => {
+const CreateDictionaryItemTool = {
+  name: "create-dictionary",
+  description: `Creates a new dictionary item.`,
+  schema: createDictionarySchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateDictionarySchema) => {
     const client = UmbracoManagementClient.getClient();
 
     // Transform: flat parentId -> nested parent object for API
@@ -30,7 +33,7 @@ const CreateDictionaryItemTool = CreateUmbracoTool(
       id: model.id
     };
 
-    var response = await client.postDictionary(payload);
+    const response = await client.postDictionary(payload);
 
     return {
       content: [
@@ -40,7 +43,7 @@ const CreateDictionaryItemTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof createDictionarySchema.shape>;
 
-export default CreateDictionaryItemTool;
+export default withStandardDecorators(CreateDictionaryItemTool);

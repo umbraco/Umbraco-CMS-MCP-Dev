@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { putMediaByIdMoveToRecycleBinParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const MoveMediaToRecycleBinTool = CreateUmbracoTool(
-  "move-media-to-recycle-bin",
-  "Move a media item to the recycle bin",
-  putMediaByIdMoveToRecycleBinParams.shape,
-  async ({ id }) => {
+const MoveMediaToRecycleBinTool = {
+  name: "move-media-to-recycle-bin",
+  description: "Move a media item to the recycle bin",
+  schema: putMediaByIdMoveToRecycleBinParams.shape,
+  isReadOnly: false,
+  slices: ['move', 'recycle-bin'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putMediaByIdMoveToRecycleBin(id);
     return {
@@ -17,7 +20,7 @@ const MoveMediaToRecycleBinTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof putMediaByIdMoveToRecycleBinParams.shape>;
 
-export default MoveMediaToRecycleBinTool;
+export default withStandardDecorators(MoveMediaToRecycleBinTool);

@@ -32,7 +32,7 @@ describe("create-document-blueprint-from-document", () => {
     const sourceDocument = documentBuilder.getCreatedItem();
 
     // Act: Create blueprint from document
-    const result = await CreateDocumentBlueprintFromDocumentTool().handler(
+    const result = await CreateDocumentBlueprintFromDocumentTool.handler(
       {
         name: TEST_BLUEPRINT_NAME,
         document: { id: sourceDocument.id }
@@ -52,7 +52,7 @@ describe("create-document-blueprint-from-document", () => {
 
   it("should handle non-existent source document", async () => {
     // Act: Try to create blueprint from non-existent document
-    const result = await CreateDocumentBlueprintFromDocumentTool().handler(
+    const result = await CreateDocumentBlueprintFromDocumentTool.handler(
       {
         name: TEST_BLUEPRINT_NAME,
         document: { id: "00000000-0000-0000-0000-000000000000" }
@@ -74,7 +74,7 @@ describe("create-document-blueprint-from-document", () => {
     const sourceDocument = documentBuilder.getCreatedItem();
 
     // First create a blueprint
-    await CreateDocumentBlueprintFromDocumentTool().handler(
+    await CreateDocumentBlueprintFromDocumentTool.handler(
       {
         name: TEST_BLUEPRINT_NAME,
         document: { id: sourceDocument.id }
@@ -83,7 +83,7 @@ describe("create-document-blueprint-from-document", () => {
     );
 
     // Act: Try to create another blueprint with the same name
-    const result = await CreateDocumentBlueprintFromDocumentTool().handler(
+    const result = await CreateDocumentBlueprintFromDocumentTool.handler(
       {
         name: TEST_BLUEPRINT_NAME,
         document: { id: sourceDocument.id }

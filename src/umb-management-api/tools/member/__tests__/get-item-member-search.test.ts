@@ -37,7 +37,7 @@ describe("get-item-member-search", () => {
       .create();
 
     // Act - Search for the member
-    const result = await GetItemMemberSearchTool().handler(
+    const result = await GetItemMemberSearchTool.handler(
       { query: TEST_MEMBER_USERNAME, take: 100 },
       { signal: new AbortController().signal }
     );
@@ -49,7 +49,7 @@ describe("get-item-member-search", () => {
 
   it("should return empty results for non-existent search query", async () => {
     // Act - Search for a member that doesn't exist
-    const result = await GetItemMemberSearchTool().handler(
+    const result = await GetItemMemberSearchTool.handler(
       { query: "nonexistent_member_" + Date.now(), take: 100 },
       { signal: new AbortController().signal }
     );
@@ -79,7 +79,7 @@ describe("get-item-member-search", () => {
       .create();
 
     // Act - Search with pagination (take only 1 result)
-    const result = await GetItemMemberSearchTool().handler(
+    const result = await GetItemMemberSearchTool.handler(
       { query: "itemsearch", skip: 0, take: 1 },
       { signal: new AbortController().signal }
     );

@@ -26,7 +26,7 @@ describe("member-type-tree", () => {
         .withIcon("icon-user")
         .create();
 
-      const result = await GetMemberTypeRootTool().handler({
+      const result = await GetMemberTypeRootTool.handler({
         take: 100
       }, { signal: new AbortController().signal });
 

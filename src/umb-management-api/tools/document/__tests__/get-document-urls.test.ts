@@ -30,7 +30,7 @@ describe("get-document-urls", () => {
       .create();
     await builder.publish();
     const item = builder.getCreatedItem();
-    const result = await GetDocumentUrlsTool().handler(
+    const result = await GetDocumentUrlsTool.handler(
       { id: [item.id] },
       { signal: new AbortController().signal }
     );
@@ -39,7 +39,7 @@ describe("get-document-urls", () => {
   });
 
   it("should handle non-existent document id", async () => {
-    const result = await GetDocumentUrlsTool().handler(
+    const result = await GetDocumentUrlsTool.handler(
       { id: [BLANK_UUID] },
       { signal: new AbortController().signal }
     );
@@ -62,7 +62,7 @@ describe("get-document-urls", () => {
       .create();
     await childBuilder.publish();
     const childItem = childBuilder.getCreatedItem();
-    const result = await GetDocumentUrlsTool().handler(
+    const result = await GetDocumentUrlsTool.handler(
       { id: [childItem.id] },
       { signal: new AbortController().signal }
     );

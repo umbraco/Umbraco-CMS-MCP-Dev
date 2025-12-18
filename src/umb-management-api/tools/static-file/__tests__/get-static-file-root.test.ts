@@ -28,7 +28,7 @@ describe("get-static-file-root", () => {
     };
 
     // Act
-    const result = await GetStaticFileRootTool().handler(
+    const result = await GetStaticFileRootTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -68,7 +68,7 @@ describe("get-static-file-root", () => {
     };
 
     // Act
-    const result = await GetStaticFileRootTool().handler(
+    const result = await GetStaticFileRootTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -93,7 +93,7 @@ describe("get-static-file-root", () => {
 
   it.skip("should handle pagination with skip parameter", async () => {
     // Arrange - first get total count to determine valid skip
-    const initialResult = await GetStaticFileRootTool().handler(
+    const initialResult = await GetStaticFileRootTool.handler(
       { skip: 0, take: DEFAULT_TAKE },
       { signal: new AbortController().signal }
     );
@@ -110,7 +110,7 @@ describe("get-static-file-root", () => {
       };
 
       // Act
-      const result = await GetStaticFileRootTool().handler(
+      const result = await GetStaticFileRootTool.handler(
         params,
         { signal: new AbortController().signal }
       );
@@ -137,7 +137,7 @@ describe("get-static-file-root", () => {
         take: DEFAULT_TAKE
       };
 
-      const result = await GetStaticFileRootTool().handler(
+      const result = await GetStaticFileRootTool.handler(
         params,
         { signal: new AbortController().signal }
       );
@@ -154,7 +154,7 @@ describe("get-static-file-root", () => {
     };
 
     // Act
-    const result = await GetStaticFileRootTool().handler(
+    const result = await GetStaticFileRootTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -178,7 +178,7 @@ describe("get-static-file-root", () => {
     };
 
     // Act
-    const result = await GetStaticFileRootTool().handler(
+    const result = await GetStaticFileRootTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -202,7 +202,7 @@ describe("get-static-file-root", () => {
     };
 
     // Act
-    const result = await GetStaticFileRootTool().handler(
+    const result = await GetStaticFileRootTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -237,7 +237,7 @@ describe("get-static-file-root", () => {
     const params = { skip, take };
 
     // Act - get results from both tool and helper
-    const toolResult = await GetStaticFileRootTool().handler(
+    const toolResult = await GetStaticFileRootTool.handler(
       params,
       { signal: new AbortController().signal }
     );

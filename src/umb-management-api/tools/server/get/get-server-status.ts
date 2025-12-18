@@ -1,9 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetServerStatusTool = CreateUmbracoTool(
-  "get-server-status",
-  `Gets the current status of the Umbraco server.
+const GetServerStatusTool = {
+  name: "get-server-status",
+  description: `Gets the current status of the Umbraco server.
   Returns the server status (serverStatus) which can be one of:
   - Unknown: Status cannot be determined
   - Boot: Server is starting up
@@ -16,8 +17,10 @@ const GetServerStatusTool = CreateUmbracoTool(
   {
     "serverStatus": "Run"
   }`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: true,
+  slices: ['server-info'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getServerStatus();
 
@@ -29,7 +32,7 @@ const GetServerStatusTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetServerStatusTool;
+export default withStandardDecorators(GetServerStatusTool);

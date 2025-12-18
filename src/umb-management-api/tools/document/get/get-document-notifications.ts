@@ -1,13 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdNotificationsParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentNotificationsTool = CreateUmbracoTool(
-  "get-document-notifications",
-  "Gets the notifications for a document by Id.",
-  getDocumentByIdNotificationsParams.shape,
-  async ({ id }) => {
+const GetDocumentNotificationsTool = {
+  name: "get-document-notifications",
+  description: "Gets the notifications for a document by Id.",
+  schema: getDocumentByIdNotificationsParams.shape,
+  isReadOnly: true,
+  slices: ['notifications'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentByIdNotifications(id);
     return {
@@ -18,7 +20,7 @@ const GetDocumentNotificationsTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getDocumentByIdNotificationsParams.shape>;
 
-export default GetDocumentNotificationsTool;
+export default withStandardDecorators(GetDocumentNotificationsTool);

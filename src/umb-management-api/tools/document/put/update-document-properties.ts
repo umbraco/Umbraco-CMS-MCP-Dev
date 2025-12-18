@@ -1,5 +1,4 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
@@ -15,6 +14,8 @@ import {
 } from "./helpers/document-type-properties-resolver.js";
 import { validatePropertiesBeforeSave } from "./helpers/property-value-validator.js";
 import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Define the property schema for reuse
 const propertySchema = z.object({
@@ -40,9 +41,9 @@ type UpdateDocumentPropertiesModel = {
   }>;
 };
 
-const UpdateDocumentPropertiesTool = CreateUmbracoTool(
-  "update-document-properties",
-  `Updates or adds property values on a document without requiring the full document JSON payload.
+const UpdateDocumentPropertiesTool = {
+  name: "update-document-properties",
+  description: `Updates or adds property values on a document without requiring the full document JSON payload.
 
   This tool simplifies property updates by handling the read-modify-write cycle internally.
   You can update existing properties, add new properties, or do both in a single call.
@@ -60,8 +61,11 @@ const UpdateDocumentPropertiesTool = CreateUmbracoTool(
   - Add a new property: { id: "...", properties: [{ alias: "author", value: "John Doe" }] }
   - Update with culture: { id: "...", properties: [{ alias: "title", value: "Nuevo Título", culture: "es-ES" }] }
   - Mix update and add: { id: "...", properties: [{ alias: "title", value: "New" }, { alias: "newProp", value: "Value" }] }`,
-  updateDocumentPropertiesSchema,
-  async (model: UpdateDocumentPropertiesModel) => {
+  schema: updateDocumentPropertiesSchema,
+  isReadOnly: false,
+  slices: ['update'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Update),
+  handler: async (model: UpdateDocumentPropertiesModel) => {
     const client = UmbracoManagementClient.getClient();
 
     // Step 1: Fetch the current document
@@ -309,7 +313,6 @@ const UpdateDocumentPropertiesTool = CreateUmbracoTool(
       }]
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Update)
-);
+} satisfies ToolDefinition<typeof updateDocumentPropertiesSchema>;
 
-export default UpdateDocumentPropertiesTool;
+export default withStandardDecorators(UpdateDocumentPropertiesTool);

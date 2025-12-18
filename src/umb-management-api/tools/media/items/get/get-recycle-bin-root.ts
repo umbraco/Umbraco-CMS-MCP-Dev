@@ -1,12 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinMediaRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetRecycleBinMediaRootTool = CreateUmbracoTool(
-  "get-recycle-bin-media-root",
-  "Gets root items for the media recycle bin.",
-  getRecycleBinMediaRootQueryParams.shape,
-  async (params) => {
+type GetRecycleBinMediaRootParams = z.infer<typeof getRecycleBinMediaRootQueryParams>;
+
+const GetRecycleBinMediaRootTool = {
+  name: "get-recycle-bin-media-root",
+  description: "Gets root items for the media recycle bin.",
+  schema: getRecycleBinMediaRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree', 'recycle-bin'],
+  handler: async (params: GetRecycleBinMediaRootParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getRecycleBinMediaRoot(params);
     return {
@@ -17,7 +23,7 @@ const GetRecycleBinMediaRootTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getRecycleBinMediaRootQueryParams.shape>;
 
-export default GetRecycleBinMediaRootTool;
+export default withStandardDecorators(GetRecycleBinMediaRootTool);

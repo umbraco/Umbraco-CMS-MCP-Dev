@@ -33,7 +33,7 @@ describe("get-media-type-available-compositions", () => {
       .create();
 
     // Get the available compositions
-    const result = await GetMediaTypeAvailableCompositionsTool().handler(
+    const result = await GetMediaTypeAvailableCompositionsTool.handler(
       {
         id: mediaTypeBuilder.getId(),
         currentPropertyAliases: [],

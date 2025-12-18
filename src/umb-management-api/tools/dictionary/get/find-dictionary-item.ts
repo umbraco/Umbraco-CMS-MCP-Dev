@@ -1,15 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetDictionaryParams } from "@/umb-management-api/schemas/index.js";
 import { getDictionaryQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const FindDictionaryItemTool = CreateUmbracoTool(
-  "find-dictionary",
-  "Finds a dictionary by Id or name",
-  getDictionaryQueryParams.shape,
-  async (model: GetDictionaryParams) => {
+const FindDictionaryItemTool = {
+  name: "find-dictionary",
+  description: "Finds a dictionary by Id or name",
+  schema: getDictionaryQueryParams.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async (model: GetDictionaryParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getDictionary(model);
+    const response = await client.getDictionary(model);
 
     return {
       content: [
@@ -19,7 +22,7 @@ const FindDictionaryItemTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getDictionaryQueryParams.shape>;
 
-export default FindDictionaryItemTool;
+export default withStandardDecorators(FindDictionaryItemTool);

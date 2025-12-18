@@ -1,14 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { putRecycleBinDocumentByIdRestoreParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const RestoreFromRecycleBinTool = CreateUmbracoTool(
-  "restore-document-from-recycle-bin",
-  "Restores a document from the recycle bin.",
-  putRecycleBinDocumentByIdRestoreParams.shape,
-  async ({ id }) => {
+const RestoreFromRecycleBinTool = {
+  name: "restore-document-from-recycle-bin",
+  description: "Restores a document from the recycle bin.",
+  schema: putRecycleBinDocumentByIdRestoreParams.shape,
+  isReadOnly: false,
+  slices: ['move','recycle-bin'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Delete),
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putRecycleBinDocumentByIdRestore(id, {
       target: null,
@@ -22,7 +26,6 @@ const RestoreFromRecycleBinTool = CreateUmbracoTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Delete)
-);
+} satisfies ToolDefinition<typeof putRecycleBinDocumentByIdRestoreParams.shape>;
 
-export default RestoreFromRecycleBinTool;
+export default withStandardDecorators(RestoreFromRecycleBinTool);

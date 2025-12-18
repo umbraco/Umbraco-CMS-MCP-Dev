@@ -17,7 +17,7 @@ describe("get-media-type-folders", () => {
   describe("successful retrieval", () => {
     it("should get media type folders with default pagination", async () => {
       // Act
-      const result = await GetMediaTypeFoldersTool().handler(
+      const result = await GetMediaTypeFoldersTool.handler(
         { take: 100 },
         { signal: new AbortController().signal }
       );
@@ -43,7 +43,7 @@ describe("get-media-type-folders", () => {
 
     it("should get media type folders with custom pagination parameters", async () => {
       // Act
-      const result = await GetMediaTypeFoldersTool().handler(
+      const result = await GetMediaTypeFoldersTool.handler(
         { skip: 0, take: 5 },
         { signal: new AbortController().signal }
       );
@@ -60,7 +60,7 @@ describe("get-media-type-folders", () => {
 
     it("should get media type folders with skip parameter", async () => {
       // Act - Skip first item
-      const result = await GetMediaTypeFoldersTool().handler(
+      const result = await GetMediaTypeFoldersTool.handler(
         { skip: 1, take: 10 },
         { signal: new AbortController().signal }
       );
@@ -78,7 +78,7 @@ describe("get-media-type-folders", () => {
 
     it("should handle large pagination values", async () => {
       // Act - Request more items than likely exist
-      const result = await GetMediaTypeFoldersTool().handler(
+      const result = await GetMediaTypeFoldersTool.handler(
         { skip: 0, take: 1000 },
         { signal: new AbortController().signal }
       );
@@ -97,7 +97,7 @@ describe("get-media-type-folders", () => {
 
     it("should verify response structure and properties", async () => {
       // Act
-      const result = await GetMediaTypeFoldersTool().handler(
+      const result = await GetMediaTypeFoldersTool.handler(
         { skip: 0, take: 100 },
         { signal: new AbortController().signal }
       );
@@ -129,7 +129,7 @@ describe("get-media-type-folders", () => {
   describe("edge cases", () => {
     it("should handle empty results when skip exceeds available items", async () => {
       // Act - Request with high skip value to get empty results
-      const result = await GetMediaTypeFoldersTool().handler(
+      const result = await GetMediaTypeFoldersTool.handler(
         { skip: 10000, take: 10 },
         { signal: new AbortController().signal }
       );
@@ -149,7 +149,7 @@ describe("get-media-type-folders", () => {
 
     it("should handle zero take parameter", async () => {
       // Act
-      const result = await GetMediaTypeFoldersTool().handler(
+      const result = await GetMediaTypeFoldersTool.handler(
         { skip: 0, take: 0 },
         { signal: new AbortController().signal }
       );
@@ -167,7 +167,7 @@ describe("get-media-type-folders", () => {
 
     it("should handle boundary pagination values", async () => {
       // Arrange - First get the total number of items
-      const firstResult = await GetMediaTypeFoldersTool().handler(
+      const firstResult = await GetMediaTypeFoldersTool.handler(
         { skip: 0, take: 100 },
         { signal: new AbortController().signal }
       );
@@ -176,7 +176,7 @@ describe("get-media-type-folders", () => {
       const totalItems = firstParsed.total;
 
       // Act - Test boundary case where skip equals total items
-      const result = await GetMediaTypeFoldersTool().handler(
+      const result = await GetMediaTypeFoldersTool.handler(
         { skip: totalItems, take: 10 },
         { signal: new AbortController().signal }
       );
@@ -193,7 +193,7 @@ describe("get-media-type-folders", () => {
 
     it("should handle pagination with skip and small take values", async () => {
       // Act - Test with small pagination window
-      const result = await GetMediaTypeFoldersTool().handler(
+      const result = await GetMediaTypeFoldersTool.handler(
         { skip: 0, take: 1 },
         { signal: new AbortController().signal }
       );

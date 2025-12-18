@@ -22,12 +22,14 @@ describe("data-type-folder", () => {
   afterEach(async () => {
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await DataTypeTestHelper.cleanup(TEST_PARENT_FOLDER_NAME);
+    await DataTypeTestHelper.cleanup(UPDATE_FOLDER_NAME);
+    await DataTypeTestHelper.cleanup(UPDATED_FOLDER_NAME);
     console.error = originalConsoleError;
   });
 
   describe("create", () => {
     it("should create a folder", async () => {
-      const result = await CreateDataTypeFolderTool().handler(
+      const result = await CreateDataTypeFolderTool.handler(
         {
           name: TEST_FOLDER_NAME,
         },
@@ -49,7 +51,7 @@ describe("data-type-folder", () => {
       ).create();
       expect(parentBuilder).toBeDefined();
 
-      const result = await CreateDataTypeFolderTool().handler(
+      const result = await CreateDataTypeFolderTool.handler(
         {
           name: TEST_FOLDER_NAME,
           parent: { id: parentBuilder.getId() },
@@ -74,7 +76,7 @@ describe("data-type-folder", () => {
       ).create();
       expect(builder).toBeDefined();
 
-      const result = await UpdateDataTypeFolderTool().handler(
+      const result = await UpdateDataTypeFolderTool.handler(
         {
           id: builder.getId(),
           data: {
@@ -94,7 +96,7 @@ describe("data-type-folder", () => {
     });
 
     it("should handle non-existent folder", async () => {
-      const result = await UpdateDataTypeFolderTool().handler(
+      const result = await UpdateDataTypeFolderTool.handler(
         {
           id: BLANK_UUID,
           data: {
@@ -116,7 +118,7 @@ describe("data-type-folder", () => {
       ).create();
       expect(builder).toBeDefined();
 
-      const result = await DeleteDataTypeFolderTool().handler(
+      const result = await DeleteDataTypeFolderTool.handler(
         {
           id: builder.getId(),
         },
@@ -131,7 +133,7 @@ describe("data-type-folder", () => {
     });
 
     it("should handle non-existent folder", async () => {
-      const result = await DeleteDataTypeFolderTool().handler(
+      const result = await DeleteDataTypeFolderTool.handler(
         {
           id: BLANK_UUID,
         },

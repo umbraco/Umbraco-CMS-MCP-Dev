@@ -57,7 +57,7 @@ describe("get-media-siblings", () => {
       .create();
 
     // Act: Get siblings of the first child
-    const result = await GetMediaSiblingsTool().handler(
+    const result = await GetMediaSiblingsTool.handler(
       {
         target: sibling1Builder.getId(),
       },
@@ -71,7 +71,7 @@ describe("get-media-siblings", () => {
 
   it("should handle non-existent target", async () => {
     // Act: Try to get siblings for non-existent media item
-    const result = await GetMediaSiblingsTool().handler(
+    const result = await GetMediaSiblingsTool.handler(
       {
         target: BLANK_UUID,
       },

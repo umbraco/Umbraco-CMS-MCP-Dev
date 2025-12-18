@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemLanguageDefaultResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDefaultLanguageTool = CreateUmbracoTool(
-  "get-default-language",
-  "Gets the default language",
-  {}, // No params required
-  async () => {
+const GetDefaultLanguageTool = {
+  name: "get-default-language",
+  description: "Gets the default language",
+  schema: {}, // No params required
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemLanguageDefault();
     // Validate response shape
@@ -19,7 +22,7 @@ const GetDefaultLanguageTool = CreateUmbracoTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetDefaultLanguageTool;
+export default withStandardDecorators(GetDefaultLanguageTool);
