@@ -10,6 +10,7 @@ exports[`webhook-tool-index should have all tools when user has webhook access 1
   "update-webhook",
   "get-webhook-events",
   "get-all-webhook-logs",
+  "get-webhook-logs",
 ]
 `;
 

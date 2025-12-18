@@ -1,12 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaUrlsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetMediaUrlsTool = CreateUmbracoReadTool(
-  "get-media-urls",
-  "Gets the URLs for a media item.",
-  getMediaUrlsQueryParams.shape,
-  async (params) => {
+type GetMediaUrlsParams = z.infer<typeof getMediaUrlsQueryParams>;
+
+const GetMediaUrlsTool = {
+  name: "get-media-urls",
+  description: "Gets the URLs for a media item.",
+  schema: getMediaUrlsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (params: GetMediaUrlsParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaUrls(params);
     return {
@@ -17,7 +23,7 @@ const GetMediaUrlsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMediaUrlsQueryParams.shape>;
 
-export default GetMediaUrlsTool;
+export default withStandardDecorators(GetMediaUrlsTool);

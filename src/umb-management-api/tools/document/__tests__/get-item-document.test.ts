@@ -35,7 +35,7 @@ describe("get-item-document", () => {
       .create();
 
     // Act - Get documents by their IDs
-    const result = await GetItemDocumentTool().handler(
+    const result = await GetItemDocumentTool.handler(
       {
         id: [builder1.getId(), builder2.getId()],
       },
@@ -49,7 +49,7 @@ describe("get-item-document", () => {
 
   it("should handle non-existent document ids", async () => {
     // Act
-    const result = await GetItemDocumentTool().handler(
+    const result = await GetItemDocumentTool.handler(
       {
         id: [BLANK_UUID],
       },

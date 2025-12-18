@@ -14,7 +14,7 @@ describe("get-webhook-events", () => {
   });
 
   it("should get list of webhook events", async () => {
-    const result = await GetWebhookEventsTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetWebhookEventsTool.handler({}, { signal: new AbortController().signal });
     expect(result).toMatchSnapshot();
   });
 }); 

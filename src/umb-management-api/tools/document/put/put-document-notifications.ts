@@ -1,19 +1,24 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putDocumentByIdNotificationsParams,
   putDocumentByIdNotificationsBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const PutDocumentNotificationsTool = CreateUmbracoWriteTool(
-  "put-document-notifications",
-  "Updates the notifications for a document by Id.",
-  {
-    id: putDocumentByIdNotificationsParams.shape.id,
-    data: z.object(putDocumentByIdNotificationsBody.shape),
-  },
-  async (model: { id: string; data: any }) => {
+const putDocumentNotificationsSchema = {
+  id: putDocumentByIdNotificationsParams.shape.id,
+  data: z.object(putDocumentByIdNotificationsBody.shape),
+};
+
+const PutDocumentNotificationsTool = {
+  name: "put-document-notifications",
+  description: "Updates the notifications for a document by Id.",
+  schema: putDocumentNotificationsSchema,
+  isReadOnly: false,
+  slices: ['notifications'],
+  handler: async (model: { id: string; data: any }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putDocumentByIdNotifications(
       model.id,
@@ -27,7 +32,7 @@ const PutDocumentNotificationsTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof putDocumentNotificationsSchema>;
 
-export default PutDocumentNotificationsTool;
+export default withStandardDecorators(PutDocumentNotificationsTool);

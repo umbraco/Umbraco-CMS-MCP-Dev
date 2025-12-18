@@ -35,7 +35,7 @@ describe("get-member", () => {
     const id = builder.getId();
 
     // Get by ID
-    const result = await GetMemberTool().handler(
+    const result = await GetMemberTool.handler(
       { id },
       { signal: new AbortController().signal }
     );
@@ -46,7 +46,7 @@ describe("get-member", () => {
   });
 
   it("should return error for non-existent ID", async () => {
-    const result = await GetMemberTool().handler(
+    const result = await GetMemberTool.handler(
       { id: BLANK_UUID },
       { signal: new AbortController().signal }
     );

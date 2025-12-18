@@ -42,7 +42,7 @@ describe("delete-media-recycle-bin-item", () => {
     const mediaInRecycleBin = await MediaTestHelper.findMediaInRecycleBin(TEST_MEDIA_NAME);
 
     // Act: Permanently delete the media from recycle bin
-    const result = await DeleteMediaRecycleBinItemTool().handler(
+    const result = await DeleteMediaRecycleBinItemTool.handler(
       {
         id: mediaInRecycleBin!.id,
       },
@@ -59,7 +59,7 @@ describe("delete-media-recycle-bin-item", () => {
 
   it("should handle non-existent media in recycle bin", async () => {
     // Act: Try to delete non-existent media from recycle bin
-    const result = await DeleteMediaRecycleBinItemTool().handler(
+    const result = await DeleteMediaRecycleBinItemTool.handler(
       {
         id: BLANK_UUID,
       },

@@ -24,7 +24,7 @@ describe("get-webhook", () => {
 
   it("should get empty paged webhooks", async () => {
     // Get paged webhooks
-    const result = await GetWebhookTool().handler(
+    const result = await GetWebhookTool.handler(
       { skip: 0, take: 10 },
       { signal: new AbortController().signal }
     );
@@ -45,7 +45,7 @@ describe("get-webhook", () => {
       .create();
 
     // Get paged webhooks
-    const result = await GetWebhookTool().handler(
+    const result = await GetWebhookTool.handler(
       { skip: 0, take: 10 },
       { signal: new AbortController().signal }
     );
@@ -71,7 +71,7 @@ describe("get-webhook", () => {
 
   it("should use pagination parameters", async () => {
     // Get webhooks with pagination parameters
-    const result = await GetWebhookTool().handler(
+    const result = await GetWebhookTool.handler(
       { skip: 0, take: 100 },
       { signal: new AbortController().signal }
     );

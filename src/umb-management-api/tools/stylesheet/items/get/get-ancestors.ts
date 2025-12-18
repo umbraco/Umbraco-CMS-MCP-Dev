@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreeStylesheetAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeStylesheetAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetStylesheetAncestorsTool = CreateUmbracoReadTool(
-  "get-stylesheet-ancestors",
-  "Gets the ancestors of a stylesheet in the tree structure",
-  getTreeStylesheetAncestorsQueryParams.shape,
-  async (model: GetTreeStylesheetAncestorsParams) => {
+const GetStylesheetAncestorsTool = {
+  name: "get-stylesheet-ancestors",
+  description: "Gets the ancestors of a stylesheet in the tree structure",
+  schema: getTreeStylesheetAncestorsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (model: GetTreeStylesheetAncestorsParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreeStylesheetAncestors(model);
 
@@ -20,6 +23,6 @@ const GetStylesheetAncestorsTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getTreeStylesheetAncestorsQueryParams.shape>;
 
-export default GetStylesheetAncestorsTool;
+export default withStandardDecorators(GetStylesheetAncestorsTool);

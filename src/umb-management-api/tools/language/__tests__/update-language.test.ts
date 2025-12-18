@@ -49,7 +49,7 @@ describe("update-language", () => {
     };
 
     // Update the language
-    const result = await UpdateLanguageTool().handler({
+    const result = await UpdateLanguageTool.handler({
       isoCode: builder.getIsoCode(),
       data: updateModel
     }, { signal: new AbortController().signal });
@@ -74,7 +74,7 @@ describe("update-language", () => {
       fallbackIsoCode: null
     };
 
-    const result = await UpdateLanguageTool().handler({
+    const result = await UpdateLanguageTool.handler({
       isoCode: nonExistentIso,
       data: updateModel
     }, { signal: new AbortController().signal });

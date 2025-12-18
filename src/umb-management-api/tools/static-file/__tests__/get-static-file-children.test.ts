@@ -39,7 +39,7 @@ describe("get-static-file-children", () => {
     };
 
     // Act
-    const result = await GetStaticFileChildrenTool().handler(
+    const result = await GetStaticFileChildrenTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -85,7 +85,7 @@ describe("get-static-file-children", () => {
         take: SMALL_TAKE
       };
 
-      const result = await GetStaticFileChildrenTool().handler(
+      const result = await GetStaticFileChildrenTool.handler(
         params,
         { signal: new AbortController().signal }
       );
@@ -101,7 +101,7 @@ describe("get-static-file-children", () => {
     };
 
     // Act
-    const result = await GetStaticFileChildrenTool().handler(
+    const result = await GetStaticFileChildrenTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -136,7 +136,7 @@ describe("get-static-file-children", () => {
     }
 
     // Get initial result to determine total items
-    const initialResult = await GetStaticFileChildrenTool().handler(
+    const initialResult = await GetStaticFileChildrenTool.handler(
       { parentPath: testFolder.path, skip: 0, take: DEFAULT_TAKE },
       { signal: new AbortController().signal }
     );
@@ -154,7 +154,7 @@ describe("get-static-file-children", () => {
       };
 
       // Act
-      const result = await GetStaticFileChildrenTool().handler(
+      const result = await GetStaticFileChildrenTool.handler(
         params,
         { signal: new AbortController().signal }
       );
@@ -175,7 +175,7 @@ describe("get-static-file-children", () => {
         take: DEFAULT_TAKE
       };
 
-      const result = await GetStaticFileChildrenTool().handler(
+      const result = await GetStaticFileChildrenTool.handler(
         params,
         { signal: new AbortController().signal }
       );
@@ -193,7 +193,7 @@ describe("get-static-file-children", () => {
     };
 
     // Act
-    const result = await GetStaticFileChildrenTool().handler(
+    const result = await GetStaticFileChildrenTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -222,7 +222,7 @@ describe("get-static-file-children", () => {
     };
 
     // Act
-    const result = await GetStaticFileChildrenTool().handler(
+    const result = await GetStaticFileChildrenTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -251,7 +251,7 @@ describe("get-static-file-children", () => {
     };
 
     // Act
-    const result = await GetStaticFileChildrenTool().handler(
+    const result = await GetStaticFileChildrenTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -289,7 +289,7 @@ describe("get-static-file-children", () => {
     };
 
     // Act
-    const result = await GetStaticFileChildrenTool().handler(
+    const result = await GetStaticFileChildrenTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -333,7 +333,7 @@ describe("get-static-file-children", () => {
     const params = { parentPath: testFolder.path, skip, take };
 
     // Act - get results from both tool and helper
-    const toolResult = await GetStaticFileChildrenTool().handler(
+    const toolResult = await GetStaticFileChildrenTool.handler(
       params,
       { signal: new AbortController().signal }
     );

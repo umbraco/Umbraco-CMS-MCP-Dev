@@ -37,7 +37,7 @@ describe("get-document-type-blueprint", () => {
       .create();
 
     // Get the blueprints
-    const result = await GetDocumentTypeBlueprintTool().handler(
+    const result = await GetDocumentTypeBlueprintTool.handler(
       {
         id: docTypeBuilder.getId(),
       },
@@ -64,7 +64,7 @@ describe("get-document-type-blueprint", () => {
   });
 
   it("should handle non-existent document type", async () => {
-    const result = await GetDocumentTypeBlueprintTool().handler(
+    const result = await GetDocumentTypeBlueprintTool.handler(
       {
         id: BLANK_UUID,
       },
@@ -83,7 +83,7 @@ describe("get-document-type-blueprint", () => {
       .create();
 
     // Get the blueprints
-    const result = await GetDocumentTypeBlueprintTool().handler(
+    const result = await GetDocumentTypeBlueprintTool.handler(
       {
         id: docTypeBuilder.getId(),
       },

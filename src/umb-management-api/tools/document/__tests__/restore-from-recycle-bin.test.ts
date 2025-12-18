@@ -31,7 +31,7 @@ describe("restore-document-from-recycle-bin", () => {
     await builder.moveToRecycleBin();
 
     // Restore from recycle bin
-    const result = await RestoreFromRecycleBinTool().handler(
+    const result = await RestoreFromRecycleBinTool.handler(
       {
         id: builder.getId(),
       },
@@ -48,7 +48,7 @@ describe("restore-document-from-recycle-bin", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const result = await RestoreFromRecycleBinTool().handler(
+    const result = await RestoreFromRecycleBinTool.handler(
       {
         id: BLANK_UUID,
       },

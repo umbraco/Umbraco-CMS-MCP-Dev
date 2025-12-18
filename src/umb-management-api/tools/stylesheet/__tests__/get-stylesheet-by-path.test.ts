@@ -31,7 +31,7 @@ describe("get-stylesheet-by-path", () => {
     const stylesheetPath = stylesheetBuilder.getPath();
 
     // Act
-    const result = await GetStylesheetByPathTool().handler({ path: stylesheetPath }, { signal: new AbortController().signal });
+    const result = await GetStylesheetByPathTool.handler({ path: stylesheetPath }, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -47,7 +47,7 @@ describe("get-stylesheet-by-path", () => {
 
   it("should handle non-existent stylesheet", async () => {
     // Act
-    const result = await GetStylesheetByPathTool().handler({ path: NON_EXISTENT_STYLESHEET_PATH }, { signal: new AbortController().signal });
+    const result = await GetStylesheetByPathTool.handler({ path: NON_EXISTENT_STYLESHEET_PATH }, { signal: new AbortController().signal });
 
     // Assert
     expect(result).toMatchSnapshot();

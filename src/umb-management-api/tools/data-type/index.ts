@@ -2,6 +2,7 @@ import CreateDataTypeTool from "./post/create-data-type.js";
 import DeleteDataTypeTool from "./delete/delete-data-type.js";
 import FindDataTypeTool from "./get/find-data-type.js";
 import GetDataTypeTool from "./get/get-data-type.js";
+import GetDataTypesByIdArrayTool from "./get/get-data-type-by-id-array.js";
 import GetDataTypeConfigurationTool from "./get/get-data-type-configuration.js";
 import GetDataTypePropertyEditorTemplateTool from "./get/get-data-type-property-editor-template.js";
 import UpdateDataTypeTool from "./put/update-data-type.js";
@@ -32,43 +33,43 @@ export const DataTypeCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [GetDataTypeSearchTool()];
+    const tools: ToolDefinition<any>[] = [GetDataTypeSearchTool];
 
     if (AuthorizationPolicies.TreeAccessDocumentsOrMediaOrMembersOrContentTypes(user)) {
-      tools.push(GetReferencesDataTypeTool());
-      tools.push(IsUsedDataTypeTool());
-      tools.push(GetDataTypeTool());
-      tools.push(GetDataTypeConfigurationTool());
-      tools.push(GetDataTypePropertyEditorTemplateTool());
+      tools.push(GetReferencesDataTypeTool);
+      tools.push(IsUsedDataTypeTool);
+      tools.push(GetDataTypeTool);
+      tools.push(GetDataTypesByIdArrayTool);
+      tools.push(GetDataTypeConfigurationTool);
+      tools.push(GetDataTypePropertyEditorTemplateTool);
     }
 
     if (AuthorizationPolicies.TreeAccessDataTypes(user)) {
-      tools.push(GetDataTypeRootTool());
-      tools.push(GetDataTypeChildrenTool());
-      tools.push(GetDataTypeSiblingsTool());
-      tools.push(GetDataTypeAncestorsTool());
-      tools.push(GetAllDataTypesTool());
+      tools.push(GetDataTypeRootTool);
+      tools.push(GetDataTypeChildrenTool);
+      tools.push(GetDataTypeSiblingsTool);
+      tools.push(GetDataTypeAncestorsTool);
+      tools.push(GetAllDataTypesTool);
 
-      tools.push(DeleteDataTypeTool());
-      tools.push(CreateDataTypeTool());
-      tools.push(UpdateDataTypeTool());
+      tools.push(DeleteDataTypeTool);
+      tools.push(CreateDataTypeTool);
+      tools.push(UpdateDataTypeTool);
 
-      tools.push(CopyDataTypeTool());
-      tools.push(MoveDataTypeTool());
+      tools.push(CopyDataTypeTool);
+      tools.push(MoveDataTypeTool);
     }
 
     if (AuthorizationPolicies.TreeAccessDocumentsOrDocumentTypes(user)) {
-      tools.push(FindDataTypeTool());
+      tools.push(FindDataTypeTool);
     }
 
     if (AuthorizationPolicies.TreeAccessDataTypes(user)) {
-      tools.push(CreateDataTypeFolderTool());
-      tools.push(DeleteDataTypeFolderTool());
-      tools.push(GetDataTypeFolderTool());
-      tools.push(UpdateDataTypeFolderTool());
+      tools.push(CreateDataTypeFolderTool);
+      tools.push(DeleteDataTypeFolderTool);
+      tools.push(GetDataTypeFolderTool);
+      tools.push(UpdateDataTypeFolderTool);
     }
 
     return tools;
   }
 };
-

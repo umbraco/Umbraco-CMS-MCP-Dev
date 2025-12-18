@@ -14,7 +14,7 @@ export const RelationCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessRelationTypes(user)) {
-      tools.push(GetRelationByRelationTypeIdTool());
+      tools.push(GetRelationByRelationTypeIdTool);
     }
 
     return tools;

@@ -28,9 +28,9 @@ describe("get-member-group-root", () => {
   });
 
   it("should get the root of the member group tree and include created groups", async () => {
-    const result = await GetMemberGroupRootTool().handler({ take: 100 }, { signal: new AbortController().signal });
+    const result = await GetMemberGroupRootTool.handler({ take: 100 }, { signal: new AbortController().signal });
 
-    
+
     const text = typeof result.content[0].text === "string" ? result.content[0].text : "";
     const parsed = text ? JSON.parse(text) : { items: [] };
     const names = parsed.items ? parsed.items.map((item: any) => item.name) : [];

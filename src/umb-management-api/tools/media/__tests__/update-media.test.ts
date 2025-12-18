@@ -43,7 +43,7 @@ describe("update-media", () => {
       .build();
 
     // Update the media
-    const result = await UpdateMediaTool().handler(
+    const result = await UpdateMediaTool.handler(
       {
         id: builder.getId(),
         data: updateModel,
@@ -68,7 +68,7 @@ describe("update-media", () => {
       .withImageValue(tempFileBuilder.getId())
       .build();
 
-    const result = await UpdateMediaTool().handler(
+    const result = await UpdateMediaTool.handler(
       {
         id: BLANK_UUID,
         data: updateModel,
@@ -101,7 +101,7 @@ describe("update-media", () => {
       .build();
 
     // Update the media
-    const result = await UpdateMediaTool().handler(
+    const result = await UpdateMediaTool.handler(
       {
         id: builder.getId(),
         data: updateModel,

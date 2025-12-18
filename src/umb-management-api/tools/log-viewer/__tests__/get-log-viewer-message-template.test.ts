@@ -15,7 +15,7 @@ describe("get-log-viewer-message-template", () => {
   });
 
   it("should get log viewer message templates with default parameters", async () => {
-    const result = await GetLogViewerMessageTemplateTool().handler(
+    const result = await GetLogViewerMessageTemplateTool.handler(
       { take: 100 },
       { signal: new AbortController().signal }
     );
@@ -31,7 +31,7 @@ describe("get-log-viewer-message-template", () => {
     const oneMonthAgo = new Date(now);
     oneMonthAgo.setMonth(now.getMonth() - 1);
 
-    const result = await GetLogViewerMessageTemplateTool().handler(
+    const result = await GetLogViewerMessageTemplateTool.handler(
       {
         skip: 0,
         take: 10,

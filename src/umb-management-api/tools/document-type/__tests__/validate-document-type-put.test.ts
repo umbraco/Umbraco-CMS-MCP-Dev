@@ -24,7 +24,7 @@ describe("validate-document-type", () => {
       .withName(TEST_DOCTYPE_NAME)
       .create();
     const model = builder.build();
-    const result = await ValidateDocumentTypeTool().handler(
+    const result = await ValidateDocumentTypeTool.handler(
       {
         id: builder.getId(),
         data: model,
@@ -51,7 +51,7 @@ describe("validate-document-type", () => {
       allowedDocumentTypes: [],
       compositions: [],
     };
-    const result = await ValidateDocumentTypeTool().handler(
+    const result = await ValidateDocumentTypeTool.handler(
       {
         id: "00000000-0000-0000-0000-000000000000",
         data: invalidModel,

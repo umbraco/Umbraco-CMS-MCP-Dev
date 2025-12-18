@@ -40,7 +40,7 @@ describe("get-references-data-type", () => {
       .withProperty("testProperty", "Test Property", dataTypeBuilder.getId())
       .create();
 
-    const result = await GetReferencesDataTypeTool().handler(
+    const result = await GetReferencesDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
       { signal: new AbortController().signal }
     );
@@ -56,7 +56,7 @@ describe("get-references-data-type", () => {
       .withTextbox()
       .create();
 
-    const result = await GetReferencesDataTypeTool().handler(
+    const result = await GetReferencesDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
       { signal: new AbortController().signal }
     );
@@ -67,7 +67,7 @@ describe("get-references-data-type", () => {
   });
 
   it("should handle non-existent data type", async () => {
-    const result = await GetReferencesDataTypeTool().handler(
+    const result = await GetReferencesDataTypeTool.handler(
       { id: BLANK_UUID },
       { signal: new AbortController().signal }
     );

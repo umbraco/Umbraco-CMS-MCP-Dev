@@ -1,12 +1,21 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDocumentBlueprintRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentBlueprintRootTool = CreateUmbracoReadTool(
-  "get-document-blueprint-root",
-  "Gets the root level of the document blueprint tree",
-  getTreeDocumentBlueprintRootQueryParams.shape,
-  async (params) => {
+type GetDocumentBlueprintRootParams = {
+  skip?: number;
+  take?: number;
+  dataTypeId?: string;
+};
+
+const GetDocumentBlueprintRootTool = {
+  name: "get-document-blueprint-root",
+  description: "Gets the root level of the document blueprint tree",
+  schema: getTreeDocumentBlueprintRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetDocumentBlueprintRootParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreeDocumentBlueprintRoot(params);
     return {
@@ -17,7 +26,7 @@ const GetDocumentBlueprintRootTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeDocumentBlueprintRootQueryParams.shape>;
 
-export default GetDocumentBlueprintRootTool;
+export default withStandardDecorators(GetDocumentBlueprintRootTool);

@@ -1,16 +1,19 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteRedirectManagementByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteRedirectTool = CreateUmbracoWriteTool(
-  "delete-redirect",
-  `Deletes a specific redirect by its ID.
+const DeleteRedirectTool = {
+  name: "delete-redirect",
+  description: `Deletes a specific redirect by its ID.
   Parameters:
   - id: The unique identifier of the redirect to delete (string)
-  
+
   Returns no content on success.`,
-  deleteRedirectManagementByIdParams.shape,
-  async ({ id }) => {
+  schema: deleteRedirectManagementByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     await client.deleteRedirectManagementById(id);
 
@@ -22,7 +25,7 @@ const DeleteRedirectTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteRedirectManagementByIdParams.shape>;
 
-export default DeleteRedirectTool;
+export default withStandardDecorators(DeleteRedirectTool);

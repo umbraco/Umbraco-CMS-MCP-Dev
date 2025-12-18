@@ -24,7 +24,7 @@ describe("get-document-blueprint-scaffold", () => {
       .create();
 
     // Act: Get scaffold for the blueprint
-    const result = await GetDocumentBlueprintScaffoldTool().handler(
+    const result = await GetDocumentBlueprintScaffoldTool.handler(
       { id: builder.getId() },
       { signal: new AbortController().signal }
     );
@@ -46,7 +46,7 @@ describe("get-document-blueprint-scaffold", () => {
 
   it("should handle non-existent blueprint", async () => {
     // Act: Try to get scaffold for non-existent blueprint
-    const result = await GetDocumentBlueprintScaffoldTool().handler(
+    const result = await GetDocumentBlueprintScaffoldTool.handler(
       { id: "00000000-0000-0000-0000-000000000000" },
       { signal: new AbortController().signal }
     );

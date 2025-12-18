@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentBlueprintFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentBlueprintFolderTool = CreateUmbracoReadTool(
-  "get-document-blueprint-folder",
-  "Gets a document blueprint folder by Id",
-  getDocumentBlueprintFolderByIdParams.shape,
-  async ({ id }) => {
+const GetDocumentBlueprintFolderTool = {
+  name: "get-document-blueprint-folder",
+  description: "Gets a document blueprint folder by Id",
+  schema: getDocumentBlueprintFolderByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read', 'folders'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getDocumentBlueprintFolderById(id);
     return {
@@ -17,7 +20,7 @@ const GetDocumentBlueprintFolderTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getDocumentBlueprintFolderByIdParams.shape>;
 
-export default GetDocumentBlueprintFolderTool;
+export default withStandardDecorators(GetDocumentBlueprintFolderTool);

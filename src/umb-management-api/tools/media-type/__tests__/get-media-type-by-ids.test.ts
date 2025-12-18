@@ -35,7 +35,7 @@ describe("get-media-type-by-ids", () => {
       .withAllowedAsRoot(true)
       .create();
 
-    const result = await GetMediaTypeByIdsTool().handler(
+    const result = await GetMediaTypeByIdsTool.handler(
       {
         ids: [builder1.getId(), builder2.getId()],
       },
@@ -54,7 +54,7 @@ describe("get-media-type-by-ids", () => {
   });
 
   it("should handle non-existent media types", async () => {
-    const result = await GetMediaTypeByIdsTool().handler(
+    const result = await GetMediaTypeByIdsTool.handler(
       {
         ids: [BLANK_UUID],
       },

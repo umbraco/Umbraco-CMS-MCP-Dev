@@ -54,7 +54,7 @@ describe("get-script-tree-siblings", () => {
       .create();
 
     // Act: Get siblings for the target script
-    const result = await GetScriptTreeSiblingsTool().handler(
+    const result = await GetScriptTreeSiblingsTool.handler(
       {
         path: targetBuilder.getPath(),
       },
@@ -71,7 +71,7 @@ describe("get-script-tree-siblings", () => {
     const nonExistentPath = "non-existent-path.js";
 
     // Act: Try to get siblings for non-existent script
-    const result = await GetScriptTreeSiblingsTool().handler(
+    const result = await GetScriptTreeSiblingsTool.handler(
       {
         path: nonExistentPath,
       },

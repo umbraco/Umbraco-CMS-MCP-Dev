@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTemplateByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetTemplateTool = CreateUmbracoReadTool(
-  "get-template",
-  "Gets a template by Id",
-  getTemplateByIdParams.shape,
-  async ({ id }) => {
+const GetTemplateTool = {
+  name: "get-template",
+  description: "Gets a template by Id",
+  schema: getTemplateByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTemplateById(id);
 
@@ -18,7 +21,7 @@ const GetTemplateTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTemplateByIdParams.shape>;
 
-export default GetTemplateTool;
+export default withStandardDecorators(GetTemplateTool);

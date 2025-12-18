@@ -33,7 +33,7 @@ describe("create-partial-view", () => {
     };
 
     // Act
-    const result = await CreatePartialViewTool().handler(params, { signal: new AbortController().signal });
+    const result = await CreatePartialViewTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -46,13 +46,13 @@ describe("create-partial-view", () => {
 
   it("should handle existing partial view name", async () => {
     // Arrange - First create the partial view
-    await CreatePartialViewTool().handler({
+    await CreatePartialViewTool.handler({
       name: EXISTING_PARTIAL_VIEW_NAME,
       content: EXISTING_CONTENT
     }, { signal: new AbortController().signal });
 
     // Act - Try to create it again with same name
-    const result = await CreatePartialViewTool().handler({
+    const result = await CreatePartialViewTool.handler({
       name: EXISTING_PARTIAL_VIEW_NAME,
       content: TEST_CONTENT
     }, { signal: new AbortController().signal });
@@ -75,7 +75,7 @@ describe("create-partial-view", () => {
     };
 
     // Act
-    const result = await CreatePartialViewTool().handler(params, { signal: new AbortController().signal });
+    const result = await CreatePartialViewTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

@@ -29,7 +29,7 @@ describe("create-document", () => {
     };
 
     // Create the document
-    const result = await CreateDocumentTool().handler(docModel, {
+    const result = await CreateDocumentTool.handler(docModel, {
       signal: new AbortController().signal,
     });
 
@@ -66,7 +66,7 @@ describe("create-document", () => {
       ],
     };
 
-    const result = await CreateDocumentTool().handler(docModel, {
+    const result = await CreateDocumentTool.handler(docModel, {
       signal: new AbortController().signal,
     });
 
@@ -130,7 +130,7 @@ describe("create-document", () => {
         values: [],
       };
 
-      const result = await CreateDocumentTool().handler(docModel, {
+      const result = await CreateDocumentTool.handler(docModel, {
         signal: new AbortController().signal,
       });
 
@@ -185,7 +185,7 @@ describe("create-document", () => {
       values: [],
     };
 
-    const result = await CreateDocumentTool().handler(docModel, {
+    const result = await CreateDocumentTool.handler(docModel, {
       signal: new AbortController().signal,
     });
 

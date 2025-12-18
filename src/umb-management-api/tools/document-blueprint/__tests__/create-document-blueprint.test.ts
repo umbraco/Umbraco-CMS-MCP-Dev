@@ -33,7 +33,7 @@ describe("create-document-blueprint", () => {
       .build();
 
     // Create the blueprint
-    const result = await CreateDocumentBlueprintTool().handler(blueprintModel, {
+    const result = await CreateDocumentBlueprintTool.handler(blueprintModel, {
       signal: new AbortController().signal,
     });
 
@@ -55,12 +55,12 @@ describe("create-document-blueprint", () => {
       .build();
 
     // First create the blueprint
-    await CreateDocumentBlueprintTool().handler(blueprintModel, {
+    await CreateDocumentBlueprintTool.handler(blueprintModel, {
       signal: new AbortController().signal,
     });
 
     // Try to create it again
-    const result = await CreateDocumentBlueprintTool().handler(blueprintModel, {
+    const result = await CreateDocumentBlueprintTool.handler(blueprintModel, {
       signal: new AbortController().signal,
     });
 
@@ -75,7 +75,7 @@ describe("create-document-blueprint", () => {
     ).create();
 
     // Arrange: Create blueprint with flattened parentId for tool
-    const result = await CreateDocumentBlueprintTool().handler({
+    const result = await CreateDocumentBlueprintTool.handler({
       values: [],
       variants: [{
         culture: null,

@@ -18,9 +18,9 @@ export const ModelsBuilderCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessSettings(user)) {
-      tools.push(GetModelsBuilderDashboardTool());
-      tools.push(GetModelsBuilderStatusTool());
-      tools.push(PostModelsBuilderBuildTool());
+      tools.push(GetModelsBuilderDashboardTool);
+      tools.push(GetModelsBuilderStatusTool);
+      tools.push(PostModelsBuilderBuildTool);
     }
 
     return tools;

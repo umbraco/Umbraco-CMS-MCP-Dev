@@ -8,8 +8,8 @@ import type { UmbracoServerConfig } from "../../../config.js";
 // Mock environment variables for testing
 const originalEnv = process.env;
 
-// Helper to create mock config from process.env
-const getMockConfig = (): UmbracoServerConfig => ({
+// Helper to create mock config from process.env with optional overrides
+const getMockConfig = (overrides: Partial<UmbracoServerConfig> = {}): UmbracoServerConfig => ({
   auth: {
     clientId: "test-client",
     clientSecret: "test-secret",
@@ -24,7 +24,8 @@ const getMockConfig = (): UmbracoServerConfig => ({
     clientSecret: "env",
     baseUrl: "env",
     envFile: "default"
-  }
+  },
+  ...overrides
 });
 
 const mockUser: CurrentUserResponseModel = {
@@ -42,7 +43,16 @@ const mockUser: CurrentUserResponseModel = {
   mediaStartNodeIds: [],
   hasDocumentRootAccess: true,
   hasMediaRootAccess: true,
-  allowedSections: ["content", "settings", "media", "members"],
+  // Include all sections using Umbraco's section IDs for comprehensive test coverage
+  allowedSections: [
+    "Umb.Section.Content",
+    "Umb.Section.Settings",
+    "Umb.Section.Media",
+    "Umb.Section.Members",
+    "Umb.Section.Translation",
+    "Umb.Section.Users",
+    "Umb.Section.Packages"
+  ],
   fallbackPermissions: [],
   permissions: [],
   isAdmin: false
@@ -190,17 +200,23 @@ describe('UmbracoToolFactory Integration', () => {
 
   it('should maintain tool registration order', () => {
     UmbracoToolFactory(mockServer, mockUser, getMockConfig());
-    
+
     // Verify tools were registered in some order
     expect(mockServer.tool.mock.calls.length).toBeGreaterThan(0);
-    
+
     // Each tool call should have the expected parameters
+    // Some tools have no schema (undefined), so they may have 3 or 4 args
     mockServer.tool.mock.calls.forEach(call => {
-      expect(call.length).toBe(4); // name, description, schema, handler
+      expect(call.length).toBeGreaterThanOrEqual(3);
       expect(typeof call[0]).toBe('string'); // name
       expect(typeof call[1]).toBe('string'); // description
-      expect(typeof call[2]).toBe('object'); // schema
-      expect(typeof call[3]).toBe('function'); // handler
+      // schema can be object or undefined for tools without parameters
+      if (call[2] !== undefined) {
+        expect(typeof call[2]).toBe('object'); // schema (optional)
+      }
+      // handler is the last argument
+      const handler = call[call.length - 1];
+      expect(typeof handler).toBe('function'); // handler
     });
   });
 
@@ -217,11 +233,220 @@ describe('UmbracoToolFactory Integration', () => {
 
     it('should handle empty collection names in list', () => {
       process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS = 'culture,,data-type';
-      
+
       UmbracoToolFactory(mockServer, mockUser, getMockConfig());
-      
+
       // Should handle empty values gracefully
       expect(mockServer.tool).toHaveBeenCalled();
     });
+  });
+
+  describe('Readonly mode', () => {
+    it('should include all tools when readonly is false', () => {
+      const config = getMockConfig({
+        readonly: false,
+        includeToolCollections: ['dictionary']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Should include both read and write tools (dictionary depends on language)
+      expect(toolNames).toContain('find-dictionary');
+      expect(toolNames).toContain('create-dictionary');
+      expect(toolNames).toContain('delete-dictionary-item');
+    });
+
+    it('should filter out write tools when readonly is true', () => {
+      const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+      const config = getMockConfig({
+        readonly: true,
+        includeToolCollections: ['dictionary']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Should include read-only tools
+      expect(toolNames).toContain('find-dictionary');
+      expect(toolNames).toContain('get-dictionary');
+      // Should NOT include write tools
+      expect(toolNames).not.toContain('create-dictionary');
+      expect(toolNames).not.toContain('delete-dictionary-item');
+      expect(toolNames).not.toContain('update-dictionary-item');
+
+      consoleSpy.mockRestore();
+    });
+
+    it('should log filtered tools in readonly mode', () => {
+      const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+      const config = getMockConfig({
+        readonly: true,
+        includeToolCollections: ['dictionary']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      // Should log about disabled write tools
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Readonly mode'));
+
+      consoleSpy.mockRestore();
+    });
+  });
+
+  describe('Slice filtering', () => {
+    it('should include tools when their slices are enabled', () => {
+      const config = getMockConfig({
+        includeToolCollections: ['dictionary'],
+        includeSlices: ['create', 'search']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Should include tools with 'create' slice
+      expect(toolNames).toContain('create-dictionary');
+      // Should include tools with 'search' slice
+      expect(toolNames).toContain('find-dictionary');
+      // Should NOT include tools with other slices like 'read', 'delete'
+      expect(toolNames).not.toContain('get-dictionary');
+      expect(toolNames).not.toContain('delete-dictionary-item');
+    });
+
+    it('should exclude tools when their slices are disabled', () => {
+      const config = getMockConfig({
+        includeToolCollections: ['dictionary'],
+        excludeSlices: ['delete']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Should NOT include tools with 'delete' slice
+      expect(toolNames).not.toContain('delete-dictionary-item');
+      // But should include other tools
+      expect(toolNames).toContain('create-dictionary');
+      expect(toolNames).toContain('find-dictionary');
+    });
+
+    it('should require ALL slices for multi-slice tools (AND logic)', () => {
+      const config = getMockConfig({
+        includeToolCollections: ['data-type'],
+        includeSlices: ['create'] // Only 'create', not 'folders'
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Folder tools have ['create', 'folders'] - should NOT appear with only 'create' enabled
+      expect(toolNames).not.toContain('create-data-type-folder');
+      // Regular create tools have ['create'] - should appear
+      expect(toolNames).toContain('create-data-type');
+    });
+
+    it('should include multi-slice tools when ALL their slices are enabled', () => {
+      const config = getMockConfig({
+        includeToolCollections: ['data-type'],
+        includeSlices: ['create', 'folders'] // Both slices enabled
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Folder tools have ['create', 'folders'] - should appear with both enabled
+      expect(toolNames).toContain('create-data-type-folder');
+      // Regular create tools have ['create'] - should also appear
+      expect(toolNames).toContain('create-data-type');
+    });
+
+    it('should exclude multi-slice tools when ANY slice is disabled', () => {
+      const config = getMockConfig({
+        includeToolCollections: ['data-type'],
+        excludeSlices: ['folders'] // Disable the folders slice
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Folder tools have ['create', 'folders'] - should NOT appear
+      expect(toolNames).not.toContain('create-data-type-folder');
+      // Regular create tools have ['create'] - should still appear
+      expect(toolNames).toContain('create-data-type');
+    });
+
+    it('should warn about invalid slice names', () => {
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      const config = getMockConfig({
+        includeToolCollections: ['dictionary'],
+        includeSlices: ['invalid-slice-name', 'create']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('invalid-slice-name'));
+
+      consoleSpy.mockRestore();
+    });
+  });
+
+  describe('Mode configuration', () => {
+    it('should expand mode to collections', () => {
+      const config = getMockConfig({
+        toolModes: ['translation']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Translation mode includes culture, language, dictionary
+      expect(toolNames).toContain('get-culture');
+      expect(toolNames).toContain('get-language');
+      expect(toolNames).toContain('find-dictionary');
+    });
+
+    it('should expand health mode to health and log-viewer collections', () => {
+      const config = getMockConfig({
+        toolModes: ['health']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Health mode includes health and log-viewer collections
+      expect(toolNames).toContain('get-health-check-groups');
+      expect(toolNames).toContain('get-log-viewer-level');
+    });
+
+    it('should warn about invalid mode names', () => {
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      const config = getMockConfig({
+        toolModes: ['invalid-mode-name', 'translation']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('invalid-mode-name'));
+
+      // Valid mode should still work
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      expect(toolNames).toContain('get-culture');
+
+      consoleSpy.mockRestore();
+    });
+
+    it('should merge modes with direct collection includes', () => {
+      const config = getMockConfig({
+        toolModes: ['translation'],
+        includeToolCollections: ['server']
+      });
+
+      UmbracoToolFactory(mockServer, mockUser, config);
+
+      const toolNames = mockServer.tool.mock.calls.map(call => call[0]);
+      // Should have tools from both mode collections and direct includes
+      expect(toolNames).toContain('get-culture'); // from translation mode
+      expect(toolNames).toContain('get-server-information'); // from direct include
+    });
+
   });
 });

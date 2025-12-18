@@ -1,12 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
-import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserConfigurationTool = CreateUmbracoReadTool(
-  "get-user-configuration",
-  "Gets user configuration settings including user invitation settings and password requirements",
-  {},
-  async () => {
+const GetUserConfigurationTool = {
+  name: "get-user-configuration",
+  description: "Gets user configuration settings including user invitation settings and password requirements",
+  schema: undefined,
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getUserConfiguration();
 
@@ -18,7 +20,7 @@ const GetUserConfigurationTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<undefined>;
 
-export default GetUserConfigurationTool;
+export default withStandardDecorators(GetUserConfigurationTool);

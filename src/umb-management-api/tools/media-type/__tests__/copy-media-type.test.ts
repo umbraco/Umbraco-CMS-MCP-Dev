@@ -39,7 +39,7 @@ describe("copy-media-type", () => {
       .create();
 
     // Copy the media type
-    const result = await CopyMediaTypeTool().handler(
+    const result = await CopyMediaTypeTool.handler(
       {
         id: mediaTypeBuilder.getId(),
         data: {
@@ -71,7 +71,7 @@ describe("copy-media-type", () => {
       .create();
 
     // Copy the media type to root (no target)
-    const result = await CopyMediaTypeTool().handler(
+    const result = await CopyMediaTypeTool.handler(
       {
         id: mediaTypeBuilder.getId(),
         data: {
@@ -94,7 +94,7 @@ describe("copy-media-type", () => {
   });
 
   it("should handle non-existent media type", async () => {
-    const result = await CopyMediaTypeTool().handler(
+    const result = await CopyMediaTypeTool.handler(
       {
         id: BLANK_UUID,
         data: {

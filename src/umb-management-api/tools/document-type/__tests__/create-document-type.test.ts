@@ -42,7 +42,7 @@ describe("create-document-type", () => {
     };
 
     // Create the document type
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
       signal: new AbortController().signal
     });
 
@@ -71,12 +71,12 @@ describe("create-document-type", () => {
     };
 
     // First create the document type
-    await CreateDocumentTypeTool().handler(docTypeModel, { 
+    await CreateDocumentTypeTool.handler(docTypeModel, { 
       signal: new AbortController().signal 
     });
 
     // Try to create it again
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, { 
+    const result = await CreateDocumentTypeTool.handler(docTypeModel, { 
       signal: new AbortController().signal 
     });
 
@@ -104,7 +104,7 @@ describe("create-document-type", () => {
       ]
     };
 
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
       signal: new AbortController().signal
     });
 
@@ -139,7 +139,7 @@ describe("create-document-type", () => {
     };
 
     // Act: Create the document type
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
       signal: new AbortController().signal,
     });
 
@@ -181,7 +181,7 @@ describe("create-document-type", () => {
       ]
     };
 
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
       signal: new AbortController().signal
     });
 
@@ -217,7 +217,7 @@ describe("create-document-type", () => {
       ]
     };
 
-    const result = await CreateDocumentTypeTool().handler(docTypeModel, {
+    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
       signal: new AbortController().signal
     });
 

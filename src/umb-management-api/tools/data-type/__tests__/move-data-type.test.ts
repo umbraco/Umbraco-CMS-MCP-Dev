@@ -34,7 +34,7 @@ describe("move-data-type", () => {
       .create();
 
     // Move the data type
-    const result = await MoveDataTypeTool().handler(
+    const result = await MoveDataTypeTool.handler(
       {
         id: builder.getId(),
         body: {
@@ -62,7 +62,7 @@ describe("move-data-type", () => {
       .withTextbox()
       .create();
 
-    const result = await MoveDataTypeTool().handler(
+    const result = await MoveDataTypeTool.handler(
       {
         id: builder.getId(),
         body: {
@@ -79,7 +79,7 @@ describe("move-data-type", () => {
   });
 
   it("should handle moving non-existent data type", async () => {
-    const result = await MoveDataTypeTool().handler(
+    const result = await MoveDataTypeTool.handler(
       {
         id: BLANK_UUID,
         body: {

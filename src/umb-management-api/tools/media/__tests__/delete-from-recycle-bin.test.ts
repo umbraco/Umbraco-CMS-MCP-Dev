@@ -36,7 +36,7 @@ describe("delete-media-from-recycle-bin", () => {
     await builder.moveToRecycleBin();
 
     // Delete from recycle bin
-    const result = await DeleteFromRecycleBinTool().handler(
+    const result = await DeleteFromRecycleBinTool.handler(
       {
         id: builder.getId(),
       },
@@ -52,7 +52,7 @@ describe("delete-media-from-recycle-bin", () => {
   });
 
   it("should handle non-existent media", async () => {
-    const result = await DeleteFromRecycleBinTool().handler(
+    const result = await DeleteFromRecycleBinTool.handler(
       {
         id: BLANK_UUID,
       },

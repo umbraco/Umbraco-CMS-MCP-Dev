@@ -48,7 +48,7 @@ describe("create-language", () => {
     };
 
     // Create the language
-    const result = await CreateLanguageTool().handler(languageModel, {
+    const result = await CreateLanguageTool.handler(languageModel, {
       signal: new AbortController().signal
     });
 
@@ -79,12 +79,12 @@ describe("create-language", () => {
     };
 
     // First create the language
-    await CreateLanguageTool().handler(languageModel, {
+    await CreateLanguageTool.handler(languageModel, {
       signal: new AbortController().signal
     });
 
     // Try to create it again
-    const result = await CreateLanguageTool().handler(languageModel, {
+    const result = await CreateLanguageTool.handler(languageModel, {
       signal: new AbortController().signal
     });
 

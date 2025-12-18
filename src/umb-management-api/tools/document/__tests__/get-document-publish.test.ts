@@ -28,7 +28,7 @@ describe("get-document-publish", () => {
     await builder.publish();
     const item = builder.getCreatedItem();
 
-    const result = await GetDocumentPublishTool().handler(
+    const result = await GetDocumentPublishTool.handler(
       {
         id: item.id,
       },
@@ -45,7 +45,7 @@ describe("get-document-publish", () => {
   });
 
   it("should handle getting published state for a non-existent document", async () => {
-    const result = await GetDocumentPublishTool().handler(
+    const result = await GetDocumentPublishTool.handler(
       {
         id: BLANK_UUID,
       },

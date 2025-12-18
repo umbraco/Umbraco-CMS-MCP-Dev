@@ -25,7 +25,7 @@ describe("get-user-group", () => {
   it("should get a user group by id", async () => {
     await builder.withName(TEST_GROUP_NAME).create();
     const params = getUserGroupByIdParams.parse({ id: builder.getId() });
-    const result = await GetUserGroupTool().handler(params, {
+    const result = await GetUserGroupTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
@@ -33,7 +33,7 @@ describe("get-user-group", () => {
 
   it("should handle non-existent user group", async () => {
     const params = getUserGroupByIdParams.parse({ id: BLANK_UUID });
-    const result = await GetUserGroupTool().handler(params, {
+    const result = await GetUserGroupTool.handler(params, {
       signal: new AbortController().signal,
     });
     expect(result).toMatchSnapshot();

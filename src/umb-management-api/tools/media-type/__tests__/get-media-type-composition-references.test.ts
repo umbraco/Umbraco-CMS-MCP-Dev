@@ -35,7 +35,7 @@ describe("get-media-type-composition-references", () => {
       .create();
 
     // Get the composition references
-    const result = await GetMediaTypeCompositionReferencesTool().handler({
+    const result = await GetMediaTypeCompositionReferencesTool.handler({
       id: compositionBuilder.getId()
     }, { signal: new AbortController().signal });
 
@@ -57,7 +57,7 @@ describe("get-media-type-composition-references", () => {
       .create();
 
     // Get the composition references
-    const result = await GetMediaTypeCompositionReferencesTool().handler({
+    const result = await GetMediaTypeCompositionReferencesTool.handler({
       id: mediaTypeBuilder.getId()
     }, { signal: new AbortController().signal });
 

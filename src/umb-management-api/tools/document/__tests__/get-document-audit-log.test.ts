@@ -27,7 +27,7 @@ describe("get-document-audit-log", () => {
   });
 
   it("should return audit logs for a valid document", async () => {
-    const result = await GetDocumentAuditLogTool().handler(
+    const result = await GetDocumentAuditLogTool.handler(
       {
         id: docId,
         data: {
@@ -45,7 +45,7 @@ describe("get-document-audit-log", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const result = await GetDocumentAuditLogTool().handler(
+    const result = await GetDocumentAuditLogTool.handler(
       {
         id: BLANK_UUID,
         data: {

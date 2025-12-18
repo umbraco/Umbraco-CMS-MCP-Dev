@@ -38,7 +38,7 @@ describe("get-member-type-siblings", () => {
       .create();
 
     // Act - Get siblings using one of the items as target
-    const result = await GetMemberTypeSiblingsTool().handler(
+    const result = await GetMemberTypeSiblingsTool.handler(
       {
         target: sibling1Builder.getId(),
       },
@@ -52,7 +52,7 @@ describe("get-member-type-siblings", () => {
 
   it("should handle non-existent target", async () => {
     // Act - Try to get siblings for non-existent item
-    const result = await GetMemberTypeSiblingsTool().handler(
+    const result = await GetMemberTypeSiblingsTool.handler(
       {
         target: BLANK_UUID,
       },

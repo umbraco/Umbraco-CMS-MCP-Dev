@@ -11,7 +11,8 @@ export const CultureCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [GetCulturesTool()];
+    // Tools are now exported as objects (already decorated), not factory functions
+    const tools: ToolDefinition<any>[] = [GetCulturesTool];
     return tools;
   }
 };

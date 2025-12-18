@@ -38,7 +38,7 @@ describe("update-document", () => {
       .build();
 
     // Update the document
-    const result = await UpdateDocumentTool().handler(
+    const result = await UpdateDocumentTool.handler(
       {
         id: builder.getId(),
         data: updateModel,
@@ -64,7 +64,7 @@ describe("update-document", () => {
       .withDocumentType(ROOT_DOCUMENT_TYPE_ID)
       .build();
 
-    const result = await UpdateDocumentTool().handler(
+    const result = await UpdateDocumentTool.handler(
       {
         id: BLANK_UUID,
         data: updateModel,
@@ -91,7 +91,7 @@ describe("update-document", () => {
       .build();
 
     // Update the document
-    const result = await UpdateDocumentTool().handler(
+    const result = await UpdateDocumentTool.handler(
       {
         id: builder.getId(),
         data: updateModel,

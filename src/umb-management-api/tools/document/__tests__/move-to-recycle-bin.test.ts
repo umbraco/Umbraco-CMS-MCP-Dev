@@ -28,7 +28,7 @@ describe("move-document-to-recycle-bin", () => {
       .create();
 
     // Move the document to the recycle bin
-    const result = await MoveDocumentToRecycleBinTool().handler(
+    const result = await MoveDocumentToRecycleBinTool.handler(
       {
         id: builder.getId(),
       },
@@ -52,7 +52,7 @@ describe("move-document-to-recycle-bin", () => {
   });
 
   it("should handle moving a non-existent document", async () => {
-    const result = await MoveDocumentToRecycleBinTool().handler(
+    const result = await MoveDocumentToRecycleBinTool.handler(
       {
         id: BLANK_UUID,
       },

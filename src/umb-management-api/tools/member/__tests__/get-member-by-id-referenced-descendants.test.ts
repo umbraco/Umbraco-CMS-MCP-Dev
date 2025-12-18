@@ -35,7 +35,7 @@ describe("get-member-by-id-referenced-descendants", () => {
 
     const id = builder.getId();
 
-    const result = await GetMemberByIdReferencedDescendantsTool().handler(
+    const result = await GetMemberByIdReferencedDescendantsTool.handler(
       { id, skip: 0, take: 10 },
       { signal: new AbortController().signal }
     );
@@ -61,7 +61,7 @@ describe("get-member-by-id-referenced-descendants", () => {
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
 
-    const result = await GetMemberByIdReferencedDescendantsTool().handler(
+    const result = await GetMemberByIdReferencedDescendantsTool.handler(
       { id: builder.getId(), skip: 0, take: 10 },
       { signal: new AbortController().signal }
     );

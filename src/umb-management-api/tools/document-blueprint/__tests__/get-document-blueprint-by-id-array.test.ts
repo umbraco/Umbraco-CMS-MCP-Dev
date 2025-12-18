@@ -28,7 +28,7 @@ describe("get-item-document-blueprint", () => {
 
   it("should get no document blueprints for empty request", async () => {
     // Get all document blueprints
-    const result = await GetDocumentBlueprintByIdArrayTool().handler(
+    const result = await GetDocumentBlueprintByIdArrayTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -43,7 +43,7 @@ describe("get-item-document-blueprint", () => {
     ).create();
 
     // Get by ID
-    const result = await GetDocumentBlueprintByIdArrayTool().handler(
+    const result = await GetDocumentBlueprintByIdArrayTool.handler(
       { id: [builder.getId()] },
       { signal: new AbortController().signal }
     );
@@ -67,7 +67,7 @@ describe("get-item-document-blueprint", () => {
     ).create();
 
     // Get by IDs
-    const result = await GetDocumentBlueprintByIdArrayTool().handler(
+    const result = await GetDocumentBlueprintByIdArrayTool.handler(
       {
         id: [builder1.getId(), builder2.getId()],
       },

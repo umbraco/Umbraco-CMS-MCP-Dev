@@ -15,7 +15,7 @@ describe("get-template-query-settings", () => {
   });
 
   it("should get template query settings", async () => {
-    const result = await GetTemplateQuerySettingsTool().handler({}, {
+    const result = await GetTemplateQuerySettingsTool.handler({}, {
       signal: new AbortController().signal,
     });
 
@@ -23,7 +23,7 @@ describe("get-template-query-settings", () => {
   });
 
   it("should return settings with expected structure", async () => {
-    const result = await GetTemplateQuerySettingsTool().handler({}, {
+    const result = await GetTemplateQuerySettingsTool.handler({}, {
       signal: new AbortController().signal,
     });
 

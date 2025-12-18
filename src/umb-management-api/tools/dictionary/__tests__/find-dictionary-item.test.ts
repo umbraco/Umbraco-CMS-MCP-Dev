@@ -29,7 +29,7 @@ describe("find-dictionary-item", () => {
       .withTranslation(DEFAULT_ISO_CODE, TEST_DICTIONARY_TRANSLATION)
       .create();
 
-    const result = await FindDictionaryItemTool().handler(
+    const result = await FindDictionaryItemTool.handler(
       {
         filter: TEST_DICTIONARY_NAME,
         take: 100,
@@ -41,7 +41,7 @@ describe("find-dictionary-item", () => {
   });
 
   it("should handle non-existent dictionary item", async () => {
-    const result = await FindDictionaryItemTool().handler(
+    const result = await FindDictionaryItemTool.handler(
       {
         filter: "Non Existent Dictionary",
         take: 100,

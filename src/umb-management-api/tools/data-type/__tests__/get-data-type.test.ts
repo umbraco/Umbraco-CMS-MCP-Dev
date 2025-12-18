@@ -33,7 +33,7 @@ describe("get-data-type", () => {
   });
 
   it("should get a data type by ID", async () => {
-    const result = await GetDataTypeTool().handler(
+    const result = await GetDataTypeTool.handler(
       {
         id: dataTypeId,
       },
@@ -48,7 +48,7 @@ describe("get-data-type", () => {
   });
 
   it("should handle non-existent data type", async () => {
-    const result = await GetDataTypeTool().handler(
+    const result = await GetDataTypeTool.handler(
       {
         id: BLANK_UUID,
       },
@@ -59,7 +59,7 @@ describe("get-data-type", () => {
   });
 
   it("should handle invalid ID format", async () => {
-    const result = await GetDataTypeTool().handler(
+    const result = await GetDataTypeTool.handler(
       {
         id: "invalid-id-format",
       },

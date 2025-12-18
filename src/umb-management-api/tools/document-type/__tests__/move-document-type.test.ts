@@ -34,7 +34,7 @@ describe("move-document-type", () => {
       .create();
 
     // Move the document type
-    const result = await MoveDocumentTypeTool().handler(
+    const result = await MoveDocumentTypeTool.handler(
       {
         id: builder.getId(),
         data: {
@@ -63,7 +63,7 @@ describe("move-document-type", () => {
       .withName(TEST_DOCTYPE_NAME)
       .create();
 
-    const result = await MoveDocumentTypeTool().handler(
+    const result = await MoveDocumentTypeTool.handler(
       {
         id: builder.getId(),
         data: {
@@ -80,7 +80,7 @@ describe("move-document-type", () => {
   });
 
   it("should handle moving non-existent document type", async () => {
-    const result = await MoveDocumentTypeTool().handler(
+    const result = await MoveDocumentTypeTool.handler(
       {
         id: BLANK_UUID,
         data: {

@@ -31,7 +31,7 @@ describe("empty-recycle-bin", () => {
     expect(found).toBeDefined();
 
     // Call the tool
-    const result = await EmptyRecycleBinTool().handler({}, { signal: new AbortController().signal });
+    const result = await EmptyRecycleBinTool.handler({}, { signal: new AbortController().signal });
     expect(result).toMatchSnapshot();
 
     // Should not be found after emptying
@@ -41,7 +41,7 @@ describe("empty-recycle-bin", () => {
 
   it("should handle emptying an already empty recycle bin", async () => {
     // Call the tool on an empty recycle bin
-    const result = await EmptyRecycleBinTool().handler({}, { signal: new AbortController().signal });
+    const result = await EmptyRecycleBinTool.handler({}, { signal: new AbortController().signal });
     expect(result).toMatchSnapshot();
   });
 }); 

@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteTemporaryFileByIdParams } from "@/umb-management-api/temporary-file/types.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteTemporaryFileTool = CreateUmbracoWriteTool(
-  "delete-temporary-file",
-  "Deletes a temporary file by Id",
-  deleteTemporaryFileByIdParams.shape,
-  async ({ id }) => {
+const DeleteTemporaryFileTool = {
+  name: "delete-temporary-file",
+  description: "Deletes a temporary file by Id",
+  schema: deleteTemporaryFileByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     await client.deleteTemporaryFileById(id);
 
@@ -19,6 +22,6 @@ const DeleteTemporaryFileTool = CreateUmbracoWriteTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof deleteTemporaryFileByIdParams.shape>;
 
-export default DeleteTemporaryFileTool;
+export default withStandardDecorators(DeleteTemporaryFileTool);

@@ -45,7 +45,7 @@ describe("publish-document-with-descendants", () => {
   });
 
   it("should publish a document and its descendants", async () => {
-    const result = await PublishDocumentWithDescendantsTool().handler(
+    const result = await PublishDocumentWithDescendantsTool.handler(
       {
         id: rootId,
         data: { includeUnpublishedDescendants: true, cultures: [] },
@@ -73,7 +73,7 @@ describe("publish-document-with-descendants", () => {
   });
 
   it("should handle publishing a non-existent document", async () => {
-    const result = await PublishDocumentWithDescendantsTool().handler(
+    const result = await PublishDocumentWithDescendantsTool.handler(
       {
         id: "1234567890",
         data: { includeUnpublishedDescendants: true, cultures: [] },

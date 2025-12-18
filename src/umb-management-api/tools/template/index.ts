@@ -32,23 +32,23 @@ export const TemplateCollection: ToolCollectionExport = {
     const tools: ToolDefinition<any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessTemplates(user)) {
-      tools.push(GetTemplateTool());
-      tools.push(GetTemplateConfigurationTool());
-      tools.push(GetTemplatesByIdArrayTool());
-      tools.push(CreateTemplateTool());
-      tools.push(UpdateTemplateTool());
-      tools.push(DeleteTemplateTool());
+      tools.push(GetTemplateTool);
+      tools.push(GetTemplateConfigurationTool);
+      tools.push(GetTemplatesByIdArrayTool);
+      tools.push(CreateTemplateTool);
+      tools.push(UpdateTemplateTool);
+      tools.push(DeleteTemplateTool);
 
       // Query operations
-      tools.push(ExecuteTemplateQueryTool());
-      tools.push(GetTemplateQuerySettingsTool());
+      tools.push(ExecuteTemplateQueryTool);
+      tools.push(GetTemplateQuerySettingsTool);
 
       // Tree operations
-      tools.push(GetTemplateAncestorsTool());
-      tools.push(GetTemplateChildrenTool());
-      tools.push(GetTemplateRootTool());
-      tools.push(GetTemplateSearchTool());
-      tools.push(GetTemplateSiblingsTool());
+      tools.push(GetTemplateAncestorsTool);
+      tools.push(GetTemplateChildrenTool);
+      tools.push(GetTemplateRootTool);
+      tools.push(GetTemplateSearchTool);
+      tools.push(GetTemplateSiblingsTool);
     }
 
     return tools;

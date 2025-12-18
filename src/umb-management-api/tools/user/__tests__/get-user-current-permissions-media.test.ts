@@ -17,7 +17,7 @@ describe("get-user-current-permissions-media", () => {
 
   it("should get current user media permissions", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsMediaTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetUserCurrentPermissionsMediaTool.handler({}, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -26,7 +26,7 @@ describe("get-user-current-permissions-media", () => {
 
   it("should handle non-existent media ID", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsMediaTool().handler({
+    const result = await GetUserCurrentPermissionsMediaTool.handler({
       id: [BLANK_UUID]
     }, { signal: new AbortController().signal });
 

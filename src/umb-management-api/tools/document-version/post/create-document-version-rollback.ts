@@ -1,17 +1,20 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postDocumentVersionByIdRollbackParams, postDocumentVersionByIdRollbackQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Combined schema for both path params and query params
 const createDocumentVersionRollbackSchema = postDocumentVersionByIdRollbackParams.merge(
   postDocumentVersionByIdRollbackQueryParams
 );
 
-const CreateDocumentVersionRollbackTool = CreateUmbracoWriteTool(
-  "create-document-version-rollback",
-  "Rollback document to a specific version",
-  createDocumentVersionRollbackSchema.shape,
-  async ({ id, culture }) => {
+const CreateDocumentVersionRollbackTool = {
+  name: "create-document-version-rollback",
+  description: "Rollback document to a specific version",
+  schema: createDocumentVersionRollbackSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async ({ id, culture }: { id: string; culture?: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postDocumentVersionByIdRollback(id, { culture });
 
@@ -23,7 +26,7 @@ const CreateDocumentVersionRollbackTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof createDocumentVersionRollbackSchema.shape>;
 
-export default CreateDocumentVersionRollbackTool;
+export default withStandardDecorators(CreateDocumentVersionRollbackTool);

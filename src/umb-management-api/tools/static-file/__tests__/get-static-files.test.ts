@@ -24,7 +24,7 @@ describe("get-static-files", () => {
     const params = {};
 
     // Act
-    const result = await GetStaticFilesTool().handler(
+    const result = await GetStaticFilesTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -62,7 +62,7 @@ describe("get-static-files", () => {
       const params = { path: [] };
 
       // Act
-      const result = await GetStaticFilesTool().handler(
+      const result = await GetStaticFilesTool.handler(
         params,
         { signal: new AbortController().signal }
       );
@@ -78,7 +78,7 @@ describe("get-static-files", () => {
     const params = { path: pathArray };
 
     // Act
-    const result = await GetStaticFilesTool().handler(
+    const result = await GetStaticFilesTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -103,7 +103,7 @@ describe("get-static-files", () => {
     const params = { path: INVALID_PATH_ARRAY };
 
     // Act
-    const result = await GetStaticFilesTool().handler(
+    const result = await GetStaticFilesTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -121,7 +121,7 @@ describe("get-static-files", () => {
     const params = { path: [] };
 
     // Act
-    const result = await GetStaticFilesTool().handler(
+    const result = await GetStaticFilesTool.handler(
       params,
       { signal: new AbortController().signal }
     );
@@ -146,7 +146,7 @@ describe("get-static-files", () => {
     const params = {};
 
     // Act
-    const result = await GetStaticFilesTool().handler(
+    const result = await GetStaticFilesTool.handler(
       params,
       { signal: new AbortController().signal }
     );

@@ -1,5 +1,6 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import {
   getDocumentTypeByIdAllowedChildrenParams,
   getDocumentTypeByIdAllowedChildrenQueryParams,
@@ -10,11 +11,13 @@ const paramSchema = getDocumentTypeByIdAllowedChildrenParams.merge(
   getDocumentTypeByIdAllowedChildrenQueryParams
 );
 
-const GetDocumentTypeAllowedChildrenTool = CreateUmbracoReadTool(
-  "get-document-type-allowed-children",
-  "Gets the document types that are allowed as children of a document type",
-  paramSchema.shape,
-  async (model) => {
+const GetDocumentTypeAllowedChildrenTool = {
+  name: "get-document-type-allowed-children",
+  description: "Gets the document types that are allowed as children of a document type",
+  schema: paramSchema.shape,
+  isReadOnly: true,
+  slices: ['configuration'],
+  handler: async (model: { id: string; skip?: number; take?: number }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentTypeByIdAllowedChildren(model.id, {
       skip: model.skip,
@@ -30,6 +33,6 @@ const GetDocumentTypeAllowedChildrenTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof paramSchema.shape>;
 
-export default GetDocumentTypeAllowedChildrenTool;
+export default withStandardDecorators(GetDocumentTypeAllowedChildrenTool);

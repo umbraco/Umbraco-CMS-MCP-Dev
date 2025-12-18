@@ -33,7 +33,7 @@ describe("get-webhook-item", () => {
 
   it("should get no webhooks for empty request", async () => {
     // Get all webhooks
-    const result = await GetWebhookItemTool().handler(
+    const result = await GetWebhookItemTool.handler(
       {},
       { signal: new AbortController().signal }
     );
@@ -51,7 +51,7 @@ describe("get-webhook-item", () => {
       .create();
 
     // Get by ID
-    const result = await GetWebhookItemTool().handler(
+    const result = await GetWebhookItemTool.handler(
       { id: [builder.getId()] },
       { signal: new AbortController().signal }
     );
@@ -79,7 +79,7 @@ describe("get-webhook-item", () => {
       .create();
 
     // Get by IDs
-    const result = await GetWebhookItemTool().handler(
+    const result = await GetWebhookItemTool.handler(
       {
         id: [builder1.getId(), builder2.getId()],
       },

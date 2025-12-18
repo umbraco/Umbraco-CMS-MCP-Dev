@@ -1,14 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDataTypeFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDataTypeFolderTool = CreateUmbracoReadTool(
-  "get-data-type-folder",
-  "Gets a data type folder by Id",
-  getDataTypeFolderByIdParams.shape,
-  async ({ id }) => {
+const GetDataTypeFolderTool = {
+  name: "get-data-type-folder",
+  description: "Gets a data type folder by Id",
+  schema: getDataTypeFolderByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read', 'folders'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getDataTypeFolderById(id);
+    const response = await client.getDataTypeFolderById(id);
 
     return {
       content: [
@@ -18,7 +21,7 @@ const GetDataTypeFolderTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getDataTypeFolderByIdParams.shape>;
 
-export default GetDataTypeFolderTool;
+export default withStandardDecorators(GetDataTypeFolderTool);

@@ -1,20 +1,25 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { UpdateDocumentBlueprintRequestModel } from "@/umb-management-api/schemas/updateDocumentBlueprintRequestModel.js";
 import {
   putDocumentBlueprintByIdParams,
   putDocumentBlueprintByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UpdateDocumentBlueprintTool = CreateUmbracoWriteTool(
-  "update-document-blueprint",
-  "Updates a document blueprint by Id",
-  {
-    id: putDocumentBlueprintByIdParams.shape.id,
-    data: z.object(putDocumentBlueprintByIdBody.shape),
-  },
-  async (model: { id: string; data: UpdateDocumentBlueprintRequestModel }) => {
+const updateDocumentBlueprintSchema = {
+  id: putDocumentBlueprintByIdParams.shape.id,
+  data: z.object(putDocumentBlueprintByIdBody.shape),
+};
+
+const UpdateDocumentBlueprintTool = {
+  name: "update-document-blueprint",
+  description: "Updates a document blueprint by Id",
+  schema: updateDocumentBlueprintSchema,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async (model: { id: string; data: UpdateDocumentBlueprintRequestModel }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.putDocumentBlueprintById(model.id, model.data);
     return {
@@ -25,7 +30,7 @@ const UpdateDocumentBlueprintTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof updateDocumentBlueprintSchema>;
 
-export default UpdateDocumentBlueprintTool;
+export default withStandardDecorators(UpdateDocumentBlueprintTool);

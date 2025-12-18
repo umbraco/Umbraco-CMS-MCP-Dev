@@ -18,10 +18,10 @@ export const StaticFileCollection: ToolCollectionExport = {
   tools: (user: CurrentUserResponseModel) => {
     const tools: ToolDefinition<any>[] = [];
 
-    tools.push(GetStaticFilesTool());
-    tools.push(GetStaticFileRootTool());
-    tools.push(GetStaticFileChildrenTool());
-    tools.push(GetStaticFileAncestorsTool());
+    tools.push(GetStaticFilesTool);
+    tools.push(GetStaticFileRootTool);
+    tools.push(GetStaticFileChildrenTool);
+    tools.push(GetStaticFileAncestorsTool);
 
     return tools;
   }

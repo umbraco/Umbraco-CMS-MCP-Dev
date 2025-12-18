@@ -36,7 +36,7 @@ describe("create-data-type", () => {
       .build();
 
     // Create the data type
-    const result = await CreateDataTypeTool().handler(dataTypeModel, {
+    const result = await CreateDataTypeTool.handler(dataTypeModel, {
       signal: new AbortController().signal
     });
 
@@ -60,7 +60,7 @@ describe("create-data-type", () => {
     ).create();
 
     // Arrange: Create data type with flattened parentId for tool
-    const result = await CreateDataTypeTool().handler({
+    const result = await CreateDataTypeTool.handler({
       name: TEST_DATATYPE_WITH_PARENT_NAME,
       editorAlias: "Umbraco.TextBox",
       editorUiAlias: "Umb.PropertyEditorUi.TextBox",

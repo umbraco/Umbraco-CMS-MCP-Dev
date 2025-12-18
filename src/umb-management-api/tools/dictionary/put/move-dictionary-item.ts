@@ -1,22 +1,27 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { MoveDictionaryRequestModel } from "@/umb-management-api/schemas/moveDictionaryRequestModel.js";
 import {
   putDictionaryByIdMoveParams,
   putDictionaryByIdMoveBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const MoveDictionaryItemTool = CreateUmbracoWriteTool(
-  "move-dictionary-item",
-  "Moves a dictionary item by Id",
-  {
-    id: putDictionaryByIdMoveParams.shape.id,
-    data: z.object(putDictionaryByIdMoveBody.shape),
-  },
-  async (model: { id: string; data: MoveDictionaryRequestModel }) => {
+const moveDictionaryItemSchema = {
+  id: putDictionaryByIdMoveParams.shape.id,
+  data: z.object(putDictionaryByIdMoveBody.shape),
+};
+
+const MoveDictionaryItemTool = {
+  name: "move-dictionary-item",
+  description: "Moves a dictionary item by Id",
+  schema: moveDictionaryItemSchema,
+  isReadOnly: false,
+  slices: ['move'],
+  handler: async (model: { id: string; data: MoveDictionaryRequestModel }) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.putDictionaryByIdMove(model.id, model.data);
+    const response = await client.putDictionaryByIdMove(model.id, model.data);
     return {
       content: [
         {
@@ -25,7 +30,7 @@ const MoveDictionaryItemTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof moveDictionaryItemSchema>;
 
-export default MoveDictionaryItemTool;
+export default withStandardDecorators(MoveDictionaryItemTool);

@@ -51,7 +51,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: builder.getId(),
           propertyAlias: INVALID_ALIAS,
@@ -79,7 +79,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: builder.getId(),
           propertyAlias: "title",
@@ -100,7 +100,7 @@ describe("update-block-property", () => {
 
     it("should handle non-existent document", async () => {
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: BLANK_UUID,
           propertyAlias: "someProperty",
@@ -161,7 +161,7 @@ describe("update-block-property", () => {
       docTypeId: string;
     }> {
       // 1. Create an element type with a text property using the tool
-      const elementResult = await CreateElementTypeTool().handler({
+      const elementResult = await CreateElementTypeTool.handler({
         name: TEST_ELEMENT_TYPE_NAME,
         alias: TEST_ELEMENT_TYPE_NAME.toLowerCase().replace(/\s+/g, ""),
         icon: "icon-document",
@@ -256,7 +256,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "blocks",
@@ -296,7 +296,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "blocks",
@@ -338,7 +338,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "blocks",
@@ -390,7 +390,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "blocks",
@@ -462,7 +462,7 @@ describe("update-block-property", () => {
       docTypeId: string;
     }> {
       // 1. Create an element type with TWO text properties using the tool
-      const elementResult = await CreateElementTypeTool().handler({
+      const elementResult = await CreateElementTypeTool.handler({
         name: TEST_ELEMENT_TYPE_WITH_EXTRA_NAME,
         alias: TEST_ELEMENT_TYPE_WITH_EXTRA_NAME.toLowerCase().replace(/\s+/g, ""),
         icon: "icon-document",
@@ -570,7 +570,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Add the blockSubtitle property that exists on Element Type but not on block
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "blocks",
@@ -616,7 +616,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Update blockTitle AND add blockSubtitle in same call
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "blocks",
@@ -665,7 +665,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Try to add a property that doesn't exist on Element Type
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "blocks",
@@ -729,7 +729,7 @@ describe("update-block-property", () => {
       docTypeId: string;
     }> {
       // 1. Create an element type with a text property using the tool
-      const elementResult = await CreateElementTypeTool().handler({
+      const elementResult = await CreateElementTypeTool.handler({
         name: TEST_BLOCK_GRID_ELEMENT_TYPE_NAME,
         alias: TEST_BLOCK_GRID_ELEMENT_TYPE_NAME.toLowerCase().replace(/\s+/g, ""),
         icon: "icon-document",
@@ -834,7 +834,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "gridBlocks",
@@ -874,7 +874,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "gridBlocks",
@@ -916,7 +916,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "gridBlocks",
@@ -968,7 +968,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "gridBlocks",
@@ -1061,7 +1061,7 @@ describe("update-block-property", () => {
       docTypeId: string;
     }> {
       // 1. Create inner element type for the nested BlockList blocks
-      const innerElementResult = await CreateElementTypeTool().handler({
+      const innerElementResult = await CreateElementTypeTool.handler({
         name: TEST_INNER_ELEMENT_TYPE_NAME,
         alias: TEST_INNER_ELEMENT_TYPE_NAME.toLowerCase().replace(/\s+/g, ""),
         icon: "icon-document",
@@ -1097,7 +1097,7 @@ describe("update-block-property", () => {
       innerBlockListDataTypeId = innerBlockListBuilder.getId();
 
       // 3. Create grid element type that contains the BlockList property
-      const gridElementResult = await CreateElementTypeTool().handler({
+      const gridElementResult = await CreateElementTypeTool.handler({
         name: TEST_GRID_ELEMENT_WITH_BLOCKLIST_NAME,
         alias: TEST_GRID_ELEMENT_WITH_BLOCKLIST_NAME.toLowerCase().replace(/\s+/g, ""),
         icon: "icon-grid",
@@ -1247,7 +1247,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Update the inner block's property (deep traversal test)
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "nestedGridBlocks",
@@ -1306,7 +1306,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Update both grid block and inner block in single call
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "nestedGridBlocks",
@@ -1384,7 +1384,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Update inner blocks from both grid sections
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "nestedGridBlocks",
@@ -1480,7 +1480,7 @@ describe("update-block-property", () => {
       docTypeId: string;
     }> {
       // 1. Create an element type with a text property for RTE blocks
-      const elementResult = await CreateElementTypeTool().handler({
+      const elementResult = await CreateElementTypeTool.handler({
         name: TEST_RTE_ELEMENT_TYPE_NAME,
         alias: TEST_RTE_ELEMENT_TYPE_NAME.toLowerCase().replace(/\s+/g, ""),
         icon: "icon-document",
@@ -1578,7 +1578,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "richContent",
@@ -1620,7 +1620,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "richContent",
@@ -1664,7 +1664,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "richContent",
@@ -1718,7 +1718,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "richContent",
@@ -1813,7 +1813,7 @@ describe("update-block-property", () => {
       docTypeId: string;
     }> {
       // 1. Create inner element type for the RTE blocks
-      const innerElementResult = await CreateElementTypeTool().handler({
+      const innerElementResult = await CreateElementTypeTool.handler({
         name: TEST_RTE_INNER_ELEMENT_TYPE_NAME,
         alias: TEST_RTE_INNER_ELEMENT_TYPE_NAME.toLowerCase().replace(/\s+/g, ""),
         icon: "icon-document",
@@ -1849,7 +1849,7 @@ describe("update-block-property", () => {
       nestedRteDataTypeId = nestedRteBuilder.getId();
 
       // 3. Create grid element type that contains the RTE property
-      const gridElementResult = await CreateElementTypeTool().handler({
+      const gridElementResult = await CreateElementTypeTool.handler({
         name: TEST_GRID_ELEMENT_WITH_RTE_NAME,
         alias: TEST_GRID_ELEMENT_WITH_RTE_NAME.toLowerCase().replace(/\s+/g, ""),
         icon: "icon-grid",
@@ -2002,7 +2002,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Update the RTE block's property (deep traversal test)
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "gridWithRte",
@@ -2063,7 +2063,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Update both grid block and RTE block in single call
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "gridWithRte",
@@ -2141,7 +2141,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Update RTE blocks from both grid sections
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "gridWithRte",
@@ -2215,7 +2215,7 @@ describe("update-block-property", () => {
         .create();
 
       // Act - Try to update a non-existent property
-      const result = await UpdateBlockPropertyTool().handler(
+      const result = await UpdateBlockPropertyTool.handler(
         {
           documentId: docBuilder.getId(),
           propertyAlias: "gridWithRte",

@@ -38,7 +38,7 @@ describe("restore-media-from-recycle-bin", () => {
     await builder.moveToRecycleBin();
 
     // Restore from recycle bin
-    const result = await RestoreFromRecycleBinTool().handler(
+    const result = await RestoreFromRecycleBinTool.handler(
       {
         id: builder.getId(),
       },
@@ -55,7 +55,7 @@ describe("restore-media-from-recycle-bin", () => {
   });
 
   it("should handle non-existent media", async () => {
-    const result = await RestoreFromRecycleBinTool().handler(
+    const result = await RestoreFromRecycleBinTool.handler(
       {
         id: BLANK_UUID,
       },

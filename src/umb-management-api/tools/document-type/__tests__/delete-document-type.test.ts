@@ -26,7 +26,7 @@ describe("delete-document-type", () => {
       .create();
 
     // Delete the document type
-    const result = await DeleteDocumentTypeTool().handler(
+    const result = await DeleteDocumentTypeTool.handler(
       {
         id: builder.getId(),
       },
@@ -44,7 +44,7 @@ describe("delete-document-type", () => {
   });
 
   it("should handle non-existent document type", async () => {
-    const result = await DeleteDocumentTypeTool().handler(
+    const result = await DeleteDocumentTypeTool.handler(
       {
         id: BLANK_UUID,
       },

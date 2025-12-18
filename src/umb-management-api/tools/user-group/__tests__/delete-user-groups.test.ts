@@ -36,7 +36,7 @@ describe("delete-user-groups", () => {
     expect(items).toHaveLength(1);
 
     // Delete all test groups
-    const result = await DeleteUserGroupsTool().handler({
+    const result = await DeleteUserGroupsTool.handler({
       userGroupIds: builders.map(builder => ({ id: builder.getId() }))
     }, { signal: new AbortController().signal });
 
@@ -50,7 +50,7 @@ describe("delete-user-groups", () => {
   });
 
   it("should handle empty array of user groups", async () => {
-    const result = await DeleteUserGroupsTool().handler({
+    const result = await DeleteUserGroupsTool.handler({
       userGroupIds: []
     }, { signal: new AbortController().signal });
 

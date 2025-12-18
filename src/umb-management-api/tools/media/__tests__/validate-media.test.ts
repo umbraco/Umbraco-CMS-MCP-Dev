@@ -49,7 +49,7 @@ describe("validate-media", () => {
 
   it("should validate a valid media", async () => {
     const model = await buildValidationModel();
-    const result = await ValidateMediaTool().handler(model, {
+    const result = await ValidateMediaTool.handler(model, {
       signal: new AbortController().signal,
     });
     expect(result).toMatchSnapshot();
@@ -62,7 +62,7 @@ describe("validate-media", () => {
       variants: [{ name: "", culture: null, segment: null }],
       mediaType: undefined,
     };
-    const result = await ValidateMediaTool().handler(invalidModel as any, {
+    const result = await ValidateMediaTool.handler(invalidModel as any, {
       signal: new AbortController().signal,
     });
     expect(normalizeErrorResponse(result)).toMatchSnapshot();

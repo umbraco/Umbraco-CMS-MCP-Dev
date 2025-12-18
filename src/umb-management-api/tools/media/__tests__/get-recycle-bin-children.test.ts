@@ -47,7 +47,7 @@ describe("get-recycle-bin-media-children", () => {
     await parentBuilder.moveToRecycleBin();
 
     // Get children
-    const result = await GetRecycleBinMediaChildrenTool().handler(
+    const result = await GetRecycleBinMediaChildrenTool.handler(
       {
         parentId: parentBuilder.getId(),
         take: 10,
@@ -74,7 +74,7 @@ describe("get-recycle-bin-media-children", () => {
   });
 
   it("should handle non-existent media", async () => {
-    const result = await GetRecycleBinMediaChildrenTool().handler(
+    const result = await GetRecycleBinMediaChildrenTool.handler(
       {
         parentId: BLANK_UUID,
         take: 10,

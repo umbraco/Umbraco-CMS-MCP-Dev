@@ -15,7 +15,7 @@ describe("get-log-viewer-level", () => {
   });
 
   it("should get log viewer levels with default parameters", async () => {
-    const result = await GetLogViewerLevelTool().handler(
+    const result = await GetLogViewerLevelTool.handler(
       { take: 100 },
       { signal: new AbortController().signal }
     );
@@ -25,7 +25,7 @@ describe("get-log-viewer-level", () => {
   });
 
   it("should get log viewer levels with custom pagination", async () => {
-    const result = await GetLogViewerLevelTool().handler(
+    const result = await GetLogViewerLevelTool.handler(
       {
         skip: 1,
         take: 2,

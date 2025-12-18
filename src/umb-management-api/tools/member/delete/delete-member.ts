@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteMemberByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteMemberTool = CreateUmbracoWriteTool(
-  "delete-member",
-  "Deletes a member by Id",
-  deleteMemberByIdParams.shape,
-  async ({ id }) => {
+const DeleteMemberTool = {
+  name: "delete-member",
+  description: "Deletes a member by Id",
+  schema: deleteMemberByIdParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteMemberById(id);
 
@@ -18,7 +21,7 @@ const DeleteMemberTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deleteMemberByIdParams.shape>;
 
-export default DeleteMemberTool;
+export default withStandardDecorators(DeleteMemberTool);

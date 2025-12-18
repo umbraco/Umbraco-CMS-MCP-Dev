@@ -36,7 +36,7 @@ describe("update-data-type", () => {
       .build();
 
     // Update the data type
-    const result = await UpdateDataTypeTool().handler(
+    const result = await UpdateDataTypeTool.handler(
       {
         id: builder.getId(),
         data: {
@@ -65,7 +65,7 @@ describe("update-data-type", () => {
       .withValue("maxChars", 100)
       .build();
 
-    const result = await UpdateDataTypeTool().handler(
+    const result = await UpdateDataTypeTool.handler(
       {
         id: BLANK_UUID,
         data: {

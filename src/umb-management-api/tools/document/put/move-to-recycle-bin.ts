@@ -1,14 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { putDocumentByIdMoveToRecycleBinParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const MoveDocumentToRecycleBinTool = CreateUmbracoWriteTool(
-  "move-document-to-recycle-bin",
-  "Move a document to the recycle bin",
-  putDocumentByIdMoveToRecycleBinParams.shape,
-  async ({ id }) => {
+const MoveDocumentToRecycleBinTool = {
+  name: "move-document-to-recycle-bin",
+  description: "Move a document to the recycle bin",
+  schema: putDocumentByIdMoveToRecycleBinParams.shape,
+  isReadOnly: false,
+  slices: ['move', 'recycle-bin'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Delete),
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putDocumentByIdMoveToRecycleBin(id);
     return {
@@ -20,7 +24,6 @@ const MoveDocumentToRecycleBinTool = CreateUmbracoWriteTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Delete)
-);
+} satisfies ToolDefinition<typeof putDocumentByIdMoveToRecycleBinParams.shape>;
 
-export default MoveDocumentToRecycleBinTool;
+export default withStandardDecorators(MoveDocumentToRecycleBinTool);

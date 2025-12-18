@@ -18,17 +18,18 @@ describe("get-indexer", () => {
   });
 
   it("should list all indexes with default parameters", async () => {
-    const result = await GetIndexerTool().handler(
+    const result = await GetIndexerTool.handler(
       { take: 100 },
       { signal: new AbortController().signal }
     );
 
-    // Normalize documentCount which changes as documents are created/deleted
+    // Normalize dynamic values that change based on content/schema
     const parsed = JSON.parse(result.content[0].text as string);
     if (parsed.items && Array.isArray(parsed.items)) {
       parsed.items = parsed.items.map((item: any) => ({
         ...item,
-        documentCount: "NORMALIZED_COUNT"
+        documentCount: "NORMALIZED_COUNT",
+        fieldCount: "NORMALIZED_COUNT"
       }));
     }
     result.content[0].text = JSON.stringify(parsed);

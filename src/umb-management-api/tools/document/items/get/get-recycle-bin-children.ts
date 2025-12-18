@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinDocumentChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetRecycleBinDocumentChildrenTool = CreateUmbracoReadTool(
-  "get-recycle-bin-document-children",
-  "Gets child items for a document in the recycle bin.",
-  getRecycleBinDocumentChildrenQueryParams.shape,
-  async (params) => {
+const GetRecycleBinDocumentChildrenTool = {
+  name: "get-recycle-bin-document-children",
+  description: "Gets child items for a document in the recycle bin.",
+  schema: getRecycleBinDocumentChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree', 'recycle-bin'],
+  handler: async (params: z.infer<typeof getRecycleBinDocumentChildrenQueryParams>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getRecycleBinDocumentChildren(params);
     return {
@@ -17,7 +21,7 @@ const GetRecycleBinDocumentChildrenTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getRecycleBinDocumentChildrenQueryParams.shape>;
 
-export default GetRecycleBinDocumentChildrenTool;
+export default withStandardDecorators(GetRecycleBinDocumentChildrenTool);

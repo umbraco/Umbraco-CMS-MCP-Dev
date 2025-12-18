@@ -1,11 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
-import { CreateDocumentRequestModel } from "@/umb-management-api/schemas/createDocumentRequestModel.js";
+import { CreateDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
-import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { UmbracoDocumentPermissions } from "../constants.js";
 import { AxiosResponse } from "axios";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoDocumentPermissions } from "../constants.js";
 
 const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
@@ -25,9 +25,9 @@ const createDocumentSchema = z.object({
     .default([]),
 });
 
-const CreateDocumentTool = CreateUmbracoWriteTool(
-  "create-document",
-  `Creates a document with support for multiple cultures.
+const CreateDocumentTool = {
+  name: "create-document",
+  description: `Creates a document with support for multiple cultures.
 
   Always follow these requirements when creating documents exactly, do not deviate in any way.
 
@@ -99,8 +99,11 @@ const CreateDocumentTool = CreateUmbracoWriteTool(
 
   Note: Some property editors (BlockList, BlockGrid, ImageCropper, UploadField) have special requirements - check their templates for important notes.
   `,
-  createDocumentSchema.shape,
-  async (model) => {
+  schema: createDocumentSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Create),
+  handler: async (model: z.infer<typeof createDocumentSchema>) => {
     const client = UmbracoManagementClient.getClient();
 
     const documentId = uuidv4();
@@ -175,7 +178,6 @@ const CreateDocumentTool = CreateUmbracoWriteTool(
       };
     }
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Create)
-);
+} satisfies ToolDefinition<typeof createDocumentSchema.shape>;
 
-export default CreateDocumentTool;
+export default withStandardDecorators(CreateDocumentTool);

@@ -52,7 +52,7 @@ describe("get-media-type-siblings", () => {
       .create();
 
     // Act: Get siblings for the target media type
-    const result = await GetMediaTypeSiblingsTool().handler(
+    const result = await GetMediaTypeSiblingsTool.handler(
       {
         target: targetBuilder.getId(),
       },
@@ -69,7 +69,7 @@ describe("get-media-type-siblings", () => {
     const nonExistentId = BLANK_UUID;
 
     // Act: Try to get siblings for non-existent media type
-    const result = await GetMediaTypeSiblingsTool().handler(
+    const result = await GetMediaTypeSiblingsTool.handler(
       {
         target: nonExistentId,
       },

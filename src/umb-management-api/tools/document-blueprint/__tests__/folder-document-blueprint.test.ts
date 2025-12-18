@@ -27,7 +27,7 @@ describe("document-blueprint-folder", () => {
 
   describe("create", () => {
     it("should create a folder", async () => {
-      const result = await CreateDocumentBlueprintFolderTool().handler(
+      const result = await CreateDocumentBlueprintFolderTool.handler(
         {
           name: TEST_FOLDER_NAME,
         },
@@ -51,7 +51,7 @@ describe("document-blueprint-folder", () => {
       ).create();
       expect(parentBuilder).toBeDefined();
 
-      const result = await CreateDocumentBlueprintFolderTool().handler(
+      const result = await CreateDocumentBlueprintFolderTool.handler(
         {
           name: TEST_FOLDER_NAME,
           parent: { id: parentBuilder.getId() },
@@ -78,7 +78,7 @@ describe("document-blueprint-folder", () => {
       ).create();
       expect(builder).toBeDefined();
 
-      const result = await UpdateDocumentBlueprintFolderTool().handler(
+      const result = await UpdateDocumentBlueprintFolderTool.handler(
         {
           id: builder.getId(),
           data: {
@@ -100,7 +100,7 @@ describe("document-blueprint-folder", () => {
     });
 
     it("should handle non-existent folder", async () => {
-      const result = await UpdateDocumentBlueprintFolderTool().handler(
+      const result = await UpdateDocumentBlueprintFolderTool.handler(
         {
           id: BLANK_UUID,
           data: {
@@ -122,7 +122,7 @@ describe("document-blueprint-folder", () => {
       ).create();
       expect(builder).toBeDefined();
 
-      const result = await DeleteDocumentBlueprintFolderTool().handler(
+      const result = await DeleteDocumentBlueprintFolderTool.handler(
         {
           id: builder.getId(),
         },
@@ -139,7 +139,7 @@ describe("document-blueprint-folder", () => {
     });
 
     it("should handle non-existent folder", async () => {
-      const result = await DeleteDocumentBlueprintFolderTool().handler(
+      const result = await DeleteDocumentBlueprintFolderTool.handler(
         {
           id: BLANK_UUID,
         },

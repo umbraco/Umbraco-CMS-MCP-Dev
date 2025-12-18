@@ -1,19 +1,24 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putMediaTypeFolderByIdParams,
   putMediaTypeFolderByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UpdateMediaTypeFolderTool = CreateUmbracoWriteTool(
-  "update-media-type-folder",
-  "Updates a media type folder by Id",
-  {
-    id: putMediaTypeFolderByIdParams.shape.id,
-    data: z.object(putMediaTypeFolderByIdBody.shape),
-  },
-  async (model: { id: string; data: { name: string } }) => {
+const updateMediaTypeFolderSchema = z.object({
+  id: putMediaTypeFolderByIdParams.shape.id,
+  data: z.object(putMediaTypeFolderByIdBody.shape),
+});
+
+const UpdateMediaTypeFolderTool = {
+  name: "update-media-type-folder",
+  description: "Updates a media type folder by Id",
+  schema: updateMediaTypeFolderSchema.shape,
+  isReadOnly: false,
+  slices: ['update', 'folders'],
+  handler: async (model: { id: string; data: { name: string } }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putMediaTypeFolderById(model.id, model.data);
 
@@ -25,7 +30,7 @@ const UpdateMediaTypeFolderTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof updateMediaTypeFolderSchema.shape>;
 
-export default UpdateMediaTypeFolderTool;
+export default withStandardDecorators(UpdateMediaTypeFolderTool);

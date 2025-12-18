@@ -14,7 +14,7 @@ describe("get-member-type-configuration", () => {
   });
 
   it("should get the global member type configuration", async () => {
-    const result = await GetMemberTypeConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetMemberTypeConfigurationTool.handler({}, { signal: new AbortController().signal });
     const config = JSON.parse(result.content[0].text as string);
     expect(config).toMatchSnapshot();
   });

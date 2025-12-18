@@ -38,7 +38,7 @@ describe("GetFilterUserGroupTool", () => {
       take: 100,
       filter: "Filter" 
     });
-    const result = await GetFilterUserGroupTool().handler(params, { signal: new AbortController().signal });
+    const result = await GetFilterUserGroupTool.handler(params, { signal: new AbortController().signal });
 
     // Verify the response contains only groups with "Filter" in the name
     const response = JSON.parse(result.content[0].text as string) as PagedUserGroupResponseModel;
@@ -51,7 +51,7 @@ describe("GetFilterUserGroupTool", () => {
       skip: 0, 
       take: 100 
     });
-    const result = await GetFilterUserGroupTool().handler(params, { signal: new AbortController().signal });
+    const result = await GetFilterUserGroupTool.handler(params, { signal: new AbortController().signal });
 
     // Verify the response contains all groups
     const response = JSON.parse(result.content[0].text as string) as PagedUserGroupResponseModel;
@@ -63,7 +63,7 @@ describe("GetFilterUserGroupTool", () => {
       skip: 2, 
       take: 2 
     });
-    const result = await GetFilterUserGroupTool().handler(params, { signal: new AbortController().signal });
+    const result = await GetFilterUserGroupTool.handler(params, { signal: new AbortController().signal });
 
     // Verify the response contains only 2 items
     const response = JSON.parse(result.content[0].text as string) as PagedUserGroupResponseModel;

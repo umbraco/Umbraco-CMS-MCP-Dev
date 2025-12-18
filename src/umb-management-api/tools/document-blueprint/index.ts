@@ -31,28 +31,28 @@ export const DocumentBlueprintCollection: ToolCollectionExport = {
 
     if (AuthorizationPolicies.TreeAccessDocumentTypes(user)) {
       // Blueprint CRUD
-      tools.push(GetDocumentBlueprintTool());
-      tools.push(CreateDocumentBlueprintTool());
-      tools.push(UpdateDocumentBlueprintTool());
-      tools.push(DeleteDocumentBlueprintTool());
-      tools.push(MoveDocumentBlueprintTool());
+      tools.push(GetDocumentBlueprintTool);
+      tools.push(CreateDocumentBlueprintTool);
+      tools.push(UpdateDocumentBlueprintTool);
+      tools.push(DeleteDocumentBlueprintTool);
+      tools.push(MoveDocumentBlueprintTool);
 
       // Blueprint queries
-      tools.push(GetDocumentBlueprintByIdArrayTool());
-      tools.push(GetDocumentBlueprintScaffoldTool());
-      tools.push(CreateDocumentBlueprintFromDocumentTool());
+      tools.push(GetDocumentBlueprintByIdArrayTool);
+      tools.push(GetDocumentBlueprintScaffoldTool);
+      tools.push(CreateDocumentBlueprintFromDocumentTool);
 
       // Blueprint tree
-      tools.push(GetDocumentBlueprintAncestorsTool());
-      tools.push(GetDocumentBlueprintChildrenTool());
-      tools.push(GetDocumentBlueprintRootTool());
-      tools.push(GetDocumentBlueprintSiblingsTool());
+      tools.push(GetDocumentBlueprintAncestorsTool);
+      tools.push(GetDocumentBlueprintChildrenTool);
+      tools.push(GetDocumentBlueprintRootTool);
+      tools.push(GetDocumentBlueprintSiblingsTool);
 
       // Folder operations
-      tools.push(CreateDocumentBlueprintFolderTool());
-      tools.push(GetDocumentBlueprintFolderTool());
-      tools.push(UpdateDocumentBlueprintFolderTool());
-      tools.push(DeleteDocumentBlueprintFolderTool());
+      tools.push(CreateDocumentBlueprintFolderTool);
+      tools.push(GetDocumentBlueprintFolderTool);
+      tools.push(UpdateDocumentBlueprintFolderTool);
+      tools.push(DeleteDocumentBlueprintFolderTool);
     }
 
     return tools;

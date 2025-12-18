@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getRecycleBinMediaByIdOriginalParentParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetRecycleBinMediaOriginalParentTool = CreateUmbracoReadTool(
-  "get-recycle-bin-media-original-parent",
-  `Get the original parent location of a media item in the recycle bin
+const GetRecycleBinMediaOriginalParentTool = {
+  name: "get-recycle-bin-media-original-parent",
+  description: `Get the original parent location of a media item in the recycle bin
   Returns information about where the media item was located before deletion.`,
-  getRecycleBinMediaByIdOriginalParentParams.shape,
-  async ({ id }) => {
+  schema: getRecycleBinMediaByIdOriginalParentParams.shape,
+  isReadOnly: true,
+  slices: ['read', 'recycle-bin'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getRecycleBinMediaByIdOriginalParent(id);
     return {
@@ -18,7 +21,7 @@ const GetRecycleBinMediaOriginalParentTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getRecycleBinMediaByIdOriginalParentParams.shape>;
 
-export default GetRecycleBinMediaOriginalParentTool;
+export default withStandardDecorators(GetRecycleBinMediaOriginalParentTool);

@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getItemMediaTypeQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetItemMediaTypeTool = CreateUmbracoReadTool(
-  "get-item-media-type",
-  "Gets media type items by their ids",
-  getItemMediaTypeQueryParams.shape,
-  async (params) => {
+const GetItemMediaTypeTool = {
+  name: "get-item-media-type",
+  description: "Gets media type items by their ids",
+  schema: getItemMediaTypeQueryParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (params) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemMediaType(params);
 
@@ -18,7 +21,7 @@ const GetItemMediaTypeTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getItemMediaTypeQueryParams.shape>;
 
-export default GetItemMediaTypeTool;
+export default withStandardDecorators(GetItemMediaTypeTool);

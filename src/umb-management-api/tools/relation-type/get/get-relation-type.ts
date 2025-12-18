@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetRelationTypeParams } from "@/umb-management-api/schemas/index.js";
 import { getRelationTypeQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetRelationTypeTool = CreateUmbracoReadTool(
-  "get-relation-type",
-  "Gets all relation types with pagination",
-  getRelationTypeQueryParams.shape,
-  async (model: GetRelationTypeParams) => {
+const GetRelationTypeTool = {
+  name: "get-relation-type",
+  description: "Gets all relation types with pagination",
+  schema: getRelationTypeQueryParams.shape,
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async (model: GetRelationTypeParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getRelationType(model);
 
@@ -19,7 +22,7 @@ const GetRelationTypeTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getRelationTypeQueryParams.shape>;
 
-export default GetRelationTypeTool;
+export default withStandardDecorators(GetRelationTypeTool);

@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteStylesheetByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteStylesheetTool = CreateUmbracoWriteTool(
-  "delete-stylesheet",
-  "Deletes a stylesheet by its path",
-  deleteStylesheetByPathParams.shape,
-  async (model: { path: string }) => {
+const DeleteStylesheetTool = {
+  name: "delete-stylesheet",
+  description: "Deletes a stylesheet by its path",
+  schema: deleteStylesheetByPathParams.shape,
+  isReadOnly: false,
+  slices: ['delete'],
+  handler: async (model: { path: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.deleteStylesheetByPath(model.path);
 
@@ -19,6 +22,6 @@ const DeleteStylesheetTool = CreateUmbracoWriteTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof deleteStylesheetByPathParams.shape>;
 
-export default DeleteStylesheetTool;
+export default withStandardDecorators(DeleteStylesheetTool);

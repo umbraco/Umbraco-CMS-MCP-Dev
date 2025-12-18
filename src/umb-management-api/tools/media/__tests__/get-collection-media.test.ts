@@ -47,7 +47,7 @@ describe("get-collection-media", () => {
       .withImageValue(tempFileBuilder2.getId())
       .create();
 
-    const result = await GetCollectionMediaTool().handler(
+    const result = await GetCollectionMediaTool.handler(
       {
         orderBy: "updateDate",
         take: 100,
@@ -68,7 +68,7 @@ describe("get-collection-media", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetCollectionMediaTool().handler(
+    const result = await GetCollectionMediaTool.handler(
       {
         orderBy: "name",
         take: 10
@@ -88,7 +88,7 @@ describe("get-collection-media", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetCollectionMediaTool().handler(
+    const result = await GetCollectionMediaTool.handler(
       {
         skip: 0,
         take: 5,
@@ -109,7 +109,7 @@ describe("get-collection-media", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetCollectionMediaTool().handler(
+    const result = await GetCollectionMediaTool.handler(
       {
         orderBy: "name",
         orderDirection: "Descending",
@@ -130,7 +130,7 @@ describe("get-collection-media", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetCollectionMediaTool().handler(
+    const result = await GetCollectionMediaTool.handler(
       {
         filter: "Test Collection",
         orderBy: "name",
@@ -144,7 +144,7 @@ describe("get-collection-media", () => {
   });
 
   it("should handle non-existent data type ID", async () => {
-    const result = await GetCollectionMediaTool().handler(
+    const result = await GetCollectionMediaTool.handler(
       {
         dataTypeId: BLANK_UUID,
         orderBy: "name",
@@ -157,7 +157,7 @@ describe("get-collection-media", () => {
   });
 
   it("should use default values when minimal parameters provided", async () => {
-    const result = await GetCollectionMediaTool().handler(
+    const result = await GetCollectionMediaTool.handler(
       {
         orderBy: "updateDate", // Using default orderBy value
         take: 100

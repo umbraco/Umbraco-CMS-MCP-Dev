@@ -1,19 +1,25 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import {
   putDocumentTypeByIdParams,
   putDocumentTypeByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { UpdateDocumentTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 
-const ValidateDocumentTypeTool = CreateUmbracoReadTool(
-  "validate-document-type",
-  "Validates a document type using the Umbraco API (PUT, does not persist changes).",
-  {
-    id: putDocumentTypeByIdParams.shape.id,
-    data: z.object(putDocumentTypeByIdBody.shape),
-  },
-  async (model: { id: string; data: any }) => {
+const validateDocumentTypeSchema = {
+  id: putDocumentTypeByIdParams.shape.id,
+  data: z.object(putDocumentTypeByIdBody.shape),
+};
+
+const ValidateDocumentTypeTool = {
+  name: "validate-document-type",
+  description: "Validates a document type using the Umbraco API (PUT, does not persist changes).",
+  schema: validateDocumentTypeSchema,
+  isReadOnly: true,
+  slices: ['validate'],
+  handler: async (model: { id: string; data: UpdateDocumentTypeRequestModel }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putDocumentTypeById(model.id, model.data);
     return {
@@ -25,6 +31,6 @@ const ValidateDocumentTypeTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof validateDocumentTypeSchema>;
 
-export default ValidateDocumentTypeTool;
+export default withStandardDecorators(ValidateDocumentTypeTool);

@@ -50,7 +50,7 @@ describe("get-template-siblings", () => {
       .create();
 
     // Act: Get siblings for the target template
-    const result = await GetTemplateSiblingsTool().handler(
+    const result = await GetTemplateSiblingsTool.handler(
       {
         target: targetBuilder.getId(),
       },
@@ -67,7 +67,7 @@ describe("get-template-siblings", () => {
     const nonExistentId = BLANK_UUID;
 
     // Act: Try to get siblings for non-existent template
-    const result = await GetTemplateSiblingsTool().handler(
+    const result = await GetTemplateSiblingsTool.handler(
       {
         target: nonExistentId,
       },

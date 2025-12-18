@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getHealthCheckGroupByNameParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetHealthCheckGroupByNameTool = CreateUmbracoReadTool(
-  "get-health-check-group-by-name",
-  "Gets specific health check group details by name for system monitoring",
-  getHealthCheckGroupByNameParams.shape,
-  async (params: { name: string }) => {
+const GetHealthCheckGroupByNameTool = {
+  name: "get-health-check-group-by-name",
+  description: "Gets specific health check group details by name for system monitoring",
+  schema: getHealthCheckGroupByNameParams.shape,
+  isReadOnly: true,
+  slices: ['diagnostics'],
+  handler: async (params: { name: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getHealthCheckGroupByName(params.name);
 
@@ -19,6 +22,6 @@ const GetHealthCheckGroupByNameTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getHealthCheckGroupByNameParams.shape>;
 
-export default GetHealthCheckGroupByNameTool;
+export default withStandardDecorators(GetHealthCheckGroupByNameTool);

@@ -32,7 +32,7 @@ describe("post-document-public-access", () => {
   });
 
   it("should add public access for a valid document using the post tool", async () => {
-    const postResult = await PostDocumentPublicAccessTool().handler(
+    const postResult = await PostDocumentPublicAccessTool.handler(
       {
         id: docId,
         data: {
@@ -59,7 +59,7 @@ describe("post-document-public-access", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const postResult = await PostDocumentPublicAccessTool().handler(
+    const postResult = await PostDocumentPublicAccessTool.handler(
       {
         id: BLANK_UUID,
         data: {

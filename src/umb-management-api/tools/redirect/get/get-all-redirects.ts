@@ -1,11 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetAllRedirectsTool = CreateUmbracoReadTool(
-  "get-all-redirects",
-  `Gets all redirects from the Umbraco server.
+const GetAllRedirectsTool = {
+  name: "get-all-redirects",
+  description: `Gets all redirects from the Umbraco server.
   Returns a list of redirects with their details.
-  
+
   Example response:
   {
     "items": [
@@ -21,8 +22,10 @@ const GetAllRedirectsTool = CreateUmbracoReadTool(
     ],
     "total": 1
   }`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: true,
+  slices: ['list'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getRedirectManagement();
 
@@ -34,7 +37,7 @@ const GetAllRedirectsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetAllRedirectsTool;
+export default withStandardDecorators(GetAllRedirectsTool);

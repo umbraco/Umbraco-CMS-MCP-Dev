@@ -59,7 +59,7 @@ describe("validate-member-update", () => {
     const model = buildUpdateValidationModel(memberId, TEST_MEMBER_EMAIL);
 
     // Act - validate the update for the existing member
-    const result = await ValidateMemberUpdateTool().handler({
+    const result = await ValidateMemberUpdateTool.handler({
       id: memberId,
       data: model
     }, { signal: new AbortController().signal });
@@ -90,7 +90,7 @@ describe("validate-member-update", () => {
     };
 
     // Act - validate invalid update data
-    const result = await ValidateMemberUpdateTool().handler({
+    const result = await ValidateMemberUpdateTool.handler({
       id: memberBuilder.getId(),
       data: invalidModel
     }, { signal: new AbortController().signal });
@@ -103,7 +103,7 @@ describe("validate-member-update", () => {
     const nonExistentId = crypto.randomUUID();
     const model = buildUpdateValidationModel(nonExistentId, TEST_MEMBER_EMAIL);
 
-    const result = await ValidateMemberUpdateTool().handler({
+    const result = await ValidateMemberUpdateTool.handler({
       id: nonExistentId,
       data: model
     }, { signal: new AbortController().signal });

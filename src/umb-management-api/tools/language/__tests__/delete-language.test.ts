@@ -31,7 +31,7 @@ describe("delete-language", () => {
       .create();
 
     // Delete the language
-    const result = await DeleteLanguageTool().handler({
+    const result = await DeleteLanguageTool.handler({
       isoCode: builder.getIsoCode()
     }, { signal: new AbortController().signal });
 
@@ -45,7 +45,7 @@ describe("delete-language", () => {
 
   it("should handle non-existent language", async () => {
     const nonExistentIso = "xx-DEL";
-    const result = await DeleteLanguageTool().handler({
+    const result = await DeleteLanguageTool.handler({
       isoCode: nonExistentIso
     }, { signal: new AbortController().signal });
 

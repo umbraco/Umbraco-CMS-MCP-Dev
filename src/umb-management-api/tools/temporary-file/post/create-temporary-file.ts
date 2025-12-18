@@ -1,5 +1,6 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 import * as fs from "fs";
 import * as os from "os";
@@ -14,17 +15,19 @@ const createTemporaryFileSchema = z.object({
 
 type CreateTemporaryFileParams = z.infer<typeof createTemporaryFileSchema>;
 
-const CreateTemporaryFileTool = CreateUmbracoWriteTool(
-  "create-temporary-file",
-  `Creates a new temporary file. The file will be deleted after 10 minutes.
+const CreateTemporaryFileTool = {
+  name: "create-temporary-file",
+  description: `Creates a new temporary file. The file will be deleted after 10 minutes.
   The temporary file id is used when uploading media files to Umbraco.
   The process is as follows:
   - Create a temporary file using this endpoint
   - Use the temporary file id when creating a media item using the media post endpoint
 
   Provide the file content as a base64 encoded string.`,
-  createTemporaryFileSchema.shape,
-  async (model: CreateTemporaryFileParams) => {
+  schema: createTemporaryFileSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateTemporaryFileParams) => {
     let tempFilePath: string | null = null;
 
     try {
@@ -73,6 +76,6 @@ const CreateTemporaryFileTool = CreateUmbracoWriteTool(
       }
     }
   }
-);
+} satisfies ToolDefinition<typeof createTemporaryFileSchema.shape>;
 
-export default CreateTemporaryFileTool;
+export default withStandardDecorators(CreateTemporaryFileTool);

@@ -1,17 +1,22 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentByIdReferencedByParams, getDocumentByIdReferencedByQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentByIdReferencedByTool = CreateUmbracoReadTool(
-  "get-document-by-id-referenced-by",
-  `Get items that reference a specific document item
+const schema = z.object({
+  ...getDocumentByIdReferencedByParams.shape,
+  ...getDocumentByIdReferencedByQueryParams.shape,
+});
+
+const GetDocumentByIdReferencedByTool = {
+  name: "get-document-by-id-referenced-by",
+  description: `Get items that reference a specific document item
   Use this to find all content, documents, or other items that are currently referencing a specific document item.`,
-  z.object({
-    ...getDocumentByIdReferencedByParams.shape,
-    ...getDocumentByIdReferencedByQueryParams.shape,
-  }).shape,
-  async ({ id, skip, take }) => {
+  schema: schema.shape,
+  isReadOnly: true,
+  slices: ['references'],
+  handler: async ({ id, skip, take }: z.infer<typeof schema>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentByIdReferencedBy(id, { skip, take });
     return {
@@ -22,7 +27,7 @@ const GetDocumentByIdReferencedByTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof schema.shape>;
 
-export default GetDocumentByIdReferencedByTool;
+export default withStandardDecorators(GetDocumentByIdReferencedByTool);

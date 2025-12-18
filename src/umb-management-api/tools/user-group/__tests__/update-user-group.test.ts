@@ -26,7 +26,7 @@ describe("update-user-group", () => {
 
   it("should update a user group", async () => {
     await builder.withName(TEST_GROUP_NAME).create();
-    const result = await UpdateUserGroupTool().handler(
+    const result = await UpdateUserGroupTool.handler(
       {
         id: builder.getId(),
         data: {
@@ -50,7 +50,7 @@ describe("update-user-group", () => {
   });
 
   it("should handle non-existent user group", async () => {
-    const result = await UpdateUserGroupTool().handler(
+    const result = await UpdateUserGroupTool.handler(
       {
         id: BLANK_UUID,
         data: {

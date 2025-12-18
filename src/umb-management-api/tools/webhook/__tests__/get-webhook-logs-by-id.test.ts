@@ -28,7 +28,7 @@ describe("get-webhook-logs", () => {
       .withEvents([CONTENT_PUBLISHED_EVENT])
       .create();
 
-    const result = await GetWebhookLogsTool().handler({
+    const result = await GetWebhookLogsTool.handler({
       id: builder.getId()
     }, { signal: new AbortController().signal });
 

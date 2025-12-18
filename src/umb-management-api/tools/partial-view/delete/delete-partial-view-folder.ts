@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deletePartialViewFolderByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeletePartialViewFolderTool = CreateUmbracoWriteTool(
-  "delete-partial-view-folder",
-  "Deletes a partial view folder by its path",
-  deletePartialViewFolderByPathParams.shape,
-  async (model: { path: string }) => {
+const DeletePartialViewFolderTool = {
+  name: "delete-partial-view-folder",
+  description: "Deletes a partial view folder by its path",
+  schema: deletePartialViewFolderByPathParams.shape,
+  isReadOnly: false,
+  slices: ['delete', 'folders'],
+  handler: async (model: { path: string }) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.deletePartialViewFolderByPath(model.path);
 
@@ -18,7 +21,7 @@ const DeletePartialViewFolderTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof deletePartialViewFolderByPathParams.shape>;
 
-export default DeletePartialViewFolderTool;
+export default withStandardDecorators(DeletePartialViewFolderTool);

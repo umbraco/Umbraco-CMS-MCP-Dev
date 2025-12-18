@@ -1,12 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { postDocumentTypeAvailableCompositionsBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { z } from "zod";
 
-const GetDocumentTypeAvailableCompositionsTool = CreateUmbracoReadTool(
-  "get-document-type-available-compositions",
-  "Gets the available compositions for a document type",
-  postDocumentTypeAvailableCompositionsBody.shape,
-  async (model) => {
+type SchemaParams = z.infer<typeof postDocumentTypeAvailableCompositionsBody>;
+
+const GetDocumentTypeAvailableCompositionsTool = {
+  name: "get-document-type-available-compositions",
+  description: "Gets the available compositions for a document type",
+  schema: postDocumentTypeAvailableCompositionsBody.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (model: SchemaParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postDocumentTypeAvailableCompositions(model);
 
@@ -19,6 +25,6 @@ const GetDocumentTypeAvailableCompositionsTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof postDocumentTypeAvailableCompositionsBody.shape>;
 
-export default GetDocumentTypeAvailableCompositionsTool;
+export default withStandardDecorators(GetDocumentTypeAvailableCompositionsTool);

@@ -53,7 +53,7 @@ describe("get-media-are-referenced", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetMediaAreReferencedTool().handler(
+    const result = await GetMediaAreReferencedTool.handler(
       {
         id: [builder.getId()],
         skip: 0,
@@ -105,7 +105,7 @@ describe("get-media-are-referenced", () => {
       .create();
 
     // Check both media items
-    const result = await GetMediaAreReferencedTool().handler(
+    const result = await GetMediaAreReferencedTool.handler(
       {
         id: [referencedMedia.getId(), unreferencedMedia.getId()],
         skip: 0,
@@ -122,7 +122,7 @@ describe("get-media-are-referenced", () => {
   });
 
   it("should handle non-existent media IDs", async () => {
-    const result = await GetMediaAreReferencedTool().handler(
+    const result = await GetMediaAreReferencedTool.handler(
       {
         id: [BLANK_UUID],
         skip: 0,
@@ -162,7 +162,7 @@ describe("get-media-are-referenced", () => {
       .create();
 
     // Check if the media is now referenced
-    const result = await GetMediaAreReferencedTool().handler(
+    const result = await GetMediaAreReferencedTool.handler(
       {
         id: [mediaBuilder.getId()],
         skip: 0,

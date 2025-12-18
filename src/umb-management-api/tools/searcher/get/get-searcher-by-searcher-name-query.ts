@@ -1,18 +1,20 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getSearcherBySearcherNameQueryParams, getSearcherBySearcherNameQueryQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetSearcherBySearcherNameQueryParams } from "@/umb-management-api/schemas/index.js";
-import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Combine both parameter schemas for the tool
 const combinedSchema = getSearcherBySearcherNameQueryParams.merge(getSearcherBySearcherNameQueryQueryParams);
 
-const GetSearcherBySearcherNameQueryTool = CreateUmbracoReadTool(
-  "get-searcher-by-searcher-name-query",
-  `Gets search results from a specific searcher by name with query parameters.
+const GetSearcherBySearcherNameQueryTool = {
+  name: "get-searcher-by-searcher-name-query",
+  description: `Gets search results from a specific searcher by name with query parameters.
   Returns search results from the specified searcher with pagination support.`,
-  combinedSchema.shape,
-  async (model: { searcherName: string } & GetSearcherBySearcherNameQueryParams) => {
+  schema: combinedSchema.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async (model: { searcherName: string } & GetSearcherBySearcherNameQueryParams) => {
     const client = UmbracoManagementClient.getClient();
     const { searcherName, ...queryParams } = model;
     const response = await client.getSearcherBySearcherNameQuery(searcherName, queryParams);
@@ -26,6 +28,6 @@ const GetSearcherBySearcherNameQueryTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof combinedSchema.shape>;
 
-export default GetSearcherBySearcherNameQueryTool;
+export default withStandardDecorators(GetSearcherBySearcherNameQueryTool);

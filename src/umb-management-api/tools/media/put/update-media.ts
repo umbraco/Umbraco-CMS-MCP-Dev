@@ -1,22 +1,27 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putMediaByIdParams,
   putMediaByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UpdateMediaTool = CreateUmbracoWriteTool(
-  "update-media",
-  `Updates a media item by Id
+const schema = {
+  id: putMediaByIdParams.shape.id,
+  data: z.object(putMediaByIdBody.shape),
+};
+
+const UpdateMediaTool = {
+  name: "update-media",
+  description: `Updates a media item by Id. Works for all media types including folders, images, files, videos, etc.
   Always read the current media value first and only update the required values.
   Don't miss any properties from the original media that you are updating.
-  This cannot be used for moving media to a new folder. Use the move endpoint to do that`,
-  {
-    id: putMediaByIdParams.shape.id,
-    data: z.object(putMediaByIdBody.shape),
-  },
-  async (model: { id: string; data: any }) => {
+  This cannot be used for moving media to a new folder. Use the move endpoint to do that.`,
+  schema,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async (model: { id: string; data: any }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putMediaById(model.id, model.data);
     return {
@@ -27,7 +32,7 @@ const UpdateMediaTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof schema>;
 
-export default UpdateMediaTool;
+export default withStandardDecorators(UpdateMediaTool);

@@ -30,7 +30,7 @@ describe("delete-document-public-access", () => {
       .create();
     docId = builder.getId();
     // Add public access
-    await PostDocumentPublicAccessTool().handler(
+    await PostDocumentPublicAccessTool.handler(
       {
         id: docId,
         data: buildPublicAccessData(docId),
@@ -45,14 +45,14 @@ describe("delete-document-public-access", () => {
   });
 
   it("should delete public access for a valid document", async () => {
-    const deleteResult = await DeleteDocumentPublicAccessTool().handler(
+    const deleteResult = await DeleteDocumentPublicAccessTool.handler(
       { id: docId },
       { signal: new AbortController().signal }
     );
     expect(deleteResult).toMatchSnapshot();
 
     // GET to verify
-    const getResult = await GetDocumentPublicAccessTool().handler(
+    const getResult = await GetDocumentPublicAccessTool.handler(
       { id: docId },
       { signal: new AbortController().signal }
     );
@@ -60,7 +60,7 @@ describe("delete-document-public-access", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const deleteResult = await DeleteDocumentPublicAccessTool().handler(
+    const deleteResult = await DeleteDocumentPublicAccessTool.handler(
       { id: BLANK_UUID },
       { signal: new AbortController().signal }
     );

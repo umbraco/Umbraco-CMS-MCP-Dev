@@ -31,7 +31,7 @@ describe("stylesheet-tree-operations", () => {
 
   describe("get-root", () => {
     it("should get root level stylesheets", async () => {
-      const result = await GetStylesheetRootTool().handler(
+      const result = await GetStylesheetRootTool.handler(
         {
           skip: 0,
           take: 100
@@ -59,7 +59,7 @@ describe("stylesheet-tree-operations", () => {
         .withPath(`/${TEST_FOLDER_NAME}`)
         .create();
 
-      const result = await GetStylesheetChildrenTool().handler(
+      const result = await GetStylesheetChildrenTool.handler(
         {
           parentPath: `/${TEST_FOLDER_NAME}`,
           skip: 0,
@@ -86,7 +86,7 @@ describe("stylesheet-tree-operations", () => {
         .withPath(parentFolder.getPath());
       await childFolder.create();
 
-      const result = await GetStylesheetAncestorsTool().handler(
+      const result = await GetStylesheetAncestorsTool.handler(
         {
           descendantPath: childFolder.getPath()
         },
@@ -106,7 +106,7 @@ describe("stylesheet-tree-operations", () => {
         .withContent(TEST_CONTENT)
         .create();
 
-      const result = await GetStylesheetSearchTool().handler(
+      const result = await GetStylesheetSearchTool.handler(
         {
           path: [TEST_STYLESHEET_NAME]
         },

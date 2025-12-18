@@ -1,14 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { GetTreeDataTypeChildrenParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDataTypeChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDataTypeChildrenTool = CreateUmbracoReadTool(
-  "get-data-type-children",
-  "Gets the children data types or data type folders by the parent id",
-  getTreeDataTypeChildrenQueryParams.shape,
-  async (params) => {
+const GetDataTypeChildrenTool = {
+  name: "get-data-type-children",
+  description: "Gets the children data types or data type folders by the parent id",
+  schema: getTreeDataTypeChildrenQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: GetTreeDataTypeChildrenParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getTreeDataTypeChildren(params);
+    const response = await client.getTreeDataTypeChildren(params);
 
     return {
       content: [
@@ -18,7 +22,7 @@ const GetDataTypeChildrenTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeDataTypeChildrenQueryParams.shape>;
 
-export default GetDataTypeChildrenTool;
+export default withStandardDecorators(GetDataTypeChildrenTool);

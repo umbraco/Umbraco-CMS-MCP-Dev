@@ -33,7 +33,7 @@ describe("get-media-by-id-array", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetMediaByIdArrayTool().handler(
+    const result = await GetMediaByIdArrayTool.handler(
       {
         id: [mediaBuilder.getId()],
       },
@@ -45,7 +45,7 @@ describe("get-media-by-id-array", () => {
   });
 
   it("should handle non-existent media", async () => {
-    const result = await GetMediaByIdArrayTool().handler(
+    const result = await GetMediaByIdArrayTool.handler(
       {
         id: [BLANK_UUID],
       },
@@ -56,7 +56,7 @@ describe("get-media-by-id-array", () => {
   });
 
   it("should handle empty id array", async () => {
-    const result = await GetMediaByIdArrayTool().handler(
+    const result = await GetMediaByIdArrayTool.handler(
       {
         id: [],
       },

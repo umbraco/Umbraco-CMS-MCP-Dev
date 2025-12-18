@@ -40,7 +40,7 @@ describe("update-document-version-prevent-cleanup", () => {
     const versionId = versions[0].id;
 
     // Act
-    const result = await UpdateDocumentVersionPreventCleanupTool().handler({
+    const result = await UpdateDocumentVersionPreventCleanupTool.handler({
       id: versionId,
       preventCleanup: true
     }, { signal: new AbortController().signal });
@@ -69,7 +69,7 @@ describe("update-document-version-prevent-cleanup", () => {
     const versionId = versions[0].id;
 
     // Act
-    const result = await UpdateDocumentVersionPreventCleanupTool().handler({
+    const result = await UpdateDocumentVersionPreventCleanupTool.handler({
       id: versionId,
       preventCleanup: false
     }, { signal: new AbortController().signal });
@@ -81,7 +81,7 @@ describe("update-document-version-prevent-cleanup", () => {
 
   it("should handle non-existent version ID", async () => {
     // Act
-    const result = await UpdateDocumentVersionPreventCleanupTool().handler({
+    const result = await UpdateDocumentVersionPreventCleanupTool.handler({
       id: "non-existent-version-id",
       preventCleanup: true
     }, { signal: new AbortController().signal });

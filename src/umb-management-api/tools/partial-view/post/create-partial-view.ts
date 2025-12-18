@@ -1,7 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { CreatePartialViewRequestModel } from "@/umb-management-api/schemas/index.js";
 import z from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 const createPartialViewSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -11,11 +12,13 @@ const createPartialViewSchema = z.object({
 
 type CreatePartialViewSchema = z.infer<typeof createPartialViewSchema>;
 
-const CreatePartialViewTool = CreateUmbracoWriteTool(
-  "create-partial-view",
-  "Creates a new partial view",
-  createPartialViewSchema.shape,
-  async (model: CreatePartialViewSchema) => {
+const CreatePartialViewTool = {
+  name: "create-partial-view",
+  description: "Creates a new partial view",
+  schema: createPartialViewSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreatePartialViewSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     const normalizedPath = model.path && !model.path.startsWith('/')
@@ -33,7 +36,7 @@ const CreatePartialViewTool = CreateUmbracoWriteTool(
       content,
       parent: normalizedPath ? { path: normalizedPath } : undefined,
     };
-    
+
     var response = await client.postPartialView(payload);
 
     return {
@@ -44,7 +47,7 @@ const CreatePartialViewTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof createPartialViewSchema.shape>;
 
-export default CreatePartialViewTool;
+export default withStandardDecorators(CreatePartialViewTool);

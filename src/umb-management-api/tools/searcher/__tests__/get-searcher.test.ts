@@ -18,7 +18,7 @@ describe("get-searcher", () => {
   });
 
   it("should list all searchers with default parameters", async () => {
-    const result = await GetSearcherTool().handler(
+    const result = await GetSearcherTool.handler(
       { take: 100 },
       { signal: new AbortController().signal }
     );

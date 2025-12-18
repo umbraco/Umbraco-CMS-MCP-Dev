@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetModelsBuilderStatusTool = CreateUmbracoReadTool(
-  "get-models-builder-status",
-  `Gets the out-of-date status of Models Builder models.
+const GetModelsBuilderStatusTool = {
+  name: "get-models-builder-status",
+  description: `Gets the out-of-date status of Models Builder models.
   Returns an object containing:
   - status: The out-of-date status, one of: 'OutOfDate', 'Current', 'Unknown' (string)`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: true,
+  slices: ['diagnostics'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getModelsBuilderStatus();
 
@@ -20,6 +23,6 @@ const GetModelsBuilderStatusTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<{}>;
 
-export default GetModelsBuilderStatusTool;
+export default withStandardDecorators(GetModelsBuilderStatusTool);

@@ -42,7 +42,7 @@ describe("media-type-tree", () => {
         .withParentId(folderBuilder.getId())
         .create();
 
-      const result = await GetMediaTypeChildrenTool().handler(
+      const result = await GetMediaTypeChildrenTool.handler(
         {
           take: 100,
           parentId: folderBuilder.getId(),
@@ -56,7 +56,7 @@ describe("media-type-tree", () => {
     });
 
     it("should handle non-existent parent", async () => {
-      const result = await GetMediaTypeChildrenTool().handler(
+      const result = await GetMediaTypeChildrenTool.handler(
         {
           take: 100,
           parentId: BLANK_UUID,
@@ -80,7 +80,7 @@ describe("media-type-tree", () => {
         .withParentId(folderBuilder.getId())
         .create();
 
-      const result = await GetMediaTypeAncestorsTool().handler(
+      const result = await GetMediaTypeAncestorsTool.handler(
         {
           descendantId: childBuilder.getId(),
         },
@@ -93,7 +93,7 @@ describe("media-type-tree", () => {
     });
 
     it("should handle non-existent item", async () => {
-      const result = await GetMediaTypeAncestorsTool().handler(
+      const result = await GetMediaTypeAncestorsTool.handler(
         {
           descendantId: BLANK_UUID,
         },

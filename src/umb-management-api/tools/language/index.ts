@@ -20,15 +20,15 @@ export const LanguageCollection: ToolCollectionExport = {
   tools: (user: CurrentUserResponseModel) => {
     const tools: ToolDefinition<any>[] = [];
 
-    tools.push(GetLanguageItemsTool());
-    tools.push(GetDefaultLanguageTool());
-    tools.push(GetLanguageTool());
+    tools.push(GetLanguageItemsTool);
+    tools.push(GetDefaultLanguageTool);
+    tools.push(GetLanguageTool);
 
     if (AuthorizationPolicies.TreeAccessLanguages(user)) {
-      tools.push(CreateLanguageTool());
-      tools.push(UpdateLanguageTool());
-      tools.push(DeleteLanguageTool());
-      tools.push(GetLanguageByIsoCodeTool());
+      tools.push(CreateLanguageTool);
+      tools.push(UpdateLanguageTool);
+      tools.push(DeleteLanguageTool);
+      tools.push(GetLanguageByIsoCodeTool);
     }
 
     return tools;

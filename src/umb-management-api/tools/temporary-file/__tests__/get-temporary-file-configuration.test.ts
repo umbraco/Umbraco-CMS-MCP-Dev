@@ -14,7 +14,7 @@ describe("get-temporary-file-configuration", () => {
   });
 
   it("should get the global temporary file configuration", async () => {
-    const result = await GetTemporaryFileConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetTemporaryFileConfigurationTool.handler({}, { signal: new AbortController().signal });
     const config = JSON.parse(result.content[0].text as string);
     expect(config).toMatchSnapshot();
   });

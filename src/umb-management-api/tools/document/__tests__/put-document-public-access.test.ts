@@ -38,7 +38,7 @@ describe("put-document-public-access", () => {
 
   it("should update public access for a valid document", async () => {
     // Update public access (simulate by adding another group)
-    const putResult = await PutDocumentPublicAccessTool().handler(
+    const putResult = await PutDocumentPublicAccessTool.handler(
       {
         id: docId,
         data: {
@@ -65,7 +65,7 @@ describe("put-document-public-access", () => {
   });
 
   it("should handle non-existent document", async () => {
-    const putResult = await PutDocumentPublicAccessTool().handler(
+    const putResult = await PutDocumentPublicAccessTool.handler(
       {
         id: BLANK_UUID,
         data: {

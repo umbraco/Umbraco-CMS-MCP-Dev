@@ -64,7 +64,7 @@ describe("dictionary-tree", () => {
 
   describe("get-root", () => {
     it("should get root level dictionary items", async () => {
-      const result = await GetDictionaryRootTool().handler(
+      const result = await GetDictionaryRootTool.handler(
         {
           take: 100,
         },
@@ -76,7 +76,7 @@ describe("dictionary-tree", () => {
 
   describe("get-children", () => {
     it("should get children of root dictionary", async () => {
-      const result = await GetDictionaryChildrenTool().handler(
+      const result = await GetDictionaryChildrenTool.handler(
         {
           parentId: rootHelper.getId(),
           take: 100,
@@ -87,7 +87,7 @@ describe("dictionary-tree", () => {
     });
 
     it("should get children of child dictionary", async () => {
-      const result = await GetDictionaryChildrenTool().handler(
+      const result = await GetDictionaryChildrenTool.handler(
         {
           parentId: childHelper.getId(),
           take: 100,
@@ -98,7 +98,7 @@ describe("dictionary-tree", () => {
     });
 
     it("should get empty children for leaf dictionary", async () => {
-      const result = await GetDictionaryChildrenTool().handler(
+      const result = await GetDictionaryChildrenTool.handler(
         {
           parentId: grandchildHelper.getId(),
           take: 100,
@@ -111,7 +111,7 @@ describe("dictionary-tree", () => {
 
   describe("get-ancestors", () => {
     it("should get ancestors of grandchild dictionary", async () => {
-      const result = await GetDictionaryAncestorsTool().handler(
+      const result = await GetDictionaryAncestorsTool.handler(
         {
           descendantId: grandchildHelper.getId(),
         },
@@ -121,7 +121,7 @@ describe("dictionary-tree", () => {
     });
 
     it("should get ancestors of child dictionary", async () => {
-      const result = await GetDictionaryAncestorsTool().handler(
+      const result = await GetDictionaryAncestorsTool.handler(
         {
           descendantId: childHelper.getId(),
         },
@@ -131,7 +131,7 @@ describe("dictionary-tree", () => {
     });
 
     it("should get empty ancestors for root dictionary", async () => {
-      const result = await GetDictionaryAncestorsTool().handler(
+      const result = await GetDictionaryAncestorsTool.handler(
         {
           descendantId: rootHelper.getId(),
         },

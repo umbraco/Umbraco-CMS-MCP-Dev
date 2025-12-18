@@ -40,7 +40,7 @@ describe("move-dictionary-item", () => {
       .withTranslation(DEFAULT_ISO_CODE, CHILD_DICTIONARY_TRANSLATION)
       .create();
 
-    const result = await MoveDictionaryItemTool().handler(
+    const result = await MoveDictionaryItemTool.handler(
       {
         id: childHelper.getId(),
         data: {
@@ -69,7 +69,7 @@ describe("move-dictionary-item", () => {
       .withParentId(parentHelper.getId())
       .create();
 
-    const result = await MoveDictionaryItemTool().handler(
+    const result = await MoveDictionaryItemTool.handler(
       {
         id: childHelper.getId(),
         data: {
@@ -83,7 +83,7 @@ describe("move-dictionary-item", () => {
   });
 
   it("should handle non-existent dictionary item", async () => {
-    const result = await MoveDictionaryItemTool().handler(
+    const result = await MoveDictionaryItemTool.handler(
       {
         id: BLANK_UUID,
         data: {

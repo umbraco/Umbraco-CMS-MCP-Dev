@@ -54,7 +54,7 @@ describe("get-stylesheet-siblings", () => {
       .create();
 
     // Act: Get siblings for the target stylesheet
-    const result = await GetStylesheetSiblingsTool().handler(
+    const result = await GetStylesheetSiblingsTool.handler(
       {
         path: targetBuilder.getPath(),
       },
@@ -71,7 +71,7 @@ describe("get-stylesheet-siblings", () => {
     const nonExistentPath = "non-existent-path.css";
 
     // Act: Try to get siblings for non-existent stylesheet
-    const result = await GetStylesheetSiblingsTool().handler(
+    const result = await GetStylesheetSiblingsTool.handler(
       {
         path: nonExistentPath,
       },

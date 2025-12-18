@@ -1,5 +1,6 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
@@ -14,7 +15,7 @@ const createDocumentTypeSchema = z.object({
   description: z.string().optional(),
   icon: z.string().min(1, "Icon is required"),
   allowedAsRoot: z.boolean().default(false),
-  parentId: z.string().uuid().optional(), 
+  parentId: z.string().uuid().optional(),
   compositions: z
     .array(z.string().uuid("Must be a valid document type UUID"))
     .default([]),
@@ -48,9 +49,9 @@ type CreateDocumentTypeModel = z.infer<typeof createDocumentTypeSchema>;
 
 export type { CreateDocumentTypeModel };
 
-const CreateDocumentTypeTool = CreateUmbracoWriteTool(
-  "create-document-type",
-  `Creates a new document type in Umbraco.
+const CreateDocumentTypeTool = {
+  name: "create-document-type",
+  description: `Creates a new document type in Umbraco.
 
 IMPORTANT: IMPLEMENTATION REQUIREMENTS
 
@@ -66,8 +67,10 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
    - Property with only group: appears in the group (group has no parent tab)
    - Property with both tab and group: group is nested inside the tab, property appears in the group
    - The tool will automatically create the container hierarchy`,
-  createDocumentTypeSchema.shape,
-  async (rawModel: CreateDocumentTypeModel) => {
+  schema: createDocumentTypeSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (rawModel: CreateDocumentTypeModel) => {
     // Validate the model with the schema (including refine rules)
     const model = createDocumentTypeSchema.parse(rawModel);
 
@@ -179,6 +182,6 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
       };
     }
   }
-);
+} satisfies ToolDefinition<typeof createDocumentTypeSchema.shape>;
 
-export default CreateDocumentTypeTool;
+export default withStandardDecorators(CreateDocumentTypeTool);

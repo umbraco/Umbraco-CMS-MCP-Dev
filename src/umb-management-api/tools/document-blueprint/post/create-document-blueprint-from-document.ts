@@ -1,7 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
-import { CurrentUserResponseModel, CreateDocumentBlueprintFromDocumentRequestModel } from "@/umb-management-api/schemas/index.js";
+import { CreateDocumentBlueprintFromDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
 // Note: The Umbraco API schema includes a 'parent' parameter, but testing shows it is not
 // respected by the API - blueprints created from documents are always created at the root level.
@@ -16,14 +17,17 @@ const createDocumentBlueprintFromDocumentSchema = z.object({
 
 type CreateDocumentBlueprintFromDocumentModel = z.infer<typeof createDocumentBlueprintFromDocumentSchema>;
 
-const CreateDocumentBlueprintFromDocumentTool = CreateUmbracoWriteTool(
-  "create-document-blueprint-from-document",
-  `Create a new document blueprint from an existing document
+const CreateDocumentBlueprintFromDocumentTool = {
+  name: "create-document-blueprint-from-document",
+  description: `Create a new document blueprint from an existing document
   Use this to create a blueprint template based on an existing document, preserving its structure and content for reuse.
 
   Note: Blueprints created from documents are always created at the root level. Use the move-document-blueprint tool to relocate them to folders after creation if needed.`,
-  createDocumentBlueprintFromDocumentSchema.shape,
-  async (model: CreateDocumentBlueprintFromDocumentModel) => {
+  schema: createDocumentBlueprintFromDocumentSchema.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes("Umb.Document.CreateBlueprint"),
+  handler: async (model: CreateDocumentBlueprintFromDocumentModel) => {
     const client = UmbracoManagementClient.getClient();
 
     const payload: CreateDocumentBlueprintFromDocumentRequestModel = {
@@ -43,7 +47,6 @@ const CreateDocumentBlueprintFromDocumentTool = CreateUmbracoWriteTool(
       ],
     };
   },
-  (user: CurrentUserResponseModel) => user.fallbackPermissions.includes("Umb.Document.CreateBlueprint")
-);
+} satisfies ToolDefinition<typeof createDocumentBlueprintFromDocumentSchema.shape>;
 
-export default CreateDocumentBlueprintFromDocumentTool;
+export default withStandardDecorators(CreateDocumentBlueprintFromDocumentTool);

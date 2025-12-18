@@ -38,7 +38,7 @@ describe("document-blueprint-tree", () => {
         .withParentId(folderBuilder.getId())
         .create();
 
-      const result = await GetDocumentBlueprintChildrenTreeTool().handler(
+      const result = await GetDocumentBlueprintChildrenTreeTool.handler(
         {
           take: 100,
           parentId: folderBuilder.getId(),
@@ -52,7 +52,7 @@ describe("document-blueprint-tree", () => {
     });
 
     it("should handle non-existent parent", async () => {
-      const result = await GetDocumentBlueprintChildrenTreeTool().handler(
+      const result = await GetDocumentBlueprintChildrenTreeTool.handler(
         {
           take: 100,
           parentId: BLANK_UUID,
@@ -75,7 +75,7 @@ describe("document-blueprint-tree", () => {
         .withParentId(folderBuilder.getId())
         .create();
 
-      const result = await GetDocumentBlueprintAncestorsTreeTool().handler(
+      const result = await GetDocumentBlueprintAncestorsTreeTool.handler(
         {
           descendantId: childBuilder.getId(),
         },
@@ -88,7 +88,7 @@ describe("document-blueprint-tree", () => {
     });
 
     it("should handle non-existent item", async () => {
-      const result = await GetDocumentBlueprintAncestorsTreeTool().handler(
+      const result = await GetDocumentBlueprintAncestorsTreeTool.handler(
         {
           descendantId: BLANK_UUID,
         },

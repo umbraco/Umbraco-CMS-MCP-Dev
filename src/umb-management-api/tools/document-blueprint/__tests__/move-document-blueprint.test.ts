@@ -34,7 +34,7 @@ describe("move-document-blueprint", () => {
     ).create();
 
     // Move the blueprint
-    const result = await MoveDocumentBlueprintTool().handler(
+    const result = await MoveDocumentBlueprintTool.handler(
       {
         id: builder.getId(),
         data: {
@@ -63,7 +63,7 @@ describe("move-document-blueprint", () => {
       TEST_BLUEPRINT_NAME
     ).create();
 
-    const result = await MoveDocumentBlueprintTool().handler(
+    const result = await MoveDocumentBlueprintTool.handler(
       {
         id: builder.getId(),
         data: {
@@ -80,7 +80,7 @@ describe("move-document-blueprint", () => {
   });
 
   it("should handle moving non-existent blueprint", async () => {
-    const result = await MoveDocumentBlueprintTool().handler(
+    const result = await MoveDocumentBlueprintTool.handler(
       {
         id: BLANK_UUID,
         data: {

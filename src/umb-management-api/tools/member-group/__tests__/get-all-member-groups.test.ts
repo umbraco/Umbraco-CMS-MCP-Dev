@@ -31,7 +31,7 @@ describe("get-all-member-groups", () => {
     await builder2.withName(TEST_GROUP_NAME_2).create();
 
     // Act - Get all member groups
-    const result = await GetAllMemberGroupsTool().handler(
+    const result = await GetAllMemberGroupsTool.handler(
       { take: 100 },
       { signal: new AbortController().signal }
     );
@@ -49,7 +49,7 @@ describe("get-all-member-groups", () => {
     await builder2.withName(TEST_GROUP_NAME_2).create();
 
     // Act - Get member groups with pagination (take only 1)
-    const result = await GetAllMemberGroupsTool().handler(
+    const result = await GetAllMemberGroupsTool.handler(
       { take: 1, skip: 0 },
       { signal: new AbortController().signal }
     );
@@ -61,7 +61,7 @@ describe("get-all-member-groups", () => {
 
   it("should return empty results when no groups exist with skip beyond total", async () => {
     // Act - Get member groups with skip beyond any possible results
-    const result = await GetAllMemberGroupsTool().handler(
+    const result = await GetAllMemberGroupsTool.handler(
       { take: 100, skip: 999999 },
       { signal: new AbortController().signal }
     );

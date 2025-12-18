@@ -14,7 +14,7 @@ describe("get-member-configuration", () => {
   });
 
   it("should get member configuration", async () => {
-    const result = await GetMemberConfigurationTool().handler(
+    const result = await GetMemberConfigurationTool.handler(
       {},
       { signal: new AbortController().signal }
     );

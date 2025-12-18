@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentVersionByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetDocumentVersionByIdTool = CreateUmbracoReadTool(
-  "get-document-version-by-id",
-  "Get specific document version by ID",
-  getDocumentVersionByIdParams.shape,
-  async ({ id }) => {
+const GetDocumentVersionByIdTool = {
+  name: "get-document-version-by-id",
+  description: "Get specific document version by ID",
+  schema: getDocumentVersionByIdParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentVersionById(id);
 
@@ -18,7 +21,7 @@ const GetDocumentVersionByIdTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getDocumentVersionByIdParams.shape>;
 
-export default GetDocumentVersionByIdTool;
+export default withStandardDecorators(GetDocumentVersionByIdTool);

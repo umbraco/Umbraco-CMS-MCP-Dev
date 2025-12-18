@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getDocumentUrlsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetDocumentUrlsTool = CreateUmbracoReadTool(
-  "get-document-urls",
-  "Gets the URLs for a document.",
-  getDocumentUrlsQueryParams.shape,
-  async (params) => {
+const GetDocumentUrlsTool = {
+  name: "get-document-urls",
+  description: "Gets the URLs for a document.",
+  schema: getDocumentUrlsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['urls'],
+  handler: async (params: z.infer<typeof getDocumentUrlsQueryParams>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentUrls(params);
     return {
@@ -17,7 +21,7 @@ const GetDocumentUrlsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getDocumentUrlsQueryParams.shape>;
 
-export default GetDocumentUrlsTool;
+export default withStandardDecorators(GetDocumentUrlsTool);

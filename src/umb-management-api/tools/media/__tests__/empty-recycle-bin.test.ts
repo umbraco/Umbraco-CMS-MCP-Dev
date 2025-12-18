@@ -35,7 +35,7 @@ describe("empty-media-recycle-bin", () => {
     await builder.moveToRecycleBin();
 
     // Empty the recycle bin
-    const result = await EmptyRecycleBinTool().handler({}, { signal: new AbortController().signal });
+    const result = await EmptyRecycleBinTool.handler({}, { signal: new AbortController().signal });
 
     // Verify the handler response using snapshot
     expect(result).toMatchSnapshot();

@@ -1,11 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetTemplateQuerySettingsTool = CreateUmbracoReadTool(
-  "get-template-query-settings",
-  "Returns schema for template queries: available document types, properties, and operators",
-  {},
-  async () => {
+const GetTemplateQuerySettingsTool = {
+  name: "get-template-query-settings",
+  description: "Returns schema for template queries: available document types, properties, and operators",
+  schema: {},
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTemplateQuerySettings();
 
@@ -17,7 +20,7 @@ const GetTemplateQuerySettingsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetTemplateQuerySettingsTool;
+export default withStandardDecorators(GetTemplateQuerySettingsTool);

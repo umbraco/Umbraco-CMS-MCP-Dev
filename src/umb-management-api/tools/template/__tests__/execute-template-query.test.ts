@@ -24,7 +24,7 @@ describe("execute-template-query", () => {
       take: 10
     });
 
-    const result = await ExecuteTemplateQueryTool().handler(queryBody, {
+    const result = await ExecuteTemplateQueryTool.handler(queryBody, {
       signal: new AbortController().signal,
     });
 
@@ -40,7 +40,7 @@ describe("execute-template-query", () => {
       take: 5
     });
 
-    const result = await ExecuteTemplateQueryTool().handler(queryBody, {
+    const result = await ExecuteTemplateQueryTool.handler(queryBody, {
       signal: new AbortController().signal,
     });
 
@@ -65,7 +65,7 @@ describe("execute-template-query", () => {
       take: 10
     });
 
-    const result = await ExecuteTemplateQueryTool().handler(queryBody, {
+    const result = await ExecuteTemplateQueryTool.handler(queryBody, {
       signal: new AbortController().signal,
     });
 
@@ -81,7 +81,7 @@ describe("execute-template-query", () => {
       take: 10
     });
 
-    const result = await ExecuteTemplateQueryTool().handler(queryBody, {
+    const result = await ExecuteTemplateQueryTool.handler(queryBody, {
       signal: new AbortController().signal,
     });
 

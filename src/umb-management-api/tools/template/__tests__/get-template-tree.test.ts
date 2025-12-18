@@ -43,7 +43,7 @@ describe("template-tree", () => {
         .withParent(parentBuilder.getId())
         .create();
 
-      const result = await GetTemplateChildrenTool().handler(
+      const result = await GetTemplateChildrenTool.handler(
         {
           take: 100,
           parentId: parentBuilder.getId(),
@@ -57,7 +57,7 @@ describe("template-tree", () => {
     });
 
     it("should handle non-existent parent", async () => {
-      const result = await GetTemplateChildrenTool().handler(
+      const result = await GetTemplateChildrenTool.handler(
         {
           take: 100,
           parentId: BLANK_UUID,
@@ -84,7 +84,7 @@ describe("template-tree", () => {
         .withParent(parentBuilder.getId())
         .create();
 
-      const result = await GetTemplateAncestorsTool().handler(
+      const result = await GetTemplateAncestorsTool.handler(
         {
           descendantId: childBuilder.getId(),
         },
@@ -102,7 +102,7 @@ describe("template-tree", () => {
     });
 
     it("should handle non-existent item", async () => {
-      const result = await GetTemplateAncestorsTool().handler(
+      const result = await GetTemplateAncestorsTool.handler(
         {
           descendantId: BLANK_UUID,
         },
@@ -115,7 +115,7 @@ describe("template-tree", () => {
 
   describe("get-root", () => {
     it("should get root level templates", async () => {
-      const result = await GetTemplateRootTool().handler(
+      const result = await GetTemplateRootTool.handler(
         {
           skip: 0,
           take: 100
@@ -135,7 +135,7 @@ describe("template-tree", () => {
         .withContent("<h1>@Model.Title</h1>")
         .create();
 
-      const result = await GetTemplateSearchTool().handler(
+      const result = await GetTemplateSearchTool.handler(
         {
           query: TEST_ROOT_NAME,
           skip: 0,

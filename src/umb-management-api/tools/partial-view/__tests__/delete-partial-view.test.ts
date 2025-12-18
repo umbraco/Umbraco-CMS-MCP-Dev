@@ -38,7 +38,7 @@ describe("delete-partial-view", () => {
     };
 
     // Act
-    const result = await DeletePartialViewTool().handler(params, { signal: new AbortController().signal });
+    const result = await DeletePartialViewTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -56,7 +56,7 @@ describe("delete-partial-view", () => {
     };
 
     // Act
-    const result = await DeletePartialViewTool().handler(params, { signal: new AbortController().signal });
+    const result = await DeletePartialViewTool.handler(params, { signal: new AbortController().signal });
 
     // Assert - Error responses don't use createSnapshotResult
     expect(result).toMatchSnapshot();

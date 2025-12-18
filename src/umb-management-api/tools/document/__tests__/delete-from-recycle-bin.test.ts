@@ -34,7 +34,7 @@ describe("delete-from-recycle-bin", () => {
     expect(found).toBeDefined();
 
     // Call the tool
-    const result = await DeleteFromRecycleBinTool().handler(
+    const result = await DeleteFromRecycleBinTool.handler(
       { id: found!.id },
       { signal: new AbortController().signal }
     );
@@ -48,7 +48,7 @@ describe("delete-from-recycle-bin", () => {
   });
 
   it("should handle deleting a non-existent document from the recycle bin", async () => {
-    const result = await DeleteFromRecycleBinTool().handler(
+    const result = await DeleteFromRecycleBinTool.handler(
       { id: BLANK_UUID },
       { signal: new AbortController().signal }
     );

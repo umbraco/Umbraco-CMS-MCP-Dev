@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { putUserDataBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { UpdateUserDataRequestModel } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UpdateUserDataTool = CreateUmbracoWriteTool(
-  "update-user-data",
-  "Updates an existing user data record",
-  putUserDataBody.shape,
-  async (body) => {
+const UpdateUserDataTool = {
+  name: "update-user-data",
+  description: "Updates an existing user data record",
+  schema: putUserDataBody.shape,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async (body: UpdateUserDataRequestModel) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.putUserData(body);
 
@@ -19,6 +23,6 @@ const UpdateUserDataTool = CreateUmbracoWriteTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof putUserDataBody.shape>;
 
-export default UpdateUserDataTool;
+export default withStandardDecorators(UpdateUserDataTool);

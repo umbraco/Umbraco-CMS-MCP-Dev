@@ -43,7 +43,7 @@ describe("delete-partial-view-folder", () => {
     };
 
     // Act
-    const result = await DeletePartialViewFolderTool().handler(params, { signal: new AbortController().signal });
+    const result = await DeletePartialViewFolderTool.handler(params, { signal: new AbortController().signal });
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -78,7 +78,7 @@ describe("delete-partial-view-folder", () => {
     };
 
     // Act
-    const result = await DeletePartialViewFolderTool().handler(params, { signal: new AbortController().signal });
+    const result = await DeletePartialViewFolderTool.handler(params, { signal: new AbortController().signal });
 
     // Assert - Error responses don't use createSnapshotResult (folder is not empty)
     expect(result).toMatchSnapshot();
@@ -97,7 +97,7 @@ describe("delete-partial-view-folder", () => {
     };
 
     // Act
-    const result = await DeletePartialViewFolderTool().handler(params, { signal: new AbortController().signal });
+    const result = await DeletePartialViewFolderTool.handler(params, { signal: new AbortController().signal });
 
     // Assert - Error responses don't use createSnapshotResult
     expect(result).toMatchSnapshot();

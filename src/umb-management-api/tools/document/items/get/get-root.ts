@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getTreeDocumentRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const GetDocumentRootTool = CreateUmbracoReadTool(
-  "get-document-root",
-  "Gets root items for documents.",
-  getTreeDocumentRootQueryParams.shape,
-  async (params) => {
+const GetDocumentRootTool = {
+  name: "get-document-root",
+  description: "Gets root items for documents.",
+  schema: getTreeDocumentRootQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (params: z.infer<typeof getTreeDocumentRootQueryParams>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeDocumentRoot(params);
     return {
@@ -17,7 +21,7 @@ const GetDocumentRootTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreeDocumentRootQueryParams.shape>;
 
-export default GetDocumentRootTool;
+export default withStandardDecorators(GetDocumentRootTool);

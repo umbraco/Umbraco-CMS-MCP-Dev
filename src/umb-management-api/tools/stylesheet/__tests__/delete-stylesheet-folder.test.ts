@@ -32,7 +32,7 @@ describe("delete-stylesheet-folder", () => {
     expect(existsBefore).toBe(true);
 
     // Act
-    const result = await DeleteStylesheetFolderTool().handler({ path: folderPath }, { signal: new AbortController().signal });
+    const result = await DeleteStylesheetFolderTool.handler({ path: folderPath }, { signal: new AbortController().signal });
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -44,7 +44,7 @@ describe("delete-stylesheet-folder", () => {
 
   it("should handle non-existent folder", async () => {
     // Act
-    const result = await DeleteStylesheetFolderTool().handler({ path: NON_EXISTENT_FOLDER_PATH }, { signal: new AbortController().signal });
+    const result = await DeleteStylesheetFolderTool.handler({ path: NON_EXISTENT_FOLDER_PATH }, { signal: new AbortController().signal });
 
     // Assert
     expect(result).toMatchSnapshot();

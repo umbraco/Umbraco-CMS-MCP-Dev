@@ -54,7 +54,7 @@ describe("sort-media", () => {
 
     var folderOrder = await folderBuilder.getChildren();
 
-    const result = await SortMediaTool().handler(
+    const result = await SortMediaTool.handler(
       {
         parent: {
           id: folderBuilder.getId(),
@@ -73,7 +73,7 @@ describe("sort-media", () => {
   });
 
   it("should handle non-existent parent", async () => {
-    const result = await SortMediaTool().handler(
+    const result = await SortMediaTool.handler(
       {
         parent: {
           id: BLANK_UUID,

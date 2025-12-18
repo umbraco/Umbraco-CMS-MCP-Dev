@@ -34,7 +34,7 @@ describe("get-template-by-id-array", () => {
       id: [builder1.getId(), builder2.getId()] 
     });
     
-    const result = await GetTemplatesByIdArrayTool().handler(params, {
+    const result = await GetTemplatesByIdArrayTool.handler(params, {
       signal: new AbortController().signal,
     });
     
@@ -49,7 +49,7 @@ describe("get-template-by-id-array", () => {
       id: [builder1.getId()] 
     });
     
-    const result = await GetTemplatesByIdArrayTool().handler(params, {
+    const result = await GetTemplatesByIdArrayTool.handler(params, {
       signal: new AbortController().signal,
     });
     
@@ -60,7 +60,7 @@ describe("get-template-by-id-array", () => {
   it("should handle empty array", async () => {
     const params = getItemTemplateQueryParams.parse({ id: [] });
     
-    const result = await GetTemplatesByIdArrayTool().handler(params, {
+    const result = await GetTemplatesByIdArrayTool.handler(params, {
       signal: new AbortController().signal,
     });
     
@@ -72,7 +72,7 @@ describe("get-template-by-id-array", () => {
       id: [BLANK_UUID] 
     });
     
-    const result = await GetTemplatesByIdArrayTool().handler(params, {
+    const result = await GetTemplatesByIdArrayTool.handler(params, {
       signal: new AbortController().signal,
     });
     
@@ -82,7 +82,7 @@ describe("get-template-by-id-array", () => {
   it("should handle no id parameter", async () => {
     const params = getItemTemplateQueryParams.parse({});
     
-    const result = await GetTemplatesByIdArrayTool().handler(params, {
+    const result = await GetTemplatesByIdArrayTool.handler(params, {
       signal: new AbortController().signal,
     });
     

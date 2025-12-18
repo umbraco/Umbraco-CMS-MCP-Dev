@@ -20,7 +20,7 @@ describe("get-imaging-resize-urls", () => {
   });
 
   it("should generate resize URLs for specific media item", async () => {
-    const result = await GetImagingResizeUrlsTool().handler(
+    const result = await GetImagingResizeUrlsTool.handler(
       {
         id: [TEST_MEDIA_UID],
         height: 200,

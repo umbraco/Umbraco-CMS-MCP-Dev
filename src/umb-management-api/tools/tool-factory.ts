@@ -39,11 +39,40 @@ import { UserDataCollection } from "./user-data/index.js";
 import { StaticFileCollection } from "./static-file/index.js";
 
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
+import { ToolDefinition, ToolSliceName } from "types/tool-definition.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
 import { CollectionConfigLoader } from "@/helpers/config/collection-config-loader.js";
 import { CollectionConfiguration } from "../../types/collection-configuration.js";
 import type { UmbracoServerConfig } from "../../config.js";
+
+/**
+ * Check if a tool is allowed based on its explicit slice assignments.
+ * Tools with empty slices array are ALWAYS included.
+ */
+function isToolAllowedByExplicitSlices(
+  toolSlices: ToolSliceName[],
+  enabledSlices: string[],
+  disabledSlices: string[]
+): boolean {
+  // Tools with empty slices array are ALWAYS included
+  if (toolSlices.length === 0) {
+    return true;
+  }
+
+  // Check if ANY of the tool's slices is in the disabled list
+  if (disabledSlices.length > 0) {
+    if (toolSlices.some(slice => disabledSlices.includes(slice))) {
+      return false;
+    }
+  }
+
+  // If enabled slices specified, ALL of the tool's slices must be in the enabled list
+  if (enabledSlices.length > 0) {
+    return toolSlices.every(slice => enabledSlices.includes(slice));
+  }
+
+  return true;
+}
 
 // Available collections (converted to new format)
 const availableCollections: ToolCollectionExport[] = [
@@ -85,7 +114,7 @@ const availableCollections: ToolCollectionExport[] = [
   StaticFileCollection
 ];
 
-// Enhanced mapTools with collection filtering and readonly support
+// Enhanced mapTools with collection filtering, slice filtering, and readonly support
 const mapTools = (
   server: McpServer,
   user: CurrentUserResponseModel,
@@ -102,6 +131,11 @@ const mapTools = (
     // Readonly mode filter - skip write tools
     if (readonlyMode && !tool.isReadOnly) {
       filteredTools.push(tool.name);
+      return;
+    }
+
+    // Apply slice-level filtering using explicit slice assignments
+    if (!isToolAllowedByExplicitSlices(tool.slices, config.enabledSlices, config.disabledSlices)) {
       return;
     }
 

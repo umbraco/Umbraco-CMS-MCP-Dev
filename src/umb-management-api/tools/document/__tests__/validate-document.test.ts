@@ -45,7 +45,7 @@ describe("validate-document", () => {
 
   it("should validate a valid document", async () => {
     const model = await buildValidationModel();
-    const result = await ValidateDocumentTool().handler(model, {
+    const result = await ValidateDocumentTool.handler(model, {
       signal: new AbortController().signal,
     });
     expect(result).toMatchSnapshot();
@@ -59,7 +59,7 @@ describe("validate-document", () => {
       documentType: undefined,
       template: null,
     };
-    const result = await ValidateDocumentTool().handler(invalidModel as any, {
+    const result = await ValidateDocumentTool.handler(invalidModel as any, {
       signal: new AbortController().signal,
     });
     expect(normalizeErrorResponse(result)).toMatchSnapshot();

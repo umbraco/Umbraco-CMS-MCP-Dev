@@ -26,7 +26,7 @@ exports[`execute-template-query should execute a template query with filters and
 {
   "content": [
     {
-      "text": "{"queryExpression":"Umbraco.ContentAtRoot().FirstOrDefault()\\n    .Children()\\n    .Where(x => x.IsVisible())\\n    .OrderByDescending(x => x.createDate)\\n    .Take(10)","sampleResults":[{"icon":"icon-search color-blue","name":"Search"},{"icon":"icon-document color-blue","name":"Features"},{"icon":"icon-message color-blue","name":"Contact"},{"icon":"icon-thumbnail-list color-blue","name":"Blog"},{"icon":"icon-users color-blue","name":"Authors"},{"icon":"icon-document color-blue","name":"About"}],"resultCount":6,"executionTime":4}",
+      "text": "{"queryExpression":"Umbraco.ContentAtRoot().FirstOrDefault()\\n    .Children()\\n    .Where(x => x.IsVisible())\\n    .OrderByDescending(x => x.createDate)\\n    .Take(10)","sampleResults":[{"icon":"icon-search color-blue","name":"Search"},{"icon":"icon-document color-blue","name":"Features"},{"icon":"icon-message color-blue","name":"Contact"},{"icon":"icon-thumbnail-list color-blue","name":"Blog"},{"icon":"icon-users color-blue","name":"Authors"},{"icon":"icon-document color-blue","name":"About"}],"resultCount":6,"executionTime":0}",
       "type": "text",
     },
   ],

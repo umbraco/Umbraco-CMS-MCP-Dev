@@ -1,12 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postLanguageBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
-const CreateLanguageTool = CreateUmbracoWriteTool(
-  "create-language",
-  "Creates a new language",
-  postLanguageBody.shape,
-  async (model) => {
+type CreateLanguageModel = z.infer<typeof postLanguageBody>;
+
+const CreateLanguageTool = {
+  name: "create-language",
+  description: "Creates a new language",
+  schema: postLanguageBody.shape,
+  isReadOnly: false,
+  slices: ['create'],
+  handler: async (model: CreateLanguageModel) => {
     const client = UmbracoManagementClient.getClient();
     const validated = postLanguageBody.parse(model);
     await client.postLanguage(validated);
@@ -22,7 +28,7 @@ const CreateLanguageTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postLanguageBody.shape>;
 
-export default CreateLanguageTool;
+export default withStandardDecorators(CreateLanguageTool);

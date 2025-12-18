@@ -1,21 +1,24 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postTemplateQueryExecuteBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const ExecuteTemplateQueryTool = CreateUmbracoReadTool(
-  "execute-template-query",
-  `Executes template queries and returns generated LINQ code with sample results and execution time. 
+const ExecuteTemplateQueryTool = {
+  name: "execute-template-query",
+  description: `Executes template queries and returns generated LINQ code with sample results and execution time.
   IMPORTANT: Always follow the example format exactly.
-  Example: 
-  {"take": 5} 
-  or 
+  Example:
+  {"take": 5}
+  or
   {
-    "documentTypeAlias": "article", 
-    "filters": [{"propertyAlias": "Name", "constraintValue": "Blog", "operator": "Contains"}, 
+    "documentTypeAlias": "article",
+    "filters": [{"propertyAlias": "Name", "constraintValue": "Blog", "operator": "Contains"},
     "take": 10
   }`,
-  postTemplateQueryExecuteBody.shape,
-  async (body) => {
+  schema: postTemplateQueryExecuteBody.shape,
+  isReadOnly: true,
+  slices: ['templates'],
+  handler: async (body: any) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postTemplateQueryExecute(body);
 
@@ -27,7 +30,7 @@ const ExecuteTemplateQueryTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postTemplateQueryExecuteBody.shape>;
 
-export default ExecuteTemplateQueryTool;
+export default withStandardDecorators(ExecuteTemplateQueryTool);

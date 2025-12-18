@@ -1,13 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetTreePartialViewAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreePartialViewAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetPartialViewAncestorsTool = CreateUmbracoReadTool(
-  "get-partial-view-ancestors",
-  "Gets the ancestors of a partial view in the tree structure",
-  getTreePartialViewAncestorsQueryParams.shape,
-  async (model: GetTreePartialViewAncestorsParams) => {
+const GetPartialViewAncestorsTool = {
+  name: "get-partial-view-ancestors",
+  description: "Gets the ancestors of a partial view in the tree structure",
+  schema: getTreePartialViewAncestorsQueryParams.shape,
+  isReadOnly: true,
+  slices: ['tree'],
+  handler: async (model: GetTreePartialViewAncestorsParams) => {
     const client = UmbracoManagementClient.getClient();
     var response = await client.getTreePartialViewAncestors(model);
 
@@ -19,7 +22,7 @@ const GetPartialViewAncestorsTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getTreePartialViewAncestorsQueryParams.shape>;
 
-export default GetPartialViewAncestorsTool;
+export default withStandardDecorators(GetPartialViewAncestorsTool);

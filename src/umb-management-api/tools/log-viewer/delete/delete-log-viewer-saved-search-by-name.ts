@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { deleteLogViewerSavedSearchByNameParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const DeleteLogViewerSavedSearchByNameTool = CreateUmbracoWriteTool(
-  "delete-log-viewer-saved-search-by-name",
-  "Deletes a saved search by name",
-  deleteLogViewerSavedSearchByNameParams.shape,
-  async ({ name }) => {
+const DeleteLogViewerSavedSearchByNameTool = {
+  name: "delete-log-viewer-saved-search-by-name",
+  description: "Deletes a saved search by name",
+  schema: deleteLogViewerSavedSearchByNameParams.shape,
+  isReadOnly: false,
+  slices: ['diagnostics'],
+  handler: async ({ name }: { name: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.deleteLogViewerSavedSearchByName(name);
 
@@ -19,6 +22,6 @@ const DeleteLogViewerSavedSearchByNameTool = CreateUmbracoWriteTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof deleteLogViewerSavedSearchByNameParams.shape>;
 
-export default DeleteLogViewerSavedSearchByNameTool;
+export default withStandardDecorators(DeleteLogViewerSavedSearchByNameTool);

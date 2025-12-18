@@ -1,22 +1,25 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetServerConfigurationTool = CreateUmbracoReadTool(
-  "get-server-configuration",
-  `Gets the server configuration settings.
+const GetServerConfigurationTool = {
+  name: "get-server-configuration",
+  description: `Gets the server configuration settings.
   Returns an object containing:
   - allowPasswordReset: Whether password reset is allowed (boolean)
   - versionCheckPeriod: The period between version checks in minutes (number)
   - allowLocalLogin: Whether local login is allowed (boolean)
-  
+
   Example response:
   {
     "allowPasswordReset": true,
     "versionCheckPeriod": 1440,
     "allowLocalLogin": true
   }`,
-  {},
-  async () => {
+  schema: {},
+  isReadOnly: true,
+  slices: ['server-info'],
+  handler: async () => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getServerConfiguration();
 
@@ -28,7 +31,7 @@ const GetServerConfigurationTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<{}>;
 
-export default GetServerConfigurationTool;
+export default withStandardDecorators(GetServerConfigurationTool);

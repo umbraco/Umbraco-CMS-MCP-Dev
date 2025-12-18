@@ -34,7 +34,7 @@ describe("delete-member", () => {
     const id = builder.getId();
 
     // Delete the member
-    const result = await DeleteMemberTool().handler(
+    const result = await DeleteMemberTool.handler(
       { id },
       { signal: new AbortController().signal }
     );
@@ -46,7 +46,7 @@ describe("delete-member", () => {
   });
 
   it("should return error for non-existent ID", async () => {
-    const result = await DeleteMemberTool().handler(
+    const result = await DeleteMemberTool.handler(
       { id: BLANK_UUID },
       { signal: new AbortController().signal }
     );

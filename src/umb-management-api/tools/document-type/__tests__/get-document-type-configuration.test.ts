@@ -14,7 +14,7 @@ describe("get-document-type-configuration", () => {
   });
 
   it("should get the global document type configuration", async () => {
-    const result = await GetDocumentTypeConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetDocumentTypeConfigurationTool.handler({}, { signal: new AbortController().signal });
     const config = JSON.parse(result.content[0].text as string);
     expect(config).toMatchSnapshot();
   });

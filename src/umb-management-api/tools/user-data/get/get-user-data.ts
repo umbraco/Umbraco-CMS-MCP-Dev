@@ -1,12 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getUserDataQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetUserDataParams } from "@/umb-management-api/schemas/index.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetUserDataTool = CreateUmbracoReadTool(
-  "get-user-data",
-  "Retrieves user data records with pagination and filtering",
-  getUserDataQueryParams.shape,
-  async (params) => {
+const GetUserDataTool = {
+  name: "get-user-data",
+  description: "Retrieves user data records with pagination and filtering",
+  schema: getUserDataQueryParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async (params: GetUserDataParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getUserData(params);
 
@@ -19,6 +23,6 @@ const GetUserDataTool = CreateUmbracoReadTool(
       ],
     };
   }
-);
+} satisfies ToolDefinition<typeof getUserDataQueryParams.shape>;
 
-export default GetUserDataTool;
+export default withStandardDecorators(GetUserDataTool);

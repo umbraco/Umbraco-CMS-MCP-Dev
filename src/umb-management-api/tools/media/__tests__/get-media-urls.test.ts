@@ -33,7 +33,7 @@ describe("get-media-urls", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetMediaUrlsTool().handler(
+    const result = await GetMediaUrlsTool.handler(
       {
         id: [mediaBuilder.getId()],
       },
@@ -45,7 +45,7 @@ describe("get-media-urls", () => {
   });
 
   it("should handle non-existent media", async () => {
-    const result = await GetMediaUrlsTool().handler(
+    const result = await GetMediaUrlsTool.handler(
       {
         id: [BLANK_UUID],
       },

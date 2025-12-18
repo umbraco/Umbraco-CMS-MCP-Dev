@@ -37,7 +37,7 @@ describe("rename-stylesheet", () => {
     expect(existsBefore).toBe(true);
 
     // Act
-    const result = await RenameStylesheetTool().handler({ 
+    const result = await RenameStylesheetTool.handler({ 
       path: originalPath, 
       name: NEW_STYLESHEET_NAME 
     }, { signal: new AbortController().signal });
@@ -61,7 +61,7 @@ describe("rename-stylesheet", () => {
 
   it("should handle non-existent stylesheet", async () => {
     // Act
-    const result = await RenameStylesheetTool().handler({ 
+    const result = await RenameStylesheetTool.handler({ 
       path: NON_EXISTENT_STYLESHEET_PATH, 
       name: NEW_STYLESHEET_NAME 
     }, { signal: new AbortController().signal });

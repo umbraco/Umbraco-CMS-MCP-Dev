@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getMediaTypeByIdCompositionReferencesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetMediaTypeCompositionReferencesTool = CreateUmbracoReadTool(
-  "get-media-type-composition-references",
-  "Gets the composition references for a media type",
-  getMediaTypeByIdCompositionReferencesParams.shape,
-  async ({ id }) => {
+const GetMediaTypeCompositionReferencesTool = {
+  name: "get-media-type-composition-references",
+  description: "Gets the composition references for a media type",
+  schema: getMediaTypeByIdCompositionReferencesParams.shape,
+  isReadOnly: true,
+  slices: ['read'],
+  handler: async ({ id }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaTypeByIdCompositionReferences(id);
 
@@ -18,7 +21,7 @@ const GetMediaTypeCompositionReferencesTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getMediaTypeByIdCompositionReferencesParams.shape>;
 
-export default GetMediaTypeCompositionReferencesTool;
+export default withStandardDecorators(GetMediaTypeCompositionReferencesTool);

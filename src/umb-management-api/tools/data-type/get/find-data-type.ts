@@ -1,15 +1,18 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { GetFilterDataTypeParams } from "@/umb-management-api/schemas/index.js";
 import { getFilterDataTypeQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const FindDataTypeTool = CreateUmbracoReadTool(
-  "find-data-type",
-  "Finds a data type by Id or Name",
-  getFilterDataTypeQueryParams.shape,
-  async (model: GetFilterDataTypeParams) => {
+const FindDataTypeTool = {
+  name: "find-data-type",
+  description: "Finds a data type by Id or Name",
+  schema: getFilterDataTypeQueryParams.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async (model: GetFilterDataTypeParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getFilterDataType(model);
+    const response = await client.getFilterDataType(model);
 
     return {
       content: [
@@ -19,7 +22,7 @@ const FindDataTypeTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof getFilterDataTypeQueryParams.shape>;
 
-export default FindDataTypeTool;
+export default withStandardDecorators(FindDataTypeTool);

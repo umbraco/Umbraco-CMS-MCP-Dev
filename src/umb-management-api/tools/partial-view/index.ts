@@ -36,25 +36,25 @@ export const PartialViewCollection: ToolCollectionExport = {
 
     if (AuthorizationPolicies.TreeAccessPartialViews(user)) {
       // Basic CRUD operations
-      tools.push(CreatePartialViewTool());
-      tools.push(CreatePartialViewFolderTool());
-      tools.push(GetPartialViewByPathTool());
-      tools.push(GetPartialViewFolderByPathTool());
-      tools.push(UpdatePartialViewTool());
-      tools.push(RenamePartialViewTool());
-      tools.push(DeletePartialViewTool());
-      tools.push(DeletePartialViewFolderTool());
-      
+      tools.push(CreatePartialViewTool);
+      tools.push(CreatePartialViewFolderTool);
+      tools.push(GetPartialViewByPathTool);
+      tools.push(GetPartialViewFolderByPathTool);
+      tools.push(UpdatePartialViewTool);
+      tools.push(RenamePartialViewTool);
+      tools.push(DeletePartialViewTool);
+      tools.push(DeletePartialViewFolderTool);
+
       // Snippet operations
-      tools.push(GetPartialViewSnippetTool());
-      tools.push(GetPartialViewSnippetByIdTool());
+      tools.push(GetPartialViewSnippetTool);
+      tools.push(GetPartialViewSnippetByIdTool);
 
       // Tree operations
-      tools.push(GetPartialViewAncestorsTool());
-      tools.push(GetPartialViewChildrenTool());
-      tools.push(GetPartialViewRootTool());
-      tools.push(GetPartialViewSearchTool());
-      tools.push(GetPartialViewSiblingsTool());
+      tools.push(GetPartialViewAncestorsTool);
+      tools.push(GetPartialViewChildrenTool);
+      tools.push(GetPartialViewRootTool);
+      tools.push(GetPartialViewSearchTool);
+      tools.push(GetPartialViewSiblingsTool);
     }
 
     return tools;

@@ -22,7 +22,7 @@ describe("delete-template", () => {
     const builder = await new TemplateBuilder()
       .withName(TEST_TEMPLATE_NAME)
       .create();
-    const result = await DeleteTemplateTool().handler(
+    const result = await DeleteTemplateTool.handler(
       {
         id: builder.getId(),
       },
@@ -34,7 +34,7 @@ describe("delete-template", () => {
   });
 
   it("should handle non-existent template", async () => {
-    const result = await DeleteTemplateTool().handler(
+    const result = await DeleteTemplateTool.handler(
       {
         id: BLANK_UUID,
       },

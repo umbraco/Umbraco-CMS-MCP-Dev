@@ -1,17 +1,22 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoReadTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { getCollectionDocumentByIdParams, getCollectionDocumentByIdQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const GetCollectionDocumentByIdTool = CreateUmbracoReadTool(
-  "get-collection-document-by-id",
-  `Get a collection of document items
+const schema = z.object({
+  ...getCollectionDocumentByIdParams.shape,
+  ...getCollectionDocumentByIdQueryParams.shape,
+});
+
+const GetCollectionDocumentByIdTool = {
+  name: "get-collection-document-by-id",
+  description: `Get a collection of document items
   Use this to retrieve a filtered and paginated collection of document items based on various criteria like data type, ordering, and filtering.`,
-  z.object({
-    ...getCollectionDocumentByIdParams.shape,
-    ...getCollectionDocumentByIdQueryParams.shape,
-  }).shape,
-  async ({ id, dataTypeId, orderBy, orderDirection, filter, skip, take }) => {
+  schema: schema.shape,
+  isReadOnly: true,
+  slices: ['search'],
+  handler: async ({ id, dataTypeId, orderBy, orderDirection, filter, skip, take }: z.infer<typeof schema>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getCollectionDocumentById(id, {
       dataTypeId,
@@ -29,7 +34,7 @@ const GetCollectionDocumentByIdTool = CreateUmbracoReadTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof schema.shape>;
 
-export default GetCollectionDocumentByIdTool;
+export default withStandardDecorators(GetCollectionDocumentByIdTool);

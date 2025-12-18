@@ -1,12 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import { postUserCurrentAvatarBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UploadUserCurrentAvatarTool = CreateUmbracoWriteTool(
-  "upload-user-current-avatar",
-  "Uploads an avatar for the current authenticated user",
-  postUserCurrentAvatarBody.shape,
-  async ({ file }) => {
+const UploadUserCurrentAvatarTool = {
+  name: "upload-user-current-avatar",
+  description: "Uploads an avatar for the current authenticated user",
+  schema: postUserCurrentAvatarBody.shape,
+  isReadOnly: false,
+  slices: ['current-user'],
+  handler: async ({ file }: { file: { id: string } }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.postUserCurrentAvatar({ file });
 
@@ -18,7 +21,7 @@ const UploadUserCurrentAvatarTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof postUserCurrentAvatarBody.shape>;
 
-export default UploadUserCurrentAvatarTool;
+export default withStandardDecorators(UploadUserCurrentAvatarTool);

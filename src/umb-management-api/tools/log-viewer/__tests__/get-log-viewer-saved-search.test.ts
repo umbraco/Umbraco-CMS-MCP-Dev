@@ -33,7 +33,7 @@ describe("get-log-viewer-saved-search", () => {
       .withQuery("level:Warning")
       .create();
 
-    const result = await GetLogViewerSavedSearchTool().handler(
+    const result = await GetLogViewerSavedSearchTool.handler(
       { take: 100 },
       {
         signal: new AbortController().signal,
@@ -57,7 +57,7 @@ describe("get-log-viewer-saved-search", () => {
       .withQuery("level:Warning")
       .create();
 
-    const result = await GetLogViewerSavedSearchTool().handler(
+    const result = await GetLogViewerSavedSearchTool.handler(
       { skip: 0, take: 10 },
       {
         signal: new AbortController().signal,
@@ -70,7 +70,7 @@ describe("get-log-viewer-saved-search", () => {
   });
 
   it("should handle empty result set", async () => {
-    const result = await GetLogViewerSavedSearchTool().handler(
+    const result = await GetLogViewerSavedSearchTool.handler(
       { take: 100 },
       {
         signal: new AbortController().signal,

@@ -25,7 +25,7 @@ describe("get-document-type", () => {
       .create();
 
     // Get the document type
-    const result = await GetDocumentTypeTool().handler(
+    const result = await GetDocumentTypeTool.handler(
       {
         id: builder.getId(),
       },
@@ -104,7 +104,7 @@ describe("get-document-type", () => {
   });
 
   it("should handle non-existent document type", async () => {
-    const result = await GetDocumentTypeTool().handler(
+    const result = await GetDocumentTypeTool.handler(
       {
         id: BLANK_UUID,
       },

@@ -18,7 +18,7 @@ describe("manifest tools", () => {
 
   describe("get-manifest-manifest", () => {
     it("should get all manifests", async () => {
-      const result = await GetManifestManifestTool().handler({}, { signal: new AbortController().signal });
+      const result = await GetManifestManifestTool.handler({}, { signal: new AbortController().signal });
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -26,7 +26,7 @@ describe("manifest tools", () => {
 
   describe("get-manifest-manifest-private", () => {
     it("should get private manifests", async () => {
-      const result = await GetManifestManifestPrivateTool().handler({}, { signal: new AbortController().signal });
+      const result = await GetManifestManifestPrivateTool.handler({}, { signal: new AbortController().signal });
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -34,7 +34,7 @@ describe("manifest tools", () => {
 
   describe("get-manifest-manifest-public", () => {
     it("should get public manifests", async () => {
-      const result = await GetManifestManifestPublicTool().handler({}, { signal: new AbortController().signal });
+      const result = await GetManifestManifestPublicTool.handler({}, { signal: new AbortController().signal });
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });

@@ -1,22 +1,29 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateUmbracoWriteTool } from "@/helpers/mcp/create-umbraco-tool.js";
 import {
   putLanguageByIsoCodeParams,
   putLanguageByIsoCodeBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const UpdateLanguageTool = CreateUmbracoWriteTool(
-  "update-language",
-  "Updates an existing language by ISO code",
-  {
-    isoCode: putLanguageByIsoCodeParams.shape.isoCode,
-    data: z.object(putLanguageByIsoCodeBody.shape),
-  },
-  async (model: {
-    isoCode: string;
-    data: z.infer<typeof putLanguageByIsoCodeBody>;
-  }) => {
+const updateLanguageSchema = {
+  isoCode: putLanguageByIsoCodeParams.shape.isoCode,
+  data: z.object(putLanguageByIsoCodeBody.shape),
+};
+
+type UpdateLanguageModel = {
+  isoCode: string;
+  data: z.infer<typeof putLanguageByIsoCodeBody>;
+};
+
+const UpdateLanguageTool = {
+  name: "update-language",
+  description: "Updates an existing language by ISO code",
+  schema: updateLanguageSchema,
+  isReadOnly: false,
+  slices: ['update'],
+  handler: async (model: UpdateLanguageModel) => {
     const client = UmbracoManagementClient.getClient();
     const params = putLanguageByIsoCodeParams.parse({ isoCode: model.isoCode });
     const body = putLanguageByIsoCodeBody.parse(model.data);
@@ -33,7 +40,7 @@ const UpdateLanguageTool = CreateUmbracoWriteTool(
         },
       ],
     };
-  }
-);
+  },
+} satisfies ToolDefinition<typeof updateLanguageSchema>;
 
-export default UpdateLanguageTool;
+export default withStandardDecorators(UpdateLanguageTool);

@@ -14,7 +14,7 @@ describe("get-media-type-configuration", () => {
   });
 
   it("should get the global media type configuration", async () => {
-    const result = await GetMediaTypeConfigurationTool().handler({}, { signal: new AbortController().signal });
+    const result = await GetMediaTypeConfigurationTool.handler({}, { signal: new AbortController().signal });
     const config = JSON.parse(result.content[0].text as string);
     expect(config).toMatchSnapshot();
   });
