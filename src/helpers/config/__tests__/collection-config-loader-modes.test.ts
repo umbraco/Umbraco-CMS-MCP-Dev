@@ -35,7 +35,8 @@ describe('CollectionConfigLoader with Modes', () => {
       expect(config.enabledCollections).toContain('document');
       expect(config.enabledCollections).toContain('document-version');
       expect(config.enabledCollections).toContain('document-blueprint');
-      expect(config.enabledCollections).toHaveLength(3);
+      expect(config.enabledCollections).toContain('tag');
+      expect(config.enabledCollections).toHaveLength(4);
     });
 
     it('should expand multiple modes to collections', () => {
@@ -50,13 +51,14 @@ describe('CollectionConfigLoader with Modes', () => {
       expect(config.enabledCollections).toContain('document');
       expect(config.enabledCollections).toContain('document-version');
       expect(config.enabledCollections).toContain('document-blueprint');
+      expect(config.enabledCollections).toContain('tag');
 
       // Media collections
       expect(config.enabledCollections).toContain('media');
       expect(config.enabledCollections).toContain('imaging');
       expect(config.enabledCollections).toContain('temporary-file');
 
-      expect(config.enabledCollections).toHaveLength(6);
+      expect(config.enabledCollections).toHaveLength(7);
     });
 
   });
@@ -114,11 +116,12 @@ describe('CollectionConfigLoader with Modes', () => {
       expect(config.enabledCollections).toContain('document');
       expect(config.enabledCollections).toContain('document-version');
       expect(config.enabledCollections).toContain('document-blueprint');
+      expect(config.enabledCollections).toContain('tag');
 
       // Explicit collection
       expect(config.enabledCollections).toContain('webhook');
 
-      expect(config.enabledCollections).toHaveLength(4);
+      expect(config.enabledCollections).toHaveLength(5);
     });
 
     it('should deduplicate when mode and explicit include overlap', () => {
@@ -130,7 +133,7 @@ describe('CollectionConfigLoader with Modes', () => {
 
       const config = CollectionConfigLoader.loadFromConfig(serverConfig);
 
-      expect(config.enabledCollections).toHaveLength(3);
+      expect(config.enabledCollections).toHaveLength(4);
       expect(config.enabledCollections.filter(c => c === 'document')).toHaveLength(1);
     });
   });

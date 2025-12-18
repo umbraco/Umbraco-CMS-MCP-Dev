@@ -21,8 +21,8 @@ describe("checkUmbracoVersion", () => {
         baseUtcOffset: string;
         runtimeMode: string;
       }>>().mockResolvedValue({
-        version: "16.3.1",
-        assemblyVersion: "16.3.1.0",
+        version: "17.3.1",
+        assemblyVersion: "17.3.1.0",
         baseUtcOffset: "-07:00:00",
         runtimeMode: "Production"
       })
@@ -93,8 +93,8 @@ describe("checkUmbracoVersion", () => {
         baseUtcOffset: string;
         runtimeMode: string;
       }>>().mockResolvedValue({
-        version: "16.0.0-rc1",
-        assemblyVersion: "16.0.0.0",
+        version: "17.0.0-rc1",
+        assemblyVersion: "17.0.0.0",
         baseUtcOffset: "-07:00:00",
         runtimeMode: "Development"
       })
