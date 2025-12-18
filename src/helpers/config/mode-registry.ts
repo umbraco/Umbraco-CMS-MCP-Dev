@@ -8,13 +8,13 @@ export const baseModes: ToolModeDefinition[] = [
     name: 'content',
     displayName: 'Content Management',
     description: 'Document creation, editing, versioning, and blueprints',
-    collections: ['document', 'document-version', 'document-blueprint']
+    collections: ['document', 'document-version', 'document-blueprint', 'tag']
   },
   {
     name: 'content-modeling',
     displayName: 'Content Modeling',
     description: 'Document and media structure: types, data types, and content to see the output',
-    collections: ['document', 'document-type', 'data-type', 'media', 'media-type']
+    collections: ['document-type', 'data-type', 'media-type']
   },
   {
     name: 'front-end',
@@ -68,7 +68,7 @@ export const baseModes: ToolModeDefinition[] = [
     name: 'integrations',
     displayName: 'Integrations',
     description: 'Webhooks, redirects, relations, and tags',
-    collections: ['webhook', 'redirect', 'relation', 'relation-type', 'tag']
+    collections: ['webhook', 'redirect', 'relation', 'relation-type']
   }
 ];
 
