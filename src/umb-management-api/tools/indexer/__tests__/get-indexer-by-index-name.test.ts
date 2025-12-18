@@ -25,9 +25,10 @@ describe("get-indexer-by-index-name", () => {
       { signal: new AbortController().signal }
     );
 
-    // Normalize documentCount which changes as documents are created/deleted
+    // Normalize documentCount and fieldCount which change based on index state
     const parsed = JSON.parse(result.content[0].text as string);
     parsed.documentCount = "NORMALIZED_COUNT";
+    parsed.fieldCount = "NORMALIZED_FIELD_COUNT";
     result.content[0].text = JSON.stringify(parsed);
 
     // Verify the handler response using snapshot
