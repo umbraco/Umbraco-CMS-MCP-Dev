@@ -52,17 +52,16 @@ describe('Mode Expander', () => {
         expect(result).toContain('document');
         expect(result).toContain('document-version');
         expect(result).toContain('document-blueprint');
-        expect(result).toHaveLength(3);
+        expect(result).toContain('tag');
+        expect(result).toHaveLength(4);
       });
 
       it('should expand content-modeling mode', () => {
         const result = expandModesToCollections(['content-modeling']);
-        expect(result).toContain('document');
         expect(result).toContain('document-type');
         expect(result).toContain('data-type');
-        expect(result).toContain('media');
         expect(result).toContain('media-type');
-        expect(result).toHaveLength(5);
+        expect(result).toHaveLength(3);
       });
 
       it('should expand front-end mode', () => {
@@ -135,8 +134,7 @@ describe('Mode Expander', () => {
         expect(result).toContain('redirect');
         expect(result).toContain('relation');
         expect(result).toContain('relation-type');
-        expect(result).toContain('tag');
-        expect(result).toHaveLength(5);
+        expect(result).toHaveLength(4);
       });
     });
 
@@ -147,10 +145,11 @@ describe('Mode Expander', () => {
         expect(result).toContain('document');
         expect(result).toContain('document-version');
         expect(result).toContain('document-blueprint');
+        expect(result).toContain('tag');
         expect(result).toContain('media');
         expect(result).toContain('imaging');
         expect(result).toContain('temporary-file');
-        expect(result).toHaveLength(6);
+        expect(result).toHaveLength(7);
       });
 
       it('should deduplicate collections when modes overlap', () => {
@@ -161,7 +160,7 @@ describe('Mode Expander', () => {
         // content-modeling has: document, document-type, data-type, media, media-type (5)
         // media mode has: media, imaging, temporary-file
         // Combined should be 7 (media is shared)
-        expect(combinedResult).toHaveLength(7);
+        expect(combinedResult).toHaveLength(6);
         expect(combinedResult).toContain('media');
         expect(combinedResult).toContain('imaging');
         expect(combinedResult).toContain('temporary-file');
@@ -184,12 +183,13 @@ describe('Mode Expander', () => {
         expect(result).toContain('document');
         expect(result).toContain('document-version');
         expect(result).toContain('document-blueprint');
-        expect(result).toHaveLength(3);
+        expect(result).toContain('tag');
+        expect(result).toHaveLength(4);
       });
 
       it('should handle duplicate mode names', () => {
         const result = expandModesToCollections(['content', 'content']);
-        expect(result).toHaveLength(3); // Same as single content mode
+        expect(result).toHaveLength(4); // Same as single content mode
       });
     });
   });
@@ -198,7 +198,7 @@ describe('Mode Expander', () => {
     it('should generate summary for single mode', () => {
       const summary = getModeExpansionSummary(['content']);
       expect(summary).toContain('content');
-      expect(summary).toContain('3 collections');
+      expect(summary).toContain('4 collections');
       expect(summary).toContain('document');
     });
 
@@ -206,7 +206,7 @@ describe('Mode Expander', () => {
       const summary = getModeExpansionSummary(['content', 'media']);
       expect(summary).toContain('content');
       expect(summary).toContain('media');
-      expect(summary).toContain('6 collections');
+      expect(summary).toContain('7 collections');
     });
 
   });
