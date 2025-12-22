@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`relation-tool-index should have all tools when user has settings section access 1`] = `
-[
-  "get-relation-by-relation-type-id",
-]
-`;
-
-exports[`relation-tool-index should have no tools when user has no relation types access 1`] = `[]`;
