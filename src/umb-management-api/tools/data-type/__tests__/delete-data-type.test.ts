@@ -3,6 +3,7 @@ import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("delete-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test DataType Delete";
@@ -31,7 +32,7 @@ describe("delete-data-type", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
@@ -47,7 +48,7 @@ describe("delete-data-type", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

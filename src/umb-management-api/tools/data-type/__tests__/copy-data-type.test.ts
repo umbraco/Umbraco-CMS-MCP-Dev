@@ -4,6 +4,7 @@ import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType Copy";
 const TEST_DATATYPE_COPY_NAME = "_Test DataType Copy (copy)";
@@ -47,14 +48,15 @@ describe("copy-data-type", () => {
           },
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize IDs in the response
     const normalizedResult = {
       ...result,
       content: result.content.map((content) => {
-        const parsed = JSON.parse(content.text as string);
+        if (content.type !== "text") return content;
+        const parsed = JSON.parse(content.text);
         return {
           ...content,
           text: JSON.stringify(DataTypeTestHelper.normaliseIds(parsed)),
@@ -88,14 +90,15 @@ describe("copy-data-type", () => {
           target: null,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize IDs in the response
     const normalizedResult = {
       ...result,
       content: result.content.map((content) => {
-        const parsed = JSON.parse(content.text as string);
+        if (content.type !== "text") return content;
+        const parsed = JSON.parse(content.text);
         return {
           ...content,
           text: JSON.stringify(DataTypeTestHelper.normaliseIds(parsed)),
@@ -122,7 +125,7 @@ describe("copy-data-type", () => {
           target: null,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

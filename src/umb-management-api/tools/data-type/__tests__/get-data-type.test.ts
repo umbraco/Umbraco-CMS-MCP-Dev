@@ -3,6 +3,7 @@ import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import GetDataTypeTool from "../get/get-data-type.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 describe("get-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test Get DataType";
   let dataTypeId: string;
@@ -37,11 +38,11 @@ describe("get-data-type", () => {
       {
         id: dataTypeId,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     expect(result.content).toHaveLength(1);
-    const content = JSON.parse(result.content[0].text as string);
+    const content = JSON.parse(getResultText(result));
     const normalizedContent = DataTypeTestHelper.normaliseIds(content);
 
     expect(normalizedContent).toMatchSnapshot();
@@ -52,10 +53,10 @@ describe("get-data-type", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    expect(result.content[0].text as string).toContain("Error");
+    expect(getResultText(result)).toContain("Error");
   });
 
   it("should handle invalid ID format", async () => {
@@ -63,9 +64,9 @@ describe("get-data-type", () => {
       {
         id: "invalid-id-format",
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    expect(result.content[0].text as string).toContain("Error");
+    expect(getResultText(result)).toContain("Error");
   });
 });

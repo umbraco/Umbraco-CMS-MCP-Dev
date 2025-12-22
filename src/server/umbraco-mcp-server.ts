@@ -11,9 +11,6 @@ export class UmbracoMcpServer {
       UmbracoMcpServer.instance = new McpServer({
         name: "Umbraco Server",
         version: packageJson.version,
-        capabilities: {
-          tools: {},
-        },
       });
     }
     return UmbracoMcpServer.instance;

@@ -5,6 +5,7 @@ import { jest } from "@jest/globals";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, createToolParams } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-data-type-siblings", () => {
   const TEST_FOLDER_NAME = "_Test Folder DataType";
@@ -52,10 +53,10 @@ describe("get-data-type-siblings", () => {
 
     // Act - Get siblings using one of the items as target
     const result = await GetDataTypeSiblingsTool.handler(
-      {
+      createToolParams({
         target: sibling1Builder.getId(),
-      },
-      { signal: new AbortController().signal }
+      }),
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify the siblings are returned
@@ -66,10 +67,10 @@ describe("get-data-type-siblings", () => {
   it("should handle non-existent target", async () => {
     // Act - Try to get siblings for non-existent item
     const result = await GetDataTypeSiblingsTool.handler(
-      {
+      createToolParams({
         target: BLANK_UUID,
-      },
-      { signal: new AbortController().signal }
+      }),
+      createMockRequestHandlerExtra()
     );
 
     // Assert

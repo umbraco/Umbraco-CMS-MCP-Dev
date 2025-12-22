@@ -4,6 +4,7 @@ import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 describe("move-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test DataType Move";
   const TEST_FOLDER_NAME = "_Test Folder";
@@ -43,7 +44,7 @@ describe("move-data-type", () => {
           },
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
@@ -71,7 +72,7 @@ describe("move-data-type", () => {
           },
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot
@@ -88,7 +89,7 @@ describe("move-data-type", () => {
           },
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

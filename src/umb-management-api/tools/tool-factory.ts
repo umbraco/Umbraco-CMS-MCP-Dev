@@ -1,42 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 // Import collections (new format)
-import { CultureCollection } from "./culture/index.js";
 import { DataTypeCollection } from "./data-type/index.js";
-import { DictionaryCollection } from "./dictionary/index.js";
-import { DocumentTypeCollection } from "./document-type/index.js";
-import { LanguageCollection } from "./language/index.js";
-import { DocumentBlueprintCollection } from "./document-blueprint/index.js";
-import { DocumentCollection } from "./document/index.js";
-import { DocumentVersionCollection } from "./document-version/index.js";
-import { MediaCollection } from "./media/index.js";
-import { MediaTypeCollection } from "./media-type/index.js";
-import { MemberCollection } from "./member/index.js";
-import { MemberGroupCollection } from "./member-group/index.js";
-import { MemberTypeCollection } from "./member-type/index.js";
-import { LogViewerCollection } from "./log-viewer/index.js";
-import { PartialViewCollection } from "./partial-view/index.js";
-import { PropertyTypeCollection } from "./property-type/index.js";
-import { TemplateCollection } from "./template/index.js";
-import { WebhookCollection } from "./webhook/index.js";
-import { ServerCollection } from "./server/index.js";
-import { RedirectCollection } from "./redirect/index.js";
-import { UserGroupCollection } from "./user-group/index.js";
-import { TemporaryFileCollection } from "./temporary-file/index.js";
-import { ScriptCollection } from "./script/index.js";
-import { StylesheetCollection } from "./stylesheet/index.js";
-import { HealthCollection } from "./health/index.js";
-import { ManifestCollection } from "./manifest/index.js";
-import { TagCollection } from "./tag/index.js";
-import { ModelsBuilderCollection } from "./models-builder/index.js";
-import { SearcherCollection } from "./searcher/index.js";
-import { IndexerCollection } from "./indexer/index.js";
-import { ImagingCollection } from "./imaging/index.js";
-import { RelationTypeCollection } from "./relation-type/index.js";
-import { RelationCollection } from "./relation/index.js";
-import { UserCollection } from "./user/index.js";
-import { UserDataCollection } from "./user-data/index.js";
-import { StaticFileCollection } from "./static-file/index.js";
 
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition, ToolSliceName } from "types/tool-definition.js";
@@ -44,6 +9,7 @@ import { ToolCollectionExport } from "types/tool-collection.js";
 import { CollectionConfigLoader } from "@/helpers/config/collection-config-loader.js";
 import { CollectionConfiguration } from "../../types/collection-configuration.js";
 import type { UmbracoServerConfig } from "../../config.js";
+import { createToolAnnotations } from "@/helpers/mcp/tool-decorators.js";
 
 /**
  * Check if a tool is allowed based on its explicit slice assignments.
@@ -76,42 +42,7 @@ function isToolAllowedByExplicitSlices(
 
 // Available collections (converted to new format)
 const availableCollections: ToolCollectionExport[] = [
-  CultureCollection,
   DataTypeCollection,
-  DictionaryCollection,
-  DocumentTypeCollection,
-  LanguageCollection,
-  DocumentBlueprintCollection,
-  DocumentCollection,
-  DocumentVersionCollection,
-  MediaCollection,
-  MediaTypeCollection,
-  MemberCollection,
-  MemberGroupCollection,
-  MemberTypeCollection,
-  LogViewerCollection,
-  PartialViewCollection,
-  PropertyTypeCollection,
-  TemplateCollection,
-  WebhookCollection,
-  ServerCollection,
-  RedirectCollection,
-  UserGroupCollection,
-  TemporaryFileCollection,
-  ScriptCollection,
-  StylesheetCollection,
-  HealthCollection,
-  ManifestCollection,
-  TagCollection,
-  ModelsBuilderCollection,
-  SearcherCollection,
-  IndexerCollection,
-  ImagingCollection,
-  RelationTypeCollection,
-  RelationCollection,
-  UserCollection,
-  UserDataCollection,
-  StaticFileCollection
 ];
 
 // Enhanced mapTools with collection filtering, slice filtering, and readonly support
@@ -129,7 +60,9 @@ const mapTools = (
     if (!userHasPermission) return;
 
     // Readonly mode filter - skip write tools
-    if (readonlyMode && !tool.isReadOnly) {
+    // readOnlyHint is required in annotations (defaults to false if not provided)
+    const readOnlyHint = tool.annotations?.readOnlyHint ?? false;
+    if (readonlyMode && !readOnlyHint) {
       filteredTools.push(tool.name);
       return;
     }
@@ -143,8 +76,17 @@ const mapTools = (
     if (config.disabledTools?.includes(tool.name)) return;
     if (config.enabledTools?.length && !config.enabledTools.includes(tool.name)) return;
 
-    // Register the tool
-    server.tool(tool.name, tool.description, tool.schema, tool.handler);
+    // Build annotations from tool definition
+    // openWorldHint is always true since all tools use the Umbraco API
+    const annotations = createToolAnnotations(tool);
+
+    // Register the tool using the new registerTool API (supports outputSchema and annotations)
+    server.registerTool(tool.name, {
+      description: tool.description,
+      inputSchema: tool.inputSchema,
+      outputSchema: tool.outputSchema,
+      annotations,
+    }, tool.handler);
   })
 }
 

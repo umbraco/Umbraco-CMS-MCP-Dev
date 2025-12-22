@@ -4,6 +4,7 @@ import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, createToolParams, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType Created";
 const EXISTING_DATATYPE_NAME = "_Existing DataType";
@@ -36,12 +37,10 @@ describe("create-data-type", () => {
       .build();
 
     // Create the data type
-    const result = await CreateDataTypeTool.handler(dataTypeModel, {
-      signal: new AbortController().signal
-    });
+    const result = await CreateDataTypeTool.handler(createToolParams(dataTypeModel), createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    const responseData = JSON.parse(getResultText(result));
     const dataTypeId = responseData.id;
 
     // Verify the handler response using snapshot
@@ -66,12 +65,10 @@ describe("create-data-type", () => {
       editorUiAlias: "Umb.PropertyEditorUi.TextBox",
       values: [],
       parentId: folderBuilder.getId()  // Flattened parent ID
-    }, {
-      signal: new AbortController().signal,
-    });
+    }, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    const responseData = JSON.parse(getResultText(result));
     const dataTypeId = responseData.id;
 
     // Assert: Verify the handler response

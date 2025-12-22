@@ -1,5 +1,6 @@
 import GetDataTypePropertyEditorTemplateTool from "../get/get-data-type-property-editor-template.js";
 import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, createToolParams, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-data-type-property-editor-template", () => {
   let originalConsoleError: typeof console.error;
@@ -16,14 +17,14 @@ describe("get-data-type-property-editor-template", () => {
   it("should list all available property editors when no editorName is provided", async () => {
     // Act
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      createToolParams({}),
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
     expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const text = getResultText(result);
     expect(text).toContain("Available Property Editor Templates:");
     expect(text).toContain("Textbox");
     expect(text).toContain("Toggle");
@@ -35,13 +36,13 @@ describe("get-data-type-property-editor-template", () => {
     // Act
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "Textbox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
     expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const text = getResultText(result);
     expect(text).toContain("Property Editor Template: Textbox");
     expect(text).toContain("editorAlias");
     expect(text).toContain("editorUiAlias");
@@ -54,13 +55,13 @@ describe("get-data-type-property-editor-template", () => {
     // Act
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "textbox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
     expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const text = getResultText(result);
     expect(text).toContain("Property Editor Template: Textbox");
   });
 
@@ -68,13 +69,13 @@ describe("get-data-type-property-editor-template", () => {
     // Act
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "BlockList" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
     expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const text = getResultText(result);
     expect(text).toContain("IMPORTANT NOTES:");
     expect(text).toContain("when creating new block list data types always create the required element types first");
   });
@@ -83,14 +84,14 @@ describe("get-data-type-property-editor-template", () => {
     // Act
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "NonExistentEditor" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
     expect(result.content[0].type).toBe("text");
     expect(result.isError).toBe(true);
-    const text = result.content[0].text as string;
+    const text = getResultText(result);
     expect(text).toContain("not found");
     expect(text).toContain("Available templates:");
   });
@@ -99,13 +100,13 @@ describe("get-data-type-property-editor-template", () => {
     // Act
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "Toggle" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
     expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const text = getResultText(result);
     expect(text).toContain("values");
     expect(text).toContain("default");
     expect(text).toContain("showLabels");

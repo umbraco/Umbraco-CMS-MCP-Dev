@@ -241,16 +241,15 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
 }
 
 export function normalizeErrorResponse(result: CallToolResult): CallToolResult {
-  if (
-    Array.isArray(result.content) &&
-    result.content[0]?.text &&
-    typeof result.content[0].text === "string"
-  ) {
-    // Replace any traceId in the text with a normalized version
-    result.content[0].text = result.content[0].text.replace(
-      /00-[0-9a-f]{32}-[0-9a-f]{16}-00/g,
-      "normalized-trace-id"
-    );
+  if (Array.isArray(result.content) && result.content[0]) {
+    const firstContent = result.content[0];
+    if (firstContent.type === "text" && typeof firstContent.text === "string") {
+      // Replace any traceId in the text with a normalized version
+      firstContent.text = firstContent.text.replace(
+        /00-[0-9a-f]{32}-[0-9a-f]{16}-00/g,
+        "normalized-trace-id"
+      );
+    }
   }
   return result;
 }

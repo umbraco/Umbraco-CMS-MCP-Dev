@@ -8,6 +8,7 @@ import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { DataTypeTreeItemResponseModel } from "@/umb-management-api/schemas/dataTypeTreeItemResponseModel.js";
+import { createMockRequestHandlerExtra, createToolParams, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("data-type-tree", () => {
   const TEST_ROOT_NAME = "_Test Root DataType";
@@ -45,11 +46,11 @@ describe("data-type-tree", () => {
         .create();
 
       const result = await GetDataTypeChildrenTool.handler(
-        {
+        createToolParams({
           take: 100,
           parentId: folderBuilder.getId(),
-        },
-        { signal: new AbortController().signal }
+        }),
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -59,11 +60,11 @@ describe("data-type-tree", () => {
 
     it("should handle non-existent parent", async () => {
       const result = await GetDataTypeChildrenTool.handler(
-        {
+        createToolParams({
           take: 100,
           parentId: BLANK_UUID,
-        },
-        { signal: new AbortController().signal }
+        }),
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -88,7 +89,7 @@ describe("data-type-tree", () => {
         {
           descendantId: childBuilder.getId(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -101,7 +102,7 @@ describe("data-type-tree", () => {
         {
           descendantId: BLANK_UUID,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -131,11 +132,11 @@ describe("data-type-tree", () => {
 
       const result = await GetAllDataTypesTool.handler(
         {},
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Parse the response
-      const items = JSON.parse(result.content[0].text?.toString() ?? "[]") as DataTypeTreeItemResponseModel[];
+      const items = JSON.parse(getResultText(result) ?? "[]") as DataTypeTreeItemResponseModel[];
 
       // Verify our test structure exists
       const rootFolder = items.find(item => item.name === TEST_FOLDER_NAME);

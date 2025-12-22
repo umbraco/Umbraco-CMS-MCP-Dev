@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { propertyEditorTemplates } from "../post/property-editor-templates.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 // Zod schema for the tool parameters
 const propertyEditorTemplateSchema = z.object({
@@ -9,6 +10,35 @@ const propertyEditorTemplateSchema = z.object({
 });
 
 type PropertyEditorTemplateParams = z.infer<typeof propertyEditorTemplateSchema>;
+
+// Zod schema for PropertyEditorTemplate structure
+const propertyEditorTemplateValueSchema = z.object({
+  alias: z.string(),
+  value: z.any().optional(),
+});
+
+const propertyEditorTemplateItemSchema = z.object({
+  editorAlias: z.string().optional(),
+  editorUiAlias: z.string().optional(),
+  values: z.array(propertyEditorTemplateValueSchema).optional(),
+  _notes: z.string().optional(),
+});
+
+// Output schema: union of available editors list or specific template
+const propertyEditorTemplateOutputSchema = z.union([
+  z.object({
+    type: z.literal("list"),
+    availableEditors: z.array(z.object({
+      name: z.string(),
+      notes: z.string().optional(),
+    })),
+  }),
+  z.object({
+    type: z.literal("template"),
+    name: z.string(),
+    template: propertyEditorTemplateItemSchema,
+  }),
+]);
 
 const GetDataTypePropertyEditorTemplateTool = {
   name: "get-data-type-property-editor-template",
@@ -31,28 +61,30 @@ The templates include:
 - _notes: Important information about special requirements or options
 
 Note: Some templates (like BlockList, BlockGrid) have _notes indicating you must create element types first before creating the data type.`,
-  schema: propertyEditorTemplateSchema.shape,
-  isReadOnly: true,
+  inputSchema: propertyEditorTemplateSchema.shape,
+  outputSchema: propertyEditorTemplateOutputSchema,
+  annotations: {
+    readOnlyHint: true
+  },
   slices: ['templates'],
-  handler: async (model: PropertyEditorTemplateParams) => {
+  handler: (async (model: PropertyEditorTemplateParams) => {
     // If no editorName provided, return list of available editors
     if (!model.editorName) {
       const availableEditors = Object.entries(propertyEditorTemplates)
-        .map(([name, config]) => {
-          const hasNotes = config._notes ? ` (${config._notes})` : '';
-          return `- ${name}${hasNotes}`;
-        })
-        .sort()
-        .join('\n');
+        .map(([name, config]) => ({
+          name,
+          notes: config._notes,
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name));
 
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: `Available Property Editor Templates:\n\n${availableEditors}\n\nUse get-data-type-property-editor-template with a specific editorName to see the full configuration.`,
-          },
-        ],
+      const structuredOutput = {
+        type: "list" as const,
+        availableEditors,
       };
+
+      const text = `Available Property Editor Templates:\n\n${availableEditors.map(e => `- ${e.name}${e.notes ? ` (${e.notes})` : ''}`).join('\n')}\n\nUse get-data-type-property-editor-template with a specific editorName to see the full configuration.`;
+      
+      return createToolResult(structuredOutput);
     }
 
     // Look for the specific editor (case-insensitive)
@@ -62,20 +94,28 @@ Note: Some templates (like BlockList, BlockGrid) have _notes indicating you must
 
     if (!editorKey) {
       const availableEditors = Object.keys(propertyEditorTemplates).sort().join(', ');
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: `Property editor template '${model.editorName}' not found.\n\nAvailable templates: ${availableEditors}\n\nNote: Editor names are case-insensitive.`,
-          },
-        ],
-        isError: true,
+      const errorData = {
+        title: "Property editor template not found",
+        detail: `Property editor template '${model.editorName}' not found. Available templates: ${availableEditors}. Note: Editor names are case-insensitive.`,
+        availableTemplates: Object.keys(propertyEditorTemplates).sort()
       };
+      return createToolResultError(errorData);
     }
 
     const template = propertyEditorTemplates[editorKey];
 
-    // Build a helpful response with the template
+    const structuredOutput = {
+      type: "template" as const,
+      name: editorKey,
+      template: {
+        editorAlias: template.editorAlias,
+        editorUiAlias: template.editorUiAlias,
+        values: template.values,
+        _notes: template._notes,
+      },
+    };
+
+    // Build a helpful text response
     let response = `Property Editor Template: ${editorKey}\n\n`;
 
     if (template._notes) {
@@ -92,15 +132,8 @@ Note: Some templates (like BlockList, BlockGrid) have _notes indicating you must
       response += `- values: Customize the values array based on your requirements\n`;
     }
 
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: response,
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof propertyEditorTemplateSchema.shape>;
+    return createToolResult(structuredOutput);
+  }),
+} satisfies ToolDefinition<typeof propertyEditorTemplateSchema.shape, typeof propertyEditorTemplateOutputSchema>;
 
 export default withStandardDecorators(GetDataTypePropertyEditorTemplateTool);

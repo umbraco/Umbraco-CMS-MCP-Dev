@@ -3,6 +3,7 @@ import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("update-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test DataType Update";
@@ -46,7 +47,7 @@ describe("update-data-type", () => {
           values: updateModel.values,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
@@ -75,7 +76,7 @@ describe("update-data-type", () => {
           values: updateModel.values,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

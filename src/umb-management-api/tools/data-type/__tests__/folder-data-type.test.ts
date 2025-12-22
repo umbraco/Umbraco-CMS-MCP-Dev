@@ -6,6 +6,7 @@ import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, createToolParams } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("data-type-folder", () => {
   const TEST_FOLDER_NAME = "_Test DataType Folder";
@@ -30,10 +31,10 @@ describe("data-type-folder", () => {
   describe("create", () => {
     it("should create a folder", async () => {
       const result = await CreateDataTypeFolderTool.handler(
-        {
+        createToolParams({
           name: TEST_FOLDER_NAME,
-        },
-        { signal: new AbortController().signal }
+        }),
+        createMockRequestHandlerExtra()
       );
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -52,11 +53,11 @@ describe("data-type-folder", () => {
       expect(parentBuilder).toBeDefined();
 
       const result = await CreateDataTypeFolderTool.handler(
-        {
+        createToolParams({
           name: TEST_FOLDER_NAME,
           parent: { id: parentBuilder.getId() },
-        },
-        { signal: new AbortController().signal }
+        }),
+        createMockRequestHandlerExtra()
       );
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -83,7 +84,7 @@ describe("data-type-folder", () => {
             name: UPDATED_FOLDER_NAME,
           },
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -103,7 +104,7 @@ describe("data-type-folder", () => {
             name: UPDATED_FOLDER_NAME,
           },
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -122,7 +123,7 @@ describe("data-type-folder", () => {
         {
           id: builder.getId(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -137,7 +138,7 @@ describe("data-type-folder", () => {
         {
           id: BLANK_UUID,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();

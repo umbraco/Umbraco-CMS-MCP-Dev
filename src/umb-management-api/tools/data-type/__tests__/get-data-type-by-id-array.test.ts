@@ -3,6 +3,7 @@ import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, createToolParams, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-item-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test Item DataType";
@@ -29,10 +30,10 @@ describe("get-item-data-type", () => {
   it("should get no data types for empty request", async () => {
     // Get all data types
     const result = await GetDataTypesByIdArrayTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      createToolParams({}),
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+    const items = parseItems(getResultText(result));
     expect(items).toMatchSnapshot();
   });
 
@@ -46,9 +47,9 @@ describe("get-item-data-type", () => {
     // Get by ID
     const result = await GetDataTypesByIdArrayTool.handler(
       { id: [builder.getId()] },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+    const items = parseItems(getResultText(result));
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_DATATYPE_NAME);
     // Normalize for snapshot
@@ -74,10 +75,10 @@ describe("get-item-data-type", () => {
       {
         id: [builder1.getId(), builder2.getId()],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    const items = parseItems(result.content[0].text as string);
+    const items = parseItems(getResultText(result));
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_DATATYPE_NAME);
     expect(items[1].name).toBe(TEST_DATATYPE_NAME_2);

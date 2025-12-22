@@ -303,9 +303,13 @@ describe("normalizeErrorResponse", () => {
     const result = normalizeErrorResponse(input);
 
     // Assert
-    expect(result.content[0].text).toBe(
-      "Error with trace ID: normalized-trace-id"
-    );
+    const firstContent = result.content[0];
+    expect(firstContent.type).toBe("text");
+    if (firstContent.type === "text") {
+      expect(firstContent.text).toBe(
+        "Error with trace ID: normalized-trace-id"
+      );
+    }
   });
 
   it("should handle response without content array", () => {

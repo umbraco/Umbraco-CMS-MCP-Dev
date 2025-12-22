@@ -2,6 +2,7 @@ import FindDataTypeTool from "../get/find-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, createToolParams, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DATATYPE_NAME = "_Test FindDataType";
 const TEST_DATATYPE_NAME_2 = "_Test FindDataType 2";
@@ -29,11 +30,11 @@ describe("find-data-type", () => {
 
     // Use the tool to find by name
     const result = await FindDataTypeTool.handler(
-      { name: TEST_DATATYPE_NAME, take: 100 },
-      { signal: new AbortController().signal }
+      createToolParams({ name: TEST_DATATYPE_NAME, take: 100 }),
+      createMockRequestHandlerExtra()
     );
 
-    const data = JSON.parse(result.content[0].text as string);
+    const data = JSON.parse(getResultText(result));
     expect(data.total).toBeGreaterThan(0);
     const found = data.items.find(
       (dt: any) => dt.name === TEST_DATATYPE_NAME
@@ -44,14 +45,14 @@ describe("find-data-type", () => {
 
   it("should return no results for a non-existent name", async () => {
     const result = await FindDataTypeTool.handler(
-      {
+      createToolParams({
         name: "nonexistentdatatype_" + Date.now(),
         take: 100,
-      },
-      { signal: new AbortController().signal }
+      }),
+      createMockRequestHandlerExtra()
     );
 
-    const data = JSON.parse(result.content[0].text as string);
+    const data = JSON.parse(getResultText(result));
     expect(data.total).toBe(0);
     expect(data.items.length).toBe(0);
   });

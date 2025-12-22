@@ -1,7 +1,6 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getDataTypeByIdReferencedByParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDataTypeByIdReferencedByParams, getDataTypeByIdReferencedByResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
 
 const GetReferencesDataTypeTool = {
   name: "get-references-data-type",
@@ -17,22 +16,17 @@ const GetReferencesDataTypeTool = {
   Returns a detailed list with content type information (id, type, name, icon) and all properties
   (name, alias) that use the specified data type.
   `,
-  schema: getDataTypeByIdReferencedByParams.shape,
-  isReadOnly: true,
-  slices: ['references'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDataTypeByIdReferencedBy(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getDataTypeByIdReferencedByParams.shape,
+  outputSchema: getDataTypeByIdReferencedByResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getDataTypeByIdReferencedByParams.shape>;
+  slices: ['references'],
+  handler: (async ({ id }: { id: string }) => {
+    return executeGetOperation((client) =>
+      client.getDataTypeByIdReferencedBy(id, undefined, FULL_RESPONSE_OPTIONS)
+    );
+  }),
+} satisfies ToolDefinition<typeof getDataTypeByIdReferencedByParams.shape, typeof getDataTypeByIdReferencedByResponse.shape>;
 
 export default withStandardDecorators(GetReferencesDataTypeTool);
