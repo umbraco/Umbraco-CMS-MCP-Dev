@@ -5,7 +5,8 @@ import { jest } from "@jest/globals";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateErrorResult, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { getTreeDataTypeSiblingsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_FOLDER_NAME = "_Test Folder DataType";
 const TEST_SIBLING_1_NAME = "_Test Sibling 1 DataType";
@@ -59,6 +60,7 @@ describe("get-data-type-siblings", () => {
     );
 
     // Assert - Verify the siblings are returned
+    validateStructuredContent(result, getTreeDataTypeSiblingsResponse);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
