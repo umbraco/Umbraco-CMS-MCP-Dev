@@ -9,67 +9,56 @@ import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 describe("get-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test Get DataType";
-  let dataTypeId: string;
   let originalConsoleError: typeof console.error;
-
-  beforeAll(async () => {
-    // Create a test data type to get
-    const builder = await new DataTypeBuilder()
-      .withName(TEST_DATATYPE_NAME)
-      .withEditorAlias("Umbraco.TextBox")
-      .withEditorUiAlias("Umb.PropertyEditorUi.TextBox")
-      .create();
-
-    dataTypeId = builder.getId();
-  });
 
   beforeEach(() => {
     originalConsoleError = console.error;
     console.error = jest.fn();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     console.error = originalConsoleError;
   });
 
-  afterAll(async () => {
-    await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
-  });
-
   it("should get a data type by ID", async () => {
+    // Arrange - Create a test data type to get
+    const builder = await new DataTypeBuilder()
+      .withName(TEST_DATATYPE_NAME)
+      .withTextbox()
+      .create();
+
+    // Act - Get the data type by ID
     const result = await GetDataTypeTool.handler(
-      {
-        id: dataTypeId,
-      },
+      { id: builder.getId() },
       createMockRequestHandlerExtra()
     );
 
+    // Assert - Verify the handler response
     validateStructuredContent(result, getDataTypeByIdResponse);
-
-    // Use createSnapshotResult to normalize for snapshot testing
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should handle non-existent data type", async () => {
+    // Act - Try to get non-existent data type
     const result = await GetDataTypeTool.handler(
-      {
-        id: BLANK_UUID,
-      },
+      { id: BLANK_UUID },
       createMockRequestHandlerExtra()
     );
 
+    // Assert - Verify the error response
     validateErrorResult(result);
     expect(result).toMatchSnapshot();
   });
 
   it("should handle invalid ID format", async () => {
+    // Act - Try to get data type with invalid ID
     const result = await GetDataTypeTool.handler(
-      {
-        id: "invalid-id-format",
-      },
+      { id: "invalid-id-format" },
       createMockRequestHandlerExtra()
     );
 
+    // Assert - Verify the error response
     validateErrorResult(result);
     expect(result).toMatchSnapshot();
   });

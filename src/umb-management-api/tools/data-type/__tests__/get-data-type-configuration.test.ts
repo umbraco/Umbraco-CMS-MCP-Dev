@@ -1,7 +1,7 @@
 import GetDataTypeConfigurationTool from "../get/get-data-type-configuration.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
-import { createMockRequestHandlerExtra, getStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-data-type-configuration", () => {
   let originalConsoleError: typeof console.error;
@@ -16,15 +16,15 @@ describe("get-data-type-configuration", () => {
   });
 
   it("should get the data type configuration", async () => {
-    // Act
+    // Act - Get the data type configuration
     const result = await GetDataTypeConfigurationTool.handler({}, createMockRequestHandlerExtra());
 
-    // Assert
-    const normalizedResult = createSnapshotResult(result);
-    expect(normalizedResult).toMatchSnapshot();
+    // Assert - Verify the handler response
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
-    // Verify expected properties exist - now returns structuredContent
-    const parsed = getStructuredContent(result) as any;
+    // Assert - Verify expected properties exist
+    const parsed: { canBeChanged: boolean; documentListViewId: string; mediaListViewId: string } =
+      result.structuredContent as any;
     expect(parsed).toHaveProperty("canBeChanged");
     expect(parsed).toHaveProperty("documentListViewId");
     expect(parsed).toHaveProperty("mediaListViewId");

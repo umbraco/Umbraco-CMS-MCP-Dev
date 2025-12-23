@@ -20,63 +20,57 @@ describe("create-data-type", () => {
   });
 
   afterEach(async () => {
-    // Clean up any test data types
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(EXISTING_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_WITH_PARENT_NAME);
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     console.error = originalConsoleError;
-
   });
 
   it("should create a data type", async () => {
-    // Create data type model using builder
+    // Arrange - Create data type model using builder
     const dataTypeModel = new DataTypeBuilder()
       .withName(TEST_DATATYPE_NAME)
       .withTextbox()
       .build();
 
-    // Create the data type
+    // Act - Create the data type
     const result = await CreateDataTypeTool.handler(dataTypeModel as any, createMockRequestHandlerExtra());
 
+    // Assert - Verify the handler response
     const responseData = validateStructuredContent(result, createDataTypeOutputSchema);
-    
     const dataTypeId = responseData.id;
     expect(responseData.message).toBe("Data type created successfully");
-
-    // Verify the handler response using snapshot
     expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();
 
-    // Verify the created item exists and matches expected values
+    // Assert - Verify the created item exists and matches expected values
     const item = await DataTypeTestHelper.findDataType(TEST_DATATYPE_NAME);
     expect(item).toBeDefined();
     expect(DataTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
   });
 
   it("should create a data type with parent folder", async () => {
-    // Arrange: Create parent folder
+    // Arrange - Create parent folder
     const folderBuilder = await new DataTypeFolderBuilder(
       TEST_FOLDER_NAME
     ).create();
 
-    // Arrange: Create data type with flattened parentId for tool
+    // Act - Create data type with parent
     const result = await CreateDataTypeTool.handler({
       name: TEST_DATATYPE_WITH_PARENT_NAME,
       editorAlias: "Umbraco.TextBox",
       editorUiAlias: "Umb.PropertyEditorUi.TextBox",
       values: [],
-      parentId: folderBuilder.getId()  // Flattened parent ID
+      parentId: folderBuilder.getId()
     }, createMockRequestHandlerExtra());
 
+    // Assert - Verify the handler response
     const responseData = validateStructuredContent(result, createDataTypeOutputSchema);
-    
     const dataTypeId = responseData.id;
     expect(responseData.message).toBe("Data type created successfully");
-
-    // Assert: Verify the handler response
     expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();
 
-    // Assert: Verify the created item exists with correct parent
+    // Assert - Verify the created item exists with correct parent
     const item = await DataTypeTestHelper.findDataType(
       TEST_DATATYPE_WITH_PARENT_NAME
     );
@@ -85,5 +79,4 @@ describe("create-data-type", () => {
     expect(item!.parent!.id).toBe(folderBuilder.getId());
     expect(DataTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
   });
-
 }); 

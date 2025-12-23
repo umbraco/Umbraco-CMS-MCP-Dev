@@ -4,7 +4,7 @@ import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType Copy";
@@ -20,7 +20,6 @@ describe("copy-data-type", () => {
   });
 
   afterEach(async () => {
-    // Clean up any test data types and folders
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_COPY_NAME);
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
@@ -28,37 +27,32 @@ describe("copy-data-type", () => {
   });
 
   it("should copy a data type to a folder", async () => {
-    // Create a data type to copy
+    // Arrange - Create a data type to copy
     const dataTypeBuilder = await new DataTypeBuilder()
       .withName(TEST_DATATYPE_NAME)
       .withTextbox()
       .create();
 
-    // Create a target folder
+    // Arrange - Create a target folder
     const folderBuilder = await new DataTypeFolderBuilder(
       TEST_FOLDER_NAME
     ).create();
 
-    // Copy the data type
+    // Act - Copy the data type to the folder
     const result = await CopyDataTypeTool.handler(
       {
         id: dataTypeBuilder.getId(),
         body: {
-          target: {
-            id: folderBuilder.getId(),
-          },
+          target: { id: folderBuilder.getId() },
         },
       },
       createMockRequestHandlerExtra()
     );
 
-    // Verify structuredContent exists
-    expect(result.structuredContent).toBeDefined();
-    
-    // Use createSnapshotResult to normalize for snapshot testing
+    // Assert - Verify the handler response
     expect(createSnapshotResult(result)).toMatchSnapshot();
 
-    // Verify the data type was actually copied to the folder
+    // Assert - Verify the data type was copied to the folder
     const copiedDataType = await DataTypeTestHelper.findDataType(
       TEST_DATATYPE_COPY_NAME
     );
@@ -67,13 +61,13 @@ describe("copy-data-type", () => {
   });
 
   it("should copy a data type to root", async () => {
-    // Create a data type to copy
+    // Arrange - Create a data type to copy
     const dataTypeBuilder = await new DataTypeBuilder()
       .withName(TEST_DATATYPE_NAME)
       .withTextbox()
       .create();
 
-    // Copy the data type to root (no target)
+    // Act - Copy the data type to root (no target)
     const result = await CopyDataTypeTool.handler(
       {
         id: dataTypeBuilder.getId(),
@@ -84,10 +78,10 @@ describe("copy-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Use createSnapshotResult to normalize for snapshot testing
+    // Assert - Verify the handler response
     expect(createSnapshotResult(result)).toMatchSnapshot();
 
-    // Verify the data type was actually copied to root
+    // Assert - Verify the data type was copied to root
     const copiedDataType = await DataTypeTestHelper.findDataType(
       TEST_DATATYPE_COPY_NAME
     );
@@ -96,6 +90,7 @@ describe("copy-data-type", () => {
   });
 
   it("should handle non-existent data type", async () => {
+    // Act - Try to copy non-existent data type
     const result = await CopyDataTypeTool.handler(
       {
         id: BLANK_UUID,
@@ -106,7 +101,8 @@ describe("copy-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Verify the error response using snapshot (errors don't use createSnapshotResult)
+    // Assert - Verify the error response
+    validateErrorResult(result);
     expect(result).toMatchSnapshot();
   });
 });

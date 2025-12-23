@@ -24,16 +24,17 @@ describe("find-data-type", () => {
   });
 
   it("should find a data type by name", async () => {
-    // Create a data type
+    // Arrange - Create a data type
     await new DataTypeBuilder()
       .withName(TEST_DATATYPE_NAME)
       .withTextbox()
       .create();
 
-    // Use the tool to find by name
+    // Act - Use the tool to find by name
     const params: GetFilterDataTypeParams = { name: TEST_DATATYPE_NAME, take: 100 };
     const result = await FindDataTypeTool.handler(params as any, createMockRequestHandlerExtra());
 
+    // Assert - Verify the data type was found
     const data = validateStructuredContent(result, getFilterDataTypeResponse);
     expect(data.total).toBeGreaterThan(0);
     const found = data.items.find(
@@ -44,12 +45,13 @@ describe("find-data-type", () => {
   });
 
   it("should return no results for a non-existent name", async () => {
+    // Act - Search for non-existent data type
     const params: GetFilterDataTypeParams = { name: "nonexistentdatatype_" + Date.now(), take: 100 };
     const result = await FindDataTypeTool.handler(params as any, createMockRequestHandlerExtra());
 
+    // Assert - Verify no results
     const data = validateStructuredContent(result, getFilterDataTypeResponse);
     expect(data.total).toBe(0);
     expect(data.items.length).toBe(0);
   });
-
 });

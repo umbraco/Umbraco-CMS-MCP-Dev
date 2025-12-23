@@ -7,7 +7,7 @@ import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test
 import { getItemDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
-describe("get-item-data-type", () => {
+describe("get-data-type-by-id-array", () => {
   const TEST_DATATYPE_NAME = "_Test Item DataType";
   const TEST_DATATYPE_NAME_2 = "_Test Item DataType2";
   let originalConsoleError: typeof console.error;
@@ -24,53 +24,51 @@ describe("get-item-data-type", () => {
   });
 
   it("should get no data types for empty request", async () => {
-    // Get all data types
+    // Act - Get data types with empty ID array
     const result = await GetDataTypesByIdArrayTool.handler(
       {} as any,
       createMockRequestHandlerExtra()
     );
-    
-    validateStructuredContent(result, getItemDataTypeResponse);
 
-    // Use createSnapshotResult to normalize for snapshot testing
+    // Assert - Verify empty response
+    validateStructuredContent(result, getItemDataTypeResponse);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should get single data type by ID", async () => {
-    // Create a data type
+    // Arrange - Create a data type
     const builder = await new DataTypeBuilder()
       .withName(TEST_DATATYPE_NAME)
       .withTextbox()
       .create();
 
-    // Get by ID
+    // Act - Get by ID
     const result = await GetDataTypesByIdArrayTool.handler(
       { id: [builder.getId()] },
       createMockRequestHandlerExtra()
     );
-    
+
+    // Assert - Verify the data type is returned
     const items = validateStructuredContent(result, getItemDataTypeResponse);
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_DATATYPE_NAME);
-    
-    // Use createSnapshotResult to normalize for snapshot testing
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should get multiple data types by ID", async () => {
-    // Create first data type
+    // Arrange - Create first data type
     const builder1 = await new DataTypeBuilder()
       .withName(TEST_DATATYPE_NAME)
       .withTextbox()
       .create();
 
-    // Create second data type
+    // Arrange - Create second data type
     const builder2 = await new DataTypeBuilder()
       .withName(TEST_DATATYPE_NAME_2)
       .withTextbox()
       .create();
 
-    // Get by IDs
+    // Act - Get by IDs
     const result = await GetDataTypesByIdArrayTool.handler(
       {
         id: [builder1.getId(), builder2.getId()],
@@ -78,12 +76,11 @@ describe("get-item-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
+    // Assert - Verify both data types are returned
     const items = validateStructuredContent(result, getItemDataTypeResponse);
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_DATATYPE_NAME);
     expect(items[1].name).toBe(TEST_DATATYPE_NAME_2);
-
-    // Use createSnapshotResult to normalize for snapshot testing
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 });
