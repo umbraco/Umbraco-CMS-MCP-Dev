@@ -1,8 +1,6 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { getItemDataTypeQueryParams, getItemDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, executeGetApiCall } from "@/helpers/mcp/tool-decorators.js";
-import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypesByIdArrayTool = {
   name: "get-data-types-by-id-array",
@@ -14,8 +12,8 @@ const GetDataTypesByIdArrayTool = {
   },
   slices: ['list'],
   handler: (async (params: { id?: string[] }) => {
-    return executeGetApiCall((client) => 
-      client.getItemDataType(params)
+    return executeGetApiCall((client) =>
+      client.getItemDataType(params, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getItemDataTypeQueryParams.shape, typeof getItemDataTypeResponse>;

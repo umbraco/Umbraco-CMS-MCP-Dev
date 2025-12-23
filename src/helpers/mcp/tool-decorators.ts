@@ -32,6 +32,9 @@ export {
   handleVoidOperation,
   executeVoidApiCallWithOptions,
   type VoidApiCallOptions,
+  type UmbracoClient,
+  type ToolCallResult,
+  type ApiCallFn,
 } from "./api-call-helpers.js";
 
 /**

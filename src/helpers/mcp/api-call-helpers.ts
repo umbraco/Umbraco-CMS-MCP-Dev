@@ -52,6 +52,28 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { createToolResult, createToolResultError } from "./tool-result.js";
 
 /**
+ * Type alias for the Umbraco Management API client instance.
+ */
+export type UmbracoClient = ReturnType<typeof UmbracoManagementClient.getClient>;
+
+/**
+ * Standard tool result shape returned by all API call helpers.
+ * Index signature required for MCP SDK compatibility.
+ */
+export interface ToolCallResult {
+  [x: string]: unknown;
+  content: Array<{ type: "text"; text: string }>;
+  structuredContent?: { [x: string]: unknown };
+  isError?: boolean;
+}
+
+/**
+ * Function signature for API calls that return an AxiosResponse.
+ * Use with CAPTURE_RAW_HTTP_RESPONSE to get the full response object.
+ */
+export type ApiCallFn<T = unknown> = (client: UmbracoClient) => Promise<AxiosResponse<T>>;
+
+/**
  * Options that configure Axios to return the raw HTTP response object instead of just the data.
  *
  * ## What This Does
@@ -104,11 +126,7 @@ export const FULL_RESPONSE_OPTIONS = CAPTURE_RAW_HTTP_RESPONSE;
  */
 export function processVoidResponse(
   response: AxiosResponse<ProblemDetails | void>
-): {
-  content: Array<{ type: "text"; text: string }>;
-  structuredContent?: { [x: string]: unknown };
-  isError?: boolean;
-} {
+): ToolCallResult {
   // Success status codes (200-299)
   if (response.status >= 200 && response.status < 300) {
     return createToolResult(
@@ -154,12 +172,8 @@ export function processVoidResponse(
  * ```
  */
 export async function executeVoidApiCall(
-  apiCall: (client: ReturnType<typeof UmbracoManagementClient.getClient>) => Promise<any>
-): Promise<{
-  content: Array<{ type: "text"; text: string }>;
-  structuredContent?: { [x: string]: unknown };
-  isError?: boolean;
-}> {
+  apiCall: (client: UmbracoClient) => Promise<AxiosResponse<ProblemDetails | void> | unknown>
+): Promise<ToolCallResult> {
   const client = UmbracoManagementClient.getClient();
   const result = await apiCall(client);
 
@@ -221,12 +235,8 @@ export const executeVoidOperation = executeVoidApiCall;
  * ```
  */
 export async function executeGetApiCall<T = unknown>(
-  apiCall: (client: ReturnType<typeof UmbracoManagementClient.getClient>) => Promise<any>
-): Promise<{
-  content: Array<{ type: "text"; text: string }>;
-  structuredContent?: { [x: string]: unknown };
-  isError?: boolean;
-}> {
+  apiCall: (client: UmbracoClient) => Promise<AxiosResponse<T | ProblemDetails> | unknown>
+): Promise<ToolCallResult> {
   const client = UmbracoManagementClient.getClient();
   const result = await apiCall(client);
 
@@ -340,13 +350,9 @@ export interface VoidApiCallOptions {
  * ```
  */
 export async function executeVoidApiCallWithOptions(
-  apiCall: (client: ReturnType<typeof UmbracoManagementClient.getClient>) => Promise<any>,
+  apiCall: (client: UmbracoClient) => Promise<AxiosResponse<ProblemDetails | void> | unknown>,
   options?: VoidApiCallOptions
-): Promise<{
-  content: Array<{ type: "text"; text: string }>;
-  structuredContent?: { [x: string]: unknown };
-  isError?: boolean;
-}> {
+): Promise<ToolCallResult> {
   const client = UmbracoManagementClient.getClient();
   const result = await apiCall(client);
 
