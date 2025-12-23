@@ -1,7 +1,7 @@
 import { GetFilterDataTypeParams } from "@/umb-management-api/schemas/index.js";
 import { getFilterDataTypeQueryParams, getFilterDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const FindDataTypeTool = {
   name: "find-data-type",
@@ -13,8 +13,8 @@ const FindDataTypeTool = {
   },
   slices: ['search'],
   handler: (async (model: GetFilterDataTypeParams) => {
-    return executeGetOperation((client) => 
-      client.getFilterDataType(model, FULL_RESPONSE_OPTIONS)
+    return executeGetApiCall((client) => 
+      client.getFilterDataType(model, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getFilterDataTypeQueryParams.shape, typeof getFilterDataTypeResponse.shape>;

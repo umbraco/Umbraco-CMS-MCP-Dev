@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { getItemDataTypeQueryParams, getItemDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, executeGetOperation } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, executeGetApiCall } from "@/helpers/mcp/tool-decorators.js";
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 const GetDataTypesByIdArrayTool = {
@@ -14,7 +14,7 @@ const GetDataTypesByIdArrayTool = {
   },
   slices: ['list'],
   handler: (async (params: { id?: string[] }) => {
-    return executeGetOperation((client) => 
+    return executeGetApiCall((client) => 
       client.getItemDataType(params)
     );
   }),

@@ -1,7 +1,7 @@
 import { GetItemDataTypeSearchParams } from "@/umb-management-api/schemas/index.js";
 import { getItemDataTypeSearchQueryParams, getItemDataTypeSearchResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypeSearchTool = {
   name: "get-data-type-search",
@@ -13,8 +13,8 @@ const GetDataTypeSearchTool = {
   },
   slices: ['search'],
   handler: (async (params: GetItemDataTypeSearchParams) => {
-    return executeGetOperation((client) =>
-      client.getItemDataTypeSearch(params, FULL_RESPONSE_OPTIONS)
+    return executeGetApiCall((client) =>
+      client.getItemDataTypeSearch(params, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getItemDataTypeSearchQueryParams.shape, typeof getItemDataTypeSearchResponse.shape>;

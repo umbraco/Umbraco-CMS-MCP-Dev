@@ -1,7 +1,7 @@
 import { GetTreeDataTypeSiblingsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDataTypeSiblingsQueryParams, getTreeDataTypeSiblingsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypeSiblingsTool = {
   name: "get-data-type-siblings",
@@ -13,8 +13,8 @@ const GetDataTypeSiblingsTool = {
   },
   slices: ['tree'],
   handler: (async (params: GetTreeDataTypeSiblingsParams) => {
-    return executeGetOperation((client) =>
-      client.getTreeDataTypeSiblings(params, FULL_RESPONSE_OPTIONS)
+    return executeGetApiCall((client) =>
+      client.getTreeDataTypeSiblings(params, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getTreeDataTypeSiblingsQueryParams.shape, typeof getTreeDataTypeSiblingsResponse.shape>;

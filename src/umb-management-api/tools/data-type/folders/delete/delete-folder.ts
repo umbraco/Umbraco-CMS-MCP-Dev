@@ -1,6 +1,6 @@
 import { deleteDataTypeFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const DeleteDataTypeFolderTool = {
   name: "delete-data-type-folder",
@@ -12,8 +12,8 @@ const DeleteDataTypeFolderTool = {
   },
   slices: ['delete', 'folders'],
   handler: (async ({ id }: { id: string }) => {
-    return executeVoidOperation((client) => 
-      client.deleteDataTypeFolderById(id, FULL_RESPONSE_OPTIONS)
+    return executeVoidApiCall((client) => 
+      client.deleteDataTypeFolderById(id, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof deleteDataTypeFolderByIdParams.shape>;

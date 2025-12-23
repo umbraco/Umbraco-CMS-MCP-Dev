@@ -1,6 +1,6 @@
 import { getDataTypeByIdParams, getDataTypeByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypeTool = {
   name: "get-data-type",
@@ -12,8 +12,8 @@ const GetDataTypeTool = {
   },
   slices: ['read'],
   handler: async ({ id }: { id: string }) => {
-    return executeGetOperation((client) => 
-      client.getDataTypeById(id, FULL_RESPONSE_OPTIONS)
+    return executeGetApiCall((client) => 
+      client.getDataTypeById(id, CAPTURE_RAW_HTTP_RESPONSE)
     );
   },
 } satisfies ToolDefinition<typeof getDataTypeByIdParams.shape, typeof getDataTypeByIdResponse.shape>;

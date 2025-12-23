@@ -1,7 +1,7 @@
 import { GetTreeDataTypeRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDataTypeRootQueryParams, getTreeDataTypeRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypeRootTool = {
   name: "get-data-type-root",
@@ -13,8 +13,8 @@ const GetDataTypeRootTool = {
   },
   slices: ['tree'],
   handler: (async (params: GetTreeDataTypeRootParams) => {
-    return executeGetOperation((client) =>
-      client.getTreeDataTypeRoot(params, FULL_RESPONSE_OPTIONS)
+    return executeGetApiCall((client) =>
+      client.getTreeDataTypeRoot(params, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getTreeDataTypeRootQueryParams.shape, typeof getTreeDataTypeRootResponse.shape>;

@@ -1,6 +1,6 @@
 import { getDataTypeFolderByIdParams, getDataTypeFolderByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypeFolderTool = {
   name: "get-data-type-folder",
@@ -13,8 +13,8 @@ const GetDataTypeFolderTool = {
   },
   slices: ['read', 'folders'],
   handler: (async ({ id }: { id: string }) => {
-    return executeGetOperation((client) => 
-      client.getDataTypeFolderById(id, FULL_RESPONSE_OPTIONS)
+    return executeGetApiCall((client) => 
+      client.getDataTypeFolderById(id, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getDataTypeFolderByIdParams.shape, typeof getDataTypeFolderByIdResponse.shape>;

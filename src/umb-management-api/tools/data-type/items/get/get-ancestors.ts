@@ -1,7 +1,7 @@
 import { GetTreeDataTypeAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDataTypeAncestorsQueryParams, getTreeDataTypeAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypeAncestorsTool = {
   name: "get-data-type-ancestors",
@@ -13,8 +13,8 @@ const GetDataTypeAncestorsTool = {
   },
   slices: ['tree'],
   handler: (async (params: GetTreeDataTypeAncestorsParams) => {
-    return executeGetOperation((client) =>
-      client.getTreeDataTypeAncestors(params, FULL_RESPONSE_OPTIONS)
+    return executeGetApiCall((client) =>
+      client.getTreeDataTypeAncestors(params, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getTreeDataTypeAncestorsQueryParams.shape, typeof getTreeDataTypeAncestorsResponse>;

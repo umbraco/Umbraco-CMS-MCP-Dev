@@ -1,6 +1,6 @@
 import { deleteDataTypeByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const DeleteDataTypeTool = {
   name: "delete-data-type",
@@ -12,8 +12,8 @@ const DeleteDataTypeTool = {
   },
   slices: ['delete'],
   handler: (async ({ id }: { id: string }) => {
-    return executeVoidOperation((client) => 
-      client.deleteDataTypeById(id, FULL_RESPONSE_OPTIONS)
+    return executeVoidApiCall((client) => 
+      client.deleteDataTypeById(id, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof deleteDataTypeByIdParams.shape>;

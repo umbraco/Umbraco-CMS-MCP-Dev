@@ -4,7 +4,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const updateDataTypeFolderSchema = {
   id: putDataTypeFolderByIdParams.shape.id,
@@ -20,8 +20,8 @@ const UpdateDataTypeFolderTool = {
   },
   slices: ['update', 'folders'],
   handler: (async (model: { id: string; data: { name: string } }) => {
-    return executeVoidOperation((client) => 
-      client.putDataTypeFolderById(model.id, model.data, FULL_RESPONSE_OPTIONS)
+    return executeVoidApiCall((client) => 
+      client.putDataTypeFolderById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof updateDataTypeFolderSchema>;

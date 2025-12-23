@@ -1,7 +1,7 @@
 import { CreateFolderRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postDataTypeFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const CreateDataTypeFolderTool = {
   name: "create-data-type-folder",
@@ -9,8 +9,8 @@ const CreateDataTypeFolderTool = {
   inputSchema: postDataTypeFolderBody.shape,
   slices: ['create', 'folders'],
   handler: (async (model: CreateFolderRequestModel) => {
-    return executeVoidOperation((client) => 
-      client.postDataTypeFolder(model, FULL_RESPONSE_OPTIONS)
+    return executeVoidApiCall((client) => 
+      client.postDataTypeFolder(model, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof postDataTypeFolderBody.shape>;

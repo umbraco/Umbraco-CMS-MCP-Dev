@@ -5,7 +5,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const moveDataTypeSchema = {
   id: putDataTypeByIdMoveParams.shape.id,
@@ -18,8 +18,8 @@ const MoveDataTypeTool = {
   inputSchema: moveDataTypeSchema,
   slices: ['move'],
   handler: (async ({ id, body }: { id: string; body: MoveDataTypeRequestModel }) => {
-    return executeVoidOperation((client) => 
-      client.putDataTypeByIdMove(id, body, FULL_RESPONSE_OPTIONS)
+    return executeVoidApiCall((client) => 
+      client.putDataTypeByIdMove(id, body, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof moveDataTypeSchema>;

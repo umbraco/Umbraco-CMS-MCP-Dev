@@ -1,6 +1,6 @@
 import { getDataTypeByIdReferencedByParams, getDataTypeByIdReferencedByResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetReferencesDataTypeTool = {
   name: "get-references-data-type",
@@ -23,8 +23,8 @@ const GetReferencesDataTypeTool = {
   },
   slices: ['references'],
   handler: (async ({ id }: { id: string }) => {
-    return executeGetOperation((client) =>
-      client.getDataTypeByIdReferencedBy(id, undefined, FULL_RESPONSE_OPTIONS)
+    return executeGetApiCall((client) =>
+      client.getDataTypeByIdReferencedBy(id, undefined, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getDataTypeByIdReferencedByParams.shape, typeof getDataTypeByIdReferencedByResponse.shape>;

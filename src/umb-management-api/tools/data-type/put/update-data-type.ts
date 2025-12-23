@@ -5,7 +5,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidOperation, FULL_RESPONSE_OPTIONS } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const updateDataTypeSchema = {
   id: putDataTypeByIdParams.shape.id,
@@ -21,8 +21,8 @@ const UpdateDataTypeTool = {
   },
   slices: ['update'],
   handler: (async (model: { id: string; data: UpdateDataTypeRequestModel }) => {
-    return executeVoidOperation((client) => 
-      client.putDataTypeById(model.id, model.data, FULL_RESPONSE_OPTIONS)
+    return executeVoidApiCall((client) => 
+      client.putDataTypeById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof updateDataTypeSchema>;
