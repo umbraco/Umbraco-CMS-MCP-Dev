@@ -6,7 +6,7 @@ import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, createToolParams } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("data-type-folder", () => {
   const TEST_FOLDER_NAME = "_Test DataType Folder";
@@ -31,9 +31,7 @@ describe("data-type-folder", () => {
   describe("create", () => {
     it("should create a folder", async () => {
       const result = await CreateDataTypeFolderTool.handler(
-        createToolParams({
-          name: TEST_FOLDER_NAME,
-        }),
+        { name: TEST_FOLDER_NAME } as any,
         createMockRequestHandlerExtra()
       );
 
@@ -53,10 +51,7 @@ describe("data-type-folder", () => {
       expect(parentBuilder).toBeDefined();
 
       const result = await CreateDataTypeFolderTool.handler(
-        createToolParams({
-          name: TEST_FOLDER_NAME,
-          parent: { id: parentBuilder.getId() },
-        }),
+        { name: TEST_FOLDER_NAME, parent: { id: parentBuilder.getId() } } as any,
         createMockRequestHandlerExtra()
       );
 

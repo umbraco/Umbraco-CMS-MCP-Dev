@@ -2,42 +2,27 @@
 
 exports[`copy-data-type should copy a data type to a folder 1`] = `
 {
-  "content": [
-    {
-      "text": "{"id":"00000000-0000-0000-0000-000000000000"}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": "",
 }
 `;
 
 exports[`copy-data-type should copy a data type to root 1`] = `
 {
-  "content": [
-    {
-      "text": "{"id":"00000000-0000-0000-0000-000000000000"}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": "",
 }
 `;
 
 exports[`copy-data-type should handle non-existent data type 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using copy-data-type:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The data type could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The data type could not be found",
+    "type": "Error",
+  },
 }
 `;

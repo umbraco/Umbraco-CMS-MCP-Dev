@@ -2,7 +2,6 @@ import { z } from "zod";
 import { propertyEditorTemplates } from "../post/property-editor-templates.js";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
-import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 // Zod schema for the tool parameters
 const propertyEditorTemplateSchema = z.object({

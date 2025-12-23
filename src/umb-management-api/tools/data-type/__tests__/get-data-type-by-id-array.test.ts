@@ -3,18 +3,14 @@ import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, createToolParams, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { getItemDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 describe("get-item-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test Item DataType";
   const TEST_DATATYPE_NAME_2 = "_Test Item DataType2";
   let originalConsoleError: typeof console.error;
-
-  // Helper to parse response, handling empty string as empty array
-  const parseItems = (text: string) => {
-    if (!text || text.trim() === "") return [];
-    return JSON.parse(text);
-  };
 
   beforeEach(() => {
     originalConsoleError = console.error;
@@ -30,11 +26,14 @@ describe("get-item-data-type", () => {
   it("should get no data types for empty request", async () => {
     // Get all data types
     const result = await GetDataTypesByIdArrayTool.handler(
-      createToolParams({}),
+      {} as any,
       createMockRequestHandlerExtra()
     );
-    const items = parseItems(getResultText(result));
-    expect(items).toMatchSnapshot();
+    
+    validateStructuredContent(result, getItemDataTypeResponse);
+
+    // Use createSnapshotResult to normalize for snapshot testing
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should get single data type by ID", async () => {
@@ -49,12 +48,13 @@ describe("get-item-data-type", () => {
       { id: [builder.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = parseItems(getResultText(result));
+    
+    const items = validateStructuredContent(result, getItemDataTypeResponse);
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_DATATYPE_NAME);
-    // Normalize for snapshot
-    items[0].id = BLANK_UUID;
-    expect(items).toMatchSnapshot();
+    
+    // Use createSnapshotResult to normalize for snapshot testing
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should get multiple data types by ID", async () => {
@@ -78,15 +78,12 @@ describe("get-item-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    const items = parseItems(getResultText(result));
+    const items = validateStructuredContent(result, getItemDataTypeResponse);
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_DATATYPE_NAME);
     expect(items[1].name).toBe(TEST_DATATYPE_NAME_2);
 
-    // Normalize for snapshot
-    items.forEach((item: any) => {
-      item.id = BLANK_UUID;
-    });
-    expect(items).toMatchSnapshot();
+    // Use createSnapshotResult to normalize for snapshot testing
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 });

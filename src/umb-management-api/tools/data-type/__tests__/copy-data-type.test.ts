@@ -5,6 +5,7 @@ import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType Copy";
 const TEST_DATATYPE_COPY_NAME = "_Test DataType Copy (copy)";
@@ -51,21 +52,11 @@ describe("copy-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Normalize IDs in the response
-    const normalizedResult = {
-      ...result,
-      content: result.content.map((content) => {
-        if (content.type !== "text") return content;
-        const parsed = JSON.parse(content.text);
-        return {
-          ...content,
-          text: JSON.stringify(DataTypeTestHelper.normaliseIds(parsed)),
-        };
-      }),
-    };
-
-    // Verify the handler response using snapshot
-    expect(normalizedResult).toMatchSnapshot();
+    // Verify structuredContent exists
+    expect(result.structuredContent).toBeDefined();
+    
+    // Use createSnapshotResult to normalize for snapshot testing
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Verify the data type was actually copied to the folder
     const copiedDataType = await DataTypeTestHelper.findDataType(
@@ -93,21 +84,8 @@ describe("copy-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Normalize IDs in the response
-    const normalizedResult = {
-      ...result,
-      content: result.content.map((content) => {
-        if (content.type !== "text") return content;
-        const parsed = JSON.parse(content.text);
-        return {
-          ...content,
-          text: JSON.stringify(DataTypeTestHelper.normaliseIds(parsed)),
-        };
-      }),
-    };
-
-    // Verify the handler response using snapshot
-    expect(normalizedResult).toMatchSnapshot();
+    // Use createSnapshotResult to normalize for snapshot testing
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Verify the data type was actually copied to root
     const copiedDataType = await DataTypeTestHelper.findDataType(
@@ -128,7 +106,7 @@ describe("copy-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Verify the error response using snapshot
+    // Verify the error response using snapshot (errors don't use createSnapshotResult)
     expect(result).toMatchSnapshot();
   });
 });

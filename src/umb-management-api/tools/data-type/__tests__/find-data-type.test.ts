@@ -2,7 +2,9 @@ import FindDataTypeTool from "../get/find-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { jest } from "@jest/globals";
-import { createMockRequestHandlerExtra, createToolParams, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { getFilterDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetFilterDataTypeParams } from "@/umb-management-api/schemas/index.js";
 
 const TEST_DATATYPE_NAME = "_Test FindDataType";
 const TEST_DATATYPE_NAME_2 = "_Test FindDataType 2";
@@ -29,30 +31,23 @@ describe("find-data-type", () => {
       .create();
 
     // Use the tool to find by name
-    const result = await FindDataTypeTool.handler(
-      createToolParams({ name: TEST_DATATYPE_NAME, take: 100 }),
-      createMockRequestHandlerExtra()
-    );
+    const params: GetFilterDataTypeParams = { name: TEST_DATATYPE_NAME, take: 100 };
+    const result = await FindDataTypeTool.handler(params as any, createMockRequestHandlerExtra());
 
-    const data = JSON.parse(getResultText(result));
+    const data = validateStructuredContent(result, getFilterDataTypeResponse);
     expect(data.total).toBeGreaterThan(0);
     const found = data.items.find(
       (dt: any) => dt.name === TEST_DATATYPE_NAME
     );
     expect(found).toBeTruthy();
-    expect(found.name).toBe(TEST_DATATYPE_NAME);
+    expect(found!.name).toBe(TEST_DATATYPE_NAME);
   });
 
   it("should return no results for a non-existent name", async () => {
-    const result = await FindDataTypeTool.handler(
-      createToolParams({
-        name: "nonexistentdatatype_" + Date.now(),
-        take: 100,
-      }),
-      createMockRequestHandlerExtra()
-    );
+    const params: GetFilterDataTypeParams = { name: "nonexistentdatatype_" + Date.now(), take: 100 };
+    const result = await FindDataTypeTool.handler(params as any, createMockRequestHandlerExtra());
 
-    const data = JSON.parse(getResultText(result));
+    const data = validateStructuredContent(result, getFilterDataTypeResponse);
     expect(data.total).toBe(0);
     expect(data.items.length).toBe(0);
   });

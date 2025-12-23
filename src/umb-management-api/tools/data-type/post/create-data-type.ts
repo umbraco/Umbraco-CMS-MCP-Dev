@@ -20,7 +20,7 @@ const createDataTypeSchema = z.object({
 
 type CreateDataTypeSchema = z.infer<typeof createDataTypeSchema>;
 
-const createDataTypeOutputSchema = z.object({
+export const createDataTypeOutputSchema = z.object({
   message: z.string(),
   id: z.string().uuid()
 });

@@ -1,10 +1,10 @@
-import CreateDataTypeTool from "../post/create-data-type.js";
+import CreateDataTypeTool, { createDataTypeOutputSchema } from "../post/create-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
-import { createMockRequestHandlerExtra, createToolParams, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType Created";
 const EXISTING_DATATYPE_NAME = "_Existing DataType";
@@ -37,11 +37,12 @@ describe("create-data-type", () => {
       .build();
 
     // Create the data type
-    const result = await CreateDataTypeTool.handler(createToolParams(dataTypeModel), createMockRequestHandlerExtra());
+    const result = await CreateDataTypeTool.handler(dataTypeModel as any, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = JSON.parse(getResultText(result));
+    const responseData = validateStructuredContent(result, createDataTypeOutputSchema);
+    
     const dataTypeId = responseData.id;
+    expect(responseData.message).toBe("Data type created successfully");
 
     // Verify the handler response using snapshot
     expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();
@@ -67,9 +68,10 @@ describe("create-data-type", () => {
       parentId: folderBuilder.getId()  // Flattened parent ID
     }, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = JSON.parse(getResultText(result));
+    const responseData = validateStructuredContent(result, createDataTypeOutputSchema);
+    
     const dataTypeId = responseData.id;
+    expect(responseData.message).toBe("Data type created successfully");
 
     // Assert: Verify the handler response
     expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();

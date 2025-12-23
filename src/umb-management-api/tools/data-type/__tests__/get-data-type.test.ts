@@ -3,7 +3,10 @@ import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import GetDataTypeTool from "../get/get-data-type.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateStructuredContent, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { getDataTypeByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+
 describe("get-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test Get DataType";
   let dataTypeId: string;
@@ -41,11 +44,10 @@ describe("get-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    expect(result.content).toHaveLength(1);
-    const content = JSON.parse(getResultText(result));
-    const normalizedContent = DataTypeTestHelper.normaliseIds(content);
+    validateStructuredContent(result, getDataTypeByIdResponse);
 
-    expect(normalizedContent).toMatchSnapshot();
+    // Use createSnapshotResult to normalize for snapshot testing
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should handle non-existent data type", async () => {
@@ -56,7 +58,8 @@ describe("get-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    expect(getResultText(result)).toContain("Error");
+    validateErrorResult(result);
+    expect(result).toMatchSnapshot();
   });
 
   it("should handle invalid ID format", async () => {
@@ -67,6 +70,7 @@ describe("get-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    expect(getResultText(result)).toContain("Error");
+    validateErrorResult(result);
+    expect(result).toMatchSnapshot();
   });
 });

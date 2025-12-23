@@ -1,8 +1,145 @@
 import { BLANK_UUID } from "@/constants/constants.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
+/**
+ * Normalizes structured content (objects, arrays, primitives) for snapshot testing.
+ * Handles nested objects, arrays, and all the same normalization rules as normalizeItem.
+ */
+function normalizeStructuredContent(content: any, idToReplace?: string): any {
+  if (content === null || content === undefined) {
+    return content;
+  }
+
+  if (Array.isArray(content)) {
+    return content.map(item => normalizeStructuredContent(item));
+  }
+
+  if (typeof content === 'object') {
+    const normalized: any = { ...content };
+    
+    // Normalize ID
+    if (idToReplace && normalized.id === idToReplace) {
+      normalized.id = BLANK_UUID;
+    } else if (normalized.id && !idToReplace) {
+      normalized.id = BLANK_UUID;
+    }
+
+    // Apply all the same normalization rules as normalizeItem
+    if (normalized.parent) {
+      normalized.parent = { ...normalized.parent, id: BLANK_UUID };
+      if (normalized.parent.path && typeof normalized.parent.path === "string") {
+        normalized.parent.path = normalized.parent.path.replace(/_\d{13}(?=_|\.js$|\/|$)/g, "_NORMALIZED_TIMESTAMP");
+      }
+    }
+    if (normalized.document) {
+      normalized.document = { ...normalized.document, id: BLANK_UUID };
+    }
+    if (normalized.documentType) {
+      normalized.documentType = { ...normalized.documentType, id: BLANK_UUID };
+    }
+    if (normalized.mediaType) {
+      normalized.mediaType = { ...normalized.mediaType, id: BLANK_UUID };
+    }
+    if (normalized.user) {
+      normalized.user = { ...normalized.user, id: BLANK_UUID };
+    }
+    if (normalized.ancestors && Array.isArray(normalized.ancestors)) {
+      normalized.ancestors = normalized.ancestors.map((ancestor: any) => ({
+        ...ancestor,
+        id: BLANK_UUID
+      }));
+    }
+    if (normalized.createDate) {
+      normalized.createDate = "NORMALIZED_DATE";
+    }
+    if (normalized.publishDate) {
+      normalized.publishDate = "NORMALIZED_DATE";
+    }
+    if (normalized.updateDate) {
+      normalized.updateDate = "NORMALIZED_DATE";
+    }
+    if (normalized.versionDate) {
+      normalized.versionDate = "NORMALIZED_DATE";
+    }
+    if (normalized.lastLoginDate) {
+      normalized.lastLoginDate = "NORMALIZED_DATE";
+    }
+    if (normalized.lastPasswordChangeDate) {
+      normalized.lastPasswordChangeDate = "NORMALIZED_DATE";
+    }
+    if (normalized.lastLockoutDate) {
+      normalized.lastLockoutDate = "NORMALIZED_DATE";
+    }
+    if (normalized.variants && Array.isArray(normalized.variants)) {
+      normalized.variants = normalized.variants.map((variant: any) => {
+        const normalizedVariant = { ...variant };
+        if (normalizedVariant.createDate) normalizedVariant.createDate = "NORMALIZED_DATE";
+        if (normalizedVariant.publishDate) normalizedVariant.publishDate = "NORMALIZED_DATE";
+        if (normalizedVariant.updateDate) normalizedVariant.updateDate = "NORMALIZED_DATE";
+        if (normalizedVariant.versionDate) normalizedVariant.versionDate = "NORMALIZED_DATE";
+        return normalizedVariant;
+      });
+    }
+    if (normalized.name && typeof normalized.name === "string") {
+      normalized.name = normalized.name.replace(/_\d{13}(?=_|\.js$|$)/, "_NORMALIZED_TIMESTAMP");
+    }
+    if (normalized.path && typeof normalized.path === "string") {
+      normalized.path = normalized.path.replace(/_\d{13}(?=_|\.js$|\/|$)/g, "_NORMALIZED_TIMESTAMP");
+    }
+    if (normalized.email && typeof normalized.email === "string") {
+      normalized.email = normalized.email.replace(/-\d+@/, "-NORMALIZED@");
+    }
+    if (normalized.userName && typeof normalized.userName === "string") {
+      normalized.userName = normalized.userName.replace(/-\d+@/, "-NORMALIZED@");
+    }
+    if (normalized.avatarUrls && Array.isArray(normalized.avatarUrls)) {
+      normalized.avatarUrls = normalized.avatarUrls.map((url: string) =>
+        url.replace(/\/[a-f0-9]{40}\.jpg/, "/NORMALIZED_AVATAR.jpg")
+      );
+    }
+    if (normalized.urlInfos && Array.isArray(normalized.urlInfos)) {
+      normalized.urlInfos = normalized.urlInfos.map((urlInfo: any) => ({
+        ...urlInfo,
+        url: urlInfo.url ? urlInfo.url.replace(/\/media\/[a-z0-9]+\//i, "/media/NORMALIZED_PATH/") : urlInfo.url
+      }));
+    }
+    // Handle nested items arrays (for list responses)
+    if (normalized.items && Array.isArray(normalized.items)) {
+      normalized.items = normalized.items.map((item: any) => normalizeStructuredContent(item));
+    }
+    
+    return normalized;
+  }
+
+  return content;
+}
+
 export function createSnapshotResult(result: any, idToReplace?: string) {
+  // Handle structuredContent (new format) - normalize it directly
+  if (result?.structuredContent !== undefined) {
+    const normalized = { ...result };
+    if (idToReplace) {
+      // For single item responses with specific ID to normalize
+      if (typeof normalized.structuredContent === 'object' && normalized.structuredContent !== null) {
+        normalized.structuredContent = normalizeStructuredContent(normalized.structuredContent, idToReplace);
+      }
+    } else {
+      // For list/array responses - normalize all items
+      normalized.structuredContent = normalizeStructuredContent(normalized.structuredContent);
+    }
+    return normalized;
+  }
+
+  // Legacy format: handle content[0].text with JSON strings
   if (!result?.content) {
+    return result;
+  }
+
+  // Handle void operation results with empty content
+  // These have content: [{ type: "text", text: "" }] and no structuredContent
+  if (result.content.length === 1 &&
+      result.content[0].type === "text" &&
+      result.content[0].text === "") {
     return result;
   }
 

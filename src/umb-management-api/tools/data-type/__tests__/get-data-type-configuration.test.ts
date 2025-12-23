@@ -1,7 +1,7 @@
 import GetDataTypeConfigurationTool from "../get/get-data-type-configuration.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
-import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, getStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-data-type-configuration", () => {
   let originalConsoleError: typeof console.error;
@@ -23,8 +23,8 @@ describe("get-data-type-configuration", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify expected properties exist
-    const parsed = JSON.parse(getResultText(result));
+    // Verify expected properties exist - now returns structuredContent
+    const parsed = getStructuredContent(result) as any;
     expect(parsed).toHaveProperty("canBeChanged");
     expect(parsed).toHaveProperty("documentListViewId");
     expect(parsed).toHaveProperty("mediaListViewId");

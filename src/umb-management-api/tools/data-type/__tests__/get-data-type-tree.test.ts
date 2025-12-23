@@ -8,7 +8,7 @@ import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { DataTypeTreeItemResponseModel } from "@/umb-management-api/schemas/dataTypeTreeItemResponseModel.js";
-import { createMockRequestHandlerExtra, createToolParams, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("data-type-tree", () => {
   const TEST_ROOT_NAME = "_Test Root DataType";
@@ -46,10 +46,7 @@ describe("data-type-tree", () => {
         .create();
 
       const result = await GetDataTypeChildrenTool.handler(
-        createToolParams({
-          take: 100,
-          parentId: folderBuilder.getId(),
-        }),
+        { take: 100, parentId: folderBuilder.getId() } as any,
         createMockRequestHandlerExtra()
       );
 
@@ -60,10 +57,7 @@ describe("data-type-tree", () => {
 
     it("should handle non-existent parent", async () => {
       const result = await GetDataTypeChildrenTool.handler(
-        createToolParams({
-          take: 100,
-          parentId: BLANK_UUID,
-        }),
+        { take: 100, parentId: BLANK_UUID } as any,
         createMockRequestHandlerExtra()
       );
 
@@ -135,8 +129,7 @@ describe("data-type-tree", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Parse the response
-      const items = JSON.parse(getResultText(result) ?? "[]") as DataTypeTreeItemResponseModel[];
+      const items: DataTypeTreeItemResponseModel[] = result.structuredContent as any;
 
       // Verify our test structure exists
       const rootFolder = items.find(item => item.name === TEST_FOLDER_NAME);
