@@ -62,18 +62,22 @@ describe("move-data-type", () => {
       .withTextbox()
       .create();
 
+    // Use a random UUID that definitely doesn't exist
+    // Note: BLANK_UUID (all zeros) has special meaning in Umbraco - it means "root"
+    const NON_EXISTENT_FOLDER_ID = "12345678-1234-1234-1234-123456789abc";
+
     // Act - Try to move to non-existent folder
     const result = await MoveDataTypeTool.handler(
       {
         id: builder.getId(),
         body: {
-          target: { id: BLANK_UUID },
+          target: { id: NON_EXISTENT_FOLDER_ID },
         },
       },
       createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify the error response
+    // Assert - API returns 404 ParentNotFound error
     validateErrorResult(result);
     expect(result).toMatchSnapshot();
   });

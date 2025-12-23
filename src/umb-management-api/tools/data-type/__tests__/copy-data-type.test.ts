@@ -4,9 +4,7 @@ import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateErrorResult, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { getDataTypeByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { createMockRequestHandlerExtra, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType Copy";
 const TEST_DATATYPE_COPY_NAME = "_Test DataType Copy (copy)";
@@ -50,9 +48,9 @@ describe("copy-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify the handler response
-    validateStructuredContent(result, getDataTypeByIdResponse);
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    // Assert - Verify the handler response (void operation, no structured content)
+    expect(result.isError).toBeFalsy();
+    expect(result).toMatchSnapshot();
 
     // Assert - Verify the data type was copied to the folder
     const copiedDataType = await DataTypeTestHelper.findDataType(
@@ -80,9 +78,9 @@ describe("copy-data-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify the handler response
-    validateStructuredContent(result, getDataTypeByIdResponse);
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    // Assert - Verify the handler response (void operation, no structured content)
+    expect(result.isError).toBeFalsy();
+    expect(result).toMatchSnapshot();
 
     // Assert - Verify the data type was copied to root
     const copiedDataType = await DataTypeTestHelper.findDataType(

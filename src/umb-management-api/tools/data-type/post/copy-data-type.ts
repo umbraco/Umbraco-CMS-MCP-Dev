@@ -2,11 +2,10 @@ import { CopyDataTypeRequestModel } from "@/umb-management-api/schemas/index.js"
 import {
   postDataTypeByIdCopyParams,
   postDataTypeByIdCopyBody,
-  getDataTypeByIdResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const copyDataTypeSchema = {
   id: postDataTypeByIdCopyParams.shape.id,
@@ -15,15 +14,15 @@ const copyDataTypeSchema = {
 
 const CopyDataTypeTool = {
   name: "copy-data-type",
-  description: "Copy a data type by Id",
+  description: "Copy a data type by Id. Returns 201 Created on success.",
   inputSchema: copyDataTypeSchema,
-  outputSchema: getDataTypeByIdResponse,
   slices: ['copy'],
   handler: (async ({ id, body }: { id: string; body: CopyDataTypeRequestModel }) => {
-    return executeGetApiCall((client) => 
+    // Copy endpoint returns 201 with Location header, not a response body
+    return executeVoidApiCall((client) =>
       client.postDataTypeByIdCopy(id, body, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof copyDataTypeSchema, typeof getDataTypeByIdResponse>;
+} satisfies ToolDefinition<typeof copyDataTypeSchema>;
 
 export default withStandardDecorators(CopyDataTypeTool);

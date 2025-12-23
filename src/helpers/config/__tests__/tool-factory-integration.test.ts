@@ -107,7 +107,7 @@ describe('UmbracoToolFactory Integration', () => {
     expect(mockServer.registerTool).toHaveBeenCalled();
     
     // Check that tools from enabled collections were loaded
-    const toolCalls = mockServer.registerTool.mock.calls.map(call => call[0]);
+    const toolCalls = mockServer.registerTool.mock.calls.map(call => call[0] as string);
     const hasCultureTools = toolCalls.some(name => name.includes('culture'));
     const hasDataTypeTools = toolCalls.some(name => name.includes('data-type'));
     

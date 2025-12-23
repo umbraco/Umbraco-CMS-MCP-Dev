@@ -15,12 +15,14 @@ exports[`move-data-type should handle moving non-existent data type 1`] = `
 
 exports[`move-data-type should handle moving to non-existent folder 1`] = `
 {
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "ParentNotFound",
+    "status": 404,
+    "title": "The targeted parent for the data type operation was not found.",
+    "type": "Error",
+  },
 }
 `;
 
