@@ -1,17 +1,21 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 
-const getAllDataTypesOutputSchema = z.array(z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  children: z.array(z.object({
+// MCP SDK's structuredContent only supports object schemas, not arrays
+// Wrap array results in an object with 'items' property
+const getAllDataTypesOutputSchema = z.object({
+  items: z.array(z.object({
     id: z.string().uuid(),
     name: z.string(),
-  })),
-}));
+    // children may be undefined for leaf items
+    children: z.array(z.object({
+      id: z.string().uuid(),
+      name: z.string(),
+    })).optional(),
+  }))
+});
 
 const GetAllDataTypesTool = {
   name: "get-all-data-types",
@@ -58,9 +62,9 @@ const GetAllDataTypesTool = {
 
     await getChildrenForItems(rootResponse.items);
 
-    return createToolResult(
-      allItems
-    );
+    return createToolResult({
+      items: allItems
+    });
   }),
 } satisfies ToolDefinition<{}, typeof getAllDataTypesOutputSchema>;
 

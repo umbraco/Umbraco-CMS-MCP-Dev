@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate-document-type should handle invalid document type model 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "errors": [
+      {
+        "$.icon": [
+          "The Icon field is required.",
+        ],
+      },
+      {
+        "$.name": [
+          "The Name field is required.",
+        ],
+      },
+      {
+        "$.alias": [
+          "The Alias field is required.",
+        ],
+      },
+    ],
+    "status": 400,
+    "title": "One or more validation errors occurred.",
+    "traceId": "normalized-trace-id",
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  },
+}
+`;
+
+exports[`validate-document-type should validate a valid document type 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

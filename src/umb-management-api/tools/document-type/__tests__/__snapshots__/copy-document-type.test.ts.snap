@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`copy-document-type should copy a document type to a folder 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`copy-document-type should copy a document type to root 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`copy-document-type should handle non-existent document type 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "The specified document type was not found",
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not Found",
+    "type": "Error",
+  },
+}
+`;

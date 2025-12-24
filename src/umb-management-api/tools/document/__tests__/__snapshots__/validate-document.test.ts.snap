@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validate-document should handle invalid document model 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "errors": [
+      {
+        "$.$": [
+          "JSON deserialization for type 'Umbraco.Cms.Api.Management.ViewModels.Document.CreateDocumentRequestModel' was missing required properties including: 'documentType'.",
+        ],
+      },
+      {
+        "$.requestModel": [
+          "The requestModel field is required.",
+        ],
+      },
+    ],
+    "status": 400,
+    "title": "One or more validation errors occurred.",
+    "traceId": "normalized-trace-id",
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  },
+}
+`;
+
+exports[`validate-document should validate a valid document 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

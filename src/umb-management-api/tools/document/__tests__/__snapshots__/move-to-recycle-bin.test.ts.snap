@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`move-document-to-recycle-bin should handle moving a non-existent document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The content could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`move-document-to-recycle-bin should move a document to the recycle bin 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

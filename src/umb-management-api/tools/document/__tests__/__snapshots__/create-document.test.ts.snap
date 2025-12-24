@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-document should create a document 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document created successfully",
+  },
+}
+`;
+
+exports[`create-document should create a document 2`] = `
+{
+  "ancestors": [],
+  "createDate": "NORMALIZED_DATE",
+  "documentType": {
+    "collection": null,
+    "icon": "icon-home color-blue",
+    "id": "a95360e8-ff04-40b1-8f46-7aa4b5983096",
+  },
+  "flags": [],
+  "hasChildren": false,
+  "id": "00000000-0000-0000-0000-000000000000",
+  "isProtected": false,
+  "isTrashed": false,
+  "noAccess": false,
+  "parent": null,
+  "variants": [
+    {
+      "culture": null,
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "_Test Document Created",
+      "state": "Draft",
+    },
+  ],
+}
+`;
+
+exports[`create-document should create a document with additional properties 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document created successfully",
+  },
+}
+`;
+
+exports[`create-document should create a document with additional properties 2`] = `
+{
+  "ancestors": [],
+  "createDate": "NORMALIZED_DATE",
+  "documentType": {
+    "collection": null,
+    "icon": "icon-home color-blue",
+    "id": "a95360e8-ff04-40b1-8f46-7aa4b5983096",
+  },
+  "flags": [],
+  "hasChildren": false,
+  "id": "00000000-0000-0000-0000-000000000000",
+  "isProtected": false,
+  "isTrashed": false,
+  "noAccess": false,
+  "parent": null,
+  "variants": [
+    {
+      "culture": null,
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "_Test Document Created",
+      "state": "Draft",
+    },
+  ],
+}
+`;
+
+exports[`create-document should create a document with empty cultures array (null culture) 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document created successfully",
+  },
+}
+`;
+
+exports[`create-document should create a document with specific cultures 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document created successfully",
+  },
+}
+`;

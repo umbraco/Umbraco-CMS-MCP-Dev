@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-type-allowed-at-root should get document types allowed at root 1`] = `
+{
+  "description": null,
+  "icon": "icon-document",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "name": "_Test DocumentType Root",
+}
+`;

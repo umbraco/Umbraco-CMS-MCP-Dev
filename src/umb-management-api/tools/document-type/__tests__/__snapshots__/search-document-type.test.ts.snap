@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`search-document-type should handle empty search results 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
+}
+`;
+
+exports[`search-document-type should handle pagination 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "description": null,
+        "flags": [],
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "name": "_Test DocumentType Search 2",
+      },
+    ],
+    "total": 2,
+  },
+}
+`;
+
+exports[`search-document-type should search for document types 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "description": null,
+        "flags": [],
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "name": "_Test DocumentType Search",
+      },
+      {
+        "description": null,
+        "flags": [],
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "name": "_Test DocumentType Search 2",
+      },
+    ],
+    "total": 2,
+  },
+}
+`;

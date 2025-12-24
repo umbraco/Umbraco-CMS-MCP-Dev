@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentBuilder should set domains for a document using setDomains 1`] = `
+{
+  "defaultIsoCode": null,
+  "domains": [
+    {
+      "domainName": "example.com",
+      "isoCode": "en-US",
+    },
+  ],
+}
+`;
+
+exports[`DocumentBuilder should set public access for a document using setPublicAccess 1`] = `
+{
+  "errorDocument": {
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+  "groups": [
+    {
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "_Test Builder PublicAccess MemberGroup",
+    },
+  ],
+  "loginDocument": {
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+  "members": [],
+}
+`;

@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`move-document-type should handle moving non-existent document type 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "The specified document type was not found",
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not Found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`move-document-type should handle moving to non-existent folder 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "The specified container was not found",
+    "operationStatus": "ContainerNotFound",
+    "status": 404,
+    "title": "Container not found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`move-document-type should move a document type 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

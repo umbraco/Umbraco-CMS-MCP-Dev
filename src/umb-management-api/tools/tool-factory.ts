@@ -2,6 +2,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 // Import collections (new format)
 import { DataTypeCollection } from "./data-type/index.js";
+import { DocumentCollection } from "./document/index.js";
+import { DocumentTypeCollection } from "./document-type/index.js";
 
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition, ToolSliceName } from "types/tool-definition.js";
@@ -43,6 +45,8 @@ function isToolAllowedByExplicitSlices(
 // Available collections (converted to new format)
 const availableCollections: ToolCollectionExport[] = [
   DataTypeCollection,
+  DocumentCollection,
+  DocumentTypeCollection,
 ];
 
 // Enhanced mapTools with collection filtering, slice filtering, and readonly support

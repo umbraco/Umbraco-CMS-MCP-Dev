@@ -378,6 +378,21 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
 }
 
 export function normalizeErrorResponse(result: CallToolResult): CallToolResult {
+  // Handle structuredContent (new format)
+  if (result.structuredContent && typeof result.structuredContent === 'object') {
+    const normalized = { ...result };
+    const content = normalized.structuredContent as any;
+    // Normalize traceId in structured content
+    if (content.traceId && typeof content.traceId === 'string') {
+      content.traceId = content.traceId.replace(
+        /00-[0-9a-f]{32}-[0-9a-f]{16}-00/g,
+        "normalized-trace-id"
+      );
+    }
+    return normalized;
+  }
+
+  // Handle legacy content[0].text format
   if (Array.isArray(result.content) && result.content[0]) {
     const firstContent = result.content[0];
     if (firstContent.type === "text" && typeof firstContent.text === "string") {

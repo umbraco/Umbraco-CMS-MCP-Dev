@@ -631,12 +631,12 @@ export const getDocumentBlueprintByIdResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true}),
   "state": zod.enum(['NotCreated', 'Draft', 'Published', 'PublishedPendingChanges', 'Trashed']),
-  "publishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledPublishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledUnpublishDate": zod.string().datetime({"local":true}).nullish(),
+  "publishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledPublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledUnpublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -707,12 +707,12 @@ export const getDocumentBlueprintByIdScaffoldResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true}),
   "state": zod.enum(['NotCreated', 'Draft', 'Published', 'PublishedPendingChanges', 'Trashed']),
-  "publishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledPublishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledUnpublishDate": zod.string().datetime({"local":true}).nullish(),
+  "publishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledPublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledUnpublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -1503,7 +1503,7 @@ export const getDocumentVersionResponse = zod.object({
   "user": zod.object({
   "id": zod.string().uuid()
 }),
-  "versionDate": zod.string().datetime({"local":true}),
+  "versionDate": zod.string().datetime({"local":true,"offset":true}),
   "isCurrentPublishedVersion": zod.boolean(),
   "isCurrentDraftVersion": zod.boolean(),
   "preventCleanup": zod.boolean()
@@ -1527,12 +1527,12 @@ export const getDocumentVersionByIdResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true}),
   "state": zod.enum(['NotCreated', 'Draft', 'Published', 'PublishedPendingChanges', 'Trashed']),
-  "publishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledPublishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledUnpublishDate": zod.string().datetime({"local":true}).nullish(),
+  "publishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledPublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledUnpublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -1603,12 +1603,12 @@ export const getCollectionDocumentByIdResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true}),
   "state": zod.enum(['NotCreated', 'Draft', 'Published', 'PublishedPendingChanges', 'Trashed']),
-  "publishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledPublishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledUnpublishDate": zod.string().datetime({"local":true}).nullish(),
+  "publishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledPublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledUnpublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -1679,12 +1679,12 @@ export const getDocumentByIdResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true}),
   "state": zod.enum(['NotCreated', 'Draft', 'Published', 'PublishedPendingChanges', 'Trashed']),
-  "publishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledPublishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledUnpublishDate": zod.string().datetime({"local":true}).nullish(),
+  "publishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledPublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledUnpublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -1743,7 +1743,7 @@ export const getDocumentByIdAuditLogQuerySkipDefault = 0;export const getDocumen
 
 export const getDocumentByIdAuditLogQueryParams = zod.object({
   "orderDirection": zod.enum(['Ascending', 'Descending']).optional(),
-  "sinceDate": zod.string().datetime({"local":true}).optional(),
+  "sinceDate": zod.string().datetime({"local":true,"offset":true}).optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getDocumentByIdAuditLogQueryTakeDefault)
 })
@@ -1754,7 +1754,7 @@ export const getDocumentByIdAuditLogResponse = zod.object({
   "user": zod.object({
   "id": zod.string().uuid()
 }),
-  "timestamp": zod.string().datetime({"local":true}),
+  "timestamp": zod.string().datetime({"local":true,"offset":true}),
   "logType": zod.enum(['New', 'Save', 'SaveVariant', 'Open', 'Delete', 'Publish', 'PublishVariant', 'SendToPublish', 'SendToPublishVariant', 'Unpublish', 'UnpublishVariant', 'Move', 'Copy', 'AssignDomain', 'PublicAccess', 'Sort', 'Notify', 'System', 'RollBack', 'PackagerInstall', 'PackagerUninstall', 'Custom', 'ContentVersionPreventCleanup', 'ContentVersionEnableCleanup']),
   "comment": zod.string().nullish(),
   "parameters": zod.string().nullish()
@@ -1964,8 +1964,8 @@ export const putDocumentByIdPublishBody = zod.object({
   "publishSchedules": zod.array(zod.object({
   "culture": zod.string().nullish(),
   "schedule": zod.object({
-  "publishTime": zod.string().datetime({"local":true}).nullish(),
-  "unpublishTime": zod.string().datetime({"local":true}).nullish()
+  "publishTime": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "unpublishTime": zod.string().datetime({"local":true,"offset":true}).nullish()
 }).nullish()
 }))
 })
@@ -2013,12 +2013,12 @@ export const getDocumentByIdPublishedResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true}),
   "state": zod.enum(['NotCreated', 'Draft', 'Published', 'PublishedPendingChanges', 'Trashed']),
-  "publishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledPublishDate": zod.string().datetime({"local":true}).nullish(),
-  "scheduledUnpublishDate": zod.string().datetime({"local":true}).nullish(),
+  "publishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledPublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "scheduledUnpublishDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -2383,7 +2383,7 @@ export const getRecycleBinDocumentChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
   "id": zod.string().uuid()
@@ -2511,7 +2511,7 @@ export const getRecycleBinDocumentRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
   "id": zod.string().uuid()
@@ -2548,7 +2548,7 @@ export const getRecycleBinDocumentSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
   "id": zod.string().uuid()
@@ -2588,7 +2588,7 @@ export const getTreeDocumentAncestorsResponseItem = zod.object({
 })),
   "noAccess": zod.boolean(),
   "isTrashed": zod.boolean(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "isProtected": zod.boolean(),
   "ancestors": zod.array(zod.object({
   "id": zod.string().uuid()
@@ -2635,7 +2635,7 @@ export const getTreeDocumentChildrenResponse = zod.object({
 })),
   "noAccess": zod.boolean(),
   "isTrashed": zod.boolean(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "isProtected": zod.boolean(),
   "ancestors": zod.array(zod.object({
   "id": zod.string().uuid()
@@ -2681,7 +2681,7 @@ export const getTreeDocumentRootResponse = zod.object({
 })),
   "noAccess": zod.boolean(),
   "isTrashed": zod.boolean(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "isProtected": zod.boolean(),
   "ancestors": zod.array(zod.object({
   "id": zod.string().uuid()
@@ -2727,7 +2727,7 @@ export const getTreeDocumentSiblingsResponse = zod.object({
 })),
   "noAccess": zod.boolean(),
   "isTrashed": zod.boolean(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "isProtected": zod.boolean(),
   "ancestors": zod.array(zod.object({
   "id": zod.string().uuid()
@@ -3133,8 +3133,8 @@ export const getLogViewerLevelResponse = zod.object({
 
 
 export const getLogViewerLevelCountQueryParams = zod.object({
-  "startDate": zod.string().datetime({"local":true}).optional(),
-  "endDate": zod.string().datetime({"local":true}).optional()
+  "startDate": zod.string().datetime({"local":true,"offset":true}).optional(),
+  "endDate": zod.string().datetime({"local":true,"offset":true}).optional()
 })
 
 export const getLogViewerLevelCountResponse = zod.object({
@@ -3154,14 +3154,14 @@ export const getLogViewerLogQueryParams = zod.object({
   "orderDirection": zod.enum(['Ascending', 'Descending']).optional(),
   "filterExpression": zod.string().optional(),
   "logLevel": zod.array(zod.enum(['Verbose', 'Debug', 'Information', 'Warning', 'Error', 'Fatal'])).optional(),
-  "startDate": zod.string().datetime({"local":true}).optional(),
-  "endDate": zod.string().datetime({"local":true}).optional()
+  "startDate": zod.string().datetime({"local":true,"offset":true}).optional(),
+  "endDate": zod.string().datetime({"local":true,"offset":true}).optional()
 })
 
 export const getLogViewerLogResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "timestamp": zod.string().datetime({"local":true}),
+  "timestamp": zod.string().datetime({"local":true,"offset":true}),
   "level": zod.enum(['Verbose', 'Debug', 'Information', 'Warning', 'Error', 'Fatal']),
   "messageTemplate": zod.string().nullish(),
   "renderedMessage": zod.string().nullish(),
@@ -3179,8 +3179,8 @@ export const getLogViewerMessageTemplateQuerySkipDefault = 0;export const getLog
 export const getLogViewerMessageTemplateQueryParams = zod.object({
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getLogViewerMessageTemplateQueryTakeDefault),
-  "startDate": zod.string().datetime({"local":true}).optional(),
-  "endDate": zod.string().datetime({"local":true}).optional()
+  "startDate": zod.string().datetime({"local":true,"offset":true}).optional(),
+  "endDate": zod.string().datetime({"local":true,"offset":true}).optional()
 })
 
 export const getLogViewerMessageTemplateResponse = zod.object({
@@ -3230,8 +3230,8 @@ export const deleteLogViewerSavedSearchByNameParams = zod.object({
 
 
 export const getLogViewerValidateLogsSizeQueryParams = zod.object({
-  "startDate": zod.string().datetime({"local":true}).optional(),
-  "endDate": zod.string().datetime({"local":true}).optional()
+  "startDate": zod.string().datetime({"local":true,"offset":true}).optional(),
+  "endDate": zod.string().datetime({"local":true,"offset":true}).optional()
 })
 
 
@@ -3824,8 +3824,8 @@ export const getCollectionMediaResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true})
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true})
 })),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
@@ -3952,8 +3952,8 @@ export const getMediaByIdResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true})
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true})
 })),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
@@ -4002,7 +4002,7 @@ export const getMediaByIdAuditLogQuerySkipDefault = 0;export const getMediaByIdA
 
 export const getMediaByIdAuditLogQueryParams = zod.object({
   "orderDirection": zod.enum(['Ascending', 'Descending']).optional(),
-  "sinceDate": zod.string().datetime({"local":true}).optional(),
+  "sinceDate": zod.string().datetime({"local":true,"offset":true}).optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getMediaByIdAuditLogQueryTakeDefault)
 })
@@ -4013,7 +4013,7 @@ export const getMediaByIdAuditLogResponse = zod.object({
   "user": zod.object({
   "id": zod.string().uuid()
 }),
-  "timestamp": zod.string().datetime({"local":true}),
+  "timestamp": zod.string().datetime({"local":true,"offset":true}),
   "logType": zod.enum(['New', 'Save', 'SaveVariant', 'Open', 'Delete', 'Publish', 'PublishVariant', 'SendToPublish', 'SendToPublishVariant', 'Unpublish', 'UnpublishVariant', 'Move', 'Copy', 'AssignDomain', 'PublicAccess', 'Sort', 'Notify', 'System', 'RollBack', 'PackagerInstall', 'PackagerUninstall', 'Custom', 'ContentVersionPreventCleanup', 'ContentVersionEnableCleanup']),
   "comment": zod.string().nullish(),
   "parameters": zod.string().nullish()
@@ -4280,7 +4280,7 @@ export const getRecycleBinMediaChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
   "id": zod.string().uuid()
@@ -4403,7 +4403,7 @@ export const getRecycleBinMediaRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
   "id": zod.string().uuid()
@@ -4435,7 +4435,7 @@ export const getRecycleBinMediaSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "id": zod.string().uuid(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
   "id": zod.string().uuid()
@@ -4470,7 +4470,7 @@ export const getTreeMediaAncestorsResponseItem = zod.object({
 })),
   "noAccess": zod.boolean(),
   "isTrashed": zod.boolean(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "mediaType": zod.object({
   "id": zod.string().uuid(),
   "icon": zod.string(),
@@ -4508,7 +4508,7 @@ export const getTreeMediaChildrenResponse = zod.object({
 })),
   "noAccess": zod.boolean(),
   "isTrashed": zod.boolean(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "mediaType": zod.object({
   "id": zod.string().uuid(),
   "icon": zod.string(),
@@ -4545,7 +4545,7 @@ export const getTreeMediaRootResponse = zod.object({
 })),
   "noAccess": zod.boolean(),
   "isTrashed": zod.boolean(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "mediaType": zod.object({
   "id": zod.string().uuid(),
   "icon": zod.string(),
@@ -4582,7 +4582,7 @@ export const getTreeMediaSiblingsResponse = zod.object({
 })),
   "noAccess": zod.boolean(),
   "isTrashed": zod.boolean(),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "mediaType": zod.object({
   "id": zod.string().uuid(),
   "icon": zod.string(),
@@ -5060,8 +5060,8 @@ export const getFilterMemberResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true})
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true})
 })),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
@@ -5080,9 +5080,9 @@ export const getFilterMemberResponse = zod.object({
   "isLockedOut": zod.boolean(),
   "isTwoFactorEnabled": zod.boolean(),
   "failedPasswordAttempts": zod.number(),
-  "lastLoginDate": zod.string().datetime({"local":true}).nullish(),
-  "lastLockoutDate": zod.string().datetime({"local":true}).nullish(),
-  "lastPasswordChangeDate": zod.string().datetime({"local":true}).nullish(),
+  "lastLoginDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastLockoutDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastPasswordChangeDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "groups": zod.array(zod.string().uuid()),
   "kind": zod.enum(['Default', 'Api'])
 }))
@@ -5186,8 +5186,8 @@ export const getMemberByIdResponse = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true})
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true})
 })),
   "id": zod.string().uuid(),
   "flags": zod.array(zod.object({
@@ -5206,9 +5206,9 @@ export const getMemberByIdResponse = zod.object({
   "isLockedOut": zod.boolean(),
   "isTwoFactorEnabled": zod.boolean(),
   "failedPasswordAttempts": zod.number(),
-  "lastLoginDate": zod.string().datetime({"local":true}).nullish(),
-  "lastLockoutDate": zod.string().datetime({"local":true}).nullish(),
-  "lastPasswordChangeDate": zod.string().datetime({"local":true}).nullish(),
+  "lastLoginDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastLockoutDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastPasswordChangeDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "groups": zod.array(zod.string().uuid()),
   "kind": zod.enum(['Default', 'Api'])
 })
@@ -5854,7 +5854,7 @@ export const getRedirectManagementResponse = zod.object({
   "id": zod.string().uuid(),
   "originalUrl": zod.string(),
   "destinationUrl": zod.string(),
-  "created": zod.string().datetime({"local":true}),
+  "created": zod.string().datetime({"local":true,"offset":true}),
   "document": zod.object({
   "id": zod.string().uuid()
 }),
@@ -5880,7 +5880,7 @@ export const getRedirectManagementByIdResponse = zod.object({
   "id": zod.string().uuid(),
   "originalUrl": zod.string(),
   "destinationUrl": zod.string(),
-  "created": zod.string().datetime({"local":true}),
+  "created": zod.string().datetime({"local":true,"offset":true}),
   "document": zod.object({
   "id": zod.string().uuid()
 }),
@@ -5994,7 +5994,7 @@ export const getRelationByRelationTypeIdResponse = zod.object({
   "id": zod.string().uuid(),
   "name": zod.string().nullish()
 }),
-  "createDate": zod.string().datetime({"local":true}),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
   "comment": zod.string().nullish()
 }))
 })
@@ -7176,11 +7176,11 @@ export const getFilterUserResponse = zod.object({
   "avatarUrls": zod.array(zod.string()),
   "state": zod.enum(['Active', 'Disabled', 'LockedOut', 'Invited', 'Inactive', 'All']),
   "failedLoginAttempts": zod.number(),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true}),
-  "lastLoginDate": zod.string().datetime({"local":true}).nullish(),
-  "lastLockoutDate": zod.string().datetime({"local":true}).nullish(),
-  "lastPasswordChangeDate": zod.string().datetime({"local":true}).nullish(),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true}),
+  "lastLoginDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastLockoutDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastPasswordChangeDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "isAdmin": zod.boolean(),
   "kind": zod.enum(['Default', 'Api'])
 }))
@@ -7251,11 +7251,11 @@ export const getUserResponse = zod.object({
   "avatarUrls": zod.array(zod.string()),
   "state": zod.enum(['Active', 'Disabled', 'LockedOut', 'Invited', 'Inactive', 'All']),
   "failedLoginAttempts": zod.number(),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true}),
-  "lastLoginDate": zod.string().datetime({"local":true}).nullish(),
-  "lastLockoutDate": zod.string().datetime({"local":true}).nullish(),
-  "lastPasswordChangeDate": zod.string().datetime({"local":true}).nullish(),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true}),
+  "lastLoginDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastLockoutDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastPasswordChangeDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "isAdmin": zod.boolean(),
   "kind": zod.enum(['Default', 'Api'])
 }))
@@ -7286,11 +7286,11 @@ export const getUserByIdResponse = zod.object({
   "avatarUrls": zod.array(zod.string()),
   "state": zod.enum(['Active', 'Disabled', 'LockedOut', 'Invited', 'Inactive', 'All']),
   "failedLoginAttempts": zod.number(),
-  "createDate": zod.string().datetime({"local":true}),
-  "updateDate": zod.string().datetime({"local":true}),
-  "lastLoginDate": zod.string().datetime({"local":true}).nullish(),
-  "lastLockoutDate": zod.string().datetime({"local":true}).nullish(),
-  "lastPasswordChangeDate": zod.string().datetime({"local":true}).nullish(),
+  "createDate": zod.string().datetime({"local":true,"offset":true}),
+  "updateDate": zod.string().datetime({"local":true,"offset":true}),
+  "lastLoginDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastLockoutDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
+  "lastPasswordChangeDate": zod.string().datetime({"local":true,"offset":true}).nullish(),
   "isAdmin": zod.boolean(),
   "kind": zod.enum(['Default', 'Api'])
 })
@@ -7782,7 +7782,7 @@ export const getWebhookByIdLogsResponse = zod.object({
   "webhookKey": zod.string().uuid(),
   "statusCode": zod.string(),
   "isSuccessStatusCode": zod.boolean(),
-  "date": zod.string().datetime({"local":true}),
+  "date": zod.string().datetime({"local":true,"offset":true}),
   "eventAlias": zod.string(),
   "url": zod.string(),
   "retryCount": zod.number(),
@@ -7826,7 +7826,7 @@ export const getWebhookLogsResponse = zod.object({
   "webhookKey": zod.string().uuid(),
   "statusCode": zod.string(),
   "isSuccessStatusCode": zod.boolean(),
-  "date": zod.string().datetime({"local":true}),
+  "date": zod.string().datetime({"local":true,"offset":true}),
   "eventAlias": zod.string(),
   "url": zod.string(),
   "retryCount": zod.number(),

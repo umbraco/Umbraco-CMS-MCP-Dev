@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-recycle-bin-siblings should get sibling documents in recycle bin 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test RecycleBin Sibling 1",
+            "state": "Trashed",
+          },
+        ],
+      },
+      {
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test RecycleBin Sibling 2",
+            "state": "Trashed",
+          },
+        ],
+      },
+      {
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-home color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test RecycleBin Siblings Parent",
+            "state": "Trashed",
+          },
+        ],
+      },
+    ],
+    "totalAfter": 0,
+    "totalBefore": 0,
+  },
+}
+`;
+
+exports[`get-document-recycle-bin-siblings should handle non-existent target in recycle bin 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
+}
+`;

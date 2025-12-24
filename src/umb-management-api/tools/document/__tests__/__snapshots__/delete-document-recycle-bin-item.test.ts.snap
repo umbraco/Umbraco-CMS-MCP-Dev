@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete-document-recycle-bin-item should handle non-existent document in recycle bin 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The content could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`delete-document-recycle-bin-item should permanently delete document from recycle bin 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-type-siblings should get sibling document types 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": false,
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "isFolder": false,
+        "name": "_Test Target DocumentType",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+    "totalAfter": 0,
+    "totalBefore": 2,
+  },
+}
+`;
+
+exports[`get-document-type-siblings should handle non-existent document type 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
+}
+`;

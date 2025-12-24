@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-item-document should get document items by ids 1`] = `
+{
+  "content": [],
+  "structuredContent": [
+    {
+      "documentType": {
+        "collection": null,
+        "icon": "icon-home color-blue",
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+      "flags": [],
+      "hasChildren": false,
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isProtected": false,
+      "isTrashed": false,
+      "parent": null,
+      "variants": [
+        {
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test Document Item 1",
+          "state": "Draft",
+        },
+      ],
+    },
+    {
+      "documentType": {
+        "collection": null,
+        "icon": "icon-home color-blue",
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+      "flags": [],
+      "hasChildren": false,
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isProtected": false,
+      "isTrashed": false,
+      "parent": null,
+      "variants": [
+        {
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test Document Item 2",
+          "state": "Draft",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`get-item-document should handle non-existent document ids 1`] = `
+{
+  "content": [],
+  "structuredContent": [],
+}
+`;

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`restore-document-from-recycle-bin should handle non-existent document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The content could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`restore-document-from-recycle-bin should restore a document from recycle bin 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

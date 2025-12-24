@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-type should get a document type by id 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "alias": "testdocumenttypeget",
+    "allowedAsRoot": false,
+    "allowedDocumentTypes": [],
+    "allowedTemplates": [],
+    "cleanup": {
+      "keepAllVersionsNewerThanDays": null,
+      "keepLatestVersionPerDayForDays": null,
+      "preventCleanup": false,
+    },
+    "collection": null,
+    "compositions": [],
+    "containers": [],
+    "defaultTemplate": null,
+    "description": null,
+    "icon": "icon-document",
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isElement": false,
+    "name": "_Test DocumentType Get",
+    "properties": [],
+    "variesByCulture": false,
+    "variesBySegment": false,
+  },
+}
+`;
+
+exports[`get-document-type should handle non-existent document type 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "The specified document type was not found",
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not Found",
+    "type": "Error",
+  },
+}
+`;

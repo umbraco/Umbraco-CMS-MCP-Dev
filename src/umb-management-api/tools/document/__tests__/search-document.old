@@ -1,0 +1,112 @@
+import SearchDocumentTool from "../get/search-document.js";
+import { DocumentBuilder } from "./helpers/document-builder.js";
+import { DocumentTestHelper } from "./helpers/document-test-helper.js";
+import { jest } from "@jest/globals";
+
+const TEST_DOCUMENT_NAME = "_Test Document Search";
+const TEST_DOCUMENT_NAME_2 = "_Test Document Search 2";
+
+/*This test depends on the Examine index being correct, if it's not they might need rebuilding*/
+
+/*describe("search-document", () => {
+  let originalConsoleError: typeof console.error;
+
+  beforeEach(() => {
+    originalConsoleError = console.error;
+    console.error = jest.fn();
+  });
+
+  afterEach(async () => {
+    console.error = originalConsoleError;
+    // Clean up any test documents
+    await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
+    await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME_2);
+  });
+
+  it("should search for documents", async () => {
+    // Create test documents
+    await new DocumentBuilder()
+      .withName(TEST_DOCUMENT_NAME)
+      .withRootDocumentType()
+      .create();
+
+    await new DocumentBuilder()
+      .withName(TEST_DOCUMENT_NAME_2)
+      .withRootDocumentType()
+      .create();
+
+    // Search for documents
+    const result = await SearchDocumentTool().handler({
+      query: TEST_DOCUMENT_NAME,
+      skip: 0,
+      take: 10
+    }, { signal: new AbortController().signal });
+
+    // Normalize IDs in the response
+    const normalizedResult = {
+      ...result,
+      content: result.content.map(content => {
+        const parsed = JSON.parse(content.text as string);
+        return {
+          ...content,
+          text: JSON.stringify({
+            ...parsed,
+            items: DocumentTestHelper.normaliseIds(parsed.items)
+          })
+        };
+      })
+    };
+
+    // Verify the handler response using snapshot
+    expect(normalizedResult).toMatchSnapshot();
+  });
+
+  it("should handle empty search results", async () => {
+    const result = await SearchDocumentTool().handler({
+      query: "NonExistentDocument",
+      skip: 0,
+      take: 10
+    }, { signal: new AbortController().signal });
+
+    // Verify the handler response using snapshot
+    expect(result).toMatchSnapshot();
+  });
+
+  it("should handle pagination", async () => {
+    // Create test documents
+    await new DocumentBuilder()
+      .withName(TEST_DOCUMENT_NAME)
+      .withRootDocumentType()
+      .create();
+
+    await new DocumentBuilder()
+      .withName(TEST_DOCUMENT_NAME_2)
+      .withRootDocumentType()
+      .create();
+
+    // Search with pagination
+    const result = await SearchDocumentTool().handler({
+      query: TEST_DOCUMENT_NAME,
+      skip: 1,
+      take: 1
+    }, { signal: new AbortController().signal });
+
+    // Normalize IDs in the response
+    const normalizedResult = {
+      ...result,
+      content: result.content.map(content => {
+        const parsed = JSON.parse(content.text as string);
+        return {
+          ...content,
+          text: JSON.stringify({
+            ...parsed,
+            items: DocumentTestHelper.normaliseIds(parsed.items)
+          })
+        };
+      })
+    };
+
+    // Verify the handler response using snapshot
+    expect(normalizedResult).toMatchSnapshot();
+  });
+}); */

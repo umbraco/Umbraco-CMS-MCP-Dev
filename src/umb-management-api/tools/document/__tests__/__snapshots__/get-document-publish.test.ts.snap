@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-publish should get the published state of a published document 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "documentType": {
+      "collection": null,
+      "icon": "icon-home color-blue",
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "flags": [],
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isTrashed": false,
+    "template": null,
+    "values": [],
+    "variants": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "culture": null,
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test GetDocumentPublish",
+        "publishDate": "NORMALIZED_DATE",
+        "scheduledPublishDate": null,
+        "scheduledUnpublishDate": null,
+        "segment": null,
+        "state": "Published",
+        "updateDate": "NORMALIZED_DATE",
+      },
+    ],
+  },
+}
+`;

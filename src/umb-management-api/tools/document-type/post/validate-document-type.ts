@@ -1,0 +1,19 @@
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { postDocumentTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { CreateDocumentTypeRequestModel } from "@/umb-management-api/schemas/index.js";
+
+const ValidateDocumentTypePostTool = {
+  name: "validate-document-type-post",
+  description: "Validates a document type using the Umbraco API (POST, does not persist changes).",
+  inputSchema: postDocumentTypeBody.shape,
+  annotations: { readOnlyHint: true },
+  slices: ['validate'],
+  handler: (async (model: CreateDocumentTypeRequestModel) => {
+    return executeVoidApiCall((client) =>
+      client.postDocumentType(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof postDocumentTypeBody.shape>;
+
+export default withStandardDecorators(ValidateDocumentTypePostTool);

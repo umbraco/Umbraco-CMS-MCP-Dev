@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`publish-document-with-descendants should handle publishing a non-existent document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "cause": undefined,
+    "message": "Request failed with status code 404",
+  },
+}
+`;
+
+exports[`publish-document-with-descendants should publish a document and its descendants 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;

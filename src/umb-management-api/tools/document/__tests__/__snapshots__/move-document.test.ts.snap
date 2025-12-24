@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`move-document should handle moving non-existent document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The content could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`move-document should handle moving to non-existent target 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "ParentNotFound",
+    "status": 404,
+    "title": "The targeted content parent could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`move-document should move a document to another root document 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

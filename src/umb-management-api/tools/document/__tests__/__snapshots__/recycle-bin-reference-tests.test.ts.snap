@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`recycle-bin-reference-tests get-recycle-bin-document-original-parent should get original parent for recycled document 1`] = `
+{
+  "content": [
+    {
+      "text": "null",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`recycle-bin-reference-tests get-recycle-bin-document-original-parent should handle non-existent recycled document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The document could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should get references for recycled document 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
+}
+`;
+
+exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should get references with pagination for recycled document 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
+}
+`;
+
+exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should handle non-existent recycled document 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
+}
+`;

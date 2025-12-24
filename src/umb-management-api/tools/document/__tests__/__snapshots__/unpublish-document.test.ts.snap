@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`unpublish-document should handle unpublishing a non-existent document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "ContentNotFound",
+    "status": 404,
+    "title": "The requested document could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`unpublish-document should unpublish a published document 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

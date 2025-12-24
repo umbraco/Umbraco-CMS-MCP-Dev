@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-siblings should get sibling documents 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "ancestors": [
+          {
+            "id": "00000000-0000-0000-0000-000000000000",
+          },
+        ],
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isProtected": false,
+        "isTrashed": false,
+        "noAccess": false,
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Sibling 1",
+            "state": "Draft",
+          },
+        ],
+      },
+      {
+        "ancestors": [
+          {
+            "id": "00000000-0000-0000-0000-000000000000",
+          },
+        ],
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isProtected": false,
+        "isTrashed": false,
+        "noAccess": false,
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Sibling 2",
+            "state": "Draft",
+          },
+        ],
+      },
+    ],
+    "totalAfter": 0,
+    "totalBefore": 0,
+  },
+}
+`;
+
+exports[`get-document-siblings should handle non-existent target 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
+}
+`;

@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`document-tree ancestors should get ancestor items 1`] = `
+{
+  "content": [],
+  "structuredContent": [
+    {
+      "ancestors": [],
+      "createDate": "NORMALIZED_DATE",
+      "documentType": {
+        "collection": null,
+        "icon": "icon-home color-blue",
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+      "flags": [],
+      "hasChildren": true,
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isProtected": false,
+      "isTrashed": false,
+      "noAccess": false,
+      "parent": null,
+      "variants": [
+        {
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test Root Document",
+          "state": "Draft",
+        },
+      ],
+    },
+    {
+      "ancestors": [
+        {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      ],
+      "createDate": "NORMALIZED_DATE",
+      "documentType": {
+        "collection": null,
+        "icon": "icon-document color-blue",
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+      "flags": [],
+      "hasChildren": false,
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isProtected": false,
+      "isTrashed": false,
+      "noAccess": false,
+      "parent": {
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+      "variants": [
+        {
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test Child Document",
+          "state": "Draft",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`document-tree ancestors should handle non-existent item 1`] = `
+{
+  "content": [],
+  "structuredContent": [],
+}
+`;
+
+exports[`document-tree children should get child items 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "ancestors": [
+          {
+            "id": "00000000-0000-0000-0000-000000000000",
+          },
+        ],
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isProtected": false,
+        "isTrashed": false,
+        "noAccess": false,
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Child Document",
+            "state": "Draft",
+          },
+        ],
+      },
+    ],
+    "total": 1,
+  },
+}
+`;
+
+exports[`document-tree children should handle non-existent parent 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
+}
+`;

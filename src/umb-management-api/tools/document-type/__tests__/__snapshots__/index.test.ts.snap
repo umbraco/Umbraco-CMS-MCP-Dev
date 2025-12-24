@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`document-type-tool-index should have all management tools when user has document types access 1`] = `
+[
+  "get-document-type-by-id",
+  "get-document-type-configuration",
+  "get-document-type-blueprint",
+  "get-document-types-by-id-array",
+  "get-document-type-available-compositions",
+  "get-document-type-composition-references",
+  "update-document-type",
+  "copy-document-type",
+  "move-document-type",
+  "create-document-type",
+  "delete-document-type",
+  "create-element-type",
+  "get-icons",
+  "get-document-type-allowed-children",
+  "get-all-document-types",
+  "create-document-type-folder",
+  "delete-document-type-folder",
+  "get-document-type-folder",
+  "update-document-type-folder",
+  "get-document-type-root",
+  "get-document-type-ancestors",
+  "get-document-type-children",
+  "get-document-type-siblings",
+]
+`;
+
+exports[`document-type-tool-index should have all tools when user has all required access 1`] = `
+[
+  "get-document-type-by-id",
+  "get-document-type-configuration",
+  "get-document-type-blueprint",
+  "get-document-types-by-id-array",
+  "get-document-type-available-compositions",
+  "get-document-type-composition-references",
+  "update-document-type",
+  "copy-document-type",
+  "move-document-type",
+  "create-document-type",
+  "delete-document-type",
+  "create-element-type",
+  "get-icons",
+  "get-document-type-allowed-children",
+  "get-all-document-types",
+  "create-document-type-folder",
+  "delete-document-type-folder",
+  "get-document-type-folder",
+  "update-document-type-folder",
+  "get-document-type-root",
+  "get-document-type-ancestors",
+  "get-document-type-children",
+  "get-document-type-siblings",
+]
+`;
+
+exports[`document-type-tool-index should have basic query tool by default 1`] = `
+[
+  "get-document-type-by-id",
+]
+`;
+
+exports[`document-type-tool-index should have configuration tools when user has documents or document types access 1`] = `
+[
+  "get-document-type-by-id",
+  "get-document-type-configuration",
+  "get-document-type-blueprint",
+  "get-document-types-by-id-array",
+]
+`;
