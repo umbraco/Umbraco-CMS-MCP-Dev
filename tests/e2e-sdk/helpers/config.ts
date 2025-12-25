@@ -22,60 +22,12 @@ export const DEFAULT_MAX_TURNS = 15;
 export const DEFAULT_MAX_BUDGET_USD = 0.50;
 export const DEFAULT_TIMEOUT_MS = 120000;
 
-// Common tool sets for different test scenarios
-export const TOOL_SETS = {
-  dataType: [
-    "create-data-type",
-    "delete-data-type",
-    "get-data-type-root",
-    "get-data-type-property-editor-template",
-    "find-data-type",
-    "move-data-type",
-    "create-data-type-folder",
-    "delete-data-type-folder"
-  ],
-  documentType: [
-    "create-document-type",
-    "delete-document-type",
-    "get-document-type",
-    "get-all-document-types",
-    "get-document-type-configuration"
-  ],
-  document: [
-    "get-document-root",
-    "get-document-by-id",
-    "create-document",
-    "delete-document",
-    "update-document"
-  ],
-  basic: [
-    "get-document-type-configuration",
-    "get-document-root",
-    "get-document-by-id",
-    "create-data-type-folder",
-    "get-data-type-root",
-    "find-data-type",
-    "move-data-type",
-    "delete-data-type-folder"
-  ]
-} as const;
+/** Delay between tests to avoid rate limiting (ms). Set E2E_TEST_DELAY_MS env var to override. */
+export const TEST_DELAY_MS = parseInt(process.env.E2E_TEST_DELAY_MS || "0", 10);
 
 /**
  * Gets tool list as comma-separated string for UMBRACO_INCLUDE_TOOLS env var
  */
 export function getToolsString(tools: readonly string[]): string {
   return [...tools].join(",");
-}
-
-/**
- * Combines multiple tool sets into a single string
- */
-export function combineToolSets(...sets: (keyof typeof TOOL_SETS)[]): string {
-  const allTools = new Set<string>();
-  for (const set of sets) {
-    for (const tool of TOOL_SETS[set]) {
-      allTools.add(tool);
-    }
-  }
-  return Array.from(allTools).join(",");
 }

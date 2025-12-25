@@ -1,37 +1,9 @@
 import { jest } from "@jest/globals";
 import { runAgentTest, logTestResult } from "./agent-runner.js";
 import { verifyRequiredToolCalls, verifySuccessMessage } from "./verification.js";
-import { DEFAULT_TIMEOUT_MS, getToolsString } from "./config.js";
-import type { TestScenario, TestScenarioResult, AgentTestResult } from "./types.js";
-
-/**
- * Runs a test scenario and returns comprehensive results
- */
-export async function runScenario(scenario: TestScenario): Promise<TestScenarioResult> {
-  const toolsString = Array.isArray(scenario.tools)
-    ? getToolsString(scenario.tools)
-    : scenario.tools;
-
-  const result = await runAgentTest(
-    scenario.prompt,
-    toolsString,
-    scenario.options
-  );
-
-  const toolVerification = verifyRequiredToolCalls(result.toolCalls, scenario.requiredTools);
-
-  let successPatternMatched: boolean | undefined;
-  if (scenario.successPattern) {
-    successPatternMatched = verifySuccessMessage(result.finalResult, scenario.successPattern);
-  }
-
-  return {
-    ...result,
-    scenario,
-    toolVerification,
-    successPatternMatched
-  };
-}
+import { DEFAULT_TIMEOUT_MS, TEST_DELAY_MS } from "./config.js";
+import { waitForRateLimit, recordTokenUsage } from "./rate-limiter.js";
+import type { TestScenario } from "./types.js";
 
 /**
  * Creates a Jest test from a scenario
@@ -40,11 +12,15 @@ export async function runScenario(scenario: TestScenario): Promise<TestScenarioR
  * ```typescript
  * describe("my tests", () => {
  *   createScenarioTest({
- *     name: "should do something",
- *     prompt: "Do something...",
- *     tools: TOOL_SETS.dataType,
- *     requiredTools: ["create-data-type"],
- *     successPattern: "completed successfully"
+ *     name: "should create and delete a data type",
+ *     prompt: `Complete these tasks:
+ *       1. Create a data type called '_Test'
+ *       2. Delete the data type
+ *       3. Say 'The task has completed successfully'`,
+ *     tools: ["create-data-type", "delete-data-type"],
+ *     requiredTools: ["create-data-type", "delete-data-type"],
+ *     successPattern: "task has completed successfully",
+ *     verbose: true  // or debug: true - see full conversation trace
  *   });
  * });
  * ```
@@ -54,20 +30,33 @@ export function createScenarioTest(
   timeout: number = DEFAULT_TIMEOUT_MS
 ): void {
   it(scenario.name, async () => {
-    console.log(`Starting test: ${scenario.name}`);
-    const result = await runScenario(scenario);
+    // Check rate limit before starting
+    await waitForRateLimit();
 
-    // Log results
+    console.log(`Starting test: ${scenario.name}`);
+
+    const result = await runAgentTest(
+      scenario.prompt,
+      scenario.tools,
+      { ...scenario.options, verbose: scenario.verbose || scenario.debug }
+    );
+
+    // Record token usage for rate limiting
+    recordTokenUsage(result.tokens.input, result.tokens.output);
+
     logTestResult(result, scenario.name);
 
-    // Assertions
-    if (!result.toolVerification.passed) {
-      console.log(`Missing required tools: ${result.toolVerification.missing.join(", ")}`);
+    // Verify required tools were called
+    const toolVerification = verifyRequiredToolCalls(result.toolCalls, scenario.requiredTools);
+    if (!toolVerification.passed) {
+      console.log(`Missing required tools: ${toolVerification.missing.join(", ")}`);
     }
-    expect(result.toolVerification.passed).toBe(true);
+    expect(toolVerification.passed).toBe(true);
 
+    // Verify success pattern if specified
     if (scenario.successPattern) {
-      expect(result.successPatternMatched).toBe(true);
+      const matched = verifySuccessMessage(result.finalResult, scenario.successPattern);
+      expect(matched).toBe(true);
     }
 
     expect(result.success).toBe(true);
@@ -75,29 +64,19 @@ export function createScenarioTest(
 }
 
 /**
- * Creates multiple Jest tests from scenarios
+ * Helper to delay execution (for rate limiting)
  */
-export function createScenarioTests(
-  scenarios: TestScenario[],
-  timeout: number = DEFAULT_TIMEOUT_MS
-): void {
-  for (const scenario of scenarios) {
-    createScenarioTest(scenario, timeout);
-  }
+function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
- * Setup helper for beforeEach/afterEach console mocking
+ * Setup helper for beforeEach/afterEach console mocking and rate limit delays
  *
- * Usage:
- * ```typescript
- * describe("my tests", () => {
- *   const consoleMock = setupConsoleMock();
- *   // tests...
- * });
- * ```
+ * Set E2E_TEST_DELAY_MS environment variable to add delay between tests.
+ * Example: E2E_TEST_DELAY_MS=60000 for 1 minute delay between tests.
  */
-export function setupConsoleMock(): { restore: () => void } {
+export function setupConsoleMock(): void {
   let originalConsoleError: typeof console.error;
 
   beforeEach(() => {
@@ -105,102 +84,13 @@ export function setupConsoleMock(): { restore: () => void } {
     console.error = jest.fn();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     console.error = originalConsoleError;
+
+    // Add delay between tests if configured (for rate limiting)
+    if (TEST_DELAY_MS > 0) {
+      console.log(`Waiting ${TEST_DELAY_MS}ms before next test (rate limit delay)...`);
+      await delay(TEST_DELAY_MS);
+    }
   });
-
-  return {
-    restore: () => {
-      console.error = originalConsoleError;
-    }
-  };
-}
-
-/**
- * Builder for creating test scenarios fluently
- *
- * Usage:
- * ```typescript
- * const scenario = new ScenarioBuilder("create data type")
- *   .withPrompt("Create a textbox data type...")
- *   .withTools(TOOL_SETS.dataType)
- *   .requireTools(["create-data-type", "delete-data-type"])
- *   .expectSuccess()
- *   .build();
- * ```
- */
-export class ScenarioBuilder {
-  private scenario: Partial<TestScenario>;
-
-  constructor(name: string) {
-    this.scenario = { name };
-  }
-
-  withPrompt(prompt: string): this {
-    this.scenario.prompt = prompt;
-    return this;
-  }
-
-  withTools(tools: string | string[]): this {
-    this.scenario.tools = tools;
-    return this;
-  }
-
-  requireTools(tools: string[]): this {
-    this.scenario.requiredTools = tools;
-    return this;
-  }
-
-  expectSuccess(pattern?: RegExp | string): this {
-    this.scenario.successPattern = pattern ?? "task has completed successfully";
-    return this;
-  }
-
-  withMaxTurns(turns: number): this {
-    this.scenario.options = { ...this.scenario.options, maxTurns: turns };
-    return this;
-  }
-
-  withMaxBudget(budget: number): this {
-    this.scenario.options = { ...this.scenario.options, maxBudget: budget };
-    return this;
-  }
-
-  build(): TestScenario {
-    if (!this.scenario.name || !this.scenario.prompt || !this.scenario.tools || !this.scenario.requiredTools) {
-      throw new Error("Scenario must have name, prompt, tools, and requiredTools");
-    }
-    return this.scenario as TestScenario;
-  }
-}
-
-/**
- * Shorthand for creating a simple workflow test
- *
- * @param name - Test name
- * @param steps - Numbered list of steps for the agent to complete
- * @param tools - Tools to make available
- * @param requiredTools - Tools that must be called
- * @param timeout - Test timeout in ms
- */
-export function workflowTest(
-  name: string,
-  steps: string[],
-  tools: string | readonly string[],
-  requiredTools: readonly string[],
-  timeout: number = DEFAULT_TIMEOUT_MS
-): void {
-  const numberedSteps = steps.map((step, i) => `${i + 1}. ${step}`).join("\n");
-  const prompt = `Complete these tasks in order:\n${numberedSteps}\n${steps.length + 1}. When successfully completed the tasks, say 'The task has completed successfully', nothing else`;
-
-  createScenarioTest(
-    {
-      name,
-      prompt,
-      tools,
-      requiredTools,
-      successPattern: "task has completed successfully"
-    },
-    timeout
-  );
 }

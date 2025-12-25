@@ -132,7 +132,8 @@ describe("data-type-tree", () => {
       );
 
       // Assert - Verify our test structure exists
-      const items: DataTypeTreeItemResponseModel[] = result.structuredContent as any;
+      const response = result.structuredContent as { items: DataTypeTreeItemResponseModel[] };
+      const items = response.items;
       const rootFolder = items.find(item => item.name === TEST_FOLDER_NAME);
       const childFolder = items.find(item => item.name === TEST_CHILD_NAME);
       const grandchild = items.find(item => item.name === TEST_ROOT_NAME);

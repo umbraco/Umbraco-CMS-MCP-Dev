@@ -22,6 +22,12 @@ export interface AgentTestResult {
   turns: number;
   /** List of available tools from init message */
   availableTools: string[];
+  /** Token usage */
+  tokens: {
+    input: number;
+    output: number;
+    total: number;
+  };
 }
 
 /**
@@ -44,10 +50,8 @@ export interface AgentTestOptions {
   maxBudget?: number;
   /** Model to use (default: claude-3-5-haiku-20241022) */
   model?: string;
-  /** Callback for stderr from MCP server */
-  onStderr?: (data: string) => void;
-  /** Callback for each message during execution */
-  onMessage?: (message: unknown) => void;
+  /** Log full conversation trace to console */
+  verbose?: boolean;
 }
 
 /**
@@ -76,18 +80,10 @@ export interface TestScenario {
   requiredTools: readonly string[] | string[];
   /** Optional: expected success message pattern */
   successPattern?: RegExp | string;
+  /** Log full conversation trace (assistant messages, tool calls, tool results) */
+  verbose?: boolean;
+  /** Alias for verbose - log full conversation trace */
+  debug?: boolean;
   /** Optional: test options override */
   options?: AgentTestOptions;
-}
-
-/**
- * Result of running a test scenario
- */
-export interface TestScenarioResult extends AgentTestResult {
-  /** The scenario that was run */
-  scenario: TestScenario;
-  /** Tool verification result */
-  toolVerification: ToolVerificationResult;
-  /** Whether success pattern was matched (if specified) */
-  successPatternMatched?: boolean;
 }

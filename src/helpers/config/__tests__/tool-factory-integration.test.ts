@@ -148,8 +148,8 @@ describe('UmbracoToolFactory Integration', () => {
     // Should not include data-type tools (from the excluded collection)
     expect(toolCalls).not.toContain('get-data-type-search');
     expect(toolCalls).not.toContain('create-data-type');
-    // No other collections in this template, so no tools should be loaded
-    expect(toolCalls.length).toBe(0);
+    // Other collections (document, document-type) should still be loaded
+    expect(toolCalls.length).toBeGreaterThan(0);
   });
 
 

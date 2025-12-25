@@ -6,10 +6,8 @@
  * Usage:
  * ```typescript
  * import {
- *   runAgentTest,
- *   verifyRequiredToolCalls,
- *   TOOL_SETS,
- *   assertTestPassed
+ *   createScenarioTest,
+ *   setupConsoleMock
  * } from "./helpers/index.js";
  * ```
  */
@@ -25,9 +23,7 @@ export {
   DEFAULT_MAX_TURNS,
   DEFAULT_MAX_BUDGET_USD,
   DEFAULT_TIMEOUT_MS,
-  TOOL_SETS,
-  getToolsString,
-  combineToolSets
+  getToolsString
 } from "./config.js";
 
 // Types
@@ -36,8 +32,7 @@ export type {
   ToolCall,
   AgentTestOptions,
   ToolVerificationResult,
-  TestScenario,
-  TestScenarioResult
+  TestScenario
 } from "./types.js";
 
 // Agent runner
@@ -62,10 +57,13 @@ export {
 
 // Scenario runner (high-level test creation)
 export {
-  runScenario,
   createScenarioTest,
-  createScenarioTests,
-  setupConsoleMock,
-  ScenarioBuilder,
-  workflowTest
+  setupConsoleMock
 } from "./scenario-runner.js";
+
+// Rate limiter
+export {
+  rateLimiter,
+  waitForRateLimit,
+  recordTokenUsage
+} from "./rate-limiter.js";

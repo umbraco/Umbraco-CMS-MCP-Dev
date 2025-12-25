@@ -30,7 +30,9 @@ export async function runAgentTest(
   let result: SDKResultMessage | undefined;
   let initMessage: SDKSystemMessage | undefined;
 
-  const toolsString = Array.isArray(tools) ? getToolsString(tools) : tools;
+  const toolsString: string = typeof tools === 'string' ? tools : getToolsString(tools);
+
+  const verbose = options?.verbose ?? false;
 
   for await (const message of query({
     prompt,
@@ -55,42 +57,63 @@ export async function runAgentTest(
       allowDangerouslySkipPermissions: true,
       tools: [],
       maxTurns: options?.maxTurns ?? DEFAULT_MAX_TURNS,
-      maxBudgetUsd: options?.maxBudget ?? DEFAULT_MAX_BUDGET_USD,
-      ...(options?.onStderr && { stderr: options.onStderr })
+      maxBudgetUsd: options?.maxBudget ?? DEFAULT_MAX_BUDGET_USD
     }
   })) {
-    // Callback for message monitoring
-    if (options?.onMessage) {
-      options.onMessage(message);
-    }
-
     // Capture init message
     if (message.type === "system" && message.subtype === "init") {
       initMessage = message;
+      if (verbose) {
+        console.log("\n[SYSTEM] MCP servers connected");
+        console.log(`  Tools: ${message.tools.map(t => getShortToolName(t)).join(", ")}`);
+      }
     }
 
-    // Track tool calls
+    // Track and log assistant messages
     if (message.type === "assistant" && message.message.content) {
+      if (verbose) {
+        console.log("\n[ASSISTANT]");
+      }
       for (const block of message.message.content) {
         if (block.type === "tool_use") {
           toolCalls.push({
             name: block.name,
             input: block.input
           });
+          if (verbose) {
+            console.log(`  Tool call: ${getShortToolName(block.name)}`);
+            console.log(`  Input: ${JSON.stringify(block.input, null, 2).split('\n').map(l => '    ' + l).join('\n').trim()}`);
+          }
+        } else if (block.type === "text" && verbose) {
+          console.log(`  ${block.text}`);
         }
       }
     }
 
-    // Capture tool results
+    // Capture and log tool results
     if (message.type === "user" && message.tool_use_result) {
       toolResults.push(message.tool_use_result);
+      if (verbose) {
+        const resultStr = JSON.stringify(message.tool_use_result, null, 2);
+        const preview = resultStr.length > 500 ? resultStr.substring(0, 500) + "..." : resultStr;
+        console.log("\n[TOOL RESULT]");
+        console.log(`  ${preview.split('\n').map(l => '  ' + l).join('\n').trim()}`);
+      }
     }
 
     // Capture final result
     if (message.type === "result") {
       result = message;
+      if (verbose && result.subtype === "success") {
+        console.log("\n[RESULT]");
+        console.log(`  ${result.result}`);
+      }
     }
   }
+
+  // Extract token usage from result
+  const inputTokens = result?.usage?.input_tokens ?? 0;
+  const outputTokens = result?.usage?.output_tokens ?? 0;
 
   return {
     toolCalls,
@@ -99,7 +122,12 @@ export async function runAgentTest(
     success: result?.subtype === "success",
     cost: result?.subtype === "success" ? result.total_cost_usd : 0,
     turns: result?.subtype === "success" ? result.num_turns : 0,
-    availableTools: initMessage?.tools ?? []
+    availableTools: initMessage?.tools ?? [],
+    tokens: {
+      input: inputTokens,
+      output: outputTokens,
+      total: inputTokens + outputTokens
+    }
   };
 }
 
@@ -135,6 +163,7 @@ export function logTestResult(result: AgentTestResult, testName?: string): void 
   console.log(`Tools called: ${formatToolCalls(result.toolCalls)}`);
   console.log(`Final result preview: ${result.finalResult.substring(0, 200)}${result.finalResult.length > 200 ? "..." : ""}`);
   console.log(`Cost: $${result.cost.toFixed(4)}`);
+  console.log(`Tokens: ${result.tokens.total} (in: ${result.tokens.input}, out: ${result.tokens.output})`);
   console.log(`Turns: ${result.turns}`);
   console.log(`Success: ${result.success}`);
 }
