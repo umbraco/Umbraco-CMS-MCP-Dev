@@ -226,6 +226,12 @@ describe("update-document-properties", () => {
     let languageBuilder: LanguageBuilder | null = null;
     let docTypeBuilder: DocumentTypeBuilder | null = null;
 
+    beforeEach(async () => {
+      // Clean up any leftover test data from previous runs
+      await DocumentTestHelper.cleanup(MULTI_CULTURE_DOC_NAME);
+      await DocumentTypeTestHelper.cleanup(MULTI_CULTURE_DOC_TYPE_NAME);
+    });
+
     afterEach(async () => {
       // Clean up test documents first (before document type)
       await DocumentTestHelper.cleanup(MULTI_CULTURE_DOC_NAME);

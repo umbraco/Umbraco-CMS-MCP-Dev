@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-default-language should get the default language 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "isoCode": "en-US",
+    "name": "English (United States)",
+  },
+}
+`;
+
+exports[`get-default-language should handle error from client 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "message": "Simulated error",
+    "name": "Error",
+  },
+}
+`;

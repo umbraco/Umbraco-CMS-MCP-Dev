@@ -2,9 +2,8 @@ import GetDocumentTypeAvailableCompositionsTool from "../post/get-document-type-
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { DocumentTypeCompositionResponseModel } from "@/umb-management-api/schemas/index.js";
-import { postDocumentTypeAvailableCompositionsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { jest } from "@jest/globals";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Available";
@@ -49,10 +48,8 @@ describe("get-document-type-available-compositions", () => {
     );
 
     // Parse and filter just our test composition
-    const parsed = validateStructuredContent(result, postDocumentTypeAvailableCompositionsResponse) as Record<
-      string,
-      DocumentTypeCompositionResponseModel
-    >;
+    const data = result.structuredContent as { items: Record<string, DocumentTypeCompositionResponseModel> };
+    const parsed = data.items;
     const testComposition =
       parsed[
         Object.keys(parsed).find(

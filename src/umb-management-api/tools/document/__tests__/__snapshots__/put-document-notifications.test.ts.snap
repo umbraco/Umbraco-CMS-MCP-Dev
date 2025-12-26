@@ -14,63 +14,65 @@ exports[`put-document-notifications should add a notification for a valid docume
 exports[`put-document-notifications should add a notification for a valid document 2`] = `
 {
   "content": [],
-  "structuredContent": [
-    {
-      "actionId": "Umb.Document.Duplicate",
-      "alias": "copy",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.Document.Delete",
-      "alias": "delete",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.Document.Move",
-      "alias": "move",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.Document.Create",
-      "alias": "create",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.Document.PublicAccess",
-      "alias": "protect",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.Document.Publish",
-      "alias": "publish",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.DocumentRecycleBin.Restore",
-      "alias": "restore",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.Document.Permissions",
-      "alias": "rights",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.Document.Rollback",
-      "alias": "rollback",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.Document.Sort",
-      "alias": "sort",
-      "subscribed": false,
-    },
-    {
-      "actionId": "Umb.Document.Update",
-      "alias": "update",
-      "subscribed": false,
-    },
-  ],
+  "structuredContent": {
+    "items": [
+      {
+        "actionId": "Umb.Document.Duplicate",
+        "alias": "copy",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.Document.Delete",
+        "alias": "delete",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.Document.Move",
+        "alias": "move",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.Document.Create",
+        "alias": "create",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.Document.PublicAccess",
+        "alias": "protect",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.Document.Publish",
+        "alias": "publish",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.DocumentRecycleBin.Restore",
+        "alias": "restore",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.Document.Permissions",
+        "alias": "rights",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.Document.Rollback",
+        "alias": "rollback",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.Document.Sort",
+        "alias": "sort",
+        "subscribed": false,
+      },
+      {
+        "actionId": "Umb.Document.Update",
+        "alias": "update",
+        "subscribed": false,
+      },
+    ],
+  },
 }
 `;
 

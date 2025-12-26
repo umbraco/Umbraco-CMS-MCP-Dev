@@ -34,8 +34,7 @@ describe("get-collection-document-by-id", () => {
     );
 
     // Assert: Check if this is an error response
-    const responseText = result.content[0].text;
-    if (typeof responseText === 'string' && responseText.startsWith('Error')) {
+    if (result.isError) {
       // This is an error response, handle it directly
       expect(result).toMatchSnapshot();
     } else {
@@ -65,8 +64,7 @@ describe("get-collection-document-by-id", () => {
     );
 
     // Assert: Check if this is an error response
-    const responseText = result.content[0].text;
-    if (typeof responseText === 'string' && responseText.startsWith('Error')) {
+    if (result.isError) {
       // This is an error response, handle it directly
       expect(result).toMatchSnapshot();
     } else {

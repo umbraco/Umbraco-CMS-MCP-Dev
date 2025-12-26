@@ -2,43 +2,29 @@
 
 exports[`get-collection-document-by-id should get collection document by id 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-collection-document-by-id:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "The document item is not configured as a collection",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified document is not configured as a collection",
-    "operationStatus": "ContentNotCollection"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "ContentNotCollection",
+    "status": 400,
+    "title": "The document item is not configured as a collection",
+    "type": "Error",
+  },
 }
 `;
 
 exports[`get-collection-document-by-id should get collection document with filters 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-collection-document-by-id:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "The document item is not configured as a collection",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified document is not configured as a collection",
-    "operationStatus": "ContentNotCollection"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "ContentNotCollection",
+    "status": 400,
+    "title": "The document item is not configured as a collection",
+    "type": "Error",
+  },
 }
 `;
 

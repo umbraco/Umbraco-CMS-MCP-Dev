@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-member-group should handle non-existent member group 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The requested member group could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`update-member-group should update a member group 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-member-group should update a member group 2`] = `
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "_Updated Member Group",
+  },
+]
+`;

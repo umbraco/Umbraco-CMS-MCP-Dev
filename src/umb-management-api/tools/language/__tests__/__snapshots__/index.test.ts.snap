@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`language-tool-index should have all tools when user has language access 1`] = `
+[
+  "get-language-items",
+  "get-default-language",
+  "get-language",
+  "create-language",
+  "update-language",
+  "delete-language",
+  "get-language-by-iso-code",
+]
+`;
+
+exports[`language-tool-index should have basic query tools by default 1`] = `
+[
+  "get-language-items",
+  "get-default-language",
+  "get-language",
+]
+`;

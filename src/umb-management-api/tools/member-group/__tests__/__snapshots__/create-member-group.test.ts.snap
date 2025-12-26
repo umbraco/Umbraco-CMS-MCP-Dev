@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-member-group should create a member group 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Member group created successfully",
+  },
+}
+`;
+
+exports[`create-member-group should handle existing member group 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Another group with the same name already exists.",
+    "status": 400,
+    "title": "Duplicate name",
+    "type": "Error",
+  },
+}
+`;

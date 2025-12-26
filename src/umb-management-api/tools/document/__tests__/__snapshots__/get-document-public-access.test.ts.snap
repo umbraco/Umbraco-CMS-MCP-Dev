@@ -2,31 +2,19 @@
 
 exports[`get-document-public-access should get public access for a valid document 1`] = `
 {
-  "content": [
+  "errorDocument": {
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+  "groups": [
     {
-      "text": "{"members":[],"groups":[{"name":"_Test PublicAccess MemberGroup","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"loginDocument":{"id":"00000000-0000-0000-0000-000000000000"},"errorDocument":{"id":"00000000-0000-0000-0000-000000000000"}}",
-      "type": "text",
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "_Test PublicAccess MemberGroup",
     },
   ],
-}
-`;
-
-exports[`get-document-public-access should handle non-existent document 1`] = `
-{
-  "content": [
-    {
-      "text": "Error using get-document-public-access:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The document could not be found",
-    "status": 404,
-    "operationStatus": "ContentNotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+  "loginDocument": {
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+  "members": [],
 }
 `;

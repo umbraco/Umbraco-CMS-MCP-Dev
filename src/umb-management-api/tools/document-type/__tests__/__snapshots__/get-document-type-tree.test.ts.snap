@@ -3,37 +3,41 @@
 exports[`document-type-tree ancestors should get ancestor items 1`] = `
 {
   "content": [],
-  "structuredContent": [
-    {
-      "flags": [],
-      "hasChildren": true,
-      "icon": "",
-      "id": "00000000-0000-0000-0000-000000000000",
-      "isElement": false,
-      "isFolder": true,
-      "name": "_Test Folder DocumentType",
-      "parent": null,
-    },
-    {
-      "flags": [],
-      "hasChildren": false,
-      "icon": "",
-      "id": "00000000-0000-0000-0000-000000000000",
-      "isElement": false,
-      "isFolder": false,
-      "name": "_Test Child DocumentType",
-      "parent": {
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": true,
+        "icon": "",
         "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "isFolder": true,
+        "name": "_Test Folder DocumentType",
+        "parent": null,
       },
-    },
-  ],
+      {
+        "flags": [],
+        "hasChildren": false,
+        "icon": "",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "isFolder": false,
+        "name": "_Test Child DocumentType",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+  },
 }
 `;
 
 exports[`document-type-tree ancestors should handle non-existent item 1`] = `
 {
   "content": [],
-  "structuredContent": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 

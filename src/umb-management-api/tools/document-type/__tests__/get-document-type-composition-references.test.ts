@@ -2,7 +2,8 @@ import GetDocumentTypeCompositionReferencesTool from "../get/get-document-type-c
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { jest } from "@jest/globals";
-import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Composition";
 const TEST_COMPOSITION_NAME = "_Test Composition DocumentType";
@@ -35,19 +36,8 @@ describe("get-document-type-composition-references", () => {
       id: compositionBuilder.getId()
     } as any, createMockRequestHandlerExtra());
 
-    // Normalize IDs in the response
-    const normalizedResult = {
-      ...result,
-      content: result.content.map(content => {
-        const parsed = JSON.parse((content as any).text);
-        return {
-          ...content,
-          text: JSON.stringify(DocumentTypeTestHelper.normaliseIds(parsed))
-        };
-      })
-    };
-
     // Verify the handler response using snapshot
+    const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });
 
@@ -64,6 +54,7 @@ describe("get-document-type-composition-references", () => {
     } as any, createMockRequestHandlerExtra());
 
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    const normalizedResult = createSnapshotResult(result);
+    expect(normalizedResult).toMatchSnapshot();
   });
 }); 

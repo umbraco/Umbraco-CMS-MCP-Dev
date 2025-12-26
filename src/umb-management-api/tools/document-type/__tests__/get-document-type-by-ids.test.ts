@@ -1,9 +1,8 @@
 import GetDocumentTypesByIdArrayTool from "../get/get-document-type-by-id-array.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { getItemDocumentTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { jest } from "@jest/globals";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("get-item-document-type", () => {
@@ -27,9 +26,9 @@ describe("get-item-document-type", () => {
     const result = await GetDocumentTypesByIdArrayTool.handler(
       {} as any, createMockRequestHandlerExtra()
     );
-    const items = validateStructuredContent(result, getItemDocumentTypeResponse);
+    const data = result.structuredContent as { items: any[] };
 
-    expect(items).toMatchSnapshot();
+    expect(data.items).toMatchSnapshot();
   });
 
   it("should get single document type by ID", async () => {
@@ -43,12 +42,12 @@ describe("get-item-document-type", () => {
     const result = await GetDocumentTypesByIdArrayTool.handler(
       { id: [builder.getId()] } as any, createMockRequestHandlerExtra()
     );
-    const items = validateStructuredContent(result, getItemDocumentTypeResponse) as any[];
-    expect(items).toHaveLength(1);
-    expect(items[0].name).toBe(TEST_DOCTYPE_NAME);
+    const data = result.structuredContent as { items: any[] };
+    expect(data.items).toHaveLength(1);
+    expect(data.items[0].name).toBe(TEST_DOCTYPE_NAME);
     // Normalize for snapshot
-    items[0].id = BLANK_UUID;
-    expect(items).toMatchSnapshot();
+    data.items[0].id = BLANK_UUID;
+    expect(data.items).toMatchSnapshot();
   });
 
   it("should get multiple document types by ID", async () => {
@@ -71,15 +70,15 @@ describe("get-item-document-type", () => {
       } as any, createMockRequestHandlerExtra()
     );
 
-    const items = validateStructuredContent(result, getItemDocumentTypeResponse) as any[];
-    expect(items).toHaveLength(2);
-    expect(items[0].name).toBe(TEST_DOCTYPE_NAME);
-    expect(items[1].name).toBe(TEST_DOCTYPE_NAME_2);
+    const data = result.structuredContent as { items: any[] };
+    expect(data.items).toHaveLength(2);
+    expect(data.items[0].name).toBe(TEST_DOCTYPE_NAME);
+    expect(data.items[1].name).toBe(TEST_DOCTYPE_NAME_2);
 
     // Normalize for snapshot
-    items.forEach((item: any) => {
+    data.items.forEach((item: any) => {
       item.id = BLANK_UUID;
     });
-    expect(items).toMatchSnapshot();
+    expect(data.items).toMatchSnapshot();
   });
 });

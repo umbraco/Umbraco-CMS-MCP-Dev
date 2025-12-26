@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-language should get all languages 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "fallbackIsoCode": null,
+        "isDefault": true,
+        "isMandatory": false,
+        "isoCode": "en-US",
+        "name": "English (United States)",
+      },
+      {
+        "fallbackIsoCode": null,
+        "isDefault": false,
+        "isMandatory": false,
+        "isoCode": "en-AU",
+        "name": "_Test Language Get 1",
+      },
+      {
+        "fallbackIsoCode": null,
+        "isDefault": false,
+        "isMandatory": false,
+        "isoCode": "en-NZ",
+        "name": "_Test Language Get 2",
+      },
+    ],
+    "total": 3,
+  },
+}
+`;
+
+exports[`get-language should get languages with pagination - skip and take 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "fallbackIsoCode": null,
+        "isDefault": false,
+        "isMandatory": false,
+        "isoCode": "en-AU",
+        "name": "_Test Language Get 1",
+      },
+    ],
+    "total": 4,
+  },
+}
+`;
+
+exports[`get-language should get languages with take parameter only 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "fallbackIsoCode": null,
+        "isDefault": true,
+        "isMandatory": false,
+        "isoCode": "en-US",
+        "name": "English (United States)",
+      },
+    ],
+    "total": 3,
+  },
+}
+`;

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-language-by-iso-code should get a language by isoCode 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "fallbackIsoCode": null,
+    "isDefault": false,
+    "isMandatory": false,
+    "isoCode": "en-Gb",
+    "name": "_Test Language",
+  },
+}
+`;
+
+exports[`get-language-by-iso-code should handle non-existent language 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The language could not be found",
+    "type": "Error",
+  },
+}
+`;

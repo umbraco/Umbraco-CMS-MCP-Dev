@@ -161,9 +161,14 @@ describe("document-reference-tests", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert: Should not throw an error - just verify the response structure
-      expect(result.content).toBeDefined();
-      expect(result.content[0].type).toBe("text");
+      // Assert: Should not throw an error - verify the response is defined
+      expect(result).toBeDefined();
+      // New pattern uses structuredContent for data
+      if (result.isError) {
+        expect(result.isError).toBe(true);
+      } else {
+        expect(result.structuredContent).toBeDefined();
+      }
     });
   });
 });

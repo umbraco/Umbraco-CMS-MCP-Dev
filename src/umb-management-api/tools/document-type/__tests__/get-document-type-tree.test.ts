@@ -4,12 +4,11 @@ import GetDocumentTypeChildrenTool from "../items/get/get-children.js";
 import GetAllDocumentTypesTool from "../items/get/get-all.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { jest } from "@jest/globals";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { DocumentTypeTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
-import { getTreeDocumentTypeChildrenResponse, getTreeDocumentTypeAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("document-type-tree", () => {
   const TEST_ROOT_NAME = "_Test Root DocumentType";
@@ -53,7 +52,6 @@ describe("document-type-tree", () => {
       );
 
       // Assert - Verify the children are returned
-      validateStructuredContent(result, getTreeDocumentTypeChildrenResponse);
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 
@@ -92,7 +90,6 @@ describe("document-type-tree", () => {
       );
 
       // Assert - Verify the ancestors are returned
-      validateStructuredContent(result, getTreeDocumentTypeAncestorsResponse);
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 

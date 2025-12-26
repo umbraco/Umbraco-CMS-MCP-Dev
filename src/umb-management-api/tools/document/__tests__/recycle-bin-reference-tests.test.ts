@@ -45,8 +45,8 @@ describe("recycle-bin-reference-tests", () => {
       );
 
       // Assert: Verify the response (might be null if no original parent)
-      const responseText = result.content[0].text;
-      if (responseText === "null" || responseText === null) {
+      const data = result.structuredContent;
+      if (data === null || data === undefined) {
         // Handle null response - no original parent found
         expect(result).toMatchSnapshot();
       } else {

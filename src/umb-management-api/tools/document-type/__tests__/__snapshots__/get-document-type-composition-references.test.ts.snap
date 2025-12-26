@@ -3,13 +3,17 @@
 exports[`get-document-type-composition-references should get composition references for a document type 1`] = `
 {
   "content": [],
-  "structuredContent": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
 exports[`get-document-type-composition-references should handle document type with no composition references 1`] = `
 {
   "content": [],
-  "structuredContent": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-language should create a language 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "isoCode": "en-GB",
+    "message": "Language created successfully",
+  },
+}
+`;
+
+exports[`create-language should handle existing language 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Another language already exists with the attempted ISO code.",
+    "operationStatus": "DuplicateIsoCode",
+    "status": 400,
+    "title": "Duplicate ISO code",
+    "type": "Error",
+  },
+}
+`;

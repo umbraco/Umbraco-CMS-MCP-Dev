@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-blueprint should get a document blueprint by id 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "documentType": {
+      "collection": null,
+      "icon": "icon-home color-blue",
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "flags": [],
+    "id": "00000000-0000-0000-0000-000000000000",
+    "values": [],
+    "variants": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "culture": null,
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Blueprint Get",
+        "publishDate": null,
+        "scheduledPublishDate": null,
+        "scheduledUnpublishDate": null,
+        "segment": null,
+        "state": "Draft",
+        "updateDate": "NORMALIZED_DATE",
+      },
+    ],
+  },
+}
+`;
+
+exports[`get-document-blueprint should handle non-existent document blueprint 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The document blueprint could not be found",
+    "type": "Error",
+  },
+}
+`;

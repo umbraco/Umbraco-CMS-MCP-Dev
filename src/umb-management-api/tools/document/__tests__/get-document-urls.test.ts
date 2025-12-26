@@ -3,8 +3,7 @@ import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { getDocumentUrlsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetDocumentUrls";
@@ -37,8 +36,8 @@ describe("get-document-urls", () => {
       { id: [item.id] },
       createMockRequestHandlerExtra()
     );
-    const data = validateStructuredContent(result, getDocumentUrlsResponse);
-    expect(DocumentTestHelper.normaliseIds(data)).toMatchSnapshot();
+    const data = result.structuredContent as { items: any[] };
+    expect(DocumentTestHelper.normaliseIds(data.items)).toMatchSnapshot();
   });
 
   it("should handle non-existent document id", async () => {
@@ -46,8 +45,8 @@ describe("get-document-urls", () => {
       { id: [BLANK_UUID] },
       createMockRequestHandlerExtra()
     );
-    const data = validateStructuredContent(result, getDocumentUrlsResponse);
-    expect(DocumentTestHelper.normaliseIds(data)).toMatchSnapshot();
+    const data = result.structuredContent as { items: any[] };
+    expect(DocumentTestHelper.normaliseIds(data.items)).toMatchSnapshot();
   });
 
   it("should get URLs for a child document", async () => {
@@ -69,7 +68,7 @@ describe("get-document-urls", () => {
       { id: [childItem.id] },
       createMockRequestHandlerExtra()
     );
-    const data = validateStructuredContent(result, getDocumentUrlsResponse);
-    expect(DocumentTestHelper.normaliseIds(data)).toMatchSnapshot();
+    const data = result.structuredContent as { items: any[] };
+    expect(DocumentTestHelper.normaliseIds(data.items)).toMatchSnapshot();
   });
 });

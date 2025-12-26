@@ -5,7 +5,7 @@ import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/docum
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DataTypeBuilder } from "../../data-type/__tests__/helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "../../data-type/__tests__/helpers/data-type-test-helper.js";
-import CreateElementTypeTool, { createOutputSchema as createElementTypeOutputSchema } from "../../document-type/post/create-element-type.js";
+import CreateElementTypeTool, { createElementTypeOutputSchema } from "../../document-type/post/create-element-type.js";
 import { jest } from "@jest/globals";
 import {
   ROOT_DOCUMENT_TYPE_ID,

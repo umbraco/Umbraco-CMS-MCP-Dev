@@ -2,12 +2,8 @@
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-original-parent should get original parent for recycled document 1`] = `
 {
-  "content": [
-    {
-      "text": "null",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": null,
 }
 `;
 

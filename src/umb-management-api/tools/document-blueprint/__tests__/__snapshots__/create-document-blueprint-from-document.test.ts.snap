@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-document-blueprint-from-document should create document blueprint from existing document 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-document-blueprint-from-document should handle duplicate blueprint name 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "The supplied name is already in use for the same content type.",
+    "operationStatus": "DuplicateName",
+    "status": 400,
+    "title": "Duplicate name",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`create-document-blueprint-from-document should handle non-existent source document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The content could not be found",
+    "type": "Error",
+  },
+}
+`;

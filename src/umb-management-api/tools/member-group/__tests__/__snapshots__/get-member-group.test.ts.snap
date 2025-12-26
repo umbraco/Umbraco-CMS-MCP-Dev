@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-member-group should get a member group by id 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "_Test Member Group Get",
+  },
+}
+`;
+
+exports[`get-member-group should handle non-existent member group 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The requested member group could not be found",
+    "type": "Error",
+  },
+}
+`;
