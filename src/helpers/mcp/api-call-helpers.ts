@@ -47,25 +47,27 @@
  */
 
 import { AxiosResponse } from "axios";
+import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { UmbracoManagementClient } from "@umb-management-client";
-import { createToolResult, createToolResultError } from "./tool-result.js";
+import { createToolResult } from "./tool-result.js";
+
+/**
+ * Custom error class for Umbraco API errors.
+ * Contains ProblemDetails for structured error information.
+ * The withErrorHandling decorator catches this and converts to tool result.
+ */
+export class UmbracoApiError extends Error {
+  constructor(public readonly problemDetails: ProblemDetails) {
+    super(problemDetails.detail || `API error: ${problemDetails.status}`);
+    this.name = 'UmbracoApiError';
+  }
+}
 
 /**
  * Type alias for the Umbraco Management API client instance.
  */
 export type UmbracoClient = ReturnType<typeof UmbracoManagementClient.getClient>;
-
-/**
- * Standard tool result shape returned by all API call helpers.
- * Index signature required for MCP SDK compatibility.
- */
-export interface ToolCallResult {
-  [x: string]: unknown;
-  content: Array<{ type: "text"; text: string }>;
-  structuredContent?: { [x: string]: unknown };
-  isError?: boolean;
-}
 
 /**
  * Function signature for API calls that return an AxiosResponse.
@@ -105,9 +107,111 @@ export const CAPTURE_RAW_HTTP_RESPONSE = {
 } as const;
 
 /**
- * @deprecated Use CAPTURE_RAW_HTTP_RESPONSE instead
+ * Options for customizing API call behavior.
  */
-export const FULL_RESPONSE_OPTIONS = CAPTURE_RAW_HTTP_RESPONSE;
+export interface ApiCallOptions<T = unknown> {
+  /** Treat as void operation - don't include response data in result */
+  void?: boolean;
+  /** Custom success message to include in the response */
+  successMessage?: string;
+  /** Additional status codes to treat as success beyond 200-299 */
+  acceptedStatusCodes?: number[];
+  /** Transform the error before returning */
+  transformError?: (error: ProblemDetails) => ProblemDetails;
+  /** Transform success data before returning */
+  transformData?: (data: T) => unknown;
+}
+
+/**
+ * Validates the API response and returns it as an AxiosResponse.
+ * Logs warnings if the response doesn't look like an AxiosResponse.
+ * @internal
+ */
+function validateApiResponse<T>(
+  result: unknown
+): { valid: true; response: AxiosResponse<T | ProblemDetails> } | { valid: false; fallback: T | undefined } {
+  if (result === undefined || result === null) {
+    console.warn(
+      '[MCP Tool Warning] API call returned undefined/null. ' +
+      'Did you forget to pass CAPTURE_RAW_HTTP_RESPONSE to the API method?'
+    );
+    return { valid: false, fallback: undefined };
+  }
+
+  if (typeof result !== 'object' || !('status' in result)) {
+    console.warn(
+      '[MCP Tool Warning] API call did not return an AxiosResponse. ' +
+      `Expected { status, data, ... } but got: ${typeof result}. ` +
+      'Did you forget to pass CAPTURE_RAW_HTTP_RESPONSE to the API method?'
+    );
+    return { valid: false, fallback: result as T };
+  }
+
+  return { valid: true, response: result as AxiosResponse<T | ProblemDetails> };
+}
+
+/**
+ * Checks if the HTTP status code indicates success.
+ * @internal
+ */
+function isSuccessStatus(status: number, acceptedStatusCodes?: number[]): boolean {
+  return (status >= 200 && status < 300) ||
+    (acceptedStatusCodes?.includes(status) ?? false);
+}
+
+/**
+ * Core API call executor with unified options.
+ * Returns success results, throws UmbracoApiError on failures.
+ * Error handling is centralized in the withErrorHandling decorator.
+ * @internal
+ */
+async function executeApiCallInternal<T = unknown>(
+  apiCall: (client: UmbracoClient) => Promise<AxiosResponse<T | ProblemDetails> | unknown>,
+  options?: ApiCallOptions<T>
+): Promise<CallToolResult> {
+  const client = UmbracoManagementClient.getClient();
+  const result = await apiCall(client);
+
+  const validation = validateApiResponse<T>(result);
+
+  if (!validation.valid) {
+    // Fallback behavior for invalid responses
+    if (options?.void) {
+      return createToolResult(undefined, false);
+    }
+    return createToolResult(validation.fallback);
+  }
+
+  const response = validation.response;
+
+  if (isSuccessStatus(response.status, options?.acceptedStatusCodes)) {
+    // Success
+    if (options?.void) {
+      if (options.successMessage) {
+        return createToolResult({ message: options.successMessage });
+      }
+      return createToolResult(undefined, false);
+    }
+
+    // GET with data
+    const data = options?.transformData
+      ? options.transformData(response.data as T)
+      : response.data;
+    return createToolResult(data);
+  }
+
+  // Error - throw for decorator to handle
+  let errorData: ProblemDetails = (response.data as ProblemDetails) || {
+    status: response.status,
+    detail: response.statusText,
+  };
+
+  if (options?.transformError) {
+    errorData = options.transformError(errorData);
+  }
+
+  throw new UmbracoApiError(errorData);
+}
 
 /**
  * Processes the HTTP response from a void operation (DELETE, PUT, POST without response body).
@@ -115,33 +219,30 @@ export const FULL_RESPONSE_OPTIONS = CAPTURE_RAW_HTTP_RESPONSE;
  * ## What This Does
  * 1. Checks if status code is 200-299 (success)
  * 2. Success: Returns empty tool result (no structuredContent for void operations)
- * 3. Error: Extracts ProblemDetails from response body and returns as error
+ * 3. Error: Throws UmbracoApiError for decorator to handle
  *
  * ## Usage
  * This is an internal helper used by `executeVoidApiCall`. You typically don't
  * call this directly unless building custom handlers.
  *
  * @param response - The AxiosResponse from the API call (requires CAPTURE_RAW_HTTP_RESPONSE)
- * @returns Tool result with success (empty) or error (ProblemDetails)
+ * @returns Tool result with success (empty)
+ * @throws UmbracoApiError on non-2xx status codes
  */
 export function processVoidResponse(
   response: AxiosResponse<ProblemDetails | void>
-): ToolCallResult {
+): CallToolResult {
   // Success status codes (200-299)
   if (response.status >= 200 && response.status < 300) {
-    return createToolResult(
-      undefined,  // No structuredContent for void responses
-      false,      // isError
-      false       // includeStructured - No outputSchema, so exclude structuredContent to reduce token usage
-    );
+    return createToolResult(undefined, false);
   }
 
-  // Error status codes (400+, 500+, etc.) - all returned as structured ProblemDetails
+  // Error status codes (400+, 500+, etc.) - throw for decorator to handle
   const errorData: ProblemDetails = response.data || {
     status: response.status,
     detail: response.statusText,
   };
-  return createToolResultError(errorData);
+  throw new UmbracoApiError(errorData);
 }
 
 /**
@@ -157,10 +258,6 @@ export function processVoidResponse(
  * Without it, Axios throws on 400+ errors instead of returning them,
  * breaking the status code handling in this function.
  *
- * ## Runtime Validation
- * This function logs a warning if the API call doesn't return an AxiosResponse,
- * which usually indicates CAPTURE_RAW_HTTP_RESPONSE was forgotten.
- *
  * @param apiCall - Function receiving the client and returning the API promise
  * @returns MCP tool result with success (empty) or ProblemDetails error
  *
@@ -171,40 +268,12 @@ export function processVoidResponse(
  * );
  * ```
  */
-export async function executeVoidApiCall(
+export function executeVoidApiCall(
   apiCall: (client: UmbracoClient) => Promise<AxiosResponse<ProblemDetails | void> | unknown>
-): Promise<ToolCallResult> {
-  const client = UmbracoManagementClient.getClient();
-  const result = await apiCall(client);
-
-  // Runtime validation: Check if result looks like an AxiosResponse
-  // If not, CAPTURE_RAW_HTTP_RESPONSE was likely forgotten
-  if (result === undefined || result === null) {
-    console.warn(
-      '[MCP Tool Warning] API call returned undefined/null. ' +
-      'Did you forget to pass CAPTURE_RAW_HTTP_RESPONSE to the API method?'
-    );
-    return createToolResult(undefined, false, false);
-  }
-
-  if (typeof result !== 'object' || !('status' in result)) {
-    console.warn(
-      '[MCP Tool Warning] API call did not return an AxiosResponse. ' +
-      `Expected { status, data, ... } but got: ${typeof result}. ` +
-      'Did you forget to pass CAPTURE_RAW_HTTP_RESPONSE to the API method?'
-    );
-    // Attempt to handle as success (legacy behavior)
-    return createToolResult(undefined, false, false);
-  }
-
-  const response = result as AxiosResponse<ProblemDetails | void>;
-  return processVoidResponse(response);
+): Promise<CallToolResult> {
+  return executeApiCallInternal(apiCall, { void: true });
 }
 
-/**
- * @deprecated Use executeVoidApiCall instead
- */
-export const executeVoidOperation = executeVoidApiCall;
 
 /**
  * Executes a GET API call and handles the response.
@@ -219,10 +288,6 @@ export const executeVoidOperation = executeVoidApiCall;
  * Without it, Axios throws on 400+ errors instead of returning them,
  * breaking the status code handling in this function.
  *
- * ## Runtime Validation
- * This function logs a warning if the API call doesn't return an AxiosResponse,
- * which usually indicates CAPTURE_RAW_HTTP_RESPONSE was forgotten.
- *
  * @typeParam T - The expected response data type on success
  * @param apiCall - Function receiving the client and returning the API promise
  * @returns MCP tool result with structured data on success or ProblemDetails error
@@ -234,87 +299,18 @@ export const executeVoidOperation = executeVoidApiCall;
  * );
  * ```
  */
-export async function executeGetApiCall<T = unknown>(
+export function executeGetApiCall<T = unknown>(
   apiCall: (client: UmbracoClient) => Promise<AxiosResponse<T | ProblemDetails> | unknown>
-): Promise<ToolCallResult> {
-  const client = UmbracoManagementClient.getClient();
-  const result = await apiCall(client);
-
-  // Runtime validation: Check if result looks like an AxiosResponse
-  // If not, CAPTURE_RAW_HTTP_RESPONSE was likely forgotten
-  if (result === undefined || result === null) {
-    console.warn(
-      '[MCP Tool Warning] API call returned undefined/null. ' +
-      'Did you forget to pass CAPTURE_RAW_HTTP_RESPONSE to the API method?'
-    );
-    return createToolResult(undefined);
-  }
-
-  if (typeof result !== 'object' || !('status' in result)) {
-    console.warn(
-      '[MCP Tool Warning] API call did not return an AxiosResponse. ' +
-      `Expected { status, data, ... } but got: ${typeof result}. ` +
-      'Did you forget to pass CAPTURE_RAW_HTTP_RESPONSE to the API method? ' +
-      'Attempting to use result as data directly (legacy fallback).'
-    );
-    // Fallback: assume result is the data directly (legacy behavior without options)
-    return createToolResult(result as T);
-  }
-
-  const response = result as AxiosResponse<T | ProblemDetails>;
-
-  // Check for success status codes (200-299)
-  if (response.status >= 200 && response.status < 300) {
-    // Success - return structured data
-    return createToolResult(response.data as T);
-  } else {
-    // Error - return structured ProblemDetails
-    const errorData: ProblemDetails = response.data || {
-      status: response.status,
-      detail: response.statusText,
-    };
-    return createToolResultError(errorData);
-  }
+): Promise<CallToolResult> {
+  return executeApiCallInternal<T>(apiCall);
 }
 
-/**
- * @deprecated Use executeGetApiCall instead
- */
-export const executeGetOperation = executeGetApiCall;
-
-/**
- * @deprecated Use processVoidResponse instead
- */
-export const handleVoidOperation = processVoidResponse;
 
 /**
  * Options for customizing void API call behavior.
- *
- * Use with `executeVoidApiCallWithOptions` when you need slight customization
- * without abandoning the helper pattern entirely.
+ * Subset of ApiCallOptions without void/transformData (which don't apply to void operations).
  */
-export interface VoidApiCallOptions {
-  /**
-   * Custom success message to include in the response.
-   * Default: no message (empty content for void operations)
-   */
-  successMessage?: string;
-
-  /**
-   * Additional status codes to treat as success beyond 200-299.
-   * Useful for endpoints that return 202 Accepted for async operations.
-   * Default: only 200-299 are treated as success
-   */
-  acceptedStatusCodes?: number[];
-
-  /**
-   * Transform the error before returning.
-   * Useful for adding context or modifying the ProblemDetails.
-   * @param error - The original ProblemDetails from the API
-   * @returns Modified ProblemDetails to return
-   */
-  transformError?: (error: ProblemDetails) => ProblemDetails;
-}
+export type VoidApiCallOptions = Omit<ApiCallOptions, 'void' | 'transformData'>;
 
 /**
  * Executes a void API call with optional customization.
@@ -349,59 +345,9 @@ export interface VoidApiCallOptions {
  * );
  * ```
  */
-export async function executeVoidApiCallWithOptions(
+export function executeVoidApiCallWithOptions(
   apiCall: (client: UmbracoClient) => Promise<AxiosResponse<ProblemDetails | void> | unknown>,
   options?: VoidApiCallOptions
-): Promise<ToolCallResult> {
-  const client = UmbracoManagementClient.getClient();
-  const result = await apiCall(client);
-
-  // Runtime validation (same as executeVoidApiCall)
-  if (result === undefined || result === null) {
-    console.warn(
-      '[MCP Tool Warning] API call returned undefined/null. ' +
-      'Did you forget to pass CAPTURE_RAW_HTTP_RESPONSE to the API method?'
-    );
-    return createToolResult(undefined, false, false);
-  }
-
-  if (typeof result !== 'object' || !('status' in result)) {
-    console.warn(
-      '[MCP Tool Warning] API call did not return an AxiosResponse. ' +
-      `Expected { status, data, ... } but got: ${typeof result}. ` +
-      'Did you forget to pass CAPTURE_RAW_HTTP_RESPONSE to the API method?'
-    );
-    return createToolResult(undefined, false, false);
-  }
-
-  const response = result as AxiosResponse<ProblemDetails | void>;
-
-  // Check for success status codes
-  const isSuccess =
-    (response.status >= 200 && response.status < 300) ||
-    (options?.acceptedStatusCodes?.includes(response.status) ?? false);
-
-  if (isSuccess) {
-    // Success - return with optional message
-    if (options?.successMessage) {
-      return createToolResult(
-        { message: options.successMessage },
-        false,
-        true
-      );
-    }
-    return createToolResult(undefined, false, false);
-  }
-
-  // Error - extract and optionally transform ProblemDetails
-  let errorData: ProblemDetails = response.data || {
-    status: response.status,
-    detail: response.statusText,
-  };
-
-  if (options?.transformError) {
-    errorData = options.transformError(errorData);
-  }
-
-  return createToolResultError(errorData);
+): Promise<CallToolResult> {
+  return executeApiCallInternal(apiCall, { ...options, void: true });
 }

@@ -6,7 +6,7 @@
  */
 
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { ZodRawShape, ZodTypeAny } from "zod";
+import { ZodRawShape, ZodType } from "zod";
 import { ToolDefinition, ToolAnnotations } from "../../types/tool-definition.js";
 import {
   getVersionCheckMessage,
@@ -23,25 +23,30 @@ export {
 
 export {
   CAPTURE_RAW_HTTP_RESPONSE,
-  FULL_RESPONSE_OPTIONS,
   processVoidResponse,
   executeVoidApiCall,
-  executeVoidOperation,
   executeGetApiCall,
-  executeGetOperation,
-  handleVoidOperation,
   executeVoidApiCallWithOptions,
+  UmbracoApiError,
+  type ApiCallOptions,
   type VoidApiCallOptions,
   type UmbracoClient,
-  type ToolCallResult,
   type ApiCallFn,
 } from "./api-call-helpers.js";
 
+import { UmbracoApiError } from "./api-call-helpers.js";
+
 /**
  * Wraps a tool handler with standardized error handling.
- * Catches errors and returns them in a consistent format.
+ * Catches all errors and converts them to MCP tool error results.
+ *
+ * Error handling priority:
+ * 1. UmbracoApiError - API errors with ProblemDetails (from helpers)
+ * 2. Axios errors - Network/HTTP errors with response data
+ * 3. Standard errors - JavaScript errors with message
+ * 4. Unknown errors - Anything else
  */
-export function withErrorHandling<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodTypeAny = undefined>(
+export function withErrorHandling<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodType = undefined>(
   tool: ToolDefinition<Args, OutputArgs>
 ): ToolDefinition<Args, OutputArgs> {
   const originalHandler = tool.handler;
@@ -54,15 +59,26 @@ export function withErrorHandling<Args extends undefined | ZodRawShape, OutputAr
       } catch (error) {
         console.error(`Error in tool ${tool.name}:`, error);
 
-        // Umbraco API errors are ProblemDetails objects (structured data)
-        // Extract the ProblemDetails from the error response if available
-        const errorData = error instanceof Error && (error as any).response?.data
-          ? (error as any).response.data
-          : error instanceof Error
-          ? { message: error.message, cause: error.cause }
-          : error;
+        // UmbracoApiError - thrown by helpers with ProblemDetails
+        if (error instanceof UmbracoApiError) {
+          return createToolResultError(error.problemDetails);
+        }
 
-        return createToolResultError(errorData);
+        // Axios error with response data (network succeeded but got error response)
+        if (error instanceof Error && (error as any).response?.data) {
+          return createToolResultError((error as any).response.data);
+        }
+
+        // Standard Error
+        if (error instanceof Error) {
+          return createToolResultError({
+            message: error.message,
+            name: error.name
+          });
+        }
+
+        // Unknown error type
+        return createToolResultError({ message: String(error) });
       }
     }) as ToolCallback<Args>,
   };
@@ -72,7 +88,7 @@ export function withErrorHandling<Args extends undefined | ZodRawShape, OutputAr
  * Wraps a tool handler with version check blocking.
  * Blocks execution if there's a version incompatibility warning.
  */
-export function withVersionCheck<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodTypeAny = undefined>(
+export function withVersionCheck<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodType = undefined>(
   tool: ToolDefinition<Args, OutputArgs>
 ): ToolDefinition<Args, OutputArgs> {
   const originalHandler = tool.handler;
@@ -106,7 +122,7 @@ export function withVersionCheck<Args extends undefined | ZodRawShape, OutputArg
  * compose(withErrorHandling, withVersionCheck)(myTool)
  * // Equivalent to: withErrorHandling(withVersionCheck(myTool))
  */
-export function compose<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodTypeAny = undefined>(
+export function compose<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodType = undefined>(
   ...decorators: Array<(tool: ToolDefinition<Args, OutputArgs>) => ToolDefinition<Args, OutputArgs>>
 ): (tool: ToolDefinition<Args, OutputArgs>) => ToolDefinition<Args, OutputArgs> {
   return (tool: ToolDefinition<Args, OutputArgs>) =>
@@ -141,7 +157,7 @@ export function createToolAnnotations(tool: ToolDefinition<any, any>): ToolAnnot
  * @example
  * export default withStandardDecorators(myTool);
  */
-export function withStandardDecorators<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodTypeAny = undefined>(
+export function withStandardDecorators<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodType = undefined>(
   tool: ToolDefinition<Args, OutputArgs>
 ): ToolDefinition<Args, OutputArgs> {
   return compose<Args, OutputArgs>(withErrorHandling, withVersionCheck)(tool);

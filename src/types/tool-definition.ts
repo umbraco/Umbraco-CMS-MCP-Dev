@@ -1,6 +1,6 @@
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { ZodRawShape, ZodTypeAny } from "zod";
+import { ZodRawShape, ZodType } from "zod";
 
 // Re-export ToolSliceName from the single source of truth
 export type { ToolSliceName, ExtendedSliceName } from "@/helpers/config/slice-registry.js";
@@ -25,7 +25,7 @@ export interface ToolAnnotations {
 
 export interface ToolDefinition<
   InputArgs extends undefined | ZodRawShape = undefined,
-  OutputArgs extends undefined | ZodRawShape | ZodTypeAny = undefined
+  OutputArgs extends undefined | ZodRawShape | ZodType = undefined
 > {
   name: string;
   description: string;

@@ -6,7 +6,7 @@
  */
 
 /**
- * Creates a properly typed tool result with structured content.
+ * Creates a properly typed success tool result with structured content.
  *
  * This helper centralizes the type assertion needed because the MCP SDK's ToolCallback
  * type expects structuredContent to be `{ [x: string]: unknown } | undefined`, but at runtime
@@ -20,31 +20,19 @@
  * 5. Only include structuredContent when outputSchema is defined (reduces token usage)
  * 6. Content is optional when structuredContent is provided (further reduces token usage)
  *
- * @overload
- * When structuredContent is provided, content is optional and defaults to empty array
  * @param structuredContent - The structured data matching the outputSchema
- * @param isError - Optional flag indicating this is an error response
  * @param includeStructured - Whether to include structuredContent (default: true)
  * @param content - Optional content array (defaults to empty when structuredContent provided)
- *
- * @overload
- * When no structuredContent, content is required for backward compatibility
- * @param structuredContent - undefined
- * @param isError - Optional flag indicating this is an error response
- * @param includeStructured - Whether to include structuredContent (default: false)
- * @param content - Required content array
  *
  * @returns A tool result that satisfies ToolCallback's type constraints
  */
 export function createToolResult<T = unknown>(
   structuredContent?: T,
-  isError?: boolean,
   includeStructured: boolean = true,
   content?: Array<{ type: "text"; text: string }>
 ): {
   content: Array<{ type: "text"; text: string }>;
   structuredContent?: { [x: string]: unknown };
-  isError?: boolean;
 } {
   // Type assertion is necessary here because ToolCallback's type definition is more
   // restrictive than the actual runtime behavior. The MCP SDK accepts structuredContent
@@ -61,7 +49,6 @@ export function createToolResult<T = unknown>(
     ...(includeStructured && structuredContent !== undefined && {
       structuredContent: structuredContent as { [x: string]: unknown }
     }),
-    ...(isError && { isError }),
   };
 }
 
@@ -79,9 +66,8 @@ export function createToolResultError<T = unknown>(
   structuredContent?: { [x: string]: unknown };
   isError: boolean;
 } {
-  const result = createToolResult(errorData, true);
   return {
-    ...result,
-    isError: true, // Ensure isError is always true
+    ...createToolResult(errorData),
+    isError: true,
   };
 }
