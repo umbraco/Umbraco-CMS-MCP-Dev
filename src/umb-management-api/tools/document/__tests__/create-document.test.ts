@@ -26,6 +26,8 @@ describe("create-document", () => {
     const docModel = {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
+      parentId: undefined,
+      cultures: undefined,
       values: [],
     };
 
@@ -54,6 +56,8 @@ describe("create-document", () => {
     const docModel = {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
+      parentId: undefined,
+      cultures: undefined,
       values: [
         {
           editorAlias: "Umbraco.TextBox",
@@ -123,6 +127,7 @@ describe("create-document", () => {
       const docModel = {
         documentTypeId: ROOT_DOCUMENT_TYPE_ID,
         name: TEST_DOCUMENT_NAME,
+        parentId: undefined,
         cultures: ["en-US", "da-DK"],
         values: [],
       };
@@ -176,6 +181,7 @@ describe("create-document", () => {
     const docModel = {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
+      parentId: undefined,
       cultures: [],
       values: [],
     };

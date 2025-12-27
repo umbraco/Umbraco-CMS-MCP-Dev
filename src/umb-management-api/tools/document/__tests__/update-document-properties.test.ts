@@ -305,6 +305,7 @@ describe("update-document-properties", () => {
             { editorAlias: "Umbraco.TextBox", alias: "title", value: EN_US_TITLE, culture: "en-US", segment: null },
             { editorAlias: "Umbraco.TextBox", alias: "title", value: DA_DK_TITLE, culture: "da-DK", segment: null },
           ],
+          parentId: undefined,
         },
         createMockRequestHandlerExtra()
       );
@@ -368,6 +369,7 @@ describe("update-document-properties", () => {
             { editorAlias: "Umbraco.TextBox", alias: "title", value: EN_US_TITLE, culture: "en-US", segment: null },
             { editorAlias: "Umbraco.TextBox", alias: "title", value: DA_DK_TITLE, culture: "da-DK", segment: null },
           ],
+          parentId: undefined,
         },
         createMockRequestHandlerExtra()
       );
@@ -436,6 +438,7 @@ describe("update-document-properties", () => {
           values: [
             { editorAlias: "Umbraco.TextBox", alias: "title", value: EN_US_TITLE, culture: "en-US", segment: null },
           ],
+          parentId: undefined,
         },
         createMockRequestHandlerExtra()
       );

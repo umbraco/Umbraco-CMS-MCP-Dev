@@ -40,7 +40,7 @@ describe("get-document-type-allowed-at-root", () => {
     );
 
     // Parse and find our test document type
-    const parsed = validateStructuredContent(result, getDocumentTypeAllowedAtRootResponse) as {
+    const parsed = validateStructuredContent(result, getDocumentTypeAllowedAtRootResponse) as unknown as {
       items: DocumentTypeResponseModel[];
     };
     const testDocType = parsed.items.find(

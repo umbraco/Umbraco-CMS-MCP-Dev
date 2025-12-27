@@ -9,11 +9,6 @@ import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 const TEST_DOCUMENT_NAME = "_Test Document Copy";
 const TEST_DOCUMENT_COPY_NAME = "_Test Document Copy (1)";
 
-// Helper to get the copied document name (Umbraco appends ' (copy)' by default)
-function getCopyName(name: string) {
-  return `${name} (copy)`;
-}
-
 describe("copy-document", () => {
   let originalConsoleError: typeof console.error;
 
@@ -39,6 +34,7 @@ describe("copy-document", () => {
     // Copy the document to root (no parentId means root)
     const result = await CopyDocumentTool.handler(
       {
+        parentId: undefined,
         idToCopy: docBuilder.getId(),
         relateToOriginal: false,
         includeDescendants: false,
@@ -61,6 +57,7 @@ describe("copy-document", () => {
   it("should handle non-existent document", async () => {
     const result = await CopyDocumentTool.handler(
       {
+        parentId: undefined,
         idToCopy: BLANK_UUID,
         relateToOriginal: false,
         includeDescendants: false,

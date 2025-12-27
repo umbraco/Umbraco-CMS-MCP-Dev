@@ -62,7 +62,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "title", value: "Updated" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -90,7 +92,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "someAlias", value: "Updated" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -111,7 +115,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "title", value: "Updated" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -174,7 +180,8 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID, 
             group: "Content"
           }
-        ]
+        ],
+        description: undefined
       }, createMockRequestHandlerExtra());
 
       const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
@@ -265,7 +272,9 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "blockTitle", value: "Updated Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -305,7 +314,9 @@ describe("update-block-property", () => {
             contentKey: FAKE_CONTENT_KEY,
             blockType: "content",
             properties: [{ alias: "blockTitle", value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -354,7 +365,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "blockTitle", value: "Updated Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -399,7 +412,9 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: NON_EXISTENT_PROPERTY_ALIAS, value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -481,7 +496,8 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
+        ],
+        description: undefined
       }, createMockRequestHandlerExtra());
 
       const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
@@ -579,7 +595,9 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "blockSubtitle", value: "New Subtitle" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -628,7 +646,9 @@ describe("update-block-property", () => {
               { alias: "blockTitle", value: "Updated Title" },
               { alias: "blockSubtitle", value: "New Subtitle" }
             ]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -674,7 +694,9 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "nonExistentOnElementType", value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -742,7 +764,8 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
+        ],
+        description: undefined
       }, createMockRequestHandlerExtra());
 
       const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
@@ -843,7 +866,9 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "gridBlockTitle", value: "Updated Grid Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -883,7 +908,9 @@ describe("update-block-property", () => {
             contentKey: FAKE_CONTENT_KEY,
             blockType: "content",
             properties: [{ alias: "gridBlockTitle", value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -932,7 +959,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "gridBlockTitle", value: "Updated Grid Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -977,7 +1006,9 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: NON_EXISTENT_PROPERTY_ALIAS, value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -1074,7 +1105,8 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
+        ],
+        description: undefined
       }, createMockRequestHandlerExtra());
 
       const innerElementResponse = validateStructuredContent(innerElementResult, createElementTypeOutputSchema);
@@ -1116,7 +1148,8 @@ describe("update-block-property", () => {
             dataTypeId: innerBlockListDataTypeId,
             group: "Content"
           }
-        ]
+        ],
+        description: undefined
       }, createMockRequestHandlerExtra());
 
       const gridElementResponse = validateStructuredContent(gridElementResult, createElementTypeOutputSchema);
@@ -1256,7 +1289,9 @@ describe("update-block-property", () => {
             contentKey: innerBlockKey,
             blockType: "content",
             properties: [{ alias: "innerTitle", value: "Updated Inner Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -1322,7 +1357,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "innerTitle", value: "Updated Inner Title" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -1400,7 +1437,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "innerTitle", value: "Updated Inner Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -1493,7 +1532,8 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
+        ],
+        description: undefined
       }, createMockRequestHandlerExtra());
 
       const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
@@ -1587,7 +1627,9 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "rteBlockTitle", value: "Updated RTE Block Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -1629,7 +1671,9 @@ describe("update-block-property", () => {
             contentKey: FAKE_CONTENT_KEY,
             blockType: "content",
             properties: [{ alias: "rteBlockTitle", value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -1680,7 +1724,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "rteBlockTitle", value: "Updated RTE Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -1727,7 +1773,9 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: NON_EXISTENT_PROPERTY_ALIAS, value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -1826,7 +1874,8 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
+        ],
+        description: undefined
       }, createMockRequestHandlerExtra());
 
       const innerElementResponse = validateStructuredContent(innerElementResult, createElementTypeOutputSchema);
@@ -1868,7 +1917,8 @@ describe("update-block-property", () => {
             dataTypeId: nestedRteDataTypeId,
             group: "Content"
           }
-        ]
+        ],
+        description: undefined
       }, createMockRequestHandlerExtra());
 
       const gridElementResponse = validateStructuredContent(gridElementResult, createElementTypeOutputSchema);
@@ -2011,7 +2061,9 @@ describe("update-block-property", () => {
             contentKey: rteBlockKey,
             blockType: "content",
             properties: [{ alias: "innerRteTitle", value: "Updated Inner RTE Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -2079,7 +2131,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "innerRteTitle", value: "Updated Inner RTE Title" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -2157,7 +2211,9 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "innerRteTitle", value: "Updated RTE Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );
@@ -2224,7 +2280,9 @@ describe("update-block-property", () => {
             contentKey: rteBlockKey,
             blockType: "content",
             properties: [{ alias: NON_EXISTENT_PROPERTY_ALIAS, value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
         createMockRequestHandlerExtra()
       );

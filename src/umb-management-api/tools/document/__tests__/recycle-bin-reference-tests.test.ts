@@ -84,7 +84,7 @@ describe("recycle-bin-reference-tests", () => {
 
       // Act: Get references for the recycled document
       const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { take: 20 },
+        { take: 20, skip: 0 },
         createMockRequestHandlerExtra()
       );
 
@@ -121,7 +121,7 @@ describe("recycle-bin-reference-tests", () => {
     it("should handle non-existent recycled document", async () => {
       // Act: Try to get references for non-existent recycled document
       const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { take: 20 },
+        { take: 20, skip: 0 },
         createMockRequestHandlerExtra()
       );
 

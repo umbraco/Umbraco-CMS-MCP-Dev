@@ -58,7 +58,7 @@ describe("get-document-type-allowed-children", () => {
       (item: any) => item.name === TEST_CHILD_NAME
     );
     expect(foundChild).toBeDefined();
-    expect(foundChild.name).toBe(TEST_CHILD_NAME);
+    expect(foundChild!.name).toBe(TEST_CHILD_NAME);
 
     // Verify the total count
     expect(response.total).toBe(1);
