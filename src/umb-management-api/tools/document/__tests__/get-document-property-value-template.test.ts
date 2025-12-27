@@ -1,19 +1,9 @@
 import GetDocumentPropertyValueTemplateTool from "../get/get-document-property-value-template.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-document-property-value-template", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
+  setupTestEnvironment();
   it("should list all available property value templates when no editorAlias is provided", async () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(

@@ -1,30 +1,23 @@
 import GetDocumentTypeBlueprintTool from "../get/get-document-type-blueprint.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-// TODO: Document blueprint tests are skipped - document-blueprint module not in this template
-// import { DocumentBlueprintBuilder } from "../../document-blueprint/__tests__/helpers/document-blueprint-builder.js";
-// import { DocumentBlueprintTestHelper } from "../../document-blueprint/__tests__/helpers/document-blueprint-test-helper.js";
-import { jest } from "@jest/globals";
-import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { DocumentBlueprintBuilder } from "../../document-blueprint/__tests__/helpers/document-blueprint-builder.js";
+import { DocumentBlueprintTestHelper } from "../../document-blueprint/__tests__/helpers/document-blueprint-test-helper.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { normalizeObject } from "@/test-helpers/create-snapshot-result.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Blueprint";
 const TEST_BLUEPRINT_NAME = "_Test Blueprint For DocumentType";
 
-// Skipping: document-blueprint module not available in this template
-describe.skip("get-document-type-blueprint", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+describe("get-document-type-blueprint", () => {
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test document types and blueprints
+    await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
-    // await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
   });
 
   it("should get blueprints for a document type", async () => {
@@ -35,9 +28,9 @@ describe.skip("get-document-type-blueprint", () => {
       .create();
 
     // Create a blueprint for the document type
-    // await new DocumentBlueprintBuilder(TEST_BLUEPRINT_NAME)
-    //   .withDocumentType(docTypeBuilder.getId())
-    //   .create();
+    await new DocumentBlueprintBuilder(TEST_BLUEPRINT_NAME)
+      .withDocumentType(docTypeBuilder.getId())
+      .create();
 
     // Get the blueprints
     const result = await GetDocumentTypeBlueprintTool.handler(
@@ -46,23 +39,8 @@ describe.skip("get-document-type-blueprint", () => {
       } as any, createMockRequestHandlerExtra()
     );
 
-    // Normalize IDs in the response
-    const normalizedResult = {
-      ...result,
-      content: result.content.map((content) => {
-        const parsed = JSON.parse((content as any).text);
-        return {
-          ...content,
-          text: JSON.stringify({
-            ...parsed,
-            items: DocumentTypeTestHelper.normaliseIds(parsed.items),
-          }),
-        };
-      }),
-    };
-
-    // Verify the handler response using snapshot
-    expect(normalizedResult).toMatchSnapshot();
+    // Normalize and verify the handler response using snapshot
+    expect(normalizeObject(result)).toMatchSnapshot();
   });
 
   it("should handle non-existent document type", async () => {

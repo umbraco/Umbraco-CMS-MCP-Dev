@@ -4,21 +4,20 @@ import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { MemberGroupBuilder } from "../../member-group/__tests__/helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "../../member-group/__tests__/helpers/member-group-helper.js";
 import { UmbracoManagementClient } from "@umb-management-client";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test PutPublicAccessDocument";
 const TEST_MEMBER_GROUP_NAME = "_Test PutPublicAccess MemberGroup";
 const TEST_MEMBER_GROUP_NAME_2 = "_Test PutPublicAccess MemberGroup2";
 
 describe("put-document-public-access", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let docId: string;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     await new MemberGroupBuilder().withName(TEST_MEMBER_GROUP_NAME).create();
     await new MemberGroupBuilder().withName(TEST_MEMBER_GROUP_NAME_2).create();
     const builder = await new DocumentBuilder()
@@ -31,7 +30,6 @@ describe("put-document-public-access", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await MemberGroupTestHelper.cleanup(TEST_MEMBER_GROUP_NAME);
     await MemberGroupTestHelper.cleanup(TEST_MEMBER_GROUP_NAME_2);

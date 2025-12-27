@@ -1,7 +1,7 @@
-import { normalizeErrorResponse, createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { normalizeErrorResponse, createSnapshotResult , normalizeObject} from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import CreateElementTypeTool, { createElementTypeOutputSchema } from "../post/create-element-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { v4 as uuidv4 } from "uuid";
 import { TextString_DATA_TYPE_ID } from "@/constants/constants.js";
@@ -10,15 +10,9 @@ const TEST_ELEMENT_NAME = "_Test ElementType Created";
 const EXISTING_ELEMENT_NAME = "_Existing ElementType";
 
 describe("create-element-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test element types
     await DocumentTypeTestHelper.cleanup(TEST_ELEMENT_NAME);
     await DocumentTypeTestHelper.cleanup(EXISTING_ELEMENT_NAME);
@@ -49,7 +43,7 @@ describe("create-element-type", () => {
       TEST_ELEMENT_NAME
     );
     expect(item).toBeDefined();
-    expect(DocumentTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should handle existing element type", async () => {
@@ -103,7 +97,7 @@ describe("create-element-type", () => {
       TEST_ELEMENT_NAME
     );
     expect(item).toBeDefined();
-    expect(DocumentTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should reject property without tab or group", async () => {

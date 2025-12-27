@@ -3,7 +3,7 @@ import CreateDataTypeFolderTool from "../folders/post/create-folder.js";
 import DeleteDataTypeFolderTool from "../folders/delete/delete-folder.js";
 import UpdateDataTypeFolderTool from "../folders/put/update-folder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
@@ -14,19 +14,13 @@ const UPDATE_FOLDER_NAME = "_Update DataType Folder Name";
 const UPDATED_FOLDER_NAME = "_Updated DataType Folder Name";
 
 describe("data-type-folder", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await DataTypeTestHelper.cleanup(TEST_PARENT_FOLDER_NAME);
     await DataTypeTestHelper.cleanup(UPDATE_FOLDER_NAME);
     await DataTypeTestHelper.cleanup(UPDATED_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   describe("create", () => {

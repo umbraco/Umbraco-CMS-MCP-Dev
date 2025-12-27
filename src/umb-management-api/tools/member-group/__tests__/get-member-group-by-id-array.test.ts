@@ -2,21 +2,15 @@ import GetMemberGroupByIdArrayTool from "../get/get-member-group-by-id-array.js"
 import { MemberGroupBuilder } from "./helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "./helpers/member-group-helper.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("get-item-member-group", () => {
   const TEST_GROUP_NAME_1 = "_Test Item Member Group 1";
   const TEST_GROUP_NAME_2 = "_Test Item Member Group 2";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberGroupTestHelper.cleanup(TEST_GROUP_NAME_1);
     await MemberGroupTestHelper.cleanup(TEST_GROUP_NAME_2);
   });

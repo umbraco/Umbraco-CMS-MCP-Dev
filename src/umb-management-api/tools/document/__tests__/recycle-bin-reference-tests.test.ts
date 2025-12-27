@@ -1,26 +1,20 @@
 import GetRecycleBinDocumentByIdOriginalParentTool from "../get/get-recycle-bin-document-original-parent.js";
 import GetRecycleBinDocumentReferencedByTool from "../get/get-recycle-bin-document-referenced-by.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCUMENT_NAME = "_Test Recycle Bin Document";
 
 describe("recycle-bin-reference-tests", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up both regular and recycle bin documents
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTestHelper.emptyRecycleBin();
-    console.error = originalConsoleError;
   });
 
   describe("get-recycle-bin-document-original-parent", () => {

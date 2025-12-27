@@ -24,15 +24,6 @@ export class DocumentTestHelper {
     return "";
   }
 
-  static normaliseIds(
-    items: DocumentTreeItemResponseModel | DocumentTreeItemResponseModel[]
-  ): DocumentTreeItemResponseModel | DocumentTreeItemResponseModel[] {
-    if (Array.isArray(items)) {
-      return items.map((item) => ({ ...item, id: BLANK_UUID }));
-    }
-    return { ...items, id: BLANK_UUID };
-  }
-
   static async cleanup(name: string): Promise<void> {
     try {
       const client = UmbracoManagementClient.getClient();

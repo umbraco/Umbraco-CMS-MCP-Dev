@@ -3,7 +3,7 @@ import GetDataTypeAncestorsTool from "../items/get/get-ancestors.js";
 import GetDataTypeChildrenTool from "../items/get/get-children.js";
 import GetAllDataTypesTool from "../items/get/get-all.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
@@ -16,18 +16,12 @@ const TEST_FOLDER_NAME = "_Test Folder DataType";
 const TEST_CHILD_NAME = "_Test Child DataType";
 
 describe("data-type-tree", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await DataTypeTestHelper.cleanup(TEST_ROOT_NAME);
     await DataTypeTestHelper.cleanup(TEST_CHILD_NAME);
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   describe("children", () => {

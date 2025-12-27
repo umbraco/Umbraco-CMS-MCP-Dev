@@ -33,10 +33,10 @@ const config: Config = {
       },
     ],
   },
-  testMatch: ["<rootDir>/tests/e2e-sdk/**/*.test.ts"],
+  testMatch: ["<rootDir>/tests/e2e/**/*.test.ts"],
   setupFilesAfterEnv: [
     "jest-extended/all",
-    "<rootDir>/tests/e2e-sdk/helpers/e2e-setup.ts"
+    "<rootDir>/tests/e2e/helpers/e2e-setup.ts"
   ],
   setupFiles: ["<rootDir>/jest.setup.ts"],
 

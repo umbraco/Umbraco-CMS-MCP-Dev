@@ -17,7 +17,7 @@ exports[`create-document should create a document 2`] = `
   "documentType": {
     "collection": null,
     "icon": "icon-home color-blue",
-    "id": "a95360e8-ff04-40b1-8f46-7aa4b5983096",
+    "id": "00000000-0000-0000-0000-000000000000",
   },
   "flags": [],
   "hasChildren": false,
@@ -55,7 +55,7 @@ exports[`create-document should create a document with additional properties 2`]
   "documentType": {
     "collection": null,
     "icon": "icon-home color-blue",
-    "id": "a95360e8-ff04-40b1-8f46-7aa4b5983096",
+    "id": "00000000-0000-0000-0000-000000000000",
   },
   "flags": [],
   "hasChildren": false,

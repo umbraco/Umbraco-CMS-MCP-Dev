@@ -6,7 +6,6 @@ import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/do
 import { DataTypeBuilder } from "../../data-type/__tests__/helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "../../data-type/__tests__/helpers/data-type-test-helper.js";
 import CreateElementTypeTool, { createElementTypeOutputSchema } from "../../document-type/post/create-element-type.js";
-import { jest } from "@jest/globals";
 import {
   ROOT_DOCUMENT_TYPE_ID,
   BLANK_UUID,
@@ -14,6 +13,7 @@ import {
 } from "../../../../constants/constants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { v4 as uuidv4 } from "uuid";
 
@@ -27,17 +27,7 @@ const FAKE_CONTENT_KEY = "00000000-0000-0000-0000-000000000001";
 const NON_EXISTENT_PROPERTY_ALIAS = "nonExistentPropertyAlias";
 
 describe("update-block-property", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
-
+  setupTestEnvironment();
   describe("error handling integration tests", () => {
     afterEach(async () => {
       await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);

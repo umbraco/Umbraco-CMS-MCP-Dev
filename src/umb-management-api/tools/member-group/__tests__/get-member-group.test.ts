@@ -3,23 +3,21 @@ import GetMemberGroupTool from "../get/get-member-group.js";
 import { MemberGroupBuilder } from "./helpers/member-group-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_GROUP_NAME = "_Test Member Group Get";
 
 describe("get-member-group", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let builder: MemberGroupBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new MemberGroupBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
   });
 

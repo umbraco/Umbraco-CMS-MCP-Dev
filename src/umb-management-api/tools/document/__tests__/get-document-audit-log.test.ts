@@ -1,19 +1,18 @@
 import GetDocumentAuditLogTool from "../get/get-document-audit-log.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test AuditLogDocument";
 
 describe("get-document-audit-log", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let docId: string;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     // Create a document
     const builder = await new DocumentBuilder()
       .withName(TEST_DOCUMENT_NAME)
@@ -23,7 +22,6 @@ describe("get-document-audit-log", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 

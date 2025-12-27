@@ -1,5 +1,4 @@
 import { MemberGroupBuilder } from "./member-group-builder.js";
-import { jest } from "@jest/globals";
 
 describe("MemberGroupBuilder", () => {
   let helper: MemberGroupBuilder;

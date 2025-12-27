@@ -1,24 +1,22 @@
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import DeleteDocumentRecycleBinItemTool from "../delete/delete-recycle-bin-item.js";
-import { jest } from "@jest/globals";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test Document Recycle Bin Delete";
 
 describe("delete-document-recycle-bin-item", () => {
-  let originalConsoleError: typeof console.error;
+
+  setupTestEnvironment();
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     await DocumentTestHelper.emptyRecycleBin();
   });
 
   afterEach(async () => {
     await DocumentTestHelper.emptyRecycleBin();
-    console.error = originalConsoleError;
   });
 
   it("should permanently delete document from recycle bin", async () => {

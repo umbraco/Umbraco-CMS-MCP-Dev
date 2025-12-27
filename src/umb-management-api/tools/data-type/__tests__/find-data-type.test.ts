@@ -1,8 +1,8 @@
 import FindDataTypeTool from "../get/find-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getFilterDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetFilterDataTypeParams } from "@/umb-management-api/schemas/index.js";
 
@@ -10,17 +10,11 @@ const TEST_DATATYPE_NAME = "_Test FindDataType";
 const TEST_DATATYPE_NAME_2 = "_Test FindDataType 2";
 
 describe("find-data-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME_2);
-    console.error = originalConsoleError;
   });
 
   it("should find a data type by name", async () => {

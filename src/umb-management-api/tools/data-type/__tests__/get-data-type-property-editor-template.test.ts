@@ -1,19 +1,9 @@
 import GetDataTypePropertyEditorTemplateTool from "../get/get-data-type-property-editor-template.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-data-type-property-editor-template", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
+  setupTestEnvironment();
   it("should list all available property editors when no editorName is provided", async () => {
     // Act - Get property editors without specifying a name
     const result = await GetDataTypePropertyEditorTemplateTool.handler(

@@ -2,23 +2,17 @@ import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
 import GetDocumentByIdTool from "../get/get-document-by-id.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getDocumentByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetDocumentById";
 
 describe("get-document-by-id", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 

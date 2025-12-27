@@ -1,23 +1,17 @@
 import CreateDocumentTool, { createOutputSchema } from "../post/create-document.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { createSnapshotResult, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 
 const TEST_DOCUMENT_NAME = "_Test Document Created";
 
 describe("create-document", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 
@@ -45,7 +39,7 @@ describe("create-document", () => {
     const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
     expect(item).toBeDefined();
     const norm = {
-      ...DocumentTestHelper.normaliseIds(item!),
+      ...normalizeObject(item!),
       createDate: "NORMALIZED_DATE",
     };
     expect(norm).toMatchSnapshot();
@@ -81,7 +75,7 @@ describe("create-document", () => {
     const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
     expect(item).toBeDefined();
     const norm = {
-      ...DocumentTestHelper.normaliseIds(item!),
+      ...normalizeObject(item!),
       createDate: "NORMALIZED_DATE",
     };
     expect(norm).toMatchSnapshot();

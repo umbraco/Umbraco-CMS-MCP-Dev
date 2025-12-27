@@ -1,20 +1,14 @@
 import DeleteDocumentBlueprintTool from "../delete/delete-blueprint.js";
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 describe("delete-document-blueprint", () => {
   const TEST_BLUEPRINT_NAME = "_Test Blueprint Delete";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any remaining test blueprints
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
   });

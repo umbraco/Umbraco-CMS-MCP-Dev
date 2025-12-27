@@ -2,8 +2,8 @@ import CreateDataTypeTool, { createDataTypeOutputSchema } from "../post/create-d
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createSnapshotResult, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType Created";
@@ -12,19 +12,13 @@ const TEST_FOLDER_NAME = "_Test DataType Folder For Creation";
 const TEST_DATATYPE_WITH_PARENT_NAME = "_Test DataType With Parent";
 
 describe("create-data-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(EXISTING_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_WITH_PARENT_NAME);
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should create a data type", async () => {
@@ -46,7 +40,7 @@ describe("create-data-type", () => {
     // Assert - Verify the created item exists and matches expected values
     const item = await DataTypeTestHelper.findDataType(TEST_DATATYPE_NAME);
     expect(item).toBeDefined();
-    expect(DataTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should create a data type with parent folder", async () => {
@@ -77,6 +71,6 @@ describe("create-data-type", () => {
     expect(item).toBeDefined();
     expect(item!.parent).toBeDefined();
     expect(item!.parent!.id).toBe(folderBuilder.getId());
-    expect(DataTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 }); 

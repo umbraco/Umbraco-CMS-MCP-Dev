@@ -1,7 +1,7 @@
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import GetDataTypeSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
@@ -14,19 +14,13 @@ const TEST_SIBLING_2_NAME = "_Test Sibling 2 DataType";
 const TEST_SIBLING_3_NAME = "_Test Sibling 3 DataType";
 
 describe("get-data-type-siblings", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await DataTypeTestHelper.cleanup(TEST_SIBLING_1_NAME);
     await DataTypeTestHelper.cleanup(TEST_SIBLING_2_NAME);
     await DataTypeTestHelper.cleanup(TEST_SIBLING_3_NAME);
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get sibling data types", async () => {

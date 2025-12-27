@@ -2,24 +2,22 @@ import DeleteLanguageTool from "../delete/delete-language.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("delete-language", () => {
+  setupTestEnvironment();
+
   const TEST_LANGUAGE_NAME = "_Test Language Delete";
   const TEST_LANGUAGE_ISO = "en-GB";
-  let originalConsoleError: typeof console.error;
   let builder: LanguageBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new LanguageBuilder();
   });
 
   afterEach(async () => {
     await builder.cleanup();
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
-    console.error = originalConsoleError;
   });
 
   it("should delete a language", async () => {

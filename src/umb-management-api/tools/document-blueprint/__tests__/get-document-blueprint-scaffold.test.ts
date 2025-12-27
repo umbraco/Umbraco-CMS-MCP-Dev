@@ -2,20 +2,14 @@ import GetDocumentBlueprintScaffoldTool from "../get/get-document-blueprint-scaf
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_BLUEPRINT_NAME = "_Test Blueprint Scaffold";
 
 describe("get-document-blueprint-scaffold", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
   });
 

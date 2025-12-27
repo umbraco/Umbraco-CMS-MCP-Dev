@@ -1,7 +1,7 @@
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import GetDocumentTypeSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
@@ -12,19 +12,13 @@ describe("get-document-type-siblings", () => {
   const TEST_SIBLING_1_NAME = "_Test Sibling 1";
   const TEST_SIBLING_2_NAME = "_Test Sibling 2";
   const TEST_TARGET_NAME = "_Test Target DocumentType";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await DocumentTypeTestHelper.cleanup(TEST_SIBLING_1_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_SIBLING_2_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_TARGET_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get sibling document types", async () => {

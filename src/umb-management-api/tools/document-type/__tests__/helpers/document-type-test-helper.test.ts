@@ -1,19 +1,12 @@
 import { DocumentTypeTestHelper } from "./document-type-test-helper.js";
 import { DocumentTypeBuilder } from "./document-type-builder.js";
-import { jest } from "@jest/globals";
-import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("DocumentTypeTestHelper", () => {
   const TEST_DOCTYPE_NAME = "_Test Helper DocumentType";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
   });
 
@@ -90,56 +83,6 @@ describe("DocumentTypeTestHelper", () => {
     it("should handle empty array", () => {
       const result = DocumentTypeTestHelper.findByName([], TEST_DOCTYPE_NAME);
       expect(result).toBeUndefined();
-    });
-  });
-
-  describe("normaliseIds", () => {
-    it("should normalise single item", () => {
-      const item = {
-        name: TEST_DOCTYPE_NAME,
-        id: "123-456",
-        hasChildren: false,
-        isFolder: false,
-        isElement: false,
-        icon: "icon-test",
-        flags: [],
-      };
-
-      const result = DocumentTypeTestHelper.normaliseIds(item);
-      expect(result).toEqual({
-        ...item,
-        id: BLANK_UUID,
-      });
-    });
-
-    it("should normalise array of items", () => {
-      const items = [
-        {
-          name: "Test1",
-          id: "1",
-          hasChildren: false,
-          isFolder: false,
-          isElement: false,
-          icon: "icon-test",
-          flags: [],
-        },
-        {
-          name: "Test2",
-          id: "2",
-          hasChildren: false,
-          isFolder: false,
-          isElement: false,
-          icon: "icon-test",
-          flags: [],
-        },
-      ];
-
-      const result = DocumentTypeTestHelper.normaliseIds(items);
-      expect(Array.isArray(result)).toBe(true);
-      expect(result).toHaveLength(2);
-      (result as any[]).forEach((item) => {
-        expect(item.id).toBe(BLANK_UUID);
-      });
     });
   });
 

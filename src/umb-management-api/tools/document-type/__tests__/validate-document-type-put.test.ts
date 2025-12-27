@@ -1,22 +1,16 @@
 import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import ValidateDocumentTypeTool from "../put/validate-document-type.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCTYPE_NAME = "_Test ValidateDocumentType";
 
 describe("validate-document-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
   });
 

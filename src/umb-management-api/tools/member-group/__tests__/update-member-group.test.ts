@@ -2,7 +2,7 @@ import UpdateMemberGroupTool from "../put/update-member-group.js";
 import { MemberGroupBuilder } from "./helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "./helpers/member-group-helper.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_GROUP_NAME = "_Test Member Group Update";
@@ -10,17 +10,15 @@ const UPDATED_GROUP_NAME = "_Updated Member Group";
 const NON_EXISTENT_GROUP_NAME = "_Non Existent Member Group";
 
 describe("update-member-group", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let builder: MemberGroupBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new MemberGroupBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
     await MemberGroupTestHelper.cleanup(UPDATED_GROUP_NAME);
   });

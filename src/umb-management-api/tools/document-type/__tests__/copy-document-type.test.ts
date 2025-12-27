@@ -2,8 +2,8 @@ import CopyDocumentTypeTool from "../post/copy-document-type.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Copy";
@@ -11,15 +11,9 @@ const TEST_DOCTYPE_COPY_NAME = "_Test DocumentType Copy (copy)";
 const TEST_FOLDER_NAME = "_Test Folder For Copy";
 
 describe("copy-document-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test document types and folders
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_COPY_NAME);

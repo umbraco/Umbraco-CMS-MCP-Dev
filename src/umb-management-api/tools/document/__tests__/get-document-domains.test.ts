@@ -1,21 +1,20 @@
 import GetDocumentDomainsTool from "../get/get-document-domains.js";
 import { DocumentBuilder, TEST_DOMAIN } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getDocumentByIdDomainsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_DOCUMENT_NAME = "_Test DomainsDocument";
 
 describe("get-document-domains", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let docId: string;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     // Create a document and set domains
     const builder = await new DocumentBuilder()
       .withName(TEST_DOCUMENT_NAME)
@@ -26,7 +25,6 @@ describe("get-document-domains", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 

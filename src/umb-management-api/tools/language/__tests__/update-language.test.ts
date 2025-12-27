@@ -2,26 +2,24 @@ import UpdateLanguageTool from "../put/update-language.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_LANGUAGE_NAME = '_Test Update Language';
 const TEST_LANGUAGE_ISO = 'en-GB';
 const UPDATED_LANGUAGE_NAME = '_Test Updated Language';
 
 describe("update-language", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let builder: LanguageBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new LanguageBuilder();
   });
 
   afterEach(async () => {
     await builder.cleanup();
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
-    console.error = originalConsoleError;
   });
 
   it("should update an existing language", async () => {

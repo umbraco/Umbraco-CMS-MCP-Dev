@@ -2,7 +2,7 @@ import CreateLanguageTool from "../post/create-language.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_LANGUAGE_NAME = '_Test Create Language';
 const TEST_LANGUAGE_ISO = 'en-GB';
@@ -10,17 +10,11 @@ const EXISTING_LANGUAGE_NAME = '_Existing Language';
 const EXISTING_LANGUAGE_ISO = 'en';
 
 describe("create-language", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
     await LanguageTestHelper.cleanup(EXISTING_LANGUAGE_ISO);
-    console.error = originalConsoleError;
   });
 
   it("should create a language", async () => {

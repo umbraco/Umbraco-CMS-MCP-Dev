@@ -1,24 +1,18 @@
 import CreateDocumentBlueprintFromDocumentTool from "../post/create-document-blueprint-from-document.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCUMENT_NAME = "_Test Source Document";
 const TEST_BLUEPRINT_NAME = "_Test Blueprint From Document";
 
 describe("create-document-blueprint-from-document", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
   });

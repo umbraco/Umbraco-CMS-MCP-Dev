@@ -1,8 +1,7 @@
 import { jest } from "@jest/globals";
 import { runAgentTest, logTestResult } from "./agent-runner.js";
 import { verifyRequiredToolCalls, verifySuccessMessage } from "./verification.js";
-import { DEFAULT_TIMEOUT_MS, TEST_DELAY_MS, getVerbosity } from "./config.js";
-import { waitForRateLimit, recordTokenUsage } from "./rate-limiter.js";
+import { DEFAULT_TIMEOUT_MS, getVerbosity } from "./config.js";
 import type { TestScenario } from "./types.js";
 
 /**
@@ -30,9 +29,6 @@ export function createScenarioTest(
   timeout: number = DEFAULT_TIMEOUT_MS
 ): void {
   it(scenario.name, async () => {
-    // Check rate limit before starting
-    await waitForRateLimit();
-
     const verbosity = getVerbosity({
       verbose: scenario.verbose || scenario.debug,
       verbosity: scenario.verbosity
@@ -48,9 +44,6 @@ export function createScenarioTest(
       scenario.tools,
       { ...scenario.options, verbosity }
     );
-
-    // Record token usage for rate limiting
-    recordTokenUsage(result.tokens.input, result.tokens.output);
 
     // Only show detailed result in normal or verbose mode
     if (verbosity !== "quiet") {
@@ -76,17 +69,7 @@ export function createScenarioTest(
 }
 
 /**
- * Helper to delay execution (for rate limiting)
- */
-function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-/**
- * Setup helper for beforeEach/afterEach console mocking and rate limit delays
- *
- * Set E2E_TEST_DELAY_MS environment variable to add delay between tests.
- * Example: E2E_TEST_DELAY_MS=60000 for 1 minute delay between tests.
+ * Setup helper for beforeEach/afterEach console mocking
  */
 export function setupConsoleMock(): void {
   let originalConsoleError: typeof console.error;
@@ -96,13 +79,7 @@ export function setupConsoleMock(): void {
     console.error = jest.fn();
   });
 
-  afterEach(async () => {
+  afterEach(() => {
     console.error = originalConsoleError;
-
-    // Add delay between tests if configured (for rate limiting)
-    if (TEST_DELAY_MS > 0) {
-      console.log(`Waiting ${TEST_DELAY_MS}ms before next test (rate limit delay)...`);
-      await delay(TEST_DELAY_MS);
-    }
   });
 }

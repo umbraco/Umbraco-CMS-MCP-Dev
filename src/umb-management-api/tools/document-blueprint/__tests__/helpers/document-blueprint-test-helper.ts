@@ -1,6 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { DocumentBlueprintTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 
 export class DocumentBlueprintTestHelper {
   private static findByName(
@@ -8,27 +7,6 @@ export class DocumentBlueprintTestHelper {
     name: string
   ): DocumentBlueprintTreeItemResponseModel | undefined {
     return items.find((item: any) => item.name === name);
-  }
-
-  static normaliseIds(
-    items:
-      | DocumentBlueprintTreeItemResponseModel
-      | DocumentBlueprintTreeItemResponseModel[]
-  ):
-    | DocumentBlueprintTreeItemResponseModel
-    | DocumentBlueprintTreeItemResponseModel[] {
-    if (Array.isArray(items)) {
-      return items.map((item) => ({
-        ...item,
-        id: BLANK_UUID,
-        parent: item.parent ? { ...item.parent, id: BLANK_UUID } : item.parent
-      }));
-    }
-    return {
-      ...items,
-      id: BLANK_UUID,
-      parent: items.parent ? { ...items.parent, id: BLANK_UUID } : items.parent
-    };
   }
 
   static async cleanup(name: string): Promise<void> {

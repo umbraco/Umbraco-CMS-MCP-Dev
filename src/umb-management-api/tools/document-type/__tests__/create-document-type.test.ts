@@ -1,7 +1,7 @@
 import CreateDocumentTypeTool, { createDocumentTypeOutputSchema } from "../post/create-document-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createSnapshotResult, normalizeErrorResponse, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import type { CreateDocumentTypeModel } from "../post/create-document-type.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import type { DocumentTypeTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
@@ -14,12 +14,7 @@ const TEST_FOLDER_NAME = "_Test Folder DocumentType";
 const TEST_DOCTYPE_WITH_PARENT_NAME = "_Test DocumentType With Parent";
 
 describe("create-document-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up any test document types
@@ -27,7 +22,6 @@ describe("create-document-type", () => {
     await DocumentTypeTestHelper.cleanup(EXISTING_DOCTYPE_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_WITH_PARENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should create a document type", async () => {
@@ -56,7 +50,7 @@ describe("create-document-type", () => {
     // Verify the created item exists and matches expected values
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_NAME);
     expect(item).toBeDefined();
-    expect(DocumentTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should handle existing document type", async () => {
@@ -112,7 +106,7 @@ describe("create-document-type", () => {
 
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_NAME);
     expect(item).toBeDefined();
-    expect(DocumentTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should create a document type with parent folder", async () => {
@@ -149,7 +143,7 @@ describe("create-document-type", () => {
     expect(item!.parent!.id).toBe(folderBuilder.getId());
 
     // Normalize both the item ID and parent ID for snapshot
-    const normalizedItem = DocumentTypeTestHelper.normaliseIds(item!) as DocumentTypeTreeItemResponseModel;
+    const normalizedItem = normalizeObject(item!) as DocumentTypeTreeItemResponseModel;
     if (normalizedItem.parent) {
       normalizedItem.parent.id = "00000000-0000-0000-0000-000000000000";
     }

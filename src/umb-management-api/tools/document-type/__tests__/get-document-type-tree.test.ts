@@ -3,7 +3,7 @@ import GetDocumentTypeAncestorsTool from "../items/get/get-ancestors.js";
 import GetDocumentTypeChildrenTool from "../items/get/get-children.js";
 import GetAllDocumentTypesTool from "../items/get/get-all.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
@@ -14,15 +14,9 @@ describe("document-type-tree", () => {
   const TEST_ROOT_NAME = "_Test Root DocumentType";
   const TEST_FOLDER_NAME = "_Test Folder DocumentType";
   const TEST_CHILD_NAME = "_Test Child DocumentType";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTypeTestHelper.cleanup(TEST_ROOT_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_CHILD_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_FOLDER_NAME);

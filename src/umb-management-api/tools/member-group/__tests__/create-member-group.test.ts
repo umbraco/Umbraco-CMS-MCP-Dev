@@ -2,21 +2,15 @@ import CreateMemberGroupTool from "../post/create-member-group.js";
 import { MemberGroupTestHelper } from "./helpers/member-group-helper.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_GROUP_NAME = "_Test Member Group Created";
 const EXISTING_GROUP_NAME = "_Existing Member Group";
 
 describe("create-member-group", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberGroupTestHelper.cleanup(TEST_GROUP_NAME);
     await MemberGroupTestHelper.cleanup(EXISTING_GROUP_NAME);
   });

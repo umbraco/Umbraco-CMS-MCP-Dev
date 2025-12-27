@@ -1,20 +1,18 @@
 import GetDefaultLanguageTool from "../get/get-default-language.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-default-language", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let originalGetClient: typeof UmbracoManagementClient.getClient;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     originalGetClient = UmbracoManagementClient.getClient;
   });
 
   afterEach(() => {
-    console.error = originalConsoleError;
     UmbracoManagementClient.getClient = originalGetClient;
   });
 

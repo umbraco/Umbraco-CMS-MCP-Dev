@@ -3,20 +3,14 @@ import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.j
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("get-document-blueprint", () => {
   const TEST_BLUEPRINT_NAME = "_Test Blueprint Get";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
   });
 

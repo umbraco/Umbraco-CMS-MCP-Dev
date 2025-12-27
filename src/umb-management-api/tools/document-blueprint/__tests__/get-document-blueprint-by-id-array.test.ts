@@ -2,13 +2,14 @@ import GetDocumentBlueprintByIdArrayTool from "../get/get-document-blueprint-by-
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-item-document-blueprint", () => {
+  setupTestEnvironment();
+
   const TEST_BLUEPRINT_NAME = "_Test Item Blueprint";
   const TEST_BLUEPRINT_NAME_2 = "_Test Item Blueprint2";
-  let originalConsoleError: typeof console.error;
 
   // Helper to get items from structuredContent
   const getItems = (result: any) => {
@@ -17,15 +18,7 @@ describe("get-item-document-blueprint", () => {
       return content.items;
     }
     return content ?? [];
-  };
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
+  };  afterEach(async () => {
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME_2);
   });

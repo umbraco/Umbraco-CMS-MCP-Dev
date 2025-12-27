@@ -5,7 +5,6 @@ import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { LanguageBuilder } from "../../language/__tests__/helpers/language-builder.js";
-import { jest } from "@jest/globals";
 import {
   ROOT_DOCUMENT_TYPE_ID,
   BLANK_UUID,
@@ -14,6 +13,7 @@ import {
 import { UmbracoManagementClient } from "@umb-management-client";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("update-document-properties", () => {
   const TEST_DOCUMENT_NAME = "_Test Document Properties";
@@ -21,18 +21,11 @@ describe("update-document-properties", () => {
   const UPDATED_TITLE = "_Updated Title";
   const SECOND_PROPERTY_VALUE = "_Second Property Value";
   const INVALID_ALIAS = "nonExistentProperty";
-
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up any test documents
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should update single property value", async () => {

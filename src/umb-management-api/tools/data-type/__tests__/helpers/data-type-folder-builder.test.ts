@@ -1,19 +1,13 @@
 import { DataTypeFolderBuilder } from "./data-type-folder-builder.js";
 import { DataTypeTestHelper } from "./data-type-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe('DataTypeFolderBuilder', () => {
   const TEST_FOLDER_NAME = '_Test Builder DataType Folder';
   const TEST_PARENT_FOLDER_NAME = '_Test Parent DataType Folder';
-  let originalConsoleError: typeof console.error;
-  
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await DataTypeTestHelper.cleanup(TEST_PARENT_FOLDER_NAME);
   });

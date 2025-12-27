@@ -9,7 +9,6 @@ import {
   allModes,
   allModeNames
 } from "../mode-registry.js";
-import { jest } from "@jest/globals";
 
 describe('Mode Expander', () => {
   describe('validateModeNames', () => {

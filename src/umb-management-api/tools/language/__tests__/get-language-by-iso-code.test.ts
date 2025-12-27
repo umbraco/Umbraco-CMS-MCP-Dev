@@ -3,23 +3,21 @@ import GetLanguageByIsoCodeTool from "../get/get-language-by-iso-code.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_LANGUAGE_NAME = "_Test Language";
 const TEST_LANGUAGE_ISO = "en-Gb";
 
 describe("get-language-by-iso-code", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let builder: LanguageBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new LanguageBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
   });
 

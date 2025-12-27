@@ -11,7 +11,7 @@ const GetDocumentTypeBlueprintTool = {
   slices: ['blueprints'],
   handler: (async ({ id }: { id: string }) => {
     return executeGetApiCall((client) =>
-      client.getDocumentTypeByIdBlueprint(id, CAPTURE_RAW_HTTP_RESPONSE)
+      client.getDocumentTypeByIdBlueprint(id, {}, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getDocumentTypeByIdBlueprintParams.shape, typeof getDocumentTypeByIdBlueprintResponse.shape>;

@@ -1,22 +1,20 @@
 import DeleteFromRecycleBinTool from "../delete/delete-from-recycle-bin.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("delete-from-recycle-bin", () => {
+  setupTestEnvironment();
+
   const TEST_RECYCLE_BIN_NAME = "_Test DeleteFromRecycleBinTool";
-  let originalConsoleError: typeof console.error;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     await DocumentTestHelper.emptyRecycleBin();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_RECYCLE_BIN_NAME);
   });
 

@@ -1,22 +1,16 @@
 import GetDocumentTypesByIdArrayTool from "../get/get-document-type-by-id-array.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("get-item-document-type", () => {
   const TEST_DOCTYPE_NAME = "_Test Item DocumentType";
   const TEST_DOCTYPE_NAME_2 = "_Test Item DocumentType2";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME_2);
   });

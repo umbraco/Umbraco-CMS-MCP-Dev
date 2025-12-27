@@ -1,26 +1,20 @@
 import GetDataTypesByIdArrayTool from "../get/get-data-type-by-id-array.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getItemDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 describe("get-data-type-by-id-array", () => {
   const TEST_DATATYPE_NAME = "_Test Item DataType";
   const TEST_DATATYPE_NAME_2 = "_Test Item DataType2";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME_2);
-    console.error = originalConsoleError;
   });
 
   it("should get no data types for empty request", async () => {

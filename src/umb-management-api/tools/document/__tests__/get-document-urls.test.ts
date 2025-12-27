@@ -1,25 +1,19 @@
 import GetDocumentUrlsTool from "../get/get-document-urls.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { createSnapshotResult, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetDocumentUrls";
 const TEST_PARENT_DOCUMENT_NAME = "_Test GetDocumentUrls Parent";
 const TEST_CHILD_DOCUMENT_NAME = "_Test GetDocumentUrls Child";
 
 describe("get-document-urls", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(TEST_PARENT_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(TEST_CHILD_DOCUMENT_NAME);
@@ -37,7 +31,7 @@ describe("get-document-urls", () => {
       createMockRequestHandlerExtra()
     );
     const data = result.structuredContent as { items: any[] };
-    expect(DocumentTestHelper.normaliseIds(data.items)).toMatchSnapshot();
+    expect(normalizeObject(data.items)).toMatchSnapshot();
   });
 
   it("should handle non-existent document id", async () => {
@@ -46,7 +40,7 @@ describe("get-document-urls", () => {
       createMockRequestHandlerExtra()
     );
     const data = result.structuredContent as { items: any[] };
-    expect(DocumentTestHelper.normaliseIds(data.items)).toMatchSnapshot();
+    expect(normalizeObject(data.items)).toMatchSnapshot();
   });
 
   it("should get URLs for a child document", async () => {
@@ -69,6 +63,6 @@ describe("get-document-urls", () => {
       createMockRequestHandlerExtra()
     );
     const data = result.structuredContent as { items: any[] };
-    expect(DocumentTestHelper.normaliseIds(data.items)).toMatchSnapshot();
+    expect(normalizeObject(data.items)).toMatchSnapshot();
   });
 });

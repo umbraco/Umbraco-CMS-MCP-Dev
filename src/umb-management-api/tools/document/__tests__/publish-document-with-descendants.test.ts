@@ -1,9 +1,9 @@
 import PublishDocumentWithDescendantsTool from "../put/publish-document-with-descendants.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_ROOT_NAME = "_Test PublishWithDescendants Root";
 const TEST_CHILD_NAMES = [
@@ -12,13 +12,12 @@ const TEST_CHILD_NAMES = [
 ];
 
 describe("publish-document-with-descendants", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let rootId: string;
   let childIds: string[];
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     // Create root
     const rootBuilder = await new DocumentBuilder()
       .withName(TEST_ROOT_NAME)
@@ -38,7 +37,6 @@ describe("publish-document-with-descendants", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_ROOT_NAME);
     for (const name of TEST_CHILD_NAMES) {
       await DocumentTestHelper.cleanup(name);

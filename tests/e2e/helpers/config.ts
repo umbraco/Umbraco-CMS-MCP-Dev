@@ -22,9 +22,6 @@ export const DEFAULT_MAX_TURNS = 15;
 export const DEFAULT_MAX_BUDGET_USD = 0.50;
 export const DEFAULT_TIMEOUT_MS = 120000;
 
-/** Delay between tests to avoid rate limiting (ms). Set E2E_TEST_DELAY_MS env var to override. */
-export const TEST_DELAY_MS = parseInt(process.env.E2E_TEST_DELAY_MS || "0", 10);
-
 /**
  * Verbosity levels for test output:
  * - "quiet": Minimal output (just pass/fail per test, summary at end)

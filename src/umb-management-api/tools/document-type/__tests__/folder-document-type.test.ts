@@ -3,7 +3,7 @@ import CreateDocumentTypeFolderTool from "../folders/post/create-folder.js";
 import DeleteDocumentTypeFolderTool from "../folders/delete/delete-folder.js";
 import UpdateDocumentTypeFolderTool from "../folders/put/update-folder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
@@ -13,15 +13,9 @@ describe("document-type-folder", () => {
   const TEST_PARENT_FOLDER_NAME = "_Test Parent Folder";
   const UPDATE_FOLDER_NAME = "_Update Folder Name";
   const UPDATED_FOLDER_NAME = "_Updated Folder Name";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_PARENT_FOLDER_NAME);
   });

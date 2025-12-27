@@ -2,23 +2,17 @@ import GetDocumentTypeAllowedChildrenTool from "../get/get-document-type-allowed
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getDocumentTypeByIdAllowedChildrenResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { jest } from "@jest/globals";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("get-document-type-allowed-children", () => {
   const TEST_PARENT_NAME = "_Test Parent DocumentType";
   const TEST_CHILD_NAME = "_Test Child DocumentType";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test document types
     await DocumentTypeTestHelper.cleanup(TEST_PARENT_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_CHILD_NAME);

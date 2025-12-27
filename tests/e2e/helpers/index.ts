@@ -63,10 +63,3 @@ export {
   createScenarioTest,
   setupConsoleMock
 } from "./scenario-runner.js";
-
-// Rate limiter
-export {
-  rateLimiter,
-  waitForRateLimit,
-  recordTokenUsage
-} from "./rate-limiter.js";
