@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 import { runAgentTest, logTestResult } from "./agent-runner.js";
 import { verifyRequiredToolCalls, verifySuccessMessage } from "./verification.js";
-import { DEFAULT_TIMEOUT_MS, TEST_DELAY_MS } from "./config.js";
+import { DEFAULT_TIMEOUT_MS, TEST_DELAY_MS, getVerbosity } from "./config.js";
 import { waitForRateLimit, recordTokenUsage } from "./rate-limiter.js";
 import type { TestScenario } from "./types.js";
 
@@ -33,22 +33,34 @@ export function createScenarioTest(
     // Check rate limit before starting
     await waitForRateLimit();
 
-    console.log(`Starting test: ${scenario.name}`);
+    const verbosity = getVerbosity({
+      verbose: scenario.verbose || scenario.debug,
+      verbosity: scenario.verbosity
+    });
+
+    // Only log "Starting test" in normal or verbose mode
+    if (verbosity !== "quiet") {
+      console.log(`Starting test: ${scenario.name}`);
+    }
 
     const result = await runAgentTest(
       scenario.prompt,
       scenario.tools,
-      { ...scenario.options, verbose: scenario.verbose || scenario.debug }
+      { ...scenario.options, verbosity }
     );
 
     // Record token usage for rate limiting
     recordTokenUsage(result.tokens.input, result.tokens.output);
 
-    logTestResult(result, scenario.name);
+    // Only show detailed result in normal or verbose mode
+    if (verbosity !== "quiet") {
+      logTestResult(result, scenario.name);
+    }
 
     // Verify required tools were called
     const toolVerification = verifyRequiredToolCalls(result.toolCalls, scenario.requiredTools);
     if (!toolVerification.passed) {
+      // Always log missing tools (important for debugging failures)
       console.log(`Missing required tools: ${toolVerification.missing.join(", ")}`);
     }
     expect(toolVerification.passed).toBe(true);

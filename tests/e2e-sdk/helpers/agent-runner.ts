@@ -8,7 +8,8 @@ import {
   DEFAULT_MODEL,
   DEFAULT_MAX_TURNS,
   DEFAULT_MAX_BUDGET_USD,
-  getToolsString
+  getToolsString,
+  getVerbosity
 } from "./config.js";
 import type { AgentTestResult, AgentTestOptions, ToolCall } from "./types.js";
 
@@ -32,7 +33,8 @@ export async function runAgentTest(
 
   const toolsString: string = typeof tools === 'string' ? tools : getToolsString(tools);
 
-  const verbose = options?.verbose ?? false;
+  const verbosity = getVerbosity(options);
+  const isVerbose = verbosity === "verbose";
 
   for await (const message of query({
     prompt,
@@ -63,7 +65,7 @@ export async function runAgentTest(
     // Capture init message
     if (message.type === "system" && message.subtype === "init") {
       initMessage = message;
-      if (verbose) {
+      if (isVerbose) {
         console.log("\n[SYSTEM] MCP servers connected");
         console.log(`  Tools: ${message.tools.map(t => getShortToolName(t)).join(", ")}`);
       }
@@ -71,7 +73,7 @@ export async function runAgentTest(
 
     // Track and log assistant messages
     if (message.type === "assistant" && message.message.content) {
-      if (verbose) {
+      if (isVerbose) {
         console.log("\n[ASSISTANT]");
       }
       for (const block of message.message.content) {
@@ -80,11 +82,11 @@ export async function runAgentTest(
             name: block.name,
             input: block.input
           });
-          if (verbose) {
+          if (isVerbose) {
             console.log(`  Tool call: ${getShortToolName(block.name)}`);
             console.log(`  Input: ${JSON.stringify(block.input, null, 2).split('\n').map(l => '    ' + l).join('\n').trim()}`);
           }
-        } else if (block.type === "text" && verbose) {
+        } else if (block.type === "text" && isVerbose) {
           console.log(`  ${block.text}`);
         }
       }
@@ -93,7 +95,7 @@ export async function runAgentTest(
     // Capture and log tool results
     if (message.type === "user" && message.tool_use_result) {
       toolResults.push(message.tool_use_result);
-      if (verbose) {
+      if (isVerbose) {
         const resultStr = JSON.stringify(message.tool_use_result, null, 2);
         const preview = resultStr.length > 500 ? resultStr.substring(0, 500) + "..." : resultStr;
         console.log("\n[TOOL RESULT]");
@@ -104,7 +106,7 @@ export async function runAgentTest(
     // Capture final result
     if (message.type === "result") {
       result = message;
-      if (verbose && result.subtype === "success") {
+      if (isVerbose && result.subtype === "success") {
         console.log("\n[RESULT]");
         console.log(`  ${result.result}`);
       }

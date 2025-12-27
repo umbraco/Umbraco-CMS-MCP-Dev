@@ -26,8 +26,38 @@ export const DEFAULT_TIMEOUT_MS = 120000;
 export const TEST_DELAY_MS = parseInt(process.env.E2E_TEST_DELAY_MS || "0", 10);
 
 /**
+ * Verbosity levels for test output:
+ * - "quiet": Minimal output (just pass/fail per test, summary at end)
+ * - "normal": Standard output with tools called, cost info
+ * - "verbose": Full conversation trace with all messages
+ */
+export type VerbosityLevel = "quiet" | "normal" | "verbose";
+
+/**
+ * Default verbosity level. Set E2E_VERBOSITY env var to override.
+ * Options: quiet, normal, verbose
+ */
+export const DEFAULT_VERBOSITY: VerbosityLevel =
+  (process.env.E2E_VERBOSITY as VerbosityLevel) || "quiet";
+
+/**
  * Gets tool list as comma-separated string for UMBRACO_INCLUDE_TOOLS env var
  */
 export function getToolsString(tools: readonly string[]): string {
   return [...tools].join(",");
+}
+
+/**
+ * Gets the effective verbosity level from options
+ */
+export function getVerbosity(options?: { verbose?: boolean; verbosity?: VerbosityLevel }): VerbosityLevel {
+  // Explicit verbosity takes precedence
+  if (options?.verbosity) {
+    return options.verbosity;
+  }
+  // Legacy verbose flag maps to "verbose"
+  if (options?.verbose) {
+    return "verbose";
+  }
+  return DEFAULT_VERBOSITY;
 }

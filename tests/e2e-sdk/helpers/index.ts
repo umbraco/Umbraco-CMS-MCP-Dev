@@ -23,7 +23,10 @@ export {
   DEFAULT_MAX_TURNS,
   DEFAULT_MAX_BUDGET_USD,
   DEFAULT_TIMEOUT_MS,
-  getToolsString
+  DEFAULT_VERBOSITY,
+  getToolsString,
+  getVerbosity,
+  type VerbosityLevel
 } from "./config.js";
 
 // Types

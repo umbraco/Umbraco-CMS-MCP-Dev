@@ -1,3 +1,5 @@
+import type { VerbosityLevel } from "./config.js";
+
 /**
  * E2E SDK Test Types
  *
@@ -50,8 +52,10 @@ export interface AgentTestOptions {
   maxBudget?: number;
   /** Model to use (default: claude-3-5-haiku-20241022) */
   model?: string;
-  /** Log full conversation trace to console */
+  /** @deprecated Use verbosity instead */
   verbose?: boolean;
+  /** Output verbosity level */
+  verbosity?: VerbosityLevel;
 }
 
 /**
@@ -84,6 +88,8 @@ export interface TestScenario {
   verbose?: boolean;
   /** Alias for verbose - log full conversation trace */
   debug?: boolean;
+  /** Output verbosity level (overrides verbose/debug) */
+  verbosity?: VerbosityLevel;
   /** Optional: test options override */
   options?: AgentTestOptions;
 }
