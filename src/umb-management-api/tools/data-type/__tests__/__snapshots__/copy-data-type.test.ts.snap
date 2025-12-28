@@ -2,23 +2,21 @@
 
 exports[`copy-data-type should copy a data type to a folder 1`] = `
 {
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Data type copied successfully",
+  },
 }
 `;
 
 exports[`copy-data-type should copy a data type to root 1`] = `
 {
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Data type copied successfully",
+  },
 }
 `;
 
