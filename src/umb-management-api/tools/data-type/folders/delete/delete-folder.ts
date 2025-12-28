@@ -8,7 +8,6 @@ const DeleteDataTypeFolderTool = {
   inputSchema: deleteDataTypeFolderByIdParams.shape,
   annotations: {
     destructiveHint: true,
-    idempotentHint: true,
   },
   slices: ['delete', 'folders'],
   handler: (async ({ id }: { id: string }) => {

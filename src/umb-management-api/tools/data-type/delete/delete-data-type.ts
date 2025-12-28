@@ -8,7 +8,6 @@ const DeleteDataTypeTool = {
   inputSchema: deleteDataTypeByIdParams.shape,
   annotations: {
     destructiveHint: true,
-    idempotentHint: true,
   },
   slices: ['delete'],
   handler: (async ({ id }: { id: string }) => {

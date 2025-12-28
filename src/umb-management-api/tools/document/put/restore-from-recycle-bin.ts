@@ -8,9 +8,7 @@ const RestoreFromRecycleBinTool = {
   name: "restore-document-from-recycle-bin",
   description: "Restores a document from the recycle bin.",
   inputSchema: putRecycleBinDocumentByIdRestoreParams.shape,
-  annotations: {
-    idempotentHint: true,
-  },
+  annotations: {},
   slices: ['move','recycle-bin'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Delete),
   handler: (async ({ id }: { id: string }) => {
