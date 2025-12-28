@@ -134,16 +134,13 @@ describe("update-document-properties", () => {
     // Assert - Verify error response includes invalidAliases and availableAliases
     expect(result).toMatchSnapshot();
 
-    // Verify the error content structure
-    const content = result.content[0];
-    expect(content.type).toBe("text");
-    if (content.type === "text") {
-      const responseData = JSON.parse(content.text);
-      expect(responseData.success).toBe(false);
-      expect(responseData.invalidAliases).toContain(INVALID_ALIAS);
-      expect(Array.isArray(responseData.availableProperties)).toBe(true);
-      expect(responseData.availableProperties.length).toBeGreaterThan(0);
-    }
+    // Verify the error content structure (ProblemDetails format)
+    expect(result.isError).toBe(true);
+    const responseData = result.structuredContent as any;
+    expect(responseData.title).toBe("Invalid property aliases");
+    expect(responseData.invalidAliases).toContain(INVALID_ALIAS);
+    expect(Array.isArray(responseData.availableProperties)).toBe(true);
+    expect(responseData.availableProperties.length).toBeGreaterThan(0);
   });
 
   it("should handle non-existent document", async () => {
@@ -323,12 +320,8 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Verify success
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
 
       // Verify only English title was updated, Danish remains unchanged
       const updatedDocument = await client.getDocumentById(documentId);
@@ -392,13 +385,9 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Verify success
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.updatedProperties).toHaveLength(2);
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.updatedProperties).toHaveLength(2);
 
       // Verify both titles were updated
       const updatedDocument = await client.getDocumentById(documentId);
@@ -456,13 +445,9 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Should succeed because property exists on document type
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.addedProperties).toContain("title[da-DK]");
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.addedProperties).toContain("title[da-DK]");
 
       // Verify the Danish title was added
       const updatedDocument = await client.getDocumentById(documentId);
@@ -545,13 +530,9 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Should succeed with property added
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.addedProperties).toContain("author");
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.addedProperties).toContain("author");
 
       // Verify the author was added
       const updatedDocument = await client.getDocumentById(documentId);
@@ -598,13 +579,9 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Should succeed with property added
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.addedProperties).toContain("subtitle");
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.addedProperties).toContain("subtitle");
 
       // Verify the subtitle was added
       const updatedDocument = await client.getDocumentById(documentId);
@@ -651,16 +628,12 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Should succeed with both updated and added
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.updatedProperties).toContain("title");
-        expect(responseData.addedProperties).toContain("author");
-        expect(responseData.message).toContain("updated 1");
-        expect(responseData.message).toContain("added 1");
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.updatedProperties).toContain("title");
+      expect(responseData.addedProperties).toContain("author");
+      expect(responseData.message).toContain("updated 1");
+      expect(responseData.message).toContain("added 1");
 
       // Verify both properties
       const updatedDocument = await client.getDocumentById(documentId);
@@ -701,16 +674,12 @@ describe("update-document-properties", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert - Should fail with variance error
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(false);
-        expect(responseData.error).toBe("Culture/segment validation failed");
-        expect(responseData.message).toContain("author");
-        expect(responseData.message).toContain("does not vary by culture");
-      }
+      // Assert - Should fail with variance error (ProblemDetails format)
+      expect(result.isError).toBe(true);
+      const responseData = result.structuredContent as any;
+      expect(responseData.title).toBe("Culture/segment validation failed");
+      expect(responseData.detail).toContain("author");
+      expect(responseData.detail).toContain("does not vary by culture");
     });
 
     it("should return error when adding culture-variant property without culture", async () => {
@@ -745,16 +714,12 @@ describe("update-document-properties", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert - Should fail with variance error
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(false);
-        expect(responseData.error).toBe("Culture/segment validation failed");
-        expect(responseData.message).toContain("author");
-        expect(responseData.message).toContain("culture is required");
-      }
+      // Assert - Should fail with variance error (ProblemDetails format)
+      expect(result.isError).toBe(true);
+      const responseData = result.structuredContent as any;
+      expect(responseData.title).toBe("Culture/segment validation failed");
+      expect(responseData.detail).toContain("author");
+      expect(responseData.detail).toContain("culture is required");
     });
 
     it("should return error when property does not exist on document type", async () => {
@@ -787,19 +752,15 @@ describe("update-document-properties", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert - Should fail with invalid aliases
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(false);
-        expect(responseData.error).toBe("Invalid property aliases");
-        expect(responseData.invalidAliases).toContain("nonExistentProperty");
-        expect(responseData.availableProperties).toBeDefined();
-        expect(responseData.availableProperties.length).toBeGreaterThan(0);
-        // Should show the available property from document type
-        expect(responseData.availableProperties[0].alias).toBe("title");
-      }
+      // Assert - Should fail with invalid aliases (ProblemDetails format)
+      expect(result.isError).toBe(true);
+      const responseData = result.structuredContent as any;
+      expect(responseData.title).toBe("Invalid property aliases");
+      expect(responseData.invalidAliases).toContain("nonExistentProperty");
+      expect(responseData.availableProperties).toBeDefined();
+      expect(responseData.availableProperties.length).toBeGreaterThan(0);
+      // Should show the available property from document type
+      expect(responseData.availableProperties[0].alias).toBe("title");
     });
   });
 });

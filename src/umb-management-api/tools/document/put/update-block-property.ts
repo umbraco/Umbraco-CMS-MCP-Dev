@@ -20,7 +20,24 @@ import {
   type BlockDataItem
 } from "./helpers/block-discovery.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, ToolValidationError } from "@/helpers/mcp/tool-decorators.js";
+
+// Output schema for successful responses
+const blockUpdateResultSchema = z.object({
+  success: z.boolean(),
+  contentKey: z.string().uuid(),
+  message: z.string(),
+  updatedCount: z.number().optional(),
+  addedCount: z.number().optional(),
+  warnings: z.array(z.string()).optional(),
+  errors: z.array(z.string()).optional(),
+});
+
+export const updateBlockPropertyOutputSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  results: z.array(blockUpdateResultSchema),
+});
 
 // Schema definitions
 const blockPropertyUpdateSchema = z.object({
@@ -84,6 +101,7 @@ const UpdateBlockPropertyTool = {
   - Update with culture: { documentId: "...", propertyAlias: "mainContent", culture: "es-ES", updates: [...] }
   - Batch update multiple blocks: { documentId: "...", propertyAlias: "mainContent", updates: [{ contentKey: "uuid1", ... }, { contentKey: "uuid2", ... }] }`,
   inputSchema: updateBlockPropertySchema,
+  outputSchema: updateBlockPropertyOutputSchema,
   annotations: {
     idempotentHint: true,
   },
@@ -108,34 +126,26 @@ const UpdateBlockPropertyTool = {
         editorAlias: v.editorAlias
       }));
 
-      return {
-        content: [{
-          type: "text" as const,
-          text: JSON.stringify({
-            success: false,
-            error: "Property not found",
-            message: `Property '${getPropertyKey(model.propertyAlias, model.culture, model.segment)}' does not exist on this document`,
-            availableProperties: availableAliases
-          }, null, 2)
-        }]
-      };
+      throw new ToolValidationError({
+        title: "Property not found",
+        detail: `Property '${getPropertyKey(model.propertyAlias, model.culture, model.segment)}' does not exist on this document`,
+        extensions: {
+          availableProperties: availableAliases
+        }
+      });
     }
 
     // Step 3: Discover all block arrays via deep traversal
     const discoveredArrays = discoverAllBlockArrays(documentProperty.value, `property(${model.propertyAlias})`);
 
     if (discoveredArrays.length === 0) {
-      return {
-        content: [{
-          type: "text" as const,
-          text: JSON.stringify({
-            success: false,
-            error: "No block structure found",
-            message: `Property '${model.propertyAlias}' does not contain a BlockList, BlockGrid, or RichText block structure`,
-            propertyValue: documentProperty.value
-          }, null, 2)
-        }]
-      };
+      throw new ToolValidationError({
+        title: "No block structure found",
+        detail: `Property '${model.propertyAlias}' does not contain a BlockList, BlockGrid, or RichText block structure`,
+        extensions: {
+          propertyValue: documentProperty.value
+        }
+      });
     }
 
     // Step 4: Process updates
@@ -277,18 +287,14 @@ const UpdateBlockPropertyTool = {
         ...d.settingsData.map((b: BlockDataItem) => ({ key: b.key, type: "settings", path: d.path }))
       ]);
 
-      return {
-        content: [{
-          type: "text" as const,
-          text: JSON.stringify({
-            success: false,
-            error: "Blocks not found",
-            message: "None of the specified blocks were found in the document",
-            notFoundBlocks,
-            availableBlocks: allBlocks
-          }, null, 2)
-        }]
-      };
+      throw new ToolValidationError({
+        title: "Blocks not found",
+        detail: "None of the specified blocks were found in the document",
+        extensions: {
+          notFoundBlocks,
+          availableBlocks: allBlocks
+        }
+      });
     }
 
     // Step 5: Prepare updated values array (strip editorAlias as it's read-only)
@@ -317,14 +323,11 @@ const UpdateBlockPropertyTool = {
     await client.putDocumentById(model.documentId, updatePayload);
 
     return {
-      content: [{
-        type: "text" as const,
-        text: JSON.stringify({
-          success: true,
-          message: `Successfully processed ${model.updates.length} block update(s)`,
-          results
-        }, null, 2)
-      }]
+      structuredContent: {
+        success: true,
+        message: `Successfully processed ${model.updates.length} block update(s)`,
+        results
+      }
     };
   }),
 } satisfies ToolDefinition<typeof updateBlockPropertySchema>;

@@ -105,7 +105,7 @@ export function normalizeObject(obj: any, idToReplace?: string, normalizeIdRefs:
 
   // Normalize variants array
   if (normalized.variants && Array.isArray(normalized.variants)) {
-    normalized.variants = normalizeVariants(normalized.variants);
+    normalized.variants = normalizeVariants(normalized.variants, idToReplace);
   }
 
   // Apply regex normalizations for string fields
@@ -156,48 +156,20 @@ export function normalizeObject(obj: any, idToReplace?: string, normalizeIdRefs:
     normalized.structuredContent = normalizeObject(normalized.structuredContent, idToReplace, normalizeIdRefs);
   }
 
+  // Recursively normalize nested 'document' field (common in response wrappers)
+  if (normalized.document && typeof normalized.document === "object") {
+    normalized.document = normalizeObject(normalized.document, idToReplace, normalizeIdRefs);
+  }
+
   return normalized;
 }
 
 /**
  * Normalizes variant arrays (used in documents)
+ * Uses normalizeObject for full recursive normalization of each variant
  */
-function normalizeVariants(variants: any[]): any[] {
-  return variants.map((variant: any) => {
-    const normalizedVariant = { ...variant };
-    if (normalizedVariant.createDate) normalizedVariant.createDate = "NORMALIZED_DATE";
-    if (normalizedVariant.publishDate) normalizedVariant.publishDate = "NORMALIZED_DATE";
-    if (normalizedVariant.updateDate) normalizedVariant.updateDate = "NORMALIZED_DATE";
-    if (normalizedVariant.versionDate) normalizedVariant.versionDate = "NORMALIZED_DATE";
-    return normalizedVariant;
-  });
-}
-
-/**
- * Normalizes a single item for legacy format.
- * This includes additional normalization for document.documentType that isn't done in structuredContent.
- */
-function normalizeLegacySingleItem(parsed: any): any {
-  const normalized = normalizeObject(parsed, undefined, false);
-
-  // Legacy single-item has special handling for nested document structures
-  if (normalized.document) {
-    normalized.document = { ...normalized.document, id: BLANK_UUID };
-    if (normalized.document.variants && Array.isArray(normalized.document.variants)) {
-      normalized.document.variants = normalizeVariants(normalized.document.variants);
-    }
-    if (normalized.document.documentType) {
-      normalized.document.documentType = { ...normalized.document.documentType, id: BLANK_UUID };
-    }
-  }
-  if (normalized.documentType) {
-    normalized.documentType = { ...normalized.documentType, id: BLANK_UUID };
-  }
-  if (normalized.user) {
-    normalized.user = { ...normalized.user, id: BLANK_UUID };
-  }
-
-  return normalized;
+function normalizeVariants(variants: any[], idToReplace?: string): any[] {
+  return variants.map((variant: any) => normalizeObject(variant, idToReplace, true));
 }
 
 // ============================================================================
@@ -206,13 +178,12 @@ function normalizeLegacySingleItem(parsed: any): any {
 
 /**
  * Creates a normalized result suitable for snapshot testing.
- * Handles both new structuredContent format and legacy content[0].text format.
+ * Normalizes structuredContent responses from MCP tools.
  *
  * @param result - The tool result to normalize
  * @param idToReplace - Optional specific ID to replace (for single item responses)
  */
 export function createSnapshotResult(result: any, idToReplace?: string) {
-  // Handle structuredContent (new format)
   if (result?.structuredContent !== undefined) {
     return {
       ...result,
@@ -220,61 +191,15 @@ export function createSnapshotResult(result: any, idToReplace?: string) {
     };
   }
 
-  // Legacy format: handle content[0].text with JSON strings
-  if (!result?.content) {
-    return result;
-  }
-
-  // Handle void operation results with empty content
-  if (
-    result.content.length === 1 &&
-    result.content[0].type === "text" &&
-    result.content[0].text === ""
-  ) {
-    return result;
-  }
-
-  return {
-    ...result,
-    content: result.content.map((item: any) => {
-      if (item.type !== "text") {
-        return item;
-      }
-
-      if (idToReplace) {
-        // For single item responses - replace ID in text first, then parse and normalize
-        // Note: Legacy single-item does NOT normalize parent.id, only the specific ID
-        let text = item.text.replace(idToReplace, BLANK_UUID);
-        try {
-          const parsed = JSON.parse(text);
-          const normalized = normalizeLegacySingleItem(parsed);
-          text = JSON.stringify(normalized, null, 2);
-        } catch {
-          // If parsing fails, return with just the ID replacement
-        }
-        return { ...item, text };
-      } else {
-        // For list responses - normalize all IDs
-        const parsed = JSON.parse(item.text);
-        if (Array.isArray(parsed)) {
-          // Handle array responses (like ancestors)
-          const normalized = parsed.map((p: any) => normalizeObject(p, undefined, true));
-          return { ...item, text: JSON.stringify(normalized) };
-        }
-        // Handle object responses with items
-        const normalized = normalizeObject(parsed, undefined, true);
-        return { ...item, text: JSON.stringify(normalized) };
-      }
-    }),
-  };
+  // Pass through non-structuredContent results unchanged
+  return result;
 }
 
 /**
  * Normalizes error responses for snapshot testing.
- * Handles traceId normalization in both formats.
+ * Handles traceId normalization in structuredContent.
  */
 export function normalizeErrorResponse(result: CallToolResult): CallToolResult {
-  // Handle structuredContent (new format)
   if (result.structuredContent && typeof result.structuredContent === "object") {
     const normalized = { ...result };
     const content = normalized.structuredContent as any;
@@ -287,15 +212,5 @@ export function normalizeErrorResponse(result: CallToolResult): CallToolResult {
     return normalized;
   }
 
-  // Handle legacy content[0].text format
-  if (Array.isArray(result.content) && result.content[0]) {
-    const firstContent = result.content[0];
-    if (firstContent.type === "text" && typeof firstContent.text === "string") {
-      firstContent.text = firstContent.text.replace(
-        /00-[0-9a-f]{32}-[0-9a-f]{16}-00/g,
-        "normalized-trace-id"
-      );
-    }
-  }
   return result;
 }

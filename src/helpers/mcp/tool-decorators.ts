@@ -21,6 +21,8 @@ export {
   createToolResultError,
 } from "./tool-result.js";
 
+export { ToolValidationError, type ValidationErrorDetails } from "./tool-validation-error.js";
+
 export {
   CAPTURE_RAW_HTTP_RESPONSE,
   processVoidResponse,
@@ -35,16 +37,18 @@ export {
 } from "./api-call-helpers.js";
 
 import { UmbracoApiError } from "./api-call-helpers.js";
+import { ToolValidationError } from "./tool-validation-error.js";
 
 /**
  * Wraps a tool handler with standardized error handling.
  * Catches all errors and converts them to MCP tool error results.
  *
  * Error handling priority:
- * 1. UmbracoApiError - API errors with ProblemDetails (from helpers)
- * 2. Axios errors - Network/HTTP errors with response data
- * 3. Standard errors - JavaScript errors with message
- * 4. Unknown errors - Anything else
+ * 1. ToolValidationError - Business logic validation errors with context
+ * 2. UmbracoApiError - API errors with ProblemDetails (from helpers)
+ * 3. Axios errors - Network/HTTP errors with response data
+ * 4. Standard errors - JavaScript errors with message
+ * 5. Unknown errors - Anything else
  */
 export function withErrorHandling<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodType = undefined>(
   tool: ToolDefinition<Args, OutputArgs>
@@ -58,6 +62,11 @@ export function withErrorHandling<Args extends undefined | ZodRawShape, OutputAr
         return await originalHandler(args, context);
       } catch (error) {
         console.error(`Error in tool ${tool.name}:`, error);
+
+        // ToolValidationError - business logic validation errors with context
+        if (error instanceof ToolValidationError) {
+          return createToolResultError(error.toProblemDetails());
+        }
 
         // UmbracoApiError - thrown by helpers with ProblemDetails
         if (error instanceof UmbracoApiError) {

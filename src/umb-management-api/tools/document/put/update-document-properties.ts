@@ -15,7 +15,16 @@ import {
 import { validatePropertiesBeforeSave } from "./helpers/property-value-validator.js";
 import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, ToolValidationError } from "@/helpers/mcp/tool-decorators.js";
+
+// Output schema for successful responses
+export const updateDocumentPropertiesOutputSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  updatedProperties: z.array(z.string()),
+  addedProperties: z.array(z.string()),
+  document: z.any().describe("The updated document object"),
+});
 
 // Define the property schema for reuse
 const propertySchema = z.object({
@@ -62,6 +71,7 @@ const UpdateDocumentPropertiesTool = {
   - Update with culture: { id: "...", properties: [{ alias: "title", value: "Nuevo Título", culture: "es-ES" }] }
   - Mix update and add: { id: "...", properties: [{ alias: "title", value: "New" }, { alias: "newProp", value: "Value" }] }`,
   inputSchema: updateDocumentPropertiesSchema,
+  outputSchema: updateDocumentPropertiesOutputSchema,
   annotations: {
     idempotentHint: true,
   },
@@ -149,23 +159,19 @@ const UpdateDocumentPropertiesTool = {
     // Step 3: Return error if there are validation issues
     // Note: documentTypeProperties is guaranteed to be loaded if we have variance errors or invalid aliases
     if (varianceErrors.length > 0) {
-      return {
-        content: [{
-          type: "text" as const,
-          text: JSON.stringify({
-            success: false,
-            error: "Culture/segment validation failed",
-            message: varianceErrors.join("; "),
-            errors: varianceErrors,
-            availableProperties: (documentTypeProperties ?? [] as ResolvedProperty[]).map(p => ({
-              alias: p.alias,
-              name: p.name,
-              variesByCulture: p.variesByCulture,
-              variesBySegment: p.variesBySegment
-            }))
-          }, null, 2)
-        }]
-      };
+      throw new ToolValidationError({
+        title: "Culture/segment validation failed",
+        detail: varianceErrors.join("; "),
+        extensions: {
+          errors: varianceErrors,
+          availableProperties: (documentTypeProperties ?? [] as ResolvedProperty[]).map(p => ({
+            alias: p.alias,
+            name: p.name,
+            variesByCulture: p.variesByCulture,
+            variesBySegment: p.variesBySegment
+          }))
+        }
+      });
     }
 
     if (invalidAliases.length > 0) {
@@ -184,18 +190,14 @@ const UpdateDocumentPropertiesTool = {
             editorAlias: v.editorAlias
           }));
 
-      return {
-        content: [{
-          type: "text" as const,
-          text: JSON.stringify({
-            success: false,
-            error: "Invalid property aliases",
-            message: `The following properties do not exist on this document type: ${invalidAliases.join(", ")}`,
-            invalidAliases,
-            availableProperties
-          }, null, 2)
-        }]
-      };
+      throw new ToolValidationError({
+        title: "Invalid property aliases",
+        detail: `The following properties do not exist on this document type: ${invalidAliases.join(", ")}`,
+        extensions: {
+          invalidAliases,
+          availableProperties
+        }
+      });
     }
 
     // Step 4: Validate property values against Data Type configuration
@@ -214,16 +216,13 @@ const UpdateDocumentPropertiesTool = {
       if (propsToValidate.length > 0) {
         const valueValidation = await validatePropertiesBeforeSave(propsToValidate);
         if (!valueValidation.isValid) {
-          return {
-            content: [{
-              type: "text" as const,
-              text: JSON.stringify({
-                success: false,
-                error: "Property value validation failed",
-                errors: valueValidation.errors
-              }, null, 2)
-            }]
-          };
+          throw new ToolValidationError({
+            title: "Property value validation failed",
+            detail: valueValidation.errors.join("; "),
+            extensions: {
+              errors: valueValidation.errors
+            }
+          });
         }
       }
     }
@@ -303,16 +302,13 @@ const UpdateDocumentPropertiesTool = {
     }
 
     return {
-      content: [{
-        type: "text" as const,
-        text: JSON.stringify({
-          success: true,
-          message,
-          updatedProperties: updatedPropertyKeys,
-          addedProperties: addedPropertyKeys,
-          document: updatedDocument
-        }, null, 2)
-      }]
+      structuredContent: {
+        success: true,
+        message,
+        updatedProperties: updatedPropertyKeys,
+        addedProperties: addedPropertyKeys,
+        document: updatedDocument
+      }
     };
   }),
 } satisfies ToolDefinition<typeof updateDocumentPropertiesSchema>;
