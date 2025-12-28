@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`user-tool-index should have all tools when user has users section access 1`] = `
+[
+  "get-user-current",
+  "get-user-current-configuration",
+  "get-user-current-login-providers",
+  "get-user-current-permissions",
+  "get-user-current-permissions-document",
+  "get-user-current-permissions-media",
+  "upload-user-current-avatar",
+  "get-user",
+  "get-user-by-id",
+  "find-user",
+  "get-item-user",
+  "get-user-configuration",
+  "get-user-by-id-calculate-start-nodes",
+  "upload-user-avatar-by-id",
+  "delete-user-avatar-by-id",
+]
+`;
+
+exports[`user-tool-index should only have self-service tools when user has no user section access 1`] = `
+[
+  "get-user-current",
+  "get-user-current-configuration",
+  "get-user-current-login-providers",
+  "get-user-current-permissions",
+  "get-user-current-permissions-document",
+  "get-user-current-permissions-media",
+  "upload-user-current-avatar",
+]
+`;

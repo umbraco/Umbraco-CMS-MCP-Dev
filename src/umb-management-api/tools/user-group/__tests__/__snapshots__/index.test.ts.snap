@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`user-group-tool-index should have all tools when user has users section access 1`] = `
+[
+  "get-user-group-by-id-array",
+  "get-user-groups",
+  "get-filter-user-group",
+  "create-user-group",
+  "update-user-group",
+  "delete-user-group",
+  "delete-user-groups",
+  "get-user-group",
+]
+`;
+
+exports[`user-group-tool-index should have no tools by default 1`] = `
+[
+  "get-user-group",
+]
+`;
+
+exports[`user-group-tool-index should have tool with get user group 1`] = `
+[
+  "get-user-group",
+]
+`;

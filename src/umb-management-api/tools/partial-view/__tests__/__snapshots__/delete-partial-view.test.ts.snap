@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete-partial-view should delete a partial view 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`delete-partial-view should handle non-existent partial view 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using delete-partial-view:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Partial view not found",
+    "status": 404,
+    "detail": "The partial view was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

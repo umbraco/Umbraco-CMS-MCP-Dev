@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-stylesheet-folder should create a stylesheet folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-stylesheet-folder should create folder with parent folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-stylesheet-folder should handle existing folder name 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using create-stylesheet-folder:
+{
+  "message": "Request failed with status code 400",
+  "response": {
+    "type": "Error",
+    "title": "Folder already exists",
+    "status": 400,
+    "detail": "The folder already exists",
+    "operationStatus": "AlreadyExists"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

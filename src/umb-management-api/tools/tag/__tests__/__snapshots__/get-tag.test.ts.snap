@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-tag should retrieve tags successfully 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":1,"items":[{"id":"00000000-0000-0000-0000-000000000000","text":"test-tag","group":"default","nodeCount":1}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-tag should return empty result when no tags match query 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-tag should return tags that match query  1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":1,"items":[{"id":"00000000-0000-0000-0000-000000000000","text":"test-tag","group":"default","nodeCount":1}]}",
+      "type": "text",
+    },
+  ],
+}
+`;

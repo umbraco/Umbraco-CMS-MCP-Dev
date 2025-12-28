@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`document-version-tool-index should have all tools when user has content section access 1`] = `
+[
+  "get-document-version",
+  "get-document-version-by-id",
+  "update-document-version-prevent-cleanup",
+  "create-document-version-rollback",
+]
+`;
+
+exports[`document-version-tool-index should have no tools when user has no content access 1`] = `[]`;

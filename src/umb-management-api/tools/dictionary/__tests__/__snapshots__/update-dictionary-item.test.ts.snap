@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-dictionary-item should handle non-existent dictionary item 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using update-dictionary-item:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The dictionary item could not be found",
+    "status": 404,
+    "operationStatus": "ItemNotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-dictionary-item should update a dictionary item 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-dictionary-item should update a dictionary item 2`] = `
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "_Updated Dictionary",
+    "parent": null,
+    "translatedIsoCodes": [
+      "en-US",
+    ],
+  },
+]
+`;

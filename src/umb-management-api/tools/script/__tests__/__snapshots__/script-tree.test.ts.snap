@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`script-tree get-script-tree-ancestors should get ancestors of child script 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_RootFolder_NORMALIZED_TIMESTAMP","path":"/_RootFolder_NORMALIZED_TIMESTAMP","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_ChildScript_NORMALIZED_TIMESTAMP.js","path":"/_RootFolder_NORMALIZED_TIMESTAMP/_ChildScript_NORMALIZED_TIMESTAMP.js","parent":{"path":"/_RootFolder_NORMALIZED_TIMESTAMP","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-tree get-script-tree-ancestors should get ancestors of grandchild script 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_RootFolder_NORMALIZED_TIMESTAMP","path":"/_RootFolder_NORMALIZED_TIMESTAMP","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_ChildFolder_NORMALIZED_TIMESTAMP","path":"/_RootFolder_NORMALIZED_TIMESTAMP/_ChildFolder_NORMALIZED_TIMESTAMP","parent":{"path":"/_RootFolder_NORMALIZED_TIMESTAMP","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_GrandchildScript_NORMALIZED_TIMESTAMP.js","path":"/_RootFolder_NORMALIZED_TIMESTAMP/_ChildFolder_NORMALIZED_TIMESTAMP/_GrandchildScript_NORMALIZED_TIMESTAMP.js","parent":{"path":"/_RootFolder_NORMALIZED_TIMESTAMP/_ChildFolder_NORMALIZED_TIMESTAMP","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-tree get-script-tree-ancestors should get empty ancestors for root script 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_RootScript_NORMALIZED_TIMESTAMP.js","path":"/_RootScript_NORMALIZED_TIMESTAMP.js","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-tree get-script-tree-children should get children of child folder 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":1,"items":[{"name":"_GrandchildScript_NORMALIZED_TIMESTAMP.js","path":"/_RootFolder_NORMALIZED_TIMESTAMP/_ChildFolder_NORMALIZED_TIMESTAMP/_GrandchildScript_NORMALIZED_TIMESTAMP.js","parent":{"path":"/_RootFolder_NORMALIZED_TIMESTAMP/_ChildFolder_NORMALIZED_TIMESTAMP","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-tree get-script-tree-children should get children of root folder 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":2,"items":[{"name":"_ChildFolder_NORMALIZED_TIMESTAMP","path":"/_RootFolder_NORMALIZED_TIMESTAMP/_ChildFolder_NORMALIZED_TIMESTAMP","parent":{"path":"/_RootFolder_NORMALIZED_TIMESTAMP","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_ChildScript_NORMALIZED_TIMESTAMP.js","path":"/_RootFolder_NORMALIZED_TIMESTAMP/_ChildScript_NORMALIZED_TIMESTAMP.js","parent":{"path":"/_RootFolder_NORMALIZED_TIMESTAMP","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-tree get-script-tree-children should get empty children for non-folder script 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-tree get-script-tree-root should get root level script items 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":2,"items":[{"name":"_RootFolder_NORMALIZED_TIMESTAMP","path":"/_RootFolder_NORMALIZED_TIMESTAMP","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_RootScript_NORMALIZED_TIMESTAMP.js","path":"/_RootScript_NORMALIZED_TIMESTAMP.js","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`redirect-tool-index should have all tools when user has content access 1`] = `
+[
+  "get-all-redirects",
+  "get-redirect-by-id",
+  "delete-redirect",
+  "get-redirect-status",
+  "update-redirect-status",
+]
+`;
+
+exports[`redirect-tool-index should have no tools when user meets no policies 1`] = `[]`;

@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-dictionary-item should create a dictionary item 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-dictionary-item should create a dictionary item 2`] = `
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "_Test Dictionary Created",
+    "parent": null,
+    "translatedIsoCodes": [
+      "en-US",
+    ],
+  },
+]
+`;
+
+exports[`create-dictionary-item should create a dictionary item with parent 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-dictionary-item should create a dictionary item with parent 2`] = `
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "_Test Child Dictionary",
+    "parent": {
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "translatedIsoCodes": [
+      "en-US",
+    ],
+  },
+]
+`;
+
+exports[`create-dictionary-item should handle existing dictionary item 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using create-dictionary:
+{
+  "message": "Request failed with status code 409",
+  "response": {
+    "type": "Error",
+    "title": "Duplicate dictionary item name detected",
+    "status": 409,
+    "detail": "Another dictionary item exists with the same name. Dictionary item names must be unique.",
+    "operationStatus": "DuplicateItemKey"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

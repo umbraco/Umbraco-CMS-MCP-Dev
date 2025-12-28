@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-template should get a template by id 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "masterTemplate": null,
+  "name": "_Test Template Get",
+  "alias": "_testTemplateGet",
+  "content": "@using Umbraco.Cms.Web.Common.PublishedModels;\\n@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage\\n@{\\n\\tLayout = null;\\n}"
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-template should handle non-existent template 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-template:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The template could not be found",
+    "status": 404,
+    "operationStatus": "TemplateNotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

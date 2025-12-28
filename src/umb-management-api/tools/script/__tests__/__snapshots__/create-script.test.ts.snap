@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-script create-script should create a script 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-script create-script should handle existing script 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using create-script:
+{
+  "message": "Request failed with status code 400",
+  "response": {
+    "type": "Error",
+    "title": "Script already exists",
+    "status": 400,
+    "detail": "A script with the same path already exists",
+    "operationStatus": "AlreadyExists"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-script create-script-folder should create a script folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-script create-script-folder should handle existing script folder 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using create-script-folder:
+{
+  "message": "Request failed with status code 400",
+  "response": {
+    "type": "Error",
+    "title": "Folder already exists",
+    "status": 400,
+    "detail": "The folder already exists",
+    "operationStatus": "AlreadyExists"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-imaging-resize-urls should generate resize URLs for specific media item 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"id":"3c6c415c-35a0-4629-891e-683506250c31","urlInfos":[{"culture":null,"url":"https://localhost:44391/media/0ofdvcwj/chairs-lamps.jpg?width=200&height=200"}]}]",
+      "type": "text",
+    },
+  ],
+}
+`;

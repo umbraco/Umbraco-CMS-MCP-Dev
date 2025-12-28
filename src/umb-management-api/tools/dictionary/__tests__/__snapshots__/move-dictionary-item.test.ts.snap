@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`move-dictionary-item should handle non-existent dictionary item 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using move-dictionary-item:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The dictionary item could not be found",
+    "status": 404,
+    "operationStatus": "ItemNotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`move-dictionary-item should move a dictionary item from parent back to root 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`move-dictionary-item should move a dictionary item to a new parent 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;

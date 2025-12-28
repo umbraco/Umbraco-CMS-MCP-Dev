@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`script-items should get script folder by path 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"isFolder":true,"name":"_TestFolderItems","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"path":"/_TestFolderItems","id":"00000000-0000-0000-0000-000000000000"}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-items should get scripts by path array 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"isFolder":false,"name":"_TestScriptItems1.js","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"path":"/_TestScriptItems1.js","id":"00000000-0000-0000-0000-000000000000"},{"isFolder":false,"name":"_TestScriptItems2.js","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"path":"/_TestScriptItems2.js","id":"00000000-0000-0000-0000-000000000000"}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-items should get single script by path 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"isFolder":false,"name":"_TestScriptItems1.js","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"path":"/_TestScriptItems1.js","id":"00000000-0000-0000-0000-000000000000"}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-items should handle empty array 1`] = `
+{
+  "content": [
+    {
+      "text": "[]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-items should handle no path parameter 1`] = `
+{
+  "content": [
+    {
+      "text": "[]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`script-items should handle non-existent script path 1`] = `
+{
+  "content": [
+    {
+      "text": "[]",
+      "type": "text",
+    },
+  ],
+}
+`;

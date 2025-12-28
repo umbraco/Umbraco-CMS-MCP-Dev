@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete-template should delete a template 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`delete-template should handle non-existent template 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using delete-template:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The template could not be found",
+    "status": 404,
+    "operationStatus": "TemplateNotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

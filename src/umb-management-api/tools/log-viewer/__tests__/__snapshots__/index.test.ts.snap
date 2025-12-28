@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`log-viewer-tool-index should have all tools when user has settings access 1`] = `
+[
+  "get-log-viewer-saved-search-by-name",
+  "get-log-viewer-level-count",
+  "post-log-viewer-saved-search",
+  "delete-log-viewer-saved-search-by-name",
+  "get-log-viewer-log",
+  "get-log-viewer-level",
+  "get-log-viewer-saved-search",
+  "get-log-viewer-validate-logs-size",
+  "get-log-viewer-message-template",
+]
+`;
+
+exports[`log-viewer-tool-index should have no tools when user meets no policies 1`] = `[]`;

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`manifest-tool-index should have tools when user has no permissions 1`] = `[]`;
+
+exports[`manifest-tool-index should have tools when user has settings section access 1`] = `
+[
+  "get-manifest-manifest",
+  "get-manifest-manifest-private",
+  "get-manifest-manifest-public",
+]
+`;

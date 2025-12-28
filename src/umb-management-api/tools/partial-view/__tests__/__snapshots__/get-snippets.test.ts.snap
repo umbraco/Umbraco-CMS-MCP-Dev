@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-snippets GetPartialViewSnippetByIdTool should get a specific partial view snippet by ID 1`] = `
+{
+  "content": [
+    {
+      "text": "{"content":"@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage\\n@using Umbraco.Cms.Core.PublishedCache\\n@using Umbraco.Cms.Core.Routing\\n@using Umbraco.Cms.Core.Services.Navigation\\n\\n@inject IPublishedContentCache PublishedContentCache\\n@inject IDocumentNavigationQueryService DocumentNavigationQueryService\\n@inject IPublishedUrlProvider PublishedUrlProvider\\n@*\\n    This snippet makes a breadcrumb of parents using an unordered HTML list.\\n\\n    How it works:\\n    - It uses the Ancestors method to get all parents and then generates links so the visitor can go back\\n    - Finally it outputs the name of the current page (without a link)\\n*@\\n\\n@{ var selection = Model.Ancestors(PublishedContentCache, DocumentNavigationQueryService).ToArray(); }\\n\\n@if (selection?.Length > 0)\\n{\\n    <ul class=\\"breadcrumb\\">\\n        @* For each page in the ancestors collection which have been ordered by Level (so we start with the highest top node first) *@\\n        @foreach (var item in selection.OrderBy(x => x.Level))\\n        {\\n            <li><a href=\\"@item.Url(PublishedUrlProvider)\\">@item.Name</a> <span class=\\"divider\\">/</span></li>\\n        }\\n\\n        @* Display the current page as the last item in the list *@\\n        <li class=\\"active\\">@Model.Name</li>\\n    </ul>\\n}","id":"Breadcrumb","name":"Breadcrumb"}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-snippets GetPartialViewSnippetByIdTool should handle empty snippet ID 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":15,"items":[{"id":"Breadcrumb","name":"Breadcrumb"},{"id":"EditProfile","name":"Edit Profile"},{"id":"Empty","name":"Empty"},{"id":"ListAncestorsFromCurrentPage","name":"List Ancestors From Current Page"},{"id":"ListChildPagesFromCurrentPage","name":"List Child Pages From Current Page"},{"id":"ListChildPagesOrderedByDate","name":"List Child Pages Ordered By Date"},{"id":"ListChildPagesOrderedByName","name":"List Child Pages Ordered By Name"},{"id":"ListChildPagesWithDoctype","name":"List Child Pages With Doctype"},{"id":"ListDescendantsFromCurrentPage","name":"List Descendants From Current Page"},{"id":"Login","name":"Login"},{"id":"LoginStatus","name":"Login Status"},{"id":"MultinodeTree-picker","name":"Multinode Tree-picker"},{"id":"Navigation","name":"Navigation"},{"id":"RegisterMember","name":"Register Member"},{"id":"SiteMap","name":"Site Map"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-snippets GetPartialViewSnippetByIdTool should handle invalid snippet ID format 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-partial-view-snippet-by-id:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Partial view not found",
+    "status": 404,
+    "detail": "The partial view was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-snippets GetPartialViewSnippetByIdTool should handle non-existent snippet ID 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-partial-view-snippet-by-id:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Partial view not found",
+    "status": 404,
+    "detail": "The partial view was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-snippets GetPartialViewSnippetTool should get partial view snippets with custom pagination 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":15,"items":[{"id":"00000000-0000-0000-0000-000000000000","name":"Breadcrumb"},{"id":"00000000-0000-0000-0000-000000000000","name":"Edit Profile"},{"id":"00000000-0000-0000-0000-000000000000","name":"Empty"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Ancestors From Current Page"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Child Pages From Current Page"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-snippets GetPartialViewSnippetTool should get partial view snippets with default parameters 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":15,"items":[{"id":"00000000-0000-0000-0000-000000000000","name":"Breadcrumb"},{"id":"00000000-0000-0000-0000-000000000000","name":"Edit Profile"},{"id":"00000000-0000-0000-0000-000000000000","name":"Empty"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Ancestors From Current Page"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Child Pages From Current Page"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Child Pages Ordered By Date"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Child Pages Ordered By Name"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Child Pages With Doctype"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Descendants From Current Page"},{"id":"00000000-0000-0000-0000-000000000000","name":"Login"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-snippets GetPartialViewSnippetTool should get partial view snippets with skip parameter 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":15,"items":[{"id":"00000000-0000-0000-0000-000000000000","name":"List Child Pages Ordered By Date"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Child Pages Ordered By Name"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Child Pages With Doctype"},{"id":"00000000-0000-0000-0000-000000000000","name":"List Descendants From Current Page"},{"id":"00000000-0000-0000-0000-000000000000","name":"Login"},{"id":"00000000-0000-0000-0000-000000000000","name":"Login Status"},{"id":"00000000-0000-0000-0000-000000000000","name":"Multinode Tree-picker"},{"id":"00000000-0000-0000-0000-000000000000","name":"Navigation"},{"id":"00000000-0000-0000-0000-000000000000","name":"Register Member"},{"id":"00000000-0000-0000-0000-000000000000","name":"Site Map"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-snippets GetPartialViewSnippetTool should handle edge case with very high skip value 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":15,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;

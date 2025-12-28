@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-dictionary-item should get a dictionary item by id 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "name": "_Test Dictionary Get",
+  "translations": [
+    {
+      "isoCode": "en-US",
+      "translation": "_Test Translation Get"
+    }
+  ]
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-dictionary-item should handle non-existent dictionary item 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-dictionary:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The dictionary item could not be found",
+    "status": 404,
+    "operationStatus": "ItemNotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

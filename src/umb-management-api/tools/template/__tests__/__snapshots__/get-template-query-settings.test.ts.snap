@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-template-query-settings should get template query settings 1`] = `
+{
+  "content": [
+    {
+      "text": "{"documentTypeAliases":["articleControls","contactFormControls","contentControls","footerControls","headerControls","mainImageControls","sEOControls","visibilityControls","article","articleList","author","authorList","category","categoryList","contact","content","error","home","search","xMLSitemap"],"properties":[{"alias":"Id","type":"Integer"},{"alias":"Name","type":"String"},{"alias":"CreateDate","type":"DateTime"},{"alias":"UpdateDate","type":"DateTime"}],"operators":[{"operator":"Equals","applicableTypes":["Integer","String"]},{"operator":"NotEquals","applicableTypes":["Integer","String"]},{"operator":"LessThan","applicableTypes":["Integer","DateTime"]},{"operator":"LessThanEqualTo","applicableTypes":["Integer","DateTime"]},{"operator":"GreaterThan","applicableTypes":["Integer","DateTime"]},{"operator":"GreaterThanEqualTo","applicableTypes":["Integer","DateTime"]},{"operator":"Contains","applicableTypes":["String"]},{"operator":"NotContains","applicableTypes":["String"]}]}",
+      "type": "text",
+    },
+  ],
+}
+`;

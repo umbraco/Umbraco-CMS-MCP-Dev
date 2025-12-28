@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete-stylesheet-folder should delete a stylesheet folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`delete-stylesheet-folder should handle non-existent folder 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using delete-stylesheet-folder:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Not found",
+    "status": 404,
+    "detail": "The specified folder was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

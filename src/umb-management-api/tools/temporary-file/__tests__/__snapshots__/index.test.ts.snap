@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`temporary-file-tool-index should always have all tools available 1`] = `
+[
+  "create-temporary-file",
+  "get-temporary-file",
+  "delete-temporary-file",
+  "get-temporary-file-configuration",
+]
+`;

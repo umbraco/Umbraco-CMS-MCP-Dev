@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-user-current-configuration should get the current user configuration 1`] = `
+{
+  "content": [
+    {
+      "text": "{"keepUserLoggedIn":false,"passwordConfiguration":{"minimumPasswordLength":10,"requireNonLetterOrDigit":false,"requireDigit":false,"requireLowercase":false,"requireUppercase":false},"allowChangePassword":true,"allowTwoFactor":true}",
+      "type": "text",
+    },
+  ],
+}
+`;

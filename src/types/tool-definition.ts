@@ -29,12 +29,14 @@ export interface ToolDefinition<
 > {
   name: string;
   description: string;
-  inputSchema: InputArgs;
+  inputSchema?: InputArgs;
+  schema?: InputArgs;  // @deprecated Use inputSchema instead - kept for backwards compatibility
   outputSchema?: OutputArgs;  // Optional output schema for structured responses (supports objects, arrays, primitives)
   handler: ToolCallback<InputArgs>;
   enabled?: (user: CurrentUserResponseModel) => boolean;
   slices: ToolSliceName[];  // Explicit slice assignment (empty array = always included)
   annotations?: Partial<ToolAnnotations>;  // Optional annotations (readOnlyHint and openWorldHint are required and auto-populated)
+  isReadOnly?: boolean;  // @deprecated Use annotations.readOnlyHint instead - kept for backwards compatibility
 }
 
 

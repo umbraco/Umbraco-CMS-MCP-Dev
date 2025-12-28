@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rename-partial-view should handle non-existent partial view 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using rename-partial-view:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Partial view not found",
+    "status": 404,
+    "detail": "The partial view was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`rename-partial-view should rename a partial view 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`rename-partial-view should rename a partial view folder 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using rename-partial-view:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Partial view not found",
+    "status": 404,
+    "detail": "The partial view was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`rename-partial-view should rename a partial view in a folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;

@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rename-script should handle non-existent script 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using rename-script:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The script could not be found",
+    "status": 404,
+    "detail": "The script was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`rename-script should handle renaming script to same name 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using rename-script:
+{
+  "message": "Request failed with status code 400",
+  "response": {
+    "type": "Error",
+    "title": "Script already exists",
+    "status": 400,
+    "detail": "A script with the same path already exists",
+    "operationStatus": "AlreadyExists"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`rename-script should handle renaming with folder path (tests path handling) 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`rename-script should handle script folder rename attempt 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using rename-script:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The script could not be found",
+    "status": 404,
+    "detail": "The script was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`rename-script should rename a script 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`rename-script should rename a script in a folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;

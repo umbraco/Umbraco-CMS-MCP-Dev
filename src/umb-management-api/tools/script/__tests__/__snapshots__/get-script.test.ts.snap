@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-script get-script-by-path should get a script by path 1`] = `
+{
+  "content": [
+    {
+      "text": "{"content":"console.log('test script get');","name":"_TestScriptGet.js","parent":null,"path":"/_TestScriptGet.js"}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-script get-script-by-path should handle non-existent script 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-script-by-path:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The script could not be found",
+    "status": 404,
+    "detail": "The script was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-script get-script-folder-by-path should get a script folder by path 1`] = `
+{
+  "content": [
+    {
+      "text": "{"name":"_TestFolderGet","parent":{"path":"/"},"path":"/_TestFolderGet"}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-script get-script-folder-by-path should handle non-existent script folder 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-script-folder-by-path:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Not found",
+    "status": 404,
+    "detail": "The specified folder was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

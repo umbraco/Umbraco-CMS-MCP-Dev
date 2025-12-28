@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`webhook-tool-index should have all tools when user has webhook access 1`] = `
+[
+  "get-webhook-item",
+  "create-webhook",
+  "get-webhook",
+  "get-webhook-by-id",
+  "delete-webhook",
+  "update-webhook",
+  "get-webhook-events",
+  "get-all-webhook-logs",
+  "get-webhook-logs",
+]
+`;
+
+exports[`webhook-tool-index should have no tools when user meets no policies 1`] = `[]`;

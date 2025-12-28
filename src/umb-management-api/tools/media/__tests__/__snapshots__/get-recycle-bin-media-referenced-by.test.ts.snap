@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-recycle-bin-media-referenced-by should detect references to deleted media items 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":2,"items":[{"$type":"DocumentReferenceResponseModel","published":false,"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document","alias":"testdoctyperecyclemedia","name":"_Test DocType Recycle Media"},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Document Recycle Media","culture":null}],"id":"00000000-0000-0000-0000-000000000000","name":null},{"$type":"DocumentReferenceResponseModel","published":false,"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document","alias":"testdoctyperecyclemedia","name":"_Test DocType Recycle Media"},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Document Recycle Media 2","culture":null}],"id":"00000000-0000-0000-0000-000000000000","name":null}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-recycle-bin-media-referenced-by should handle default pagination parameters 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-recycle-bin-media-referenced-by should handle pagination parameters correctly 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-recycle-bin-media-referenced-by should return empty when no deleted media has references 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;

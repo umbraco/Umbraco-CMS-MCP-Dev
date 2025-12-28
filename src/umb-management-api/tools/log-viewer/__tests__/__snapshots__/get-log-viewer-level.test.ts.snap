@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-log-viewer-level should get log viewer levels with custom pagination 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":2,"items":[{"name":"UmbracoFile","level":"Verbose"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-log-viewer-level should get log viewer levels with default parameters 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":2,"items":[{"name":"Global","level":"Information"},{"name":"UmbracoFile","level":"Verbose"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;

@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-document-version-prevent-cleanup should allow cleanup for a document version 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-document-version-prevent-cleanup should handle non-existent version ID 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using update-document-version-prevent-cleanup:
+{
+  "message": "Request failed with status code 404",
+  "response": ""
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-document-version-prevent-cleanup should prevent cleanup for a document version 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;

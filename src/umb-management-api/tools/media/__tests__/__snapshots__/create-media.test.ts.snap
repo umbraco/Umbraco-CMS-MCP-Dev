@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-media should create file media 1`] = `
+{
+  "content": [
+    {
+      "text": "Media "_Test File Upload" created successfully",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-media should create image media 1`] = `
+{
+  "content": [
+    {
+      "text": "Media "_Test Image Upload" created successfully",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-media should create media from URL 1`] = `
+{
+  "content": [
+    {
+      "text": "Media "_Test URL Image Upload" created successfully",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-media should create media from base64 1`] = `
+{
+  "content": [
+    {
+      "text": "Media "_Test Base64 Image Upload.png" created successfully",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-media should handle invalid media type 1`] = `
+{
+  "content": [
+    {
+      "text": "Error creating media: Media type 'NonExistentMediaType' not found. Available types: None found",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;
+
+exports[`create-media should handle non-existent file path 1`] = `
+{
+  "content": [
+    {
+      "text": "Error creating media: File path "/non/existent/file.jpg" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;

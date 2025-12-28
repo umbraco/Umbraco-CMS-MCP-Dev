@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-template-by-id-array should get templates by id array 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"alias":"_testTemplateArray1","name":"_Test Template Array 1","id":"00000000-0000-0000-0000-000000000000","flags":[]},{"alias":"_testTemplateArray2","name":"_Test Template Array 2","id":"00000000-0000-0000-0000-000000000000","flags":[]}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-template-by-id-array should handle empty array 1`] = `
+{
+  "content": [
+    {
+      "text": "[]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-template-by-id-array should handle no id parameter 1`] = `
+{
+  "content": [
+    {
+      "text": "[]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-template-by-id-array should handle non-existent template ids 1`] = `
+{
+  "content": [
+    {
+      "text": "[]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-template-by-id-array should handle single template id 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"alias":"_testTemplateArray1","name":"_Test Template Array 1","id":"00000000-0000-0000-0000-000000000000","flags":[]}]",
+      "type": "text",
+    },
+  ],
+}
+`;

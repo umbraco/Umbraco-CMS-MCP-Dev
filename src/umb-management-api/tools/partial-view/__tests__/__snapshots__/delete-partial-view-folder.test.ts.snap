@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete-partial-view-folder should delete an empty partial view folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`delete-partial-view-folder should handle attempt to delete a non-empty partial view folder 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using delete-partial-view-folder:
+{
+  "message": "Request failed with status code 400",
+  "response": {
+    "type": "Error",
+    "title": "Not empty",
+    "status": 400,
+    "detail": "The folder is not empty and can therefore not be deleted.",
+    "operationStatus": "NotEmpty"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`delete-partial-view-folder should handle non-existent partial view folder 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using delete-partial-view-folder:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Not found",
+    "status": 404,
+    "detail": "The specified folder was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-partial-view GetPartialViewByPathTool should get a partial view by path 1`] = `
+{
+  "content": [
+    {
+      "text": "{"content":"@* Test get content *@\\n<div><p>Get Test Content</p></div>","name":"_TestGetPartialView.cshtml","parent":null,"path":"/_TestGetPartialView.cshtml"}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-partial-view GetPartialViewByPathTool should get a partial view in a folder 1`] = `
+{
+  "content": [
+    {
+      "text": "{"content":"@* Test get content *@\\n<div><p>Get Test Content</p></div>","name":"_TestGetPartialView.cshtml","parent":{"path":"/_TestGetPartialViewFolder"},"path":"/_TestGetPartialViewFolder/_TestGetPartialView.cshtml"}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-partial-view GetPartialViewByPathTool should handle invalid path format 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-partial-view-by-path:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Partial view not found",
+    "status": 404,
+    "detail": "The partial view was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-partial-view GetPartialViewByPathTool should handle non-existent partial view 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-partial-view-by-path:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Partial view not found",
+    "status": 404,
+    "detail": "The partial view was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-partial-view GetPartialViewFolderByPathTool should get a partial view folder by path 1`] = `
+{
+  "content": [
+    {
+      "text": "{"name":"_TestGetPartialViewFolder","parent":{"path":"/"},"path":"/_TestGetPartialViewFolder"}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-partial-view GetPartialViewFolderByPathTool should handle getting folder that is actually a partial view 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-partial-view-folder-by-path:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Not found",
+    "status": 404,
+    "detail": "The specified folder was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-partial-view GetPartialViewFolderByPathTool should handle non-existent partial view folder 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-partial-view-folder-by-path:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Not found",
+    "status": 404,
+    "detail": "The specified folder was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

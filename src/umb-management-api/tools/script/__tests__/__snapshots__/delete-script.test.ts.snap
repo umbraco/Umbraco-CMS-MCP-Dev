@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete-script delete-script should delete a script 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`delete-script delete-script should handle non-existent script 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using delete-script:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The script could not be found",
+    "status": 404,
+    "detail": "The script was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`delete-script delete-script-folder should delete a script folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`delete-script delete-script-folder should handle non-existent script folder 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using delete-script-folder:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "Not found",
+    "status": 404,
+    "detail": "The specified folder was not found.",
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

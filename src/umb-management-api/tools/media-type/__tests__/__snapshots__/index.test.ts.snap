@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`media-type-tool-index should have all tools when user has all required access 1`] = `
+[
+  "get-media-type-folder",
+  "create-media-type-folder",
+  "delete-media-type-folder",
+  "update-media-type-folder",
+  "create-media-type",
+  "copy-media-type",
+  "get-media-type-available-compositions",
+  "update-media-type",
+  "move-media-type",
+  "delete-media-type",
+  "get-media-type-root",
+  "get-media-type-children",
+  "get-media-type-siblings",
+  "get-media-type-ancestors",
+  "get-media-type-folders",
+  "get-media-type-by-id",
+  "get-media-type-by-ids",
+  "get-item-media-type",
+  "get-media-type-configuration",
+  "get-allowed-media-type",
+  "get-media-type-allowed-at-root",
+  "get-media-type-allowed-children",
+  "get-media-type-composition-references",
+]
+`;
+
+exports[`media-type-tool-index should have management tools when user has media type access 1`] = `
+[
+  "get-media-type-folder",
+  "create-media-type-folder",
+  "delete-media-type-folder",
+  "update-media-type-folder",
+  "create-media-type",
+  "copy-media-type",
+  "get-media-type-available-compositions",
+  "update-media-type",
+  "move-media-type",
+  "delete-media-type",
+  "get-media-type-root",
+  "get-media-type-children",
+  "get-media-type-siblings",
+  "get-media-type-ancestors",
+  "get-media-type-folders",
+  "get-media-type-by-id",
+  "get-media-type-by-ids",
+  "get-item-media-type",
+  "get-media-type-configuration",
+  "get-allowed-media-type",
+  "get-media-type-allowed-at-root",
+  "get-media-type-allowed-children",
+  "get-media-type-composition-references",
+]
+`;
+
+exports[`media-type-tool-index should have no tools by default 1`] = `[]`;
+
+exports[`media-type-tool-index should have query tools when user has media or media type access 1`] = `
+[
+  "get-media-type-by-id",
+  "get-media-type-by-ids",
+  "get-item-media-type",
+  "get-media-type-configuration",
+  "get-allowed-media-type",
+  "get-media-type-allowed-at-root",
+  "get-media-type-allowed-children",
+  "get-media-type-composition-references",
+]
+`;

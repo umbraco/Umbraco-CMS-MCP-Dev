@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-member-by-id-referenced-by should get reference data for a specific member 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":1,"items":[{"$type":"DocumentReferenceResponseModel","published":false,"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document","alias":"testdoctypewithmemberref","name":"_Test DocType With Member Ref"},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Document With Member Ref","culture":null}],"id":"00000000-0000-0000-0000-000000000000","name":null}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-member-by-id-referenced-by should return empty results when member has no references 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;

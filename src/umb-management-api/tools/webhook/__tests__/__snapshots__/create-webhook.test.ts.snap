@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-webhook should create a webhook 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-webhook should handle invalid webhook data 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using create-webhook:
+{
+  "message": "Request failed with status code 400",
+  "response": {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+    "title": "One or more validation errors occurred.",
+    "status": 400,
+    "errors": [
+      {
+        "$.url": [
+          "The Url field is required."
+        ]
+      }
+    ],
+    "traceId": "normalized-trace-id"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

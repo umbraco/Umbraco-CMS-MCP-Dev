@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`execute-template-query should execute a simple template query 1`] = `
+{
+  "content": [
+    {
+      "text": "{"queryExpression":"Umbraco.ContentAtRoot().FirstOrDefault()\\n    .Children()\\n    .Where(x => x.IsVisible())\\n    .Take(10)","sampleResults":[{"icon":"icon-document color-blue","name":"Features"},{"icon":"icon-document color-blue","name":"About"},{"icon":"icon-thumbnail-list color-blue","name":"Blog"},{"icon":"icon-message color-blue","name":"Contact"},{"icon":"icon-search color-blue","name":"Search"},{"icon":"icon-users color-blue","name":"Authors"}],"resultCount":6,"executionTime":0}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`execute-template-query should execute a template query with document type filter 1`] = `
+{
+  "content": [
+    {
+      "text": "{"queryExpression":"Umbraco.ContentAtRoot().FirstOrDefault()\\n    .ChildrenOfType(\\"contentPage\\")\\n    .Where(x => x.IsVisible())\\n    .Take(5)","sampleResults":[],"resultCount":0,"executionTime":0}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`execute-template-query should execute a template query with filters and sorting 1`] = `
+{
+  "content": [
+    {
+      "text": "{"queryExpression":"Umbraco.ContentAtRoot().FirstOrDefault()\\n    .Children()\\n    .Where(x => x.IsVisible())\\n    .OrderByDescending(x => x.createDate)\\n    .Take(10)","sampleResults":[{"icon":"icon-search color-blue","name":"Search"},{"icon":"icon-document color-blue","name":"Features"},{"icon":"icon-message color-blue","name":"Contact"},{"icon":"icon-thumbnail-list color-blue","name":"Blog"},{"icon":"icon-users color-blue","name":"Authors"},{"icon":"icon-document color-blue","name":"About"}],"resultCount":6,"executionTime":0}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`execute-template-query should handle invalid query gracefully 1`] = `
+{
+  "content": [
+    {
+      "text": "{"queryExpression":"Umbraco.ContentAtRoot().FirstOrDefault()\\n    .ChildrenOfType(\\"nonExistentType\\")\\n    .Where(x => x.IsVisible())\\n    .Take(10)","sampleResults":[],"resultCount":0,"executionTime":0}",
+      "type": "text",
+    },
+  ],
+}
+`;

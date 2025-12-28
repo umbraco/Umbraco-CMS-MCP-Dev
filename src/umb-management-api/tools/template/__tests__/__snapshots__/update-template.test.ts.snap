@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-template should handle non-existent template 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using update-template:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The template could not be found",
+    "status": 404,
+    "operationStatus": "TemplateNotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-template should update a template 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-template should update a template 2`] = `
+[
+  {
+    "alias": "_updatedTemplate",
+    "flags": [],
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "_Updated Template",
+  },
+]
+`;

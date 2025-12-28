@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`partial-view-tree-operations get-ancestors should get ancestor items 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_Test Parent","path":"/_Test Parent","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_Test Child.cshtml","path":"/_Test Parent/_Test Child.cshtml","parent":{"path":"/_Test Parent","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`partial-view-tree-operations get-ancestors should handle non-existent descendant path 1`] = `
+{
+  "content": [
+    {
+      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true},{"name":"_NonExistent","path":"/_NonExistent","parent":{"path":"/"},"isFolder":true,"hasChildren":false},{"name":"test.cshtml","path":"/_NonExistent/test.cshtml","parent":{"path":"/_NonExistent"},"isFolder":true,"hasChildren":false}]",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`partial-view-tree-operations get-children should get child items of a folder 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":1,"items":[{"name":"_Test Child.cshtml","path":"/_Test Folder/_Test Child.cshtml","parent":{"path":"/_Test Folder","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`partial-view-tree-operations get-children should handle non-existent parent path 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`partial-view-tree-operations get-root should get root level partial views 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":8,"items":[{"name":"blockgrid","path":"/blockgrid","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"blocklist","path":"/blocklist","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"authors.cshtml","path":"/authors.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"footer.cshtml","path":"/footer.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"mainNavigation.cshtml","path":"/mainNavigation.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"metaData.cshtml","path":"/metaData.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"pageHeader.cshtml","path":"/pageHeader.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"xmlSitemap.cshtml","path":"/xmlSitemap.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;

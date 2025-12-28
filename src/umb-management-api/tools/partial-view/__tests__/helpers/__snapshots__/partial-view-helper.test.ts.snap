@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PartialViewHelper should find partial views with snapshot normalization 1`] = `
+[
+  {
+    "hasChildren": false,
+    "isFolder": false,
+    "name": "_TestHelperPartialView.cshtml",
+    "parent": null,
+    "path": "/_TestHelperPartialView.cshtml",
+  },
+]
+`;
+
+exports[`PartialViewHelper should get partial view folder with snapshot normalization 1`] = `
+{
+  "name": "_TestHelperFolder",
+  "parent": {
+    "path": "/",
+  },
+  "path": "/_TestHelperFolder",
+}
+`;
+
+exports[`PartialViewHelper should get partial view with snapshot normalization 1`] = `
+{
+  "content": "@* Test helper content *@
+<p>Helper Test</p>",
+  "name": "_TestHelperPartialView.cshtml",
+  "parent": null,
+  "path": "/_TestHelperPartialView.cshtml",
+}
+`;

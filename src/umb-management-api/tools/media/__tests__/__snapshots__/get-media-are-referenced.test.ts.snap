@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-media-are-referenced should detect when media is referenced by a document 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":1,"items":[{"id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-media-are-referenced should handle non-existent media IDs 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-media-are-referenced should return empty when media is not referenced 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;

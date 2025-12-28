@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`member-type-tool-index should have all tools when user has member type access 1`] = `
+[
+  "get-member-type-by-id",
+  "create-member-type",
+  "get-member-types-by-id-array",
+  "delete-member-type",
+  "update-member-type",
+  "copy-member-type",
+  "get-member-type-available-compositions",
+  "get-member-type-composition-references",
+  "get-member-type-configuration",
+  "get-member-type-root",
+  "get-member-type-siblings",
+  "search-member-type-items",
+]
+`;
+
+exports[`member-type-tool-index should have basic tools by default 1`] = `
+[
+  "get-member-type-by-id",
+]
+`;

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete-user-data should delete user data 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`delete-user-data should handle non-existent user data 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using delete-user-data:
+{
+  "message": "Request failed with status code 404",
+  "response": ""
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

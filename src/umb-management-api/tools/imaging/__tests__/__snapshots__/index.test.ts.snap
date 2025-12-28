@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`imaging-tool-index should have tools when user has no permissions 1`] = `[]`;
+
+exports[`imaging-tool-index should have tools when user has settings section access 1`] = `
+[
+  "get-imaging-resize-urls",
+]
+`;

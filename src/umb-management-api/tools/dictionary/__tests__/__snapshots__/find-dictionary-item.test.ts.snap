@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`find-dictionary-item should find a dictionary item by name 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":1,"items":[{"name":"_Test Dictionary Find","id":"00000000-0000-0000-0000-000000000000","parent":null,"translatedIsoCodes":["en-US"]}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`find-dictionary-item should handle non-existent dictionary item 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":0,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;

@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-user-group should handle non-existent user group 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using update-user-group:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The user group could not be found",
+    "status": 404,
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-user-group should update a user group 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`update-user-group should update a user group 2`] = `
+[
+  {
+    "alias": "updatedUserGroup",
+    "aliasCanBeChanged": true,
+    "documentRootAccess": false,
+    "documentStartNode": null,
+    "fallbackPermissions": [],
+    "hasAccessToAllLanguages": true,
+    "icon": null,
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isDeletable": true,
+    "languages": [],
+    "mediaRootAccess": false,
+    "mediaStartNode": null,
+    "name": "_Updated User Group",
+    "permissions": [],
+    "sections": [
+      "Umb.Section.Content",
+    ],
+  },
+]
+`;

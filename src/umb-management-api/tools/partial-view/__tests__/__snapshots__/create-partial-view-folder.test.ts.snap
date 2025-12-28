@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-partial-view-folder should create a partial view folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-partial-view-folder should create a partial view folder 2`] = `
+[
+  {
+    "hasChildren": false,
+    "id": undefined,
+    "isFolder": true,
+    "name": "_TestCreateFolder",
+    "parent": null,
+    "path": "/_TestCreateFolder",
+  },
+]
+`;
+
+exports[`create-partial-view-folder should handle existing folder name 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using create-partial-view-folder:
+{
+  "message": "Request failed with status code 400",
+  "response": {
+    "type": "Error",
+    "title": "Folder already exists",
+    "status": 400,
+    "detail": "The folder already exists",
+    "operationStatus": "AlreadyExists"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`property-type-tool-index should have property type is used tool by default 1`] = `
+[
+  "get-property-type-is-used",
+]
+`;

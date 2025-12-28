@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`partial-view-tool-index should have all tools when user has settings section access 1`] = `
+[
+  "create-partial-view",
+  "create-partial-view-folder",
+  "get-partial-view-by-path",
+  "get-partial-view-folder-by-path",
+  "update-partial-view",
+  "rename-partial-view",
+  "delete-partial-view",
+  "delete-partial-view-folder",
+  "get-partial-view-snippet",
+  "get-partial-view-snippet-by-id",
+  "get-partial-view-ancestors",
+  "get-partial-view-children",
+  "get-partial-view-root",
+  "get-partial-view-search",
+  "get-partial-view-siblings",
+]
+`;
+
+exports[`partial-view-tool-index should only have no tools when user has no permissions 1`] = `[]`;

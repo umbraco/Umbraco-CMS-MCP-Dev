@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-recycle-bin-media-original-parent should handle invalid media id 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using get-recycle-bin-media-original-parent:
+{
+  "message": "Request failed with status code 404",
+  "response": {
+    "type": "Error",
+    "title": "The media item could not be found",
+    "status": 404,
+    "operationStatus": "NotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-recycle-bin-media-original-parent should return null for media that was at root level 1`] = `
+{
+  "content": [
+    {
+      "text": "null",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-recycle-bin-media-original-parent should return original parent information for recycled media 1`] = `
+{
+  "content": [
+    {
+      "text": "{
+  "id": "00000000-0000-0000-0000-000000000000"
+}",
+      "type": "text",
+    },
+  ],
+}
+`;

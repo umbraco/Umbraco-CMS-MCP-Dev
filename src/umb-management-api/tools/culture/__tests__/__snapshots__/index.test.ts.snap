@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`culture-tool-index should have all tools when user has settings access 1`] = `
+[
+  "get-culture",
+]
+`;
+
+exports[`culture-tool-index should have basic query tools by default 1`] = `
+[
+  "get-culture",
+]
+`;

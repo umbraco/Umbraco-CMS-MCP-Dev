@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-health-check-groups should get health check groups 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":6,"items":[{"name":"Configuration","id":"00000000-0000-0000-0000-000000000000"},{"name":"Data Integrity","id":"00000000-0000-0000-0000-000000000000"},{"name":"Live Environment","id":"00000000-0000-0000-0000-000000000000"},{"name":"Permissions","id":"00000000-0000-0000-0000-000000000000"},{"name":"Security","id":"00000000-0000-0000-0000-000000000000"},{"name":"Services","id":"00000000-0000-0000-0000-000000000000"}]}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`get-health-check-groups should handle invalid parameters 1`] = `
+{
+  "content": [
+    {
+      "text": "{"total":6,"items":[]}",
+      "type": "text",
+    },
+  ],
+}
+`;

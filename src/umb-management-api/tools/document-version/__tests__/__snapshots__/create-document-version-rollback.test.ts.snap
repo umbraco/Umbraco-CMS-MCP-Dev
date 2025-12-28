@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-document-version-rollback should handle non-existent version ID 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using create-document-version-rollback:
+{
+  "message": "Request failed with status code 404",
+  "response": ""
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-document-version-rollback should rollback document to a specific version 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-document-version-rollback should rollback document to a specific version with culture 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;

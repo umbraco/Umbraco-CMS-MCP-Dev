@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StylesheetHelper should find stylesheet items with snapshot normalization 1`] = `
+[
+  {
+    "hasChildren": false,
+    "isFolder": false,
+    "name": "_TestHelperStylesheet.css",
+    "parent": null,
+    "path": "/_TestHelperStylesheet.css",
+  },
+]
+`;
+
+exports[`StylesheetHelper should get stylesheet folder with snapshot normalization 1`] = `
+{
+  "name": "_TestHelperFolder",
+  "parent": {
+    "path": "/",
+  },
+  "path": "/_TestHelperFolder",
+}
+`;
+
+exports[`StylesheetHelper should get stylesheet with snapshot normalization 1`] = `
+{
+  "content": "/* Test helper content */
+body {
+  color: #333;
+}",
+  "name": "_TestHelperStylesheet.css",
+  "parent": null,
+  "path": "/_TestHelperStylesheet.css",
+}
+`;

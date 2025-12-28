@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TagTestBuilder should build tag search model with query and tagGroup 1`] = `
+{
+  "query": "test",
+  "tagGroup": "default",
+}
+`;
+
+exports[`TagTestBuilder should find specific tag 1`] = `
+{
+  "group": "default",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "nodeCount": 1,
+  "text": "builder-test-tag",
+}
+`;

@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-partial-view should create a partial view 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-partial-view should create partial view with parent folder 1`] = `
+{
+  "content": [
+    {
+      "text": """",
+      "type": "text",
+    },
+  ],
+}
+`;
+
+exports[`create-partial-view should handle existing partial view name 1`] = `
+{
+  "content": [
+    {
+      "text": "Error using create-partial-view:
+{
+  "message": "Request failed with status code 400",
+  "response": {
+    "type": "Error",
+    "title": "Partial view already exists",
+    "status": 400,
+    "detail": "A partial view with the same path already exists",
+    "operationStatus": "AlreadyExists"
+  }
+}",
+      "type": "text",
+    },
+  ],
+}
+`;
