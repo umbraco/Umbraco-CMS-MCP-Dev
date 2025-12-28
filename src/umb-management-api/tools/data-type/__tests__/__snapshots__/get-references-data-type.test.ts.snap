@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-references-data-type should get references for a data type used in document type property 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "$type": "DocumentTypePropertyTypeReferenceResponseModel",
+        "alias": "testProperty",
+        "documentType": {
+          "alias": "testdoctypeforreferences",
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test DocType For References",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Test Property",
+      },
+    ],
+    "total": 1,
+  },
+}
+`;
+
+exports[`get-references-data-type should handle non-existent data type 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
+}
+`;
+
+exports[`get-references-data-type should return empty array for unreferenced data type 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
+}
+`;

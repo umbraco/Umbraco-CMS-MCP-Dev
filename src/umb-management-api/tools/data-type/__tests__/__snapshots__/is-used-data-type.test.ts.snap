@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`is-used-data-type should check if a data type is used 1`] = `
+{
+  "content": [],
+  "structuredContent": true,
+}
+`;
+
+exports[`is-used-data-type should handle non-existent data type 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The data type could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`is-used-data-type should return false when data type is not used 1`] = `
+{
+  "content": [],
+  "structuredContent": false,
+}
+`;
+
+exports[`is-used-data-type should return true when data type is used in document type without documents 1`] = `
+{
+  "content": [],
+  "structuredContent": false,
+}
+`;
