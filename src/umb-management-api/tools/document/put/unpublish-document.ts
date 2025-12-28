@@ -14,9 +14,7 @@ const UnpublishDocumentTool = {
   name: "unpublish-document",
   description: "Unpublishes a document by Id.",
   inputSchema: inputSchema,
-  annotations: {
-    idempotentHint: true,
-  },
+  annotations: {},
   slices: ['publish'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Unpublish),
   handler: (async (model: {

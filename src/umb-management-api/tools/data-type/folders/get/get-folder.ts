@@ -9,7 +9,6 @@ const GetDataTypeFolderTool = {
   outputSchema: getDataTypeFolderByIdResponse.shape,
   annotations: {
     readOnlyHint: true,
-    idempotentHint: true,
   },
   slices: ['read', 'folders'],
   handler: (async ({ id }: { id: string }) => {

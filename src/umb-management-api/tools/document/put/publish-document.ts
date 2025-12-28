@@ -17,9 +17,7 @@ const PublishDocumentTool = {
   When the culture is not provided, the default culture is null.
   When the schedule is not provided, the default schedule is null.`,
   inputSchema: inputSchema,
-  annotations: {
-    idempotentHint: true,
-  },
+  annotations: {},
   slices: ['publish'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Publish),
   handler: (async (model: { id: string; data: any }) => {

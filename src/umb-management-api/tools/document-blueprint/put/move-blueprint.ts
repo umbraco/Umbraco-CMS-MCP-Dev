@@ -18,7 +18,7 @@ const MoveDocumentBlueprintTool = {
   name: "move-document-blueprint",
   description: "Moves a document blueprint by Id",
   inputSchema: moveDocumentBlueprintSchema.shape,
-  annotations: { idempotentHint: true },
+  annotations: {},
   slices: ['move'],
   handler: (async (model: MoveDocumentBlueprintParams) => {
     return executeVoidApiCall((client) =>

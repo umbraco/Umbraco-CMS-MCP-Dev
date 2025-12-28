@@ -14,9 +14,7 @@ const MoveDocumentTool = {
   name: "move-document",
   description: "Move a document to a new location",
   inputSchema: inputSchema,
-  annotations: {
-    idempotentHint: true,
-  },
+  annotations: {},
   slices: ['move'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Move),
   handler: (async (model: { id: string; data: any }) => {
