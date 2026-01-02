@@ -4,6 +4,7 @@ import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import { createMockRequestHandlerExtra, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Copy";
@@ -45,9 +46,9 @@ describe("copy-document-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify the handler response (void operation, no structured content)
+    // Assert - Verify the handler response returns the new ID
     expect(result.isError).toBeFalsy();
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Assert - Verify the document type was actually copied to the folder
     const copiedDocType = await DocumentTypeTestHelper.findDocumentType(
@@ -75,9 +76,9 @@ describe("copy-document-type", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify the handler response (void operation, no structured content)
+    // Assert - Verify the handler response returns the new ID
     expect(result.isError).toBeFalsy();
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Assert - Verify the document type was actually copied to root
     const copiedDocType = await DocumentTypeTestHelper.findDocumentType(
