@@ -2,77 +2,286 @@
 
 exports[`dictionary-tree get-ancestors should get ancestors of child dictionary 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"name":"_Child Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":true}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Root Dictionary",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Child Dictionary",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+  },
 }
 `;
 
 exports[`dictionary-tree get-ancestors should get ancestors of grandchild dictionary 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"name":"_Child Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":true},{"name":"_Grandchild Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Root Dictionary",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Child Dictionary",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Grandchild Dictionary",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+  },
 }
 `;
 
 exports[`dictionary-tree get-ancestors should get empty ancestors for root dictionary 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Root Dictionary",
+        "parent": null,
+      },
+    ],
+  },
 }
 `;
 
 exports[`dictionary-tree get-children should get children of child dictionary 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"name":"_Grandchild Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Grandchild Dictionary",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`dictionary-tree get-children should get children of root dictionary 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"name":"_Child Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":true}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Child Dictionary",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`dictionary-tree get-children should get empty children for leaf dictionary 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`dictionary-tree get-root should get root level dictionary items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":21,"items":[{"name":"_Root Dictionary","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"name":"Article.By","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Article.On","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Article.Posted","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ArticleList.ViewAll","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Author.ReadMore","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ContactForm.Email","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ContactForm.Message","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ContactForm.Name","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"ContactForm.Send","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Footer.CopyrightStatement","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Footer.CopyrightTitle","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Navigation.MenuTitle","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Navigation.SiteName","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Paging.Next","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Paging.Of","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Paging.Page","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Paging.Previous","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Search.Placeholder","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Search.Results","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false},{"name":"Search.SearchButton","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":false}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Root Dictionary",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Article.By",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Article.On",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Article.Posted",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "ArticleList.ViewAll",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Author.ReadMore",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "ContactForm.Email",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "ContactForm.Message",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "ContactForm.Name",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "ContactForm.Send",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Footer.CopyrightStatement",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Footer.CopyrightTitle",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Navigation.MenuTitle",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Navigation.SiteName",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Paging.Next",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Paging.Of",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Paging.Page",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Paging.Previous",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Search.Placeholder",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Search.Results",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Search.SearchButton",
+        "parent": null,
+      },
+    ],
+    "total": 21,
+  },
 }
 `;

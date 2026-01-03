@@ -2,53 +2,45 @@
 
 exports[`get-document-version-by-id should get document version by ID 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "document": {
-    "id": "00000000-0000-0000-0000-000000000000"
-  },
-  "documentType": {
-    "id": "00000000-0000-0000-0000-000000000000",
-    "icon": "icon-home color-blue",
-    "collection": null
-  },
-  "id": "00000000-0000-0000-0000-000000000000",
-  "flags": [],
-  "values": [],
-  "variants": [
-    {
-      "state": "Published",
-      "publishDate": "NORMALIZED_DATE",
-      "scheduledPublishDate": null,
-      "scheduledUnpublishDate": null,
+  "content": [],
+  "structuredContent": {
+    "document": {
       "id": "00000000-0000-0000-0000-000000000000",
-      "flags": [],
-      "createDate": "NORMALIZED_DATE",
-      "updateDate": "NORMALIZED_DATE",
-      "culture": null,
-      "segment": null,
-      "name": "_Test Document for Version By ID"
-    }
-  ]
-}",
-      "type": "text",
     },
-  ],
+    "documentType": {
+      "collection": null,
+      "icon": "icon-home color-blue",
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "flags": [],
+    "id": "00000000-0000-0000-0000-000000000000",
+    "values": [],
+    "variants": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "culture": null,
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Document for Version By ID",
+        "publishDate": "NORMALIZED_DATE",
+        "scheduledPublishDate": null,
+        "scheduledUnpublishDate": null,
+        "segment": null,
+        "state": "Published",
+        "updateDate": "NORMALIZED_DATE",
+      },
+    ],
+  },
 }
 `;
 
 exports[`get-document-version-by-id should handle non-existent version ID 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-document-version-by-id:
-{
-  "message": "Request failed with status code 404",
-  "response": ""
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
 }
 `;

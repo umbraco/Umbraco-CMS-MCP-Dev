@@ -369,3 +369,27 @@ handler: async (model: Model) => {
 ```
 
 The outer parentheses are required for the `satisfies` type checking to work correctly.
+
+---
+
+## Next Step: Migrate Tests
+
+After completing the tool migration, you should also migrate the corresponding tests to use the new patterns.
+
+Run:
+```
+/migrate-tests <test-folder-path>
+```
+
+Example:
+```
+/migrate-tests src/umb-management-api/tools/document-type/__tests__
+```
+
+The migrate-tests command will:
+1. Update test files to use `createMockRequestHandlerExtra()` and `setupTestEnvironment()`
+2. Replace `JSON.parse(getResultText(result))` with `validateStructuredContent()`
+3. Update snapshot tests to use `createSnapshotResult()`
+4. Run tests with `-u` flag to update snapshots
+
+ARGUMENTS: $ARGUMENTS

@@ -4,7 +4,8 @@ import GetDictionaryAncestorsTool from "../items/get/get-ancestors.js";
 import { DictionaryBuilder } from "./helpers/dictionary-builder.js";
 import { DEFAULT_ISO_CODE } from "./helpers/dictionary-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const ROOT_DICTIONARY_NAME = "_Root Dictionary";
 const ROOT_DICTIONARY_TRANSLATION = "_Root Translation";
@@ -14,7 +15,7 @@ const GRANDCHILD_DICTIONARY_NAME = "_Grandchild Dictionary";
 const GRANDCHILD_DICTIONARY_TRANSLATION = "_Grandchild Translation";
 
 describe("dictionary-tree", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let rootHelper: DictionaryBuilder;
   let childHelper: DictionaryBuilder;
   let grandchildHelper: DictionaryBuilder;
@@ -46,15 +47,6 @@ describe("dictionary-tree", () => {
       .create();
   });
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
   afterAll(async () => {
     // Clean up all test dictionary items
     await grandchildHelper.cleanup();
@@ -67,8 +59,8 @@ describe("dictionary-tree", () => {
       const result = await GetDictionaryRootTool.handler(
         {
           take: 100,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -80,8 +72,8 @@ describe("dictionary-tree", () => {
         {
           parentId: rootHelper.getId(),
           take: 100,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -91,8 +83,8 @@ describe("dictionary-tree", () => {
         {
           parentId: childHelper.getId(),
           take: 100,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -102,8 +94,8 @@ describe("dictionary-tree", () => {
         {
           parentId: grandchildHelper.getId(),
           take: 100,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -114,8 +106,8 @@ describe("dictionary-tree", () => {
       const result = await GetDictionaryAncestorsTool.handler(
         {
           descendantId: grandchildHelper.getId(),
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -124,8 +116,8 @@ describe("dictionary-tree", () => {
       const result = await GetDictionaryAncestorsTool.handler(
         {
           descendantId: childHelper.getId(),
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -134,8 +126,8 @@ describe("dictionary-tree", () => {
       const result = await GetDictionaryAncestorsTool.handler(
         {
           descendantId: rootHelper.getId(),
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });

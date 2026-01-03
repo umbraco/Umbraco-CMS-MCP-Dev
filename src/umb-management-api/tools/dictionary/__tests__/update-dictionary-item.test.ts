@@ -4,7 +4,8 @@ import {
   DEFAULT_ISO_CODE,
   DictionaryTestHelper,
 } from "./helpers/dictionary-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_DICTIONARY_NAME = "_Test Dictionary Update";
@@ -15,17 +16,14 @@ const NON_EXISTENT_DICTIONARY_NAME = "_Non Existent Dictionary";
 const NON_EXISTENT_DICTIONARY_TRANSLATION = "_Non Existent Translation";
 
 describe("update-dictionary-item", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let helper: DictionaryBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     helper = new DictionaryBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await helper.cleanup();
   });
 
@@ -48,11 +46,12 @@ describe("update-dictionary-item", () => {
             },
           ],
         },
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
 
     // Verify the updated item exists and matches expected values
@@ -76,11 +75,12 @@ describe("update-dictionary-item", () => {
             },
           ],
         },
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });
