@@ -3,24 +3,22 @@ import GetDictionaryItemTool from "../get/get-dictionary-item.js";
 import { DictionaryBuilder } from "./helpers/dictionary-builder.js";
 import { DEFAULT_ISO_CODE } from "./helpers/dictionary-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_DICTIONARY_NAME = "_Test Dictionary Get";
 const TEST_DICTIONARY_TRANSLATION = "_Test Translation Get";
 
 describe("get-dictionary-item", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let helper: DictionaryBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     helper = new DictionaryBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await helper.cleanup();
   });
 
@@ -33,9 +31,10 @@ describe("get-dictionary-item", () => {
 
     const params = getDictionaryByIdParams.parse({ id: helper.getId() });
 
-    const result = await GetDictionaryItemTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetDictionaryItemTool.handler(
+      params as any,
+      createMockRequestHandlerExtra()
+    );
 
     expect(createSnapshotResult(result, helper.getId())).toMatchSnapshot();
   });
@@ -44,9 +43,12 @@ describe("get-dictionary-item", () => {
     const nonExistentId = BLANK_UUID;
     const params = getDictionaryByIdParams.parse({ id: nonExistentId });
 
-    const result = await GetDictionaryItemTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetDictionaryItemTool.handler(
+      params as any,
+      createMockRequestHandlerExtra()
+    );
+
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

@@ -2,12 +2,11 @@
 
 exports[`create-dictionary-item should create a dictionary item 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Dictionary item created successfully",
+  },
 }
 `;
 
@@ -26,12 +25,11 @@ exports[`create-dictionary-item should create a dictionary item 2`] = `
 
 exports[`create-dictionary-item should create a dictionary item with parent 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Dictionary item created successfully",
+  },
 }
 `;
 
@@ -52,21 +50,14 @@ exports[`create-dictionary-item should create a dictionary item with parent 2`] 
 
 exports[`create-dictionary-item should handle existing dictionary item 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-dictionary:
-{
-  "message": "Request failed with status code 409",
-  "response": {
-    "type": "Error",
-    "title": "Duplicate dictionary item name detected",
-    "status": 409,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "Another dictionary item exists with the same name. Dictionary item names must be unique.",
-    "operationStatus": "DuplicateItemKey"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "DuplicateItemKey",
+    "status": 409,
+    "title": "Duplicate dictionary item name detected",
+    "type": "Error",
+  },
 }
 `;

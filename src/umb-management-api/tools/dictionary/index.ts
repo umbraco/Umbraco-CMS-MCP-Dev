@@ -21,7 +21,7 @@ export const DictionaryCollection: ToolCollectionExport = {
     dependencies: ['language'] // Dictionary items typically require language context
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [FindDictionaryItemTool];
+    const tools: ToolDefinition<any, any>[] = [FindDictionaryItemTool];
 
     if (AuthorizationPolicies.TreeAccessDictionary(user)) {
       tools.push(CreateDictionaryItemTool);

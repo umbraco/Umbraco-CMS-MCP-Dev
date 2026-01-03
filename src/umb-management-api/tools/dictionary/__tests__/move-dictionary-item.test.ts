@@ -1,7 +1,8 @@
 import MoveDictionaryItemTool from "../put/move-dictionary-item.js";
 import { DictionaryBuilder } from "./helpers/dictionary-builder.js";
 import { DEFAULT_ISO_CODE } from "./helpers/dictionary-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const CHILD_DICTIONARY_NAME = "_Child Dictionary";
@@ -10,19 +11,16 @@ const PARENT_DICTIONARY_NAME = "_Parent Dictionary";
 const PARENT_DICTIONARY_TRANSLATION = "_Parent Translation";
 
 describe("move-dictionary-item", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let childHelper: DictionaryBuilder;
   let parentHelper: DictionaryBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     childHelper = new DictionaryBuilder();
     parentHelper = new DictionaryBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await childHelper.cleanup();
     await parentHelper.cleanup();
   });
@@ -48,10 +46,11 @@ describe("move-dictionary-item", () => {
             id: parentHelper.getId(),
           },
         },
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
   });
 
@@ -75,10 +74,11 @@ describe("move-dictionary-item", () => {
         data: {
           target: null,
         },
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
   });
 
@@ -89,10 +89,11 @@ describe("move-dictionary-item", () => {
         data: {
           target: null,
         },
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

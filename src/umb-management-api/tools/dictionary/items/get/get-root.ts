@@ -1,27 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetTreeDictionaryRootParams } from "@/umb-management-api/schemas/index.js";
-import { getTreeDictionaryRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getTreeDictionaryRootQueryParams, getTreeDictionaryRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDictionaryRootTool = {
   name: "get-dictionary-root",
   description: "Gets the root level of the dictionary tree",
-  schema: getTreeDictionaryRootQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeDictionaryRootQueryParams.shape,
+  outputSchema: getTreeDictionaryRootResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (params: GetTreeDictionaryRootParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeDictionaryRoot(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getTreeDictionaryRootQueryParams.shape>;
+  handler: (async (params: GetTreeDictionaryRootParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeDictionaryRoot(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeDictionaryRootQueryParams.shape, typeof getTreeDictionaryRootResponse.shape>;
 
 export default withStandardDecorators(GetDictionaryRootTool);

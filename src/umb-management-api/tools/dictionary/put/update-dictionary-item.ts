@@ -1,4 +1,3 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { UpdateDictionaryItemRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putDictionaryByIdBody,
@@ -6,7 +5,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const updateDictionaryItemSchema = {
   id: putDictionaryByIdParams.shape.id,
@@ -16,22 +15,16 @@ const updateDictionaryItemSchema = {
 const UpdateDictionaryItemTool = {
   name: "update-dictionary-item",
   description: "Updates a dictionary item by Id",
-  schema: updateDictionaryItemSchema,
-  isReadOnly: false,
-  slices: ['update'],
-  handler: async (model: { id: string; data: UpdateDictionaryItemRequestModel }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.putDictionaryById(model.id, model.data);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: updateDictionaryItemSchema,
+  annotations: {
+    idempotentHint: true,
   },
+  slices: ['update'],
+  handler: (async (model: { id: string; data: UpdateDictionaryItemRequestModel }) => {
+    return executeVoidApiCall((client) =>
+      client.putDictionaryById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
 } satisfies ToolDefinition<typeof updateDictionaryItemSchema>;
 
 export default withStandardDecorators(UpdateDictionaryItemTool);

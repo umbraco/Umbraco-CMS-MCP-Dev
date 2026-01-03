@@ -1,40 +1,28 @@
 import GetIndexerTool from "../get/get-indexer.js";
-import { UmbracoManagementClient } from "@umb-management-client";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 describe("get-indexer", () => {
-  let originalConsoleError: typeof console.error;
-  let originalGetClient: typeof UmbracoManagementClient.getClient;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-    originalGetClient = UmbracoManagementClient.getClient;
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-    UmbracoManagementClient.getClient = originalGetClient;
-  });
+  setupTestEnvironment();
 
   it("should list all indexes with default parameters", async () => {
     const result = await GetIndexerTool.handler(
       { take: 100 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize dynamic values that change based on content/schema
-    const parsed = JSON.parse(result.content[0].text as string);
-    if (parsed.items && Array.isArray(parsed.items)) {
-      parsed.items = parsed.items.map((item: any) => ({
+    const snapshot = createSnapshotResult(result);
+    if (snapshot.structuredContent?.items && Array.isArray(snapshot.structuredContent.items)) {
+      snapshot.structuredContent.items = snapshot.structuredContent.items.map((item: any) => ({
         ...item,
         documentCount: "NORMALIZED_COUNT",
         fieldCount: "NORMALIZED_COUNT"
       }));
     }
-    result.content[0].text = JSON.stringify(parsed);
 
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(snapshot).toMatchSnapshot();
   });
 });

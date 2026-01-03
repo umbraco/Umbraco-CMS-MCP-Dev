@@ -2,23 +2,18 @@ import UpdateDocumentVersionPreventCleanupTool from "../put/update-document-vers
 import { DocumentVersionBuilder } from "./helpers/document-version-builder.js";
 import { DocumentVersionVerificationHelper } from "./helpers/document-version-verification-helper.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCUMENT_NAME = "_Test Document for Prevent Cleanup";
 
 describe("update-document-version-prevent-cleanup", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let documentBuilder: DocumentVersionBuilder;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     // Clean up any test documents
     await DocumentVersionVerificationHelper.cleanup(TEST_DOCUMENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should prevent cleanup for a document version", async () => {
@@ -26,7 +21,7 @@ describe("update-document-version-prevent-cleanup", () => {
     documentBuilder = new DocumentVersionBuilder()
       .withName(TEST_DOCUMENT_NAME)
       .withRootDocumentType();
-    
+
     await documentBuilder.create();
     await documentBuilder.publish();
 
@@ -35,7 +30,7 @@ describe("update-document-version-prevent-cleanup", () => {
       documentBuilder.getId(),
       false
     );
-    
+
     expect(versions.length).toBeGreaterThan(0);
     const versionId = versions[0].id;
 
@@ -43,11 +38,11 @@ describe("update-document-version-prevent-cleanup", () => {
     const result = await UpdateDocumentVersionPreventCleanupTool.handler({
       id: versionId,
       preventCleanup: true
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
-    const normalizedResult = createSnapshotResult(result, versionId);
-    expect(normalizedResult).toMatchSnapshot();
+    expect(result.isError).toBeFalsy();
+    expect(result).toMatchSnapshot();
   });
 
   it("should allow cleanup for a document version", async () => {
@@ -55,7 +50,7 @@ describe("update-document-version-prevent-cleanup", () => {
     documentBuilder = new DocumentVersionBuilder()
       .withName(TEST_DOCUMENT_NAME)
       .withRootDocumentType();
-    
+
     await documentBuilder.create();
     await documentBuilder.publish();
 
@@ -64,7 +59,7 @@ describe("update-document-version-prevent-cleanup", () => {
       documentBuilder.getId(),
       false
     );
-    
+
     expect(versions.length).toBeGreaterThan(0);
     const versionId = versions[0].id;
 
@@ -72,11 +67,11 @@ describe("update-document-version-prevent-cleanup", () => {
     const result = await UpdateDocumentVersionPreventCleanupTool.handler({
       id: versionId,
       preventCleanup: false
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
-    const normalizedResult = createSnapshotResult(result, versionId);
-    expect(normalizedResult).toMatchSnapshot();
+    expect(result.isError).toBeFalsy();
+    expect(result).toMatchSnapshot();
   });
 
   it("should handle non-existent version ID", async () => {
@@ -84,9 +79,10 @@ describe("update-document-version-prevent-cleanup", () => {
     const result = await UpdateDocumentVersionPreventCleanupTool.handler({
       id: "non-existent-version-id",
       preventCleanup: true
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert - Use normalizeErrorResponse for error responses
+    expect(result.isError).toBe(true);
     const normalizedResult = normalizeErrorResponse(result);
     expect(normalizedResult).toMatchSnapshot();
   });

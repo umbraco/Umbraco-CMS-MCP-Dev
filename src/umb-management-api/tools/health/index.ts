@@ -15,7 +15,7 @@ export const HealthCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     // Health checks are system-level operations requiring settings access
     if (AuthorizationPolicies.SectionAccessSettings(user)) {

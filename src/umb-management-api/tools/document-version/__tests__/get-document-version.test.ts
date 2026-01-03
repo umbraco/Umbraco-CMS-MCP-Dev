@@ -2,23 +2,18 @@ import GetDocumentVersionTool from "../get/get-document-version.js";
 import { DocumentVersionBuilder } from "./helpers/document-version-builder.js";
 import { DocumentVersionVerificationHelper } from "./helpers/document-version-verification-helper.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCUMENT_NAME = "_Test Document for Versions";
 
 describe("get-document-version", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let documentBuilder: DocumentVersionBuilder;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     // Clean up any test documents
     await DocumentVersionVerificationHelper.cleanup(TEST_DOCUMENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should list document versions with pagination", async () => {
@@ -26,7 +21,7 @@ describe("get-document-version", () => {
     documentBuilder = new DocumentVersionBuilder()
       .withName(TEST_DOCUMENT_NAME)
       .withRootDocumentType();
-    
+
     await documentBuilder.create();
     await documentBuilder.publish();
     await documentBuilder.updateContent(); // Create another version
@@ -36,7 +31,7 @@ describe("get-document-version", () => {
       documentId: documentBuilder.getId(),
       skip: 0,
       take: 10
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -48,7 +43,7 @@ describe("get-document-version", () => {
     documentBuilder = new DocumentVersionBuilder()
       .withName(TEST_DOCUMENT_NAME)
       .withRootDocumentType();
-    
+
     await documentBuilder.create();
     await documentBuilder.publish();
     await documentBuilder.updateContent(); // Create another version
@@ -58,9 +53,9 @@ describe("get-document-version", () => {
       documentId: documentBuilder.getId(),
       skip: 1,
       take: 1
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
-    // Assert  
+    // Assert
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });
@@ -71,9 +66,10 @@ describe("get-document-version", () => {
       documentId: "non-existent-id",
       skip: 0,
       take: 10
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert - Use normalizeErrorResponse for error responses
+    expect(result.isError).toBe(true);
     const normalizedResult = normalizeErrorResponse(result);
     expect(normalizedResult).toMatchSnapshot();
   });

@@ -15,7 +15,7 @@ export const DocumentVersionCollection: ToolCollectionExport = {
     dependencies: ['document']
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessContent(user)) {
       tools.push(GetDocumentVersionTool);

@@ -16,11 +16,12 @@ export class LogViewerTestHelper {
   }
 
   static async cleanup(name: string): Promise<void> {
-    try {
+    // Check if the saved search exists before trying to delete it
+    // This avoids 404 errors that get logged by the axios client
+    const existingSearch = await this.findSavedSearch(name);
+    if (existingSearch) {
       const client = UmbracoManagementClient.getClient();
       await client.deleteLogViewerSavedSearchByName(name);
-    } catch (error) {
-      // Ignore cleanup errors
     }
   }
 

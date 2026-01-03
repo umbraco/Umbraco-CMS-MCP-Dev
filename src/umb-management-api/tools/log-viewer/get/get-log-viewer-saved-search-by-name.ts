@@ -1,27 +1,21 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getLogViewerSavedSearchByNameParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getLogViewerSavedSearchByNameParams, getLogViewerSavedSearchByNameResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetLogViewerSavedSearchByNameTool = {
   name: "get-log-viewer-saved-search-by-name",
   description: "Gets a saved search by name",
-  schema: getLogViewerSavedSearchByNameParams.shape,
-  isReadOnly: true,
+  inputSchema: getLogViewerSavedSearchByNameParams.shape,
+  outputSchema: getLogViewerSavedSearchByNameResponse.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
   slices: ['diagnostics'],
-  handler: async ({ name }: { name: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getLogViewerSavedSearchByName(name);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getLogViewerSavedSearchByNameParams.shape>;
+  handler: (async ({ name }: { name: string }) => {
+    return executeGetApiCall((client) =>
+      client.getLogViewerSavedSearchByName(name, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getLogViewerSavedSearchByNameParams.shape, typeof getLogViewerSavedSearchByNameResponse.shape>;
 
 export default withStandardDecorators(GetLogViewerSavedSearchByNameTool);

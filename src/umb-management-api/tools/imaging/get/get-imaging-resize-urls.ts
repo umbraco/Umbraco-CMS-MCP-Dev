@@ -1,8 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { getImagingResizeUrlsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getImagingResizeUrlsQueryParams, getImagingResizeUrlsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetImagingResizeUrlsParams } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
+
+// Wrap array response in object (MCP requirement)
+const outputSchema = z.object({
+  items: getImagingResizeUrlsResponse,
+});
 
 const GetImagingResizeUrlsTool = {
   name: "get-imaging-resize-urls",
@@ -17,22 +23,17 @@ const GetImagingResizeUrlsTool = {
   - height: Target height in pixels (default: 200)
   - width: Target width in pixels (default: 200)
   - mode: Resize mode (Crop, Max, Stretch, Pad, BoxPad, Min)`,
-  schema: getImagingResizeUrlsQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getImagingResizeUrlsQueryParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
   slices: ['read'],
-  handler: async (model: GetImagingResizeUrlsParams) => {
+  handler: (async (model: GetImagingResizeUrlsParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getImagingResizeUrls(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getImagingResizeUrlsQueryParams.shape>;
+    return createToolResult({ items: response });
+  }),
+} satisfies ToolDefinition<typeof getImagingResizeUrlsQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetImagingResizeUrlsTool);

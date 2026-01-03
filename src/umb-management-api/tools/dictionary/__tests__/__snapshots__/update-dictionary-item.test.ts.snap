@@ -2,21 +2,14 @@
 
 exports[`update-dictionary-item should handle non-existent dictionary item 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using update-dictionary-item:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The dictionary item could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "ItemNotFound",
     "status": 404,
-    "operationStatus": "ItemNotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The dictionary item could not be found",
+    "type": "Error",
+  },
 }
 `;
 
@@ -24,7 +17,7 @@ exports[`update-dictionary-item should update a dictionary item 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],

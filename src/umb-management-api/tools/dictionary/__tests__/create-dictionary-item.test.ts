@@ -1,7 +1,8 @@
-import CreateDictionaryItemTool from "../post/create-dictionary-item.js";
+import CreateDictionaryItemTool, { createDictionaryOutputSchema } from "../post/create-dictionary-item.js";
 import { DEFAULT_ISO_CODE, DictionaryTestHelper } from "./helpers/dictionary-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DICTIONARY_NAME = "_Test Dictionary Created";
 const TEST_DICTIONARY_TRANSLATION = "_Test Translation";
@@ -9,12 +10,7 @@ const EXISTING_DICTIONARY_NAME = "_Existing Dictionary";
 const EXISTING_DICTIONARY_TRANSLATION = "_Existing Translation";
 
 describe("create-dictionary-item", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up any test dictionary items
@@ -23,17 +19,20 @@ describe("create-dictionary-item", () => {
     await DictionaryTestHelper.cleanup("_Test Parent Dictionary");
     await DictionaryTestHelper.cleanup("_Test Child Dictionary");
     await DictionaryTestHelper.cleanup("_Parent Dictionary");
-    console.error = originalConsoleError;
   });
 
   it("should create a dictionary item", async () => {
     const result = await CreateDictionaryItemTool.handler({
       name: TEST_DICTIONARY_NAME,
       translations: [{ isoCode: DEFAULT_ISO_CODE, translation: TEST_DICTIONARY_TRANSLATION }]
-    }, { signal: new AbortController().signal });
+    } as any, createMockRequestHandlerExtra());
+
+    // Validate structured response
+    const responseData = validateStructuredContent(result, createDictionaryOutputSchema);
+    expect(responseData.message).toBe("Dictionary item created successfully");
 
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
     const items = await DictionaryTestHelper.findDictionaryItems(TEST_DICTIONARY_NAME, true);
@@ -45,16 +44,16 @@ describe("create-dictionary-item", () => {
     await CreateDictionaryItemTool.handler({
       name: EXISTING_DICTIONARY_NAME,
       translations: [{ isoCode: DEFAULT_ISO_CODE, translation: EXISTING_DICTIONARY_TRANSLATION }]
-    }, { signal: new AbortController().signal });
+    } as any, createMockRequestHandlerExtra());
 
     // Try to create it again
     const result = await CreateDictionaryItemTool.handler({
       name: EXISTING_DICTIONARY_NAME,
       translations: [{ isoCode: DEFAULT_ISO_CODE, translation: EXISTING_DICTIONARY_TRANSLATION }]
-    }, { signal: new AbortController().signal });
+    } as any, createMockRequestHandlerExtra());
 
     // Verify the error response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
 
   it("should create a dictionary item with parent", async () => {
@@ -72,10 +71,13 @@ describe("create-dictionary-item", () => {
       name: "_Test Child Dictionary",
       parentId: parentBuilder.getId(),
       translations: [{ isoCode: DEFAULT_ISO_CODE, translation: "_Child Translation" }]
-    }, { signal: new AbortController().signal });
+    } as any, createMockRequestHandlerExtra());
+
+    // Validate structured response
+    const responseData = validateStructuredContent(result, createDictionaryOutputSchema);
 
     // Verify the handler response using snapshot (normalize IDs)
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
 
     // Verify the created item exists and has correct parent (normalize IDs)
     const items = await DictionaryTestHelper.findDictionaryItems("_Test Child Dictionary", true);
@@ -85,4 +87,4 @@ describe("create-dictionary-item", () => {
     await DictionaryTestHelper.cleanup("_Test Child Dictionary");
     await DictionaryTestHelper.cleanup("_Test Parent Dictionary");
   });
-}); 
+});

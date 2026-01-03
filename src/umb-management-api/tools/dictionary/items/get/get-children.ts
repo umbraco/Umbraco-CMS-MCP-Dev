@@ -1,27 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetTreeDictionaryChildrenParams } from "@/umb-management-api/schemas/index.js";
-import { getTreeDictionaryChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getTreeDictionaryChildrenQueryParams, getTreeDictionaryChildrenResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDictionaryChildrenTool = {
   name: "get-dictionary-children",
   description: "Gets the children of a dictionary item by Id",
-  schema: getTreeDictionaryChildrenQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeDictionaryChildrenQueryParams.shape,
+  outputSchema: getTreeDictionaryChildrenResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (params: GetTreeDictionaryChildrenParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeDictionaryChildren(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getTreeDictionaryChildrenQueryParams.shape>;
+  handler: (async (params: GetTreeDictionaryChildrenParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeDictionaryChildren(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeDictionaryChildrenQueryParams.shape, typeof getTreeDictionaryChildrenResponse.shape>;
 
 export default withStandardDecorators(GetDictionaryChildrenTool);

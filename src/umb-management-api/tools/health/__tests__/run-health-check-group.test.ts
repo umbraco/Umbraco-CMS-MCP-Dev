@@ -1,21 +1,12 @@
 import RunHealthCheckGroupTool from "../post/run-health-check-group.js";
 import { postHealthCheckGroupByNameCheckParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_VALID_GROUP_NAME = "Data Integrity";
 const TEST_INVALID_GROUP_NAME = "_NonExistentHealthCheckGroup";
 
 describe("run-health-check-group", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should validate parameters for valid group name", async () => {
     // Test parameter validation only - verify schema accepts valid input

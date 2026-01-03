@@ -1,28 +1,32 @@
 import GetLogViewerMessageTemplateTool from "../get/get-log-viewer-message-template.js";
-import { LogViewerTestHelper } from "./helpers/log-viewer-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-log-viewer-message-template", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get log viewer message templates with default parameters", async () => {
     const result = await GetLogViewerMessageTemplateTool.handler(
       { take: 100 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Parse the response
-    const response = JSON.parse(result.content[0].text as string);
-    LogViewerTestHelper.verifyMessageTemplateResponse(response);
+    // Verify response structure (message templates are dynamic, so we verify structure not content)
+    expect(result.structuredContent).toBeDefined();
+    expect(result.structuredContent).toHaveProperty("items");
+    expect(result.structuredContent).toHaveProperty("total");
+    expect(Array.isArray(result.structuredContent.items)).toBe(true);
+    expect(typeof result.structuredContent.total).toBe("number");
+    expect(result.structuredContent.total).toBeGreaterThanOrEqual(0);
+
+    // Verify items have the expected structure
+    if (result.structuredContent.items.length > 0) {
+      const firstItem = result.structuredContent.items[0];
+      expect(firstItem).toHaveProperty("messageTemplate");
+      expect(firstItem).toHaveProperty("count");
+      expect(typeof firstItem.messageTemplate).toBe("string");
+      expect(typeof firstItem.count).toBe("number");
+    }
   });
 
   it("should get log viewer message templates with custom parameters", async () => {
@@ -38,11 +42,14 @@ describe("get-log-viewer-message-template", () => {
         startDate: oneMonthAgo.toISOString(),
         endDate: now.toISOString(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Parse the response
-    const response = JSON.parse(result.content[0].text as string);
-    LogViewerTestHelper.verifyMessageTemplateResponse(response);
+    // Verify response structure (message templates are dynamic, so we verify structure not content)
+    expect(result.structuredContent).toBeDefined();
+    expect(result.structuredContent).toHaveProperty("items");
+    expect(result.structuredContent).toHaveProperty("total");
+    expect(Array.isArray(result.structuredContent.items)).toBe(true);
+    expect(result.structuredContent.items.length).toBeLessThanOrEqual(10);
   });
 });

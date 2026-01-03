@@ -300,3 +300,39 @@ The `migration-reviewer` agent should automatically run to validate:
 - Error testing uses `result.isError` instead of `rejects.toThrow()`
 - Correct import patterns
 - No remaining `getResultText` usage (unless intentionally kept)
+
+## IMPORTANT: Run Tests After Migration
+
+After completing all test migrations, you MUST run the tests with the `-u` flag to update snapshots:
+
+```bash
+npm test -- --testPathPattern="<entity-name>" -u
+```
+
+For example, if migrating dictionary tests:
+```bash
+npm test -- --testPathPattern="dictionary" -u
+```
+
+This will:
+1. Run all tests matching the pattern
+2. Update any outdated snapshots to reflect the new `structuredContent` format
+3. Verify all tests pass with the migrated code
+
+Do NOT consider the migration complete until all tests pass.
+
+---
+
+## Execution Instructions
+
+When this command is invoked with an argument (e.g., `/migrate-tests dictionary`), you should:
+
+1. Migrate all test files in the specified tool group's `__tests__` folder
+2. Run TypeScript compilation check on the migrated files
+3. **Run the tests with `-u` flag to update snapshots:**
+   ```bash
+   npm test -- --testPathPattern="<argument>" -u
+   ```
+4. Verify all tests pass before reporting completion
+
+ARGUMENTS: $ARGUMENTS

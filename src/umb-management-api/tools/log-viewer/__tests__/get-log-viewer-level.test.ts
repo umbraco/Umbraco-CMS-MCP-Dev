@@ -1,23 +1,14 @@
 import GetLogViewerLevelTool from "../get/get-log-viewer-level.js";
-import { UmbracoManagementClient } from "@umb-management-client";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-log-viewer-level", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get log viewer levels with default parameters", async () => {
     const result = await GetLogViewerLevelTool.handler(
       { take: 100 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
@@ -30,7 +21,7 @@ describe("get-log-viewer-level", () => {
         skip: 1,
         take: 2,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot

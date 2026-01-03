@@ -12,7 +12,7 @@ export const CultureCollection: ToolCollectionExport = {
   },
   tools: (user: CurrentUserResponseModel) => {
     // Tools are now exported as objects (already decorated), not factory functions
-    const tools: ToolDefinition<any>[] = [GetCulturesTool];
+    const tools: ToolDefinition<any, any>[] = [GetCulturesTool];
     return tools;
   }
 };
