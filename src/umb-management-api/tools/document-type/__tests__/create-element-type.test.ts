@@ -119,6 +119,7 @@ describe("create-element-type", () => {
     // The zod schema validation should fail and return an error result
     const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
     expect(result.isError).toBe(true);
+    expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
 
   it("should create separate groups for same group name in different tabs", async () => {

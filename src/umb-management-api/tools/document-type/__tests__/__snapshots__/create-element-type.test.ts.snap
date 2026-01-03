@@ -167,3 +167,24 @@ exports[`create-element-type should handle existing element type 1`] = `
   },
 }
 `;
+
+exports[`create-element-type should reject property without tab or group 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "message": "[
+  {
+    "code": "custom",
+    "path": [
+      "properties",
+      0,
+      "tab"
+    ],
+    "message": "Property must specify either 'tab' or 'group' (or both) to appear in Umbraco UI. Properties without a container are invisible."
+  }
+]",
+    "name": "ZodError",
+  },
+}
+`;
