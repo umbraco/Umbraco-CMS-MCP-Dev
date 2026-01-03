@@ -1,28 +1,22 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getLogViewerLevelQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getLogViewerLevelQueryParams, getLogViewerLevelResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetLogViewerLevelParams } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetLogViewerLevelTool = {
   name: "get-log-viewer-level",
   description: "Get log viewer levels",
-  schema: getLogViewerLevelQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getLogViewerLevelQueryParams.shape,
+  outputSchema: getLogViewerLevelResponse.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
   slices: ['diagnostics'],
-  handler: async (model: GetLogViewerLevelParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getLogViewerLevel(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getLogViewerLevelQueryParams.shape>;
+  handler: (async (model: GetLogViewerLevelParams) => {
+    return executeGetApiCall((client) =>
+      client.getLogViewerLevel(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getLogViewerLevelQueryParams.shape, typeof getLogViewerLevelResponse.shape>;
 
 export default withStandardDecorators(GetLogViewerLevelTool);

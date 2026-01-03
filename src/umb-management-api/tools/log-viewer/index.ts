@@ -20,7 +20,7 @@ export const LogViewerCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     if (AuthorizationPolicies.SectionAccessSettings(user)) {
       tools.push(GetLogViewerSavedSearchByNameTool);
