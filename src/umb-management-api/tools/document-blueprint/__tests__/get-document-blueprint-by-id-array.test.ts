@@ -2,26 +2,23 @@ import GetDocumentBlueprintByIdArrayTool from "../get/get-document-blueprint-by-
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-item-document-blueprint", () => {
+  setupTestEnvironment();
+
   const TEST_BLUEPRINT_NAME = "_Test Item Blueprint";
   const TEST_BLUEPRINT_NAME_2 = "_Test Item Blueprint2";
-  let originalConsoleError: typeof console.error;
 
-  // Helper to parse response, handling empty string as empty array
-  const parseItems = (text: string) => {
-    if (!text || text.trim() === "") return [];
-    return JSON.parse(text);
-  };
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
+  // Helper to get items from structuredContent
+  const getItems = (result: any) => {
+    const content = result.structuredContent;
+    if (content && content.items) {
+      return content.items;
+    }
+    return content ?? [];
+  };  afterEach(async () => {
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME_2);
   });
@@ -29,10 +26,10 @@ describe("get-item-document-blueprint", () => {
   it("should get no document blueprints for empty request", async () => {
     // Get all document blueprints
     const result = await GetDocumentBlueprintByIdArrayTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      {} as any,
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+    const items = getItems(result);
     expect(items).toMatchSnapshot();
   });
 
@@ -45,9 +42,9 @@ describe("get-item-document-blueprint", () => {
     // Get by ID
     const result = await GetDocumentBlueprintByIdArrayTool.handler(
       { id: [builder.getId()] },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+    const items = getItems(result);
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_BLUEPRINT_NAME);
     // Normalize for snapshot
@@ -71,10 +68,10 @@ describe("get-item-document-blueprint", () => {
       {
         id: [builder1.getId(), builder2.getId()],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    const items = parseItems(result.content[0].text as string);
+    const items = getItems(result);
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_BLUEPRINT_NAME);
     expect(items[1].name).toBe(TEST_BLUEPRINT_NAME_2);

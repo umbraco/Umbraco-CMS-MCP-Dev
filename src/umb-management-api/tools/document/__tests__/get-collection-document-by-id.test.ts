@@ -1,21 +1,16 @@
 import GetCollectionDocumentByIdTool from "../get/get-collection-document-by-id.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCUMENT_NAME = "_Test Collection Document";
 
 describe("get-collection-document-by-id", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 
@@ -29,12 +24,11 @@ describe("get-collection-document-by-id", () => {
     // Act: Get collection for the document
     const result = await GetCollectionDocumentByIdTool.handler(
       { id: builder.getId(), take: 10, orderBy: "name" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Check if this is an error response
-    const responseText = result.content[0].text;
-    if (typeof responseText === 'string' && responseText.startsWith('Error')) {
+    if (result.isError) {
       // This is an error response, handle it directly
       expect(result).toMatchSnapshot();
     } else {
@@ -60,12 +54,11 @@ describe("get-collection-document-by-id", () => {
         take: 10,
         orderBy: "name"
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Check if this is an error response
-    const responseText = result.content[0].text;
-    if (typeof responseText === 'string' && responseText.startsWith('Error')) {
+    if (result.isError) {
       // This is an error response, handle it directly
       expect(result).toMatchSnapshot();
     } else {
@@ -79,7 +72,7 @@ describe("get-collection-document-by-id", () => {
     // Act: Try to get collection for non-existent document
     const result = await GetCollectionDocumentByIdTool.handler(
       { id: "00000000-0000-0000-0000-000000000000", take: 10, orderBy: "name" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Should handle gracefully

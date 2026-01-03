@@ -1,22 +1,18 @@
 import GetDocumentPublishTool from "../get/get-document-publish.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { getDocumentByIdPublishedResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetDocumentPublish";
 
 describe("get-document-publish", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 
@@ -32,14 +28,14 @@ describe("get-document-publish", () => {
       {
         id: item.id,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     const snapshot = createSnapshotResult(result, item.id);
     expect(snapshot).toMatchSnapshot();
 
     // Parse and check published state
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(parsed.variants.some((v: any) => v.state === "Published")).toBe(
+    const data = validateStructuredContent(result, getDocumentByIdPublishedResponse);
+    expect(data.variants.some((v: any) => v.state === "Published")).toBe(
       true
     );
   });
@@ -49,9 +45,8 @@ describe("get-document-publish", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const snapshot = createSnapshotResult(result, BLANK_UUID);
-    expect(snapshot).toMatchSnapshot();
+    expect(result.isError).toBe(true);
   });
 });

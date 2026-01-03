@@ -2,43 +2,41 @@
 
 exports[`get-document-type-allowed-children should get allowed children for a document type 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"id":"00000000-0000-0000-0000-000000000000","name":"_Test Child DocumentType","description":null,"icon":"icon-document"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "description": null,
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Child DocumentType",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-document-type-allowed-children should handle document type with no allowed children 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`get-document-type-allowed-children should handle non-existent document type 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-document-type-allowed-children:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Not Found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified document type was not found",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not Found",
+    "type": "Error",
+  },
 }
 `;

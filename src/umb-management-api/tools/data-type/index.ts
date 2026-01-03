@@ -33,7 +33,7 @@ export const DataTypeCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [GetDataTypeSearchTool];
+    const tools: ToolDefinition<any, any>[] = [GetDataTypeSearchTool];
 
     if (AuthorizationPolicies.TreeAccessDocumentsOrMediaOrMembersOrContentTypes(user)) {
       tools.push(GetReferencesDataTypeTool);

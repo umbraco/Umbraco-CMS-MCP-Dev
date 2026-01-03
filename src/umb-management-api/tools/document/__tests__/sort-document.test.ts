@@ -1,7 +1,8 @@
 import SortDocumentTool from "../put/sort-document.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_ROOT_NAME = "_Test SortDocument Root";
 const TEST_CHILD_NAMES = [
@@ -11,13 +12,12 @@ const TEST_CHILD_NAMES = [
 ];
 
 describe("sort-document", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let rootId: string;
   let childIds: string[];
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     // Create root
     const rootBuilder = await new DocumentBuilder()
       .withName(TEST_ROOT_NAME)
@@ -39,7 +39,6 @@ describe("sort-document", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_ROOT_NAME);
     for (const name of TEST_CHILD_NAMES) {
       await DocumentTestHelper.cleanup(name);
@@ -53,7 +52,7 @@ describe("sort-document", () => {
     const sortResult = await SortDocumentTool.handler({
       parent: { id: rootId },
       sorting
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
     expect(sortResult).toMatchSnapshot();
 
     // Fetch children after sort

@@ -1,20 +1,15 @@
 import GetDocumentBlueprintScaffoldTool from "../get/get-document-blueprint-scaffold.js";
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_BLUEPRINT_NAME = "_Test Blueprint Scaffold";
 
 describe("get-document-blueprint-scaffold", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
   });
 
@@ -26,12 +21,11 @@ describe("get-document-blueprint-scaffold", () => {
     // Act: Get scaffold for the blueprint
     const result = await GetDocumentBlueprintScaffoldTool.handler(
       { id: builder.getId() },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify the response structure without snapshots due to ID normalization issues
-    const responseText = result.content[0].text as string;
-    const parsedResponse = JSON.parse(responseText);
+    const parsedResponse = result.structuredContent as any;
 
     // Verify key properties exist and are correct
     expect(parsedResponse).toHaveProperty('documentType');
@@ -48,7 +42,7 @@ describe("get-document-blueprint-scaffold", () => {
     // Act: Try to get scaffold for non-existent blueprint
     const result = await GetDocumentBlueprintScaffoldTool.handler(
       { id: "00000000-0000-0000-0000-000000000000" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Should handle gracefully

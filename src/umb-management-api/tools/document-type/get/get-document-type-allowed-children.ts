@@ -1,9 +1,9 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import {
   getDocumentTypeByIdAllowedChildrenParams,
   getDocumentTypeByIdAllowedChildrenQueryParams,
+  getDocumentTypeByIdAllowedChildrenResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 // Combine both parameter schemas
@@ -14,25 +14,18 @@ const paramSchema = getDocumentTypeByIdAllowedChildrenParams.merge(
 const GetDocumentTypeAllowedChildrenTool = {
   name: "get-document-type-allowed-children",
   description: "Gets the document types that are allowed as children of a document type",
-  schema: paramSchema.shape,
-  isReadOnly: true,
+  inputSchema: paramSchema.shape,
+  outputSchema: getDocumentTypeByIdAllowedChildrenResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['configuration'],
-  handler: async (model: { id: string; skip?: number; take?: number }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDocumentTypeByIdAllowedChildren(model.id, {
-      skip: model.skip,
-      take: model.take,
-    });
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof paramSchema.shape>;
+  handler: (async (model: { id: string; skip?: number; take?: number }) => {
+    return executeGetApiCall((client) =>
+      client.getDocumentTypeByIdAllowedChildren(model.id, {
+        skip: model.skip,
+        take: model.take,
+      }, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof paramSchema.shape, typeof getDocumentTypeByIdAllowedChildrenResponse.shape>;
 
 export default withStandardDecorators(GetDocumentTypeAllowedChildrenTool);

@@ -1,15 +1,21 @@
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 
 //TODO: This really should be an endpoint
+
+const getIconsOutputSchema = z.object({
+  icons: z.array(z.string())
+});
 
 const GetIconsTool = {
   name: "get-icons",
   description: "Returns a list of all available Umbraco icons that can be used in document types and element types",
-  schema: {},
-  isReadOnly: true,
+  inputSchema: {},
+  outputSchema: getIconsOutputSchema.shape,
+  annotations: { readOnlyHint: true },
   slices: ['list'],
-  handler: async () => {
+  handler: (async () => {
     const icons = [
       "icon-activity",
       "icon-add",
@@ -519,15 +525,8 @@ const GetIconsTool = {
       "icon-umbraco"
     ];
 
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify({ icons }, null, 2),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<{}>;
+    return createToolResult({ icons });
+  }),
+} satisfies ToolDefinition<{}, typeof getIconsOutputSchema.shape>;
 
 export default withStandardDecorators(GetIconsTool);

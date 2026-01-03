@@ -1,30 +1,23 @@
 import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import ValidateDocumentTypePostTool from "../post/validate-document-type.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCTYPE_NAME = "_Test ValidateDocumentTypePost";
 
 describe("validate-document-type-post", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test document types
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
   });
 
   it("should validate a valid document type (POST)", async () => {
     const model = new DocumentTypeBuilder().withName(TEST_DOCTYPE_NAME).build();
-    const result = await ValidateDocumentTypePostTool.handler(model, {
-      signal: new AbortController().signal,
-    });
+    const result = await ValidateDocumentTypePostTool.handler(model as any, createMockRequestHandlerExtra());
     expect(result).toMatchSnapshot();
   });
 
@@ -45,9 +38,7 @@ describe("validate-document-type-post", () => {
       allowedDocumentTypes: [],
       compositions: [],
     };
-    const result = await ValidateDocumentTypePostTool.handler(invalidModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await ValidateDocumentTypePostTool.handler(invalidModel as any, createMockRequestHandlerExtra());
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
 });

@@ -2,11 +2,12 @@
 
 exports[`get-document-configuration should get the document configuration 1`] = `
 {
-  "content": [
-    {
-      "text": "{"disableDeleteWhenReferenced":false,"disableUnpublishWhenReferenced":false,"allowEditInvariantFromNonDefault":true,"allowNonExistingSegmentsCreation":true}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "allowEditInvariantFromNonDefault": true,
+    "allowNonExistingSegmentsCreation": true,
+    "disableDeleteWhenReferenced": false,
+    "disableUnpublishWhenReferenced": false,
+  },
 }
 `;

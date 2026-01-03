@@ -2,23 +2,18 @@ import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-h
 import GetDocumentBlueprintAncestorsTreeTool from "../get/get-ancestors.js";
 import GetDocumentBlueprintChildrenTreeTool from "../get/get-children.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBlueprintFolderBuilder } from "./helpers/document-blueprint-folder-builder.js";
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 describe("document-blueprint-tree", () => {
   const TEST_ROOT_NAME = "_Test Root Blueprint";
   const TEST_FOLDER_NAME = "_Test Folder Blueprint";
   const TEST_CHILD_NAME = "_Test Child Blueprint";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentBlueprintTestHelper.cleanup(TEST_ROOT_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_CHILD_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_FOLDER_NAME);
@@ -42,8 +37,8 @@ describe("document-blueprint-tree", () => {
         {
           take: 100,
           parentId: folderBuilder.getId(),
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -56,8 +51,8 @@ describe("document-blueprint-tree", () => {
         {
           take: 100,
           parentId: BLANK_UUID,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -79,7 +74,7 @@ describe("document-blueprint-tree", () => {
         {
           descendantId: childBuilder.getId(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -92,7 +87,7 @@ describe("document-blueprint-tree", () => {
         {
           descendantId: BLANK_UUID,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();

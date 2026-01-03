@@ -2,23 +2,22 @@ import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import GetRecycleBinDocumentRootTool from "../items/get/get-recycle-bin-root.js";
 import GetRecycleBinDocumentChildrenTool from "../items/get/get-recycle-bin-children.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("recycle-bin-tree", () => {
+  setupTestEnvironment();
+
   const TEST_RECYCLE_BIN_NAME = "_Test RecycleBin Root";
   const TEST_RECYCLE_BIN_CHILD_NAME = "_Test RecycleBin Child";
-  let originalConsoleError: typeof console.error;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     await DocumentTestHelper.emptyRecycleBin();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.emptyRecycleBin();
   });
 
@@ -33,7 +32,7 @@ describe("recycle-bin-tree", () => {
 
       const result = await GetRecycleBinDocumentRootTool.handler(
         { take: 100 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
       const normalizedItems = createSnapshotResult(result);
       expect(normalizedItems).toMatchSnapshot();
@@ -66,7 +65,7 @@ describe("recycle-bin-tree", () => {
           take: 100,
           parentId: parentInBin!.id,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
       const normalizedItems = createSnapshotResult(result);
       expect(normalizedItems).toMatchSnapshot();
@@ -78,7 +77,7 @@ describe("recycle-bin-tree", () => {
           take: 100,
           parentId: BLANK_UUID,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
       expect(result).toMatchSnapshot();
     });

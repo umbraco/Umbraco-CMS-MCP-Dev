@@ -6,7 +6,7 @@ import { UmbracoDocumentPermissions } from "../constants.js";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 
-const publishDocumentWithDescendantsSchema = {
+const inputSchema = {
   id: z.string().uuid(),
   data: z.object(putDocumentByIdPublishWithDescendantsBody.shape),
 };
@@ -15,11 +15,11 @@ const PublishDocumentWithDescendantsTool = {
   name: "publish-document-with-descendants",
   description: `Publishes a document and its descendants by Id. This is an asynchronous operation that may take time for large document trees.
   The tool will poll for completion and return the final result when finished.`,
-  schema: publishDocumentWithDescendantsSchema,
-  isReadOnly: false,
+  inputSchema: inputSchema,
+  annotations: {},
   slices: ['publish'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Publish),
-  handler: async (model: { id: string; data: any }) => {
+  handler: (async (model: { id: string; data: any }) => {
     const client = UmbracoManagementClient.getClient();
 
     // Start the async publish operation
@@ -97,7 +97,7 @@ const PublishDocumentWithDescendantsTool = {
         },
       ],
     };
-  },
-} satisfies ToolDefinition<typeof publishDocumentWithDescendantsSchema>;
+  }),
+} satisfies ToolDefinition<typeof inputSchema>;
 
 export default withStandardDecorators(PublishDocumentWithDescendantsTool);

@@ -1,11 +1,10 @@
 import UpdateDocumentPropertiesTool from "../put/update-document-properties.js";
-import CreateDocumentTool from "../post/create-document.js";
+import CreateDocumentTool, { createOutputSchema } from "../post/create-document.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { LanguageBuilder } from "../../language/__tests__/helpers/language-builder.js";
-import { jest } from "@jest/globals";
 import {
   ROOT_DOCUMENT_TYPE_ID,
   BLANK_UUID,
@@ -13,6 +12,8 @@ import {
 } from "../../../../constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("update-document-properties", () => {
   const TEST_DOCUMENT_NAME = "_Test Document Properties";
@@ -20,18 +21,11 @@ describe("update-document-properties", () => {
   const UPDATED_TITLE = "_Updated Title";
   const SECOND_PROPERTY_VALUE = "_Second Property Value";
   const INVALID_ALIAS = "nonExistentProperty";
-
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up any test documents
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should update single property value", async () => {
@@ -53,7 +47,7 @@ describe("update-document-properties", () => {
           },
         ],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify the handler response with normalized IDs and dates
@@ -87,7 +81,7 @@ describe("update-document-properties", () => {
           },
         ],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Act - Update the title property again to a different value
@@ -101,7 +95,7 @@ describe("update-document-properties", () => {
           },
         ],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify the handler response with normalized IDs and dates
@@ -134,22 +128,19 @@ describe("update-document-properties", () => {
           },
         ],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify error response includes invalidAliases and availableAliases
     expect(result).toMatchSnapshot();
 
-    // Verify the error content structure
-    const content = result.content[0];
-    expect(content.type).toBe("text");
-    if (content.type === "text") {
-      const responseData = JSON.parse(content.text);
-      expect(responseData.success).toBe(false);
-      expect(responseData.invalidAliases).toContain(INVALID_ALIAS);
-      expect(Array.isArray(responseData.availableProperties)).toBe(true);
-      expect(responseData.availableProperties.length).toBeGreaterThan(0);
-    }
+    // Verify the error content structure (ProblemDetails format)
+    expect(result.isError).toBe(true);
+    const responseData = result.structuredContent as any;
+    expect(responseData.title).toBe("Invalid property aliases");
+    expect(responseData.invalidAliases).toContain(INVALID_ALIAS);
+    expect(Array.isArray(responseData.availableProperties)).toBe(true);
+    expect(responseData.availableProperties.length).toBeGreaterThan(0);
   });
 
   it("should handle non-existent document", async () => {
@@ -164,7 +155,7 @@ describe("update-document-properties", () => {
           },
         ],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify the error response
@@ -198,7 +189,7 @@ describe("update-document-properties", () => {
           },
         ],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify the handler response with normalized IDs and dates
@@ -224,6 +215,12 @@ describe("update-document-properties", () => {
     // Track builders for cleanup
     let languageBuilder: LanguageBuilder | null = null;
     let docTypeBuilder: DocumentTypeBuilder | null = null;
+
+    beforeEach(async () => {
+      // Clean up any leftover test data from previous runs
+      await DocumentTestHelper.cleanup(MULTI_CULTURE_DOC_NAME);
+      await DocumentTypeTestHelper.cleanup(MULTI_CULTURE_DOC_TYPE_NAME);
+    });
 
     afterEach(async () => {
       // Clean up test documents first (before document type)
@@ -298,19 +295,13 @@ describe("update-document-properties", () => {
             { editorAlias: "Umbraco.TextBox", alias: "title", value: EN_US_TITLE, culture: "en-US", segment: null },
             { editorAlias: "Umbraco.TextBox", alias: "title", value: DA_DK_TITLE, culture: "da-DK", segment: null },
           ],
+          parentId: undefined,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Extract the document ID from the creation response
-      const createContent = createResult.content[0];
-      if (createContent.type !== "text") {
-        throw new Error("Unexpected response type from CreateDocumentTool");
-      }
-      const createResponse = JSON.parse(createContent.text);
-      if (!createResponse.id) {
-        throw new Error(`Failed to create multi-culture document: ${createContent.text}`);
-      }
+      const createResponse = validateStructuredContent(createResult, createOutputSchema);
       const documentId = createResponse.id;
 
       // Act - Update only the English title
@@ -325,16 +316,12 @@ describe("update-document-properties", () => {
             },
           ],
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify success
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
 
       // Verify only English title was updated, Danish remains unchanged
       const updatedDocument = await client.getDocumentById(documentId);
@@ -368,19 +355,13 @@ describe("update-document-properties", () => {
             { editorAlias: "Umbraco.TextBox", alias: "title", value: EN_US_TITLE, culture: "en-US", segment: null },
             { editorAlias: "Umbraco.TextBox", alias: "title", value: DA_DK_TITLE, culture: "da-DK", segment: null },
           ],
+          parentId: undefined,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Extract the document ID from the creation response
-      const createContent = createResult.content[0];
-      if (createContent.type !== "text") {
-        throw new Error("Unexpected response type from CreateDocumentTool");
-      }
-      const createResponse = JSON.parse(createContent.text);
-      if (!createResponse.id) {
-        throw new Error(`Failed to create multi-culture document: ${createContent.text}`);
-      }
+      const createResponse = validateStructuredContent(createResult, createOutputSchema);
       const documentId = createResponse.id;
 
       // Act - Update both culture titles in a single call
@@ -400,17 +381,13 @@ describe("update-document-properties", () => {
             },
           ],
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify success
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.updatedProperties).toHaveLength(2);
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.updatedProperties).toHaveLength(2);
 
       // Verify both titles were updated
       const updatedDocument = await client.getDocumentById(documentId);
@@ -443,19 +420,13 @@ describe("update-document-properties", () => {
           values: [
             { editorAlias: "Umbraco.TextBox", alias: "title", value: EN_US_TITLE, culture: "en-US", segment: null },
           ],
+          parentId: undefined,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Extract the document ID from the creation response
-      const createContent = createResult.content[0];
-      if (createContent.type !== "text") {
-        throw new Error("Unexpected response type from CreateDocumentTool");
-      }
-      const createResponse = JSON.parse(createContent.text);
-      if (!createResponse.id) {
-        throw new Error(`Failed to create document: ${createContent.text}`);
-      }
+      const createResponse = validateStructuredContent(createResult, createOutputSchema);
       const documentId = createResponse.id;
 
       // Act - Add the Danish title property (didn't exist on document before but exists on doc type)
@@ -470,17 +441,13 @@ describe("update-document-properties", () => {
             },
           ],
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Should succeed because property exists on document type
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.addedProperties).toContain("title[da-DK]");
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.addedProperties).toContain("title[da-DK]");
 
       // Verify the Danish title was added
       const updatedDocument = await client.getDocumentById(documentId);
@@ -559,17 +526,13 @@ describe("update-document-properties", () => {
             },
           ],
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Should succeed with property added
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.addedProperties).toContain("author");
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.addedProperties).toContain("author");
 
       // Verify the author was added
       const updatedDocument = await client.getDocumentById(documentId);
@@ -612,17 +575,13 @@ describe("update-document-properties", () => {
             },
           ],
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Should succeed with property added
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.addedProperties).toContain("subtitle");
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.addedProperties).toContain("subtitle");
 
       // Verify the subtitle was added
       const updatedDocument = await client.getDocumentById(documentId);
@@ -665,20 +624,16 @@ describe("update-document-properties", () => {
             { alias: "author", value: AUTHOR_VALUE },
           ],
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Should succeed with both updated and added
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(true);
-        expect(responseData.updatedProperties).toContain("title");
-        expect(responseData.addedProperties).toContain("author");
-        expect(responseData.message).toContain("updated 1");
-        expect(responseData.message).toContain("added 1");
-      }
+      const responseData = result.structuredContent as any;
+      expect(responseData.success).toBe(true);
+      expect(responseData.updatedProperties).toContain("title");
+      expect(responseData.addedProperties).toContain("author");
+      expect(responseData.message).toContain("updated 1");
+      expect(responseData.message).toContain("added 1");
 
       // Verify both properties
       const updatedDocument = await client.getDocumentById(documentId);
@@ -716,19 +671,15 @@ describe("update-document-properties", () => {
             },
           ],
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
-      // Assert - Should fail with variance error
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(false);
-        expect(responseData.error).toBe("Culture/segment validation failed");
-        expect(responseData.message).toContain("author");
-        expect(responseData.message).toContain("does not vary by culture");
-      }
+      // Assert - Should fail with variance error (ProblemDetails format)
+      expect(result.isError).toBe(true);
+      const responseData = result.structuredContent as any;
+      expect(responseData.title).toBe("Culture/segment validation failed");
+      expect(responseData.detail).toContain("author");
+      expect(responseData.detail).toContain("does not vary by culture");
     });
 
     it("should return error when adding culture-variant property without culture", async () => {
@@ -760,19 +711,15 @@ describe("update-document-properties", () => {
             },
           ],
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
-      // Assert - Should fail with variance error
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(false);
-        expect(responseData.error).toBe("Culture/segment validation failed");
-        expect(responseData.message).toContain("author");
-        expect(responseData.message).toContain("culture is required");
-      }
+      // Assert - Should fail with variance error (ProblemDetails format)
+      expect(result.isError).toBe(true);
+      const responseData = result.structuredContent as any;
+      expect(responseData.title).toBe("Culture/segment validation failed");
+      expect(responseData.detail).toContain("author");
+      expect(responseData.detail).toContain("culture is required");
     });
 
     it("should return error when property does not exist on document type", async () => {
@@ -802,22 +749,18 @@ describe("update-document-properties", () => {
             },
           ],
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
-      // Assert - Should fail with invalid aliases
-      const content = result.content[0];
-      expect(content.type).toBe("text");
-      if (content.type === "text") {
-        const responseData = JSON.parse(content.text);
-        expect(responseData.success).toBe(false);
-        expect(responseData.error).toBe("Invalid property aliases");
-        expect(responseData.invalidAliases).toContain("nonExistentProperty");
-        expect(responseData.availableProperties).toBeDefined();
-        expect(responseData.availableProperties.length).toBeGreaterThan(0);
-        // Should show the available property from document type
-        expect(responseData.availableProperties[0].alias).toBe("title");
-      }
+      // Assert - Should fail with invalid aliases (ProblemDetails format)
+      expect(result.isError).toBe(true);
+      const responseData = result.structuredContent as any;
+      expect(responseData.title).toBe("Invalid property aliases");
+      expect(responseData.invalidAliases).toContain("nonExistentProperty");
+      expect(responseData.availableProperties).toBeDefined();
+      expect(responseData.availableProperties.length).toBeGreaterThan(0);
+      // Should show the available property from document type
+      expect(responseData.availableProperties[0].alias).toBe("title");
     });
   });
 });

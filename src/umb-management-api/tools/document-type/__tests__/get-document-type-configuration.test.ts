@@ -1,21 +1,13 @@
 import GetDocumentTypeConfigurationTool from "../get/get-document-type-configuration.js";
-import { jest } from "@jest/globals";
+import { getDocumentTypeConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-document-type-configuration", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
+  setupTestEnvironment();
   it("should get the global document type configuration", async () => {
-    const result = await GetDocumentTypeConfigurationTool.handler({}, { signal: new AbortController().signal });
-    const config = JSON.parse(result.content[0].text as string);
+    const result = await GetDocumentTypeConfigurationTool.handler({} as any, createMockRequestHandlerExtra());
+    const config = validateStructuredContent(result, getDocumentTypeConfigurationResponse);
     expect(config).toMatchSnapshot();
   });
 }); 

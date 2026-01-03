@@ -1,32 +1,27 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getTreeDocumentBlueprintRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetTreeDocumentBlueprintRootParams } from "@/umb-management-api/schemas/index.js";
+import { getTreeDocumentBlueprintRootQueryParams, getTreeDocumentBlueprintRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoManagementClient } from "@umb-management-client";
+import { z } from "zod";
 
-type GetDocumentBlueprintRootParams = {
-  skip?: number;
-  take?: number;
-  dataTypeId?: string;
-};
+const outputSchema = z.object({
+  items: getTreeDocumentBlueprintRootResponse.shape.items,
+  total: getTreeDocumentBlueprintRootResponse.shape.total,
+});
 
 const GetDocumentBlueprintRootTool = {
   name: "get-document-blueprint-root",
   description: "Gets the root level of the document blueprint tree",
-  schema: getTreeDocumentBlueprintRootQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeDocumentBlueprintRootQueryParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (params: GetDocumentBlueprintRootParams) => {
+  handler: (async (params: GetTreeDocumentBlueprintRootParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getTreeDocumentBlueprintRoot(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getTreeDocumentBlueprintRootQueryParams.shape>;
+    const response = await client.getTreeDocumentBlueprintRoot(params);
+    return createToolResult(response);
+  }),
+} satisfies ToolDefinition<typeof getTreeDocumentBlueprintRootQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetDocumentBlueprintRootTool);

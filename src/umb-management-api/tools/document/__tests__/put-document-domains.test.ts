@@ -1,19 +1,21 @@
 import PutDocumentDomainsTool from "../put/put-document-domains.js";
 import { DocumentBuilder, TEST_DOMAIN } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import GetDocumentDomainsTool from "../get/get-document-domains.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { getDocumentByIdDomainsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_DOCUMENT_NAME = "_Test PutDomainsDocument";
 
 describe("put-document-domains", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let docId: string;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     // Create a document
     const builder = await new DocumentBuilder()
       .withName(TEST_DOCUMENT_NAME)
@@ -23,7 +25,6 @@ describe("put-document-domains", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 
@@ -33,23 +34,21 @@ describe("put-document-domains", () => {
         id: docId,
         data: { defaultIsoCode: null, domains: [TEST_DOMAIN] },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    expect(result).toMatchSnapshot();
-
-    const text = result.content[0].text as string;
-    expect(text).not.toContain("Error:");
+    expect(result.isError).toBeFalsy();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Get the domains back to verify
     const getResult = await GetDocumentDomainsTool.handler(
       {
         id: docId,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    const domains = JSON.parse(getResult.content[0].text as string);
+    const domains = validateStructuredContent(getResult, getDocumentByIdDomainsResponse);
     expect(domains.domains).toEqual(
       expect.arrayContaining([expect.objectContaining(TEST_DOMAIN)])
     );
@@ -61,8 +60,8 @@ describe("put-document-domains", () => {
         id: BLANK_UUID,
         data: { defaultIsoCode: "en", domains: [TEST_DOMAIN] },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(result.isError).toBe(true);
   });
 });

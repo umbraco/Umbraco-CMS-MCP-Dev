@@ -3,22 +3,17 @@ import GetDocumentAncestorsTool from "../items/get/get-ancestors.js";
 import GetDocumentChildrenTool from "../items/get/get-children.js";
 import GetDocumentRootTool from "../items/get/get-root.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("document-tree", () => {
   const TEST_ROOT_NAME = "_Test Root Document";
   const TEST_CHILD_NAME = "_Test Child Document";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_ROOT_NAME);
     await DocumentTestHelper.cleanup(TEST_CHILD_NAME);
   });
@@ -43,7 +38,7 @@ describe("document-tree", () => {
           take: 100,
           parentId: parentBuilder.getId(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       const normalizedItems = createSnapshotResult(result);
@@ -56,7 +51,7 @@ describe("document-tree", () => {
           take: 100,
           parentId: BLANK_UUID,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -82,7 +77,7 @@ describe("document-tree", () => {
         {
           descendantId: childBuilder.getId(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       const normalizedItems = createSnapshotResult(result);
@@ -94,7 +89,7 @@ describe("document-tree", () => {
         {
           descendantId: BLANK_UUID,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();

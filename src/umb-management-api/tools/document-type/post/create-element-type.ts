@@ -1,6 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
+import { ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
@@ -39,6 +40,11 @@ const createElementTypeSchema = z.object({
 
 type CreateElementTypeModel = z.infer<typeof createElementTypeSchema>;
 
+export const createElementTypeOutputSchema = z.object({
+  message: z.string(),
+  id: z.string().uuid()
+});
+
 const CreateElementTypeTool = {
   name: "create-element-type",
   description: `Creates a new element type in Umbraco.
@@ -56,10 +62,10 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
    - Property with only group: appears in the group (group has no parent tab)
    - Property with both tab and group: group is nested inside the tab, property appears in the group
    - The tool will automatically create the container hierarchy`,
-  schema: createElementTypeSchema.shape,
-  isReadOnly: false,
+  inputSchema: createElementTypeSchema.shape,
+  outputSchema: createElementTypeOutputSchema.shape,
   slices: ['create'],
-  handler: async (rawModel: CreateElementTypeModel) => {
+  handler: (async (rawModel: CreateElementTypeModel) => {
     // Validate the model with the schema (including refine rules)
     const model = createElementTypeSchema.parse(rawModel);
 
@@ -134,38 +140,23 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
     const response = await client.postDocumentType(payload, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<void>;
+    }) as unknown as AxiosResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              message: "Element type created successfully",
-              id: elementTypeId
-            }),
-          },
-        ],
+      const output = {
+        message: "Element type created successfully",
+        id: elementTypeId
       };
+      return createToolResult(output);
     } else {
-      // Handle error
-      const errorData = response.data as any;
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              message: "Failed to create element type",
-              status: response.status,
-              error: errorData || response.statusText
-            }),
-          },
-        ],
-        isError: true,
+      // Handle error - Umbraco API returns ProblemDetails as structured data
+      const errorData: ProblemDetails = response.data || {
+        status: response.status,
+        detail: response.statusText,
       };
+      return createToolResultError(errorData);
     }
-  }
-} satisfies ToolDefinition<typeof createElementTypeSchema.shape>;
+  }),
+} satisfies ToolDefinition<typeof createElementTypeSchema.shape, typeof createElementTypeOutputSchema.shape>;
 
 export default withStandardDecorators(CreateElementTypeTool);

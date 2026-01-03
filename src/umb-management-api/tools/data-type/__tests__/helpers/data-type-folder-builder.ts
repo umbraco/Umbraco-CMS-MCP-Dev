@@ -17,6 +17,10 @@ export class DataTypeFolderBuilder {
     return this;
   }
 
+  withParentId(parentId: string): this {
+    return this.withParent(parentId);
+  }
+
   build(): Partial<CreateFolderRequestModel> {
     return this.model;
   }

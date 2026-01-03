@@ -5,14 +5,15 @@ import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/docum
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DataTypeBuilder } from "../../data-type/__tests__/helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "../../data-type/__tests__/helpers/data-type-test-helper.js";
-import CreateElementTypeTool from "../../document-type/post/create-element-type.js";
-import { jest } from "@jest/globals";
+import CreateElementTypeTool, { createElementTypeOutputSchema } from "../../document-type/post/create-element-type.js";
 import {
   ROOT_DOCUMENT_TYPE_ID,
   BLANK_UUID,
   TextString_DATA_TYPE_ID,
 } from "../../../../constants/constants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { v4 as uuidv4 } from "uuid";
 
@@ -26,17 +27,7 @@ const FAKE_CONTENT_KEY = "00000000-0000-0000-0000-000000000001";
 const NON_EXISTENT_PROPERTY_ALIAS = "nonExistentPropertyAlias";
 
 describe("update-block-property", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
-
+  setupTestEnvironment();
   describe("error handling integration tests", () => {
     afterEach(async () => {
       await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
@@ -61,9 +52,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "title", value: "Updated" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -89,9 +82,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "someAlias", value: "Updated" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -110,9 +105,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "title", value: "Updated" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -173,10 +170,11 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID, 
             group: "Content"
           }
-        ]
-      }, { signal: new AbortController().signal });
+        ],
+        description: undefined
+      }, createMockRequestHandlerExtra());
 
-      const elementResponse = JSON.parse(elementResult.content[0].text as string);
+      const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
       if (!elementResponse.id) {
         throw new Error(`Failed to create element type: ${JSON.stringify(elementResponse)}`);
       }
@@ -264,9 +262,11 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "blockTitle", value: "Updated Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -304,9 +304,11 @@ describe("update-block-property", () => {
             contentKey: FAKE_CONTENT_KEY,
             blockType: "content",
             properties: [{ alias: "blockTitle", value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -353,9 +355,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "blockTitle", value: "Updated Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -398,9 +402,11 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: NON_EXISTENT_PROPERTY_ALIAS, value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response includes error
@@ -480,10 +486,11 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
-      }, { signal: new AbortController().signal });
+        ],
+        description: undefined
+      }, createMockRequestHandlerExtra());
 
-      const elementResponse = JSON.parse(elementResult.content[0].text as string);
+      const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
       if (!elementResponse.id) {
         throw new Error(`Failed to create element type: ${JSON.stringify(elementResponse)}`);
       }
@@ -578,9 +585,11 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "blockSubtitle", value: "New Subtitle" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -627,9 +636,11 @@ describe("update-block-property", () => {
               { alias: "blockTitle", value: "Updated Title" },
               { alias: "blockSubtitle", value: "New Subtitle" }
             ]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response shows both updated and added
@@ -673,9 +684,11 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "nonExistentOnElementType", value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response includes error
@@ -741,10 +754,11 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
-      }, { signal: new AbortController().signal });
+        ],
+        description: undefined
+      }, createMockRequestHandlerExtra());
 
-      const elementResponse = JSON.parse(elementResult.content[0].text as string);
+      const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
       if (!elementResponse.id) {
         throw new Error(`Failed to create element type: ${JSON.stringify(elementResponse)}`);
       }
@@ -842,9 +856,11 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "gridBlockTitle", value: "Updated Grid Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -882,9 +898,11 @@ describe("update-block-property", () => {
             contentKey: FAKE_CONTENT_KEY,
             blockType: "content",
             properties: [{ alias: "gridBlockTitle", value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -931,9 +949,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "gridBlockTitle", value: "Updated Grid Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -976,9 +996,11 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: NON_EXISTENT_PROPERTY_ALIAS, value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response includes error
@@ -1073,10 +1095,11 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
-      }, { signal: new AbortController().signal });
+        ],
+        description: undefined
+      }, createMockRequestHandlerExtra());
 
-      const innerElementResponse = JSON.parse(innerElementResult.content[0].text as string);
+      const innerElementResponse = validateStructuredContent(innerElementResult, createElementTypeOutputSchema);
       if (!innerElementResponse.id) {
         throw new Error(`Failed to create inner element type: ${JSON.stringify(innerElementResponse)}`);
       }
@@ -1115,10 +1138,11 @@ describe("update-block-property", () => {
             dataTypeId: innerBlockListDataTypeId,
             group: "Content"
           }
-        ]
-      }, { signal: new AbortController().signal });
+        ],
+        description: undefined
+      }, createMockRequestHandlerExtra());
 
-      const gridElementResponse = JSON.parse(gridElementResult.content[0].text as string);
+      const gridElementResponse = validateStructuredContent(gridElementResult, createElementTypeOutputSchema);
       if (!gridElementResponse.id) {
         throw new Error(`Failed to create grid element type: ${JSON.stringify(gridElementResponse)}`);
       }
@@ -1255,9 +1279,11 @@ describe("update-block-property", () => {
             contentKey: innerBlockKey,
             blockType: "content",
             properties: [{ alias: "innerTitle", value: "Updated Inner Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -1321,9 +1347,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "innerTitle", value: "Updated Inner Title" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -1399,9 +1427,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "innerTitle", value: "Updated Inner Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -1492,10 +1522,11 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
-      }, { signal: new AbortController().signal });
+        ],
+        description: undefined
+      }, createMockRequestHandlerExtra());
 
-      const elementResponse = JSON.parse(elementResult.content[0].text as string);
+      const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
       if (!elementResponse.id) {
         throw new Error(`Failed to create element type: ${JSON.stringify(elementResponse)}`);
       }
@@ -1586,9 +1617,11 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: "rteBlockTitle", value: "Updated RTE Block Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -1628,9 +1661,11 @@ describe("update-block-property", () => {
             contentKey: FAKE_CONTENT_KEY,
             blockType: "content",
             properties: [{ alias: "rteBlockTitle", value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -1679,9 +1714,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "rteBlockTitle", value: "Updated RTE Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -1726,9 +1763,11 @@ describe("update-block-property", () => {
             contentKey: blockKey,
             blockType: "content",
             properties: [{ alias: NON_EXISTENT_PROPERTY_ALIAS, value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response includes error
@@ -1825,10 +1864,11 @@ describe("update-block-property", () => {
             dataTypeId: TextString_DATA_TYPE_ID,
             group: "Content"
           }
-        ]
-      }, { signal: new AbortController().signal });
+        ],
+        description: undefined
+      }, createMockRequestHandlerExtra());
 
-      const innerElementResponse = JSON.parse(innerElementResult.content[0].text as string);
+      const innerElementResponse = validateStructuredContent(innerElementResult, createElementTypeOutputSchema);
       if (!innerElementResponse.id) {
         throw new Error(`Failed to create inner element type: ${JSON.stringify(innerElementResponse)}`);
       }
@@ -1867,10 +1907,11 @@ describe("update-block-property", () => {
             dataTypeId: nestedRteDataTypeId,
             group: "Content"
           }
-        ]
-      }, { signal: new AbortController().signal });
+        ],
+        description: undefined
+      }, createMockRequestHandlerExtra());
 
-      const gridElementResponse = JSON.parse(gridElementResult.content[0].text as string);
+      const gridElementResponse = validateStructuredContent(gridElementResult, createElementTypeOutputSchema);
       if (!gridElementResponse.id) {
         throw new Error(`Failed to create grid element type: ${JSON.stringify(gridElementResponse)}`);
       }
@@ -2010,9 +2051,11 @@ describe("update-block-property", () => {
             contentKey: rteBlockKey,
             blockType: "content",
             properties: [{ alias: "innerRteTitle", value: "Updated Inner RTE Title" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -2078,9 +2121,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "innerRteTitle", value: "Updated Inner RTE Title" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -2156,9 +2201,11 @@ describe("update-block-property", () => {
               blockType: "content",
               properties: [{ alias: "innerRteTitle", value: "Updated RTE Block 2" }]
             }
-          ]
+          ],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response
@@ -2223,9 +2270,11 @@ describe("update-block-property", () => {
             contentKey: rteBlockKey,
             blockType: "content",
             properties: [{ alias: NON_EXISTENT_PROPERTY_ALIAS, value: "Test" }]
-          }]
+          }],
+          culture: null,
+          segment: null
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert - Verify the handler response includes error

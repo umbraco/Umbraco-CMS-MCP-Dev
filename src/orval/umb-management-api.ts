@@ -49,6 +49,7 @@ export const UmbManagementApiOrvalConfig = defineConfig({
         zod: {
           dateTimeOptions: {
             local: true,
+            offset: true,
           },
           coerce: {
             query: ["number", "boolean"],

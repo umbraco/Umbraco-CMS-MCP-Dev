@@ -2,64 +2,50 @@
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-original-parent should get original parent for recycled document 1`] = `
 {
-  "content": [
-    {
-      "text": "null",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": null,
 }
 `;
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-original-parent should handle non-existent recycled document 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-recycle-bin-document-original-parent:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The document could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The document could not be found",
+    "type": "Error",
+  },
 }
 `;
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should get references for recycled document 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should get references with pagination for recycled document 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should handle non-existent recycled document 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

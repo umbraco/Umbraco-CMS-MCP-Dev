@@ -2,15 +2,11 @@
 
 exports[`create-document-type should create a document type 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "message": "Document type created successfully",
-  "id": "00000000-0000-0000-0000-000000000000"
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document type created successfully",
+  },
 }
 `;
 
@@ -29,15 +25,11 @@ exports[`create-document-type should create a document type 2`] = `
 
 exports[`create-document-type should create a document type with parent folder 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "message": "Document type created successfully",
-  "id": "00000000-0000-0000-0000-000000000000"
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document type created successfully",
+  },
 }
 `;
 
@@ -58,15 +50,11 @@ exports[`create-document-type should create a document type with parent folder 2
 
 exports[`create-document-type should create a document type with properties 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "message": "Document type created successfully",
-  "id": "00000000-0000-0000-0000-000000000000"
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document type created successfully",
+  },
 }
 `;
 
@@ -193,12 +181,14 @@ exports[`create-document-type should create separate groups for same group name 
 
 exports[`create-document-type should handle existing document type 1`] = `
 {
-  "content": [
-    {
-      "text": "{"message":"Failed to create document type","status":400,"error":{"type":"Error","title":"Duplicate alias","status":400,"detail":"The specified document type alias is already in use","operationStatus":"DuplicateAlias"}}",
-      "type": "text",
-    },
-  ],
+  "content": [],
   "isError": true,
+  "structuredContent": {
+    "detail": "The specified document type alias is already in use",
+    "operationStatus": "DuplicateAlias",
+    "status": 400,
+    "title": "Duplicate alias",
+    "type": "Error",
+  },
 }
 `;

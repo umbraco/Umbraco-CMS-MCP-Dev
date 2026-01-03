@@ -1,4 +1,3 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { UpdateDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putDataTypeByIdBody,
@@ -6,7 +5,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const updateDataTypeSchema = {
   id: putDataTypeByIdParams.shape.id,
@@ -16,22 +15,16 @@ const updateDataTypeSchema = {
 const UpdateDataTypeTool = {
   name: "update-data-type",
   description: "Updates a data type by Id",
-  schema: updateDataTypeSchema,
-  isReadOnly: false,
-  slices: ['update'],
-  handler: async (model: { id: string; data: UpdateDataTypeRequestModel }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.putDataTypeById(model.id, model.data);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: updateDataTypeSchema,
+  annotations: {
+    idempotentHint: true,
   },
+  slices: ['update'],
+  handler: (async (model: { id: string; data: UpdateDataTypeRequestModel }) => {
+    return executeVoidApiCall((client) => 
+      client.putDataTypeById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
 } satisfies ToolDefinition<typeof updateDataTypeSchema>;
 
 export default withStandardDecorators(UpdateDataTypeTool);

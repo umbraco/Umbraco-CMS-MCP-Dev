@@ -1,23 +1,14 @@
 import GetDocumentPropertyValueTemplateTool from "../get/get-document-property-value-template.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-document-property-value-template", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
+  setupTestEnvironment();
   it("should list all available property value templates when no editorAlias is provided", async () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       {},
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -36,7 +27,7 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.TextBox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -57,7 +48,7 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Textbox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -72,7 +63,7 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "umbraco.textbox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -86,7 +77,7 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.BlockList" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -101,7 +92,7 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "NonExistent.Editor" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -117,7 +108,7 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.BlockGrid" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -136,7 +127,7 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.RichText" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -152,7 +143,7 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.ImageCropper" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -168,7 +159,7 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.MediaPicker3" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert

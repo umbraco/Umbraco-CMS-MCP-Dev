@@ -3,24 +3,19 @@ import CreateDocumentBlueprintFolderTool from "../folders/post/create-folder.js"
 import DeleteDocumentBlueprintFolderTool from "../folders/delete/delete-folder.js";
 import UpdateDocumentBlueprintFolderTool from "../folders/put/update-folder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBlueprintFolderBuilder } from "./helpers/document-blueprint-folder-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("document-blueprint-folder", () => {
   const TEST_FOLDER_NAME = "_Test Blueprint Folder";
   const TEST_PARENT_FOLDER_NAME = "_Test Parent Folder";
   const UPDATE_FOLDER_NAME = "_Update Folder Name";
   const UPDATED_FOLDER_NAME = "_Updated Folder Name";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentBlueprintTestHelper.cleanup(TEST_FOLDER_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_PARENT_FOLDER_NAME);
   });
@@ -30,8 +25,8 @@ describe("document-blueprint-folder", () => {
       const result = await CreateDocumentBlueprintFolderTool.handler(
         {
           name: TEST_FOLDER_NAME,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -55,8 +50,8 @@ describe("document-blueprint-folder", () => {
         {
           name: TEST_FOLDER_NAME,
           parent: { id: parentBuilder.getId() },
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -85,7 +80,7 @@ describe("document-blueprint-folder", () => {
             name: UPDATED_FOLDER_NAME,
           },
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -107,7 +102,7 @@ describe("document-blueprint-folder", () => {
             name: UPDATED_FOLDER_NAME,
           },
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -126,7 +121,7 @@ describe("document-blueprint-folder", () => {
         {
           id: builder.getId(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -143,7 +138,7 @@ describe("document-blueprint-folder", () => {
         {
           id: BLANK_UUID,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();

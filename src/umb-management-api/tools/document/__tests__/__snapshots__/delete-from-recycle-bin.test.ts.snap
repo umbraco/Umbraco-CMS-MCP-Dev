@@ -4,7 +4,7 @@ exports[`delete-from-recycle-bin should delete a document from the recycle bin b
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -13,20 +13,13 @@ exports[`delete-from-recycle-bin should delete a document from the recycle bin b
 
 exports[`delete-from-recycle-bin should handle deleting a non-existent document from the recycle bin 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using delete-from-recycle-bin:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The content could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The content could not be found",
+    "type": "Error",
+  },
 }
 `;

@@ -2,10 +2,29 @@
 
 exports[`data-type-tree ancestors should get ancestor items 1`] = `
 {
-  "content": [
+  "content": [],
+  "structuredContent": [
     {
-      "text": "[{"editorUiAlias":null,"isDeletable":false,"isFolder":true,"name":"_Test Folder DataType","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"editorUiAlias":null,"isDeletable":false,"isFolder":false,"name":"_Test Child DataType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]",
-      "type": "text",
+      "editorUiAlias": null,
+      "flags": [],
+      "hasChildren": true,
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isDeletable": false,
+      "isFolder": true,
+      "name": "_Test Folder DataType",
+      "parent": null,
+    },
+    {
+      "editorUiAlias": null,
+      "flags": [],
+      "hasChildren": false,
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isDeletable": false,
+      "isFolder": false,
+      "name": "_Test Child DataType",
+      "parent": {
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
     },
   ],
 }
@@ -13,33 +32,40 @@ exports[`data-type-tree ancestors should get ancestor items 1`] = `
 
 exports[`data-type-tree ancestors should handle non-existent item 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": [],
 }
 `;
 
 exports[`data-type-tree children should get child items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"editorUiAlias":"Umb.PropertyEditorUi.TextBox","isDeletable":true,"isFolder":false,"name":"_Test Child DataType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "isFolder": false,
+        "name": "_Test Child DataType",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`data-type-tree children should handle non-existent parent 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

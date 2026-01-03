@@ -1,27 +1,22 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getItemDocumentSearchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getItemDocumentSearchQueryParams, getItemDocumentSearchResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 
 const SearchDocumentTool = {
   name: "search-document",
   description: "Searches for documents by query, skip, and take.",
-  schema: getItemDocumentSearchQueryParams.shape,
-  isReadOnly: true,
-  slices: ['search'],
-  handler: async (params: z.infer<typeof getItemDocumentSearchQueryParams>) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemDocumentSearch(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getItemDocumentSearchQueryParams.shape,
+  outputSchema: getItemDocumentSearchResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getItemDocumentSearchQueryParams.shape>;
+  slices: ['search'],
+  handler: (async (params: z.infer<typeof getItemDocumentSearchQueryParams>) => {
+    return executeGetApiCall((client) =>
+      client.getItemDocumentSearch(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getItemDocumentSearchQueryParams.shape, typeof getItemDocumentSearchResponse.shape>;
 
 export default withStandardDecorators(SearchDocumentTool);

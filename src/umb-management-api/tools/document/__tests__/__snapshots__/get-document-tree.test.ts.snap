@@ -2,44 +2,127 @@
 
 exports[`document-tree ancestors should get ancestor items 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"isProtected":false,"ancestors":[],"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Root Document","culture":null}],"noAccess":false,"isTrashed":false,"createDate":"NORMALIZED_DATE","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"isProtected":false,"ancestors":[{"id":"00000000-0000-0000-0000-000000000000"}],"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Child Document","culture":null}],"noAccess":false,"isTrashed":false,"createDate":"NORMALIZED_DATE","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "ancestors": [],
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-home color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isProtected": false,
+        "isTrashed": false,
+        "noAccess": false,
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Root Document",
+            "state": "Draft",
+          },
+        ],
+      },
+      {
+        "ancestors": [
+          {
+            "id": "00000000-0000-0000-0000-000000000000",
+          },
+        ],
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isProtected": false,
+        "isTrashed": false,
+        "noAccess": false,
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Child Document",
+            "state": "Draft",
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`document-tree ancestors should handle non-existent item 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
 exports[`document-tree children should get child items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"isProtected":false,"ancestors":[{"id":"00000000-0000-0000-0000-000000000000"}],"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Child Document","culture":null}],"noAccess":false,"isTrashed":false,"createDate":"NORMALIZED_DATE","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "ancestors": [
+          {
+            "id": "00000000-0000-0000-0000-000000000000",
+          },
+        ],
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isProtected": false,
+        "isTrashed": false,
+        "noAccess": false,
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Child Document",
+            "state": "Draft",
+          },
+        ],
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`document-tree children should handle non-existent parent 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

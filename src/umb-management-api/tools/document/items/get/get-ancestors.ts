@@ -1,27 +1,27 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getTreeDocumentAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getTreeDocumentAncestorsQueryParams, getTreeDocumentAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
+
+const outputSchema = z.object({
+  items: getTreeDocumentAncestorsResponse,
+});
 
 const GetDocumentAncestorsTool = {
   name: "get-document-ancestors",
   description: "Gets ancestor items for a document.",
-  schema: getTreeDocumentAncestorsQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeDocumentAncestorsQueryParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
   slices: ['tree'],
-  handler: async (params: z.infer<typeof getTreeDocumentAncestorsQueryParams>) => {
+  handler: (async (params: z.infer<typeof getTreeDocumentAncestorsQueryParams>) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeDocumentAncestors(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getTreeDocumentAncestorsQueryParams.shape>;
+    return createToolResult({ items: response });
+  }),
+} satisfies ToolDefinition<typeof getTreeDocumentAncestorsQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetDocumentAncestorsTool);

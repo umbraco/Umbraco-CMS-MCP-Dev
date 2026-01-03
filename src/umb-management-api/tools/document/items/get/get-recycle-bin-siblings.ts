@@ -1,27 +1,22 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getRecycleBinDocumentSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getRecycleBinDocumentSiblingsQueryParams, getRecycleBinDocumentSiblingsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 
 const GetDocumentRecycleBinSiblingsTool = {
   name: "get-document-recycle-bin-siblings",
   description: "Gets sibling documents in the recycle bin for a given descendant id",
-  schema: getRecycleBinDocumentSiblingsQueryParams.shape,
-  isReadOnly: true,
-  slices: ['tree', 'recycle-bin'],
-  handler: async (params: z.infer<typeof getRecycleBinDocumentSiblingsQueryParams>) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getRecycleBinDocumentSiblings(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getRecycleBinDocumentSiblingsQueryParams.shape,
+  outputSchema: getRecycleBinDocumentSiblingsResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getRecycleBinDocumentSiblingsQueryParams.shape>;
+  slices: ['tree', 'recycle-bin'],
+  handler: (async (params: z.infer<typeof getRecycleBinDocumentSiblingsQueryParams>) => {
+    return executeGetApiCall((client) =>
+      client.getRecycleBinDocumentSiblings(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getRecycleBinDocumentSiblingsQueryParams.shape, typeof getRecycleBinDocumentSiblingsResponse.shape>;
 
 export default withStandardDecorators(GetDocumentRecycleBinSiblingsTool);

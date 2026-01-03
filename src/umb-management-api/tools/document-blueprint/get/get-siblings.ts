@@ -1,29 +1,28 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getTreeDocumentBlueprintSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetTreeDocumentBlueprintSiblingsParams } from "@/umb-management-api/schemas/index.js";
+import { getTreeDocumentBlueprintSiblingsQueryParams, getTreeDocumentBlueprintSiblingsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
 
-type SchemaParams = z.infer<typeof getTreeDocumentBlueprintSiblingsQueryParams>;
+const outputSchema = z.object({
+  items: getTreeDocumentBlueprintSiblingsResponse.shape.items,
+  totalBefore: getTreeDocumentBlueprintSiblingsResponse.shape.totalBefore,
+  totalAfter: getTreeDocumentBlueprintSiblingsResponse.shape.totalAfter,
+});
 
 const GetDocumentBlueprintSiblingsTool = {
   name: "get-document-blueprint-siblings",
   description: "Gets sibling document blueprints for a given descendant id",
-  schema: getTreeDocumentBlueprintSiblingsQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeDocumentBlueprintSiblingsQueryParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (params: SchemaParams) => {
+  handler: (async (params: GetTreeDocumentBlueprintSiblingsParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getTreeDocumentBlueprintSiblings(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getTreeDocumentBlueprintSiblingsQueryParams.shape>;
+    return createToolResult(response);
+  }),
+} satisfies ToolDefinition<typeof getTreeDocumentBlueprintSiblingsQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetDocumentBlueprintSiblingsTool);

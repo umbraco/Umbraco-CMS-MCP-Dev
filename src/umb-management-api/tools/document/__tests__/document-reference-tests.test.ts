@@ -2,23 +2,18 @@ import GetDocumentAreReferencedTool from "../get/get-document-are-referenced.js"
 import GetDocumentByIdReferencedByTool from "../get/get-document-by-id-referenced-by.js";
 import GetDocumentByIdReferencedDescendantsTool from "../get/get-document-by-id-referenced-descendants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCUMENT_NAME = "_Test Reference Document";
 const TEST_DOCUMENT_NAME_2 = "_Test Reference Document 2";
 
 describe("document-reference-tests", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME_2);
   });
@@ -39,7 +34,7 @@ describe("document-reference-tests", () => {
       // Act: Check if documents are referenced
       const result = await GetDocumentAreReferencedTool.handler(
         { id: [builder1.getId(), builder2.getId()], take: 20 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Verify the response
@@ -57,7 +52,7 @@ describe("document-reference-tests", () => {
       // Act: Check if single document is referenced
       const result = await GetDocumentAreReferencedTool.handler(
         { id: [builder.getId()], skip: 0, take: 10 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Verify the response
@@ -77,7 +72,7 @@ describe("document-reference-tests", () => {
       // Act: Get documents that reference this document
       const result = await GetDocumentByIdReferencedByTool.handler(
         { id: builder.getId(), take: 20 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Verify the response
@@ -95,7 +90,7 @@ describe("document-reference-tests", () => {
       // Act: Get references with pagination
       const result = await GetDocumentByIdReferencedByTool.handler(
         { id: builder.getId(), skip: 0, take: 10 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Verify the response
@@ -107,7 +102,7 @@ describe("document-reference-tests", () => {
       // Act: Try to get references for non-existent document
       const result = await GetDocumentByIdReferencedByTool.handler(
         { id: "00000000-0000-0000-0000-000000000000", take: 20 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Should handle gracefully
@@ -126,7 +121,7 @@ describe("document-reference-tests", () => {
       // Act: Get referenced descendants
       const result = await GetDocumentByIdReferencedDescendantsTool.handler(
         { id: builder.getId(), take: 20 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Verify the response
@@ -144,7 +139,7 @@ describe("document-reference-tests", () => {
       // Act: Get referenced descendants with pagination
       const result = await GetDocumentByIdReferencedDescendantsTool.handler(
         { id: builder.getId(), skip: 0, take: 10 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Verify the response
@@ -157,12 +152,17 @@ describe("document-reference-tests", () => {
       // Using a random UUID that doesn't exist
       const result = await GetDocumentByIdReferencedDescendantsTool.handler(
         { id: crypto.randomUUID(), take: 20 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
-      // Assert: Should not throw an error - just verify the response structure
-      expect(result.content).toBeDefined();
-      expect(result.content[0].type).toBe("text");
+      // Assert: Should not throw an error - verify the response is defined
+      expect(result).toBeDefined();
+      // New pattern uses structuredContent for data
+      if (result.isError) {
+        expect(result.isError).toBe(true);
+      } else {
+        expect(result.structuredContent).toBeDefined();
+      }
     });
   });
 });

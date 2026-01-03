@@ -2,26 +2,85 @@
 
 exports[`get-document-siblings should get sibling documents 1`] = `
 {
-  "content": [
-    {
-      "text": "{"totalBefore":0,"totalAfter":0,"items":[{"isProtected":false,"ancestors":[{"id":"00000000-0000-0000-0000-000000000000"}],"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Sibling 1","culture":null}],"noAccess":false,"isTrashed":false,"createDate":"NORMALIZED_DATE","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false},{"isProtected":false,"ancestors":[{"id":"00000000-0000-0000-0000-000000000000"}],"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Sibling 2","culture":null}],"noAccess":false,"isTrashed":false,"createDate":"NORMALIZED_DATE","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "ancestors": [
+          {
+            "id": "00000000-0000-0000-0000-000000000000",
+          },
+        ],
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isProtected": false,
+        "isTrashed": false,
+        "noAccess": false,
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Sibling 1",
+            "state": "Draft",
+          },
+        ],
+      },
+      {
+        "ancestors": [
+          {
+            "id": "00000000-0000-0000-0000-000000000000",
+          },
+        ],
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isProtected": false,
+        "isTrashed": false,
+        "noAccess": false,
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Sibling 2",
+            "state": "Draft",
+          },
+        ],
+      },
+    ],
+    "totalAfter": 0,
+    "totalBefore": 0,
+  },
 }
 `;
 
 exports[`get-document-siblings should handle non-existent target 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-document-siblings:
-{
-  "message": "Request failed with status code 404",
-  "response": ""
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
 }
 `;

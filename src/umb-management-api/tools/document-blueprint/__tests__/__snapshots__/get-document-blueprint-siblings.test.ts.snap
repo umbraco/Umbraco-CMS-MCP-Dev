@@ -2,26 +2,38 @@
 
 exports[`get-document-blueprint-siblings should get sibling blueprints 1`] = `
 {
-  "content": [
-    {
-      "text": "{"totalBefore":0,"totalAfter":2,"items":[{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"isFolder":false,"name":"_Test Sibling Blueprint 1","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "documentType": {
+          "collection": null,
+          "icon": "icon-home color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isFolder": false,
+        "name": "_Test Sibling Blueprint 1",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+    "totalAfter": 2,
+    "totalBefore": 0,
+  },
 }
 `;
 
 exports[`get-document-blueprint-siblings should handle non-existent target 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-document-blueprint-siblings:
-{
-  "message": "Request failed with status code 404",
-  "response": ""
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "message": "Request failed with status code 404",
+    "name": "AxiosError",
+  },
 }
 `;

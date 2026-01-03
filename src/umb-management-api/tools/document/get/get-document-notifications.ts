@@ -1,26 +1,27 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getDocumentByIdNotificationsParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDocumentByIdNotificationsParams, getDocumentByIdNotificationsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoManagementClient } from "@umb-management-client";
+import { z } from "zod";
+
+const outputSchema = z.object({
+  items: getDocumentByIdNotificationsResponse,
+});
 
 const GetDocumentNotificationsTool = {
   name: "get-document-notifications",
   description: "Gets the notifications for a document by Id.",
-  schema: getDocumentByIdNotificationsParams.shape,
-  isReadOnly: true,
+  inputSchema: getDocumentByIdNotificationsParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
   slices: ['notifications'],
-  handler: async ({ id }: { id: string }) => {
+  handler: (async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getDocumentByIdNotifications(id);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getDocumentByIdNotificationsParams.shape>;
+    return createToolResult({ items: response });
+  }),
+} satisfies ToolDefinition<typeof getDocumentByIdNotificationsParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetDocumentNotificationsTool);

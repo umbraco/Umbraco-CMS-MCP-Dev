@@ -1,21 +1,18 @@
 import SearchDocumentTypeTool from "../get/search-document-type.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { jest } from "@jest/globals";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { getItemDocumentTypeSearchResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Search";
 const TEST_DOCTYPE_NAME_2 = "_Test DocumentType Search 2";
 
 describe("search-document-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test document types
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME_2);
@@ -38,25 +35,13 @@ describe("search-document-type", () => {
       query: TEST_DOCTYPE_NAME,
       skip: 0,
       take: 10
-    }, { signal: new AbortController().signal });
+    } as any, createMockRequestHandlerExtra());
 
-    // Normalize IDs in the response
-    const normalizedResult = {
-      ...result,
-      content: result.content.map(content => {
-        const parsed = JSON.parse(content.text as string);
-        return {
-          ...content,
-          text: JSON.stringify({
-            ...parsed,
-            items: DocumentTypeTestHelper.normaliseIds(parsed.items)
-          })
-        };
-      })
-    };
+    // Verify structured content is valid
+    validateStructuredContent(result, getItemDocumentTypeSearchResponse);
 
     // Verify the handler response using snapshot
-    expect(normalizedResult).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should handle empty search results", async () => {
@@ -64,10 +49,13 @@ describe("search-document-type", () => {
       query: "NonExistentDocumentType",
       skip: 0,
       take: 10
-    }, { signal: new AbortController().signal });
+    } as any, createMockRequestHandlerExtra());
+
+    // Verify structured content is valid
+    validateStructuredContent(result, getItemDocumentTypeSearchResponse);
 
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should handle pagination", async () => {
@@ -87,24 +75,12 @@ describe("search-document-type", () => {
       query: TEST_DOCTYPE_NAME,
       skip: 1,
       take: 1
-    }, { signal: new AbortController().signal });
+    } as any, createMockRequestHandlerExtra());
 
-    // Normalize IDs in the response
-    const normalizedResult = {
-      ...result,
-      content: result.content.map(content => {
-        const parsed = JSON.parse(content.text as string);
-        return {
-          ...content,
-          text: JSON.stringify({
-            ...parsed,
-            items: DocumentTypeTestHelper.normaliseIds(parsed.items)
-          })
-        };
-      })
-    };
+    // Verify structured content is valid
+    validateStructuredContent(result, getItemDocumentTypeSearchResponse);
 
     // Verify the handler response using snapshot
-    expect(normalizedResult).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
-}); 
+});

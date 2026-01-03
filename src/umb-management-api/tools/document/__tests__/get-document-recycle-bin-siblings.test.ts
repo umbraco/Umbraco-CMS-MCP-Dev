@@ -1,26 +1,25 @@
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import GetDocumentRecycleBinSiblingsTool from "../items/get/get-recycle-bin-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_PARENT_NAME = "_Test RecycleBin Siblings Parent";
 const TEST_SIBLING_1_NAME = "_Test RecycleBin Sibling 1";
 const TEST_SIBLING_2_NAME = "_Test RecycleBin Sibling 2";
 
 describe("get-document-recycle-bin-siblings", () => {
-  let originalConsoleError: typeof console.error;
+
+  setupTestEnvironment();
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     await DocumentTestHelper.emptyRecycleBin();
   });
 
   afterEach(async () => {
     await DocumentTestHelper.emptyRecycleBin();
-    console.error = originalConsoleError;
   });
 
   it("should get sibling documents in recycle bin", async () => {
@@ -59,7 +58,7 @@ describe("get-document-recycle-bin-siblings", () => {
         target: sibling1InBin!.id,
         after: 100,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -74,7 +73,7 @@ describe("get-document-recycle-bin-siblings", () => {
         target: BLANK_UUID,
         after: 100,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert

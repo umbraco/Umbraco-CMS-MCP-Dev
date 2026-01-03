@@ -1,28 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { GetTreeDocumentTypeChildrenParams } from "@/umb-management-api/schemas/index.js";
-import { getTreeDocumentTypeChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getTreeDocumentTypeChildrenQueryParams, getTreeDocumentTypeChildrenResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDocumentTypeChildrenTool = {
   name: "get-document-type-children",
   description: "Gets the children of a document type. Use get-all-document-types instead unless you specifically need only child level items for a specific folder.",
-  schema: getTreeDocumentTypeChildrenQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeDocumentTypeChildrenQueryParams.shape,
+  outputSchema: getTreeDocumentTypeChildrenResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (params: GetTreeDocumentTypeChildrenParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeDocumentTypeChildren(params);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getTreeDocumentTypeChildrenQueryParams.shape>;
+  handler: (async (params: GetTreeDocumentTypeChildrenParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeDocumentTypeChildren(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeDocumentTypeChildrenQueryParams.shape, typeof getTreeDocumentTypeChildrenResponse.shape>;
 
 export default withStandardDecorators(GetDocumentTypeChildrenTool);

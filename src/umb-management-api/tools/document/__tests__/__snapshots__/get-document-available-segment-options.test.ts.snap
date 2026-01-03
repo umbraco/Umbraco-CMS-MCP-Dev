@@ -2,22 +2,20 @@
 
 exports[`get-document-available-segment-options should get available segment options for document 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`get-document-available-segment-options should handle non-existent document 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

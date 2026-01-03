@@ -1,10 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateDataTypeRequestModel } from "@/umb-management-api/schemas/index.js";
+import { CreateDataTypeRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
 const createDataTypeSchema = z.object({
@@ -19,6 +19,11 @@ const createDataTypeSchema = z.object({
 });
 
 type CreateDataTypeSchema = z.infer<typeof createDataTypeSchema>;
+
+export const createDataTypeOutputSchema = z.object({
+  message: z.string(),
+  id: z.string().uuid()
+});
 
 const CreateDataTypeTool = {
   name: "create-data-type",
@@ -45,10 +50,10 @@ const CreateDataTypeTool = {
   If you are asked to create a data type for a property that already exists, then stop and ask the user to provide a unique name.
 
   `,
-  schema: createDataTypeSchema.shape,
-  isReadOnly: false,
+  inputSchema: createDataTypeSchema.shape,
+  outputSchema: createDataTypeOutputSchema.shape,
   slices: ['create'],
-  handler: async (model: CreateDataTypeSchema) => {
+  handler: (async (model: CreateDataTypeSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     // Generate UUID for the data type
@@ -67,38 +72,23 @@ const CreateDataTypeTool = {
     const response = await client.postDataType(payload, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<void>;
+    }) as unknown as AxiosResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              message: "Data type created successfully",
-              id: dataTypeId
-            }),
-          },
-        ],
+      const output = {
+        message: "Data type created successfully",
+        id: dataTypeId
       };
+      return createToolResult(output);
     } else {
-      // Handle error
-      const errorData = response.data as any;
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              message: "Failed to create data type",
-              status: response.status,
-              error: errorData || response.statusText
-            }),
-          },
-        ],
-        isError: true,
+      // Handle error - Umbraco API returns ProblemDetails as structured data
+      const errorData: ProblemDetails = response.data || {
+        status: response.status,
+        detail: response.statusText,
       };
+      return createToolResultError(errorData);
     }
-  },
-} satisfies ToolDefinition<typeof createDataTypeSchema.shape>;
+  }),
+} satisfies ToolDefinition<typeof createDataTypeSchema.shape, typeof createDataTypeOutputSchema.shape>;
 
 export default withStandardDecorators(CreateDataTypeTool);

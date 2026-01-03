@@ -4,7 +4,7 @@ exports[`sort-document should sort children under a root document 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],

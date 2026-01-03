@@ -1,21 +1,15 @@
 import { DataTypeBuilder } from "./data-type-builder.js";
 import { DataTypeTestHelper } from "./data-type-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe('DataTypeBuilder', () => {
   const TEST_DATATYPE_NAME = '_Test Builder DataType';
   const TEST_PARENT_NAME = '_Test Parent DataType';
   const TEST_VALUE_ALIAS = 'testAlias';
   const TEST_VALUE = 'testValue';
-  let originalConsoleError: typeof console.error;
-  
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_PARENT_NAME);
   });

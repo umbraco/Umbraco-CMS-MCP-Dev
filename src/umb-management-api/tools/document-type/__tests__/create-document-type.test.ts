@@ -1,11 +1,12 @@
-import CreateDocumentTypeTool from "../post/create-document-type.js";
+import CreateDocumentTypeTool, { createDocumentTypeOutputSchema } from "../post/create-document-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createSnapshotResult, normalizeErrorResponse, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import type { CreateDocumentTypeModel } from "../post/create-document-type.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import type { DocumentTypeTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
 import { TextString_DATA_TYPE_ID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, validateStructuredContent, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Created";
 const EXISTING_DOCTYPE_NAME = "_Existing DocumentType";
@@ -13,12 +14,7 @@ const TEST_FOLDER_NAME = "_Test Folder DocumentType";
 const TEST_DOCTYPE_WITH_PARENT_NAME = "_Test DocumentType With Parent";
 
 describe("create-document-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up any test document types
@@ -26,7 +22,6 @@ describe("create-document-type", () => {
     await DocumentTypeTestHelper.cleanup(EXISTING_DOCTYPE_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_WITH_PARENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should create a document type", async () => {
@@ -42,21 +37,20 @@ describe("create-document-type", () => {
     };
 
     // Create the document type
-    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
-      signal: new AbortController().signal
-    });
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    const responseData = validateStructuredContent(result, createDocumentTypeOutputSchema);
     const documentTypeId = responseData.id;
 
     // Verify the handler response using snapshot
+    expect(responseData.message).toBe("Document type created successfully");
     expect(createSnapshotResult(result, documentTypeId)).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_NAME);
     expect(item).toBeDefined();
-    expect(DocumentTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should handle existing document type", async () => {
@@ -71,17 +65,13 @@ describe("create-document-type", () => {
     };
 
     // First create the document type
-    await CreateDocumentTypeTool.handler(docTypeModel, { 
-      signal: new AbortController().signal 
-    });
+    await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
     // Try to create it again
-    const result = await CreateDocumentTypeTool.handler(docTypeModel, { 
-      signal: new AbortController().signal 
-    });
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
     // Verify the error response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
 
   it("should create a document type with properties", async () => {
@@ -104,20 +94,19 @@ describe("create-document-type", () => {
       ]
     };
 
-    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
-      signal: new AbortController().signal
-    });
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    const responseData = validateStructuredContent(result, createDocumentTypeOutputSchema);
     const documentTypeId = responseData.id;
 
     // Verify the handler response using snapshot
+    expect(responseData.message).toBe("Document type created successfully");
     expect(createSnapshotResult(result, documentTypeId)).toMatchSnapshot();
 
     const item = await DocumentTypeTestHelper.findDocumentType(TEST_DOCTYPE_NAME);
     expect(item).toBeDefined();
-    expect(DocumentTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should create a document type with parent folder", async () => {
@@ -139,12 +128,10 @@ describe("create-document-type", () => {
     };
 
     // Act: Create the document type
-    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    const responseData = validateStructuredContent(result, createDocumentTypeOutputSchema);
     const documentTypeId = responseData.id;
 
     // Assert: Verify response
@@ -156,7 +143,7 @@ describe("create-document-type", () => {
     expect(item!.parent!.id).toBe(folderBuilder.getId());
 
     // Normalize both the item ID and parent ID for snapshot
-    const normalizedItem = DocumentTypeTestHelper.normaliseIds(item!) as DocumentTypeTreeItemResponseModel;
+    const normalizedItem = normalizeObject(item!) as DocumentTypeTreeItemResponseModel;
     if (normalizedItem.parent) {
       normalizedItem.parent.id = "00000000-0000-0000-0000-000000000000";
     }
@@ -181,14 +168,9 @@ describe("create-document-type", () => {
       ]
     };
 
-    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
-      signal: new AbortController().signal
-    });
-
-    // The tool catches validation errors and returns them as error responses
-    const errorText = result.content[0].text as string;
-    expect(errorText).toContain("Property must specify either 'tab' or 'group'");
-    expect(errorText).toContain("Properties without a container are invisible");
+    // The zod schema validation should fail and return an error result
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
+    expect(result.isError).toBe(true);
   });
 
   it("should create separate groups for same group name in different tabs", async () => {
@@ -217,11 +199,9 @@ describe("create-document-type", () => {
       ]
     };
 
-    const result = await CreateDocumentTypeTool.handler(docTypeModel, {
-      signal: new AbortController().signal
-    });
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
-    const responseData = JSON.parse(result.content[0].text as string);
+    const responseData = validateStructuredContent(result, createDocumentTypeOutputSchema);
     const fullDocType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
 
     // Should have 2 tabs

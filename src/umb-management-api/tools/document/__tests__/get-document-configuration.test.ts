@@ -1,25 +1,18 @@
 import GetDocumentConfigurationTool from "../get/get-document-configuration.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { getDocumentConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 describe("get-document-configuration", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
+  setupTestEnvironment();
   it("should get the document configuration", async () => {
-    const result = await GetDocumentConfigurationTool.handler({}, { signal: new AbortController().signal });
-    expect(result).toMatchSnapshot();
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(parsed).toHaveProperty("disableDeleteWhenReferenced");
-    expect(parsed).toHaveProperty("disableUnpublishWhenReferenced");
-    expect(parsed).toHaveProperty("allowEditInvariantFromNonDefault");
-    expect(parsed).toHaveProperty("allowNonExistingSegmentsCreation");
+    const result = await GetDocumentConfigurationTool.handler({}, createMockRequestHandlerExtra());
+    expect(createSnapshotResult(result)).toMatchSnapshot();
+    const data = validateStructuredContent(result, getDocumentConfigurationResponse);
+    expect(data).toHaveProperty("disableDeleteWhenReferenced");
+    expect(data).toHaveProperty("disableUnpublishWhenReferenced");
+    expect(data).toHaveProperty("allowEditInvariantFromNonDefault");
+    expect(data).toHaveProperty("allowNonExistingSegmentsCreation");
   });
 }); 

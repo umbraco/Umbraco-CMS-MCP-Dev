@@ -1,27 +1,21 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getDataTypeByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDataTypeByIdParams, getDataTypeByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypeTool = {
   name: "get-data-type",
   description: "Gets a data type by Id",
-  schema: getDataTypeByIdParams.shape,
-  isReadOnly: true,
+  inputSchema: getDataTypeByIdParams.shape,
+  outputSchema: getDataTypeByIdResponse.shape,
+  annotations: {
+    readOnlyHint: true
+  },
   slices: ['read'],
   handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDataTypeById(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+    return executeGetApiCall((client) => 
+      client.getDataTypeById(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   },
-} satisfies ToolDefinition<typeof getDataTypeByIdParams.shape>;
+} satisfies ToolDefinition<typeof getDataTypeByIdParams.shape, typeof getDataTypeByIdResponse.shape>;
 
 export default withStandardDecorators(GetDataTypeTool);

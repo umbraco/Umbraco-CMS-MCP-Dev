@@ -1,256 +1,216 @@
 import { BLANK_UUID } from "@/constants/constants.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
-export function createSnapshotResult(result: any, idToReplace?: string) {
-  if (!result?.content) {
-    return result;
+// ============================================================================
+// Normalization Rules - Data-Driven Approach
+// ============================================================================
+
+/** Fields that should be normalized to "NORMALIZED_DATE" */
+const DATE_FIELDS = [
+  "createDate",
+  "publishDate",
+  "updateDate",
+  "versionDate",
+  "lastLoginDate",
+  "lastPasswordChangeDate",
+  "lastLockoutDate",
+  "availableUntil",
+] as const;
+
+/** Fields that are object references with an id property to normalize */
+const ID_REFERENCE_FIELDS = [
+  "parent",
+  "document",
+  "documentType",
+  "mediaType",
+  "user",
+] as const;
+
+/** Regex-based normalizations for string fields */
+const REGEX_NORMALIZATIONS: Array<{
+  field: string;
+  pattern: RegExp;
+  replacement: string;
+}> = [
+  { field: "name", pattern: /_\d{13}(?=_|\.js$|$)/, replacement: "_NORMALIZED_TIMESTAMP" },
+  { field: "path", pattern: /_\d{13}(?=_|\.js$|\/|$)/g, replacement: "_NORMALIZED_TIMESTAMP" },
+  { field: "email", pattern: /-\d+@/, replacement: "-NORMALIZED@" },
+  { field: "userName", pattern: /-\d+@/, replacement: "-NORMALIZED@" },
+];
+
+// ============================================================================
+// Core Normalization Function
+// ============================================================================
+
+/**
+ * Recursively normalizes an object for snapshot testing.
+ * Handles IDs, dates, timestamps, and other dynamic values.
+ *
+ * Use this function directly when normalizing raw API response objects
+ * (like items from findDocument, findDataType, etc.) for snapshot testing.
+ *
+ * @param obj - The object to normalize
+ * @param idToReplace - Optional specific ID to replace
+ * @param normalizeIdRefs - Whether to normalize ID reference fields (parent, document, etc.)
+ */
+export function normalizeObject(obj: any, idToReplace?: string, normalizeIdRefs: boolean = true): any {
+  if (obj === null || obj === undefined) {
+    return obj;
   }
 
-  function normalizeItem(i: any) {
-    const item = { ...i, id: BLANK_UUID };
-    if (item.parent) {
-      item.parent = { ...item.parent, id: BLANK_UUID };
-      // Normalize parent path as well
-      if (item.parent.path && typeof item.parent.path === "string") {
-        item.parent.path = item.parent.path.replace(/_\d{13}(?=_|\.js$|\/|$)/g, "_NORMALIZED_TIMESTAMP");
-      }
-    }
-    // Normalize document reference in document versions
-    if (item.document) {
-      item.document = { ...item.document, id: BLANK_UUID };
-    }
-    // Normalize documentType reference
-    if (item.documentType) {
-      item.documentType = { ...item.documentType, id: BLANK_UUID };
-    }
-    // Normalize mediaType reference
-    if (item.mediaType) {
-      item.mediaType = { ...item.mediaType, id: BLANK_UUID };
-    }
-    // Normalize user reference
-    if (item.user) {
-      item.user = { ...item.user, id: BLANK_UUID };
-    }
-    if (item.ancestors && Array.isArray(item.ancestors)) {
-      item.ancestors = item.ancestors.map((ancestor: any) => ({
-        ...ancestor,
-        id: BLANK_UUID
-      }));
-    }
-    if (item.createDate) {
-      item.createDate = "NORMALIZED_DATE";
-    }
-    if (item.publishDate) {
-      item.publishDate = "NORMALIZED_DATE";
-    }
-    if (item.updateDate) {
-      item.updateDate = "NORMALIZED_DATE";
-    }
-    if (item.versionDate) {
-      item.versionDate = "NORMALIZED_DATE";
-    }
-    if (item.lastLoginDate) {
-      item.lastLoginDate = "NORMALIZED_DATE";
-    }
-    if (item.lastPasswordChangeDate) {
-      item.lastPasswordChangeDate = "NORMALIZED_DATE";
-    }
-    if (item.lastLockoutDate) {
-      item.lastLockoutDate = "NORMALIZED_DATE";
-    }
-    // Normalize variants array if present
-    if (item.variants && Array.isArray(item.variants)) {
-      item.variants = item.variants.map((variant: any) => {
-        const normalizedVariant = { ...variant };
-        if (normalizedVariant.createDate) normalizedVariant.createDate = "NORMALIZED_DATE";
-        if (normalizedVariant.publishDate) normalizedVariant.publishDate = "NORMALIZED_DATE";
-        if (normalizedVariant.updateDate) normalizedVariant.updateDate = "NORMALIZED_DATE";
-        if (normalizedVariant.versionDate) normalizedVariant.versionDate = "NORMALIZED_DATE";
-        return normalizedVariant;
-      });
-    }
-    // Normalize test names that contain timestamps
-    if (item.name && typeof item.name === "string") {
-      item.name = item.name.replace(/_\d{13}(?=_|\.js$|$)/, "_NORMALIZED_TIMESTAMP");
-    }
-    if (item.path && typeof item.path === "string") {
-      item.path = item.path.replace(/_\d{13}(?=_|\.js$|\/|$)/g, "_NORMALIZED_TIMESTAMP");
-    }
-    // Normalize email addresses with random numbers
-    if (item.email && typeof item.email === "string") {
-      item.email = item.email.replace(/-\d+@/, "-NORMALIZED@");
-    }
-    if (item.userName && typeof item.userName === "string") {
-      item.userName = item.userName.replace(/-\d+@/, "-NORMALIZED@");
-    }
-    // Normalize avatar URLs that contain dynamic file hashes
-    if (item.avatarUrls && Array.isArray(item.avatarUrls)) {
-      item.avatarUrls = item.avatarUrls.map((url: string) =>
-        url.replace(/\/[a-f0-9]{40}\.jpg/, "/NORMALIZED_AVATAR.jpg")
-      );
-    }
-    // Normalize media URLs that contain dynamic path segments
-    if (item.urlInfos && Array.isArray(item.urlInfos)) {
-      item.urlInfos = item.urlInfos.map((urlInfo: any) => ({
-        ...urlInfo,
-        url: urlInfo.url ? urlInfo.url.replace(/\/media\/[a-z0-9]+\//i, "/media/NORMALIZED_PATH/") : urlInfo.url
-      }));
-    }
-    return item;
+  if (Array.isArray(obj)) {
+    return obj.map(item => normalizeObject(item, idToReplace, normalizeIdRefs));
   }
 
-  return {
-    ...result,
-    content: result.content.map((item: any) => {
-      if (item.type === "text") {
-        if (idToReplace) {
-          // For single item responses
-          let text = item.text.replace(idToReplace, BLANK_UUID);
-          try {
-            const parsed = JSON.parse(text);
-            if (parsed.createDate) {
-              parsed.createDate = "NORMALIZED_DATE";
-            }
-            if (parsed.availableUntil) {
-              parsed.availableUntil = "NORMALIZED_DATE";
-            }
-            if (parsed.publishDate) {
-              parsed.publishDate = "NORMALIZED_DATE";
-            }
-            if (parsed.updateDate) {
-              parsed.updateDate = "NORMALIZED_DATE";
-            }
-            if (parsed.versionDate) {
-              parsed.versionDate = "NORMALIZED_DATE";
-            }
-            if (parsed.lastLoginDate) {
-              parsed.lastLoginDate = "NORMALIZED_DATE";
-            }
-            if (parsed.lastPasswordChangeDate) {
-              parsed.lastPasswordChangeDate = "NORMALIZED_DATE";
-            }
-            if (parsed.lastLockoutDate) {
-              parsed.lastLockoutDate = "NORMALIZED_DATE";
-            }
-            // Normalize email addresses with random numbers
-            if (parsed.email && typeof parsed.email === "string") {
-              parsed.email = parsed.email.replace(/-\d+@/, "-NORMALIZED@");
-            }
-            if (parsed.userName && typeof parsed.userName === "string") {
-              parsed.userName = parsed.userName.replace(/-\d+@/, "-NORMALIZED@");
-            }
-            // Normalize avatar URLs that contain dynamic file hashes
-            if (parsed.avatarUrls && Array.isArray(parsed.avatarUrls)) {
-              parsed.avatarUrls = parsed.avatarUrls.map((url: string) =>
-                url.replace(/\/[a-f0-9]{40}\.jpg/, "/NORMALIZED_AVATAR.jpg")
-              );
-            }
-            // Normalize media URLs that contain dynamic path segments
-            if (parsed.urlInfos && Array.isArray(parsed.urlInfos)) {
-              parsed.urlInfos = parsed.urlInfos.map((urlInfo: any) => ({
-                ...urlInfo,
-                url: urlInfo.url ? urlInfo.url.replace(/\/media\/[a-z0-9]+\//i, "/media/NORMALIZED_PATH/") : urlInfo.url
-              }));
-            }
-            // Normalize block update results
-            if (parsed.results && Array.isArray(parsed.results)) {
-              parsed.results = parsed.results.map((r: any) => ({
-                ...r,
-                contentKey: r.contentKey ? BLANK_UUID : undefined
-              }));
-            }
-            // Normalize availableBlocks
-            if (parsed.availableBlocks && Array.isArray(parsed.availableBlocks)) {
-              parsed.availableBlocks = parsed.availableBlocks.map((b: any) => ({
-                ...b,
-                key: BLANK_UUID
-              }));
-            }
-            // Normalize document version references
-            if (parsed.document) {
-              parsed.document = { ...parsed.document, id: BLANK_UUID };
-              // Normalize nested variants in document
-              if (parsed.document.variants && Array.isArray(parsed.document.variants)) {
-                parsed.document.variants = parsed.document.variants.map((variant: any) => {
-                  if (variant.createDate) variant.createDate = "NORMALIZED_DATE";
-                  if (variant.publishDate) variant.publishDate = "NORMALIZED_DATE";
-                  if (variant.updateDate) variant.updateDate = "NORMALIZED_DATE";
-                  if (variant.versionDate) variant.versionDate = "NORMALIZED_DATE";
-                  return variant;
-                });
-              }
-              // Normalize documentType within document
-              if (parsed.document.documentType) {
-                parsed.document.documentType = { ...parsed.document.documentType, id: BLANK_UUID };
-              }
-            }
-            if (parsed.documentType) {
-              parsed.documentType = { ...parsed.documentType, id: BLANK_UUID };
-            }
-            if (parsed.user) {
-              parsed.user = { ...parsed.user, id: BLANK_UUID };
-            }
-            if (parsed.variants && Array.isArray(parsed.variants)) {
-              parsed.variants = parsed.variants.map((variant: any) => {
-                if (variant.createDate) variant.createDate = "NORMALIZED_DATE";
-                if (variant.publishDate)
-                  variant.publishDate = "NORMALIZED_DATE";
-                if (variant.updateDate) variant.updateDate = "NORMALIZED_DATE";
-                if (variant.versionDate) variant.versionDate = "NORMALIZED_DATE";
-                return variant;
-              });
-            }
-            text = JSON.stringify(parsed, null, 2);
-          } catch {}
-          return {
-            ...item,
-            text,
-          };
-        } else {
-          // For list responses
-          const parsed = JSON.parse(item.text);
-          if (Array.isArray(parsed)) {
-            // Handle ancestors API response and other array responses
-            const normalized = parsed.map(normalizeItem);
-            return {
-              ...item,
-              text: JSON.stringify(normalized),
-            };
-          }
-          // Handle other list responses
-          if (parsed.items) {
-            parsed.items = parsed.items.map(normalizeItem);
-          }
-          if (parsed.variants && Array.isArray(parsed.variants)) {
-            parsed.variants = parsed.variants.map((variant: any) => {
-              if (variant.createDate) variant.createDate = "NORMALIZED_DATE";
-              if (variant.publishDate) variant.publishDate = "NORMALIZED_DATE";
-              if (variant.updateDate) variant.updateDate = "NORMALIZED_DATE";
-              return variant;
-            });
-          }
-          return {
-            ...item,
-            text: JSON.stringify(parsed),
-          };
+  if (typeof obj !== "object") {
+    return obj;
+  }
+
+  const normalized: any = { ...obj };
+
+  // Normalize the main ID field
+  if (idToReplace && normalized.id === idToReplace) {
+    normalized.id = BLANK_UUID;
+  } else if (normalized.id && !idToReplace) {
+    normalized.id = BLANK_UUID;
+  }
+
+  // Normalize ID reference fields (objects with id property) - only when normalizeIdRefs is true
+  if (normalizeIdRefs) {
+    for (const field of ID_REFERENCE_FIELDS) {
+      if (normalized[field]) {
+        normalized[field] = { ...normalized[field], id: BLANK_UUID };
+        // Special case: parent.path may contain timestamps
+        if (field === "parent" && normalized[field].path && typeof normalized[field].path === "string") {
+          normalized[field].path = normalized[field].path.replace(/_\d{13}(?=_|\.js$|\/|$)/g, "_NORMALIZED_TIMESTAMP");
         }
       }
-      return item;
-    }),
-  };
-}
+    }
+  }
 
-export function normalizeErrorResponse(result: CallToolResult): CallToolResult {
-  if (
-    Array.isArray(result.content) &&
-    result.content[0]?.text &&
-    typeof result.content[0].text === "string"
-  ) {
-    // Replace any traceId in the text with a normalized version
-    result.content[0].text = result.content[0].text.replace(
-      /00-[0-9a-f]{32}-[0-9a-f]{16}-00/g,
-      "normalized-trace-id"
+  // Normalize date fields
+  for (const field of DATE_FIELDS) {
+    if (normalized[field]) {
+      normalized[field] = "NORMALIZED_DATE";
+    }
+  }
+
+  // Normalize ancestors array
+  if (normalized.ancestors && Array.isArray(normalized.ancestors)) {
+    normalized.ancestors = normalized.ancestors.map((ancestor: any) => ({
+      ...ancestor,
+      id: BLANK_UUID,
+    }));
+  }
+
+  // Normalize variants array
+  if (normalized.variants && Array.isArray(normalized.variants)) {
+    normalized.variants = normalizeVariants(normalized.variants, idToReplace);
+  }
+
+  // Apply regex normalizations for string fields
+  for (const { field, pattern, replacement } of REGEX_NORMALIZATIONS) {
+    if (normalized[field] && typeof normalized[field] === "string") {
+      normalized[field] = normalized[field].replace(pattern, replacement);
+    }
+  }
+
+  // Normalize avatar URLs (array of strings with hashes)
+  if (normalized.avatarUrls && Array.isArray(normalized.avatarUrls)) {
+    normalized.avatarUrls = normalized.avatarUrls.map((url: string) =>
+      url.replace(/\/[a-f0-9]{40}\.jpg/, "/NORMALIZED_AVATAR.jpg")
     );
   }
+
+  // Normalize media URLs in urlInfos
+  if (normalized.urlInfos && Array.isArray(normalized.urlInfos)) {
+    normalized.urlInfos = normalized.urlInfos.map((urlInfo: any) => ({
+      ...urlInfo,
+      url: urlInfo.url ? urlInfo.url.replace(/\/media\/[a-z0-9]+\//i, "/media/NORMALIZED_PATH/") : urlInfo.url,
+    }));
+  }
+
+  // Normalize block results (contentKey)
+  if (normalized.results && Array.isArray(normalized.results)) {
+    normalized.results = normalized.results.map((r: any) => ({
+      ...r,
+      contentKey: r.contentKey ? BLANK_UUID : undefined,
+    }));
+  }
+
+  // Normalize availableBlocks
+  if (normalized.availableBlocks && Array.isArray(normalized.availableBlocks)) {
+    normalized.availableBlocks = normalized.availableBlocks.map((b: any) => ({
+      ...b,
+      key: BLANK_UUID,
+    }));
+  }
+
+  // Recursively normalize nested items array
+  if (normalized.items && Array.isArray(normalized.items)) {
+    normalized.items = normalized.items.map((item: any) => normalizeObject(item, idToReplace, normalizeIdRefs));
+  }
+
+  // Recursively normalize structuredContent (for MCP tool responses)
+  if (normalized.structuredContent && typeof normalized.structuredContent === "object") {
+    normalized.structuredContent = normalizeObject(normalized.structuredContent, idToReplace, normalizeIdRefs);
+  }
+
+  // Recursively normalize nested 'document' field (common in response wrappers)
+  if (normalized.document && typeof normalized.document === "object") {
+    normalized.document = normalizeObject(normalized.document, idToReplace, normalizeIdRefs);
+  }
+
+  return normalized;
+}
+
+/**
+ * Normalizes variant arrays (used in documents)
+ * Uses normalizeObject for full recursive normalization of each variant
+ */
+function normalizeVariants(variants: any[], idToReplace?: string): any[] {
+  return variants.map((variant: any) => normalizeObject(variant, idToReplace, true));
+}
+
+// ============================================================================
+// Public API
+// ============================================================================
+
+/**
+ * Creates a normalized result suitable for snapshot testing.
+ * Normalizes structuredContent responses from MCP tools.
+ *
+ * @param result - The tool result to normalize
+ * @param idToReplace - Optional specific ID to replace (for single item responses)
+ */
+export function createSnapshotResult(result: any, idToReplace?: string) {
+  if (result?.structuredContent !== undefined) {
+    return {
+      ...result,
+      structuredContent: normalizeObject(result.structuredContent, idToReplace, true),
+    };
+  }
+
+  // Pass through non-structuredContent results unchanged
+  return result;
+}
+
+/**
+ * Normalizes error responses for snapshot testing.
+ * Handles traceId normalization in structuredContent.
+ */
+export function normalizeErrorResponse(result: CallToolResult): CallToolResult {
+  if (result.structuredContent && typeof result.structuredContent === "object") {
+    const normalized = { ...result };
+    const content = normalized.structuredContent as any;
+    if (content.traceId && typeof content.traceId === "string") {
+      content.traceId = content.traceId.replace(
+        /00-[0-9a-f]{32}-[0-9a-f]{16}-00/g,
+        "normalized-trace-id"
+      );
+    }
+    return normalized;
+  }
+
   return result;
 }

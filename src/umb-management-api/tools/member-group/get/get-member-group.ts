@@ -1,27 +1,24 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getMemberGroupByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import {
+  getMemberGroupByIdParams,
+  getMemberGroupByIdResponse,
+} from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetMemberGroupTool = {
   name: "get-member-group",
   description: "Gets a member group by Id",
-  schema: getMemberGroupByIdParams.shape,
-  isReadOnly: true,
-  slices: ['read'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getMemberGroupById(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getMemberGroupByIdParams.shape,
+  outputSchema: getMemberGroupByIdResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getMemberGroupByIdParams.shape>;
+  slices: ['read'],
+  handler: (async ({ id }: { id: string }) => {
+    return executeGetApiCall((client) =>
+      client.getMemberGroupById(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getMemberGroupByIdParams.shape, typeof getMemberGroupByIdResponse.shape>;
 
 export default withStandardDecorators(GetMemberGroupTool);

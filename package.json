@@ -17,15 +17,9 @@
     "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "patch-publish-alpha": "npm version prerelease --preid=alpha && npm publish --tag alpha --access public",
-    "eval-mcp:basic": "npx mcp-server-tester@1.4.0 evals tests/e2e/basic/basic-tests.yaml --server-config tests/e2e/basic/basic-tests-config.json",
-    "eval-mcp:create-data-type-text-box": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-data-type/create-data-type-text-box.yaml --server-config tests/e2e/create-data-type/create-data-type-config.json",
-    "eval-mcp:create-data-type-block-list": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-data-type/create-data-type-block-list.yaml --server-config tests/e2e/create-data-type/create-data-type-config.json",
-    "eval-mcp:create-document-type": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-document-type/create-document-type.yaml --server-config tests/e2e/create-document-type/create-document-type-config.json",
-    "eval-mcp:create-document-copy": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-document-copy/create-document-copy.yaml --server-config tests/e2e/create-document-copy/create-document-copy-config.json",
-    "eval-mcp:create-document-with-template": "npx mcp-server-tester@1.4.0 evals tests/e2e/create-document-with-template/create-document-with-template.yaml --server-config tests/e2e/create-document-with-template/create-document-with-template-config.json",
-    "eval-mcp:update-document-properties": "npx mcp-server-tester@1.4.0 evals tests/e2e/update-document-properties/update-document-properties.yaml --server-config tests/e2e/update-document-properties/update-document-properties-config.json",
-    "eval-mcp:update-block-property": "npx mcp-server-tester@1.4.0 evals tests/e2e/update-block-property/update-block-property.yaml --server-config tests/e2e/update-block-property/update-block-property-config.json",
-    "eval-mcp:all": "npm run eval-mcp:basic && npm run eval-mcp:create-data-type && npm run eval-mcp:create-document-type && npm run eval-mcp:create-blog-post"
+    "test:e2e-sdk": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --silent --forceExit 2>/dev/null",
+    "test:e2e-sdk:verbose": "E2E_VERBOSITY=verbose node --experimental-vm-modules node_modules/jest/bin/jest.js tests/e2e-sdk --runInBand --testTimeout=120000 --forceExit",
+    "test:e2e-sdk:debug": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --detectOpenHandles"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -52,7 +46,7 @@
   },
   "homepage": "https://github.com/umbraco/Umbraco-CMS-MCP-Dev#readme",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.9.0",
+    "@modelcontextprotocol/sdk": "^1.25.1",
     "@types/uuid": "^10.0.0",
     "@types/yargs": "^17.0.33",
     "axios": "^1.8.4",
@@ -62,9 +56,11 @@
     "qs": "^6.14.0",
     "uuid": "^11.1.0",
     "yargs": "^18.0.0",
-    "zod": "^3.24.3"
+    "zod": "^4.2.1"
   },
   "devDependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.1.76",
+    "@jest/types": "^30.2.0",
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^29.5.14",
     "@types/mime-types": "^3.0.1",
