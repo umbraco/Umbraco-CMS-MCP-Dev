@@ -1,7 +1,9 @@
 import { z } from "zod";
-import { CopyDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { UmbracoManagementClient } from "@umb-management-client";
+import { CopyDocumentRequestModel, CurrentUserResponseModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
+import { AxiosResponse } from "axios";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 
 const copyDocumentSchema = z.object({
@@ -11,30 +13,30 @@ const copyDocumentSchema = z.object({
   includeDescendants: z.boolean().describe("If true, all descendant documents (children, grandchildren, etc.) will also be copied. This is usually set to false unless specified."),
 });
 
+export const copyDocumentOutputSchema = z.object({
+  id: z.string().uuid()
+});
+
 const CopyDocumentTool = {
   name: "copy-document",
-  description: `Copy a document to a new location. This is also the recommended way to create new documents.
+  description: `Copy a document to a new location. Returns the new document's ID on success.
+  This is also the recommended way to create new documents.
   Copy an existing document to preserve the complex JSON structure, then modify specific fields as needed.
 
-  IMPORTANT WORKFLOW NOTES:
-  - This function returns an empty string ("") on success, not the new document ID
-  - If you need to update the copied document:
-    1. After copying, search for the new document using search-document with appropriate query parameters
-    2. Look for the most recent document with the target name pattern (e.g., "Original Name (1)")
-    3. Use the retrieved ID for subsequent update and publish operations
+  WORKFLOW NOTES:
+  - The copy is created as a draft with the naming pattern "Original Name (N)" where N is a number
+  - Use the returned ID for subsequent update and publish operations
 
-  - If you only need to create a copy without updates:
-    1. The copy is created as a draft with the naming pattern "Original Name (N)" where N is a number
-    2. No further action is required if you only want to keep it as a draft copy
-    3. To publish the copy as-is, you'll still need to find its ID using search-document first
-
-    Example workflows:
-    1. Copy only: copy-document (creates draft copy)
-    2. Copy and update: copy-document → search-document → update-document → publish-document`,
+  Example workflows:
+  1. Copy only: copy-document (creates draft copy, returns new ID)
+  2. Copy and update: copy-document → update-document → publish-document`,
   inputSchema: copyDocumentSchema.shape,
+  outputSchema: copyDocumentOutputSchema.shape,
   slices: ['copy'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Duplicate),
   handler: (async (model: z.infer<typeof copyDocumentSchema>) => {
+    const client = UmbracoManagementClient.getClient();
+
     const payload: CopyDocumentRequestModel = {
       target: model.parentId ? {
         id: model.parentId,
@@ -43,10 +45,26 @@ const CopyDocumentTool = {
       includeDescendants: model.includeDescendants,
     };
 
-    return executeVoidApiCall((client) =>
-      client.postDocumentByIdCopy(model.idToCopy, payload, CAPTURE_RAW_HTTP_RESPONSE)
-    );
+    const response = await client.postDocumentByIdCopy(model.idToCopy, payload, {
+      returnFullResponse: true,
+      validateStatus: () => true,
+    }) as unknown as AxiosResponse<ProblemDetails | void>;
+
+    if (response.status === 201) {
+      // Extract new ID from Location header: /umbraco/management/api/v1/document/{guid}
+      const location = response.headers?.location || '';
+      const newId = location.split('/').pop() || '';
+
+      const output = { id: newId };
+      return createToolResult(output);
+    } else {
+      const errorData: ProblemDetails = response.data || {
+        status: response.status,
+        detail: response.statusText,
+      };
+      return createToolResultError(errorData);
+    }
   }),
-} satisfies ToolDefinition<typeof copyDocumentSchema.shape>;
+} satisfies ToolDefinition<typeof copyDocumentSchema.shape, typeof copyDocumentOutputSchema.shape>;
 
 export default withStandardDecorators(CopyDocumentTool);

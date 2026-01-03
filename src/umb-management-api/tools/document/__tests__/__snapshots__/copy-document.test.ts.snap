@@ -2,11 +2,22 @@
 
 exports[`copy-document should copy a document to root 1`] = `
 {
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+}
+`;
+
+exports[`copy-document should handle non-existent document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The content could not be found",
+    "type": "Error",
+  },
 }
 `;

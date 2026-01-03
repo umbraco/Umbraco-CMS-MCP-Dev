@@ -61,5 +61,6 @@ describe("copy-document", () => {
 
     // Verify the error response
     expect(result.isError).toBe(true);
+    expect(result).toMatchSnapshot();
   });
 });
