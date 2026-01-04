@@ -1,28 +1,22 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getDocumentVersionQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDocumentVersionQueryParams, getDocumentVersionResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetDocumentVersionParams } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDocumentVersionTool = {
   name: "get-document-version",
   description: "List document versions with pagination",
-  schema: getDocumentVersionQueryParams.shape,
-  isReadOnly: true,
-  slices: ['read'],
-  handler: async (model: GetDocumentVersionParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDocumentVersion(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getDocumentVersionQueryParams.shape,
+  outputSchema: getDocumentVersionResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getDocumentVersionQueryParams.shape>;
+  slices: ['read'],
+  handler: (async (model: GetDocumentVersionParams) => {
+    return executeGetApiCall((client) =>
+      client.getDocumentVersion(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getDocumentVersionQueryParams.shape, typeof getDocumentVersionResponse.shape>;
 
 export default withStandardDecorators(GetDocumentVersionTool);

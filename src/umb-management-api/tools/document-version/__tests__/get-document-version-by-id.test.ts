@@ -2,23 +2,18 @@ import GetDocumentVersionByIdTool from "../get/get-document-version-by-id.js";
 import { DocumentVersionBuilder } from "./helpers/document-version-builder.js";
 import { DocumentVersionVerificationHelper } from "./helpers/document-version-verification-helper.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCUMENT_NAME = "_Test Document for Version By ID";
 
 describe("get-document-version-by-id", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let documentBuilder: DocumentVersionBuilder;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     // Clean up any test documents
     await DocumentVersionVerificationHelper.cleanup(TEST_DOCUMENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get document version by ID", async () => {
@@ -26,7 +21,7 @@ describe("get-document-version-by-id", () => {
     documentBuilder = new DocumentVersionBuilder()
       .withName(TEST_DOCUMENT_NAME)
       .withRootDocumentType();
-    
+
     await documentBuilder.create();
     await documentBuilder.publish();
 
@@ -35,14 +30,14 @@ describe("get-document-version-by-id", () => {
       documentBuilder.getId(),
       false
     );
-    
+
     expect(versions.length).toBeGreaterThan(0);
     const versionId = versions[0].id;
 
     // Act
     const result = await GetDocumentVersionByIdTool.handler({
       id: versionId
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result, versionId);
@@ -53,9 +48,10 @@ describe("get-document-version-by-id", () => {
     // Act
     const result = await GetDocumentVersionByIdTool.handler({
       id: "non-existent-version-id"
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert - Use normalizeErrorResponse for error responses
+    expect(result.isError).toBe(true);
     const normalizedResult = normalizeErrorResponse(result);
     expect(normalizedResult).toMatchSnapshot();
   });
