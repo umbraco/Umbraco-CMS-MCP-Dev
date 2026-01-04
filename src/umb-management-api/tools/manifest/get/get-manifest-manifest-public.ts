@@ -1,7 +1,7 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { getManifestManifestPublicResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
 
 // Wrap array response in object (MCP requirement)
