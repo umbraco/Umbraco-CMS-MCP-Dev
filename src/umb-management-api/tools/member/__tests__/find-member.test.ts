@@ -2,22 +2,17 @@ import FindMemberTool from "../get/find-member.js";
 import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import { Default_Memeber_TYPE_ID } from "../../../../constants/constants.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test FindMember";
 const TEST_MEMBER_EMAIL = "findmember@example.com";
 const TEST_MEMBER_USERNAME = "findmember@example.com";
 
 describe("find-member", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME);
     await MemberTestHelper.cleanup("findmember2@example.com");
   });
@@ -35,9 +30,9 @@ describe("find-member", () => {
     // Use the tool to find by username
     const result = await FindMemberTool.handler(
       { filter: TEST_MEMBER_USERNAME, orderBy: "username", take: 100 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const data = JSON.parse(result.content[0].text as string);
+    const data = result.structuredContent as any;
     expect(data.total).toBeGreaterThan(0);
     const found = data.items.find(
       (m: any) => m.username === TEST_MEMBER_USERNAME
@@ -53,9 +48,9 @@ describe("find-member", () => {
         orderBy: "username",
         take: 100,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const data = JSON.parse(result.content[0].text as string);
+    const data = result.structuredContent as any;
     expect(data.total).toBe(0);
     expect(data.items.length).toBe(0);
   });
@@ -80,9 +75,9 @@ describe("find-member", () => {
     // Use the tool to get only one result
     const result = await FindMemberTool.handler(
       { filter: "findmember@example.com", orderBy: "username", take: 1 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const data = JSON.parse(result.content[0].text as string);
+    const data = result.structuredContent as any;
     expect(data.items.length).toBeLessThanOrEqual(1);
   });
 });

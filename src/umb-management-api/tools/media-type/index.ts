@@ -34,7 +34,7 @@ export const MediaTypeCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessMediaTypes(user)) {
       tools.push(GetMediaTypeFolderTool);

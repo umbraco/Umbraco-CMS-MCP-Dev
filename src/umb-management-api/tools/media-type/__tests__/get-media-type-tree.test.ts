@@ -2,25 +2,21 @@ import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import GetMediaTypeAncestorsTool from "../items/get/get-ancestors.js";
 import GetMediaTypeChildrenTool from "../items/get/get-children.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { MediaTypeFolderTestHelper } from "./helpers/media-type-folder-helper.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("media-type-tree", () => {
+  setupTestEnvironment();
+
   const TEST_ROOT_NAME = "_Test Root MediaType";
   const TEST_FOLDER_NAME = "_Test Folder MediaType";
   const TEST_CHILD_NAME = "_Test Child MediaType";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MediaTypeTestHelper.cleanup(TEST_ROOT_NAME);
     await MediaTypeTestHelper.cleanup(TEST_CHILD_NAME);
     await MediaTypeFolderTestHelper.cleanup(TEST_FOLDER_NAME);
@@ -46,8 +42,8 @@ describe("media-type-tree", () => {
         {
           take: 100,
           parentId: folderBuilder.getId(),
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -60,8 +56,8 @@ describe("media-type-tree", () => {
         {
           take: 100,
           parentId: BLANK_UUID,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -83,8 +79,8 @@ describe("media-type-tree", () => {
       const result = await GetMediaTypeAncestorsTool.handler(
         {
           descendantId: childBuilder.getId(),
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -96,8 +92,8 @@ describe("media-type-tree", () => {
       const result = await GetMediaTypeAncestorsTool.handler(
         {
           descendantId: BLANK_UUID,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();

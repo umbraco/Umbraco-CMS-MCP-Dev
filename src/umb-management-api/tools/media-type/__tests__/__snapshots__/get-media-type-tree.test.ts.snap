@@ -2,44 +2,74 @@
 
 exports[`media-type-tree ancestors should get ancestor items 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"icon":"","isDeletable":false,"isFolder":true,"name":"_Test Folder MediaType","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"icon":"","isDeletable":false,"isFolder":false,"name":"_Test Child MediaType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": true,
+        "icon": "",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": false,
+        "isFolder": true,
+        "name": "_Test Folder MediaType",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "icon": "",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": false,
+        "isFolder": false,
+        "name": "_Test Child MediaType",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+  },
 }
 `;
 
 exports[`media-type-tree ancestors should handle non-existent item 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
 exports[`media-type-tree children should get child items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"icon":"icon-folder","isDeletable":true,"isFolder":false,"name":"_Test Child MediaType","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": false,
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "isFolder": false,
+        "name": "_Test Child MediaType",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`media-type-tree children should handle non-existent parent 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

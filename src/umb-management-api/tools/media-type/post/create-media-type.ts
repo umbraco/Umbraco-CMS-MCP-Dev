@@ -1,9 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateMediaTypeRequestModel } from "@/umb-management-api/schemas/index.js";
+import { CreateMediaTypeRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { postMediaTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+import { AxiosResponse } from "axios";
 
 // Extract the property and container schemas from the generated schema
 const propertySchema = postMediaTypeBody.shape.properties;
@@ -33,13 +34,18 @@ const createMediaTypeSchema = z.object({
 
 type CreateMediaTypeSchema = z.infer<typeof createMediaTypeSchema>;
 
+export const createMediaTypeOutputSchema = z.object({
+  message: z.string(),
+  id: z.string().uuid()
+});
+
 const CreateMediaTypeTool = {
   name: "create-media-type",
   description: "Creates a new media type",
-  schema: createMediaTypeSchema.shape,
-  isReadOnly: false,
+  inputSchema: createMediaTypeSchema.shape,
+  outputSchema: createMediaTypeOutputSchema.shape,
   slices: ['create'],
-  handler: async (model: CreateMediaTypeSchema) => {
+  handler: (async (model: CreateMediaTypeSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     // Transform: flat parentId -> nested parent object for API
@@ -61,17 +67,33 @@ const CreateMediaTypeTool = {
       collection: model.collection
     };
 
-    const response = await client.postMediaType(payload);
+    const response = await client.postMediaType(payload, {
+      returnFullResponse: true,
+      validateStatus: () => true,
+    }) as unknown as AxiosResponse<ProblemDetails | void>;
 
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof createMediaTypeSchema.shape>;
+    if (response.status === 201) {
+      // Extract ID from Location header
+      const locationHeader = response.headers['location'] || response.headers['Location'];
+      let createdId = model.id || '';
+      if (locationHeader) {
+        const idMatch = locationHeader.match(/([0-9a-f-]{36})$/i);
+        if (idMatch) {
+          createdId = idMatch[1];
+        }
+      }
+      return createToolResult({
+        message: "Media type created successfully",
+        id: createdId
+      });
+    } else {
+      const errorData: ProblemDetails = response.data || {
+        status: response.status,
+        detail: response.statusText,
+      };
+      return createToolResultError(errorData);
+    }
+  }),
+} satisfies ToolDefinition<typeof createMediaTypeSchema.shape, typeof createMediaTypeOutputSchema.shape>;
 
 export default withStandardDecorators(CreateMediaTypeTool);

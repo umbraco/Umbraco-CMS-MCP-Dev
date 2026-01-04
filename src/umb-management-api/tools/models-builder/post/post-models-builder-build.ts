@@ -1,6 +1,8 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+
+const emptySchema = z.object({});
 
 const PostModelsBuilderBuildTool = {
   name: "post-models-builder-build",
@@ -15,22 +17,13 @@ const PostModelsBuilderBuildTool = {
 
   Note: This operation may take some time to complete depending on the number of content types.
   Use get-models-builder-dashboard or get-models-builder-status to check the current state and if new models need to be generated.`,
-  schema: {},
-  isReadOnly: false,
+  inputSchema: emptySchema.shape,
   slices: ['diagnostics'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    await client.postModelsBuilderBuild();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: "Models Builder build process initiated successfully.",
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<{}>;
+  handler: (async () => {
+    return executeVoidApiCall((client) =>
+      client.postModelsBuilderBuild(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof emptySchema.shape>;
 
 export default withStandardDecorators(PostModelsBuilderBuildTool);

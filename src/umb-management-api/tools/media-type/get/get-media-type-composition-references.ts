@@ -1,27 +1,26 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getMediaTypeByIdCompositionReferencesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getMediaTypeByIdCompositionReferencesParams, getMediaTypeByIdCompositionReferencesResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoManagementClient } from "@umb-management-client";
+import { z } from "zod";
+
+// Array responses must be wrapped in an object
+const outputSchema = z.object({
+  items: getMediaTypeByIdCompositionReferencesResponse,
+});
 
 const GetMediaTypeCompositionReferencesTool = {
   name: "get-media-type-composition-references",
   description: "Gets the composition references for a media type",
-  schema: getMediaTypeByIdCompositionReferencesParams.shape,
-  isReadOnly: true,
+  inputSchema: getMediaTypeByIdCompositionReferencesParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async ({ id }) => {
+  handler: (async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMediaTypeByIdCompositionReferences(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getMediaTypeByIdCompositionReferencesParams.shape>;
+    return createToolResult({ items: response });
+  }),
+} satisfies ToolDefinition<typeof getMediaTypeByIdCompositionReferencesParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetMediaTypeCompositionReferencesTool);

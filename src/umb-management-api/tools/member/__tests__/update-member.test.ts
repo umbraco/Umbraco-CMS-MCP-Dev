@@ -5,22 +5,17 @@ import {
 import UpdateMemberTool from "../put/update-member.js";
 import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test UpdateMember";
 const TEST_MEMBER_EMAIL = "test@example.com";
 const UPDATED_MEMBER_EMAIL = "updated@example.com";
 
 describe("update-member", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
     await MemberTestHelper.cleanup(UPDATED_MEMBER_EMAIL);
   });
@@ -55,9 +50,9 @@ describe("update-member", () => {
 
     const result = await UpdateMemberTool.handler(
       { id, data: updateData },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    expect(result.content[0].text).not.toMatch(/error/i);
+    expect(result.isError).toBeFalsy();
 
     // Verify the member is updated
     const member = await MemberTestHelper.findMember(UPDATED_MEMBER_EMAIL);
@@ -86,7 +81,7 @@ describe("update-member", () => {
 
     const result = await UpdateMemberTool.handler(
       { id: BLANK_UUID, data: updateData },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     expect(result).toMatchSnapshot();
   });

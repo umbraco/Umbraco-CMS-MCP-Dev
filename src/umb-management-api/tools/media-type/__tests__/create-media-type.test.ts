@@ -1,29 +1,26 @@
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
+import { MediaTypeFolderTestHelper } from "./helpers/media-type-folder-helper.js";
 import CreateMediaTypeTool from "../post/create-media-type.js";
 import {
   createSnapshotResult,
   normalizeErrorResponse,
 } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("create-media-type", () => {
-  const TEST_MEDIA_TYPE_NAME = "_Test Media Type";
-  const TEST_FOLDER_NAME = "_Test Media Type Folder";
-  const TEST_MEDIA_TYPE_WITH_PARENT_NAME = "_Test Media Type With Parent";
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  const TEST_MEDIA_TYPE_NAME = "_Test Media Type";
+  const TEST_FOLDER_NAME = "_Test Media Type Create Folder";
+  const TEST_MEDIA_TYPE_WITH_PARENT_NAME = "_Test Media Type With Parent";
 
   afterEach(async () => {
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME);
-    await MediaTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_WITH_PARENT_NAME);
-    console.error = originalConsoleError;
+    await MediaTypeFolderTestHelper.cleanup(TEST_FOLDER_NAME);
   });
 
   it("should create a media type", async () => {
@@ -32,9 +29,10 @@ describe("create-media-type", () => {
       .withDescription("Test media type description")
       .withAllowedAsRoot(true);
 
-    const result = await CreateMediaTypeTool.handler(builder.build(), {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateMediaTypeTool.handler(
+      builder.build() as any,
+      createMockRequestHandlerExtra()
+    );
 
     // Normalize and verify response
     const normalizedItems = createSnapshotResult(result);
@@ -54,9 +52,10 @@ describe("create-media-type", () => {
       // Missing required fields
     };
 
-    const result = await CreateMediaTypeTool.handler(invalidModel as any, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateMediaTypeTool.handler(
+      invalidModel as any,
+      createMockRequestHandlerExtra()
+    );
 
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
@@ -82,9 +81,7 @@ describe("create-media-type", () => {
       allowedMediaTypes: [],
       compositions: [],
       parentId: folderBuilder.getId()  // Flattened parent ID
-    }, {
-      signal: new AbortController().signal,
-    });
+    } as any, createMockRequestHandlerExtra());
 
     // Assert: Verify the handler response
     const normalizedItems = createSnapshotResult(result);
@@ -98,4 +95,4 @@ describe("create-media-type", () => {
     expect(items[0].name).toBe(TEST_MEDIA_TYPE_WITH_PARENT_NAME);
     expect(items[0].parent!.id).toBe(folderBuilder.getId());
   });
-}); 
+});

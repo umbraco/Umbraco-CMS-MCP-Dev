@@ -3,7 +3,8 @@ import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import { Default_Memeber_TYPE_ID } from "../../../../constants/constants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Item Member Search";
 const TEST_MEMBER_EMAIL = "itemsearch@example.com";
@@ -13,17 +14,11 @@ const TEST_MEMBER_EMAIL_2 = "itemsearch2@example.com";
 const TEST_MEMBER_USERNAME_2 = "itemsearch2@example.com";
 
 describe("get-item-member-search", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME);
     await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME_2);
-    console.error = originalConsoleError;
   });
 
   it("should search for member items", async () => {
@@ -39,7 +34,7 @@ describe("get-item-member-search", () => {
     // Act - Search for the member
     const result = await GetItemMemberSearchTool.handler(
       { query: TEST_MEMBER_USERNAME, take: 100 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify results contain our member
@@ -51,11 +46,11 @@ describe("get-item-member-search", () => {
     // Act - Search for a member that doesn't exist
     const result = await GetItemMemberSearchTool.handler(
       { query: "nonexistent_member_" + Date.now(), take: 100 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify empty results
-    const data = JSON.parse(result.content[0].text as string);
+    const data = result.structuredContent as any;
     expect(data.total).toBe(0);
     expect(data.items).toEqual([]);
   });
@@ -81,11 +76,11 @@ describe("get-item-member-search", () => {
     // Act - Search with pagination (take only 1 result)
     const result = await GetItemMemberSearchTool.handler(
       { query: "itemsearch", skip: 0, take: 1 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify only one item is returned
-    const data = JSON.parse(result.content[0].text as string);
+    const data = result.structuredContent as any;
     expect(data.items.length).toBeLessThanOrEqual(1);
   });
 });

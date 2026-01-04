@@ -2,22 +2,17 @@ import GetMemberTypeAvailableCompositionsTool from "../post/get-member-type-avai
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import { MemberTypeCompositionResponseModel } from "@/umb-management-api/schemas/index.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_TYPE_NAME = "_Test MemberType Available";
 const TEST_COMPOSITION_NAME = "_Test Available Composition";
 
 describe("get-member-type-available-compositions", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test member types
     await MemberTypeTestHelper.cleanup(TEST_MEMBER_TYPE_NAME);
     await MemberTypeTestHelper.cleanup(TEST_COMPOSITION_NAME);
@@ -39,20 +34,14 @@ describe("get-member-type-available-compositions", () => {
         currentPropertyAliases: [],
         currentCompositeIds: [],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Parse and filter just our test composition
-    const parsed = JSON.parse(result.content[0].text as string) as Record<
-      string,
-      MemberTypeCompositionResponseModel
-    >;
-    const testComposition =
-      parsed[
-        Object.keys(parsed).find(
-          (key) => parsed[key].name === TEST_COMPOSITION_NAME
-        ) ?? ""
-      ];
+    const items = ((result.structuredContent as any)?.items ?? []) as MemberTypeCompositionResponseModel[];
+    const testComposition = items.find(
+      (item) => item.name === TEST_COMPOSITION_NAME
+    );
 
     if (!testComposition) {
       throw new Error("Test composition not found in results");

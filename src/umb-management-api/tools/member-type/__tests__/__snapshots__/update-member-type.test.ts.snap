@@ -2,22 +2,15 @@
 
 exports[`update-member-type should handle non-existent member type 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using update-member-type:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Not Found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified member type was not found",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not Found",
+    "type": "Error",
+  },
 }
 `;
 
@@ -25,7 +18,7 @@ exports[`update-member-type should update a member type 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],

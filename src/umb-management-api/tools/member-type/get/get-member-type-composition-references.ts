@@ -1,27 +1,26 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getMemberTypeByIdCompositionReferencesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getMemberTypeByIdCompositionReferencesParams, getMemberTypeByIdCompositionReferencesResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoManagementClient } from "@umb-management-client";
+import { z } from "zod";
+
+// Array responses must be wrapped in an object
+const outputSchema = z.object({
+  items: getMemberTypeByIdCompositionReferencesResponse,
+});
 
 const GetMemberTypeCompositionReferencesTool = {
   name: "get-member-type-composition-references",
   description: "Gets the composition references for a member type",
-  schema: getMemberTypeByIdCompositionReferencesParams.shape,
-  isReadOnly: true,
+  inputSchema: getMemberTypeByIdCompositionReferencesParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async ({ id }: { id: string }) => {
+  handler: (async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getMemberTypeByIdCompositionReferences(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getMemberTypeByIdCompositionReferencesParams.shape>;
+    return createToolResult({ items: response });
+  }),
+} satisfies ToolDefinition<typeof getMemberTypeByIdCompositionReferencesParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetMemberTypeCompositionReferencesTool);

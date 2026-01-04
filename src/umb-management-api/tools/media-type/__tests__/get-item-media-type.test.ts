@@ -1,24 +1,20 @@
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import GetItemMediaTypeTool from "../get/get-item-media-type.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-item-media-type", () => {
+  setupTestEnvironment();
+
   const TEST_MEDIA_TYPE_NAME_1 = "_Test Media Type Item 1";
   const TEST_MEDIA_TYPE_NAME_2 = "_Test Media Type Item 2";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME_1);
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME_2);
-    console.error = originalConsoleError;
   });
 
   it("should get media type items by ids", async () => {
@@ -40,7 +36,7 @@ describe("get-item-media-type", () => {
       {
         id: [builder1.getId(), builder2.getId()],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify response
@@ -57,7 +53,7 @@ describe("get-item-media-type", () => {
       {
         id: [nonExistentId],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify error response
