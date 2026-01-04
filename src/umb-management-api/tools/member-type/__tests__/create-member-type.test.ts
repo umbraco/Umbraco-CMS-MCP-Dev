@@ -4,20 +4,16 @@ import {
   createSnapshotResult,
   normalizeErrorResponse,
 } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("create-member-type", () => {
-  const TEST_MEMBER_TYPE_NAME = "_Test Member Type";
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  const TEST_MEMBER_TYPE_NAME = "_Test Member Type";
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberTypeTestHelper.cleanup(TEST_MEMBER_TYPE_NAME);
   });
 
@@ -27,9 +23,10 @@ describe("create-member-type", () => {
       .withDescription("Test member type description")
       .withAllowedAsRoot(true);
 
-    const result = await CreateMemberTypeTool.handler(builder.build(), {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateMemberTypeTool.handler(
+      builder.build(),
+      createMockRequestHandlerExtra()
+    );
 
     // Normalize and verify response
     const normalizedItems = createSnapshotResult(result);
@@ -49,9 +46,10 @@ describe("create-member-type", () => {
       // Missing required fields
     };
 
-    const result = await CreateMemberTypeTool.handler(invalidModel as any, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateMemberTypeTool.handler(
+      invalidModel as any,
+      createMockRequestHandlerExtra()
+    );
 
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });

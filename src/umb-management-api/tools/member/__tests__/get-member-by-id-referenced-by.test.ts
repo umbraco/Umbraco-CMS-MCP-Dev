@@ -2,12 +2,13 @@ import GetMemberByIdReferencedByTool from "../get/get-member-by-id-referenced-by
 import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { Default_Memeber_TYPE_ID, MEMBER_PICKER_DATA_TYPE_ID, TextString_DATA_TYPE_ID } from "../../../../constants/constants.js";
+import { Default_Memeber_TYPE_ID, MEMBER_PICKER_DATA_TYPE_ID } from "../../../../constants/constants.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Member Referenced By";
 const TEST_MEMBER_EMAIL = "test-referenced-by@example.com";
@@ -15,12 +16,7 @@ const TEST_DOCUMENT_TYPE_NAME = "_Test DocType With Member Ref";
 const TEST_DOCUMENT_NAME = "_Test Document With Member Ref";
 
 describe("get-member-by-id-referenced-by", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up in parallel to speed up tests
@@ -29,7 +25,6 @@ describe("get-member-by-id-referenced-by", () => {
       DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME),
       DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME)
     ]);
-    console.error = originalConsoleError;
   });
 
   it("should get reference data for a specific member", async () => {
@@ -58,14 +53,14 @@ describe("get-member-by-id-referenced-by", () => {
 
     const result = await GetMemberByIdReferencedByTool.handler(
       { id: memberBuilder.getId(), skip: 0, take: 10 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify the API returns proper structure with found reference
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = result.structuredContent as any;
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -84,14 +79,14 @@ describe("get-member-by-id-referenced-by", () => {
 
     const result = await GetMemberByIdReferencedByTool.handler(
       { id: memberBuilder.getId(), skip: 0, take: 10 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify the API returns proper structure with no references
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = result.structuredContent as any;
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
 

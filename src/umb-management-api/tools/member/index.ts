@@ -22,7 +22,7 @@ export const MemberCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
     if (AuthorizationPolicies.SectionAccessMembers(user)) {
 
       tools.push(GetMemberTool);

@@ -1,21 +1,17 @@
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import DeleteMediaTypeTool from "../delete/delete-media-type.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("delete-media-type", () => {
-  const TEST_MEDIA_TYPE_NAME = "_Test Media Type";
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  const TEST_MEDIA_TYPE_NAME = "_Test Media Type";
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME);
   });
 
@@ -31,7 +27,7 @@ describe("delete-media-type", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize and verify response
@@ -50,7 +46,7 @@ describe("delete-media-type", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();

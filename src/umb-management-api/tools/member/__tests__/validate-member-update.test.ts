@@ -1,9 +1,10 @@
 import ValidateMemberUpdateTool from "../put/validate-member-update.js";
 import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
-import { jest } from "@jest/globals";
 import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
 import { Default_Memeber_TYPE_ID } from "../../../../constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Member Update Validation";
 const TEST_MEMBER_EMAIL = "_test_member_update_validation@example.com";
@@ -30,15 +31,9 @@ function buildUpdateValidationModel(id: string, username: string) {
 }
 
 describe("validate-member-update", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test members
     await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
     await MemberTestHelper.cleanup("invalid_test@example.com");
@@ -59,10 +54,13 @@ describe("validate-member-update", () => {
     const model = buildUpdateValidationModel(memberId, TEST_MEMBER_EMAIL);
 
     // Act - validate the update for the existing member
-    const result = await ValidateMemberUpdateTool.handler({
-      id: memberId,
-      data: model
-    }, { signal: new AbortController().signal });
+    const result = await ValidateMemberUpdateTool.handler(
+      {
+        id: memberId,
+        data: model,
+      },
+      createMockRequestHandlerExtra()
+    );
 
     // Assert - verify the handler response using snapshot
     expect(result).toMatchSnapshot();
@@ -90,10 +88,13 @@ describe("validate-member-update", () => {
     };
 
     // Act - validate invalid update data
-    const result = await ValidateMemberUpdateTool.handler({
-      id: memberBuilder.getId(),
-      data: invalidModel
-    }, { signal: new AbortController().signal });
+    const result = await ValidateMemberUpdateTool.handler(
+      {
+        id: memberBuilder.getId(),
+        data: invalidModel,
+      },
+      createMockRequestHandlerExtra()
+    );
 
     // Assert - verify the error response using snapshot
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
@@ -103,10 +104,13 @@ describe("validate-member-update", () => {
     const nonExistentId = crypto.randomUUID();
     const model = buildUpdateValidationModel(nonExistentId, TEST_MEMBER_EMAIL);
 
-    const result = await ValidateMemberUpdateTool.handler({
-      id: nonExistentId,
-      data: model
-    }, { signal: new AbortController().signal });
+    const result = await ValidateMemberUpdateTool.handler(
+      {
+        id: nonExistentId,
+        data: model,
+      },
+      createMockRequestHandlerExtra()
+    );
 
     // Assert - verify the error response using snapshot
     expect(normalizeErrorResponse(result)).toMatchSnapshot();

@@ -1,33 +1,23 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getMemberByIdReferencedByParams, getMemberByIdReferencedByQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getMemberByIdReferencedByParams, getMemberByIdReferencedByQueryParams, getMemberByIdReferencedByResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
-const getMemberByIdReferencedBySchema = z.object({
-  ...getMemberByIdReferencedByParams.shape,
-  ...getMemberByIdReferencedByQueryParams.shape,
-}).shape;
+const inputSchema = getMemberByIdReferencedByParams.merge(getMemberByIdReferencedByQueryParams);
 
 const GetMemberByIdReferencedByTool = {
   name: "get-member-by-id-referenced-by",
   description: `Get items that reference a specific member
   Use this to find all content, documents, or other items that are currently referencing a specific member account.`,
-  schema: getMemberByIdReferencedBySchema,
-  isReadOnly: true,
+  inputSchema: inputSchema.shape,
+  outputSchema: getMemberByIdReferencedByResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['references'],
-  handler: async ({ id, skip, take }: { id: string; skip?: number; take?: number }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getMemberByIdReferencedBy(id, { skip, take });
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getMemberByIdReferencedBySchema>;
+  handler: (async ({ id, skip, take }: { id: string; skip?: number; take?: number }) => {
+    return executeGetApiCall((client) =>
+      client.getMemberByIdReferencedBy(id, { skip, take }, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof inputSchema.shape, typeof getMemberByIdReferencedByResponse.shape>;
 
 export default withStandardDecorators(GetMemberByIdReferencedByTool);

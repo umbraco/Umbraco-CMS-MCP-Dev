@@ -2,21 +2,16 @@ import GetMediaTypeAllowedAtRootTool from "../get/get-media-type-allowed-at-root
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { MediaTypeResponseModel } from "@/umb-management-api/schemas/index.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIATYPE_NAME = "_Test MediaType Root";
 
 describe("get-media-type-allowed-at-root", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test media types
     await MediaTypeTestHelper.cleanup(TEST_MEDIATYPE_NAME);
   });
@@ -33,12 +28,12 @@ describe("get-media-type-allowed-at-root", () => {
       {
         skip: 0,
         take: 10,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Parse and find our test media type
-    const parsed = JSON.parse(result.content[0].text as string) as {
+    const parsed = result.structuredContent as {
       items: MediaTypeResponseModel[];
     };
     const testMediaType = parsed.items.find(

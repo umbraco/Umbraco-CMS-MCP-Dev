@@ -1,22 +1,18 @@
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import UpdateMediaTypeTool from "../put/update-media-type.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("update-media-type", () => {
+  setupTestEnvironment();
+
   const TEST_MEDIA_TYPE_NAME = "_Test Media Type";
   const UPDATED_DESCRIPTION = "Updated test media type description";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME);
   });
 
@@ -39,7 +35,7 @@ describe("update-media-type", () => {
         id: builder.getId(),
         data: updateBuilder.build(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize and verify response
@@ -65,7 +61,7 @@ describe("update-media-type", () => {
         id: BLANK_UUID,
         data: updateBuilder.build(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();

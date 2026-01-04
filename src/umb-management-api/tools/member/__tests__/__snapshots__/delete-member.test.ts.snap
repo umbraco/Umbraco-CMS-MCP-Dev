@@ -4,7 +4,7 @@ exports[`delete-member should delete a member by ID 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -13,20 +13,13 @@ exports[`delete-member should delete a member by ID 1`] = `
 
 exports[`delete-member should return error for non-existent ID 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using delete-member:
-{
-  "message": "Request failed with status code 500",
-  "response": {
-    "type": "Error",
-    "title": "Unknown error. Please see the log for more details.",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "Unknown",
     "status": 500,
-    "operationStatus": "Unknown"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "Unknown error. Please see the log for more details.",
+    "type": "Error",
+  },
 }
 `;

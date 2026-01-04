@@ -33,7 +33,7 @@ describe("get-item-member-group", () => {
       { id: [builder.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = result.structuredContent as any[] ?? [];
+    const items = ((result.structuredContent as any)?.items ?? []) as any[];
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_GROUP_NAME_1);
     items[0].id = BLANK_UUID;
@@ -51,7 +51,7 @@ describe("get-item-member-group", () => {
       { id: [builder1.getId(), builder2.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = result.structuredContent as any[] ?? [];
+    const items = ((result.structuredContent as any)?.items ?? []) as any[];
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_GROUP_NAME_1);
     expect(items[1].name).toBe(TEST_GROUP_NAME_2);

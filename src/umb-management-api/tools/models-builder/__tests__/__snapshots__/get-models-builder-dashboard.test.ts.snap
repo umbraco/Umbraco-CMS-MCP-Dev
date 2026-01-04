@@ -2,11 +2,15 @@
 
 exports[`get-models-builder-dashboard should get the models builder dashboard 1`] = `
 {
-  "content": [
-    {
-      "text": "{"mode":"InMemoryAuto","canGenerate":false,"outOfDateModels":false,"lastError":null,"version":"17.0.0+da502e0","modelsNamespace":"Umbraco.Cms.Web.Common.PublishedModels","trackingOutOfDateModels":false}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "canGenerate": false,
+    "lastError": null,
+    "mode": "InMemoryAuto",
+    "modelsNamespace": "Umbraco.Cms.Web.Common.PublishedModels",
+    "outOfDateModels": false,
+    "trackingOutOfDateModels": false,
+    "version": "17.0.0+da502e0",
+  },
 }
 `;

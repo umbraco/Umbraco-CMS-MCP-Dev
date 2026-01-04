@@ -2,26 +2,22 @@ import MoveMediaTypeTool from "../put/move-media-type.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIATYPE_NAME = "_Test MediaType Move";
 const TEST_FOLDER_NAME = "_Test Folder For Move";
 const TEST_TARGET_FOLDER_NAME = "_Test Target Folder For Move";
 
 describe("move-media-type", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let mediaTypeBuilder: MediaTypeBuilder;
   let sourceFolderBuilder: MediaTypeFolderBuilder;
   let targetFolderBuilder: MediaTypeFolderBuilder;
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test media types and folders
     if (mediaTypeBuilder) {
       await mediaTypeBuilder.cleanup();
@@ -61,7 +57,7 @@ describe("move-media-type", () => {
           },
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
@@ -97,7 +93,7 @@ describe("move-media-type", () => {
           target: null,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
@@ -120,7 +116,7 @@ describe("move-media-type", () => {
           target: null,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

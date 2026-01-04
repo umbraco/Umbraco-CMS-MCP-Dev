@@ -1,21 +1,17 @@
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import GetMemberTypeTool from "../get/get-member-type.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-member-type", () => {
-  const TEST_MEMBER_TYPE_NAME = "_Test Member Type";
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  const TEST_MEMBER_TYPE_NAME = "_Test Member Type";
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberTypeTestHelper.cleanup(TEST_MEMBER_TYPE_NAME);
   });
 
@@ -31,16 +27,11 @@ describe("get-member-type", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize and verify response
-    const normalizedItems = createSnapshotResult(result);
-    // Replace the dynamic ID with a placeholder
-    const normalizedResponse = JSON.parse(normalizedItems.content[0].text);
-    normalizedResponse.id = "PLACEHOLDER_ID";
-    normalizedItems.content[0].text = JSON.stringify(normalizedResponse);
-    expect(normalizedItems).toMatchSnapshot();
+    expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
   });
 
   it("should handle non-existent member type", async () => {
@@ -48,7 +39,7 @@ describe("get-member-type", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();

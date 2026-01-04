@@ -2,24 +2,20 @@ import CopyMediaTypeTool from "../post/copy-media-type.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { MediaTypeFolderTestHelper } from "./helpers/media-type-folder-helper.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_MEDIATYPE_NAME = "_Test MediaType Copy";
 const TEST_MEDIATYPE_COPY_NAME = "_Test MediaType Copy (copy)";
 const TEST_FOLDER_NAME = "_Test Folder For Copy";
 
 describe("copy-media-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test media types and folders
     await MediaTypeTestHelper.cleanup(TEST_MEDIATYPE_NAME);
     await MediaTypeTestHelper.cleanup(TEST_MEDIATYPE_COPY_NAME);
@@ -48,11 +44,11 @@ describe("copy-media-type", () => {
           },
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Verify the media type was actually copied to the folder
     const copiedMediaTypes = await MediaTypeTestHelper.findMediaTypes(
@@ -78,11 +74,11 @@ describe("copy-media-type", () => {
           target: null,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Verify the media type was actually copied to root
     const copiedMediaTypes = await MediaTypeTestHelper.findMediaTypes(
@@ -101,7 +97,7 @@ describe("copy-media-type", () => {
           target: null,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

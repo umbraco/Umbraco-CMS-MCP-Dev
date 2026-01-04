@@ -1,7 +1,8 @@
 import ValidateMemberTool from "../post/validate-member.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
-import { jest } from "@jest/globals";
 import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Member Validation";
 const TEST_MEMBER_EMAIL = "_test_member_validation@example.com";
@@ -26,24 +27,19 @@ function buildValidationModel() {
 }
 
 describe("validate-member", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test members that might have been created
     await MemberTestHelper.cleanup(TEST_MEMBER_NAME);
   });
 
   it("should validate a member successfully", async () => {
     const model = buildValidationModel();
-    const result = await ValidateMemberTool.handler(model, {
-      signal: new AbortController().signal,
-    });
+    const result = await ValidateMemberTool.handler(
+      model,
+      createMockRequestHandlerExtra()
+    );
     expect(result).toMatchSnapshot();
   });
 
@@ -56,9 +52,10 @@ describe("validate-member", () => {
       email: "invalid-email",
       username: "",
     };
-    const result = await ValidateMemberTool.handler(invalidModel as any, {
-      signal: new AbortController().signal,
-    });
+    const result = await ValidateMemberTool.handler(
+      invalidModel as any,
+      createMockRequestHandlerExtra()
+    );
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
 });

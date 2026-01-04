@@ -1,26 +1,17 @@
 import GetMemberConfigurationTool from "../get/get-member-configuration.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-member-configuration", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get member configuration", async () => {
     const result = await GetMemberConfigurationTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      {} as any,
+      createMockRequestHandlerExtra()
     );
 
-    expect(result.content).toHaveLength(1);
-    const config = JSON.parse(result.content[0].text as string);
+    const config = result.structuredContent;
     expect(config).toBeDefined();
     expect(config).toMatchSnapshot();
   });
