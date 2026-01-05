@@ -20,8 +20,8 @@ exports[`update-document-properties should return error on invalid alias 1`] = `
   "structuredContent": {
     "availableProperties": [
       {
-        "alias": "mainImage",
-        "name": "Main Image",
+        "alias": "socialIconLinks",
+        "name": "Social Icon Links",
         "variesByCulture": false,
         "variesBySegment": false,
       },
@@ -44,8 +44,8 @@ exports[`update-document-properties should return error on invalid alias 1`] = `
         "variesBySegment": false,
       },
       {
-        "alias": "socialIconLinks",
-        "name": "Social Icon Links",
+        "alias": "mainImage",
+        "name": "Main Image",
         "variesByCulture": false,
         "variesBySegment": false,
       },

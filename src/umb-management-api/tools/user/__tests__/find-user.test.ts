@@ -1,25 +1,22 @@
 import FindUserTool from "../get/find-user.js";
 import { UserBuilder } from "./helpers/user-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { getFilterUserQueryParams, getFilterUserResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_USER_NAME = "_Test User Find";
 const TEST_USER_EMAIL = `test-user-find-${Math.floor(Math.random() * 10000)}@example.com`;
 
 describe("find-user", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let userBuilder: UserBuilder;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     if (userBuilder) {
       await userBuilder.cleanup();
+      userBuilder = undefined!;
     }
-    console.error = originalConsoleError;
   });
 
   it("should find user by name", async () => {
@@ -32,18 +29,19 @@ describe("find-user", () => {
     await userBuilder.create();
 
     // Act
-    const result = await FindUserTool.handler({
+    const params = getFilterUserQueryParams.parse({
       filter: TEST_USER_NAME,
       skip: 0,
       take: 10
-    }, { signal: new AbortController().signal });
+    });
+    const result = await FindUserTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify expected structure
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = validateStructuredContent(result, getFilterUserResponse);
     expect(parsed).toHaveProperty("items");
     expect(parsed).toHaveProperty("total");
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -55,11 +53,12 @@ describe("find-user", () => {
 
   it("should return empty results for non-existent user", async () => {
     // Act
-    const result = await FindUserTool.handler({
+    const params = getFilterUserQueryParams.parse({
       filter: "NonExistentUser123",
       skip: 0,
       take: 10
-    }, { signal: new AbortController().signal });
+    });
+    const result = await FindUserTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

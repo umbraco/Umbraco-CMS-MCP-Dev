@@ -2,11 +2,9 @@
 
 exports[`get-item-user should get user items with default parameters 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;

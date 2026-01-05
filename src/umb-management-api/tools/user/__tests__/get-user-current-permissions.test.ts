@@ -1,23 +1,17 @@
 import GetUserCurrentPermissionsTool from "../get/get-user-current-permissions.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { jest } from "@jest/globals";
+import { getUserCurrentPermissionsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-user-current-permissions", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get current user permissions", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsTool.handler({}, { signal: new AbortController().signal });
+    const params = getUserCurrentPermissionsQueryParams.parse({});
+    const result = await GetUserCurrentPermissionsTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -26,8 +20,9 @@ describe("get-user-current-permissions", () => {
 
   it("should return consistent permissions on multiple calls", async () => {
     // Act
-    const result1 = await GetUserCurrentPermissionsTool.handler({}, { signal: new AbortController().signal });
-    const result2 = await GetUserCurrentPermissionsTool.handler({}, { signal: new AbortController().signal });
+    const params = getUserCurrentPermissionsQueryParams.parse({});
+    const result1 = await GetUserCurrentPermissionsTool.handler(params as any, createMockRequestHandlerExtra());
+    const result2 = await GetUserCurrentPermissionsTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult1 = createSnapshotResult(result1);
@@ -38,12 +33,13 @@ describe("get-user-current-permissions", () => {
 
   it("should handle non-existent ID", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsTool.handler({
+    const params = getUserCurrentPermissionsQueryParams.parse({
       id: [BLANK_UUID]
-    }, { signal: new AbortController().signal });
+    });
+    const result = await GetUserCurrentPermissionsTool.handler(params as any, createMockRequestHandlerExtra());
 
-    // Assert
-    const normalizedResult = normalizeErrorResponse(result);
+    // Assert - This may return empty results or error depending on API behavior
+    const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });
 });

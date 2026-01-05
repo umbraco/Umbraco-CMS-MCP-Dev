@@ -1,26 +1,21 @@
 import UploadUserCurrentAvatarTool from "../post/upload-user-current-avatar.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { EXAMPLE_IMAGE_PATH, BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
-import { jest } from "@jest/globals";
 import { createReadStream } from "fs";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
 
 describe("upload-user-current-avatar", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let tempFileBuilder: TemporaryFileBuilder;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     if (tempFileBuilder) {
       await tempFileBuilder.cleanup();
     }
-    console.error = originalConsoleError;
   });
 
   it("should upload avatar for current user", async () => {
@@ -39,21 +34,24 @@ describe("upload-user-current-avatar", () => {
     // Act
     const result = await UploadUserCurrentAvatarTool.handler({
       file: { id: temporaryFileId }
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
+
+    // Mark temp file as consumed - Umbraco deletes it after avatar upload
+    tempFileBuilder.markConsumed();
 
     // Assert
-    const normalizedResult = createSnapshotResult(result);
-    expect(normalizedResult).toMatchSnapshot();
+    expect(result.isError).toBeFalsy();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should handle non-existent temporary file id", async () => {
     // Act - use non-existent temporary file id
     const result = await UploadUserCurrentAvatarTool.handler({
       file: { id: BLANK_UUID }
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
-    const normalizedResult = normalizeErrorResponse(result);
-    expect(normalizedResult).toMatchSnapshot();
+    expect(result.isError).toBe(true);
+    expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
 });

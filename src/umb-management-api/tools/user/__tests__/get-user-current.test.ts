@@ -1,25 +1,18 @@
 import GetUserCurrentTool from "../get/get-user-current.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { getUserCurrentResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-user-current", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get current authenticated user information", async () => {
     // Act
-    const result = await GetUserCurrentTool.handler({ signal: new AbortController().signal });
+    const result = await GetUserCurrentTool.handler({}, createMockRequestHandlerExtra());
 
     // Extract user ID for proper normalization
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = validateStructuredContent(result, getUserCurrentResponse);
     const userId = parsed.id;
 
     // Assert
@@ -29,11 +22,11 @@ describe("get-user-current", () => {
 
   it("should return consistent user information on multiple calls", async () => {
     // Act
-    const result1 = await GetUserCurrentTool.handler({ signal: new AbortController().signal });
-    const result2 = await GetUserCurrentTool.handler({ signal: new AbortController().signal });
+    const result1 = await GetUserCurrentTool.handler({}, createMockRequestHandlerExtra());
+    const result2 = await GetUserCurrentTool.handler({}, createMockRequestHandlerExtra());
 
     // Extract user ID for proper normalization
-    const parsed1 = JSON.parse(result1.content[0].text as string);
+    const parsed1 = validateStructuredContent(result1, getUserCurrentResponse);
     const userId = parsed1.id;
 
     // Assert
