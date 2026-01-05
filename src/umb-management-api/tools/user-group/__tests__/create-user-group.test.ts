@@ -1,20 +1,17 @@
 import CreateUserGroupTool from "../post/create-user-group.js";
+import { createUserGroupOutputSchema } from "../post/create-user-group.js";
 import { UserGroupTestHelper } from "./helpers/user-group-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_GROUP_NAME = "_Test User Group Created";
 const EXISTING_GROUP_NAME = "_Existing User Group";
 
 describe("create-user-group", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await UserGroupTestHelper.cleanup(TEST_GROUP_NAME);
     await UserGroupTestHelper.cleanup(EXISTING_GROUP_NAME);
   });
@@ -30,13 +27,14 @@ describe("create-user-group", () => {
       mediaRootAccess: false,
       fallbackPermissions: [],
       permissions: []
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
-    expect(result).toMatchSnapshot();
+    const responseData = validateStructuredContent(result, createUserGroupOutputSchema);
+    expect(responseData.message).toBe("User group created successfully");
+    expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
 
     const items = await UserGroupTestHelper.findUserGroups(TEST_GROUP_NAME);
-    items[0].id = "NORMALIZED_ID";
-    expect(items).toMatchSnapshot();
+    expect(createSnapshotResult({ structuredContent: { items } })).toMatchSnapshot();
   });
 
   it("should handle existing user group", async () => {
@@ -51,7 +49,7 @@ describe("create-user-group", () => {
       mediaRootAccess: false,
       fallbackPermissions: [],
       permissions: []
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Try to create it again
     const result = await CreateUserGroupTool.handler({
@@ -64,8 +62,9 @@ describe("create-user-group", () => {
       mediaRootAccess: false,
       fallbackPermissions: [],
       permissions: []
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
-}); 
+});

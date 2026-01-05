@@ -1,26 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getTreeTemplateRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetTreeTemplateRootParams } from "@/umb-management-api/schemas/index.js";
+import { getTreeTemplateRootQueryParams, getTreeTemplateRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetTemplateRootTool = {
   name: "get-template-root",
   description: "Gets root items for templates.",
-  schema: getTreeTemplateRootQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeTemplateRootQueryParams.shape,
+  outputSchema: getTreeTemplateRootResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (params: any) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeTemplateRoot(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getTreeTemplateRootQueryParams.shape>;
+  handler: (async (params: GetTreeTemplateRootParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeTemplateRoot(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeTemplateRootQueryParams.shape, typeof getTreeTemplateRootResponse.shape>;
 
 export default withStandardDecorators(GetTemplateRootTool);

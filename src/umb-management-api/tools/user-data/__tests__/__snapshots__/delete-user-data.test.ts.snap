@@ -4,7 +4,7 @@ exports[`delete-user-data should delete user data 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -13,15 +13,11 @@ exports[`delete-user-data should delete user data 1`] = `
 
 exports[`delete-user-data should handle non-existent user data 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using delete-user-data:
-{
-  "message": "Request failed with status code 404",
-  "response": ""
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
 }
 `;

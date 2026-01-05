@@ -1,8 +1,11 @@
 import { getUserGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetUserGroupsTool from "../get/get-user-groups.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("GetUserGroupsTool", () => {
+  setupTestEnvironment();
   let builder: UserGroupBuilder;
 
   beforeEach(() => {
@@ -19,7 +22,7 @@ describe("GetUserGroupsTool", () => {
 
     // Get all user groups
     const params = getUserGroupQueryParams.parse({ skip: 0, take: 100 });
-    await GetUserGroupsTool.handler(params, { signal: new AbortController().signal });
+    await GetUserGroupsTool.handler(params, createMockRequestHandlerExtra());
 
     // No need to test this result as it's dependant on what Umbraco has set up
   });
@@ -27,9 +30,9 @@ describe("GetUserGroupsTool", () => {
   it("should handle empty result", async () => {
     // Get all user groups with no groups created
     const params = getUserGroupQueryParams.parse({ skip: 0, take: 100 });
-    const result = await GetUserGroupsTool.handler(params, { signal: new AbortController().signal });
+    const result = await GetUserGroupsTool.handler(params, createMockRequestHandlerExtra());
 
     // Verify the response
     expect(result).toMatchSnapshot();
   });
-}); 
+});

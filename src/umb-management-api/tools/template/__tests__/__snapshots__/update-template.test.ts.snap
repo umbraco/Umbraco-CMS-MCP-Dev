@@ -2,21 +2,14 @@
 
 exports[`update-template should handle non-existent template 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using update-template:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The template could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "TemplateNotFound",
     "status": 404,
-    "operationStatus": "TemplateNotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The template could not be found",
+    "type": "Error",
+  },
 }
 `;
 
@@ -24,7 +17,7 @@ exports[`update-template should update a template 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -32,12 +25,16 @@ exports[`update-template should update a template 1`] = `
 `;
 
 exports[`update-template should update a template 2`] = `
-[
-  {
-    "alias": "_updatedTemplate",
-    "flags": [],
-    "id": "00000000-0000-0000-0000-000000000000",
-    "name": "_Updated Template",
+{
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "_updatedTemplate",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Updated Template",
+      },
+    ],
   },
-]
+}
 `;

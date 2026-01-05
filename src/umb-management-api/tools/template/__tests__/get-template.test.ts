@@ -2,40 +2,35 @@ import { getTemplateByIdParams } from "@/umb-management-api/umbracoManagementAPI
 import GetTemplateTool from "../get/get-template.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_TEMPLATE_NAME = "_Test Template Get";
 
 describe("get-template", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let builder: TemplateBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new TemplateBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
   });
 
   it("should get a template by id", async () => {
     await builder.withName(TEST_TEMPLATE_NAME).create();
     const params = getTemplateByIdParams.parse({ id: builder.getId() });
-    const result = await GetTemplateTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetTemplateTool.handler(params, createMockRequestHandlerExtra());
     expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
   });
 
   it("should handle non-existent template", async () => {
     const params = getTemplateByIdParams.parse({ id: BLANK_UUID });
-    const result = await GetTemplateTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetTemplateTool.handler(params, createMockRequestHandlerExtra());
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

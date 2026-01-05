@@ -1,21 +1,18 @@
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
 import CreateWebhookTool from "../post/create-webhook.js";
-import { jest } from "@jest/globals";
+import { createWebhookOutputSchema } from "../post/create-webhook.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { CONTENT_PUBLISHED_EVENT, TEST_WEBHOOOK_URL } from "./webhook-constants.js";
-import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
 
 describe("create-webhook", () => {
   const TEST_WEBHOOK_NAME = "_Test Webhook";
-  let originalConsoleError: typeof console.error;
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await WebhookTestHelper.cleanup(TEST_WEBHOOK_NAME);
   });
 
@@ -25,12 +22,11 @@ describe("create-webhook", () => {
       .withUrl(TEST_WEBHOOOK_URL)
       .withEvents([CONTENT_PUBLISHED_EVENT]);
 
-    const result = await CreateWebhookTool.handler(builder.build(), {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateWebhookTool.handler(builder.build(), createMockRequestHandlerExtra());
 
-    // Normalize and verify response
-    expect(result).toMatchSnapshot();
+    const responseData = validateStructuredContent(result, createWebhookOutputSchema);
+    expect(responseData.message).toBe("Webhook created successfully");
+    expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
 
     const items = await WebhookTestHelper.findWebhook(TEST_WEBHOOK_NAME);
     expect(items).not.toBeNull();
@@ -44,10 +40,9 @@ describe("create-webhook", () => {
       // Missing required URL field
     };
 
-    const result = await CreateWebhookTool.handler(invalidModel as any, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateWebhookTool.handler(invalidModel as any, createMockRequestHandlerExtra());
 
+    expect(result.isError).toBe(true);
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
-}); 
+});

@@ -4,23 +4,20 @@ import GetTemplateChildrenTool from "../items/get/get-children.js";
 import GetTemplateRootTool from "../items/get/get-root.js";
 import GetTemplateSearchTool from "../items/get/get-search.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { getItemTemplateSearchResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("template-tree", () => {
   const TEST_ROOT_NAME = "_Test Root Template";
   const TEST_CHILD_NAME = "_Test Child Template";
   const TEST_PARENT_NAME = "_Test Parent Template";
-  let originalConsoleError: typeof console.error;
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await TemplateTestHelper.cleanup(TEST_ROOT_NAME);
     await TemplateTestHelper.cleanup(TEST_CHILD_NAME);
     await TemplateTestHelper.cleanup(TEST_PARENT_NAME);
@@ -48,7 +45,7 @@ describe("template-tree", () => {
           take: 100,
           parentId: parentBuilder.getId(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -62,10 +59,12 @@ describe("template-tree", () => {
           take: 100,
           parentId: BLANK_UUID,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
-      expect(result).toMatchSnapshot();
+      // API returns empty results for non-existent parent, not an error
+      expect(result.isError).toBeFalsy();
+      expect(createSnapshotResult(result)).toMatchSnapshot();
     });
   });
 
@@ -88,7 +87,7 @@ describe("template-tree", () => {
         {
           descendantId: childBuilder.getId(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -106,10 +105,12 @@ describe("template-tree", () => {
         {
           descendantId: BLANK_UUID,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
-      expect(result).toMatchSnapshot();
+      // API returns empty results for non-existent item, not an error
+      expect(result.isError).toBeFalsy();
+      expect(createSnapshotResult(result)).toMatchSnapshot();
     });
   });
 
@@ -120,7 +121,7 @@ describe("template-tree", () => {
           skip: 0,
           take: 100
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -141,11 +142,11 @@ describe("template-tree", () => {
           skip: 0,
           take: 100,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Parse the response and verify our test template exists
-      const items = JSON.parse(result.content[0].text?.toString() ?? "[]");
+      const items = validateStructuredContent(result, getItemTemplateSearchResponse);
       const foundTemplate = Array.isArray(items.items)
         ? items.items.find((item: any) => item?.name === TEST_ROOT_NAME)
         : undefined;
@@ -159,6 +160,5 @@ describe("template-tree", () => {
       // Cleanup test template
       await builder.cleanup();
     });
-
   });
 });

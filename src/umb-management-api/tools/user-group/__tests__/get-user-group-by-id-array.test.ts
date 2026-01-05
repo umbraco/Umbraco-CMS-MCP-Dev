@@ -1,27 +1,17 @@
 import GetUserGroupByIdArrayTool from "../get/get-user-group-by-id-array.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
 import { UserGroupTestHelper } from "./helpers/user-group-helper.js";
-import { jest } from "@jest/globals";
-import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-user-group-by-id-array", () => {
   const TEST_GROUP_NAME_1 = "_Test User Group 1";
   const TEST_GROUP_NAME_2 = "_Test User Group 2";
-  let originalConsoleError: typeof console.error;
 
-  // Helper to parse response, handling empty string as empty array
-  const parseItems = (text: string) => {
-    if (!text || text.trim() === "") return [];
-    return JSON.parse(text);
-  };
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await UserGroupTestHelper.cleanup(TEST_GROUP_NAME_1);
     await UserGroupTestHelper.cleanup(TEST_GROUP_NAME_2);
   });
@@ -32,13 +22,12 @@ describe("get-user-group-by-id-array", () => {
       .create();
     const result = await GetUserGroupByIdArrayTool.handler(
       { id: [builder.getId()] },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+    const items = (result.structuredContent as any)?.items ?? [];
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_GROUP_NAME_1);
-    items[0].id = BLANK_UUID;
-    expect(items).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should get multiple user groups by ID", async () => {
@@ -50,15 +39,12 @@ describe("get-user-group-by-id-array", () => {
       .create();
     const result = await GetUserGroupByIdArrayTool.handler(
       { id: [builder1.getId(), builder2.getId()] },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+    const items = (result.structuredContent as any)?.items ?? [];
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_GROUP_NAME_1);
     expect(items[1].name).toBe(TEST_GROUP_NAME_2);
-    items.forEach((item: any) => {
-      item.id = BLANK_UUID;
-    });
-    expect(items).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 });

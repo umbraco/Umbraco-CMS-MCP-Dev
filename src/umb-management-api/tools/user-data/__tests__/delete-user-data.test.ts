@@ -1,31 +1,28 @@
 import DeleteUserDataTool from "../delete/delete-user-data.js";
 import CreateUserDataTool from "../post/create-user-data.js";
 import GetUserDataTool from "../get/get-user-data.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
+import { getUserDataResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_USER_DATA_GROUP = "_TestUserDataDelete";
 const TEST_USER_DATA_IDENTIFIER = "_test-identifier";
 const TEST_USER_DATA_VALUE = "_test-value";
 
 describe("delete-user-data", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up any remaining test user data
     try {
       const result = await GetUserDataTool.handler(
         { groups: [TEST_USER_DATA_GROUP], take: 100 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
-      const content = JSON.parse(result.content[0].text as string) as { items?: Array<{ key: string }> };
+      const content = validateStructuredContent(result, getUserDataResponse);
       if (content.items && content.items.length > 0) {
         const client = UmbracoManagementClient.getClient();
         for (const item of content.items) {
@@ -39,8 +36,6 @@ describe("delete-user-data", () => {
     } catch (error) {
       // Ignore errors during cleanup
     }
-
-    console.error = originalConsoleError;
   });
 
   it("should delete user data", async () => {
@@ -51,16 +46,16 @@ describe("delete-user-data", () => {
         identifier: TEST_USER_DATA_IDENTIFIER,
         value: TEST_USER_DATA_VALUE,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Get the created user data to obtain its ID
     const getUserDataResult = await GetUserDataTool.handler(
       { groups: [TEST_USER_DATA_GROUP], take: 100 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    const getUserDataContent = JSON.parse(getUserDataResult.content[0].text as string) as { items?: Array<{ key: string }> };
+    const getUserDataContent = validateStructuredContent(getUserDataResult, getUserDataResponse);
     expect(getUserDataContent.items).toBeDefined();
     expect(getUserDataContent.items!.length).toBeGreaterThan(0);
 
@@ -71,19 +66,20 @@ describe("delete-user-data", () => {
       {
         id: createdData.key,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Verify the handler response using snapshot
+    // Verify the handler response
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
 
     // Verify the user data no longer exists
     const findResult = await GetUserDataTool.handler(
       { groups: [TEST_USER_DATA_GROUP], take: 100 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    const findContent = JSON.parse(findResult.content[0].text as string) as { items?: Array<{ key: string }> };
+    const findContent = validateStructuredContent(findResult, getUserDataResponse);
     const found = findContent.items?.find((item) => item.key === createdData.key);
     expect(found).toBeUndefined();
   });
@@ -93,10 +89,11 @@ describe("delete-user-data", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Verify the error response using snapshot
+    // Verify the error response
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

@@ -1,29 +1,22 @@
 import GetTemplateConfigurationTool from "../get/get-template-configuration.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { getTemplateConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-template-configuration", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get the template configuration", async () => {
     // Act
-    const result = await GetTemplateConfigurationTool.handler({}, { signal: new AbortController().signal });
+    const result = await GetTemplateConfigurationTool.handler({}, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify expected properties exist
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = validateStructuredContent(result, getTemplateConfigurationResponse);
     expect(parsed).toHaveProperty("disabled");
   });
 });

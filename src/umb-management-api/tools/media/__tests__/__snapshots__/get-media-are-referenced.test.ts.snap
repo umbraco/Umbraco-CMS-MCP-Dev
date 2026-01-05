@@ -4,7 +4,7 @@ exports[`get-media-are-referenced should detect when media is referenced by a do
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"id":"00000000-0000-0000-0000-000000000000"}]}",
+      "text": "{"total":1,"items":[{"id":"db39db08-ff34-4cd1-a5f4-ee87f4a01b35"}]}",
       "type": "text",
     },
   ],

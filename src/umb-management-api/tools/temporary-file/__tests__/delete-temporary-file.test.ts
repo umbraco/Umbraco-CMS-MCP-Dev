@@ -1,22 +1,14 @@
 import DeleteTemporaryFileTool from "../delete/delete-temporary-file.js";
 import { TemporaryFileBuilder } from "./helpers/temporary-file-builder.js";
 import { TemporaryFileTestHelper } from "./helpers/temporary-file-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 describe("delete-temporary-file", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   const builder = new TemporaryFileBuilder();
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
 
   it("should delete a temporary file", async () => {
     await builder.withExampleFile().create();
@@ -25,9 +17,10 @@ describe("delete-temporary-file", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
+    expect(result.isError).toBeFalsy();
     expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
     const items = await TemporaryFileTestHelper.findTemporaryFiles(
       builder.getId()
@@ -40,8 +33,9 @@ describe("delete-temporary-file", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

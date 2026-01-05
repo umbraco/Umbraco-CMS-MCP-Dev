@@ -1,7 +1,7 @@
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
 import UpdateWebhookTool from "../put/update-webhook.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import {
@@ -15,17 +15,14 @@ const UPDATED_WEBHOOK_NAME = "_Updated Webhook";
 const NON_EXISTENT_WEBHOOK_NAME = "_Non Existent Webhook";
 
 describe("update-webhook", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let builder: WebhookBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new WebhookBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
     await WebhookTestHelper.cleanup(UPDATED_WEBHOOK_NAME);
   });
@@ -48,8 +45,9 @@ describe("update-webhook", () => {
         id: builder.getId(),
         data: model,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
 
     // Verify the webhook was updated
@@ -79,8 +77,9 @@ describe("update-webhook", () => {
         id: BLANK_UUID,
         data: model,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

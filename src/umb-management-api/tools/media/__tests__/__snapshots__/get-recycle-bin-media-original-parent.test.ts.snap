@@ -2,21 +2,14 @@
 
 exports[`get-recycle-bin-media-original-parent should handle invalid media id 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-recycle-bin-media-original-parent:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The media item could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The media item could not be found",
+    "type": "Error",
+  },
 }
 `;
 
@@ -35,9 +28,7 @@ exports[`get-recycle-bin-media-original-parent should return original parent inf
 {
   "content": [
     {
-      "text": "{
-  "id": "00000000-0000-0000-0000-000000000000"
-}",
+      "text": "{"id":"d8e49f21-354c-456d-8699-e46cad495a1f"}",
       "type": "text",
     },
   ],

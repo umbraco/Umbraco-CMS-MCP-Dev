@@ -1,26 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getTemplateConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetTemplateConfigurationTool = {
   name: "get-template-configuration",
   description: "Gets template configuration settings including whether templates are disabled system-wide",
-  schema: {},
-  isReadOnly: true,
+  inputSchema: {},
+  outputSchema: getTemplateConfigurationResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['configuration'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTemplateConfiguration();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response, null, 2),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<{}>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getTemplateConfiguration(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof getTemplateConfigurationResponse.shape>;
 
 export default withStandardDecorators(GetTemplateConfigurationTool);

@@ -1,27 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getUserGroupByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getUserGroupByIdParams, getUserGroupByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetUserGroupTool = {
   name: "get-user-group",
   description: "Gets a user group by Id",
-  schema: getUserGroupByIdParams.shape,
-  isReadOnly: true,
+  inputSchema: getUserGroupByIdParams.shape,
+  outputSchema: getUserGroupByIdResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getUserGroupById(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getUserGroupByIdParams.shape>;
+  handler: (async ({ id }: { id: string }) => {
+    return executeGetApiCall((client) =>
+      client.getUserGroupById(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getUserGroupByIdParams.shape, typeof getUserGroupByIdResponse.shape>;
 
 export default withStandardDecorators(GetUserGroupTool);

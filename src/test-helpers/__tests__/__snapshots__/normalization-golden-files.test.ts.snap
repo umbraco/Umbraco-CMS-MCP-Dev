@@ -131,7 +131,7 @@ exports[`Normalization Golden Files - legacy content[0].text format Array respon
 {
   "content": [
     {
-      "text": "[{"id":"00000000-0000-0000-0000-000000000000","name":"Root","createDate":"NORMALIZED_DATE","parent":null},{"id":"00000000-0000-0000-0000-000000000000","name":"Child","createDate":"NORMALIZED_DATE","parent":{"id":"00000000-0000-0000-0000-000000000000"}}]",
+      "text": "[{"id":"ancestor1-1234-1234-123456789012","name":"Root","createDate":"2025-01-15T10:30:00.000Z","parent":null},{"id":"ancestor2-1234-1234-123456789012","name":"Child","createDate":"2025-01-16T11:00:00.000Z","parent":{"id":"parent-1234-1234-123456789012"}}]",
       "type": "text",
     },
   ],
@@ -142,7 +142,7 @@ exports[`Normalization Golden Files - legacy content[0].text format Items array 
 {
   "content": [
     {
-      "text": "{"items":[{"id":"00000000-0000-0000-0000-000000000000","name":"Test_NORMALIZED_TIMESTAMP_Item","createDate":"NORMALIZED_DATE","publishDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","parent":{"id":"00000000-0000-0000-0000-000000000000","path":"/root/folder_NORMALIZED_TIMESTAMP"},"documentType":{"id":"00000000-0000-0000-0000-000000000000"},"email":"user-NORMALIZED@example.com","userName":"admin-NORMALIZED@domain.com","avatarUrls":["/umbraco/assets/avatars/NORMALIZED_AVATAR.jpg"]}],"total":1}",
+      "text": "{"items":[{"id":"item1-1234-1234-123456789012","name":"Test_1704067200000_Item","createDate":"2025-01-15T10:30:00.000Z","publishDate":"2025-01-16T11:00:00.000Z","updateDate":"2025-01-17T12:30:00.000Z","parent":{"id":"parent-1234-1234-123456789012","path":"/root/folder_1704067200000"},"documentType":{"id":"doctype-1234-1234-123456789012"},"email":"user-12345@example.com","userName":"admin-67890@domain.com","avatarUrls":["/umbraco/assets/avatars/0123456789abcdef0123456789abcdef01234567.jpg"]}],"total":1}",
       "type": "text",
     },
   ],
@@ -153,29 +153,7 @@ exports[`Normalization Golden Files - legacy content[0].text format Single item 
 {
   "content": [
     {
-      "text": "{
-  "id": "00000000-0000-0000-0000-000000000000",
-  "results": [
-    {
-      "contentKey": "00000000-0000-0000-0000-000000000000",
-      "success": true
-    },
-    {
-      "contentKey": "00000000-0000-0000-0000-000000000000",
-      "success": true
-    }
-  ],
-  "availableBlocks": [
-    {
-      "key": "00000000-0000-0000-0000-000000000000",
-      "label": "Block 1"
-    },
-    {
-      "key": "00000000-0000-0000-0000-000000000000",
-      "label": "Block 2"
-    }
-  ]
-}",
+      "text": "{"id":"block-result-1234-1234-123456789012","results":[{"contentKey":"block1-1234-1234-123456789012","success":true},{"contentKey":"block2-1234-1234-123456789012","success":true}],"availableBlocks":[{"key":"available1-1234-1234-123456789012","label":"Block 1"},{"key":"available2-1234-1234-123456789012","label":"Block 2"}]}",
       "type": "text",
     },
   ],
@@ -186,31 +164,7 @@ exports[`Normalization Golden Files - legacy content[0].text format Single item 
 {
   "content": [
     {
-      "text": "{
-  "id": "00000000-0000-0000-0000-000000000000",
-  "document": {
-    "id": "00000000-0000-0000-0000-000000000000",
-    "documentType": {
-      "id": "00000000-0000-0000-0000-000000000000",
-      "alias": "blogPost"
-    },
-    "variants": [
-      {
-        "culture": "en-US",
-        "createDate": "NORMALIZED_DATE",
-        "publishDate": "NORMALIZED_DATE",
-        "updateDate": "NORMALIZED_DATE",
-        "versionDate": "NORMALIZED_DATE"
-      }
-    ]
-  },
-  "documentType": {
-    "id": "00000000-0000-0000-0000-000000000000"
-  },
-  "user": {
-    "id": "00000000-0000-0000-0000-000000000000"
-  }
-}",
+      "text": "{"id":"version-id-1234-1234-123456789012","document":{"id":"doc-id-1234-1234-123456789012","documentType":{"id":"doctype-1234-1234-123456789012","alias":"blogPost"},"variants":[{"culture":"en-US","createDate":"2025-01-15T10:30:00.000Z","publishDate":"2025-01-16T11:00:00.000Z","updateDate":"2025-01-17T12:30:00.000Z","versionDate":"2025-01-18T13:45:00.000Z"}]},"documentType":{"id":"top-doctype-1234-1234-123456789012"},"user":{"id":"user-1234-1234-123456789012"}}",
       "type": "text",
     },
   ],
@@ -221,25 +175,7 @@ exports[`Normalization Golden Files - legacy content[0].text format Single item 
 {
   "content": [
     {
-      "text": "{
-  "id": "00000000-0000-0000-0000-000000000000",
-  "email": "testuser-NORMALIZED@example.com",
-  "userName": "admin-NORMALIZED@domain.com",
-  "avatarUrls": [
-    "/umbraco/assets/avatars/NORMALIZED_AVATAR.jpg",
-    "/umbraco/assets/avatars/NORMALIZED_AVATAR.jpg"
-  ],
-  "urlInfos": [
-    {
-      "culture": "en-US",
-      "url": "/media/NORMALIZED_PATH/profile.jpg"
-    },
-    {
-      "culture": "da-DK",
-      "url": "/media/NORMALIZED_PATH/profile.jpg"
-    }
-  ]
-}",
+      "text": "{"id":"user-profile-1234-1234-123456789012","email":"testuser-12345@example.com","userName":"admin-67890@domain.com","avatarUrls":["/umbraco/assets/avatars/0123456789abcdef0123456789abcdef01234567.jpg","/umbraco/assets/avatars/fedcba9876543210fedcba9876543210fedcba98.jpg"],"urlInfos":[{"culture":"en-US","url":"/media/abc123/profile.jpg"},{"culture":"da-DK","url":"/media/xyz789/profile.jpg"}]}",
       "type": "text",
     },
   ],
@@ -250,17 +186,7 @@ exports[`Normalization Golden Files - legacy content[0].text format Single item 
 {
   "content": [
     {
-      "text": "{
-  "id": "00000000-0000-0000-0000-000000000000",
-  "createDate": "NORMALIZED_DATE",
-  "availableUntil": "NORMALIZED_DATE",
-  "publishDate": "NORMALIZED_DATE",
-  "updateDate": "NORMALIZED_DATE",
-  "versionDate": "NORMALIZED_DATE",
-  "lastLoginDate": "NORMALIZED_DATE",
-  "lastPasswordChangeDate": "NORMALIZED_DATE",
-  "lastLockoutDate": "NORMALIZED_DATE"
-}",
+      "text": "{"id":"specific-id-1234-1234-123456789012","createDate":"2025-01-15T10:30:00.000Z","availableUntil":"2025-12-31T23:59:59.000Z","publishDate":"2025-01-16T11:00:00.000Z","updateDate":"2025-01-17T12:30:00.000Z","versionDate":"2025-01-18T13:45:00.000Z","lastLoginDate":"2025-01-19T14:00:00.000Z","lastPasswordChangeDate":"2025-01-20T15:15:00.000Z","lastLockoutDate":"2025-01-21T16:30:00.000Z"}",
       "type": "text",
     },
   ],
@@ -271,25 +197,7 @@ exports[`Normalization Golden Files - legacy content[0].text format Single item 
 {
   "content": [
     {
-      "text": "{
-  "id": "00000000-0000-0000-0000-000000000000",
-  "variants": [
-    {
-      "culture": "en-US",
-      "createDate": "NORMALIZED_DATE",
-      "publishDate": "NORMALIZED_DATE",
-      "updateDate": "NORMALIZED_DATE",
-      "versionDate": "NORMALIZED_DATE"
-    },
-    {
-      "culture": "da-DK",
-      "createDate": "NORMALIZED_DATE",
-      "publishDate": "NORMALIZED_DATE",
-      "updateDate": "NORMALIZED_DATE",
-      "versionDate": "NORMALIZED_DATE"
-    }
-  ]
-}",
+      "text": "{"id":"doc-with-variants-1234-1234-123456789012","variants":[{"culture":"en-US","createDate":"2025-01-15T10:30:00.000Z","publishDate":"2025-01-16T11:00:00.000Z","updateDate":"2025-01-17T12:30:00.000Z","versionDate":"2025-01-18T13:45:00.000Z"},{"culture":"da-DK","createDate":"2025-02-15T10:30:00.000Z","publishDate":"2025-02-16T11:00:00.000Z","updateDate":"2025-02-17T12:30:00.000Z","versionDate":"2025-02-18T13:45:00.000Z"}]}",
       "type": "text",
     },
   ],
@@ -300,7 +208,7 @@ exports[`Normalization Golden Files - legacy content[0].text format Top-level va
 {
   "content": [
     {
-      "text": "{"variants":[{"culture":"en-US","createDate":"NORMALIZED_DATE","publishDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE"}],"otherField":"value"}",
+      "text": "{"variants":[{"culture":"en-US","createDate":"2025-01-15T10:30:00.000Z","publishDate":"2025-01-16T11:00:00.000Z","updateDate":"2025-01-17T12:30:00.000Z"}],"otherField":"value"}",
       "type": "text",
     },
   ],
@@ -331,7 +239,7 @@ exports[`Normalization Golden Files - structuredContent format Complex nested st
     "document": {
       "documentType": {
         "alias": "blogPost",
-        "id": "doctype-1234-1234-123456789012",
+        "id": "00000000-0000-0000-0000-000000000000",
       },
       "id": "00000000-0000-0000-0000-000000000000",
     },

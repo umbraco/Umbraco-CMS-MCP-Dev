@@ -1,7 +1,8 @@
 import { TemplateTestHelper } from "./helpers/template-helper.js";
 import GetTemplateSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
@@ -10,19 +11,14 @@ describe("get-template-siblings", () => {
   const TEST_SIBLING_1_NAME = "_Test Sibling 1 Template";
   const TEST_SIBLING_2_NAME = "_Test Sibling 2 Template";
   const TEST_TARGET_NAME = "_Test Target Template";
-  let originalConsoleError: typeof console.error;
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await TemplateTestHelper.cleanup(TEST_SIBLING_1_NAME);
     await TemplateTestHelper.cleanup(TEST_SIBLING_2_NAME);
     await TemplateTestHelper.cleanup(TEST_TARGET_NAME);
     await TemplateTestHelper.cleanup(TEST_PARENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get sibling templates", async () => {
@@ -54,7 +50,7 @@ describe("get-template-siblings", () => {
       {
         target: targetBuilder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify response
@@ -71,10 +67,11 @@ describe("get-template-siblings", () => {
       {
         target: nonExistentId,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify error response
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

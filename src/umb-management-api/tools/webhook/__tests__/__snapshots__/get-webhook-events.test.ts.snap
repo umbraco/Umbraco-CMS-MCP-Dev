@@ -2,11 +2,36 @@
 
 exports[`get-webhook-events should get list of webhook events 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":5,"items":[{"eventName":"Content Deleted","eventType":"Content","alias":"Umbraco.ContentDelete"},{"eventName":"Content Published","eventType":"Content","alias":"Umbraco.ContentPublish"},{"eventName":"Content Unpublished","eventType":"Content","alias":"Umbraco.ContentUnpublish"},{"eventName":"Media Deleted","eventType":"Media","alias":"Umbraco.MediaDelete"},{"eventName":"Media Saved","eventType":"Media","alias":"Umbraco.MediaSave"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "Umbraco.ContentDelete",
+        "eventName": "Content Deleted",
+        "eventType": "Content",
+      },
+      {
+        "alias": "Umbraco.ContentPublish",
+        "eventName": "Content Published",
+        "eventType": "Content",
+      },
+      {
+        "alias": "Umbraco.ContentUnpublish",
+        "eventName": "Content Unpublished",
+        "eventType": "Content",
+      },
+      {
+        "alias": "Umbraco.MediaDelete",
+        "eventName": "Media Deleted",
+        "eventType": "Media",
+      },
+      {
+        "alias": "Umbraco.MediaSave",
+        "eventName": "Media Saved",
+        "eventType": "Media",
+      },
+    ],
+    "total": 5,
+  },
 }
 `;

@@ -4,7 +4,7 @@ exports[`get-media-by-id-referenced-descendants should get references to descend
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"id":"00000000-0000-0000-0000-000000000000"}]}",
+      "text": "{"total":1,"items":[{"id":"fc6456a1-3243-4947-b49b-49d2dfa110e3"}]}",
       "type": "text",
     },
   ],
