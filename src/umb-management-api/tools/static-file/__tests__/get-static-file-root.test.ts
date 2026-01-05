@@ -1,24 +1,15 @@
 import GetStaticFileRootTool from "../items/get/get-root.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const DEFAULT_TAKE = 100;
 const SMALL_TAKE = 5;
 const LARGE_SKIP = 1000;
 
 describe("get-static-file-root", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-    // StaticFile is read-only, no cleanup needed
-  });
+  setupTestEnvironment();
 
   it.skip("should get root-level static files and folders with default pagination", async () => {
     // Arrange
@@ -30,7 +21,7 @@ describe("get-static-file-root", () => {
     // Act
     const result = await GetStaticFileRootTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -38,16 +29,16 @@ describe("get-static-file-root", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const response = JSON.parse(result.content[0].text?.toString() ?? "{}");
+    const response = result.structuredContent as { items: any[], total: number } | undefined;
     expect(response).toHaveProperty('items');
-    expect(Array.isArray(response.items)).toBe(true);
+    expect(Array.isArray(response?.items)).toBe(true);
 
     // Verify pagination properties
     expect(response).toHaveProperty('total');
-    expect(typeof response.total).toBe('number');
+    expect(typeof response?.total).toBe('number');
 
     // Verify file system structure if items exist
-    if (response.items.length > 0) {
+    if (response?.items && response.items.length > 0) {
       const isValidStructure = StaticFileHelper.verifyFileSystemStructure(response.items);
       expect(isValidStructure).toBe(true);
 
@@ -70,7 +61,7 @@ describe("get-static-file-root", () => {
     // Act
     const result = await GetStaticFileRootTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -78,12 +69,12 @@ describe("get-static-file-root", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const response = JSON.parse(result.content[0].text?.toString() ?? "{}");
+    const response = result.structuredContent as { items: any[], total: number } | undefined;
     expect(response).toHaveProperty('items');
-    expect(Array.isArray(response.items)).toBe(true);
+    expect(Array.isArray(response?.items)).toBe(true);
 
     // If there are items, should not exceed the take parameter
-    if (response.items.length > 0) {
+    if (response?.items && response.items.length > 0) {
       expect(response.items.length).toBeLessThanOrEqual(SMALL_TAKE);
 
       const isValidStructure = StaticFileHelper.verifyFileSystemStructure(response.items);
@@ -95,11 +86,11 @@ describe("get-static-file-root", () => {
     // Arrange - first get total count to determine valid skip
     const initialResult = await GetStaticFileRootTool.handler(
       { skip: 0, take: DEFAULT_TAKE },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    const initialResponse = JSON.parse(initialResult.content[0].text?.toString() ?? "{}");
-    const totalItems = initialResponse.total || 0;
+    const initialResponse = initialResult.structuredContent as { items: any[], total: number } | undefined;
+    const totalItems = initialResponse?.total || 0;
 
     // Only test skip if there are items
     if (totalItems > 1) {
@@ -112,7 +103,7 @@ describe("get-static-file-root", () => {
       // Act
       const result = await GetStaticFileRootTool.handler(
         params,
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert
@@ -120,13 +111,13 @@ describe("get-static-file-root", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure
-      const response = JSON.parse(result.content[0].text?.toString() ?? "{}");
+      const response = result.structuredContent as { items: any[], total: number } | undefined;
       expect(response).toHaveProperty('items');
-      expect(Array.isArray(response.items)).toBe(true);
-      expect(response.total).toBe(totalItems); // Total should remain same
+      expect(Array.isArray(response?.items)).toBe(true);
+      expect(response?.total).toBe(totalItems); // Total should remain same
 
       // Verify file system structure if items exist
-      if (response.items.length > 0) {
+      if (response?.items && response.items.length > 0) {
         const isValidStructure = StaticFileHelper.verifyFileSystemStructure(response.items);
         expect(isValidStructure).toBe(true);
       }
@@ -139,7 +130,7 @@ describe("get-static-file-root", () => {
 
       const result = await GetStaticFileRootTool.handler(
         params,
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -156,18 +147,18 @@ describe("get-static-file-root", () => {
     // Act
     const result = await GetStaticFileRootTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - should not fail, should return empty items array
     expect(result).toMatchSnapshot();
 
-    const response = JSON.parse(result.content[0].text?.toString() ?? "{}");
+    const response = result.structuredContent as { items: any[], total: number } | undefined;
     expect(response).toHaveProperty('items');
-    expect(Array.isArray(response.items)).toBe(true);
-    expect(response.items.length).toBe(0); // Should be empty due to large skip
+    expect(Array.isArray(response?.items)).toBe(true);
+    expect(response?.items.length).toBe(0); // Should be empty due to large skip
     expect(response).toHaveProperty('total');
-    expect(typeof response.total).toBe('number');
+    expect(typeof response?.total).toBe('number');
   });
 
   it.skip("should handle zero take parameter", async () => {
@@ -180,18 +171,18 @@ describe("get-static-file-root", () => {
     // Act
     const result = await GetStaticFileRootTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - should return empty items but still have total count
     expect(result).toMatchSnapshot();
 
-    const response = JSON.parse(result.content[0].text?.toString() ?? "{}");
+    const response = result.structuredContent as { items: any[], total: number } | undefined;
     expect(response).toHaveProperty('items');
-    expect(Array.isArray(response.items)).toBe(true);
-    expect(response.items.length).toBe(0); // Should be empty due to take: 0
+    expect(Array.isArray(response?.items)).toBe(true);
+    expect(response?.items.length).toBe(0); // Should be empty due to take: 0
     expect(response).toHaveProperty('total');
-    expect(typeof response.total).toBe('number');
+    expect(typeof response?.total).toBe('number');
   });
 
   it("should return items with proper file system properties for root items", async () => {
@@ -204,13 +195,13 @@ describe("get-static-file-root", () => {
     // Act
     const result = await GetStaticFileRootTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
-    const response = JSON.parse(result.content[0].text?.toString() ?? "{}");
+    const response = result.structuredContent as { items: any[], total: number } | undefined;
 
-    if (response.items.length > 0) {
+    if (response?.items && response.items.length > 0) {
       // Check first item has expected structure
       const firstItem = response.items[0];
       expect(firstItem).toHaveProperty('path');
@@ -239,18 +230,18 @@ describe("get-static-file-root", () => {
     // Act - get results from both tool and helper
     const toolResult = await GetStaticFileRootTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const helperResult = await StaticFileHelper.getRootItems(skip, take);
 
     // Assert - both should return the same items
-    const toolResponse = JSON.parse(toolResult.content[0].text?.toString() ?? "{}");
+    const toolResponse = toolResult.structuredContent as { items: any[], total: number } | undefined;
 
-    expect(toolResponse.items.length).toBe(helperResult.length);
+    expect(toolResponse?.items.length).toBe(helperResult.length);
 
     // If both have items, verify they match
-    if (toolResponse.items.length > 0 && helperResult.length > 0) {
+    if (toolResponse?.items && toolResponse.items.length > 0 && helperResult.length > 0) {
       // Check that first item from tool matches first item from helper
       const toolFirstItem = toolResponse.items[0];
       const helperFirstItem = helperResult[0];

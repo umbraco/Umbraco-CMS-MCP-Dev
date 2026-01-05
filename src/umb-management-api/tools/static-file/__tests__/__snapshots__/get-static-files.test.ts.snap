@@ -2,44 +2,36 @@
 
 exports[`get-static-files should get all static files when no path is specified 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
 exports[`get-static-files should get static files filtered by path 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
 exports[`get-static-files should handle empty path array 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
 exports[`get-static-files should handle invalid path gracefully 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;

@@ -1,8 +1,7 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getSearcherQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getSearcherQueryParams, getSearcherResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetSearcherParams } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetSearcherTool = {
   name: "get-searcher",
@@ -10,22 +9,15 @@ const GetSearcherTool = {
   Returns an object containing:
   - total: Total number of searchers (number)
   - items: Array of searcher objects with name and isEnabled properties`,
-  schema: getSearcherQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getSearcherQueryParams.shape,
+  outputSchema: getSearcherResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['list'],
-  handler: async (model: GetSearcherParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getSearcher(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getSearcherQueryParams.shape>;
+  handler: (async (model: GetSearcherParams) => {
+    return executeGetApiCall((client) =>
+      client.getSearcher(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getSearcherQueryParams.shape, typeof getSearcherResponse.shape>;
 
 export default withStandardDecorators(GetSearcherTool);

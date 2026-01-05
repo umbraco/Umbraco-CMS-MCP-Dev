@@ -2,32 +2,28 @@
 
 exports[`get-stylesheet-by-path should get a stylesheet by path 1`] = `
 {
-  "content": [
-    {
-      "text": "{"content":"/* Test get stylesheet */\\nbody { background: white; }\\n.container { padding: 20px; }","name":"_TestGetStylesheet.css","parent":null,"path":"/_TestGetStylesheet.css"}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "content": "/* Test get stylesheet */
+body { background: white; }
+.container { padding: 20px; }",
+    "name": "_TestGetStylesheet.css",
+    "parent": null,
+    "path": "/_TestGetStylesheet.css",
+  },
 }
 `;
 
 exports[`get-stylesheet-by-path should handle non-existent stylesheet 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-stylesheet-by-path:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Stylesheet not found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The stylesheet was not found.",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Stylesheet not found",
+    "type": "Error",
+  },
 }
 `;

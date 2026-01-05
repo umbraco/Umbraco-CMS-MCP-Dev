@@ -2,43 +2,34 @@
 
 exports[`create-stylesheet should create a stylesheet 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "message": "Stylesheet created successfully",
+    "path": "/_TestCreateStylesheet.css",
+  },
 }
 `;
 
 exports[`create-stylesheet should create stylesheet with parent folder 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "message": "Stylesheet created successfully",
+    "path": "/_TestStylesheetParentFolder/_TestCreateStylesheet.css",
+  },
 }
 `;
 
 exports[`create-stylesheet should handle existing stylesheet name 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-stylesheet:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Stylesheet already exists",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "A stylesheet with the same path already exists",
-    "operationStatus": "AlreadyExists"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "AlreadyExists",
+    "status": 400,
+    "title": "Stylesheet already exists",
+    "type": "Error",
+  },
 }
 `;

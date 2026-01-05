@@ -2,25 +2,20 @@ import CreateStylesheetFolderTool from "../post/create-stylesheet-folder.js";
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import { StylesheetFolderBuilder } from "./helpers/stylesheet-folder-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_FOLDER_NAME = "_TestCreateStylesheetFolder";
 const EXISTING_FOLDER_NAME = "_ExistingStylesheetFolder";
 const TEST_PARENT_FOLDER_NAME = "_TestParentFolder";
 
 describe("create-stylesheet-folder", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await StylesheetHelper.cleanup(TEST_PARENT_FOLDER_NAME);
     await StylesheetHelper.cleanup(TEST_FOLDER_NAME);
     await StylesheetHelper.cleanup(EXISTING_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should create a stylesheet folder", async () => {
@@ -30,7 +25,7 @@ describe("create-stylesheet-folder", () => {
     };
 
     // Act
-    const result = await CreateStylesheetFolderTool.handler(params, { signal: new AbortController().signal });
+    const result = await CreateStylesheetFolderTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -45,12 +40,12 @@ describe("create-stylesheet-folder", () => {
     // Arrange - First create the folder
     await CreateStylesheetFolderTool.handler({
       name: EXISTING_FOLDER_NAME
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Act - Try to create it again with same name
     const result = await CreateStylesheetFolderTool.handler({
       name: EXISTING_FOLDER_NAME
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -71,7 +66,7 @@ describe("create-stylesheet-folder", () => {
     };
 
     // Act
-    const result = await CreateStylesheetFolderTool.handler(params, { signal: new AbortController().signal });
+    const result = await CreateStylesheetFolderTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

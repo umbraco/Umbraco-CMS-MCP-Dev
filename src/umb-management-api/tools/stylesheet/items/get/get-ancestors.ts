@@ -1,28 +1,27 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetTreeStylesheetAncestorsParams } from "@/umb-management-api/schemas/index.js";
-import { getTreeStylesheetAncestorsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getTreeStylesheetAncestorsQueryParams, getTreeStylesheetAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoManagementClient } from "@umb-management-client";
+import { z } from "zod";
+
+// Wrap array response in object for MCP compliance
+const outputSchema = z.object({
+  items: getTreeStylesheetAncestorsResponse,
+});
 
 const GetStylesheetAncestorsTool = {
   name: "get-stylesheet-ancestors",
   description: "Gets the ancestors of a stylesheet in the tree structure",
-  schema: getTreeStylesheetAncestorsQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeStylesheetAncestorsQueryParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (model: GetTreeStylesheetAncestorsParams) => {
+  handler: (async (model: GetTreeStylesheetAncestorsParams) => {
     const client = UmbracoManagementClient.getClient();
-    var response = await client.getTreeStylesheetAncestors(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getTreeStylesheetAncestorsQueryParams.shape>;
+    const response = await client.getTreeStylesheetAncestors(model);
+    return createToolResult({ items: response });
+  }),
+} satisfies ToolDefinition<typeof getTreeStylesheetAncestorsQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetStylesheetAncestorsTool);

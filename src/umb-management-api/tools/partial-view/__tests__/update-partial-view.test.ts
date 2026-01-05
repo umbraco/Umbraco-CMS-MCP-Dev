@@ -2,7 +2,8 @@ import UpdatePartialViewTool from "../put/update-partial-view.js";
 import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_PARTIAL_VIEW_NAME = "_TestUpdatePartialView.cshtml";
 const TEST_INITIAL_CONTENT = "@* Initial content *@\n<div><p>Initial Content</p></div>";
@@ -10,18 +11,16 @@ const TEST_UPDATED_CONTENT = "@* Updated content *@\n<div><p>Updated Content</p>
 const NON_EXISTENT_PATH = "/_NonExistentPartialView.cshtml";
 
 describe("update-partial-view", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let builder: PartialViewBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new PartialViewBuilder();
   });
 
   afterEach(async () => {
     await PartialViewHelper.cleanup(TEST_PARTIAL_VIEW_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should update a partial view", async () => {
@@ -33,11 +32,13 @@ describe("update-partial-view", () => {
 
     const params = {
       path: builder.getPath(),
-      content: TEST_UPDATED_CONTENT
+      data: {
+        content: TEST_UPDATED_CONTENT
+      }
     };
 
     // Act
-    const result = await UpdatePartialViewTool.handler(params, { signal: new AbortController().signal });
+    const result = await UpdatePartialViewTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -52,11 +53,13 @@ describe("update-partial-view", () => {
     // Arrange
     const params = {
       path: NON_EXISTENT_PATH,
-      content: TEST_UPDATED_CONTENT
+      data: {
+        content: TEST_UPDATED_CONTENT
+      }
     };
 
     // Act
-    const result = await UpdatePartialViewTool.handler(params, { signal: new AbortController().signal });
+    const result = await UpdatePartialViewTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert - Error responses don't use createSnapshotResult
     expect(result).toMatchSnapshot();
@@ -71,11 +74,13 @@ describe("update-partial-view", () => {
 
     const params = {
       path: builder.getPath(),
-      content: ""
+      data: {
+        content: ""
+      }
     };
 
     // Act
-    const result = await UpdatePartialViewTool.handler(params, { signal: new AbortController().signal });
+    const result = await UpdatePartialViewTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

@@ -2,7 +2,8 @@ import UpdateScriptTool from "../put/update-script.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptTestHelper } from "./helpers/script-test-helper.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_SCRIPT_NAME = "_TestScriptUpdate";
 const TEST_SCRIPT_CONTENT = "console.log('test script update');";
@@ -10,17 +11,15 @@ const UPDATED_SCRIPT_CONTENT = "console.log('updated script content');";
 const NONEXISTENT_SCRIPT_PATH = "/NonExistentScript.js";
 
 describe("update-script", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let scriptBuilder: ScriptBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     scriptBuilder = new ScriptBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await scriptBuilder.cleanup();
   });
 
@@ -38,7 +37,7 @@ describe("update-script", () => {
           content: UPDATED_SCRIPT_CONTENT,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
@@ -58,7 +57,7 @@ describe("update-script", () => {
           content: UPDATED_SCRIPT_CONTENT,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

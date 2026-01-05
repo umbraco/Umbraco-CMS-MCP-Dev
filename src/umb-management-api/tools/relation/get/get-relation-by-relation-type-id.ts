@@ -1,8 +1,7 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getRelationByRelationTypeIdParams, getRelationByRelationTypeIdQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getRelationByRelationTypeIdParams, getRelationByRelationTypeIdQueryParams, getRelationByRelationTypeIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const schemaParams = z.object({
   ...getRelationByRelationTypeIdParams.shape,
@@ -12,25 +11,15 @@ const schemaParams = z.object({
 const GetRelationByRelationTypeIdTool = {
   name: "get-relation-by-relation-type-id",
   description: "Gets relations by relation type ID",
-  schema: schemaParams.shape,
-  isReadOnly: true,
+  inputSchema: schemaParams.shape,
+  outputSchema: getRelationByRelationTypeIdResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async ({ id, skip, take }: z.infer<typeof schemaParams>) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getRelationByRelationTypeId(id, {
-      skip,
-      take
-    });
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof schemaParams.shape>;
+  handler: (async ({ id, skip, take }: z.infer<typeof schemaParams>) => {
+    return executeGetApiCall((client) =>
+      client.getRelationByRelationTypeId(id, { skip, take }, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof schemaParams.shape, typeof getRelationByRelationTypeIdResponse.shape>;
 
 export default withStandardDecorators(GetRelationByRelationTypeIdTool);

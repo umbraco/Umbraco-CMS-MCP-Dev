@@ -3,7 +3,8 @@ import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
 import { ScriptTestHelper } from "./helpers/script-test-helper.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_SCRIPT_NAME = "_TestRenameScript";
 const TEST_RENAMED_NAME = "_TestRenamedScript";
@@ -11,13 +12,12 @@ const TEST_CONTENT = "console.log('rename test');";
 const TEST_FOLDER_NAME = "_TestRenameFolder";
 
 describe("rename-script", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let scriptBuilder: ScriptBuilder;
   let folderBuilder: ScriptFolderBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     scriptBuilder = new ScriptBuilder();
     folderBuilder = new ScriptFolderBuilder();
   });
@@ -26,7 +26,6 @@ describe("rename-script", () => {
     await ScriptTestHelper.cleanup(TEST_SCRIPT_NAME + ".js");
     await ScriptTestHelper.cleanup(TEST_RENAMED_NAME + ".js");
     await ScriptTestHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should rename a script", async () => {
@@ -46,7 +45,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -84,7 +83,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -111,7 +110,7 @@ describe("rename-script", () => {
     };
 
     // Act - This should likely error since we're trying to rename a folder as if it's a script
-    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert - This will likely be an error since script rename tool expects scripts, not folders
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
@@ -125,7 +124,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert - Error responses use normalizeErrorResponse
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
@@ -150,7 +149,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert - This should work due to proper path construction
     try {
@@ -174,7 +173,7 @@ describe("rename-script", () => {
     };
 
     // Act
-    const result = await RenameScriptTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenameScriptTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert - Same name rename might be success or error
     try {

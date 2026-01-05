@@ -5,11 +5,16 @@ import DeleteRedirectTool from "../delete/delete-redirect.js";
 import GetAllRedirectsTool from "../get/get-all-redirects.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { getRedirectManagementResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_DOCUMENT_NAME = "_Test Redirect Document";
 const RENAMED_DOCUMENT_NAME = "_Test Redirect Document Renamed";
 
 describe("Redirect Management Tools", () => {
+  setupTestEnvironment();
+
   let documentId: string;
   let redirectId: string;
 
@@ -29,9 +34,9 @@ describe("Redirect Management Tools", () => {
     // Get the redirect ID
     const result = await GetAllRedirectsTool.handler(
       {},
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const data = JSON.parse(result.content[0].text as string);
+    const data = validateStructuredContent(result, getRedirectManagementResponse);
     const redirect = data.items.find((r: any) => r.document.id === documentId);
     if (!redirect) {
       throw new Error("Redirect not found after rename");
@@ -43,13 +48,13 @@ describe("Redirect Management Tools", () => {
     // Clean up all redirects
     const result = await GetAllRedirectsTool.handler(
       {},
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const data = JSON.parse(result.content[0].text as string);
+    const data = validateStructuredContent(result, getRedirectManagementResponse);
     for (const redirect of data.items) {
       await DeleteRedirectTool.handler(
         { id: redirect.id },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
     }
 
@@ -62,16 +67,11 @@ describe("Redirect Management Tools", () => {
     it("should get a redirect by ID", async () => {
       const result = await GetRedirectByIdTool.handler(
         { id: documentId },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       let snapshot = createSnapshotResult(result, redirectId);
       snapshot = createSnapshotResult(snapshot, documentId);
-
-      // Normalize the created date
-      const parsed = JSON.parse(snapshot.content[0].text);
-      parsed.items[0].created = "NORMALIZED_DATE";
-      snapshot.content[0].text = JSON.stringify(parsed);
 
       expect(snapshot).toMatchSnapshot();
     });
@@ -81,7 +81,7 @@ describe("Redirect Management Tools", () => {
     it("should delete a redirect", async () => {
       const result = await DeleteRedirectTool.handler(
         { id: redirectId },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -89,7 +89,7 @@ describe("Redirect Management Tools", () => {
       // Verify the redirect is deleted
       const getResult = await GetRedirectByIdTool.handler(
         { id: documentId },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       const snapshot = createSnapshotResult(getResult, documentId);

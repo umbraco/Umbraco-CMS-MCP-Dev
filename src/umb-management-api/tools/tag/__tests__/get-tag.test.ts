@@ -5,22 +5,17 @@ import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/do
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { TAG_DATA_TYPE_ID } from "@/constants/constants.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test Tag Document";
 const TEST_TAG_1 = "test-tag";
 const NON_EXISTENT_TAG = "NonExistentTag_12345";
 
 describe("get-tag", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
@@ -46,7 +41,7 @@ describe("get-tag", () => {
       {
         take: 50,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize the result for snapshot testing
@@ -75,7 +70,7 @@ describe("get-tag", () => {
         query: NON_EXISTENT_TAG,
         take: 100,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();
@@ -102,7 +97,7 @@ describe("get-tag", () => {
         query: "test",
         take: 100,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize the result for snapshot testing

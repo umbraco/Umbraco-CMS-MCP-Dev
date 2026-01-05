@@ -11,7 +11,7 @@ export const RelationCollection: ToolCollectionExport = {
     description: 'Relation management and querying'
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessRelationTypes(user)) {
       tools.push(GetRelationByRelationTypeIdTool);

@@ -2,43 +2,34 @@
 
 exports[`create-stylesheet-folder should create a stylesheet folder 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "message": "Stylesheet folder created successfully",
+    "path": "/_TestCreateStylesheetFolder",
+  },
 }
 `;
 
 exports[`create-stylesheet-folder should create folder with parent folder 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "message": "Stylesheet folder created successfully",
+    "path": "/_TestParentFolder/_TestCreateStylesheetFolder",
+  },
 }
 `;
 
 exports[`create-stylesheet-folder should handle existing folder name 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-stylesheet-folder:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Folder already exists",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The folder already exists",
-    "operationStatus": "AlreadyExists"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "AlreadyExists",
+    "status": 400,
+    "title": "Folder already exists",
+    "type": "Error",
+  },
 }
 `;

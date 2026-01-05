@@ -16,7 +16,7 @@ export const StaticFileCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     tools.push(GetStaticFilesTool);
     tools.push(GetStaticFileRootTool);

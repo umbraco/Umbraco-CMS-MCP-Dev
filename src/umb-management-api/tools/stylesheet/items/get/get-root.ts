@@ -1,28 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetTreeStylesheetRootParams } from "@/umb-management-api/schemas/index.js";
-import { getTreeStylesheetRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getTreeStylesheetRootQueryParams, getTreeStylesheetRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetStylesheetRootTool = {
   name: "get-stylesheet-root",
   description: "Gets the root stylesheets in the tree structure",
-  schema: getTreeStylesheetRootQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeStylesheetRootQueryParams.shape,
+  outputSchema: getTreeStylesheetRootResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (model: GetTreeStylesheetRootParams) => {
-    const client = UmbracoManagementClient.getClient();
-    var response = await client.getTreeStylesheetRoot(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getTreeStylesheetRootQueryParams.shape>;
+  handler: (async (model: GetTreeStylesheetRootParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeStylesheetRoot(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeStylesheetRootQueryParams.shape, typeof getTreeStylesheetRootResponse.shape>;
 
 export default withStandardDecorators(GetStylesheetRootTool);

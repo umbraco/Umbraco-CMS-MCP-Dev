@@ -2,7 +2,8 @@ import GetScriptItemsTool from "../get/get-script-items.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_SCRIPT_NAME_1 = "_TestScriptItems1";
 const TEST_SCRIPT_CONTENT_1 = "console.log('test script items 1');";
@@ -12,21 +13,19 @@ const TEST_FOLDER_NAME = "_TestFolderItems";
 const NONEXISTENT_PATH = "/NonExistentScript.js";
 
 describe("script-items", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let scriptBuilder1: ScriptBuilder;
   let scriptBuilder2: ScriptBuilder;
   let folderBuilder: ScriptFolderBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     scriptBuilder1 = new ScriptBuilder();
     scriptBuilder2 = new ScriptBuilder();
     folderBuilder = new ScriptFolderBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await scriptBuilder1.cleanup();
     await scriptBuilder2.cleanup();
     await folderBuilder.cleanup();
@@ -44,9 +43,7 @@ describe("script-items", () => {
 
     const result = await GetScriptItemsTool.handler({
       path: [scriptBuilder1.getPath(), scriptBuilder2.getPath()]
-    }, {
-      signal: new AbortController().signal,
-    });
+    }, createMockRequestHandlerExtra());
 
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
@@ -60,9 +57,7 @@ describe("script-items", () => {
 
     const result = await GetScriptItemsTool.handler({
       path: [scriptBuilder1.getPath()]
-    }, {
-      signal: new AbortController().signal,
-    });
+    }, createMockRequestHandlerExtra());
 
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
@@ -75,9 +70,7 @@ describe("script-items", () => {
 
     const result = await GetScriptItemsTool.handler({
       path: [folderBuilder.getPath()]
-    }, {
-      signal: new AbortController().signal,
-    });
+    }, createMockRequestHandlerExtra());
 
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
@@ -86,9 +79,7 @@ describe("script-items", () => {
   it("should handle empty array", async () => {
     const result = await GetScriptItemsTool.handler({
       path: []
-    }, {
-      signal: new AbortController().signal,
-    });
+    }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });
@@ -96,17 +87,13 @@ describe("script-items", () => {
   it("should handle non-existent script path", async () => {
     const result = await GetScriptItemsTool.handler({
       path: [NONEXISTENT_PATH]
-    }, {
-      signal: new AbortController().signal,
-    });
+    }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });
 
   it("should handle no path parameter", async () => {
-    const result = await GetScriptItemsTool.handler({}, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetScriptItemsTool.handler({}, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });

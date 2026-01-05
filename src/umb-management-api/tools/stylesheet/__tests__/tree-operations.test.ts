@@ -4,7 +4,8 @@ import GetStylesheetChildrenTool from "../items/get/get-children.js";
 import GetStylesheetRootTool from "../items/get/get-root.js";
 import GetStylesheetSearchTool from "../items/get/get-search.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { StylesheetBuilder } from "./helpers/stylesheet-builder.js";
 import { StylesheetFolderBuilder } from "./helpers/stylesheet-folder-builder.js";
 
@@ -14,19 +15,14 @@ describe("stylesheet-tree-operations", () => {
   const TEST_PARENT_NAME = "_Test Parent";
   const TEST_STYLESHEET_NAME = "_TestTreeStylesheet.css";
   const TEST_CONTENT = "/* Tree test */\nbody { margin: 0; }";
-  let originalConsoleError: typeof console.error;
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await StylesheetHelper.cleanup(TEST_FOLDER_NAME);
     await StylesheetHelper.cleanup(TEST_CHILD_NAME);
     await StylesheetHelper.cleanup(TEST_PARENT_NAME);
     await StylesheetHelper.cleanup(TEST_STYLESHEET_NAME);
-    console.error = originalConsoleError;
   });
 
   describe("get-root", () => {
@@ -36,7 +32,7 @@ describe("stylesheet-tree-operations", () => {
           skip: 0,
           take: 100
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -65,7 +61,7 @@ describe("stylesheet-tree-operations", () => {
           skip: 0,
           take: 100
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       const normalizedItems = createSnapshotResult(result);
@@ -90,7 +86,7 @@ describe("stylesheet-tree-operations", () => {
         {
           descendantPath: childFolder.getPath()
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       const normalizedItems = createSnapshotResult(result);
@@ -110,7 +106,7 @@ describe("stylesheet-tree-operations", () => {
         {
           path: [TEST_STYLESHEET_NAME]
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       const normalizedItems = createSnapshotResult(result);

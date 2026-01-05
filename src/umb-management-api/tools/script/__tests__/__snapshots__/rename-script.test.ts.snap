@@ -2,43 +2,29 @@
 
 exports[`rename-script should handle non-existent script 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using rename-script:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The script could not be found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The script was not found.",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The script could not be found",
+    "type": "Error",
+  },
 }
 `;
 
 exports[`rename-script should handle renaming script to same name 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using rename-script:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Script already exists",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "A script with the same path already exists",
-    "operationStatus": "AlreadyExists"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "AlreadyExists",
+    "status": 400,
+    "title": "Script already exists",
+    "type": "Error",
+  },
 }
 `;
 
@@ -46,7 +32,7 @@ exports[`rename-script should handle renaming with folder path (tests path handl
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -55,22 +41,15 @@ exports[`rename-script should handle renaming with folder path (tests path handl
 
 exports[`rename-script should handle script folder rename attempt 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using rename-script:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The script could not be found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The script was not found.",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The script could not be found",
+    "type": "Error",
+  },
 }
 `;
 
@@ -78,7 +57,7 @@ exports[`rename-script should rename a script 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -89,7 +68,7 @@ exports[`rename-script should rename a script in a folder 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
