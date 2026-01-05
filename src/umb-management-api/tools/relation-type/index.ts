@@ -12,7 +12,7 @@ export const RelationTypeCollection: ToolCollectionExport = {
     description: 'Relation type management and configuration'
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessRelationTypes(user)) {
       tools.push(GetRelationTypeTool);

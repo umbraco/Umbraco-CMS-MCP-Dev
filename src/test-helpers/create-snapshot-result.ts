@@ -7,6 +7,7 @@ import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 /** Fields that should be normalized to "NORMALIZED_DATE" */
 const DATE_FIELDS = [
+  "created",
   "createDate",
   "publishDate",
   "updateDate",

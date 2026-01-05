@@ -3,26 +3,22 @@ import GetPartialViewAncestorsTool from "../items/get/get-ancestors.js";
 import GetPartialViewChildrenTool from "../items/get/get-children.js";
 import GetPartialViewRootTool from "../items/get/get-root.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
 
 describe("partial-view-tree-operations", () => {
+  setupTestEnvironment();
+
   const TEST_FOLDER_NAME = "_Test Folder";
   const TEST_CHILD_NAME = "_Test Child";
   const TEST_PARENT_NAME = "_Test Parent";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     await PartialViewHelper.cleanup(TEST_FOLDER_NAME);
     await PartialViewHelper.cleanup(TEST_CHILD_NAME);
     await PartialViewHelper.cleanup(TEST_PARENT_NAME);
-    console.error = originalConsoleError;
   });
 
   describe("get-root", () => {
@@ -32,7 +28,7 @@ describe("partial-view-tree-operations", () => {
           skip: 0,
           take: 100
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -58,8 +54,8 @@ describe("partial-view-tree-operations", () => {
         {
           parentPath: TEST_FOLDER_NAME,
           take: 100,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -72,8 +68,8 @@ describe("partial-view-tree-operations", () => {
         {
           parentPath: "_NonExistentFolder",
           take: 100,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -97,7 +93,7 @@ describe("partial-view-tree-operations", () => {
         {
           descendantPath: childBuilder.getPath(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Normalize and verify response
@@ -110,7 +106,7 @@ describe("partial-view-tree-operations", () => {
         {
           descendantPath: "_NonExistent/test.cshtml",
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();

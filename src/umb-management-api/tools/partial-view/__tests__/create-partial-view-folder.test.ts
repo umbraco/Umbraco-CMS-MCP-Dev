@@ -2,23 +2,18 @@ import CreatePartialViewFolderTool from "../post/create-partial-view-folder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_FOLDER_NAME = "_TestCreateFolder";
 const EXISTING_FOLDER_NAME = "_ExistingFolder";
 
 describe("create-partial-view-folder", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await PartialViewHelper.cleanup(TEST_FOLDER_NAME);
     await PartialViewHelper.cleanup(EXISTING_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should create a partial view folder", async () => {
@@ -28,7 +23,7 @@ describe("create-partial-view-folder", () => {
     };
 
     // Act
-    const result = await CreatePartialViewFolderTool.handler(params, { signal: new AbortController().signal });
+    const result = await CreatePartialViewFolderTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -48,12 +43,12 @@ describe("create-partial-view-folder", () => {
     // Arrange - First create the folder
     await CreatePartialViewFolderTool.handler({
       name: EXISTING_FOLDER_NAME
-    }, { signal: new AbortController().signal });
+    } as any, createMockRequestHandlerExtra());
 
     // Act - Try to create it again
     const result = await CreatePartialViewFolderTool.handler({
       name: EXISTING_FOLDER_NAME
-    }, { signal: new AbortController().signal });
+    } as any, createMockRequestHandlerExtra());
 
     // Assert
     expect(result).toMatchSnapshot();

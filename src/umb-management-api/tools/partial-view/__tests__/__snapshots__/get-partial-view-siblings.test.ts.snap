@@ -2,22 +2,33 @@
 
 exports[`get-partial-view-siblings should get sibling partial views 1`] = `
 {
-  "content": [
-    {
-      "text": "{"totalBefore":2,"totalAfter":0,"items":[{"name":"_TestTargetPartialView.cshtml","path":"/_TestFolderForSiblings/_TestTargetPartialView.cshtml","parent":{"path":"/_TestFolderForSiblings","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "_TestTargetPartialView.cshtml",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/_TestFolderForSiblings",
+        },
+        "path": "/_TestFolderForSiblings/_TestTargetPartialView.cshtml",
+      },
+    ],
+    "totalAfter": 0,
+    "totalBefore": 2,
+  },
 }
 `;
 
 exports[`get-partial-view-siblings should handle non-existent partial view 1`] = `
 {
-  "content": [
-    {
-      "text": "{"totalBefore":0,"totalAfter":8,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "totalAfter": 8,
+    "totalBefore": 0,
+  },
 }
 `;

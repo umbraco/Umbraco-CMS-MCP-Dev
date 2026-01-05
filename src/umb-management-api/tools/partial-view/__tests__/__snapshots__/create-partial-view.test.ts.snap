@@ -2,43 +2,34 @@
 
 exports[`create-partial-view should create a partial view 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "message": "Partial view created successfully",
+    "path": "/_TestCreatePartialView.cshtml",
+  },
 }
 `;
 
 exports[`create-partial-view should create partial view with parent folder 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "message": "Partial view created successfully",
+    "path": "/_TestPartialViewParentFolder/_TestCreatePartialView.cshtml",
+  },
 }
 `;
 
 exports[`create-partial-view should handle existing partial view name 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-partial-view:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Partial view already exists",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "A partial view with the same path already exists",
-    "operationStatus": "AlreadyExists"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "AlreadyExists",
+    "status": 400,
+    "title": "Partial view already exists",
+    "type": "Error",
+  },
 }
 `;
