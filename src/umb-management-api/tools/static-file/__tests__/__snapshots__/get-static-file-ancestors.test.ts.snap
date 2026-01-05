@@ -2,12 +2,38 @@
 
 exports[`get-static-file-ancestors should get ancestors for a nested file or folder 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"bin","path":"/bin","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"Debug","path":"/bin/Debug","parent":{"path":"/bin","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "",
+        "parent": null,
+        "path": "/",
+      },
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "bin",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/",
+        },
+        "path": "/bin",
+      },
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "Debug",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/bin",
+        },
+        "path": "/bin/Debug",
+      },
+    ],
+  },
 }
 `;
 
@@ -35,11 +61,27 @@ exports[`get-static-file-ancestors should handle invalid descendant path gracefu
 
 exports[`get-static-file-ancestors should handle root-level item path gracefully 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"bin","path":"/bin","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "",
+        "parent": null,
+        "path": "/",
+      },
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "bin",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/",
+        },
+        "path": "/bin",
+      },
+    ],
+  },
 }
 `;

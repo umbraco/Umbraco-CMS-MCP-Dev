@@ -1,6 +1,6 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getServerStatusResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetServerStatusTool = {
   name: "get-server-status",
@@ -17,22 +17,15 @@ const GetServerStatusTool = {
   {
     "serverStatus": "Run"
   }`,
-  schema: {},
-  isReadOnly: true,
+  inputSchema: {},
+  outputSchema: getServerStatusResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['server-info'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getServerStatus();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<{}>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getServerStatus(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof getServerStatusResponse.shape>;
 
 export default withStandardDecorators(GetServerStatusTool);

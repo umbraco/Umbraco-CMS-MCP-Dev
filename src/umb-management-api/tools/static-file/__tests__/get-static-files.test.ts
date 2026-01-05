@@ -1,23 +1,14 @@
 import GetStaticFilesTool from "../items/get/get-static-files.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_PATH_ARRAY = ["css", "bootstrap"];
 const INVALID_PATH_ARRAY = ["nonexistent", "invalid"];
 
 describe("get-static-files", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-    // StaticFile is read-only, no cleanup needed
-  });
+  setupTestEnvironment();
 
   it("should get all static files when no path is specified", async () => {
     // Arrange - no path filtering
@@ -26,7 +17,7 @@ describe("get-static-files", () => {
     // Act
     const result = await GetStaticFilesTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -34,7 +25,8 @@ describe("get-static-files", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const items = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const structuredContent = result.structuredContent as { items: any[] } | undefined;
+    const items = structuredContent?.items ?? [];
     expect(Array.isArray(items)).toBe(true);
 
     // Verify file system structure if items exist
@@ -64,7 +56,7 @@ describe("get-static-files", () => {
       // Act
       const result = await GetStaticFilesTool.handler(
         params,
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert
@@ -80,7 +72,7 @@ describe("get-static-files", () => {
     // Act
     const result = await GetStaticFilesTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -88,7 +80,8 @@ describe("get-static-files", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const items = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const structuredContent = result.structuredContent as { items: any[] } | undefined;
+    const items = structuredContent?.items ?? [];
     expect(Array.isArray(items)).toBe(true);
 
     // Verify file system structure if items exist
@@ -105,14 +98,15 @@ describe("get-static-files", () => {
     // Act
     const result = await GetStaticFilesTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - should not fail, just return empty array or handle gracefully
     expect(result).toMatchSnapshot();
 
     // Verify response is still valid even if empty
-    const items = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const structuredContent = result.structuredContent as { items: any[] } | undefined;
+    const items = structuredContent?.items ?? [];
     expect(Array.isArray(items)).toBe(true);
   });
 
@@ -123,7 +117,7 @@ describe("get-static-files", () => {
     // Act
     const result = await GetStaticFilesTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -131,7 +125,8 @@ describe("get-static-files", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const items = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const structuredContent = result.structuredContent as { items: any[] } | undefined;
+    const items = structuredContent?.items ?? [];
     expect(Array.isArray(items)).toBe(true);
 
     // Verify file system structure if items exist
@@ -148,11 +143,12 @@ describe("get-static-files", () => {
     // Act
     const result = await GetStaticFilesTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
-    const items = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const structuredContent = result.structuredContent as { items: any[] } | undefined;
+    const items = structuredContent?.items ?? [];
 
     if (items.length > 0) {
       // Check first item has expected structure

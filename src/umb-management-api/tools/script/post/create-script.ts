@@ -1,8 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateScriptRequestModel } from "@/umb-management-api/schemas/index.js";
-import z from "zod";
+import { CreateScriptRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
+import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+import { AxiosResponse } from "axios";
 
 const createScriptSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -12,13 +13,18 @@ const createScriptSchema = z.object({
 
 type CreateScriptSchema = z.infer<typeof createScriptSchema>;
 
+export const createScriptOutputSchema = z.object({
+  message: z.string(),
+  path: z.string()
+});
+
 const CreateScriptTool = {
   name: "create-script",
   description: "Creates a new script",
-  schema: createScriptSchema.shape,
-  isReadOnly: false,
+  inputSchema: createScriptSchema.shape,
+  outputSchema: createScriptOutputSchema.shape,
   slices: ['create'],
-  handler: async (model: CreateScriptSchema) => {
+  handler: (async (model: CreateScriptSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     const normalizedPath = model.path && !model.path.startsWith('/')
@@ -35,17 +41,34 @@ const CreateScriptTool = {
       parent: normalizedPath ? { path: normalizedPath } : undefined,
     };
 
-    const response = await client.postScript(payload);
+    const response = await client.postScript(payload, {
+      returnFullResponse: true,
+      validateStatus: () => true,
+    }) as unknown as AxiosResponse<ProblemDetails | void>;
 
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof createScriptSchema.shape>;
+    if (response.status === 201) {
+      // Extract path from Location header
+      const locationHeader = response.headers['location'] || response.headers['Location'];
+      let createdPath = '';
+      if (locationHeader) {
+        // Location header format: /umbraco/management/api/v1/script/{encodedPath}
+        const pathMatch = locationHeader.match(/script\/(.+)$/);
+        if (pathMatch) {
+          createdPath = decodeURIComponent(pathMatch[1]);
+        }
+      }
+      return createToolResult({
+        message: "Script created successfully",
+        path: createdPath
+      });
+    } else {
+      const errorData: ProblemDetails = response.data || {
+        status: response.status,
+        detail: response.statusText,
+      };
+      return createToolResultError(errorData);
+    }
+  }),
+} satisfies ToolDefinition<typeof createScriptSchema.shape, typeof createScriptOutputSchema.shape>;
 
 export default withStandardDecorators(CreateScriptTool);

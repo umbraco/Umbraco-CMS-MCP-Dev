@@ -2,11 +2,10 @@
 
 exports[`get-searcher-by-searcher-name-query should get searcher query results by searcher name 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

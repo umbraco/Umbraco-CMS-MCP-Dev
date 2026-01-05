@@ -1,27 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getScriptByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getScriptByPathParams, getScriptByPathResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetScriptByPathTool = {
   name: "get-script-by-path",
   description: "Gets a script by path",
-  schema: getScriptByPathParams.shape,
-  isReadOnly: true,
+  inputSchema: getScriptByPathParams.shape,
+  outputSchema: getScriptByPathResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async ({ path }: { path: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getScriptByPath(path);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getScriptByPathParams.shape>;
+  handler: (async ({ path }: { path: string }) => {
+    return executeGetApiCall((client) =>
+      client.getScriptByPath(path, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getScriptByPathParams.shape, typeof getScriptByPathResponse.shape>;
 
 export default withStandardDecorators(GetScriptByPathTool);
