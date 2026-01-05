@@ -1,8 +1,7 @@
 import GetRelationByRelationTypeIdTool from "../get/get-relation-by-relation-type-id.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getRelationByRelationTypeIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_RELATION_TYPE_ID = "4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf";
 const TEST_SKIP_VALUE = 0;
@@ -18,7 +17,7 @@ describe("get-relation-by-relation-type-id", () => {
       take: TEST_TAKE_VALUE
     }, createMockRequestHandlerExtra());
 
-    const response = validateStructuredContent(result, getRelationByRelationTypeIdResponse);
+    const response = validateToolResponse(GetRelationByRelationTypeIdTool, result);
 
     // Verify response structure
     expect(response).toHaveProperty('total');

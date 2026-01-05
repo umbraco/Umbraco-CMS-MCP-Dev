@@ -3,7 +3,7 @@ import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_TYPE_NAME = "_Test Item MemberType Search";
 const TEST_MEMBER_TYPE_NAME_2 = "_Test Item MemberType Search 2";
@@ -40,8 +40,8 @@ describe("search-member-type-items", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify empty results
-    const data = result.structuredContent as any;
+    // Assert - Validate response against tool's output schema
+    const data = validateToolResponse(SearchMemberTypeItemsTool, result);
     expect(data.total).toBe(0);
     expect(data.items).toEqual([]);
   });

@@ -4,7 +4,7 @@ import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import { Default_Memeber_TYPE_ID } from "../../../../constants/constants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Item Member Search";
 const TEST_MEMBER_EMAIL = "itemsearch@example.com";
@@ -49,8 +49,8 @@ describe("get-item-member-search", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify empty results
-    const data = result.structuredContent as any;
+    // Assert - Validate response against tool's output schema
+    const data = validateToolResponse(GetItemMemberSearchTool, result);
     expect(data.total).toBe(0);
     expect(data.items).toEqual([]);
   });
@@ -79,8 +79,8 @@ describe("get-item-member-search", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify only one item is returned
-    const data = result.structuredContent as any;
+    // Assert - Validate response against tool's output schema
+    const data = validateToolResponse(GetItemMemberSearchTool, result);
     expect(data.items.length).toBeLessThanOrEqual(1);
   });
 });

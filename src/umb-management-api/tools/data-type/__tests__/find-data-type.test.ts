@@ -1,9 +1,8 @@
 import FindDataTypeTool from "../get/find-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getFilterDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetFilterDataTypeParams } from "@/umb-management-api/schemas/index.js";
 
 const TEST_DATATYPE_NAME = "_Test FindDataType";
@@ -29,7 +28,7 @@ describe("find-data-type", () => {
     const result = await FindDataTypeTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert - Verify the data type was found
-    const data = validateStructuredContent(result, getFilterDataTypeResponse);
+    const data = validateToolResponse(FindDataTypeTool, result);
     expect(data.total).toBeGreaterThan(0);
     const found = data.items.find(
       (dt: any) => dt.name === TEST_DATATYPE_NAME
@@ -44,7 +43,7 @@ describe("find-data-type", () => {
     const result = await FindDataTypeTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert - Verify no results
-    const data = validateStructuredContent(result, getFilterDataTypeResponse);
+    const data = validateToolResponse(FindDataTypeTool, result);
     expect(data.total).toBe(0);
     expect(data.items.length).toBe(0);
   });

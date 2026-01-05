@@ -1,6 +1,6 @@
 import GetMediaConfigurationTool from "../get/get-media-configuration.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-media-configuration", () => {
   setupTestEnvironment();
@@ -11,8 +11,9 @@ describe("get-media-configuration", () => {
       createMockRequestHandlerExtra()
     );
 
-    expect(result).toBeDefined();
-    expect(result.structuredContent).toBeDefined();
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetMediaConfigurationTool, result);
+    expect(content).toBeDefined();
     expect(result).toMatchSnapshot();
   });
 });

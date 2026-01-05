@@ -1,7 +1,7 @@
 import { TemplateTestHelper } from "./helpers/template-helper.js";
 import GetTemplateSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
@@ -56,6 +56,8 @@ describe("get-template-siblings", () => {
     );
 
     // Assert: Verify response
+    const data = validateToolResponse(GetTemplateSiblingsTool, result);
+    expect(data).toBeDefined();
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
   });

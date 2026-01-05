@@ -1,5 +1,5 @@
 import GetIndexerByIndexNameTool from "../get/get-indexer-by-index-name.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
@@ -13,6 +13,9 @@ describe("get-indexer-by-index-name", () => {
       { indexName: TEST_INDEX_NAME },
       createMockRequestHandlerExtra()
     );
+
+    // Validate the response schema
+    validateToolResponse(GetIndexerByIndexNameTool, result);
 
     // Normalize documentCount and fieldCount which change based on index state
     const snapshot = createSnapshotResult(result);

@@ -17,11 +17,7 @@ exports[`get-member-types-by-id-array should get multiple member types by ID 1`]
 ]
 `;
 
-exports[`get-member-types-by-id-array should get no member types for empty request 1`] = `
-{
-  "items": [],
-}
-`;
+exports[`get-member-types-by-id-array should get no member types for empty request 1`] = `[]`;
 
 exports[`get-member-types-by-id-array should get single member type by ID 1`] = `
 [

@@ -1,7 +1,7 @@
 import { ScriptTestHelper } from "./helpers/script-test-helper.js";
 import GetScriptTreeSiblingsTool from "../get/get-script-tree-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
@@ -59,8 +59,9 @@ describe("get-script-tree-siblings", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert: Verify response
-    const normalizedItems = createSnapshotResult(result);
+    // Assert: Validate response against tool's outputSchema
+    const data = validateToolResponse(GetScriptTreeSiblingsTool, result);
+    const normalizedItems = createSnapshotResult(data);
     expect(normalizedItems).toMatchSnapshot();
   });
 

@@ -3,7 +3,7 @@ import GetPartialViewAncestorsTool from "../items/get/get-ancestors.js";
 import GetPartialViewChildrenTool from "../items/get/get-children.js";
 import GetPartialViewRootTool from "../items/get/get-root.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
@@ -31,6 +31,10 @@ describe("partial-view-tree-operations", () => {
         createMockRequestHandlerExtra()
       );
 
+      // Validate response against tool's output schema
+      const data = validateToolResponse(GetPartialViewRootTool, result);
+      expect(data).toHaveProperty('items');
+
       // Normalize and verify response
       const normalizedItems = createSnapshotResult(result);
       expect(normalizedItems).toMatchSnapshot();
@@ -57,6 +61,10 @@ describe("partial-view-tree-operations", () => {
         } as any,
         createMockRequestHandlerExtra()
       );
+
+      // Validate response against tool's output schema
+      const data = validateToolResponse(GetPartialViewChildrenTool, result);
+      expect(data).toHaveProperty('items');
 
       // Normalize and verify response
       const normalizedItems = createSnapshotResult(result);
@@ -95,6 +103,10 @@ describe("partial-view-tree-operations", () => {
         },
         createMockRequestHandlerExtra()
       );
+
+      // Validate response against tool's output schema
+      const data = validateToolResponse(GetPartialViewAncestorsTool, result);
+      expect(data).toHaveProperty('items');
 
       // Normalize and verify response
       const normalizedItems = createSnapshotResult(result);

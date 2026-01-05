@@ -3,9 +3,8 @@ import GetDocumentByIdTool from "../get/get-document-by-id.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getDocumentByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetDocumentById";
 
@@ -28,7 +27,7 @@ describe("get-document-by-id", () => {
       { id },
       createMockRequestHandlerExtra()
     );
-    const doc = validateStructuredContent(result, getDocumentByIdResponse);
+    const doc = validateToolResponse(GetDocumentByIdTool, result);
     expect(doc.id).toBe(id);
     expect(doc.variants[0].name).toBe(TEST_DOCUMENT_NAME);
   });

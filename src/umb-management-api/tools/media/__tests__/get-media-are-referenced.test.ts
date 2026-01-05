@@ -9,7 +9,7 @@ import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/do
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media Are Referenced";
 const TEST_MEDIA_NAME_1 = "_Test Media Are Referenced1";
@@ -62,8 +62,8 @@ describe("get-media-are-referenced", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify it returns empty results
-    const parsed = result.structuredContent as { total: number; items: { id: string }[] };
+    // Validate response against tool's outputSchema and verify it returns empty results
+    const parsed = validateToolResponse(GetMediaAreReferencedTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
   });
@@ -111,7 +111,8 @@ describe("get-media-are-referenced", () => {
       createMockRequestHandlerExtra()
     );
 
-    const parsed = result.structuredContent as { total: number; items: { id: string }[] };
+    // Validate response against tool's outputSchema
+    const parsed = validateToolResponse(GetMediaAreReferencedTool, result);
     // Should return only the referenced media
     expect(parsed.total).toBe(1);
     expect(parsed.items).toHaveLength(1);
@@ -171,8 +172,8 @@ describe("get-media-are-referenced", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify it returns the reference
-    const parsed = result.structuredContent as { total: number; items: { id: string }[] };
+    // Validate response against tool's outputSchema and verify it returns the reference
+    const parsed = validateToolResponse(GetMediaAreReferencedTool, result);
     expect(parsed.total).toBeGreaterThan(0);
     expect(parsed.items).toHaveLength(1);
     expect(parsed.items[0].id).toBe(mediaBuilder.getId());

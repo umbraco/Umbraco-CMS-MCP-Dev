@@ -4,7 +4,7 @@ import GetScriptTreeAncestorsTool from "../get/get-script-tree-ancestors.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 // Generate unique names to avoid conflicts
@@ -85,7 +85,9 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
-      expect(createSnapshotResult(result)).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeRootTool, result);
+      expect(createSnapshotResult(data)).toMatchSnapshot();
     });
   });
 
@@ -99,7 +101,9 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
-      expect(createSnapshotResult(result)).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeChildrenTool, result);
+      expect(createSnapshotResult(data)).toMatchSnapshot();
     });
 
     it("should get children of child folder", async () => {
@@ -111,7 +115,9 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
-      expect(createSnapshotResult(result)).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeChildrenTool, result);
+      expect(createSnapshotResult(data)).toMatchSnapshot();
     });
 
     it("should get empty children for non-folder script", async () => {
@@ -123,7 +129,9 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
-      expect(createSnapshotResult(result)).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeChildrenTool, result);
+      expect(createSnapshotResult(data)).toMatchSnapshot();
     });
   });
 
@@ -135,7 +143,9 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
-      expect(createSnapshotResult(result)).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeAncestorsTool, result);
+      expect(createSnapshotResult(data)).toMatchSnapshot();
     });
 
     it("should get ancestors of child script", async () => {
@@ -145,7 +155,9 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
-      expect(createSnapshotResult(result)).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeAncestorsTool, result);
+      expect(createSnapshotResult(data)).toMatchSnapshot();
     });
 
     it("should get empty ancestors for root script", async () => {
@@ -155,7 +167,9 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
-      expect(createSnapshotResult(result)).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeAncestorsTool, result);
+      expect(createSnapshotResult(data)).toMatchSnapshot();
     });
   });
 });

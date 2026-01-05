@@ -5,14 +5,14 @@ import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/docum
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DataTypeBuilder } from "../../data-type/__tests__/helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "../../data-type/__tests__/helpers/data-type-test-helper.js";
-import CreateElementTypeTool, { createElementTypeOutputSchema } from "../../document-type/post/create-element-type.js";
+import CreateElementTypeTool from "../../document-type/post/create-element-type.js";
 import {
   ROOT_DOCUMENT_TYPE_ID,
   BLANK_UUID,
   TextString_DATA_TYPE_ID,
 } from "../../../../constants/constants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { v4 as uuidv4 } from "uuid";
@@ -174,7 +174,7 @@ describe("update-block-property", () => {
         description: undefined
       }, createMockRequestHandlerExtra());
 
-      const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
+      const elementResponse = validateToolResponse(CreateElementTypeTool, elementResult);
       if (!elementResponse.id) {
         throw new Error(`Failed to create element type: ${JSON.stringify(elementResponse)}`);
       }
@@ -490,7 +490,7 @@ describe("update-block-property", () => {
         description: undefined
       }, createMockRequestHandlerExtra());
 
-      const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
+      const elementResponse = validateToolResponse(CreateElementTypeTool, elementResult);
       if (!elementResponse.id) {
         throw new Error(`Failed to create element type: ${JSON.stringify(elementResponse)}`);
       }
@@ -758,7 +758,7 @@ describe("update-block-property", () => {
         description: undefined
       }, createMockRequestHandlerExtra());
 
-      const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
+      const elementResponse = validateToolResponse(CreateElementTypeTool, elementResult);
       if (!elementResponse.id) {
         throw new Error(`Failed to create element type: ${JSON.stringify(elementResponse)}`);
       }
@@ -1099,7 +1099,7 @@ describe("update-block-property", () => {
         description: undefined
       }, createMockRequestHandlerExtra());
 
-      const innerElementResponse = validateStructuredContent(innerElementResult, createElementTypeOutputSchema);
+      const innerElementResponse = validateToolResponse(CreateElementTypeTool, innerElementResult);
       if (!innerElementResponse.id) {
         throw new Error(`Failed to create inner element type: ${JSON.stringify(innerElementResponse)}`);
       }
@@ -1142,7 +1142,7 @@ describe("update-block-property", () => {
         description: undefined
       }, createMockRequestHandlerExtra());
 
-      const gridElementResponse = validateStructuredContent(gridElementResult, createElementTypeOutputSchema);
+      const gridElementResponse = validateToolResponse(CreateElementTypeTool, gridElementResult);
       if (!gridElementResponse.id) {
         throw new Error(`Failed to create grid element type: ${JSON.stringify(gridElementResponse)}`);
       }
@@ -1526,7 +1526,7 @@ describe("update-block-property", () => {
         description: undefined
       }, createMockRequestHandlerExtra());
 
-      const elementResponse = validateStructuredContent(elementResult, createElementTypeOutputSchema);
+      const elementResponse = validateToolResponse(CreateElementTypeTool, elementResult);
       if (!elementResponse.id) {
         throw new Error(`Failed to create element type: ${JSON.stringify(elementResponse)}`);
       }
@@ -1868,7 +1868,7 @@ describe("update-block-property", () => {
         description: undefined
       }, createMockRequestHandlerExtra());
 
-      const innerElementResponse = validateStructuredContent(innerElementResult, createElementTypeOutputSchema);
+      const innerElementResponse = validateToolResponse(CreateElementTypeTool, innerElementResult);
       if (!innerElementResponse.id) {
         throw new Error(`Failed to create inner element type: ${JSON.stringify(innerElementResponse)}`);
       }
@@ -1911,7 +1911,7 @@ describe("update-block-property", () => {
         description: undefined
       }, createMockRequestHandlerExtra());
 
-      const gridElementResponse = validateStructuredContent(gridElementResult, createElementTypeOutputSchema);
+      const gridElementResponse = validateToolResponse(CreateElementTypeTool, gridElementResult);
       if (!gridElementResponse.id) {
         throw new Error(`Failed to create grid element type: ${JSON.stringify(gridElementResponse)}`);
       }

@@ -3,8 +3,7 @@ import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getItemDocumentTypeSearchResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Search";
 const TEST_DOCTYPE_NAME_2 = "_Test DocumentType Search 2";
@@ -38,7 +37,7 @@ describe("search-document-type", () => {
     } as any, createMockRequestHandlerExtra());
 
     // Verify structured content is valid
-    validateStructuredContent(result, getItemDocumentTypeSearchResponse);
+    validateToolResponse(SearchDocumentTypeTool, result);
 
     // Verify the handler response using snapshot
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -52,7 +51,7 @@ describe("search-document-type", () => {
     } as any, createMockRequestHandlerExtra());
 
     // Verify structured content is valid
-    validateStructuredContent(result, getItemDocumentTypeSearchResponse);
+    validateToolResponse(SearchDocumentTypeTool, result);
 
     // Verify the handler response using snapshot
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -78,7 +77,7 @@ describe("search-document-type", () => {
     } as any, createMockRequestHandlerExtra());
 
     // Verify structured content is valid
-    validateStructuredContent(result, getItemDocumentTypeSearchResponse);
+    validateToolResponse(SearchDocumentTypeTool, result);
 
     // Verify the handler response using snapshot
     expect(createSnapshotResult(result)).toMatchSnapshot();

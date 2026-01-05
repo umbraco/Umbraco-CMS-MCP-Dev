@@ -1,10 +1,10 @@
-import CreateDataTypeTool, { createDataTypeOutputSchema } from "../post/create-data-type.js";
+import CreateDataTypeTool from "../post/create-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { createSnapshotResult, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType Created";
 const EXISTING_DATATYPE_NAME = "_Existing DataType";
@@ -32,7 +32,7 @@ describe("create-data-type", () => {
     const result = await CreateDataTypeTool.handler(dataTypeModel as any, createMockRequestHandlerExtra());
 
     // Assert - Verify the handler response
-    const responseData = validateStructuredContent(result, createDataTypeOutputSchema);
+    const responseData = validateToolResponse(CreateDataTypeTool, result);
     const dataTypeId = responseData.id;
     expect(responseData.message).toBe("Data type created successfully");
     expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();
@@ -59,7 +59,7 @@ describe("create-data-type", () => {
     }, createMockRequestHandlerExtra());
 
     // Assert - Verify the handler response
-    const responseData = validateStructuredContent(result, createDataTypeOutputSchema);
+    const responseData = validateToolResponse(CreateDataTypeTool, result);
     const dataTypeId = responseData.id;
     expect(responseData.message).toBe("Data type created successfully");
     expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();

@@ -4,9 +4,8 @@ import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getPartialViewByPathResponse, getPartialViewFolderByPathResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_PARTIAL_VIEW_NAME = "_TestGetPartialView.cshtml";
 const TEST_FOLDER_NAME = "_TestGetPartialViewFolder";
@@ -50,7 +49,7 @@ describe("get-partial-view", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response contains expected partial view data
-      const responseData = validateStructuredContent(result, getPartialViewByPathResponse);
+      const responseData = validateToolResponse(GetPartialViewByPathTool, result);
       expect(responseData).toHaveProperty('name', TEST_PARTIAL_VIEW_NAME);
       expect(responseData).toHaveProperty('content', TEST_CONTENT);
       expect(responseData).toHaveProperty('path', partialViewBuilder.getPath());
@@ -80,7 +79,7 @@ describe("get-partial-view", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response contains expected data
-      const responseData = validateStructuredContent(result, getPartialViewByPathResponse);
+      const responseData = validateToolResponse(GetPartialViewByPathTool, result);
       expect(responseData).toHaveProperty('name', TEST_PARTIAL_VIEW_NAME);
       expect(responseData).toHaveProperty('content', TEST_CONTENT);
       expect(responseData.path).toContain(TEST_FOLDER_NAME);
@@ -132,7 +131,7 @@ describe("get-partial-view", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response contains expected folder data
-      const responseData = validateStructuredContent(result, getPartialViewFolderByPathResponse);
+      const responseData = validateToolResponse(GetPartialViewFolderByPathTool, result);
       expect(responseData).toHaveProperty('name', TEST_FOLDER_NAME);
       expect(responseData).toHaveProperty('path', folderBuilder.getPath());
     });

@@ -8,7 +8,7 @@ import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/do
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Member Referenced By";
 const TEST_MEMBER_EMAIL = "test-referenced-by@example.com";
@@ -59,8 +59,8 @@ describe("get-member-by-id-referenced-by", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the API returns proper structure with found reference
-    const parsed = result.structuredContent as any;
+    // Validate response against tool's output schema
+    const parsed = validateToolResponse(GetMemberByIdReferencedByTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -85,8 +85,8 @@ describe("get-member-by-id-referenced-by", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the API returns proper structure with no references
-    const parsed = result.structuredContent as any;
+    // Validate response against tool's output schema
+    const parsed = validateToolResponse(GetMemberByIdReferencedByTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
 

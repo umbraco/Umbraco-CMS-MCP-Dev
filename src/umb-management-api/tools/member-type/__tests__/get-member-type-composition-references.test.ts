@@ -3,7 +3,7 @@ import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_TYPE_NAME = "_Test MemberType Composition";
 const TEST_COMPOSITION_NAME = "_Test Composition MemberType";
@@ -37,8 +37,9 @@ describe("get-member-type-composition-references", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Parse the response to get the ID to normalize
-    const parsed = result.structuredContent as unknown as any[];
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypeCompositionReferencesTool, result);
+    const parsed = data.items as unknown as any[];
     const idToNormalize = parsed[0]?.id;
 
     // Normalize IDs and dates for snapshot testing
@@ -62,8 +63,9 @@ describe("get-member-type-composition-references", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Parse the response to get the ID to normalize
-    const parsed = result.structuredContent as unknown as any[];
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypeCompositionReferencesTool, result);
+    const parsed = data.items as unknown as any[];
     const idToNormalize = parsed[0]?.id;
 
     // Normalize IDs and dates for snapshot testing

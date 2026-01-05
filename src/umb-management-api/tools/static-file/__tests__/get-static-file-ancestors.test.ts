@@ -1,7 +1,7 @@
 import GetStaticFileAncestorsTool from "../items/get/get-ancestors.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const INVALID_DESCENDANT_PATH = "/nonexistent/invalid/path/file.txt";
@@ -47,8 +47,8 @@ describe("get-static-file-ancestors", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const ancestors = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
 
     // Verify file system structure if ancestors exist
@@ -115,8 +115,8 @@ describe("get-static-file-ancestors", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Root-level items should have minimal ancestors (possibly just root "/")
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const ancestors = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
 
     // For root items, ancestors should be minimal (may include root and the item itself)
@@ -138,8 +138,8 @@ describe("get-static-file-ancestors", () => {
     // Assert - should not fail, may return empty array or handle gracefully
     expect(result).toMatchSnapshot();
 
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const ancestors = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
     // Invalid path should typically return empty ancestors
     expect(ancestors.length).toBe(0);
@@ -175,8 +175,8 @@ describe("get-static-file-ancestors", () => {
     );
 
     // Assert
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const ancestors = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
 
     if (ancestors.length > 0) {
       // Check first ancestor has expected structure
@@ -223,8 +223,8 @@ describe("get-static-file-ancestors", () => {
     // Assert - root should have no ancestors
     expect(result).toMatchSnapshot();
 
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const ancestors = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
     expect(ancestors.length).toBe(0); // Root has no ancestors
   });
@@ -259,8 +259,8 @@ describe("get-static-file-ancestors", () => {
     const helperResult = await StaticFileHelper.getAncestors(testPath);
 
     // Assert - both should return the same ancestors
-    const structuredContent = toolResult.structuredContent as { items: any[] } | undefined;
-    const toolAncestors = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFileAncestorsTool, toolResult);
+    const toolAncestors = data.items ?? [];
 
     expect(toolAncestors.length).toBe(helperResult.length);
 
@@ -291,8 +291,8 @@ describe("get-static-file-ancestors", () => {
     );
 
     // Assert
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const ancestors = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
 
     if (ancestors.length > 0) {

@@ -57,8 +57,6 @@ describe("sort-media", () => {
       createMockRequestHandlerExtra()
     );
     expect(result).toBeDefined();
-    // Check structuredContent for successful responses
-    expect(result.structuredContent).toBeDefined();
     expect(result).toMatchSnapshot();
   });
 });

@@ -1,7 +1,7 @@
 import GetMemberGroupByIdArrayTool from "../get/get-member-group-by-id-array.js";
 import { MemberGroupBuilder } from "./helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "./helpers/member-group-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
@@ -20,8 +20,10 @@ describe("get-item-member-group", () => {
       { id: undefined },
       createMockRequestHandlerExtra()
     );
-    // executeGetApiCall returns the array directly in structuredContent
-    const items = (result.structuredContent as unknown as any[]) ?? [];
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberGroupByIdArrayTool, result);
+    const items = (data.items ?? []) as any[];
     expect(items).toMatchSnapshot();
   });
 
@@ -33,7 +35,10 @@ describe("get-item-member-group", () => {
       { id: [builder.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = ((result.structuredContent as any)?.items ?? []) as any[];
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberGroupByIdArrayTool, result);
+    const items = (data.items ?? []) as any[];
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_GROUP_NAME_1);
     items[0].id = BLANK_UUID;
@@ -51,7 +56,10 @@ describe("get-item-member-group", () => {
       { id: [builder1.getId(), builder2.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = ((result.structuredContent as any)?.items ?? []) as any[];
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberGroupByIdArrayTool, result);
+    const items = (data.items ?? []) as any[];
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_GROUP_NAME_1);
     expect(items[1].name).toBe(TEST_GROUP_NAME_2);

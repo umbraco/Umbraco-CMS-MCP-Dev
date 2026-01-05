@@ -4,7 +4,7 @@ import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { MediaTypeCompositionResponseModel } from "@/umb-management-api/schemas/index.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_TYPE_NAME = "_Test MediaType Available";
 const TEST_COMPOSITION_NAME = "_Test Available Composition";
@@ -37,8 +37,11 @@ describe("get-media-type-available-compositions", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Parse and filter just our test composition
-    const items = ((result.structuredContent as any)?.items ?? []) as MediaTypeCompositionResponseModel[];
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMediaTypeAvailableCompositionsTool, result);
+
+    // Filter just our test composition
+    const items = (data.items ?? []) as MediaTypeCompositionResponseModel[];
     const testComposition = items.find(
       (item) => item.name === TEST_COMPOSITION_NAME
     );

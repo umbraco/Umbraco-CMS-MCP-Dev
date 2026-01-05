@@ -1,4 +1,4 @@
-import CreateDocumentTypeTool, { createDocumentTypeOutputSchema } from "../post/create-document-type.js";
+import CreateDocumentTypeTool from "../post/create-document-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { createSnapshotResult, normalizeErrorResponse, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
@@ -6,7 +6,7 @@ import type { CreateDocumentTypeModel } from "../post/create-document-type.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import type { DocumentTypeTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
 import { TextString_DATA_TYPE_ID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateStructuredContent, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Created";
 const EXISTING_DOCTYPE_NAME = "_Existing DocumentType";
@@ -40,7 +40,7 @@ describe("create-document-type", () => {
     const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = validateStructuredContent(result, createDocumentTypeOutputSchema);
+    const responseData = validateToolResponse(CreateDocumentTypeTool, result);
     const documentTypeId = responseData.id;
 
     // Verify the handler response using snapshot
@@ -97,7 +97,7 @@ describe("create-document-type", () => {
     const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = validateStructuredContent(result, createDocumentTypeOutputSchema);
+    const responseData = validateToolResponse(CreateDocumentTypeTool, result);
     const documentTypeId = responseData.id;
 
     // Verify the handler response using snapshot
@@ -131,7 +131,7 @@ describe("create-document-type", () => {
     const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = validateStructuredContent(result, createDocumentTypeOutputSchema);
+    const responseData = validateToolResponse(CreateDocumentTypeTool, result);
     const documentTypeId = responseData.id;
 
     // Assert: Verify response
@@ -201,7 +201,7 @@ describe("create-document-type", () => {
 
     const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
 
-    const responseData = validateStructuredContent(result, createDocumentTypeOutputSchema);
+    const responseData = validateToolResponse(CreateDocumentTypeTool, result);
     const fullDocType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
 
     // Should have 2 tabs

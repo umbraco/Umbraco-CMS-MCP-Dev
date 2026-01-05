@@ -2,7 +2,7 @@ import GetDocumentAuditLogTool from "../get/get-document-audit-log.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test AuditLogDocument";
@@ -39,8 +39,7 @@ describe("get-document-audit-log", () => {
       createMockRequestHandlerExtra()
     );
     expect(result).toBeDefined();
-    expect(result.structuredContent).toBeDefined();
-    const data = result.structuredContent as { items: any[], total: number };
+    const data = validateToolResponse(GetDocumentAuditLogTool, result);
     expect(data.items).toBeDefined();
   });
 
@@ -63,7 +62,7 @@ describe("get-document-audit-log", () => {
       expect(result.isError).toBe(true);
     } else {
       // API may return empty audit log for non-existent document
-      const data = result.structuredContent as { items: any[], total: number };
+      const data = validateToolResponse(GetDocumentAuditLogTool, result);
       expect(data.items).toBeDefined();
     }
   });

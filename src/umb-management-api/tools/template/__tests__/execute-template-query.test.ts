@@ -1,7 +1,6 @@
-import { postTemplateQueryExecuteBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import ExecuteTemplateQueryTool from "../post/execute-template-query.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("execute-template-query", () => {
@@ -18,6 +17,8 @@ describe("execute-template-query", () => {
 
     const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
 
+    const data = validateToolResponse(ExecuteTemplateQueryTool, result);
+    expect(data).toBeDefined();
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
@@ -32,6 +33,8 @@ describe("execute-template-query", () => {
 
     const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
 
+    const data = validateToolResponse(ExecuteTemplateQueryTool, result);
+    expect(data).toBeDefined();
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
@@ -55,6 +58,8 @@ describe("execute-template-query", () => {
 
     const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
 
+    const data = validateToolResponse(ExecuteTemplateQueryTool, result);
+    expect(data).toBeDefined();
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
@@ -69,6 +74,8 @@ describe("execute-template-query", () => {
 
     const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
 
+    const data = validateToolResponse(ExecuteTemplateQueryTool, result);
+    expect(data).toBeDefined();
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 });

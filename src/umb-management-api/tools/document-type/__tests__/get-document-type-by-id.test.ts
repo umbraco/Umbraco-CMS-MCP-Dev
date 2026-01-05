@@ -2,10 +2,9 @@ import GetDocumentTypeTool from "../get/get-document-type-by-ids.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { getDocumentTypeByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateStructuredContent, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-document-type", () => {
   const TEST_DOCTYPE_NAME = "_Test DocumentType Get";
@@ -29,7 +28,7 @@ describe("get-document-type", () => {
     );
 
     // Assert - Verify structured content is valid
-    validateStructuredContent(result, getDocumentTypeByIdResponse);
+    validateToolResponse(GetDocumentTypeTool, result);
 
     // Assert - Verify the handler response using snapshot
     expect(createSnapshotResult(result)).toMatchSnapshot();

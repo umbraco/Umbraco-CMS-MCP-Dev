@@ -3,7 +3,7 @@ import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-member-types-by-id-array", () => {
   setupTestEnvironment();
@@ -22,7 +22,10 @@ describe("get-member-types-by-id-array", () => {
       { id: undefined },
       createMockRequestHandlerExtra()
     );
-    const items = (result.structuredContent as any) ?? [];
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypesByIdArrayTool, result);
+    const items = (data.items ?? []) as any[];
 
     expect(items).toMatchSnapshot();
   });
@@ -38,7 +41,10 @@ describe("get-member-types-by-id-array", () => {
       { id: [builder.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = ((result.structuredContent as any)?.items ?? []) as any[];
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypesByIdArrayTool, result);
+    const items = (data.items ?? []) as any[];
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_MEMBER_TYPE_NAME);
     // Normalize for snapshot
@@ -65,7 +71,9 @@ describe("get-member-types-by-id-array", () => {
       createMockRequestHandlerExtra()
     );
 
-    const items = ((result.structuredContent as any)?.items ?? []) as any[];
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypesByIdArrayTool, result);
+    const items = (data.items ?? []) as any[];
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_MEMBER_TYPE_NAME);
     expect(items[1].name).toBe(TEST_MEMBER_TYPE_NAME_2);

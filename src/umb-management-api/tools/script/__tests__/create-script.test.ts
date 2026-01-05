@@ -1,7 +1,7 @@
 import CreateScriptTool from "../post/create-script.js";
 import CreateScriptFolderTool from "../post/create-script-folder.js";
 import { ScriptTestHelper } from "./helpers/script-test-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_SCRIPT_NAME = "_TestScript";
@@ -30,8 +30,9 @@ describe("create-script", () => {
         content: TEST_SCRIPT_CONTENT
       }, createMockRequestHandlerExtra());
 
-      // Verify the handler response using snapshot
-      expect(result).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(CreateScriptTool, result);
+      expect(data).toMatchSnapshot();
 
       // Verify the created script exists
       const expectedName = TEST_SCRIPT_NAME + '.js';
@@ -67,8 +68,9 @@ describe("create-script", () => {
         parent: undefined
       }, createMockRequestHandlerExtra());
 
-      // Verify the handler response using snapshot
-      expect(result).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(CreateScriptFolderTool, result);
+      expect(data).toMatchSnapshot();
 
       // Verify the created folder exists
       const folder = await ScriptTestHelper.findScript(TEST_FOLDER_NAME);

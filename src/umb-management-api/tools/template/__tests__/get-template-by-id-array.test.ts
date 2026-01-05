@@ -1,8 +1,7 @@
-import { getItemTemplateQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetTemplatesByIdArrayTool from "../get/get-template-by-id-array.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
@@ -32,6 +31,8 @@ describe("get-template-by-id-array", () => {
       id: [builder1.getId(), builder2.getId()]
     }, createMockRequestHandlerExtra());
 
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
   });
@@ -43,6 +44,8 @@ describe("get-template-by-id-array", () => {
       id: [builder1.getId()]
     }, createMockRequestHandlerExtra());
 
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
   });
@@ -52,6 +55,8 @@ describe("get-template-by-id-array", () => {
       id: []
     }, createMockRequestHandlerExtra());
 
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     expect(result).toMatchSnapshot();
   });
 
@@ -60,6 +65,8 @@ describe("get-template-by-id-array", () => {
       id: [BLANK_UUID]
     }, createMockRequestHandlerExtra());
 
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     expect(result).toMatchSnapshot();
   });
 
@@ -68,6 +75,8 @@ describe("get-template-by-id-array", () => {
       id: undefined
     }, createMockRequestHandlerExtra());
 
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     expect(result).toMatchSnapshot();
   });
 });

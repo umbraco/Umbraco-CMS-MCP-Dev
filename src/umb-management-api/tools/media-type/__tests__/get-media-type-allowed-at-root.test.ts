@@ -4,7 +4,7 @@ import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { MediaTypeResponseModel } from "@/umb-management-api/schemas/index.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIATYPE_NAME = "_Test MediaType Root";
 
@@ -32,11 +32,9 @@ describe("get-media-type-allowed-at-root", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Parse and find our test media type
-    const parsed = result.structuredContent as {
-      items: MediaTypeResponseModel[];
-    };
-    const testMediaType = parsed.items.find(
+    // Validate response against tool's output schema
+    const parsed = validateToolResponse(GetMediaTypeAllowedAtRootTool, result);
+    const testMediaType = (parsed.items as MediaTypeResponseModel[]).find(
       (item) => item.name === TEST_MEDIATYPE_NAME
     );
 

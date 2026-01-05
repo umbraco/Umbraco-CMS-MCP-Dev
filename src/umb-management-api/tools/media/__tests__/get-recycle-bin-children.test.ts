@@ -4,7 +4,7 @@ import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_MEDIA_NAME = "_Test Media Children";
@@ -58,7 +58,8 @@ describe("get-recycle-bin-media-children", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    const response = result.structuredContent as { items: { variants: { name: string }[] }[] };
+    // Validate response against tool's outputSchema
+    const response = validateToolResponse(GetRecycleBinMediaChildrenTool, result);
     expect(response.items).toHaveLength(1);
     expect(response.items[0].variants[0].name).toBe(TEST_CHILD_NAME);
   });

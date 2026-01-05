@@ -3,7 +3,7 @@ import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateErrorResult, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
@@ -45,7 +45,8 @@ describe("copy-data-type", () => {
 
     // Assert - Verify the handler response returns the new ID
     expect(result.isError).toBeFalsy();
-    expect(result.structuredContent?.id).toBeDefined();
+    const data = validateToolResponse(CopyDataTypeTool, result);
+    expect(data.id).toBeDefined();
     expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Assert - Verify the data type was copied to the folder
@@ -54,7 +55,7 @@ describe("copy-data-type", () => {
     );
     expect(copiedDataType).toBeTruthy();
     expect(copiedDataType?.parent?.id).toBe(folderBuilder.getId());
-    expect(copiedDataType?.id).toBe(result.structuredContent?.id);
+    expect(copiedDataType?.id).toBe(data.id);
   });
 
   it("should copy a data type to root", async () => {
@@ -77,7 +78,8 @@ describe("copy-data-type", () => {
 
     // Assert - Verify the handler response returns the new ID
     expect(result.isError).toBeFalsy();
-    expect(result.structuredContent?.id).toBeDefined();
+    const data = validateToolResponse(CopyDataTypeTool, result);
+    expect(data.id).toBeDefined();
     expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Assert - Verify the data type was copied to root
@@ -86,7 +88,7 @@ describe("copy-data-type", () => {
     );
     expect(copiedDataType).toBeTruthy();
     expect(copiedDataType?.parent).toBeNull();
-    expect(copiedDataType?.id).toBe(result.structuredContent?.id);
+    expect(copiedDataType?.id).toBe(data.id);
   });
 
   it("should handle non-existent data type", async () => {

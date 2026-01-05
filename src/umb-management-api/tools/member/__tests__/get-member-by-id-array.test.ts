@@ -6,7 +6,7 @@ import {
 } from "../../../../constants/constants.js";
 import GetMembersByIdArrayTool from "../get/get-member-by-id-array.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test GetMemberByIdArray";
 const TEST_MEMBER_EMAIL = "test-get-by-id-array@example.com";
@@ -69,7 +69,9 @@ describe("get-member-by-id-array", () => {
       createMockRequestHandlerExtra()
     );
 
-    const members = ((result.structuredContent as any)?.items ?? []) as Member[];
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMembersByIdArrayTool, result);
+    const members = (data.items ?? []) as Member[];
     expect(members).toHaveLength(2);
     expect(members.map((m) => m.id)).toEqual(expect.arrayContaining(memberIds));
   });
@@ -80,7 +82,9 @@ describe("get-member-by-id-array", () => {
       createMockRequestHandlerExtra()
     );
 
-    const members = ((result.structuredContent as any)?.items ?? []) as Member[];
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMembersByIdArrayTool, result);
+    const members = (data.items ?? []) as Member[];
     expect(members).toEqual([]);
   });
 
@@ -90,7 +94,9 @@ describe("get-member-by-id-array", () => {
       createMockRequestHandlerExtra()
     );
 
-    const members = ((result.structuredContent as any)?.items ?? []) as Member[];
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMembersByIdArrayTool, result);
+    const members = (data.items ?? []) as Member[];
     expect(members).toEqual([]);
   });
 
@@ -112,7 +118,9 @@ describe("get-member-by-id-array", () => {
       createMockRequestHandlerExtra()
     );
 
-    const members = ((result.structuredContent as any)?.items ?? []) as Member[];
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMembersByIdArrayTool, result);
+    const members = (data.items ?? []) as Member[];
     expect(members).toHaveLength(1);
     expect(members[0].id).toBe(member.getId());
   });

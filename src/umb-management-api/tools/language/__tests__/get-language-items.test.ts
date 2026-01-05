@@ -1,7 +1,7 @@
 import GetLanguageItemsTool from "../get/get-language-items.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-language-items", () => {
@@ -33,6 +33,7 @@ describe("get-language-items", () => {
       { isoCode: [TEST_LANGUAGE_ISO] },
       createMockRequestHandlerExtra()
     );
+    validateToolResponse(GetLanguageItemsTool, result);
     expect(result).toMatchSnapshot();
   });
 

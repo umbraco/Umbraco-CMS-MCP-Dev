@@ -1,7 +1,6 @@
 import GetDataTypesByIdArrayTool from "../get/get-data-type-by-id-array.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getItemDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";

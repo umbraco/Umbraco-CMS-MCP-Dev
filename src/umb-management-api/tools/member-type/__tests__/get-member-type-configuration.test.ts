@@ -1,6 +1,6 @@
 import GetMemberTypeConfigurationTool from "../get/get-member-type-configuration.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-member-type-configuration", () => {
   setupTestEnvironment();
@@ -10,7 +10,9 @@ describe("get-member-type-configuration", () => {
       {} as any,
       createMockRequestHandlerExtra()
     );
-    const config = result.structuredContent;
+
+    // Validate response against tool's output schema
+    const config = validateToolResponse(GetMemberTypeConfigurationTool, result);
     expect(config).toMatchSnapshot();
   });
 }); 

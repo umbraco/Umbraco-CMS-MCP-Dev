@@ -1,8 +1,7 @@
 import GetRelationTypeTool from "../get/get-relation-type.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getRelationTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-relation-type", () => {
   setupTestEnvironment();
@@ -13,7 +12,7 @@ describe("get-relation-type", () => {
       take: 10
     }, createMockRequestHandlerExtra());
 
-    const response = validateStructuredContent(result, getRelationTypeResponse);
+    const response = validateToolResponse(GetRelationTypeTool, result);
 
     // Verify response structure
     expect(response).toHaveProperty('total');

@@ -4,7 +4,7 @@ import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { Default_Memeber_TYPE_ID } from "../../../../constants/constants.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Member Referenced Descendants";
 const TEST_MEMBER_EMAIL = "test-referenced-descendants@example.com";
@@ -38,8 +38,8 @@ describe("get-member-by-id-referenced-descendants", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the API returns proper structure (members typically have no descendants)
-    const parsed = result.structuredContent as any;
+    // Validate response against tool's output schema
+    const parsed = validateToolResponse(GetMemberByIdReferencedDescendantsTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -64,8 +64,8 @@ describe("get-member-by-id-referenced-descendants", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the API returns proper structure with no descendant references
-    const parsed = result.structuredContent as any;
+    // Validate response against tool's output schema
+    const parsed = validateToolResponse(GetMemberByIdReferencedDescendantsTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
 

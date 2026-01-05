@@ -126,6 +126,8 @@ describe("document-type-tree", () => {
       );
 
       // Assert - Verify our test structure exists
+      // Note: GetAllDocumentTypesTool uses a full ZodObject for outputSchema instead of .shape
+      // so we access structuredContent directly
       const items: DocumentTypeTreeItemResponseModel[] = (result.structuredContent as any).items;
       const rootFolder = items.find(item => item.name === TEST_FOLDER_NAME);
       const childFolder = items.find(item => item.name === TEST_CHILD_NAME);

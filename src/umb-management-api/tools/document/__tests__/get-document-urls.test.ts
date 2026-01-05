@@ -2,8 +2,8 @@ import GetDocumentUrlsTool from "../get/get-document-urls.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { createSnapshotResult, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { normalizeObject } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetDocumentUrls";
@@ -30,7 +30,7 @@ describe("get-document-urls", () => {
       { id: [item.id] },
       createMockRequestHandlerExtra()
     );
-    const data = result.structuredContent as { items: any[] };
+    const data = validateToolResponse(GetDocumentUrlsTool, result);
     expect(normalizeObject(data.items)).toMatchSnapshot();
   });
 
@@ -39,7 +39,7 @@ describe("get-document-urls", () => {
       { id: [BLANK_UUID] },
       createMockRequestHandlerExtra()
     );
-    const data = result.structuredContent as { items: any[] };
+    const data = validateToolResponse(GetDocumentUrlsTool, result);
     expect(normalizeObject(data.items)).toMatchSnapshot();
   });
 
@@ -62,7 +62,7 @@ describe("get-document-urls", () => {
       { id: [childItem.id] },
       createMockRequestHandlerExtra()
     );
-    const data = result.structuredContent as { items: any[] };
+    const data = validateToolResponse(GetDocumentUrlsTool, result);
     expect(normalizeObject(data.items)).toMatchSnapshot();
   });
 });

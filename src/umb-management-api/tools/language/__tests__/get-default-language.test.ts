@@ -1,6 +1,6 @@
 import GetDefaultLanguageTool from "../get/get-default-language.js";
 import { UmbracoManagementClient } from "@umb-management-client";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-default-language", () => {
@@ -22,6 +22,7 @@ describe("get-default-language", () => {
       createMockRequestHandlerExtra()
     );
     // Verify the handler response using snapshot
+    validateToolResponse(GetDefaultLanguageTool, result);
     expect(result).toMatchSnapshot();
   });
 

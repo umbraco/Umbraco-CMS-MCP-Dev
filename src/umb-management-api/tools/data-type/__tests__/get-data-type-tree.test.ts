@@ -8,7 +8,7 @@ import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { DataTypeTreeItemResponseModel } from "@/umb-management-api/schemas/dataTypeTreeItemResponseModel.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateStructuredContent, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { getTreeDataTypeChildrenResponse, getTreeDataTypeAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_ROOT_NAME = "_Test Root DataType";
@@ -45,7 +45,7 @@ describe("data-type-tree", () => {
       );
 
       // Assert - Verify the children are returned
-      validateStructuredContent(result, getTreeDataTypeChildrenResponse);
+      validateToolResponse(GetDataTypeChildrenTool, result);
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 

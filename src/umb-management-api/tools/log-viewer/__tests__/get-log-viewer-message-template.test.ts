@@ -1,5 +1,5 @@
 import GetLogViewerMessageTemplateTool from "../get/get-log-viewer-message-template.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-log-viewer-message-template", () => {
@@ -11,9 +11,10 @@ describe("get-log-viewer-message-template", () => {
       createMockRequestHandlerExtra()
     );
 
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerMessageTemplateTool, result);
+
     // Verify response structure (message templates are dynamic, so we verify structure not content)
-    expect(result.structuredContent).toBeDefined();
-    const content = result.structuredContent as { items: Array<{ messageTemplate: string; count: number }>; total: number };
     expect(content).toHaveProperty("items");
     expect(content).toHaveProperty("total");
     expect(Array.isArray(content.items)).toBe(true);
@@ -46,9 +47,10 @@ describe("get-log-viewer-message-template", () => {
       createMockRequestHandlerExtra()
     );
 
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerMessageTemplateTool, result);
+
     // Verify response structure (message templates are dynamic, so we verify structure not content)
-    expect(result.structuredContent).toBeDefined();
-    const content = result.structuredContent as { items: unknown[]; total: number };
     expect(content).toHaveProperty("items");
     expect(content).toHaveProperty("total");
     expect(Array.isArray(content.items)).toBe(true);

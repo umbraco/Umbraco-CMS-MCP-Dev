@@ -3,9 +3,8 @@ import { DocumentBuilder, TEST_DOMAIN } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import GetDocumentDomainsTool from "../get/get-document-domains.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getDocumentByIdDomainsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_DOCUMENT_NAME = "_Test PutDomainsDocument";
@@ -48,7 +47,7 @@ describe("put-document-domains", () => {
       createMockRequestHandlerExtra()
     );
 
-    const domains = validateStructuredContent(getResult, getDocumentByIdDomainsResponse);
+    const domains = validateToolResponse(GetDocumentDomainsTool, getResult);
     expect(domains.domains).toEqual(
       expect.arrayContaining([expect.objectContaining(TEST_DOMAIN)])
     );

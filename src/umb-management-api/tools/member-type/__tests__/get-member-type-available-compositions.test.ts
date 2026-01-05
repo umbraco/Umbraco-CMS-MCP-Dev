@@ -4,7 +4,7 @@ import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import { MemberTypeCompositionResponseModel } from "@/umb-management-api/schemas/index.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_TYPE_NAME = "_Test MemberType Available";
 const TEST_COMPOSITION_NAME = "_Test Available Composition";
@@ -37,8 +37,11 @@ describe("get-member-type-available-compositions", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Parse and filter just our test composition
-    const items = ((result.structuredContent as any)?.items ?? []) as MemberTypeCompositionResponseModel[];
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypeAvailableCompositionsTool, result);
+
+    // Filter just our test composition
+    const items = (data.items ?? []) as MemberTypeCompositionResponseModel[];
     const testComposition = items.find(
       (item) => item.name === TEST_COMPOSITION_NAME
     );

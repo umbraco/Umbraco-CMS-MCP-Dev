@@ -1,9 +1,8 @@
 import GetRelationTypeByIdTool from "../get/get-relation-type-by-id.js";
 import GetRelationTypeTool from "../get/get-relation-type.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getRelationTypeResponse, getRelationTypeByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-relation-type-by-id", () => {
   setupTestEnvironment();
@@ -15,7 +14,7 @@ describe("get-relation-type-by-id", () => {
       take: 1
     }, createMockRequestHandlerExtra());
 
-    const listResponse = validateStructuredContent(listResult, getRelationTypeResponse);
+    const listResponse = validateToolResponse(GetRelationTypeTool, listResult);
 
     // Skip test if no relation types available
     if (listResponse.items.length === 0) {
@@ -30,7 +29,7 @@ describe("get-relation-type-by-id", () => {
       id: testRelationTypeId
     }, createMockRequestHandlerExtra());
 
-    const response = validateStructuredContent(result, getRelationTypeByIdResponse);
+    const response = validateToolResponse(GetRelationTypeByIdTool, result);
 
     // Verify response structure
     expect(response).toHaveProperty('id');

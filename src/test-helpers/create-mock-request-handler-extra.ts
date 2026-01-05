@@ -85,3 +85,23 @@ export function validateErrorResult(result: CallToolResult): z.infer<typeof prob
   }
   return problemDetailsSchema.parse(result.structuredContent);
 }
+
+/**
+ * Validates a tool result against the tool's own outputSchema.
+ * This provides deterministic schema validation - the schema comes from the tool itself.
+ *
+ * @param tool - The tool object with an outputSchema property
+ * @param result - The CallToolResult from the tool handler
+ * @returns The validated and parsed data matching the tool's output schema
+ * @throws Error if tool has no outputSchema or validation fails
+ */
+export function validateToolResponse<T extends z.ZodRawShape>(
+  tool: { outputSchema?: T },
+  result: CallToolResult
+): z.infer<z.ZodObject<T>> {
+  if (!tool.outputSchema) {
+    throw new Error("Tool does not define outputSchema - cannot validate response");
+  }
+  const schema = z.object(tool.outputSchema);
+  return schema.parse(result.structuredContent);
+}

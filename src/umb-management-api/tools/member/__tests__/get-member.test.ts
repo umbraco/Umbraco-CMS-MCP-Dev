@@ -6,7 +6,7 @@ import GetMemberTool from "../get/get-member.js";
 import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test GetMember";
 
@@ -34,7 +34,9 @@ describe("get-member", () => {
       { id },
       createMockRequestHandlerExtra()
     );
-    const member = result.structuredContent as any;
+
+    // Validate response against tool's output schema
+    const member = validateToolResponse(GetMemberTool, result);
 
     expect(member.id).toBe(id);
     expect(member.username).toBe("test@example.com");

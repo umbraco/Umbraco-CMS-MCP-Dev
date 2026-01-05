@@ -5,7 +5,7 @@ import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media URLs";
 
@@ -49,8 +49,9 @@ describe("get-media-urls", () => {
       createMockRequestHandlerExtra()
     );
 
-    expect(result).toBeDefined();
-    expect(result.structuredContent).toBeDefined();
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetMediaUrlsTool, result);
+    expect(content).toBeDefined();
     expect(result).toMatchSnapshot();
   });
 });

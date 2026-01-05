@@ -4,11 +4,10 @@ import GetTemplateChildrenTool from "../items/get/get-children.js";
 import GetTemplateRootTool from "../items/get/get-root.js";
 import GetTemplateSearchTool from "../items/get/get-search.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { getItemTemplateSearchResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("template-tree", () => {
   const TEST_ROOT_NAME = "_Test Root Template";
@@ -49,7 +48,9 @@ describe("template-tree", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Normalize and verify response
+      // Validate response and snapshot
+      const data = validateToolResponse(GetTemplateChildrenTool, result);
+      expect(data).toBeDefined();
       const normalizedItems = createSnapshotResult(result);
       expect(normalizedItems).toMatchSnapshot();
     });
@@ -92,7 +93,9 @@ describe("template-tree", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Normalize and verify response
+      // Validate response and snapshot
+      const data = validateToolResponse(GetTemplateAncestorsTool, result);
+      expect(data).toBeDefined();
       const normalizedItems = createSnapshotResult(result);
       expect(normalizedItems).toMatchSnapshot();
 
@@ -126,6 +129,8 @@ describe("template-tree", () => {
         createMockRequestHandlerExtra()
       );
 
+      const data = validateToolResponse(GetTemplateRootTool, result);
+      expect(data).toBeDefined();
       expect(result).toMatchSnapshot();
     });
   });
@@ -148,9 +153,9 @@ describe("template-tree", () => {
       );
 
       // Parse the response and verify our test template exists
-      const items = validateStructuredContent(result, getItemTemplateSearchResponse);
-      const foundTemplate = Array.isArray(items.items)
-        ? items.items.find((item: any) => item?.name === TEST_ROOT_NAME)
+      const data = validateToolResponse(GetTemplateSearchTool, result);
+      const foundTemplate = Array.isArray(data.items)
+        ? data.items.find((item: any) => item?.name === TEST_ROOT_NAME)
         : undefined;
 
       expect(foundTemplate).toBeDefined();

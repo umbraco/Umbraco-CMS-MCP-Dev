@@ -1,7 +1,7 @@
-import { getFilterUserGroupQueryParams, getFilterUserGroupResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getFilterUserGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetFilterUserGroupTool from "../get/get-filter-user-group.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_GROUP_NAMES = [
@@ -41,9 +41,9 @@ describe("GetFilterUserGroupTool", () => {
     }, createMockRequestHandlerExtra());
 
     // Verify the response contains only groups with "Filter" in the name
-    const response = validateStructuredContent(result, getFilterUserGroupResponse);
-    expect(response.items).toHaveLength(3);
-    expect(response.items.every((item: { name: string }) => item.name.includes("Filter"))).toBe(true);
+    const data = validateToolResponse(GetFilterUserGroupTool, result);
+    expect(data.items).toHaveLength(3);
+    expect(data.items.every((item: { name: string }) => item.name.includes("Filter"))).toBe(true);
   });
 
   it("should handle empty filter", async () => {
@@ -54,8 +54,8 @@ describe("GetFilterUserGroupTool", () => {
     }, createMockRequestHandlerExtra());
 
     // Verify the response contains all groups
-    const response = validateStructuredContent(result, getFilterUserGroupResponse);
-    expect(response.items.length).toBeGreaterThanOrEqual(TEST_GROUP_NAMES.length);
+    const data = validateToolResponse(GetFilterUserGroupTool, result);
+    expect(data.items.length).toBeGreaterThanOrEqual(TEST_GROUP_NAMES.length);
   });
 
   it("should handle pagination", async () => {
@@ -66,7 +66,7 @@ describe("GetFilterUserGroupTool", () => {
     }, createMockRequestHandlerExtra());
 
     // Verify the response contains only 2 items
-    const response = validateStructuredContent(result, getFilterUserGroupResponse);
-    expect(response.items).toHaveLength(2);
+    const data = validateToolResponse(GetFilterUserGroupTool, result);
+    expect(data.items).toHaveLength(2);
   });
 });

@@ -1,5 +1,5 @@
 import GetLogViewerLogTool from "../get/get-log-viewer-log.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-log-viewer-log", () => {
@@ -11,9 +11,10 @@ describe("get-log-viewer-log", () => {
       createMockRequestHandlerExtra()
     );
 
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerLogTool, result);
+
     // Verify response structure (logs are dynamic, so we verify structure not content)
-    expect(result.structuredContent).toBeDefined();
-    const content = result.structuredContent as { items: unknown[]; total: number };
     expect(content).toHaveProperty("items");
     expect(content).toHaveProperty("total");
     expect(Array.isArray(content.items)).toBe(true);
@@ -40,9 +41,10 @@ describe("get-log-viewer-log", () => {
       createMockRequestHandlerExtra()
     );
 
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerLogTool, result);
+
     // Verify response structure (logs are dynamic, so we verify structure not content)
-    expect(result.structuredContent).toBeDefined();
-    const content = result.structuredContent as { items: unknown[]; total: number };
     expect(content).toHaveProperty("items");
     expect(content).toHaveProperty("total");
     expect(Array.isArray(content.items)).toBe(true);

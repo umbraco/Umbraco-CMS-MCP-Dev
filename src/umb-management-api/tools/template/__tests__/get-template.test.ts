@@ -2,7 +2,7 @@ import { getTemplateByIdParams } from "@/umb-management-api/umbracoManagementAPI
 import GetTemplateTool from "../get/get-template.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
@@ -24,6 +24,8 @@ describe("get-template", () => {
     await builder.withName(TEST_TEMPLATE_NAME).create();
     const params = getTemplateByIdParams.parse({ id: builder.getId() });
     const result = await GetTemplateTool.handler(params, createMockRequestHandlerExtra());
+    const data = validateToolResponse(GetTemplateTool, result);
+    expect(data).toBeDefined();
     expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
   });
 

@@ -1,9 +1,8 @@
 import GetPartialViewSnippetTool from "../get/get-partial-view-snippet.js";
 import GetPartialViewSnippetByIdTool from "../get/get-partial-view-snippet-by-id.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getPartialViewSnippetResponse, getPartialViewSnippetByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const NON_EXISTENT_SNIPPET_ID = "non-existent-snippet-id";
 
@@ -23,7 +22,7 @@ describe("get-snippets", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure
-      const responseData = validateStructuredContent(result, getPartialViewSnippetResponse);
+      const responseData = validateToolResponse(GetPartialViewSnippetTool, result);
       expect(responseData).toHaveProperty('items');
       expect(Array.isArray(responseData.items)).toBe(true);
       expect(responseData).toHaveProperty('total');
@@ -45,7 +44,7 @@ describe("get-snippets", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure with pagination
-      const responseData = validateStructuredContent(result, getPartialViewSnippetResponse);
+      const responseData = validateToolResponse(GetPartialViewSnippetTool, result);
       expect(responseData).toHaveProperty('items');
       expect(Array.isArray(responseData.items)).toBe(true);
       expect(responseData.items.length).toBeLessThanOrEqual(5);
@@ -66,7 +65,7 @@ describe("get-snippets", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure
-      const responseData = validateStructuredContent(result, getPartialViewSnippetResponse);
+      const responseData = validateToolResponse(GetPartialViewSnippetTool, result);
       expect(responseData).toHaveProperty('items');
       expect(Array.isArray(responseData.items)).toBe(true);
     });
@@ -86,7 +85,7 @@ describe("get-snippets", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure (should return empty items array)
-      const responseData = validateStructuredContent(result, getPartialViewSnippetResponse);
+      const responseData = validateToolResponse(GetPartialViewSnippetTool, result);
       expect(responseData).toHaveProperty('items');
       expect(Array.isArray(responseData.items)).toBe(true);
       expect(responseData.items.length).toBe(0);
@@ -97,7 +96,7 @@ describe("get-snippets", () => {
     it("should get a specific partial view snippet by ID", async () => {
       // Arrange - First get available snippets to find a valid ID
       const listResult = await GetPartialViewSnippetTool.handler({ take: 10 } as any, createMockRequestHandlerExtra());
-      const listResponseData = validateStructuredContent(listResult, getPartialViewSnippetResponse);
+      const listResponseData = validateToolResponse(GetPartialViewSnippetTool, listResult);
 
       // Skip this test if no snippets are available
       if (!listResponseData.items || listResponseData.items.length === 0) {
@@ -121,7 +120,7 @@ describe("get-snippets", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response contains expected snippet data
-      const responseData = validateStructuredContent(result, getPartialViewSnippetByIdResponse);
+      const responseData = validateToolResponse(GetPartialViewSnippetByIdTool, result);
       expect(responseData).toHaveProperty('name');
       expect(responseData).toHaveProperty('content');
     });

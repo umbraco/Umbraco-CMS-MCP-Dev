@@ -2,7 +2,7 @@ import GetDocumentTypeAvailableCompositionsTool from "../post/get-document-type-
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { DocumentTypeCompositionResponseModel } from "@/umb-management-api/schemas/index.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
@@ -42,8 +42,8 @@ describe("get-document-type-available-compositions", () => {
     );
 
     // Parse and filter just our test composition
-    const data = result.structuredContent as { items: Record<string, DocumentTypeCompositionResponseModel> };
-    const parsed = data.items;
+    const data = validateToolResponse(GetDocumentTypeAvailableCompositionsTool, result);
+    const parsed = data.items as unknown as Record<string, DocumentTypeCompositionResponseModel>;
     const testComposition =
       parsed[
         Object.keys(parsed).find(
