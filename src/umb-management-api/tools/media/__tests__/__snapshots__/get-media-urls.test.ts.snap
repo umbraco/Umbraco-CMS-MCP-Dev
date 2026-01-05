@@ -2,22 +2,28 @@
 
 exports[`get-media-urls should get media URLs 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"id":"00000000-0000-0000-0000-000000000000","urlInfos":[{"culture":null,"url":"https://localhost:44391/media/NORMALIZED_PATH/example.jpg"}]}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "urlInfos": [
+          {
+            "culture": null,
+            "url": "https://localhost:44391/media/NORMALIZED_PATH/example.jpg",
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`get-media-urls should handle non-existent media 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;

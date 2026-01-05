@@ -2,34 +2,30 @@
 
 exports[`create-media-folder should create a folder at root level 1`] = `
 {
-  "content": [
-    {
-      "text": "Media folder "_Test Folder Created" created successfully",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "message": "Media folder "_Test Folder Created" created successfully",
+    "name": "_Test Folder Created",
+  },
 }
 `;
 
 exports[`create-media-folder should create a folder inside another folder 1`] = `
 {
-  "content": [
-    {
-      "text": "Media folder "_Test Nested Folder" created successfully",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "message": "Media folder "_Test Nested Folder" created successfully",
+    "name": "_Test Nested Folder",
+  },
 }
 `;
 
 exports[`create-media-folder should handle non-existent parent ID 1`] = `
 {
-  "content": [
-    {
-      "text": "Error creating media folder: Request failed with status code 404",
-      "type": "text",
-    },
-  ],
+  "content": [],
   "isError": true,
+  "structuredContent": {
+    "detail": "Error creating media folder: Request failed with status code 404",
+  },
 }
 `;

@@ -2,38 +2,40 @@
 
 exports[`get-recycle-bin-media-children should get children of a media item in recycle bin 1`] = `
 {
-  "items": [
-    {
-      "createDate": "normalized-date",
-      "hasChildren": false,
-      "id": "normalized-id",
-      "mediaType": {
-        "collection": null,
-        "icon": "icon-picture",
-        "id": "cc07b313-0843-4aa8-bbda-871c8da728c8",
-      },
-      "parent": {
-        "id": "normalized-parent-id",
-      },
-      "variants": [
-        {
-          "culture": null,
-          "name": "_Test Media Child",
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "collection": null,
+          "icon": "icon-picture",
+          "id": "00000000-0000-0000-0000-000000000000",
         },
-      ],
-    },
-  ],
-  "total": 1,
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "variants": [
+          {
+            "culture": null,
+            "name": "_Test Media Child",
+          },
+        ],
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-recycle-bin-media-children should handle non-existent media 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

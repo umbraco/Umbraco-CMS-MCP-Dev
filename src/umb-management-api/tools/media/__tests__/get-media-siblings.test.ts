@@ -2,29 +2,23 @@ import GetMediaSiblingsTool from "../items/get/get-siblings.js";
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_PARENT_NAME = "_Test Parent Media Siblings";
 const TEST_SIBLING1_NAME = "_Test Sibling 1";
 const TEST_SIBLING2_NAME = "_Test Sibling 2";
 
 describe("get-media-siblings", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up test media
     await MediaTestHelper.cleanup(TEST_SIBLING1_NAME);
     await MediaTestHelper.cleanup(TEST_SIBLING2_NAME);
     await MediaTestHelper.cleanup(TEST_PARENT_NAME);
-
-    console.error = originalConsoleError;
   });
 
   it("should get sibling media items", async () => {
@@ -60,8 +54,8 @@ describe("get-media-siblings", () => {
     const result = await GetMediaSiblingsTool.handler(
       {
         target: sibling1Builder.getId(),
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify the handler response using snapshot
@@ -74,8 +68,8 @@ describe("get-media-siblings", () => {
     const result = await GetMediaSiblingsTool.handler(
       {
         target: BLANK_UUID,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify the error response using snapshot
