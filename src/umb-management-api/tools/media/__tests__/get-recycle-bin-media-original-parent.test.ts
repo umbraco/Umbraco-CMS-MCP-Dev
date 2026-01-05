@@ -2,24 +2,21 @@ import GetRecycleBinMediaOriginalParentTool from "../get/get-recycle-bin-media-o
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { jest } from "@jest/globals";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import MoveMediaToRecycleBinTool from "../put/move-to-recycle-bin.js";
 
 const TEST_MEDIA_NAME = "_Test Media Original Parent";
 const TEST_PARENT_MEDIA_NAME = "_Test Parent Media";
 
-// Helper to get text content from result
-const getResultText = (result: { content: Array<{ text?: string }> }): string => {
-  return (result.content[0] as { text: string }).text ?? "";
-};
-
 describe("get-recycle-bin-media-original-parent", () => {
-  setupTestEnvironment();
+  let originalConsoleError: typeof console.error;
   let tempFileBuilder: TemporaryFileBuilder;
 
   beforeEach(async () => {
+    originalConsoleError = console.error;
+    console.error = jest.fn();
+
     tempFileBuilder = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
@@ -31,6 +28,7 @@ describe("get-recycle-bin-media-original-parent", () => {
       MediaTestHelper.cleanup(TEST_MEDIA_NAME),
       MediaTestHelper.cleanup(TEST_PARENT_MEDIA_NAME)
     ]);
+    console.error = originalConsoleError;
   }, 10000);
 
   it("should return original parent information for recycled media", async () => {
@@ -53,7 +51,7 @@ describe("get-recycle-bin-media-original-parent", () => {
       {
         id: childMediaBuilder.getId()
       },
-      createMockRequestHandlerExtra()
+      { signal: new AbortController().signal }
     );
 
     // Get original parent information
@@ -61,11 +59,11 @@ describe("get-recycle-bin-media-original-parent", () => {
       {
         id: childMediaBuilder.getId()
       },
-      createMockRequestHandlerExtra()
+      { signal: new AbortController().signal }
     );
 
-    // Verify parent information is returned (uses legacy content format)
-    const parsed = JSON.parse(getResultText(result));
+    // Verify parent information is returned first to get the ID
+    const parsed = JSON.parse(result.content[0].text as string);
     expect(parsed).toHaveProperty('id');
     // Verify the parent ID matches our created parent
     expect(parsed.id).toBe(parentMediaBuilder.getId());
@@ -88,7 +86,7 @@ describe("get-recycle-bin-media-original-parent", () => {
       {
         id: mediaBuilder.getId()
       },
-      createMockRequestHandlerExtra()
+      { signal: new AbortController().signal }
     );
 
     // Get original parent information
@@ -96,13 +94,15 @@ describe("get-recycle-bin-media-original-parent", () => {
       {
         id: mediaBuilder.getId()
       },
-      createMockRequestHandlerExtra()
+      { signal: new AbortController().signal }
     );
 
-    // Should return null for root-level items (uses legacy content format)
-    const parsed = JSON.parse(getResultText(result));
-    expect(parsed).toBeNull();
+    // For null responses, don't use createSnapshotResult as it can't handle null
     expect(result).toMatchSnapshot();
+
+    // Should return null for root-level items
+    const parsed = JSON.parse(result.content[0].text as string);
+    expect(parsed).toBeNull();
   });
 
   it("should handle invalid media id", async () => {
@@ -111,11 +111,13 @@ describe("get-recycle-bin-media-original-parent", () => {
       {
         id: "00000000-0000-0000-0000-000000000000"
       },
-      createMockRequestHandlerExtra()
+      { signal: new AbortController().signal }
     );
 
-    // Verify it's an error response
-    expect(result.isError).toBe(true);
+    // For error responses, don't use createSnapshotResult as it expects JSON
     expect(result).toMatchSnapshot();
+
+    // Verify it's an error response
+    expect(result.content[0].text).toContain('Error');
   });
 });

@@ -13,15 +13,22 @@ exports[`delete-user-avatar-by-id should delete avatar for user by id 1`] = `
 
 exports[`delete-user-avatar-by-id should handle non-existent user id 1`] = `
 {
-  "content": [],
-  "isError": true,
-  "structuredContent": {
-    "detail": "The specified user was not found.",
-    "operationStatus": "UserNotFound",
-    "status": 404,
-    "title": "The user was not found",
+  "content": [
+    {
+      "text": "Error using delete-user-avatar-by-id:
+{
+  "message": "Request failed with status code 404",
+  "response": {
     "type": "Error",
-  },
+    "title": "The user was not found",
+    "status": 404,
+    "detail": "The specified user was not found.",
+    "operationStatus": "UserNotFound"
+  }
+}",
+      "type": "text",
+    },
+  ],
 }
 `;
 

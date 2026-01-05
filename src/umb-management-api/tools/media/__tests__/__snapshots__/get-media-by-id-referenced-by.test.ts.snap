@@ -4,7 +4,7 @@ exports[`get-media-by-id-referenced-by should get documents that reference a spe
 {
   "content": [
     {
-      "text": "{"total":1,"items":[{"$type":"DocumentReferenceResponseModel","published":false,"documentType":{"id":"ff6d163a-c5b3-43c0-a813-3d7cfda0f9fa","icon":"icon-document","alias":"testdoctypewithmediaref","name":"_Test DocType With Media Ref"},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Document With Media Ref","culture":null}],"id":"ff29b795-40f1-4948-89ae-41af07ace481","name":null}]}",
+      "text": "{"total":1,"items":[{"$type":"DocumentReferenceResponseModel","published":false,"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document","alias":"testdoctypewithmediaref","name":"_Test DocType With Media Ref"},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Draft","name":"_Test Document With Media Ref","culture":null}],"id":"00000000-0000-0000-0000-000000000000","name":null}]}",
       "type": "text",
     },
   ],
