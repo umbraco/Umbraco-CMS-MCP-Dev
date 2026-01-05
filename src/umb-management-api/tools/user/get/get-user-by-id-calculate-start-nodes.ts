@@ -1,27 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getUserByIdCalculateStartNodesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getUserByIdCalculateStartNodesParams, getUserByIdCalculateStartNodesResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetUserByIdCalculateStartNodesTool = {
   name: "get-user-by-id-calculate-start-nodes",
   description: "Calculates start nodes for a user by their ID based on permissions",
-  schema: getUserByIdCalculateStartNodesParams.shape,
-  isReadOnly: true,
+  inputSchema: getUserByIdCalculateStartNodesParams.shape,
+  outputSchema: getUserByIdCalculateStartNodesResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getUserByIdCalculateStartNodes(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getUserByIdCalculateStartNodesParams.shape>;
+  handler: (async ({ id }: { id: string }) => {
+    return executeGetApiCall((client) =>
+      client.getUserByIdCalculateStartNodes(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getUserByIdCalculateStartNodesParams.shape, typeof getUserByIdCalculateStartNodesResponse.shape>;
 
 export default withStandardDecorators(GetUserByIdCalculateStartNodesTool);

@@ -106,8 +106,11 @@ export class UserBuilder {
       try {
         const client = UmbracoManagementClient.getClient();
         await client.deleteUserById(this.id);
-      } catch (error) {
-        console.error("Error cleaning up user:", error);
+      } catch (error: any) {
+        // Silently ignore 404 errors - the user may have already been deleted
+        if (error?.response?.status !== 404) {
+          console.error("Error cleaning up user:", error);
+        }
       }
     }
   }

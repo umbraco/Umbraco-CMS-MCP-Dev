@@ -1,23 +1,17 @@
 import GetUserCurrentPermissionsDocumentTool from "../get/get-user-current-permissions-document.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { jest } from "@jest/globals";
+import { getUserCurrentPermissionsDocumentQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-user-current-permissions-document", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get current user document permissions", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsDocumentTool.handler({}, { signal: new AbortController().signal });
+    const params = getUserCurrentPermissionsDocumentQueryParams.parse({});
+    const result = await GetUserCurrentPermissionsDocumentTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -26,13 +20,13 @@ describe("get-user-current-permissions-document", () => {
 
   it("should handle non-existent document ID", async () => {
     // Act
-    const result = await GetUserCurrentPermissionsDocumentTool.handler({
+    const params = getUserCurrentPermissionsDocumentQueryParams.parse({
       id: [BLANK_UUID]
-    }, { signal: new AbortController().signal });
+    });
+    const result = await GetUserCurrentPermissionsDocumentTool.handler(params as any, createMockRequestHandlerExtra());
 
-    // Assert
-    const normalizedResult = normalizeErrorResponse(result);
+    // Assert - This may return empty results or error depending on API behavior
+    const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });
-
 });

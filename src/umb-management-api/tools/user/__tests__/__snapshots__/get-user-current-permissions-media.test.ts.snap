@@ -2,12 +2,10 @@
 
 exports[`get-user-current-permissions-media should get current user media permissions 1`] = `
 {
-  "content": [
-    {
-      "text": "{"permissions":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "permissions": [],
+  },
 }
 `;
 

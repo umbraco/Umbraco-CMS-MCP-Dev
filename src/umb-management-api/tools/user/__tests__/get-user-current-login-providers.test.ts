@@ -1,36 +1,27 @@
 import GetUserCurrentLoginProvidersTool from "../get/get-user-current-login-providers.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-user-current-login-providers", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get current user's login providers", async () => {
     // Act
-    const result = await GetUserCurrentLoginProvidersTool.handler({ signal: new AbortController().signal });
+    const result = await GetUserCurrentLoginProvidersTool.handler({}, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify expected structure
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(Array.isArray(parsed)).toBe(true);
+    // Verify expected structure - tool returns { items: [...] }
+    const items = (result.structuredContent as any).items;
+    expect(Array.isArray(items)).toBe(true);
 
     // Each provider should have expected properties
-    if (parsed.length > 0) {
-      expect(parsed[0]).toHaveProperty("name");
-      expect(typeof parsed[0].name).toBe("string");
+    if (items.length > 0) {
+      expect(items[0]).toHaveProperty("providerSchemeName");
+      expect(typeof items[0].providerSchemeName).toBe("string");
     }
   });
-
 });

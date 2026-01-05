@@ -2,32 +2,25 @@
 
 exports[`get-user-current-permissions-document should get current user document permissions 1`] = `
 {
-  "content": [
-    {
-      "text": "{"permissions":[]}",
-      "type": "text",
+  "content": [],
+  "structuredContent": {
+    "items": {
+      "permissions": [],
     },
-  ],
+  },
 }
 `;
 
 exports[`get-user-current-permissions-document should handle non-existent document ID 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-user-current-permissions-document:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Content node not found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified content node was not found.",
-    "operationStatus": "ContentNodeNotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "ContentNodeNotFound",
+    "status": 404,
+    "title": "Content node not found",
+    "type": "Error",
+  },
 }
 `;

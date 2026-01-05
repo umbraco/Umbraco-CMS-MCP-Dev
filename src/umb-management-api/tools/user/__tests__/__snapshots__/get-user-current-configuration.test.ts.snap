@@ -2,11 +2,18 @@
 
 exports[`get-user-current-configuration should get the current user configuration 1`] = `
 {
-  "content": [
-    {
-      "text": "{"keepUserLoggedIn":false,"passwordConfiguration":{"minimumPasswordLength":10,"requireNonLetterOrDigit":false,"requireDigit":false,"requireLowercase":false,"requireUppercase":false},"allowChangePassword":true,"allowTwoFactor":true}",
-      "type": "text",
+  "content": [],
+  "structuredContent": {
+    "allowChangePassword": true,
+    "allowTwoFactor": true,
+    "keepUserLoggedIn": false,
+    "passwordConfiguration": {
+      "minimumPasswordLength": 10,
+      "requireDigit": false,
+      "requireLowercase": false,
+      "requireNonLetterOrDigit": false,
+      "requireUppercase": false,
     },
-  ],
+  },
 }
 `;

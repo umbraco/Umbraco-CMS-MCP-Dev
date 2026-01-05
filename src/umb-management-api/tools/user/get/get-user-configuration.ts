@@ -1,26 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getUserConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetUserConfigurationTool = {
   name: "get-user-configuration",
   description: "Gets user configuration settings including user invitation settings and password requirements",
-  schema: undefined,
-  isReadOnly: true,
+  inputSchema: {},
+  outputSchema: getUserConfigurationResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['configuration'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getUserConfiguration();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response, null, 2),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<undefined>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getUserConfiguration(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof getUserConfigurationResponse.shape>;
 
 export default withStandardDecorators(GetUserConfigurationTool);

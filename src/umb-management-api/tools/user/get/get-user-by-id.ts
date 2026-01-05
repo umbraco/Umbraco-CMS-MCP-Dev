@@ -1,27 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getUserByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getUserByIdParams, getUserByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetUserByIdTool = {
   name: "get-user-by-id",
   description: "Gets a user by their unique identifier",
-  schema: getUserByIdParams.shape,
-  isReadOnly: true,
+  inputSchema: getUserByIdParams.shape,
+  outputSchema: getUserByIdResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getUserById(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getUserByIdParams.shape>;
+  handler: (async ({ id }: { id: string }) => {
+    return executeGetApiCall((client) =>
+      client.getUserById(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getUserByIdParams.shape, typeof getUserByIdResponse.shape>;
 
 export default withStandardDecorators(GetUserByIdTool);
