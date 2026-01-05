@@ -2,21 +2,19 @@ import GetRecycleBinMediaOriginalParentTool from "../get/get-recycle-bin-media-o
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import MoveMediaToRecycleBinTool from "../put/move-to-recycle-bin.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media Original Parent";
 const TEST_PARENT_MEDIA_NAME = "_Test Parent Media";
 
 describe("get-recycle-bin-media-original-parent", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let tempFileBuilder: TemporaryFileBuilder;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     tempFileBuilder = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
@@ -28,7 +26,6 @@ describe("get-recycle-bin-media-original-parent", () => {
       MediaTestHelper.cleanup(TEST_MEDIA_NAME),
       MediaTestHelper.cleanup(TEST_PARENT_MEDIA_NAME)
     ]);
-    console.error = originalConsoleError;
   }, 10000);
 
   it("should return original parent information for recycled media", async () => {
@@ -50,20 +47,20 @@ describe("get-recycle-bin-media-original-parent", () => {
     await MoveMediaToRecycleBinTool.handler(
       {
         id: childMediaBuilder.getId()
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Get original parent information
     const result = await GetRecycleBinMediaOriginalParentTool.handler(
       {
         id: childMediaBuilder.getId()
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Verify parent information is returned first to get the ID
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = result.structuredContent as { id: string };
     expect(parsed).toHaveProperty('id');
     // Verify the parent ID matches our created parent
     expect(parsed.id).toBe(parentMediaBuilder.getId());
@@ -85,23 +82,23 @@ describe("get-recycle-bin-media-original-parent", () => {
     await MoveMediaToRecycleBinTool.handler(
       {
         id: mediaBuilder.getId()
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Get original parent information
     const result = await GetRecycleBinMediaOriginalParentTool.handler(
       {
         id: mediaBuilder.getId()
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // For null responses, don't use createSnapshotResult as it can't handle null
     expect(result).toMatchSnapshot();
 
     // Should return null for root-level items
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = result.structuredContent;
     expect(parsed).toBeNull();
   });
 
@@ -110,14 +107,14 @@ describe("get-recycle-bin-media-original-parent", () => {
     const result = await GetRecycleBinMediaOriginalParentTool.handler(
       {
         id: "00000000-0000-0000-0000-000000000000"
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // For error responses, don't use createSnapshotResult as it expects JSON
     expect(result).toMatchSnapshot();
 
     // Verify it's an error response
-    expect(result.content[0].text).toContain('Error');
+    expect(result.isError).toBe(true);
   });
 });

@@ -2,21 +2,17 @@ import GetMediaRecycleBinSiblingsTool from "../items/get/get-recycle-bin-sibling
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_PARENT_NAME = "_Test Parent Media Recycle Bin Siblings";
 const TEST_SIBLING1_NAME = "_Test Sibling Recycle Bin 1";
 const TEST_SIBLING2_NAME = "_Test Sibling Recycle Bin 2";
 
 describe("get-media-recycle-bin-siblings", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up test media from recycle bin
@@ -27,8 +23,6 @@ describe("get-media-recycle-bin-siblings", () => {
     await MediaTestHelper.cleanup(TEST_SIBLING1_NAME);
     await MediaTestHelper.cleanup(TEST_SIBLING2_NAME);
     await MediaTestHelper.cleanup(TEST_PARENT_NAME);
-
-    console.error = originalConsoleError;
   });
 
   it("should get sibling media items in recycle bin", async () => {
@@ -70,8 +64,8 @@ describe("get-media-recycle-bin-siblings", () => {
     const result = await GetMediaRecycleBinSiblingsTool.handler(
       {
         target: sibling1InRecycleBin?.id,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify the handler response using snapshot
@@ -84,8 +78,8 @@ describe("get-media-recycle-bin-siblings", () => {
     const result = await GetMediaRecycleBinSiblingsTool.handler(
       {
         target: BLANK_UUID,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify the error response using snapshot

@@ -1,21 +1,19 @@
 import GetMediaAuditLogTool from "../get/get-media-audit-log.js";
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test AuditLogMedia";
 
 describe("get-media-audit-log", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let mediaId: string;
   let tempFileBuilder: TemporaryFileBuilder;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     tempFileBuilder = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
@@ -30,7 +28,6 @@ describe("get-media-audit-log", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MediaTestHelper.cleanup(TEST_MEDIA_NAME);
   });
 
@@ -44,12 +41,12 @@ describe("get-media-audit-log", () => {
           skip: 0,
           take: 100,
         },
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
+
     expect(result).toBeDefined();
-    expect(result.content).toBeDefined();
-    expect(result.content.length).toBeGreaterThan(0);
+    expect(result.structuredContent).toBeDefined();
   });
 
   it("should handle non-existent media", async () => {
@@ -62,11 +59,11 @@ describe("get-media-audit-log", () => {
           skip: 0,
           take: 100,
         },
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
-    expect(result).toBeDefined();
-    expect(result.content).toBeDefined();
-    expect(result.content.length).toBeGreaterThan(0);
+
+    expect(result.structuredContent).toBeDefined();
+    expect(result).toMatchSnapshot();
   });
 });

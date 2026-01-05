@@ -131,6 +131,11 @@ export function normalizeObject(obj: any, idToReplace?: string, normalizeIdRefs:
     }));
   }
 
+  // Normalize media src paths (e.g., /media/ykvl3nua/example.jpg -> /media/NORMALIZED_PATH/example.jpg)
+  if (normalized.src && typeof normalized.src === "string") {
+    normalized.src = normalized.src.replace(/\/media\/[a-z0-9]+\//i, "/media/NORMALIZED_PATH/");
+  }
+
   // Normalize block results (contentKey)
   if (normalized.results && Array.isArray(normalized.results)) {
     normalized.results = normalized.results.map((r: any) => ({
@@ -150,6 +155,16 @@ export function normalizeObject(obj: any, idToReplace?: string, normalizeIdRefs:
   // Recursively normalize nested items array
   if (normalized.items && Array.isArray(normalized.items)) {
     normalized.items = normalized.items.map((item: any) => normalizeObject(item, idToReplace, normalizeIdRefs));
+  }
+
+  // Recursively normalize values array (used in media/document responses)
+  if (normalized.values && Array.isArray(normalized.values)) {
+    normalized.values = normalized.values.map((item: any) => normalizeObject(item, idToReplace, normalizeIdRefs));
+  }
+
+  // Recursively normalize nested 'value' field (used in property values)
+  if (normalized.value && typeof normalized.value === "object") {
+    normalized.value = normalizeObject(normalized.value, idToReplace, normalizeIdRefs);
   }
 
   // Recursively normalize structuredContent (for MCP tool responses)

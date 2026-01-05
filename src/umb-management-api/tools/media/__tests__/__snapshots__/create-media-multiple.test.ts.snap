@@ -2,124 +2,102 @@
 
 exports[`create-media-multiple should continue processing on individual file errors 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "summary": "Processed 2 files: 1 succeeded, 1 failed",
-  "results": [
-    {
-      "success": true,
-      "name": "_Test Batch Image 1"
-    },
-    {
-      "success": false,
-      "name": "_Test Batch Image 2",
-      "error": "File path \\"/non/existent/file.jpg\\" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp"
-    }
-  ]
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "results": [
+      {
+        "name": "_Test Batch Image 1",
+        "success": true,
+      },
+      {
+        "error": "File path "/non/existent/file.jpg" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp-template",
+        "name": "_Test Batch Image 2",
+        "success": false,
+      },
+    ],
+    "summary": "Processed 2 files: 1 succeeded, 1 failed",
+  },
 }
 `;
 
 exports[`create-media-multiple should create multiple files with mixed media types 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "summary": "Processed 2 files: 2 succeeded, 0 failed",
-  "results": [
-    {
-      "success": true,
-      "name": "_Test Mixed Image"
-    },
-    {
-      "success": true,
-      "name": "_Test Mixed File"
-    }
-  ]
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "results": [
+      {
+        "name": "_Test Mixed Image",
+        "success": true,
+      },
+      {
+        "name": "_Test Mixed File",
+        "success": true,
+      },
+    ],
+    "summary": "Processed 2 files: 2 succeeded, 0 failed",
+  },
 }
 `;
 
 exports[`create-media-multiple should create multiple images in batch 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "summary": "Processed 2 files: 2 succeeded, 0 failed",
-  "results": [
-    {
-      "success": true,
-      "name": "_Test Batch Image 1"
-    },
-    {
-      "success": true,
-      "name": "_Test Batch Image 2"
-    }
-  ]
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "results": [
+      {
+        "name": "_Test Batch Image 1",
+        "success": true,
+      },
+      {
+        "name": "_Test Batch Image 2",
+        "success": true,
+      },
+    ],
+    "summary": "Processed 2 files: 2 succeeded, 0 failed",
+  },
 }
 `;
 
 exports[`create-media-multiple should create multiple media from URLs 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "summary": "Processed 2 files: 2 succeeded, 0 failed",
-  "results": [
-    {
-      "success": true,
-      "name": "_Test URL Batch Image 1"
-    },
-    {
-      "success": true,
-      "name": "_Test URL Batch Image 2"
-    }
-  ]
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "results": [
+      {
+        "name": "_Test URL Batch Image 1",
+        "success": true,
+      },
+      {
+        "name": "_Test URL Batch Image 2",
+        "success": true,
+      },
+    ],
+    "summary": "Processed 2 files: 2 succeeded, 0 failed",
+  },
 }
 `;
 
 exports[`create-media-multiple should handle batch size limit validation 1`] = `
 {
-  "content": [
-    {
-      "text": "Batch upload limited to 20 files per call. You provided 21 files. Please split into multiple batches.",
-      "type": "text",
-    },
-  ],
+  "content": [],
   "isError": true,
+  "structuredContent": {
+    "detail": "Batch upload limited to 20 files per call. You provided 21 files. Please split into multiple batches.",
+  },
 }
 `;
 
 exports[`create-media-multiple should use default File media type when not specified 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "summary": "Processed 1 files: 1 succeeded, 0 failed",
-  "results": [
-    {
-      "success": true,
-      "name": "_Test Batch File 1"
-    }
-  ]
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "results": [
+      {
+        "name": "_Test Batch File 1",
+        "success": true,
+      },
+    ],
+    "summary": "Processed 1 files: 1 succeeded, 0 failed",
+  },
 }
 `;

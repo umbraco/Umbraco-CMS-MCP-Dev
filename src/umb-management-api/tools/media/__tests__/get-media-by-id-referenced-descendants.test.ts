@@ -2,13 +2,14 @@ import GetMediaByIdReferencedDescendantsTool from "../get/get-media-by-id-refere
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID, MEDIA_PICKER_DATA_TYPE_ID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media Referenced Descendants";
 const TEST_CHILD_MEDIA_NAME = "_Test Child Media Referenced";
@@ -16,13 +17,10 @@ const TEST_DOCUMENT_TYPE_NAME = "_Test DocType With Media Desc";
 const TEST_DOCUMENT_NAME = "_Test Document With Child Media";
 
 describe("get-media-by-id-referenced-descendants", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let tempFileBuilder: TemporaryFileBuilder;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     tempFileBuilder = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
@@ -33,7 +31,6 @@ describe("get-media-by-id-referenced-descendants", () => {
     await MediaTestHelper.cleanup(TEST_CHILD_MEDIA_NAME);
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get references to descendant media items", async () => {
@@ -76,15 +73,15 @@ describe("get-media-by-id-referenced-descendants", () => {
         id: parentFolder.getId(),
         skip: 0,
         take: 10
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify it returns references to the descendant media items
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = result.structuredContent as { total: number; items: unknown[] };
     expect(parsed.total).toBeGreaterThan(0);
     expect(parsed.items.length).toBeGreaterThan(0);
   });
@@ -95,8 +92,8 @@ describe("get-media-by-id-referenced-descendants", () => {
         id: BLANK_UUID,
         skip: 0,
         take: 10
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();
@@ -122,15 +119,15 @@ describe("get-media-by-id-referenced-descendants", () => {
         id: parentFolder.getId(),
         skip: 0,
         take: 10
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify it returns empty results
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = result.structuredContent as { total: number; items: unknown[] };
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
   });
@@ -148,15 +145,15 @@ describe("get-media-by-id-referenced-descendants", () => {
         id: singleMedia.getId(),
         skip: 0,
         take: 10
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify it returns empty results since there are no descendants
-    const parsed = JSON.parse(result.content[0].text as string);
+    const parsed = result.structuredContent as { total: number; items: unknown[] };
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
   });
