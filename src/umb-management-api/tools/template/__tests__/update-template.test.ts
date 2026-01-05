@@ -1,7 +1,9 @@
 import UpdateTemplateTool from "../put/update-template.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { TemplateTestHelper } from "./helpers/template-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_TEMPLATE_NAME = "_Test Template Update";
@@ -9,17 +11,14 @@ const UPDATED_TEMPLATE_NAME = "_Updated Template";
 const NON_EXISTENT_TEMPLATE_NAME = "_Non Existent Template";
 
 describe("update-template", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let builder: TemplateBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new TemplateBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
     await TemplateTestHelper.cleanup(UPDATED_TEMPLATE_NAME);
   });
@@ -35,12 +34,12 @@ describe("update-template", () => {
           content: "<h1>@Model.UpdatedTitle</h1>",
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
     const items = await TemplateTestHelper.findTemplates(UPDATED_TEMPLATE_NAME);
-    items[0].id = BLANK_UUID;
-    expect(items).toMatchSnapshot();
+    expect(createSnapshotResult({ structuredContent: { items } })).toMatchSnapshot();
   });
 
   it("should handle non-existent template", async () => {
@@ -53,8 +52,9 @@ describe("update-template", () => {
           content: "<h1>@Model.Title</h1>",
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

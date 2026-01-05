@@ -2,49 +2,38 @@
 
 exports[`get-user-group should get a user group by id 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "id": "00000000-0000-0000-0000-000000000000",
-  "isDeletable": true,
-  "aliasCanBeChanged": true,
-  "name": "_Test User Group Get",
-  "alias": "testUserGroupGet",
-  "icon": null,
-  "sections": [
-    "Umb.Section.Content"
-  ],
-  "languages": [],
-  "hasAccessToAllLanguages": true,
-  "documentStartNode": null,
-  "documentRootAccess": false,
-  "mediaStartNode": null,
-  "mediaRootAccess": false,
-  "fallbackPermissions": [],
-  "permissions": []
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "alias": "testUserGroupGet",
+    "aliasCanBeChanged": true,
+    "documentRootAccess": false,
+    "documentStartNode": null,
+    "fallbackPermissions": [],
+    "hasAccessToAllLanguages": true,
+    "icon": null,
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isDeletable": true,
+    "languages": [],
+    "mediaRootAccess": false,
+    "mediaStartNode": null,
+    "name": "_Test User Group Get",
+    "permissions": [],
+    "sections": [
+      "Umb.Section.Content",
+    ],
+  },
 }
 `;
 
 exports[`get-user-group should handle non-existent user group 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-user-group:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The user group could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The user group could not be found",
+    "type": "Error",
+  },
 }
 `;

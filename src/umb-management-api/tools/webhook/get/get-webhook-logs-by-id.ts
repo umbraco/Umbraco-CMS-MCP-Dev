@@ -1,27 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getWebhookByIdLogsParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getWebhookByIdLogsParams, getWebhookByIdLogsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetWebhookLogsTool = {
   name: "get-webhook-logs",
   description: "Gets logs for a specific webhook",
-  schema: getWebhookByIdLogsParams.shape,
-  isReadOnly: true,
+  inputSchema: getWebhookByIdLogsParams.shape,
+  outputSchema: getWebhookByIdLogsResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getWebhookByIdLogs(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getWebhookByIdLogsParams.shape>;
+  handler: (async ({ id }: { id: string }) => {
+    return executeGetApiCall((client) =>
+      client.getWebhookByIdLogs(id, undefined, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getWebhookByIdLogsParams.shape, typeof getWebhookByIdLogsResponse.shape>;
 
 export default withStandardDecorators(GetWebhookLogsTool);

@@ -1,22 +1,14 @@
 import DeleteTemplateTool from "../delete/delete-template.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { TemplateTestHelper } from "./helpers/template-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_TEMPLATE_NAME = "_Test Template Delete";
 
 describe("delete-template", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should delete a template", async () => {
     const builder = await new TemplateBuilder()
@@ -26,8 +18,9 @@ describe("delete-template", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
     const items = await TemplateTestHelper.findTemplates(TEST_TEMPLATE_NAME);
     expect(items).toHaveLength(0);
@@ -38,8 +31,9 @@ describe("delete-template", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

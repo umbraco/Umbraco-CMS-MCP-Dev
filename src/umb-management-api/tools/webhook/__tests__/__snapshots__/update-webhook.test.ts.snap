@@ -2,20 +2,13 @@
 
 exports[`update-webhook should handle non-existent webhook 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using update-webhook:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "status": 404,
     "title": "The webhook could not be found",
-    "status": 404
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "type": "Error",
+  },
 }
 `;
 
@@ -23,7 +16,7 @@ exports[`update-webhook should update a webhook 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],

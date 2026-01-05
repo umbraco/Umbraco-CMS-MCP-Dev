@@ -1,19 +1,11 @@
 import { postTemplateQueryExecuteBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import ExecuteTemplateQueryTool from "../post/execute-template-query.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("execute-template-query", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should execute a simple template query", async () => {
     const queryBody = postTemplateQueryExecuteBody.parse({
@@ -24,9 +16,7 @@ describe("execute-template-query", () => {
       take: 10
     });
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, {
-      signal: new AbortController().signal,
-    });
+    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
 
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
@@ -40,9 +30,7 @@ describe("execute-template-query", () => {
       take: 5
     });
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, {
-      signal: new AbortController().signal,
-    });
+    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
 
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
@@ -65,9 +53,7 @@ describe("execute-template-query", () => {
       take: 10
     });
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, {
-      signal: new AbortController().signal,
-    });
+    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
 
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
@@ -81,9 +67,7 @@ describe("execute-template-query", () => {
       take: 10
     });
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, {
-      signal: new AbortController().signal,
-    });
+    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
 
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });

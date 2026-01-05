@@ -1,7 +1,8 @@
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
 import GetWebhookByIdTool from "../get/get-webhook-by-id.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import {
@@ -12,15 +13,10 @@ import {
 
 describe("get-webhook-by-id", () => {
   const TEST_WEBHOOK_NAME = "_Test Webhook";
-  let originalConsoleError: typeof console.error;
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await WebhookTestHelper.cleanup(TEST_WEBHOOK_NAME);
   });
 
@@ -36,16 +32,11 @@ describe("get-webhook-by-id", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize and verify response
-    const normalizedItems = createSnapshotResult(result);
-    // Replace the dynamic ID with a placeholder
-    const normalizedResponse = JSON.parse(normalizedItems.content[0].text);
-    normalizedResponse.id = "PLACEHOLDER_ID";
-    normalizedItems.content[0].text = JSON.stringify(normalizedResponse);
-    expect(normalizedItems).toMatchSnapshot();
+    expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
   });
 
   it("should handle non-existent webhook", async () => {
@@ -53,9 +44,10 @@ describe("get-webhook-by-id", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

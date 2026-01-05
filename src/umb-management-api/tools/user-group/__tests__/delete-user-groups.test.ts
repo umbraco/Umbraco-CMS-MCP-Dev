@@ -1,17 +1,16 @@
 import DeleteUserGroupsTool from "../delete/delete-user-groups.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
 import { UserGroupTestHelper } from "./helpers/user-group-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_GROUP_NAMES = ["_Test User Group 1", "_Test User Group 2", "_Test User Group 3"];
 
 describe("delete-user-groups", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let builders: UserGroupBuilder[];
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builders = [];
   });
 
@@ -20,7 +19,6 @@ describe("delete-user-groups", () => {
     for (const builder of builders) {
       await builder.cleanup();
     }
-    console.error = originalConsoleError;
   });
 
   it("should delete multiple user groups", async () => {
@@ -38,8 +36,9 @@ describe("delete-user-groups", () => {
     // Delete all test groups
     const result = await DeleteUserGroupsTool.handler({
       userGroupIds: builders.map(builder => ({ id: builder.getId() }))
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
 
     // Verify all groups are deleted
@@ -47,13 +46,17 @@ describe("delete-user-groups", () => {
       const items = await UserGroupTestHelper.findUserGroups(name);
       expect(items).toHaveLength(0);
     }
+
+    // Clear builders since they've been deleted - prevents afterEach from trying to delete again
+    builders = [];
   });
 
   it("should handle empty array of user groups", async () => {
     const result = await DeleteUserGroupsTool.handler({
       userGroupIds: []
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
   });
-}); 
+});

@@ -1,25 +1,23 @@
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import CreateTemporaryFileTool from "../post/create-temporary-file.js";
 import { TemporaryFileTestHelper } from "./helpers/temporary-file-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 
 describe("create-temporary-file", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let testId = "";
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     testId = uuidv4();
   });
 
   afterEach(async () => {
     await TemporaryFileTestHelper.cleanup(testId);
-    console.error = originalConsoleError;
   });
 
   it("should create a temporary file", async () => {
@@ -34,16 +32,18 @@ describe("create-temporary-file", () => {
         fileName: "example.jpg",
         fileAsBase64: fileAsBase64,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     expect(createSnapshotResult(result, testId)).toMatchSnapshot();
 
     const items = await TemporaryFileTestHelper.findTemporaryFiles(testId);
-    items[0].id = "NORMALIZED_ID";
-    items[0].availableUntil = "NORMALIZED_DATE";
-    items[0].fileName = "example.jpg"; // Normalize the UUID prefix from temp file
-    expect(items).toMatchSnapshot();
+    // Normalize fileName which contains dynamic UUID (e.g., umbraco-upload-{uuid}-example.jpg)
+    const normalizedItems = items.map((item: { fileName?: string }) => ({
+      ...item,
+      fileName: item.fileName?.replace(/umbraco-upload-[a-f0-9-]+-/, 'umbraco-upload-NORMALIZED-')
+    }));
+    expect(createSnapshotResult({ structuredContent: { items: normalizedItems } })).toMatchSnapshot();
   });
 
   it("should handle empty base64", async () => {
@@ -53,7 +53,7 @@ describe("create-temporary-file", () => {
         fileName: "test.jpg",
         fileAsBase64: "",
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Empty base64 creates an empty file, which should succeed

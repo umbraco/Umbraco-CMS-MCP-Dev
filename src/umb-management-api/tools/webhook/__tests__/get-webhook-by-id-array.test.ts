@@ -1,8 +1,9 @@
 import GetWebhookItemTool from "../get/get-webhook-by-id-array.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
-import { jest } from "@jest/globals";
-import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import {
   CONTENT_DELETED_EVENT,
   CONTENT_PUBLISHED_EVENT,
@@ -12,21 +13,10 @@ import {
 describe("get-webhook-item", () => {
   const TEST_WEBHOOK_NAME = "_Test Item Webhook";
   const TEST_WEBHOOK_NAME_2 = "_Test Item Webhook2";
-  let originalConsoleError: typeof console.error;
 
-  // Helper to parse response, handling empty string as empty array
-  const parseItems = (text: string) => {
-    if (!text || text.trim() === "") return [];
-    return JSON.parse(text);
-  };
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await WebhookTestHelper.cleanup(TEST_WEBHOOK_NAME);
     await WebhookTestHelper.cleanup(TEST_WEBHOOK_NAME_2);
   });
@@ -35,9 +25,9 @@ describe("get-webhook-item", () => {
     // Get all webhooks
     const result = await GetWebhookItemTool.handler(
       {},
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+    const items = (result.structuredContent as any)?.items ?? [];
 
     expect(items).toMatchSnapshot();
   });
@@ -53,14 +43,13 @@ describe("get-webhook-item", () => {
     // Get by ID
     const result = await GetWebhookItemTool.handler(
       { id: [builder.getId()] },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+    const items = (result.structuredContent as any)?.items ?? [];
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_WEBHOOK_NAME);
-    // Normalize for snapshot
-    items[0].id = BLANK_UUID;
-    expect(items).toMatchSnapshot();
+    // Use createSnapshotResult for normalization
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should get multiple webhooks by ID", async () => {
@@ -83,18 +72,15 @@ describe("get-webhook-item", () => {
       {
         id: [builder1.getId(), builder2.getId()],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    const items = parseItems(result.content[0].text as string);
+    const items = (result.structuredContent as any)?.items ?? [];
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_WEBHOOK_NAME);
     expect(items[1].name).toBe(TEST_WEBHOOK_NAME_2);
 
-    // Normalize for snapshot
-    items.forEach((item: any) => {
-      item.id = BLANK_UUID;
-    });
-    expect(items).toMatchSnapshot();
+    // Use createSnapshotResult for normalization
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 });

@@ -1,32 +1,30 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetItemUserGroupParams } from "@/umb-management-api/schemas/index.js";
 import {
   getItemUserGroupQueryParams,
   getItemUserGroupResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { UmbracoManagementClient } from "@umb-management-client";
+import { z } from "zod";
+
+// Wrap array response in object for MCP compliance
+const outputSchema = z.object({
+  items: getItemUserGroupResponse,
+});
 
 const GetUserGroupByIdArrayTool = {
   name: "get-user-group-by-id-array",
   description: "Gets user groups by an array of IDs",
-  schema: getItemUserGroupQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getItemUserGroupQueryParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: { readOnlyHint: true },
   slices: ['list'],
-  handler: async (params: GetItemUserGroupParams) => {
+  handler: (async (params: GetItemUserGroupParams) => {
     const client = UmbracoManagementClient.getClient();
     const response = await client.getItemUserGroup(params);
-    // Validate response shape
-    getItemUserGroupResponse.parse(response);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getItemUserGroupQueryParams.shape>;
+    return createToolResult({ items: response });
+  }),
+} satisfies ToolDefinition<typeof getItemUserGroupQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetUserGroupByIdArrayTool);

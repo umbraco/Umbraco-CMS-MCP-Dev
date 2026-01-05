@@ -1,28 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetFilterUserGroupParams } from "@/umb-management-api/schemas/index.js";
-import { getFilterUserGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getFilterUserGroupQueryParams, getFilterUserGroupResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetFilterUserGroupTool = {
   name: "get-filter-user-group",
   description: "Gets filtered user groups",
-  schema: getFilterUserGroupQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getFilterUserGroupQueryParams.shape,
+  outputSchema: getFilterUserGroupResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['search'],
-  handler: async (model: GetFilterUserGroupParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getFilterUserGroup(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getFilterUserGroupQueryParams.shape>;
+  handler: (async (model: GetFilterUserGroupParams) => {
+    return executeGetApiCall((client) =>
+      client.getFilterUserGroup(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getFilterUserGroupQueryParams.shape, typeof getFilterUserGroupResponse.shape>;
 
 export default withStandardDecorators(GetFilterUserGroupTool);

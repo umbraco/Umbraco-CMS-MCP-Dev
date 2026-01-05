@@ -1,26 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getWebhookEventsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetWebhookEventsTool = {
   name: "get-webhook-events",
   description: "Gets a list of available webhook events",
-  schema: {},
-  isReadOnly: true,
+  inputSchema: {},
+  outputSchema: getWebhookEventsResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['list'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getWebhookEvents();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<{}>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getWebhookEvents(undefined, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof getWebhookEventsResponse.shape>;
 
 export default withStandardDecorators(GetWebhookEventsTool);

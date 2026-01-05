@@ -2,40 +2,35 @@ import { getUserGroupByIdParams } from "@/umb-management-api/umbracoManagementAP
 import GetUserGroupTool from "../get/get-user-group.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_GROUP_NAME = "_Test User Group Get";
 
 describe("get-user-group", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let builder: UserGroupBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new UserGroupBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
   });
 
   it("should get a user group by id", async () => {
     await builder.withName(TEST_GROUP_NAME).create();
     const params = getUserGroupByIdParams.parse({ id: builder.getId() });
-    const result = await GetUserGroupTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetUserGroupTool.handler(params, createMockRequestHandlerExtra());
     expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
   });
 
   it("should handle non-existent user group", async () => {
     const params = getUserGroupByIdParams.parse({ id: BLANK_UUID });
-    const result = await GetUserGroupTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetUserGroupTool.handler(params, createMockRequestHandlerExtra());
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

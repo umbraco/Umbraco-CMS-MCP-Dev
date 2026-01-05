@@ -2,43 +2,39 @@
 
 exports[`create-template should create a template 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Template created successfully",
+  },
 }
 `;
 
 exports[`create-template should create a template 2`] = `
-[
-  {
-    "alias": "_testTemplateCreated",
-    "flags": [],
-    "id": "NORMALIZED_ID",
-    "name": "_Test Template Created",
+{
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "_testTemplateCreated",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Template Created",
+      },
+    ],
   },
-]
+}
 `;
 
 exports[`create-template should handle existing template 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-template:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Duplicate alias",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "A template with that alias already exists.",
-    "operationStatus": "DuplicateAlias"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "DuplicateAlias",
+    "status": 400,
+    "title": "Duplicate alias",
+    "type": "Error",
+  },
 }
 `;
