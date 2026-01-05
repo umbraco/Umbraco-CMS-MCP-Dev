@@ -22,7 +22,10 @@ describe("create-webhook", () => {
       .withUrl(TEST_WEBHOOOK_URL)
       .withEvents([CONTENT_PUBLISHED_EVENT]);
 
-    const result = await CreateWebhookTool.handler(builder.build(), createMockRequestHandlerExtra());
+    const result = await CreateWebhookTool.handler(
+      builder.build() as Parameters<typeof CreateWebhookTool.handler>[0],
+      createMockRequestHandlerExtra()
+    );
 
     const responseData = validateStructuredContent(result, createWebhookOutputSchema);
     expect(responseData.message).toBe("Webhook created successfully");

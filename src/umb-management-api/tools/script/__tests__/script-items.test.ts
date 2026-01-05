@@ -93,7 +93,7 @@ describe("script-items", () => {
   });
 
   it("should handle no path parameter", async () => {
-    const result = await GetScriptItemsTool.handler({}, createMockRequestHandlerExtra());
+    const result = await GetScriptItemsTool.handler({ path: undefined }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });

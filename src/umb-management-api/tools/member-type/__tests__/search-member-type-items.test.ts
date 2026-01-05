@@ -24,7 +24,7 @@ describe("search-member-type-items", () => {
 
     // Act - Search for the member type
     const result = await SearchMemberTypeItemsTool.handler(
-      { query: TEST_MEMBER_TYPE_NAME, take: 100 },
+      { query: TEST_MEMBER_TYPE_NAME, skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
 
@@ -36,7 +36,7 @@ describe("search-member-type-items", () => {
   it("should return empty results for non-existent search query", async () => {
     // Act - Search for a member type that doesn't exist
     const result = await SearchMemberTypeItemsTool.handler(
-      { query: "nonexistent_member_type_" + Date.now(), take: 100 },
+      { query: "nonexistent_member_type_" + Date.now(), skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
 

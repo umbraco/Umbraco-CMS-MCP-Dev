@@ -21,7 +21,8 @@ describe("create-stylesheet-folder", () => {
   it("should create a stylesheet folder", async () => {
     // Arrange
     const params = {
-      name: TEST_FOLDER_NAME
+      name: TEST_FOLDER_NAME,
+      parent: undefined
     };
 
     // Act
@@ -39,12 +40,14 @@ describe("create-stylesheet-folder", () => {
   it("should handle existing folder name", async () => {
     // Arrange - First create the folder
     await CreateStylesheetFolderTool.handler({
-      name: EXISTING_FOLDER_NAME
+      name: EXISTING_FOLDER_NAME,
+      parent: undefined
     }, createMockRequestHandlerExtra());
 
     // Act - Try to create it again with same name
     const result = await CreateStylesheetFolderTool.handler({
-      name: EXISTING_FOLDER_NAME
+      name: EXISTING_FOLDER_NAME,
+      parent: undefined
     }, createMockRequestHandlerExtra());
 
     // Assert

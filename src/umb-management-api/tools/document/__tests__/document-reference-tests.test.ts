@@ -33,7 +33,7 @@ describe("document-reference-tests", () => {
 
       // Act: Check if documents are referenced
       const result = await GetDocumentAreReferencedTool.handler(
-        { id: [builder1.getId(), builder2.getId()], take: 20 },
+        { id: [builder1.getId(), builder2.getId()], skip: undefined, take: 20 },
         createMockRequestHandlerExtra()
       );
 
@@ -71,7 +71,7 @@ describe("document-reference-tests", () => {
 
       // Act: Get documents that reference this document
       const result = await GetDocumentByIdReferencedByTool.handler(
-        { id: builder.getId(), take: 20 },
+        { id: builder.getId(), skip: undefined, take: 20 },
         createMockRequestHandlerExtra()
       );
 
@@ -101,7 +101,7 @@ describe("document-reference-tests", () => {
     it("should handle non-existent document", async () => {
       // Act: Try to get references for non-existent document
       const result = await GetDocumentByIdReferencedByTool.handler(
-        { id: "00000000-0000-0000-0000-000000000000", take: 20 },
+        { id: "00000000-0000-0000-0000-000000000000", skip: undefined, take: 20 },
         createMockRequestHandlerExtra()
       );
 
@@ -120,7 +120,7 @@ describe("document-reference-tests", () => {
 
       // Act: Get referenced descendants
       const result = await GetDocumentByIdReferencedDescendantsTool.handler(
-        { id: builder.getId(), take: 20 },
+        { id: builder.getId(), skip: undefined, take: 20 },
         createMockRequestHandlerExtra()
       );
 
@@ -151,7 +151,7 @@ describe("document-reference-tests", () => {
       // Act: Try to get referenced descendants for non-existent document
       // Using a random UUID that doesn't exist
       const result = await GetDocumentByIdReferencedDescendantsTool.handler(
-        { id: crypto.randomUUID(), take: 20 },
+        { id: crypto.randomUUID(), skip: undefined, take: 20 },
         createMockRequestHandlerExtra()
       );
 

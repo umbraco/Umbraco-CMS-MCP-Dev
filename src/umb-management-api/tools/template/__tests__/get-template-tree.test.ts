@@ -42,6 +42,7 @@ describe("template-tree", () => {
 
       const result = await GetTemplateChildrenTool.handler(
         {
+          skip: undefined,
           take: 100,
           parentId: parentBuilder.getId(),
         },
@@ -56,6 +57,7 @@ describe("template-tree", () => {
     it("should handle non-existent parent", async () => {
       const result = await GetTemplateChildrenTool.handler(
         {
+          skip: undefined,
           take: 100,
           parentId: BLANK_UUID,
         },

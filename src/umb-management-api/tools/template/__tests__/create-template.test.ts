@@ -20,7 +20,8 @@ describe("create-template", () => {
     const result = await CreateTemplateTool.handler({
       name: TEST_TEMPLATE_NAME,
       alias: TEST_TEMPLATE_NAME.toLowerCase().replace(/\s+/g, "-"),
-      content: "<h1>@Model.Title</h1>"
+      content: "<h1>@Model.Title</h1>",
+      id: undefined
     }, createMockRequestHandlerExtra());
 
     const responseData = validateStructuredContent(result, createTemplateOutputSchema);
@@ -36,14 +37,16 @@ describe("create-template", () => {
     await CreateTemplateTool.handler({
       name: EXISTING_TEMPLATE_NAME,
       alias: EXISTING_TEMPLATE_NAME.toLowerCase().replace(/\s+/g, "-"),
-      content: "<h1>@Model.Title</h1>"
+      content: "<h1>@Model.Title</h1>",
+      id: undefined
     }, createMockRequestHandlerExtra());
 
     // Try to create it again
     const result = await CreateTemplateTool.handler({
       name: EXISTING_TEMPLATE_NAME,
       alias: EXISTING_TEMPLATE_NAME.toLowerCase().replace(/\s+/g, "-"),
-      content: "<h1>@Model.Title</h1>"
+      content: "<h1>@Model.Title</h1>",
+      id: undefined
     }, createMockRequestHandlerExtra());
 
     expect(result.isError).toBe(true);

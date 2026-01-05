@@ -31,7 +31,7 @@ describe("get-all-member-groups", () => {
 
     // Act - Get all member groups
     const result = await GetAllMemberGroupsTool.handler(
-      { take: 100 },
+      { skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
 

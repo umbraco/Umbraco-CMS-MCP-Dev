@@ -39,6 +39,10 @@ describe("get-tag", () => {
     // Test the get-tags tool with a common search term
     const result = await GetTagsTool.handler(
       {
+        query: undefined,
+        tagGroup: undefined,
+        culture: undefined,
+        skip: undefined,
         take: 50,
       },
       createMockRequestHandlerExtra()
@@ -68,6 +72,9 @@ describe("get-tag", () => {
     const result = await GetTagsTool.handler(
       {
         query: NON_EXISTENT_TAG,
+        tagGroup: undefined,
+        culture: undefined,
+        skip: undefined,
         take: 100,
       },
       createMockRequestHandlerExtra()
@@ -95,6 +102,9 @@ describe("get-tag", () => {
     const result = await GetTagsTool.handler(
       {
         query: "test",
+        tagGroup: undefined,
+        culture: undefined,
+        skip: undefined,
         take: 100,
       },
       createMockRequestHandlerExtra()

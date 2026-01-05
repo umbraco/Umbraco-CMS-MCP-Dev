@@ -34,12 +34,11 @@ describe("GetFilterUserGroupTool", () => {
   });
 
   it("should filter user groups by name", async () => {
-    const params = getFilterUserGroupQueryParams.parse({
+    const result = await GetFilterUserGroupTool.handler({
       skip: 0,
       take: 100,
       filter: "Filter"
-    });
-    const result = await GetFilterUserGroupTool.handler(params, createMockRequestHandlerExtra());
+    }, createMockRequestHandlerExtra());
 
     // Verify the response contains only groups with "Filter" in the name
     const response = validateStructuredContent(result, getFilterUserGroupResponse);
@@ -48,11 +47,11 @@ describe("GetFilterUserGroupTool", () => {
   });
 
   it("should handle empty filter", async () => {
-    const params = getFilterUserGroupQueryParams.parse({
+    const result = await GetFilterUserGroupTool.handler({
       skip: 0,
-      take: 100
-    });
-    const result = await GetFilterUserGroupTool.handler(params, createMockRequestHandlerExtra());
+      take: 100,
+      filter: undefined
+    }, createMockRequestHandlerExtra());
 
     // Verify the response contains all groups
     const response = validateStructuredContent(result, getFilterUserGroupResponse);
@@ -60,11 +59,11 @@ describe("GetFilterUserGroupTool", () => {
   });
 
   it("should handle pagination", async () => {
-    const params = getFilterUserGroupQueryParams.parse({
+    const result = await GetFilterUserGroupTool.handler({
       skip: 2,
-      take: 2
-    });
-    const result = await GetFilterUserGroupTool.handler(params, createMockRequestHandlerExtra());
+      take: 2,
+      filter: undefined
+    }, createMockRequestHandlerExtra());
 
     // Verify the response contains only 2 items
     const response = validateStructuredContent(result, getFilterUserGroupResponse);

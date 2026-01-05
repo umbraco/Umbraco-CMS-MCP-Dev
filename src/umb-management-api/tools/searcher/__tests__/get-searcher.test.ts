@@ -7,7 +7,7 @@ describe("get-searcher", () => {
 
   it("should list all searchers with default parameters", async () => {
     const result = await GetSearcherTool.handler(
-      { take: 100 },
+      { skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
     // Verify the handler response using snapshot

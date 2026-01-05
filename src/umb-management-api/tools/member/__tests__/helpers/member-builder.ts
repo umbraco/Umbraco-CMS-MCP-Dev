@@ -59,7 +59,18 @@ export class MemberBuilder {
   }
 
   build(): CreateMemberRequestModel {
-    return this.model as CreateMemberRequestModel;
+    // Ensure all optional properties are explicitly set for TypeScript compatibility
+    return {
+      id: this.model.id ?? undefined,
+      values: this.model.values ?? [],
+      variants: this.model.variants ?? [],
+      memberType: this.model.memberType ?? { id: "" },
+      email: this.model.email ?? "",
+      username: this.model.username ?? "",
+      password: this.model.password ?? "",
+      groups: this.model.groups ?? undefined,
+      isApproved: this.model.isApproved ?? true,
+    } as CreateMemberRequestModel;
   }
 
   async create(): Promise<MemberBuilder> {

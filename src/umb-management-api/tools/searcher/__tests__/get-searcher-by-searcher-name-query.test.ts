@@ -9,7 +9,7 @@ describe("get-searcher-by-searcher-name-query", () => {
 
   it("should get searcher query results by searcher name", async () => {
     const result = await GetSearcherBySearcherNameQueryTool.handler(
-      { searcherName: TEST_SEARCHER_NAME, take: 100 },
+      { searcherName: TEST_SEARCHER_NAME, term: undefined, skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
     // Verify the handler response using snapshot

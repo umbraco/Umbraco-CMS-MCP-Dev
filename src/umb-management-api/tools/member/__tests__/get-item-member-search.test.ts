@@ -33,7 +33,7 @@ describe("get-item-member-search", () => {
 
     // Act - Search for the member
     const result = await GetItemMemberSearchTool.handler(
-      { query: TEST_MEMBER_USERNAME, take: 100 },
+      { query: TEST_MEMBER_USERNAME, take: 100, skip: undefined, allowedMemberTypes: undefined },
       createMockRequestHandlerExtra()
     );
 
@@ -45,7 +45,7 @@ describe("get-item-member-search", () => {
   it("should return empty results for non-existent search query", async () => {
     // Act - Search for a member that doesn't exist
     const result = await GetItemMemberSearchTool.handler(
-      { query: "nonexistent_member_" + Date.now(), take: 100 },
+      { query: "nonexistent_member_" + Date.now(), take: 100, skip: undefined, allowedMemberTypes: undefined },
       createMockRequestHandlerExtra()
     );
 
@@ -75,7 +75,7 @@ describe("get-item-member-search", () => {
 
     // Act - Search with pagination (take only 1 result)
     const result = await GetItemMemberSearchTool.handler(
-      { query: "itemsearch", skip: 0, take: 1 },
+      { query: "itemsearch", skip: 0, take: 1, allowedMemberTypes: undefined },
       createMockRequestHandlerExtra()
     );
 

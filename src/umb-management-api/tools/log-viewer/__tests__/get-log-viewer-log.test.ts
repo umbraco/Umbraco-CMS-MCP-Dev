@@ -7,17 +7,18 @@ describe("get-log-viewer-log", () => {
 
   it("should get log viewer logs with default parameters", async () => {
     const result = await GetLogViewerLogTool.handler(
-      { take: 100 },
+      { skip: undefined, take: 100, orderDirection: undefined, filterExpression: undefined, logLevel: undefined, startDate: undefined, endDate: undefined },
       createMockRequestHandlerExtra()
     );
 
     // Verify response structure (logs are dynamic, so we verify structure not content)
     expect(result.structuredContent).toBeDefined();
-    expect(result.structuredContent).toHaveProperty("items");
-    expect(result.structuredContent).toHaveProperty("total");
-    expect(Array.isArray(result.structuredContent.items)).toBe(true);
-    expect(typeof result.structuredContent.total).toBe("number");
-    expect(result.structuredContent.total).toBeGreaterThanOrEqual(0);
+    const content = result.structuredContent as { items: unknown[]; total: number };
+    expect(content).toHaveProperty("items");
+    expect(content).toHaveProperty("total");
+    expect(Array.isArray(content.items)).toBe(true);
+    expect(typeof content.total).toBe("number");
+    expect(content.total).toBeGreaterThanOrEqual(0);
   });
 
   it("should get log viewer logs with custom parameters", async () => {
@@ -41,10 +42,11 @@ describe("get-log-viewer-log", () => {
 
     // Verify response structure (logs are dynamic, so we verify structure not content)
     expect(result.structuredContent).toBeDefined();
-    expect(result.structuredContent).toHaveProperty("items");
-    expect(result.structuredContent).toHaveProperty("total");
-    expect(Array.isArray(result.structuredContent.items)).toBe(true);
-    expect(result.structuredContent.items.length).toBeLessThanOrEqual(10);
-    expect(typeof result.structuredContent.total).toBe("number");
+    const content = result.structuredContent as { items: unknown[]; total: number };
+    expect(content).toHaveProperty("items");
+    expect(content).toHaveProperty("total");
+    expect(Array.isArray(content.items)).toBe(true);
+    expect(content.items.length).toBeLessThanOrEqual(10);
+    expect(typeof content.total).toBe("number");
   });
 });

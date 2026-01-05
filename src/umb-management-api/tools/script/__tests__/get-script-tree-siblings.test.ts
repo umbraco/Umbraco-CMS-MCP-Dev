@@ -53,6 +53,8 @@ describe("get-script-tree-siblings", () => {
     const result = await GetScriptTreeSiblingsTool.handler(
       {
         path: targetBuilder.getPath(),
+        before: undefined,
+        after: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -70,6 +72,8 @@ describe("get-script-tree-siblings", () => {
     const result = await GetScriptTreeSiblingsTool.handler(
       {
         path: nonExistentPath,
+        before: undefined,
+        after: undefined,
       },
       createMockRequestHandlerExtra()
     );

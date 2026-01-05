@@ -35,8 +35,10 @@ describe("document-tree", () => {
 
       const result = await GetDocumentChildrenTool.handler(
         {
-          take: 100,
           parentId: parentBuilder.getId(),
+          skip: undefined,
+          take: 100,
+          dataTypeId: undefined,
         },
         createMockRequestHandlerExtra()
       );
@@ -48,8 +50,10 @@ describe("document-tree", () => {
     it("should handle non-existent parent", async () => {
       const result = await GetDocumentChildrenTool.handler(
         {
-          take: 100,
           parentId: BLANK_UUID,
+          skip: undefined,
+          take: 100,
+          dataTypeId: undefined,
         },
         createMockRequestHandlerExtra()
       );

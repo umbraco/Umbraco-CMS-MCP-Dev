@@ -20,13 +20,17 @@ describe("create-user-group", () => {
     const result = await CreateUserGroupTool.handler({
       name: TEST_GROUP_NAME,
       alias: TEST_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
+      icon: undefined,
       sections: ["content"],
       languages: [],
       hasAccessToAllLanguages: true,
+      documentStartNode: undefined,
       documentRootAccess: false,
+      mediaStartNode: undefined,
       mediaRootAccess: false,
       fallbackPermissions: [],
-      permissions: []
+      permissions: [],
+      id: undefined
     }, createMockRequestHandlerExtra());
 
     const responseData = validateStructuredContent(result, createUserGroupOutputSchema);
@@ -42,26 +46,34 @@ describe("create-user-group", () => {
     await CreateUserGroupTool.handler({
       name: EXISTING_GROUP_NAME,
       alias: EXISTING_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
+      icon: undefined,
       sections: ["content"],
       languages: [],
       hasAccessToAllLanguages: true,
+      documentStartNode: undefined,
       documentRootAccess: false,
+      mediaStartNode: undefined,
       mediaRootAccess: false,
       fallbackPermissions: [],
-      permissions: []
+      permissions: [],
+      id: undefined
     }, createMockRequestHandlerExtra());
 
     // Try to create it again
     const result = await CreateUserGroupTool.handler({
       name: EXISTING_GROUP_NAME,
       alias: EXISTING_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
+      icon: undefined,
       sections: ["content"],
       languages: [],
       hasAccessToAllLanguages: true,
+      documentStartNode: undefined,
       documentRootAccess: false,
+      mediaStartNode: undefined,
       mediaRootAccess: false,
       fallbackPermissions: [],
-      permissions: []
+      permissions: [],
+      id: undefined
     }, createMockRequestHandlerExtra());
 
     expect(result.isError).toBe(true);

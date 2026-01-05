@@ -24,7 +24,7 @@ describe("get-webhook-item", () => {
   it("should get no webhooks for empty request", async () => {
     // Get all webhooks
     const result = await GetWebhookItemTool.handler(
-      {},
+      { id: undefined },
       createMockRequestHandlerExtra()
     );
     const items = (result.structuredContent as any)?.items ?? [];

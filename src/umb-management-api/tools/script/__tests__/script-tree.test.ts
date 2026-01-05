@@ -80,6 +80,7 @@ describe("script-tree", () => {
     it("should get root level script items", async () => {
       const result = await GetScriptTreeRootTool.handler(
         {
+          skip: undefined,
           take: 100,
         },
         createMockRequestHandlerExtra()
@@ -93,6 +94,7 @@ describe("script-tree", () => {
       const result = await GetScriptTreeChildrenTool.handler(
         {
           parentPath: rootFolderBuilder.getPath(),
+          skip: undefined,
           take: 100,
         },
         createMockRequestHandlerExtra()
@@ -104,6 +106,7 @@ describe("script-tree", () => {
       const result = await GetScriptTreeChildrenTool.handler(
         {
           parentPath: childFolderBuilder.getPath(),
+          skip: undefined,
           take: 100,
         },
         createMockRequestHandlerExtra()
@@ -115,6 +118,7 @@ describe("script-tree", () => {
       const result = await GetScriptTreeChildrenTool.handler(
         {
           parentPath: grandchildScriptBuilder.getPath(),
+          skip: undefined,
           take: 100,
         },
         createMockRequestHandlerExtra()

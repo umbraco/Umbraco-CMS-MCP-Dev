@@ -15,7 +15,7 @@ export const UserDataCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     // User Data is scoped to the authenticated user, available to all authenticated users
     tools.push(CreateUserDataTool);

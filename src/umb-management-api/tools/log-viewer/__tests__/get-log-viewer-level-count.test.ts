@@ -7,29 +7,31 @@ describe("get-log-viewer-level-count", () => {
 
   it("should get log viewer level counts with default parameters", async () => {
     const result = await GetLogViewerLevelCountTool.handler(
-      {},
+      { startDate: undefined, endDate: undefined },
       createMockRequestHandlerExtra()
     );
 
     // Verify response structure (counts are dynamic, so we verify structure not exact values)
     expect(result.structuredContent).toBeDefined();
-    expect(result.structuredContent).toHaveProperty("debug");
-    expect(result.structuredContent).toHaveProperty("error");
-    expect(result.structuredContent).toHaveProperty("fatal");
-    expect(result.structuredContent).toHaveProperty("information");
-    expect(result.structuredContent).toHaveProperty("warning");
+    const content = result.structuredContent!;
+    expect(content).toHaveProperty("debug");
+    expect(content).toHaveProperty("error");
+    expect(content).toHaveProperty("fatal");
+    expect(content).toHaveProperty("information");
+    expect(content).toHaveProperty("warning");
 
     // Verify all counts are non-negative numbers
-    expect(typeof result.structuredContent.debug).toBe("number");
-    expect(typeof result.structuredContent.error).toBe("number");
-    expect(typeof result.structuredContent.fatal).toBe("number");
-    expect(typeof result.structuredContent.information).toBe("number");
-    expect(typeof result.structuredContent.warning).toBe("number");
-    expect(result.structuredContent.debug).toBeGreaterThanOrEqual(0);
-    expect(result.structuredContent.error).toBeGreaterThanOrEqual(0);
-    expect(result.structuredContent.fatal).toBeGreaterThanOrEqual(0);
-    expect(result.structuredContent.information).toBeGreaterThanOrEqual(0);
-    expect(result.structuredContent.warning).toBeGreaterThanOrEqual(0);
+    const typedContent = content as { debug: number; error: number; fatal: number; information: number; warning: number };
+    expect(typeof typedContent.debug).toBe("number");
+    expect(typeof typedContent.error).toBe("number");
+    expect(typeof typedContent.fatal).toBe("number");
+    expect(typeof typedContent.information).toBe("number");
+    expect(typeof typedContent.warning).toBe("number");
+    expect(typedContent.debug).toBeGreaterThanOrEqual(0);
+    expect(typedContent.error).toBeGreaterThanOrEqual(0);
+    expect(typedContent.fatal).toBeGreaterThanOrEqual(0);
+    expect(typedContent.information).toBeGreaterThanOrEqual(0);
+    expect(typedContent.warning).toBeGreaterThanOrEqual(0);
   });
 
   it("should get log viewer level counts with date range", async () => {

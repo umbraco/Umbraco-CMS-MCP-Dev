@@ -29,7 +29,7 @@ describe("find-member", () => {
 
     // Use the tool to find by username
     const result = await FindMemberTool.handler(
-      { filter: TEST_MEMBER_USERNAME, orderBy: "username", take: 100 },
+      { filter: TEST_MEMBER_USERNAME, orderBy: "username", take: 100, memberTypeId: undefined, memberGroupName: undefined, isApproved: undefined, isLockedOut: undefined, orderDirection: undefined, skip: undefined },
       createMockRequestHandlerExtra()
     );
     const data = result.structuredContent as any;
@@ -47,6 +47,12 @@ describe("find-member", () => {
         filter: "nonexistentuser_" + Date.now(),
         orderBy: "username",
         take: 100,
+        memberTypeId: undefined,
+        memberGroupName: undefined,
+        isApproved: undefined,
+        isLockedOut: undefined,
+        orderDirection: undefined,
+        skip: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -74,7 +80,7 @@ describe("find-member", () => {
 
     // Use the tool to get only one result
     const result = await FindMemberTool.handler(
-      { filter: "findmember@example.com", orderBy: "username", take: 1 },
+      { filter: "findmember@example.com", orderBy: "username", take: 1, memberTypeId: undefined, memberGroupName: undefined, isApproved: undefined, isLockedOut: undefined, orderDirection: undefined, skip: undefined },
       createMockRequestHandlerExtra()
     );
     const data = result.structuredContent as any;

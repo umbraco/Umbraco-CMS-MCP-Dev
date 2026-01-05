@@ -24,6 +24,7 @@ describe("create-stylesheet", () => {
     // Arrange
     const params = {
       name: TEST_STYLESHEET_NAME,
+      path: undefined,
       content: TEST_CONTENT
     };
 
@@ -43,12 +44,14 @@ describe("create-stylesheet", () => {
     // Arrange - First create the stylesheet
     await CreateStylesheetTool.handler({
       name: EXISTING_STYLESHEET_NAME,
+      path: undefined,
       content: EXISTING_CONTENT
     }, createMockRequestHandlerExtra());
 
     // Act - Try to create it again with same name
     const result = await CreateStylesheetTool.handler({
       name: EXISTING_STYLESHEET_NAME,
+      path: undefined,
       content: TEST_CONTENT
     }, createMockRequestHandlerExtra());
 

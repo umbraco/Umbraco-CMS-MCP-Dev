@@ -97,7 +97,16 @@ export class WebhookBuilder {
   }
 
   build(): CreateWebhookRequestModel {
-    return this.model as CreateWebhookRequestModel;
+    // Ensure all optional properties are explicitly set for TypeScript compatibility
+    return {
+      enabled: this.model.enabled ?? true,
+      name: this.model.name ?? undefined,
+      description: this.model.description ?? undefined,
+      url: this.model.url ?? "",
+      contentTypeKeys: this.model.contentTypeKeys ?? [],
+      headers: this.model.headers ?? {},
+      events: this.model.events ?? [],
+    } as CreateWebhookRequestModel;
   }
 
   async cleanup(): Promise<void> {

@@ -12,7 +12,7 @@ describe("get-static-files", () => {
 
   it("should get all static files when no path is specified", async () => {
     // Arrange - no path filtering
-    const params = {};
+    const params = { path: undefined };
 
     // Act
     const result = await GetStaticFilesTool.handler(
@@ -138,7 +138,7 @@ describe("get-static-files", () => {
 
   it("should return items with proper file system properties", async () => {
     // Arrange
-    const params = {};
+    const params = { path: undefined };
 
     // Act
     const result = await GetStaticFilesTool.handler(

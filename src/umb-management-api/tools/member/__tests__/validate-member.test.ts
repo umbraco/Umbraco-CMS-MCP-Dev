@@ -10,11 +10,13 @@ const TEST_MEMBER_EMAIL = "_test_member_validation@example.com";
 // Helper to build a basic validation model
 function buildValidationModel() {
   return {
+    id: undefined,
     email: TEST_MEMBER_EMAIL,
     username: TEST_MEMBER_EMAIL,
     password: "TestPassword123!",
     isApproved: true,
     memberType: { id: "d59be02f-1df9-4228-aa1e-01917d806cda" }, // Default member type
+    groups: [],
     values: [],
     variants: [
       {

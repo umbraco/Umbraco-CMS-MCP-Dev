@@ -49,6 +49,8 @@ describe("get-template-siblings", () => {
     const result = await GetTemplateSiblingsTool.handler(
       {
         target: targetBuilder.getId(),
+        before: undefined,
+        after: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -66,6 +68,8 @@ describe("get-template-siblings", () => {
     const result = await GetTemplateSiblingsTool.handler(
       {
         target: nonExistentId,
+        before: undefined,
+        after: undefined,
       },
       createMockRequestHandlerExtra()
     );

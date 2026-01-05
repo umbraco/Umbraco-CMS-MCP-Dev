@@ -28,7 +28,7 @@ describe("get-member-group-root", () => {
 
   it("should get the root of the member group tree and include created groups", async () => {
     const result = await GetMemberGroupRootTool.handler(
-      { take: 100 },
+      { skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
 

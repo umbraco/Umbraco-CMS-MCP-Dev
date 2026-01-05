@@ -21,16 +21,14 @@ describe("GetUserGroupsTool", () => {
     await builder.withName("Test User Group").create();
 
     // Get all user groups
-    const params = getUserGroupQueryParams.parse({ skip: 0, take: 100 });
-    await GetUserGroupsTool.handler(params, createMockRequestHandlerExtra());
+    await GetUserGroupsTool.handler({ skip: 0, take: 100 }, createMockRequestHandlerExtra());
 
     // No need to test this result as it's dependant on what Umbraco has set up
   });
 
   it("should handle empty result", async () => {
     // Get all user groups with no groups created
-    const params = getUserGroupQueryParams.parse({ skip: 0, take: 100 });
-    const result = await GetUserGroupsTool.handler(params, createMockRequestHandlerExtra());
+    const result = await GetUserGroupsTool.handler({ skip: 0, take: 100 }, createMockRequestHandlerExtra());
 
     // Verify the response
     expect(result).toMatchSnapshot();

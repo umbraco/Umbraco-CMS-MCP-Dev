@@ -17,11 +17,11 @@ describe("get-item-member-group", () => {
 
   it("should get no member groups for empty request", async () => {
     const result = await GetMemberGroupByIdArrayTool.handler(
-      {},
+      { id: undefined },
       createMockRequestHandlerExtra()
     );
     // executeGetApiCall returns the array directly in structuredContent
-    const items = result.structuredContent as any[] ?? [];
+    const items = (result.structuredContent as unknown as any[]) ?? [];
     expect(items).toMatchSnapshot();
   });
 

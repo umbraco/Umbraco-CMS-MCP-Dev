@@ -7,14 +7,15 @@ describe("get-document-property-value-template", () => {
   it("should list all available property value templates when no editorAlias is provided", async () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
-      {},
+      { editorAlias: undefined },
       createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Available Property Value Templates:");
     expect(text).toContain("Textbox");
     expect(text).toContain("BlockList");
@@ -32,8 +33,9 @@ describe("get-document-property-value-template", () => {
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: Textbox");
     expect(text).toContain("editorAlias");
     expect(text).toContain("Umbraco.TextBox");
@@ -53,8 +55,9 @@ describe("get-document-property-value-template", () => {
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: Textbox");
     expect(text).toContain("Umbraco.TextBox");
   });
@@ -68,8 +71,9 @@ describe("get-document-property-value-template", () => {
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: Textbox");
   });
 
@@ -82,8 +86,9 @@ describe("get-document-property-value-template", () => {
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("IMPORTANT NOTES:");
     expect(text).toContain("Complex structure");
   });
@@ -97,9 +102,10 @@ describe("get-document-property-value-template", () => {
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
     expect(result.isError).toBe(true);
-    const text = result.content[0].text as string;
+    const text = textContent.text;
     expect(text).toContain("not found");
     expect(text).toContain("Available editor aliases:");
   });
@@ -113,8 +119,9 @@ describe("get-document-property-value-template", () => {
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: BlockGrid");
     expect(text).toContain("layout");
     expect(text).toContain("contentData");
@@ -132,8 +139,9 @@ describe("get-document-property-value-template", () => {
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: RichTextEditor");
     expect(text).toContain("markup");
     expect(text).toContain("blocks");
@@ -148,8 +156,9 @@ describe("get-document-property-value-template", () => {
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("IMPORTANT NOTES:");
     expect(text).toContain("temporary file");
     expect(text).toContain("temporaryFileId");
@@ -164,8 +173,9 @@ describe("get-document-property-value-template", () => {
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("mediaKey");
     expect(text).toContain("key");
   });

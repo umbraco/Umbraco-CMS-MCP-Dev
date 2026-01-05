@@ -42,7 +42,9 @@ describe("get-document-siblings", () => {
     const result = await GetDocumentSiblingsTool.handler(
       {
         target: sibling1Builder.getId(),
+        before: undefined,
         after: 100,
+        dataTypeId: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -57,7 +59,9 @@ describe("get-document-siblings", () => {
     const result = await GetDocumentSiblingsTool.handler(
       {
         target: BLANK_UUID,
+        before: undefined,
         after: 100,
+        dataTypeId: undefined,
       },
       createMockRequestHandlerExtra()
     );

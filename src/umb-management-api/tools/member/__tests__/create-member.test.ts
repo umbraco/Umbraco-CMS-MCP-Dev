@@ -31,7 +31,7 @@ describe("create-member", () => {
 
     // Create the member
     const result = await CreateMemberTool.handler(
-      memberModel,
+      memberModel as Parameters<typeof CreateMemberTool.handler>[0],
       createMockRequestHandlerExtra()
     );
 
@@ -61,7 +61,7 @@ describe("create-member", () => {
       .build();
 
     const result = await CreateMemberTool.handler(
-      memberModel,
+      memberModel as Parameters<typeof CreateMemberTool.handler>[0],
       createMockRequestHandlerExtra()
     );
 

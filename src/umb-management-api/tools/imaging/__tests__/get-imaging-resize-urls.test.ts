@@ -12,7 +12,8 @@ describe("get-imaging-resize-urls", () => {
       {
         id: [TEST_MEDIA_UID],
         height: 200,
-        width: 200
+        width: 200,
+        mode: undefined
       },
       createMockRequestHandlerExtra()
     );

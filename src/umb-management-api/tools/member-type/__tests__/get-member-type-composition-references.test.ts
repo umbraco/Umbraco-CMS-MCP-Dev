@@ -38,7 +38,7 @@ describe("get-member-type-composition-references", () => {
     );
 
     // Parse the response to get the ID to normalize
-    const parsed = result.structuredContent as any[];
+    const parsed = result.structuredContent as unknown as any[];
     const idToNormalize = parsed[0]?.id;
 
     // Normalize IDs and dates for snapshot testing
@@ -63,7 +63,7 @@ describe("get-member-type-composition-references", () => {
     );
 
     // Parse the response to get the ID to normalize
-    const parsed = result.structuredContent as any[];
+    const parsed = result.structuredContent as unknown as any[];
     const idToNormalize = parsed[0]?.id;
 
     // Normalize IDs and dates for snapshot testing

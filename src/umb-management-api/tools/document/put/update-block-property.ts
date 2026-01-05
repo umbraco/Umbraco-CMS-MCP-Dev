@@ -21,6 +21,7 @@ import {
 } from "./helpers/block-discovery.js";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators, ToolValidationError } from "@/helpers/mcp/tool-decorators.js";
+import { createToolResult } from "@/helpers/mcp/tool-result.js";
 
 // Output schema for successful responses
 const blockUpdateResultSchema = z.object({
@@ -322,14 +323,12 @@ const UpdateBlockPropertyTool = {
     // Step 8: Update the document
     await client.putDocumentById(model.documentId, updatePayload);
 
-    return {
-      structuredContent: {
-        success: true,
-        message: `Successfully processed ${model.updates.length} block update(s)`,
-        results
-      }
-    };
+    return createToolResult({
+      success: true,
+      message: `Successfully processed ${model.updates.length} block update(s)`,
+      results
+    });
   }),
-} satisfies ToolDefinition<typeof updateBlockPropertySchema>;
+} satisfies ToolDefinition<typeof updateBlockPropertySchema, typeof updateBlockPropertyOutputSchema>;
 
 export default withStandardDecorators(UpdateBlockPropertyTool);

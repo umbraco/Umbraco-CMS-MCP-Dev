@@ -8,7 +8,7 @@ describe("get-indexer", () => {
 
   it("should list all indexes with default parameters", async () => {
     const result = await GetIndexerTool.handler(
-      { take: 100 },
+      { skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
 

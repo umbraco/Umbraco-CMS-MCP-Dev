@@ -29,6 +29,7 @@ describe("get-document-version", () => {
     // Act
     const result = await GetDocumentVersionTool.handler({
       documentId: documentBuilder.getId(),
+      culture: undefined,
       skip: 0,
       take: 10
     }, createMockRequestHandlerExtra());
@@ -51,6 +52,7 @@ describe("get-document-version", () => {
     // Act
     const result = await GetDocumentVersionTool.handler({
       documentId: documentBuilder.getId(),
+      culture: undefined,
       skip: 1,
       take: 1
     }, createMockRequestHandlerExtra());
@@ -64,6 +66,7 @@ describe("get-document-version", () => {
     // Act
     const result = await GetDocumentVersionTool.handler({
       documentId: "non-existent-id",
+      culture: undefined,
       skip: 0,
       take: 10
     }, createMockRequestHandlerExtra());

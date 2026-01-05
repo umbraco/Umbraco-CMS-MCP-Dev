@@ -19,7 +19,7 @@ describe("get-member-types-by-id-array", () => {
   it("should get no member types for empty request", async () => {
     // Get all member types
     const result = await GetMemberTypesByIdArrayTool.handler(
-      {},
+      { id: undefined },
       createMockRequestHandlerExtra()
     );
     const items = (result.structuredContent as any) ?? [];

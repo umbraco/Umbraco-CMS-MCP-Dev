@@ -28,11 +28,9 @@ describe("get-template-by-id-array", () => {
     await builder1.withName(TEST_TEMPLATE_NAME_1).create();
     await builder2.withName(TEST_TEMPLATE_NAME_2).create();
 
-    const params = getItemTemplateQueryParams.parse({
+    const result = await GetTemplatesByIdArrayTool.handler({
       id: [builder1.getId(), builder2.getId()]
-    });
-
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
+    }, createMockRequestHandlerExtra());
 
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
@@ -41,38 +39,34 @@ describe("get-template-by-id-array", () => {
   it("should handle single template id", async () => {
     await builder1.withName(TEST_TEMPLATE_NAME_1).create();
 
-    const params = getItemTemplateQueryParams.parse({
+    const result = await GetTemplatesByIdArrayTool.handler({
       id: [builder1.getId()]
-    });
-
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
+    }, createMockRequestHandlerExtra());
 
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
   });
 
   it("should handle empty array", async () => {
-    const params = getItemTemplateQueryParams.parse({ id: [] });
-
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
+    const result = await GetTemplatesByIdArrayTool.handler({
+      id: []
+    }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });
 
   it("should handle non-existent template ids", async () => {
-    const params = getItemTemplateQueryParams.parse({
+    const result = await GetTemplatesByIdArrayTool.handler({
       id: [BLANK_UUID]
-    });
-
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
+    }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });
 
   it("should handle no id parameter", async () => {
-    const params = getItemTemplateQueryParams.parse({});
-
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
+    const result = await GetTemplatesByIdArrayTool.handler({
+      id: undefined
+    }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });
