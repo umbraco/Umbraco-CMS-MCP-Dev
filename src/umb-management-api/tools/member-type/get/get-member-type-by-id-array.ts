@@ -1,9 +1,9 @@
 import { getItemMemberTypeQueryParams, getItemMemberTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetItemMemberTypeParams } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Array responses must be wrapped in an object
 const outputSchema = z.object({
@@ -18,9 +18,9 @@ const GetMemberTypesByIdArrayTool = {
   annotations: { readOnlyHint: true },
   slices: ['list'],
   handler: (async (params: GetItemMemberTypeParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemMemberType(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemMemberType(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getItemMemberTypeQueryParams.shape, typeof outputSchema.shape>;
 

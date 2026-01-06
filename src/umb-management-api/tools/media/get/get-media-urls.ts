@@ -1,9 +1,9 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetMediaUrlsParams } from "@/umb-management-api/schemas/index.js";
 import { getMediaUrlsQueryParams, getMediaUrlsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getMediaUrlsResponse,
@@ -17,9 +17,9 @@ const GetMediaUrlsTool = {
   annotations: { readOnlyHint: true },
   slices: ['read'],
   handler: (async (params: GetMediaUrlsParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getMediaUrls(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getMediaUrls(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getMediaUrlsQueryParams.shape, typeof outputSchema.shape>;
 

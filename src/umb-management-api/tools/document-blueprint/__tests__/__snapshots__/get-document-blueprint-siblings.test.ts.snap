@@ -32,8 +32,8 @@ exports[`get-document-blueprint-siblings should handle non-existent target 1`] =
   "content": [],
   "isError": true,
   "structuredContent": {
-    "message": "Request failed with status code 404",
-    "name": "AxiosError",
+    "detail": "Not Found",
+    "status": 404,
   },
 }
 `;

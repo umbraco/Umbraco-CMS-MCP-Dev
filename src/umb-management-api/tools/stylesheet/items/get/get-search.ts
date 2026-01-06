@@ -1,9 +1,9 @@
 import { GetItemStylesheetParams } from "@/umb-management-api/schemas/index.js";
 import { getItemStylesheetQueryParams, getItemStylesheetResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Wrap array response in object for MCP compliance
 const outputSchema = z.object({
@@ -18,9 +18,9 @@ const GetStylesheetSearchTool = {
   annotations: { readOnlyHint: true },
   slices: ['search'],
   handler: (async (model: GetItemStylesheetParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemStylesheet(model);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemStylesheet(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getItemStylesheetQueryParams.shape, typeof outputSchema.shape>;
 

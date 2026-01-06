@@ -1,9 +1,9 @@
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { getItemDocumentTypeQueryParams, getItemDocumentTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetItemDocumentTypeParams } from "@/umb-management-api/schemas/index.js";
-import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getItemDocumentTypeResponse,
@@ -17,9 +17,9 @@ const GetDocumentTypesByIdArrayTool = {
   annotations: { readOnlyHint: true },
   slices: ['list'],
   handler: (async (params: GetItemDocumentTypeParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemDocumentType(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemDocumentType(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getItemDocumentTypeQueryParams.shape, typeof outputSchema.shape>;
 

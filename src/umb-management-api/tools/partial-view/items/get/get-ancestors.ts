@@ -1,9 +1,10 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+
 import { GetTreePartialViewAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreePartialViewAncestorsQueryParams, getTreePartialViewAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getTreePartialViewAncestorsResponse,
@@ -17,9 +18,9 @@ const GetPartialViewAncestorsTool = {
   annotations: { readOnlyHint: true },
   slices: ['tree'],
   handler: (async (model: GetTreePartialViewAncestorsParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreePartialViewAncestors(model);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getTreePartialViewAncestors(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getTreePartialViewAncestorsQueryParams.shape, typeof outputSchema.shape>;
 

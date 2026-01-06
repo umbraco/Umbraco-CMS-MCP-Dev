@@ -93,6 +93,7 @@ exports[`update-document-properties should return error on invalid alias 1`] = `
 
 exports[`update-document-properties should update property and preserve initial value 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "addedProperties": [],
     "document": {
@@ -143,6 +144,7 @@ exports[`update-document-properties should update property and preserve initial 
 
 exports[`update-document-properties should update property value twice 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "addedProperties": [],
     "document": {
@@ -193,6 +195,7 @@ exports[`update-document-properties should update property value twice 1`] = `
 
 exports[`update-document-properties should update single property value 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "addedProperties": [],
     "document": {

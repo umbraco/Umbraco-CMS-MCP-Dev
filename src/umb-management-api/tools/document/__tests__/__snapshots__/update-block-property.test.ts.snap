@@ -2,6 +2,7 @@
 
 exports[`update-block-property BlockGrid integration tests should batch update multiple BlockGrid blocks in single call 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 2 block update(s)",
     "results": [
@@ -31,6 +32,7 @@ exports[`update-block-property BlockGrid integration tests should batch update m
 
 exports[`update-block-property BlockGrid integration tests should return error when property not found in BlockGrid block and not on Element Type 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -79,6 +81,7 @@ exports[`update-block-property BlockGrid integration tests should return error w
 
 exports[`update-block-property BlockGrid integration tests should update property in BlockGrid content block 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -99,6 +102,7 @@ exports[`update-block-property BlockGrid integration tests should update propert
 
 exports[`update-block-property BlockList integration tests should batch update multiple blocks in single call 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 2 block update(s)",
     "results": [
@@ -128,6 +132,7 @@ exports[`update-block-property BlockList integration tests should batch update m
 
 exports[`update-block-property BlockList integration tests should return error when property not found in block and not on Element Type 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -176,6 +181,7 @@ exports[`update-block-property BlockList integration tests should return error w
 
 exports[`update-block-property BlockList integration tests should update property in BlockList content block 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -196,6 +202,7 @@ exports[`update-block-property BlockList integration tests should update propert
 
 exports[`update-block-property Nested BlockList within BlockGrid integration tests should update both grid block and nested block in same call 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 2 block update(s)",
     "results": [
@@ -225,6 +232,7 @@ exports[`update-block-property Nested BlockList within BlockGrid integration tes
 
 exports[`update-block-property Nested BlockList within BlockGrid integration tests should update multiple nested blocks across different grid blocks 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 2 block update(s)",
     "results": [
@@ -254,6 +262,7 @@ exports[`update-block-property Nested BlockList within BlockGrid integration tes
 
 exports[`update-block-property Nested BlockList within BlockGrid integration tests should update property in nested BlockList block within BlockGrid 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -274,6 +283,7 @@ exports[`update-block-property Nested BlockList within BlockGrid integration tes
 
 exports[`update-block-property RTE inside BlockGrid integration tests should return error when property not found in nested RTE block and not on Element Type 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -296,6 +306,7 @@ exports[`update-block-property RTE inside BlockGrid integration tests should ret
 
 exports[`update-block-property RTE inside BlockGrid integration tests should update both grid block and nested RTE block in same call 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 2 block update(s)",
     "results": [
@@ -325,6 +336,7 @@ exports[`update-block-property RTE inside BlockGrid integration tests should upd
 
 exports[`update-block-property RTE inside BlockGrid integration tests should update multiple RTE blocks across different grid blocks 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 2 block update(s)",
     "results": [
@@ -354,6 +366,7 @@ exports[`update-block-property RTE inside BlockGrid integration tests should upd
 
 exports[`update-block-property RTE inside BlockGrid integration tests should update property in RTE block nested within BlockGrid 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -374,6 +387,7 @@ exports[`update-block-property RTE inside BlockGrid integration tests should upd
 
 exports[`update-block-property RichText Editor (RTE) integration tests should batch update multiple RTE blocks in single call 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 2 block update(s)",
     "results": [
@@ -403,6 +417,7 @@ exports[`update-block-property RichText Editor (RTE) integration tests should ba
 
 exports[`update-block-property RichText Editor (RTE) integration tests should return error when property not found in RTE block and not on Element Type 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -451,6 +466,7 @@ exports[`update-block-property RichText Editor (RTE) integration tests should re
 
 exports[`update-block-property RichText Editor (RTE) integration tests should update property in RTE block content 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -471,6 +487,7 @@ exports[`update-block-property RichText Editor (RTE) integration tests should up
 
 exports[`update-block-property add new properties to blocks should add new property that exists on Element Type but not on block 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -491,6 +508,7 @@ exports[`update-block-property add new properties to blocks should add new prope
 
 exports[`update-block-property add new properties to blocks should mix update and add in single block call 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [
@@ -511,6 +529,7 @@ exports[`update-block-property add new properties to blocks should mix update an
 
 exports[`update-block-property add new properties to blocks should return error when property does not exist on Element Type 1`] = `
 {
+  "content": [],
   "structuredContent": {
     "message": "Successfully processed 1 block update(s)",
     "results": [

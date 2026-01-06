@@ -1,8 +1,9 @@
 import { getManifestManifestResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Wrap array response in object (MCP requirement)
 const outputSchema = z.object({
@@ -19,9 +20,9 @@ const GetManifestManifestTool = {
   },
   slices: ['read'],
   handler: (async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getManifestManifest();
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getManifestManifest(CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<{}, typeof outputSchema.shape>;
 

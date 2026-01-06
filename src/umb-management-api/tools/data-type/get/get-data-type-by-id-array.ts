@@ -2,6 +2,7 @@ import { getItemDataTypeQueryParams, getItemDataTypeResponse } from "@/umb-manag
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getItemDataTypeResponse,
@@ -17,17 +18,9 @@ const GetDataTypesByIdArrayTool = {
   },
   slices: ['list'],
   handler: (async (params: { id?: string[] }) => {
-    const result = await executeGetApiCall((client) =>
+    return executeGetItemsApiCall((client) =>
       client.getItemDataType(params, CAPTURE_RAW_HTTP_RESPONSE)
     );
-
-    // Wrap the array response in an object
-    return {
-      ...result,
-      structuredContent: {
-        items: result.structuredContent,
-      },
-    };
   }),
 } satisfies ToolDefinition<typeof getItemDataTypeQueryParams.shape, typeof outputSchema.shape>;
 

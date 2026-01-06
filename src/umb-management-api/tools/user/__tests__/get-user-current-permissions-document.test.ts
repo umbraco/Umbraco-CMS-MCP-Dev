@@ -1,5 +1,5 @@
 import GetUserCurrentPermissionsDocumentTool from "../get/get-user-current-permissions-document.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";

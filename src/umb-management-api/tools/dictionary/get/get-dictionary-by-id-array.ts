@@ -1,8 +1,8 @@
 import { getItemDictionaryQueryParams, getItemDictionaryResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getItemDictionaryResponse,
@@ -16,9 +16,9 @@ const GetDictionaryByIdArrayTool = {
   annotations: { readOnlyHint: true },
   slices: ['list'],
   handler: (async (params: { id?: string[] }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemDictionary(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemDictionary(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getItemDictionaryQueryParams.shape, typeof outputSchema.shape>;
 

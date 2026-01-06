@@ -1,9 +1,9 @@
 import { GetTreeDocumentBlueprintAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDocumentBlueprintAncestorsQueryParams, getTreeDocumentBlueprintAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getTreeDocumentBlueprintAncestorsResponse,
@@ -17,9 +17,9 @@ const GetDocumentBlueprintAncestorsTool = {
   annotations: { readOnlyHint: true },
   slices: ['tree'],
   handler: (async (params: GetTreeDocumentBlueprintAncestorsParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeDocumentBlueprintAncestors(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getTreeDocumentBlueprintAncestors(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getTreeDocumentBlueprintAncestorsQueryParams.shape, typeof outputSchema.shape>;
 

@@ -4,9 +4,9 @@ import {
   getItemUserGroupResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Wrap array response in object for MCP compliance
 const outputSchema = z.object({
@@ -21,9 +21,9 @@ const GetUserGroupByIdArrayTool = {
   annotations: { readOnlyHint: true },
   slices: ['list'],
   handler: (async (params: GetItemUserGroupParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemUserGroup(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemUserGroup(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getItemUserGroupQueryParams.shape, typeof outputSchema.shape>;
 

@@ -1,7 +1,7 @@
 import { GetTreeDataTypeAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDataTypeAncestorsQueryParams, getTreeDataTypeAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetItemsApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/index.js";
 import { z } from "zod";
 
 const outputSchema = z.object({
@@ -18,17 +18,9 @@ const GetDataTypeAncestorsTool = {
   },
   slices: ['tree'],
   handler: (async (params: GetTreeDataTypeAncestorsParams) => {
-    const result = await executeGetApiCall((client) =>
+    return executeGetItemsApiCall((client) =>
       client.getTreeDataTypeAncestors(params, CAPTURE_RAW_HTTP_RESPONSE)
     );
-
-    // Wrap the array response in an object
-    return {
-      ...result,
-      structuredContent: {
-        items: result.structuredContent,
-      },
-    };
   }),
 } satisfies ToolDefinition<typeof getTreeDataTypeAncestorsQueryParams.shape, typeof outputSchema.shape>;
 

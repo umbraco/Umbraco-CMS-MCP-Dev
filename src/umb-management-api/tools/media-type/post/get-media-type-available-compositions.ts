@@ -1,9 +1,9 @@
 import { postMediaTypeAvailableCompositionsBody, postMediaTypeAvailableCompositionsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { MediaTypeCompositionRequestModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Array responses must be wrapped in an object
 const outputSchema = z.object({
@@ -18,9 +18,9 @@ const GetMediaTypeAvailableCompositionsTool = {
   annotations: { readOnlyHint: true },
   slices: ['configuration'],
   handler: (async (model: MediaTypeCompositionRequestModel) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.postMediaTypeAvailableCompositions(model);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.postMediaTypeAvailableCompositions(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof postMediaTypeAvailableCompositionsBody.shape, typeof outputSchema.shape>;
 

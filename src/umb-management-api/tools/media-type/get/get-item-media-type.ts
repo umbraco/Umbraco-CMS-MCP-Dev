@@ -1,9 +1,9 @@
 import { getItemMediaTypeQueryParams, getItemMediaTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetItemMediaTypeParams } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Array responses must be wrapped in an object
 const outputSchema = z.object({
@@ -18,9 +18,9 @@ const GetItemMediaTypeTool = {
   annotations: { readOnlyHint: true },
   slices: ['read'],
   handler: (async (params: GetItemMediaTypeParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemMediaType(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemMediaType(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getItemMediaTypeQueryParams.shape, typeof outputSchema.shape>;
 

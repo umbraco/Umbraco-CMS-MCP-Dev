@@ -1,9 +1,9 @@
 import { postMemberTypeAvailableCompositionsBody, postMemberTypeAvailableCompositionsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { MemberTypeCompositionRequestModel } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Array responses must be wrapped in an object
 const outputSchema = z.object({
@@ -18,9 +18,9 @@ const GetMemberTypeAvailableCompositionsTool = {
   annotations: { readOnlyHint: true },
   slices: ['configuration'],
   handler: (async (model: MemberTypeCompositionRequestModel) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.postMemberTypeAvailableCompositions(model);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.postMemberTypeAvailableCompositions(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );  
   }),
 } satisfies ToolDefinition<typeof postMemberTypeAvailableCompositionsBody.shape, typeof outputSchema.shape>;
 
