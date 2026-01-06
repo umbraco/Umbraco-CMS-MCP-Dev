@@ -1,10 +1,9 @@
 import GetWebhookTool from "../get/get-webhook.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getWebhookResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import {
   CONTENT_PUBLISHED_EVENT,
   TEST_WEBHOOOK_URL,
@@ -25,7 +24,7 @@ describe("get-webhook", () => {
       { skip: 0, take: 10 },
       createMockRequestHandlerExtra()
     );
-    const response = validateStructuredContent(result, getWebhookResponse);
+    const response = validateToolResponse(GetWebhookTool, result);
 
     expect(response).toHaveProperty('total');
     expect(response).toHaveProperty('items');
@@ -46,7 +45,7 @@ describe("get-webhook", () => {
       { skip: 0, take: 10 },
       createMockRequestHandlerExtra()
     );
-    const response = validateStructuredContent(result, getWebhookResponse);
+    const response = validateToolResponse(GetWebhookTool, result);
 
     expect(response).toHaveProperty('total');
     expect(response).toHaveProperty('items');
@@ -69,7 +68,7 @@ describe("get-webhook", () => {
       { skip: 0, take: 100 },
       createMockRequestHandlerExtra()
     );
-    const response = validateStructuredContent(result, getWebhookResponse);
+    const response = validateToolResponse(GetWebhookTool, result);
 
     expect(response).toHaveProperty('total');
     expect(response).toHaveProperty('items');

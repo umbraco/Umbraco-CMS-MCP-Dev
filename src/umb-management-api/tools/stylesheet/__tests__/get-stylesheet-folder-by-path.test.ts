@@ -31,7 +31,7 @@ describe("get-stylesheet-folder-by-path", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify folder details
-    const parsedResult = result.structuredContent as any;
+    const parsedResult = validateToolResponse(GetStylesheetFolderByPathTool, result);
     expect(parsedResult.name).toBe(TEST_FOLDER_NAME);
     expect(parsedResult.path).toBe(folderPath);
   });

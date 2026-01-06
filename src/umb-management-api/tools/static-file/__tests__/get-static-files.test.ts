@@ -25,8 +25,8 @@ describe("get-static-files", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const items = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFilesTool, result);
+    const items = data.items ?? [];
     expect(Array.isArray(items)).toBe(true);
 
     // Verify file system structure if items exist
@@ -80,8 +80,8 @@ describe("get-static-files", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const items = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFilesTool, result);
+    const items = data.items ?? [];
     expect(Array.isArray(items)).toBe(true);
 
     // Verify file system structure if items exist
@@ -105,8 +105,8 @@ describe("get-static-files", () => {
     expect(result).toMatchSnapshot();
 
     // Verify response is still valid even if empty
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const items = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFilesTool, result);
+    const items = data.items ?? [];
     expect(Array.isArray(items)).toBe(true);
   });
 
@@ -125,8 +125,8 @@ describe("get-static-files", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const items = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFilesTool, result);
+    const items = data.items ?? [];
     expect(Array.isArray(items)).toBe(true);
 
     // Verify file system structure if items exist
@@ -147,8 +147,8 @@ describe("get-static-files", () => {
     );
 
     // Assert
-    const structuredContent = result.structuredContent as { items: any[] } | undefined;
-    const items = structuredContent?.items ?? [];
+    const data = validateToolResponse(GetStaticFilesTool, result);
+    const items = data.items ?? [];
 
     if (items.length > 0) {
       // Check first item has expected structure

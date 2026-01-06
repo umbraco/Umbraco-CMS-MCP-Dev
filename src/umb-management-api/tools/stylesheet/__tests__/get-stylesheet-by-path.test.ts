@@ -33,7 +33,7 @@ describe("get-stylesheet-by-path", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify content is preserved with CSS formatting
-    const parsedResult = result.structuredContent as any;
+    const parsedResult = validateToolResponse(GetStylesheetByPathTool, result);
     expect(parsedResult.content).toContain("background: white;");
     expect(parsedResult.content).toContain("padding: 20px;");
     expect(parsedResult.name).toBe(TEST_STYLESHEET_NAME);

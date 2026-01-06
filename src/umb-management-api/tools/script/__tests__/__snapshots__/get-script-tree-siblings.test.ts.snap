@@ -2,23 +2,19 @@
 
 exports[`get-script-tree-siblings should get sibling scripts 1`] = `
 {
-  "content": [],
-  "structuredContent": {
-    "items": [
-      {
-        "hasChildren": false,
-        "isFolder": false,
-        "name": "_TestTargetScript.js",
-        "parent": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "path": "/_TestFolderForSiblings",
-        },
-        "path": "/_TestFolderForSiblings/_TestTargetScript.js",
+  "items": [
+    {
+      "hasChildren": false,
+      "isFolder": false,
+      "name": "_TestTargetScript.js",
+      "parent": {
+        "path": "/_TestFolderForSiblings",
       },
-    ],
-    "totalAfter": 0,
-    "totalBefore": 2,
-  },
+      "path": "/_TestFolderForSiblings/_TestTargetScript.js",
+    },
+  ],
+  "totalAfter": 0,
+  "totalBefore": 2,
 }
 `;
 

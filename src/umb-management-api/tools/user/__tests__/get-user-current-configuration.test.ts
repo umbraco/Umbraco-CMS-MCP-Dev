@@ -1,8 +1,7 @@
 import GetUserCurrentConfigurationTool from "../get/get-user-current-configuration.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getUserCurrentConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-user-current-configuration", () => {
   setupTestEnvironment();
@@ -16,7 +15,7 @@ describe("get-user-current-configuration", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify expected properties exist
-    const parsed = validateStructuredContent(result, getUserCurrentConfigurationResponse);
+    const parsed = validateToolResponse(GetUserCurrentConfigurationTool, result);
     expect(parsed).toHaveProperty("keepUserLoggedIn");
     expect(parsed).toHaveProperty("passwordConfiguration");
   });

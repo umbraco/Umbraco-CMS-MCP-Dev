@@ -1,7 +1,6 @@
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
 import CreateWebhookTool from "../post/create-webhook.js";
-import { createWebhookOutputSchema } from "../post/create-webhook.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
@@ -27,7 +26,7 @@ describe("create-webhook", () => {
       createMockRequestHandlerExtra()
     );
 
-    const responseData = validateStructuredContent(result, createWebhookOutputSchema);
+    const responseData = validateToolResponse(CreateWebhookTool, result);
     expect(responseData.message).toBe("Webhook created successfully");
     expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
 

@@ -16,6 +16,12 @@ const TEST_MEMBER_USERNAME_2 = "itemsearch2@example.com";
 describe("get-item-member-search", () => {
   setupTestEnvironment();
 
+  beforeEach(async () => {
+    // Ensure cleanup before each test to prevent test pollution
+    await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME);
+    await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME_2);
+  });
+
   afterEach(async () => {
     await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME);
     await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME_2);
@@ -43,9 +49,10 @@ describe("get-item-member-search", () => {
   });
 
   it("should return empty results for non-existent search query", async () => {
-    // Act - Search for a member that doesn't exist
+    // Act - Search for a member that doesn't exist using a very unique string
+    const uniqueQuery = `xYz_NoNe_ExIsT_${Date.now()}_${Math.random().toString(36).substring(7)}@nowhere.invalid`;
     const result = await GetItemMemberSearchTool.handler(
-      { query: "nonexistent_member_" + Date.now(), take: 100, skip: undefined, allowedMemberTypes: undefined },
+      { query: uniqueQuery, take: 100, skip: undefined, allowedMemberTypes: undefined },
       createMockRequestHandlerExtra()
     );
 

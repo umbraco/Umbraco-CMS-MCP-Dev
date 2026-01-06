@@ -221,9 +221,9 @@ describe("get-static-file-children", () => {
     // Assert - should not fail, should return empty items array
     expect(result).toMatchSnapshot();
 
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileChildrenTool, result);
 
-    if (response?.items !== undefined) {
+    if (response.items !== undefined) {
       expect(Array.isArray(response.items)).toBe(true);
       expect(response.items.length).toBe(0); // Should be empty due to large skip
     }
@@ -250,14 +250,14 @@ describe("get-static-file-children", () => {
     // Assert - should return empty items but still have total count
     expect(result).toMatchSnapshot();
 
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileChildrenTool, result);
 
-    if (response?.items !== undefined) {
+    if (response.items !== undefined) {
       expect(Array.isArray(response.items)).toBe(true);
       expect(response.items.length).toBe(0); // Should be empty due to take: 0
     }
 
-    if (response?.total !== undefined) {
+    if (response.total !== undefined) {
       expect(typeof response.total).toBe('number');
     }
   });
@@ -286,9 +286,9 @@ describe("get-static-file-children", () => {
     );
 
     // Assert
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileChildrenTool, result);
 
-    if (response?.items && response.items.length > 0) {
+    if (response.items && response.items.length > 0) {
       // Check first item has expected structure
       const firstChild = response.items[0];
       expect(firstChild).toHaveProperty('path');
@@ -332,12 +332,12 @@ describe("get-static-file-children", () => {
     const helperResult = await StaticFileHelper.getChildren(testFolder.path, skip, take);
 
     // Assert - both should return the same items
-    const toolResponse = toolResult.structuredContent as { items: any[], total: number } | undefined;
+    const toolResponse = validateToolResponse(GetStaticFileChildrenTool, toolResult);
 
-    expect(toolResponse?.items.length).toBe(helperResult.length);
+    expect(toolResponse.items.length).toBe(helperResult.length);
 
     // If both have items, verify they match
-    if (toolResponse?.items && toolResponse.items.length > 0 && helperResult.length > 0) {
+    if (toolResponse.items && toolResponse.items.length > 0 && helperResult.length > 0) {
       // Check that first item from tool matches first item from helper
       const toolFirstItem = toolResponse.items[0];
       const helperFirstItem = helperResult[0];

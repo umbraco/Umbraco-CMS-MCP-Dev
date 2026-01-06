@@ -1,7 +1,6 @@
 import CreateUserGroupTool from "../post/create-user-group.js";
-import { createUserGroupOutputSchema } from "../post/create-user-group.js";
 import { UserGroupTestHelper } from "./helpers/user-group-helper.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
@@ -33,7 +32,7 @@ describe("create-user-group", () => {
       id: undefined
     }, createMockRequestHandlerExtra());
 
-    const responseData = validateStructuredContent(result, createUserGroupOutputSchema);
+    const responseData = validateToolResponse(CreateUserGroupTool, result);
     expect(responseData.message).toBe("User group created successfully");
     expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
 

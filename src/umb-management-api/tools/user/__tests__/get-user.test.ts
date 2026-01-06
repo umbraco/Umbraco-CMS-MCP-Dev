@@ -1,8 +1,8 @@
 import GetUserTool from "../get/get-user.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getUserQueryParams, getUserResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-user", () => {
   setupTestEnvironment();
@@ -23,7 +23,7 @@ describe("get-user", () => {
     const result = await GetUserTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
-    const parsed = validateStructuredContent(result, getUserResponse);
+    const parsed = validateToolResponse(GetUserTool, result);
     expect(parsed.items.length).toBeLessThanOrEqual(5);
   });
 });

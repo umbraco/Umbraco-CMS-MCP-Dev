@@ -1,11 +1,10 @@
 import DeleteUserDataTool from "../delete/delete-user-data.js";
 import CreateUserDataTool from "../post/create-user-data.js";
 import GetUserDataTool from "../get/get-user-data.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
-import { getUserDataResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_USER_DATA_GROUP = "_TestUserDataDelete";
 const TEST_USER_DATA_IDENTIFIER = "_test-identifier";
@@ -22,7 +21,7 @@ describe("delete-user-data", () => {
         createMockRequestHandlerExtra()
       );
 
-      const content = validateStructuredContent(result, getUserDataResponse);
+      const content = validateToolResponse(GetUserDataTool, result);
       if (content.items && content.items.length > 0) {
         const client = UmbracoManagementClient.getClient();
         for (const item of content.items) {
@@ -56,7 +55,7 @@ describe("delete-user-data", () => {
       createMockRequestHandlerExtra()
     );
 
-    const getUserDataContent = validateStructuredContent(getUserDataResult, getUserDataResponse);
+    const getUserDataContent = validateToolResponse(GetUserDataTool, getUserDataResult);
     expect(getUserDataContent.items).toBeDefined();
     expect(getUserDataContent.items!.length).toBeGreaterThan(0);
 
@@ -80,7 +79,7 @@ describe("delete-user-data", () => {
       createMockRequestHandlerExtra()
     );
 
-    const findContent = validateStructuredContent(findResult, getUserDataResponse);
+    const findContent = validateToolResponse(GetUserDataTool, findResult);
     const found = findContent.items?.find((item) => item.key === createdData.key);
     expect(found).toBeUndefined();
   });

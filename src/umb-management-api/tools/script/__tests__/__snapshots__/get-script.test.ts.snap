@@ -2,13 +2,10 @@
 
 exports[`get-script get-script-by-path should get a script by path 1`] = `
 {
-  "content": [],
-  "structuredContent": {
-    "content": "console.log('test script get');",
-    "name": "_TestScriptGet.js",
-    "parent": null,
-    "path": "/_TestScriptGet.js",
-  },
+  "content": "console.log('test script get');",
+  "name": "_TestScriptGet.js",
+  "parent": null,
+  "path": "/_TestScriptGet.js",
 }
 `;
 
@@ -28,15 +25,11 @@ exports[`get-script get-script-by-path should handle non-existent script 1`] = `
 
 exports[`get-script get-script-folder-by-path should get a script folder by path 1`] = `
 {
-  "content": [],
-  "structuredContent": {
-    "name": "_TestFolderGet",
-    "parent": {
-      "id": "00000000-0000-0000-0000-000000000000",
-      "path": "/",
-    },
-    "path": "/_TestFolderGet",
+  "name": "_TestFolderGet",
+  "parent": {
+    "path": "/",
   },
+  "path": "/_TestFolderGet",
 }
 `;
 
