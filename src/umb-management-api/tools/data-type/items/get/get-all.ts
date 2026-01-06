@@ -1,20 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { getTreeDataTypeRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-// MCP SDK's structuredContent only supports object schemas, not arrays
-// Wrap array results in an object with 'items' property
-const getAllDataTypesOutputSchema = z.object({
-  items: z.array(z.object({
-    id: z.string().uuid(),
-    name: z.string(),
-    // children may be undefined for leaf items
-    children: z.array(z.object({
-      id: z.string().uuid(),
-      name: z.string(),
-    })).optional(),
-  }))
+const outputSchema = z.object({
+  items: getTreeDataTypeRootResponse.shape.items,
 });
 
 const GetAllDataTypesTool = {
@@ -23,7 +14,7 @@ const GetAllDataTypesTool = {
   This is the preferred approach when you need to understand the full folder structure.
   For large sites, this may take a while to complete. For smaller sites its more efficient than fetching all data types by folder.`,
   inputSchema: {},
-  outputSchema: getAllDataTypesOutputSchema,
+  outputSchema: outputSchema.shape,
   annotations: {
     readOnlyHint: true,
   },
@@ -66,6 +57,6 @@ const GetAllDataTypesTool = {
       items: allItems
     });
   }),
-} satisfies ToolDefinition<{}, typeof getAllDataTypesOutputSchema>;
+} satisfies ToolDefinition<{}, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetAllDataTypesTool);

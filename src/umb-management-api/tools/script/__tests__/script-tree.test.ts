@@ -85,9 +85,13 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
       // Validate response against tool's outputSchema
       const data = validateToolResponse(GetScriptTreeRootTool, result);
-      expect(createSnapshotResult(data)).toMatchSnapshot();
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
+      expect(createSnapshotResult(result)).toMatchSnapshot();
     });
   });
 
@@ -101,9 +105,13 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
       // Validate response against tool's outputSchema
       const data = validateToolResponse(GetScriptTreeChildrenTool, result);
-      expect(createSnapshotResult(data)).toMatchSnapshot();
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
+      expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 
     it("should get children of child folder", async () => {
@@ -115,9 +123,13 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
       // Validate response against tool's outputSchema
       const data = validateToolResponse(GetScriptTreeChildrenTool, result);
-      expect(createSnapshotResult(data)).toMatchSnapshot();
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
+      expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 
     it("should get empty children for non-folder script", async () => {
@@ -129,9 +141,13 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
       // Validate response against tool's outputSchema
       const data = validateToolResponse(GetScriptTreeChildrenTool, result);
-      expect(createSnapshotResult(data)).toMatchSnapshot();
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
+      expect(createSnapshotResult(result)).toMatchSnapshot();
     });
   });
 
@@ -143,9 +159,13 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
       // Validate response against tool's outputSchema
       const data = validateToolResponse(GetScriptTreeAncestorsTool, result);
-      expect(createSnapshotResult(data)).toMatchSnapshot();
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
+      expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 
     it("should get ancestors of child script", async () => {
@@ -155,9 +175,13 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
       // Validate response against tool's outputSchema
       const data = validateToolResponse(GetScriptTreeAncestorsTool, result);
-      expect(createSnapshotResult(data)).toMatchSnapshot();
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
+      expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 
     it("should get empty ancestors for root script", async () => {
@@ -167,9 +191,13 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
       // Validate response against tool's outputSchema
       const data = validateToolResponse(GetScriptTreeAncestorsTool, result);
-      expect(createSnapshotResult(data)).toMatchSnapshot();
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
+      expect(createSnapshotResult(result)).toMatchSnapshot();
     });
   });
 });

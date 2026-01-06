@@ -3,46 +3,52 @@
 exports[`get-data-type-by-id-array should get multiple data types by ID 1`] = `
 {
   "content": [],
-  "structuredContent": [
-    {
-      "editorAlias": "Umbraco.TextBox",
-      "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
-      "flags": [],
-      "id": "00000000-0000-0000-0000-000000000000",
-      "isDeletable": true,
-      "name": "_Test Item DataType",
-    },
-    {
-      "editorAlias": "Umbraco.TextBox",
-      "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
-      "flags": [],
-      "id": "00000000-0000-0000-0000-000000000000",
-      "isDeletable": true,
-      "name": "_Test Item DataType2",
-    },
-  ],
+  "structuredContent": {
+    "items": [
+      {
+        "editorAlias": "Umbraco.TextBox",
+        "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "name": "_Test Item DataType",
+      },
+      {
+        "editorAlias": "Umbraco.TextBox",
+        "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "name": "_Test Item DataType2",
+      },
+    ],
+  },
 }
 `;
 
 exports[`get-data-type-by-id-array should get no data types for empty request 1`] = `
 {
   "content": [],
-  "structuredContent": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
 exports[`get-data-type-by-id-array should get single data type by ID 1`] = `
 {
   "content": [],
-  "structuredContent": [
-    {
-      "editorAlias": "Umbraco.TextBox",
-      "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
-      "flags": [],
-      "id": "00000000-0000-0000-0000-000000000000",
-      "isDeletable": true,
-      "name": "_Test Item DataType",
-    },
-  ],
+  "structuredContent": {
+    "items": [
+      {
+        "editorAlias": "Umbraco.TextBox",
+        "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "name": "_Test Item DataType",
+      },
+    ],
+  },
 }
 `;

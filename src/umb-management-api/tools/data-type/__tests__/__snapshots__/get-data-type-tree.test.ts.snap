@@ -3,37 +3,41 @@
 exports[`data-type-tree ancestors should get ancestor items 1`] = `
 {
   "content": [],
-  "structuredContent": [
-    {
-      "editorUiAlias": null,
-      "flags": [],
-      "hasChildren": true,
-      "id": "00000000-0000-0000-0000-000000000000",
-      "isDeletable": false,
-      "isFolder": true,
-      "name": "_Test Folder DataType",
-      "parent": null,
-    },
-    {
-      "editorUiAlias": null,
-      "flags": [],
-      "hasChildren": false,
-      "id": "00000000-0000-0000-0000-000000000000",
-      "isDeletable": false,
-      "isFolder": false,
-      "name": "_Test Child DataType",
-      "parent": {
+  "structuredContent": {
+    "items": [
+      {
+        "editorUiAlias": null,
+        "flags": [],
+        "hasChildren": true,
         "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": false,
+        "isFolder": true,
+        "name": "_Test Folder DataType",
+        "parent": null,
       },
-    },
-  ],
+      {
+        "editorUiAlias": null,
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": false,
+        "isFolder": false,
+        "name": "_Test Child DataType",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+  },
 }
 `;
 
 exports[`data-type-tree ancestors should handle non-existent item 1`] = `
 {
   "content": [],
-  "structuredContent": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
