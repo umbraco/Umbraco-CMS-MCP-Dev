@@ -1,6 +1,6 @@
 import GetHealthCheckGroupByNameTool from "../get/get-health-check-group-by-name.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_INVALID_GROUP_NAME = "_NonExistentHealthCheckGroup";
@@ -15,6 +15,7 @@ describe("get-health-check-group-by-name", () => {
       name: TEST_VALID_GROUP_NAME
     }, createMockRequestHandlerExtra());
 
+    validateToolResponse(GetHealthCheckGroupByNameTool, result);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 

@@ -1,7 +1,7 @@
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import GetPartialViewSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
 import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
@@ -57,7 +57,10 @@ describe("get-partial-view-siblings", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert: Verify response
+    // Assert: Validate response against tool's output schema
+    const data = validateToolResponse(GetPartialViewSiblingsTool, result);
+    expect(data).toHaveProperty('items');
+
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
   });

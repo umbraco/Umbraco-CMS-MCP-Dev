@@ -8,7 +8,7 @@ import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/do
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Member Are Referenced";
 const TEST_MEMBER_EMAIL = "test-are-referenced@example.com";
@@ -61,8 +61,8 @@ describe("get-member-are-referenced", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the API returns proper structure with found reference
-    const parsed = result.structuredContent as any;
+    // Validate response against tool's output schema
+    const parsed = validateToolResponse(GetMemberAreReferencedTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -95,8 +95,8 @@ describe("get-member-are-referenced", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the API returns proper structure with expected zero results
-    const parsed = result.structuredContent as any;
+    // Validate response against tool's output schema
+    const parsed = validateToolResponse(GetMemberAreReferencedTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
     expect(Array.isArray(parsed.items)).toBe(true);

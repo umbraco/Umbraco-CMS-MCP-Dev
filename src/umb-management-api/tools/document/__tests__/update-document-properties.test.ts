@@ -1,4 +1,4 @@
-import UpdateDocumentPropertiesTool from "../put/update-document-properties.js";
+import UpdateDocumentPropertiesTool, { updateDocumentPropertiesOutputSchema } from "../put/update-document-properties.js";
 import CreateDocumentTool, { createOutputSchema } from "../post/create-document.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
@@ -136,7 +136,7 @@ describe("update-document-properties", () => {
 
     // Verify the error content structure (ProblemDetails format)
     expect(result.isError).toBe(true);
-    const responseData = result.structuredContent as any;
+    const responseData = result.structuredContent as { title: string; invalidAliases: string[]; availableProperties: any[] };
     expect(responseData.title).toBe("Invalid property aliases");
     expect(responseData.invalidAliases).toContain(INVALID_ALIAS);
     expect(Array.isArray(responseData.availableProperties)).toBe(true);
@@ -320,7 +320,7 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Verify success
-      const responseData = result.structuredContent as any;
+      const responseData = validateStructuredContent(result, updateDocumentPropertiesOutputSchema);
       expect(responseData.success).toBe(true);
 
       // Verify only English title was updated, Danish remains unchanged
@@ -385,7 +385,7 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Verify success
-      const responseData = result.structuredContent as any;
+      const responseData = validateStructuredContent(result, updateDocumentPropertiesOutputSchema);
       expect(responseData.success).toBe(true);
       expect(responseData.updatedProperties).toHaveLength(2);
 
@@ -445,7 +445,7 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Should succeed because property exists on document type
-      const responseData = result.structuredContent as any;
+      const responseData = validateStructuredContent(result, updateDocumentPropertiesOutputSchema);
       expect(responseData.success).toBe(true);
       expect(responseData.addedProperties).toContain("title[da-DK]");
 
@@ -530,7 +530,7 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Should succeed with property added
-      const responseData = result.structuredContent as any;
+      const responseData = validateStructuredContent(result, updateDocumentPropertiesOutputSchema);
       expect(responseData.success).toBe(true);
       expect(responseData.addedProperties).toContain("author");
 
@@ -579,7 +579,7 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Should succeed with property added
-      const responseData = result.structuredContent as any;
+      const responseData = validateStructuredContent(result, updateDocumentPropertiesOutputSchema);
       expect(responseData.success).toBe(true);
       expect(responseData.addedProperties).toContain("subtitle");
 
@@ -628,7 +628,7 @@ describe("update-document-properties", () => {
       );
 
       // Assert - Should succeed with both updated and added
-      const responseData = result.structuredContent as any;
+      const responseData = validateStructuredContent(result, updateDocumentPropertiesOutputSchema);
       expect(responseData.success).toBe(true);
       expect(responseData.updatedProperties).toContain("title");
       expect(responseData.addedProperties).toContain("author");
@@ -676,7 +676,7 @@ describe("update-document-properties", () => {
 
       // Assert - Should fail with variance error (ProblemDetails format)
       expect(result.isError).toBe(true);
-      const responseData = result.structuredContent as any;
+      const responseData = result.structuredContent as { title: string; detail: string };
       expect(responseData.title).toBe("Culture/segment validation failed");
       expect(responseData.detail).toContain("author");
       expect(responseData.detail).toContain("does not vary by culture");
@@ -716,7 +716,7 @@ describe("update-document-properties", () => {
 
       // Assert - Should fail with variance error (ProblemDetails format)
       expect(result.isError).toBe(true);
-      const responseData = result.structuredContent as any;
+      const responseData = result.structuredContent as { title: string; detail: string };
       expect(responseData.title).toBe("Culture/segment validation failed");
       expect(responseData.detail).toContain("author");
       expect(responseData.detail).toContain("culture is required");
@@ -754,7 +754,7 @@ describe("update-document-properties", () => {
 
       // Assert - Should fail with invalid aliases (ProblemDetails format)
       expect(result.isError).toBe(true);
-      const responseData = result.structuredContent as any;
+      const responseData = result.structuredContent as { title: string; invalidAliases: string[]; availableProperties: { alias: string }[] };
       expect(responseData.title).toBe("Invalid property aliases");
       expect(responseData.invalidAliases).toContain("nonExistentProperty");
       expect(responseData.availableProperties).toBeDefined();

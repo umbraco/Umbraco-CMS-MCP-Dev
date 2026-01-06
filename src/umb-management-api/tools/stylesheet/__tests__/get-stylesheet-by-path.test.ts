@@ -2,7 +2,7 @@ import GetStylesheetByPathTool from "../get/get-stylesheet-by-path.js";
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import { StylesheetBuilder } from "./helpers/stylesheet-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_STYLESHEET_NAME = "_TestGetStylesheet.css";
@@ -33,7 +33,7 @@ describe("get-stylesheet-by-path", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify content is preserved with CSS formatting
-    const parsedResult = result.structuredContent as any;
+    const parsedResult = validateToolResponse(GetStylesheetByPathTool, result);
     expect(parsedResult.content).toContain("background: white;");
     expect(parsedResult.content).toContain("padding: 20px;");
     expect(parsedResult.name).toBe(TEST_STYLESHEET_NAME);

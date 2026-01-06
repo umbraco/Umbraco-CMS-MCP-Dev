@@ -3,7 +3,7 @@ import GetScriptFolderByPathTool from "../get/get-script-folder-by-path.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_SCRIPT_NAME = "_TestScriptGet";
@@ -40,7 +40,9 @@ describe("get-script", () => {
         path: scriptBuilder.getPath(),
       }, createMockRequestHandlerExtra());
 
-      expect(createSnapshotResult(result)).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptByPathTool, result);
+      expect(createSnapshotResult(data)).toMatchSnapshot();
     });
 
     it("should handle non-existent script", async () => {
@@ -63,7 +65,9 @@ describe("get-script", () => {
         path: folderBuilder.getPath(),
       }, createMockRequestHandlerExtra());
 
-      expect(createSnapshotResult(result)).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptFolderByPathTool, result);
+      expect(createSnapshotResult(data)).toMatchSnapshot();
     });
 
     it("should handle non-existent script folder", async () => {

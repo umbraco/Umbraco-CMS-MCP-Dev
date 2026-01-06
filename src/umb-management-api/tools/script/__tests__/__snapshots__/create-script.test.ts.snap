@@ -2,11 +2,8 @@
 
 exports[`create-script create-script should create a script 1`] = `
 {
-  "content": [],
-  "structuredContent": {
-    "message": "Script created successfully",
-    "path": "/_TestScript.js",
-  },
+  "message": "Script created successfully",
+  "path": "/_TestScript.js",
 }
 `;
 
@@ -26,11 +23,8 @@ exports[`create-script create-script should handle existing script 1`] = `
 
 exports[`create-script create-script-folder should create a script folder 1`] = `
 {
-  "content": [],
-  "structuredContent": {
-    "message": "Script folder created successfully",
-    "path": "/_TestFolder",
-  },
+  "message": "Script folder created successfully",
+  "path": "/_TestFolder",
 }
 `;
 

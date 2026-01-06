@@ -3,8 +3,7 @@ import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getDocumentTypeByIdAllowedChildrenResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("get-document-type-allowed-children", () => {
@@ -45,7 +44,7 @@ describe("get-document-type-allowed-children", () => {
     );
 
     // Parse the response
-    const response = validateStructuredContent(result, getDocumentTypeByIdAllowedChildrenResponse);
+    const response = validateToolResponse(GetDocumentTypeAllowedChildrenTool, result);
 
     // Verify the response contains our child document type
     const foundChild = response.items.find(
@@ -90,7 +89,7 @@ describe("get-document-type-allowed-children", () => {
     );
 
     // Parse and verify empty response
-    const response = validateStructuredContent(result, getDocumentTypeByIdAllowedChildrenResponse);
+    const response = validateToolResponse(GetDocumentTypeAllowedChildrenTool, result);
     expect(response.total).toBe(0);
     expect(response.items).toHaveLength(0);
 

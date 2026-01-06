@@ -1,7 +1,7 @@
 import CreateScriptTool from "../post/create-script.js";
 import CreateScriptFolderTool from "../post/create-script-folder.js";
 import { ScriptTestHelper } from "./helpers/script-test-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_SCRIPT_NAME = "_TestScript";
@@ -26,11 +26,13 @@ describe("create-script", () => {
     it("should create a script", async () => {
       const result = await CreateScriptTool.handler({
         name: TEST_SCRIPT_NAME + ".js",
+        path: undefined,
         content: TEST_SCRIPT_CONTENT
       }, createMockRequestHandlerExtra());
 
-      // Verify the handler response using snapshot
-      expect(result).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(CreateScriptTool, result);
+      expect(data).toMatchSnapshot();
 
       // Verify the created script exists
       const expectedName = TEST_SCRIPT_NAME + '.js';
@@ -43,12 +45,14 @@ describe("create-script", () => {
       // First create the script
       await CreateScriptTool.handler({
         name: EXISTING_SCRIPT_NAME + ".js",
+        path: undefined,
         content: EXISTING_SCRIPT_CONTENT
       }, createMockRequestHandlerExtra());
 
       // Try to create it again
       const result = await CreateScriptTool.handler({
         name: EXISTING_SCRIPT_NAME + ".js",
+        path: undefined,
         content: EXISTING_SCRIPT_CONTENT
       }, createMockRequestHandlerExtra());
 
@@ -60,11 +64,13 @@ describe("create-script", () => {
   describe("create-script-folder", () => {
     it("should create a script folder", async () => {
       const result = await CreateScriptFolderTool.handler({
-        name: TEST_FOLDER_NAME
+        name: TEST_FOLDER_NAME,
+        parent: undefined
       }, createMockRequestHandlerExtra());
 
-      // Verify the handler response using snapshot
-      expect(result).toMatchSnapshot();
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(CreateScriptFolderTool, result);
+      expect(data).toMatchSnapshot();
 
       // Verify the created folder exists
       const folder = await ScriptTestHelper.findScript(TEST_FOLDER_NAME);
@@ -76,12 +82,14 @@ describe("create-script", () => {
     it("should handle existing script folder", async () => {
       // First create the folder
       await CreateScriptFolderTool.handler({
-        name: EXISTING_FOLDER_NAME
+        name: EXISTING_FOLDER_NAME,
+        parent: undefined
       }, createMockRequestHandlerExtra());
 
       // Try to create it again
       const result = await CreateScriptFolderTool.handler({
-        name: EXISTING_FOLDER_NAME
+        name: EXISTING_FOLDER_NAME,
+        parent: undefined
       }, createMockRequestHandlerExtra());
 
       // Verify the error response using snapshot

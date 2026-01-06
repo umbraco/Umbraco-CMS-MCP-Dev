@@ -17,7 +17,7 @@ describe("create-member-group", () => {
 
   it("should create a member group", async () => {
     const result = await CreateMemberGroupTool.handler(
-      { name: TEST_GROUP_NAME },
+      { name: TEST_GROUP_NAME, id: undefined },
       createMockRequestHandlerExtra()
     );
 
@@ -33,13 +33,13 @@ describe("create-member-group", () => {
   it("should handle existing member group", async () => {
     // First create the group
     await CreateMemberGroupTool.handler(
-      { name: EXISTING_GROUP_NAME },
+      { name: EXISTING_GROUP_NAME, id: undefined },
       createMockRequestHandlerExtra()
     );
 
     // Try to create it again
     const result = await CreateMemberGroupTool.handler(
-      { name: EXISTING_GROUP_NAME },
+      { name: EXISTING_GROUP_NAME, id: undefined },
       createMockRequestHandlerExtra()
     );
 

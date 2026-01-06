@@ -5,7 +5,7 @@ import {
   DEFAULT_ISO_CODE,
 } from "./helpers/dictionary-helper.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 describe("get-item-dictionary", () => {
@@ -25,8 +25,8 @@ describe("get-item-dictionary", () => {
       createMockRequestHandlerExtra()
     );
     // Access structured content
-    const items = (result.structuredContent as any).items;
-    expect(items).toMatchSnapshot();
+    const data = validateToolResponse(GetDictionaryByIdArrayTool, result);
+    expect(data.items).toMatchSnapshot();
   });
 
   it("should get single dictionary item by ID", async () => {
@@ -43,9 +43,9 @@ describe("get-item-dictionary", () => {
     );
 
     // Access structured content
-    const items = (result.structuredContent as any).items;
-    expect(items).toHaveLength(1);
-    expect(items[0].name).toBe(TEST_DICTIONARY_NAME);
+    const data = validateToolResponse(GetDictionaryByIdArrayTool, result);
+    expect(data.items).toHaveLength(1);
+    expect(data.items[0].name).toBe(TEST_DICTIONARY_NAME);
 
     // Normalize for snapshot using helper
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -73,10 +73,10 @@ describe("get-item-dictionary", () => {
     );
 
     // Access structured content
-    const items = (result.structuredContent as any).items;
-    expect(items).toHaveLength(2);
-    expect(items[0].name).toBe(TEST_DICTIONARY_NAME);
-    expect(items[1].name).toBe(TEST_DICTIONARY_NAME_2);
+    const data = validateToolResponse(GetDictionaryByIdArrayTool, result);
+    expect(data.items).toHaveLength(2);
+    expect(data.items[0].name).toBe(TEST_DICTIONARY_NAME);
+    expect(data.items[1].name).toBe(TEST_DICTIONARY_NAME_2);
 
     // Normalize for snapshot using helper
     expect(createSnapshotResult(result)).toMatchSnapshot();

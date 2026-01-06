@@ -2,8 +2,7 @@ import GetDocumentTypeAllowedAtRootTool from "../get/get-document-type-allowed-a
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { DocumentTypeResponseModel } from "@/umb-management-api/schemas/index.js";
-import { getDocumentTypeAllowedAtRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
@@ -34,7 +33,7 @@ describe("get-document-type-allowed-at-root", () => {
     );
 
     // Parse and find our test document type
-    const parsed = validateStructuredContent(result, getDocumentTypeAllowedAtRootResponse) as unknown as {
+    const parsed = validateToolResponse(GetDocumentTypeAllowedAtRootTool, result) as unknown as {
       items: DocumentTypeResponseModel[];
     };
     const testDocType = parsed.items.find(

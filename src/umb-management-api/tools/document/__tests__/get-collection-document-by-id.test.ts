@@ -23,7 +23,7 @@ describe("get-collection-document-by-id", () => {
 
     // Act: Get collection for the document
     const result = await GetCollectionDocumentByIdTool.handler(
-      { id: builder.getId(), take: 10, orderBy: "name" },
+      { id: builder.getId(), dataTypeId: undefined, orderBy: "name", orderCulture: undefined, orderDirection: undefined, filter: undefined, skip: undefined, take: 10 },
       createMockRequestHandlerExtra()
     );
 
@@ -49,10 +49,13 @@ describe("get-collection-document-by-id", () => {
     const result = await GetCollectionDocumentByIdTool.handler(
       {
         id: builder.getId(),
+        dataTypeId: undefined,
+        orderBy: "name",
+        orderCulture: undefined,
+        orderDirection: undefined,
         filter: "",
         skip: 0,
-        take: 10,
-        orderBy: "name"
+        take: 10
       },
       createMockRequestHandlerExtra()
     );
@@ -71,7 +74,7 @@ describe("get-collection-document-by-id", () => {
   it("should handle non-existent document", async () => {
     // Act: Try to get collection for non-existent document
     const result = await GetCollectionDocumentByIdTool.handler(
-      { id: "00000000-0000-0000-0000-000000000000", take: 10, orderBy: "name" },
+      { id: "00000000-0000-0000-0000-000000000000", dataTypeId: undefined, orderBy: "name", orderCulture: undefined, orderDirection: undefined, filter: undefined, skip: undefined, take: 10 },
       createMockRequestHandlerExtra()
     );
 

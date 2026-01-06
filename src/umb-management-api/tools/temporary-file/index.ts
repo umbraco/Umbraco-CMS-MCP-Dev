@@ -14,7 +14,7 @@ export const TemporaryFileCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
     tools.push(CreateTemporaryFileTool);
     tools.push(GetTemporaryFileTool);
     tools.push(DeleteTemporaryFileTool);

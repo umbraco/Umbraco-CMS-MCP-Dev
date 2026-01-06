@@ -1,7 +1,7 @@
 import { getLanguageByIsoCodeParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetLanguageByIsoCodeTool from "../get/get-language-by-iso-code.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
@@ -33,6 +33,7 @@ describe("get-language-by-iso-code", () => {
       params,
       createMockRequestHandlerExtra()
     );
+    validateToolResponse(GetLanguageByIsoCodeTool, result);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 

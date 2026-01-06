@@ -1,8 +1,7 @@
 import GetUserCurrentTool from "../get/get-user-current.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getUserCurrentResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-user-current", () => {
   setupTestEnvironment();
@@ -12,7 +11,7 @@ describe("get-user-current", () => {
     const result = await GetUserCurrentTool.handler({}, createMockRequestHandlerExtra());
 
     // Extract user ID for proper normalization
-    const parsed = validateStructuredContent(result, getUserCurrentResponse);
+    const parsed = validateToolResponse(GetUserCurrentTool, result);
     const userId = parsed.id;
 
     // Assert
@@ -26,7 +25,7 @@ describe("get-user-current", () => {
     const result2 = await GetUserCurrentTool.handler({}, createMockRequestHandlerExtra());
 
     // Extract user ID for proper normalization
-    const parsed1 = validateStructuredContent(result1, getUserCurrentResponse);
+    const parsed1 = validateToolResponse(GetUserCurrentTool, result1);
     const userId = parsed1.id;
 
     // Assert

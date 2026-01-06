@@ -31,7 +31,7 @@ describe("recycle-bin-tree", () => {
       await builder.moveToRecycleBin();
 
       const result = await GetRecycleBinDocumentRootTool.handler(
-        { take: 100 },
+        { skip: undefined, take: 100 },
         createMockRequestHandlerExtra()
       );
       const normalizedItems = createSnapshotResult(result);
@@ -62,8 +62,9 @@ describe("recycle-bin-tree", () => {
 
       const result = await GetRecycleBinDocumentChildrenTool.handler(
         {
-          take: 100,
           parentId: parentInBin!.id,
+          skip: undefined,
+          take: 100,
         },
         createMockRequestHandlerExtra()
       );
@@ -74,8 +75,9 @@ describe("recycle-bin-tree", () => {
     it("should handle non-existent parent in recycle bin", async () => {
       const result = await GetRecycleBinDocumentChildrenTool.handler(
         {
-          take: 100,
           parentId: BLANK_UUID,
+          skip: undefined,
+          take: 100,
         },
         createMockRequestHandlerExtra()
       );

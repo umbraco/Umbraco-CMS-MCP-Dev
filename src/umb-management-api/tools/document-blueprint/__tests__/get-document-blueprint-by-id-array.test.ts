@@ -2,7 +2,7 @@ import GetDocumentBlueprintByIdArrayTool from "../get/get-document-blueprint-by-
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-item-document-blueprint", () => {
@@ -11,14 +11,7 @@ describe("get-item-document-blueprint", () => {
   const TEST_BLUEPRINT_NAME = "_Test Item Blueprint";
   const TEST_BLUEPRINT_NAME_2 = "_Test Item Blueprint2";
 
-  // Helper to get items from structuredContent
-  const getItems = (result: any) => {
-    const content = result.structuredContent;
-    if (content && content.items) {
-      return content.items;
-    }
-    return content ?? [];
-  };  afterEach(async () => {
+  afterEach(async () => {
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME_2);
   });
@@ -29,8 +22,8 @@ describe("get-item-document-blueprint", () => {
       {} as any,
       createMockRequestHandlerExtra()
     );
-    const items = getItems(result);
-    expect(items).toMatchSnapshot();
+    const data = validateToolResponse(GetDocumentBlueprintByIdArrayTool, result);
+    expect(data.items).toMatchSnapshot();
   });
 
   it("should get single document blueprint by ID", async () => {
@@ -44,12 +37,12 @@ describe("get-item-document-blueprint", () => {
       { id: [builder.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = getItems(result);
-    expect(items).toHaveLength(1);
-    expect(items[0].name).toBe(TEST_BLUEPRINT_NAME);
+    const data = validateToolResponse(GetDocumentBlueprintByIdArrayTool, result);
+    expect(data.items).toHaveLength(1);
+    expect(data.items[0].name).toBe(TEST_BLUEPRINT_NAME);
     // Normalize for snapshot
-    items[0].id = BLANK_UUID;
-    expect(items).toMatchSnapshot();
+    data.items[0].id = BLANK_UUID;
+    expect(data.items).toMatchSnapshot();
   });
 
   it("should get multiple document blueprints by ID", async () => {
@@ -71,15 +64,15 @@ describe("get-item-document-blueprint", () => {
       createMockRequestHandlerExtra()
     );
 
-    const items = getItems(result);
-    expect(items).toHaveLength(2);
-    expect(items[0].name).toBe(TEST_BLUEPRINT_NAME);
-    expect(items[1].name).toBe(TEST_BLUEPRINT_NAME_2);
+    const data = validateToolResponse(GetDocumentBlueprintByIdArrayTool, result);
+    expect(data.items).toHaveLength(2);
+    expect(data.items[0].name).toBe(TEST_BLUEPRINT_NAME);
+    expect(data.items[1].name).toBe(TEST_BLUEPRINT_NAME_2);
 
     // Normalize for snapshot
-    items.forEach((item: any) => {
+    data.items.forEach((item: any) => {
       item.id = BLANK_UUID;
     });
-    expect(items).toMatchSnapshot();
+    expect(data.items).toMatchSnapshot();
   });
 });

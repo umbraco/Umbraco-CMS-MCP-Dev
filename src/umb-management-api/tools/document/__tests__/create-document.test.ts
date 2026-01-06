@@ -1,7 +1,7 @@
-import CreateDocumentTool, { createOutputSchema } from "../post/create-document.js";
+import CreateDocumentTool from "../post/create-document.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { createSnapshotResult, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
@@ -28,8 +28,8 @@ describe("create-document", () => {
     // Create the document
     const result = await CreateDocumentTool.handler(docModel, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = validateStructuredContent(result, createOutputSchema);
+    // Validate and extract response
+    const responseData = validateToolResponse(CreateDocumentTool, result);
     const documentId = responseData.id;
 
     // Verify the handler response using snapshot
@@ -65,8 +65,8 @@ describe("create-document", () => {
 
     const result = await CreateDocumentTool.handler(docModel, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = validateStructuredContent(result, createOutputSchema);
+    // Validate and extract response
+    const responseData = validateToolResponse(CreateDocumentTool, result);
     const documentId = responseData.id;
 
     // Verify the handler response using snapshot
@@ -128,8 +128,8 @@ describe("create-document", () => {
 
       const result = await CreateDocumentTool.handler(docModel, createMockRequestHandlerExtra());
 
-      // Extract ID for normalization
-      const responseData = validateStructuredContent(result, createOutputSchema);
+      // Validate and extract response
+      const responseData = validateToolResponse(CreateDocumentTool, result);
       const documentId = responseData.id;
 
       // Verify the handler response using snapshot
@@ -182,8 +182,8 @@ describe("create-document", () => {
 
     const result = await CreateDocumentTool.handler(docModel, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = validateStructuredContent(result, createOutputSchema);
+    // Validate and extract response
+    const responseData = validateToolResponse(CreateDocumentTool, result);
     const documentId = responseData.id;
 
     // Verify the handler response using snapshot

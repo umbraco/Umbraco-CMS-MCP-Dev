@@ -3,9 +3,8 @@ import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getDocumentByIdPublishedResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetDocumentPublish";
 
@@ -34,7 +33,7 @@ describe("get-document-publish", () => {
     expect(snapshot).toMatchSnapshot();
 
     // Parse and check published state
-    const data = validateStructuredContent(result, getDocumentByIdPublishedResponse);
+    const data = validateToolResponse(GetDocumentPublishTool, result);
     expect(data.variants.some((v: any) => v.state === "Published")).toBe(
       true
     );

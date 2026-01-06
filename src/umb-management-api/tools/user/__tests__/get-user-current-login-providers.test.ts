@@ -1,6 +1,6 @@
 import GetUserCurrentLoginProvidersTool from "../get/get-user-current-login-providers.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-user-current-login-providers", () => {
@@ -15,8 +15,9 @@ describe("get-user-current-login-providers", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify expected structure - tool returns { items: [...] }
-    const items = (result.structuredContent as any).items;
-    expect(Array.isArray(items)).toBe(true);
+    const data = validateToolResponse(GetUserCurrentLoginProvidersTool, result);
+    expect(Array.isArray(data.items)).toBe(true);
+    const items = data.items;
 
     // Each provider should have expected properties
     if (items.length > 0) {

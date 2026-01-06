@@ -2,7 +2,7 @@ import { getUserGroupByIdParams } from "@/umb-management-api/umbracoManagementAP
 import GetUserGroupTool from "../get/get-user-group.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
@@ -24,6 +24,8 @@ describe("get-user-group", () => {
     await builder.withName(TEST_GROUP_NAME).create();
     const params = getUserGroupByIdParams.parse({ id: builder.getId() });
     const result = await GetUserGroupTool.handler(params, createMockRequestHandlerExtra());
+    const data = validateToolResponse(GetUserGroupTool, result);
+    expect(data.name).toBe(TEST_GROUP_NAME);
     expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
   });
 

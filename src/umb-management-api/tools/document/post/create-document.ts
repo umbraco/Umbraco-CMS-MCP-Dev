@@ -105,6 +105,7 @@ const CreateDocumentTool = {
   Note: Some property editors (BlockList, BlockGrid, ImageCropper, UploadField) have special requirements - check their templates for important notes.
   `,
   inputSchema: createDocumentSchema.shape,
+  outputSchema: createOutputSchema.shape,
   slices: ['create'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Create),
   handler: (async (model: z.infer<typeof createDocumentSchema>) => {
@@ -162,6 +163,6 @@ const CreateDocumentTool = {
       });
     }
   }),
-} satisfies ToolDefinition<typeof createDocumentSchema.shape>;
+} satisfies ToolDefinition<typeof createDocumentSchema.shape, typeof createOutputSchema.shape>;
 
 export default withStandardDecorators(CreateDocumentTool);

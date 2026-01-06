@@ -2,7 +2,7 @@ import CreatePartialViewTool from "../post/create-partial-view.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_PARTIAL_VIEW_NAME = "_TestCreatePartialView.cshtml";
@@ -31,6 +31,10 @@ describe("create-partial-view", () => {
     const result = await CreatePartialViewTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
+    const data = validateToolResponse(CreatePartialViewTool, result);
+    expect(data).toHaveProperty("message");
+    expect(data).toHaveProperty("path");
+
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
@@ -73,6 +77,10 @@ describe("create-partial-view", () => {
     const result = await CreatePartialViewTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
+    const data = validateToolResponse(CreatePartialViewTool, result);
+    expect(data).toHaveProperty("message");
+    expect(data).toHaveProperty("path");
+
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 

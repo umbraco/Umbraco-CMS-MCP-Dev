@@ -2,14 +2,11 @@
 
 exports[`get-searcher should list all searchers with default parameters 1`] = `
 {
-  "content": [],
-  "structuredContent": {
-    "items": [
-      {
-        "name": "MultiSearcher",
-      },
-    ],
-    "total": 1,
-  },
+  "items": [
+    {
+      "name": "MultiSearcher",
+    },
+  ],
+  "total": 1,
 }
 `;

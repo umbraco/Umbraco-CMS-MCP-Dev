@@ -1,8 +1,7 @@
 import GetDataTypeConfigurationTool from "../get/get-data-type-configuration.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { getDataTypeConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-data-type-configuration", () => {
   setupTestEnvironment();
@@ -11,7 +10,7 @@ describe("get-data-type-configuration", () => {
     const result = await GetDataTypeConfigurationTool.handler({}, createMockRequestHandlerExtra());
 
     // Assert - Verify the handler response matches schema
-    const data = validateStructuredContent(result, getDataTypeConfigurationResponse);
+    const data = validateToolResponse(GetDataTypeConfigurationTool, result);
     expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Assert - Verify expected properties exist

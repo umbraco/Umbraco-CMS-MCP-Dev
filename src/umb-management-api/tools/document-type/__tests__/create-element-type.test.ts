@@ -1,8 +1,8 @@
 import { normalizeErrorResponse, createSnapshotResult , normalizeObject} from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import CreateElementTypeTool, { createElementTypeOutputSchema } from "../post/create-element-type.js";
+import CreateElementTypeTool from "../post/create-element-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { v4 as uuidv4 } from "uuid";
 import { TextString_DATA_TYPE_ID } from "@/constants/constants.js";
 
@@ -31,7 +31,7 @@ describe("create-element-type", () => {
     const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = validateStructuredContent(result, createElementTypeOutputSchema);
+    const responseData = validateToolResponse(CreateElementTypeTool, result);
     const elementTypeId = responseData.id;
 
     // Verify the handler response using snapshot
@@ -86,7 +86,7 @@ describe("create-element-type", () => {
     const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = validateStructuredContent(result, createElementTypeOutputSchema);
+    const responseData = validateToolResponse(CreateElementTypeTool, result);
     const elementTypeId = responseData.id;
 
     // Verify the handler response using snapshot
@@ -148,7 +148,7 @@ describe("create-element-type", () => {
 
     const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
 
-    const responseData = validateStructuredContent(result, createElementTypeOutputSchema);
+    const responseData = validateToolResponse(CreateElementTypeTool, result);
     const fullElementType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
 
     // Should have 2 tabs

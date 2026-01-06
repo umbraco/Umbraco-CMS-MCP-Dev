@@ -7,7 +7,7 @@ describe("get-log-viewer-level", () => {
 
   it("should get log viewer levels with default parameters", async () => {
     const result = await GetLogViewerLevelTool.handler(
-      { take: 100 },
+      { skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
 

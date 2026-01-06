@@ -2,7 +2,7 @@ import CreatePartialViewFolderTool from "../post/create-partial-view-folder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_FOLDER_NAME = "_TestCreateFolder";
@@ -26,6 +26,10 @@ describe("create-partial-view-folder", () => {
     const result = await CreatePartialViewFolderTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
+    const data = validateToolResponse(CreatePartialViewFolderTool, result);
+    expect(data).toHaveProperty("message");
+    expect(data).toHaveProperty("path");
+
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 

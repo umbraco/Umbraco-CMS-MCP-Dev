@@ -43,7 +43,7 @@ export const ToolRegistrar = {
   registerTools: (
     server: McpServer,
     user: CurrentUserResponseModel,
-    tools: ToolDefinition<any>[],
+    tools: ToolDefinition<any, any>[],
     config: CollectionConfiguration,
     readonlyMode: boolean,
     filteredTools: string[]

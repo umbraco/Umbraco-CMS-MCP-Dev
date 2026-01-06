@@ -9,7 +9,7 @@ import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/do
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media Referenced Descendants";
 const TEST_CHILD_MEDIA_NAME = "_Test Child Media Referenced";
@@ -80,8 +80,8 @@ describe("get-media-by-id-referenced-descendants", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify it returns references to the descendant media items
-    const parsed = result.structuredContent as { total: number; items: unknown[] };
+    // Validate response against tool's outputSchema and verify it returns references to the descendant media items
+    const parsed = validateToolResponse(GetMediaByIdReferencedDescendantsTool, result);
     expect(parsed.total).toBeGreaterThan(0);
     expect(parsed.items.length).toBeGreaterThan(0);
   });
@@ -126,8 +126,8 @@ describe("get-media-by-id-referenced-descendants", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify it returns empty results
-    const parsed = result.structuredContent as { total: number; items: unknown[] };
+    // Validate response against tool's outputSchema and verify it returns empty results
+    const parsed = validateToolResponse(GetMediaByIdReferencedDescendantsTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
   });
@@ -152,8 +152,8 @@ describe("get-media-by-id-referenced-descendants", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify it returns empty results since there are no descendants
-    const parsed = result.structuredContent as { total: number; items: unknown[] };
+    // Validate response against tool's outputSchema and verify it returns empty results since there are no descendants
+    const parsed = validateToolResponse(GetMediaByIdReferencedDescendantsTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
   });

@@ -30,7 +30,7 @@ describe("get-log-viewer-saved-search", () => {
       .create();
 
     const result = await GetLogViewerSavedSearchTool.handler(
-      { take: 100 },
+      { skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
 
@@ -61,7 +61,7 @@ describe("get-log-viewer-saved-search", () => {
 
   it("should handle empty result set", async () => {
     const result = await GetLogViewerSavedSearchTool.handler(
-      { take: 100 },
+      { skip: undefined, take: 100 },
       createMockRequestHandlerExtra()
     );
 

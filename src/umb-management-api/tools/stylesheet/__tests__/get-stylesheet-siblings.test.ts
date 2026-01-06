@@ -53,6 +53,8 @@ describe("get-stylesheet-siblings", () => {
     const result = await GetStylesheetSiblingsTool.handler(
       {
         path: targetBuilder.getPath(),
+        before: undefined,
+        after: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -70,6 +72,8 @@ describe("get-stylesheet-siblings", () => {
     const result = await GetStylesheetSiblingsTool.handler(
       {
         path: nonExistentPath,
+        before: undefined,
+        after: undefined,
       },
       createMockRequestHandlerExtra()
     );

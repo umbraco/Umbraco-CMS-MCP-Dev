@@ -1,7 +1,7 @@
 import GetItemUserTool from "../get/get-item-user.js";
 import { UserBuilder } from "./helpers/user-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getItemUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
@@ -37,8 +37,9 @@ describe("get-item-user", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify expected structure - tool returns { items: [...] }
-    const items = (result.structuredContent as any).items;
-    expect(Array.isArray(items)).toBe(true);
+    const data = validateToolResponse(GetItemUserTool, result);
+    expect(Array.isArray(data.items)).toBe(true);
+    const items = data.items;
 
     // Should contain user items
     if (items.length > 0) {
@@ -66,13 +67,14 @@ describe("get-item-user", () => {
     const result = await GetItemUserTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
-    const items = (result.structuredContent as any).items;
-    expect(Array.isArray(items)).toBe(true);
+    const data = validateToolResponse(GetItemUserTool, result);
+    expect(Array.isArray(data.items)).toBe(true);
+    const items = data.items;
 
     // Should find the specific user
     const foundUser = items.find((user: any) => user.id === userId);
     expect(foundUser).toBeDefined();
-    expect(foundUser.name).toBe(TEST_USER_NAME);
+    expect(foundUser?.name).toBe(TEST_USER_NAME);
   });
 
   it("should return empty array for non-existent user IDs", async () => {
@@ -83,8 +85,8 @@ describe("get-item-user", () => {
     const result = await GetItemUserTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
-    const items = (result.structuredContent as any).items;
-    expect(Array.isArray(items)).toBe(true);
-    expect(items).toHaveLength(0);
+    const data = validateToolResponse(GetItemUserTool, result);
+    expect(Array.isArray(data.items)).toBe(true);
+    expect(data.items).toHaveLength(0);
   });
 });

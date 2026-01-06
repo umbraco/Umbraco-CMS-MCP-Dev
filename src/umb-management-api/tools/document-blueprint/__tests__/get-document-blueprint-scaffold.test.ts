@@ -1,7 +1,7 @@
 import GetDocumentBlueprintScaffoldTool from "../get/get-document-blueprint-scaffold.js";
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_BLUEPRINT_NAME = "_Test Blueprint Scaffold";
@@ -25,7 +25,7 @@ describe("get-document-blueprint-scaffold", () => {
     );
 
     // Assert: Verify the response structure without snapshots due to ID normalization issues
-    const parsedResponse = result.structuredContent as any;
+    const parsedResponse = validateToolResponse(GetDocumentBlueprintScaffoldTool, result);
 
     // Verify key properties exist and are correct
     expect(parsedResponse).toHaveProperty('documentType');

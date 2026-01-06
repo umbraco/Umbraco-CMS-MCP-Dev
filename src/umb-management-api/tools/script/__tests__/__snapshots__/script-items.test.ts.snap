@@ -2,67 +2,54 @@
 
 exports[`script-items should get script folder by path 1`] = `
 {
-  "content": [],
-  "structuredContent": {
-    "items": [
-      {
-        "isFolder": true,
-        "name": "_TestFolderItems",
-        "parent": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "path": "/",
-        },
-        "path": "/_TestFolderItems",
+  "items": [
+    {
+      "isFolder": true,
+      "name": "_TestFolderItems",
+      "parent": {
+        "path": "/",
       },
-    ],
-  },
+      "path": "/_TestFolderItems",
+    },
+  ],
 }
 `;
 
 exports[`script-items should get scripts by path array 1`] = `
 {
-  "content": [],
-  "structuredContent": {
-    "items": [
-      {
-        "isFolder": false,
-        "name": "_TestScriptItems1.js",
-        "parent": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "path": "/",
-        },
-        "path": "/_TestScriptItems1.js",
+  "items": [
+    {
+      "isFolder": false,
+      "name": "_TestScriptItems1.js",
+      "parent": {
+        "path": "/",
       },
-      {
-        "isFolder": false,
-        "name": "_TestScriptItems2.js",
-        "parent": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "path": "/",
-        },
-        "path": "/_TestScriptItems2.js",
+      "path": "/_TestScriptItems1.js",
+    },
+    {
+      "isFolder": false,
+      "name": "_TestScriptItems2.js",
+      "parent": {
+        "path": "/",
       },
-    ],
-  },
+      "path": "/_TestScriptItems2.js",
+    },
+  ],
 }
 `;
 
 exports[`script-items should get single script by path 1`] = `
 {
-  "content": [],
-  "structuredContent": {
-    "items": [
-      {
-        "isFolder": false,
-        "name": "_TestScriptItems1.js",
-        "parent": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "path": "/",
-        },
-        "path": "/_TestScriptItems1.js",
+  "items": [
+    {
+      "isFolder": false,
+      "name": "_TestScriptItems1.js",
+      "parent": {
+        "path": "/",
       },
-    ],
-  },
+      "path": "/_TestScriptItems1.js",
+    },
+  ],
 }
 `;
 

@@ -1,11 +1,7 @@
 import GetRedirectStatusTool from "../get/get-redirect-status.js";
 import UpdateRedirectStatusTool from "../post/update-redirect-status.js";
-import { getRedirectManagementStatusResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { z } from "zod";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-
-type RedirectStatus = z.infer<typeof getRedirectManagementStatusResponse>;
 
 describe("Redirect Status Tools", () => {
   setupTestEnvironment();
@@ -13,8 +9,7 @@ describe("Redirect Status Tools", () => {
   describe("GetRedirectStatusTool", () => {
     it("should get the current redirect status", async () => {
       const result = await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra());
-      const data = validateStructuredContent(result, getRedirectManagementStatusResponse);
-      expect(getRedirectManagementStatusResponse.safeParse(data).success).toBe(true);
+      const data = validateToolResponse(GetRedirectStatusTool, result);
       expect(data).toHaveProperty("status");
       expect(data).toHaveProperty("userIsAdmin");
     });
@@ -29,7 +24,7 @@ describe("Redirect Status Tools", () => {
 
       await new Promise(resolve => setTimeout(resolve, 500));
       const status = await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra());
-      const data = validateStructuredContent(status, getRedirectManagementStatusResponse);
+      const data = validateToolResponse(GetRedirectStatusTool, status);
       expect(data.status).toBe("Disabled");
     });
 

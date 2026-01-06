@@ -4,11 +4,10 @@ import GetDocumentTypeChildrenTool from "../items/get/get-children.js";
 import GetAllDocumentTypesTool from "../items/get/get-all.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { DocumentTypeTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
 
 describe("document-type-tree", () => {
   const TEST_ROOT_NAME = "_Test Root DocumentType";
@@ -126,7 +125,8 @@ describe("document-type-tree", () => {
       );
 
       // Assert - Verify our test structure exists
-      const items: DocumentTypeTreeItemResponseModel[] = (result.structuredContent as any).items;
+      const response = validateToolResponse(GetAllDocumentTypesTool, result);
+      const items = response.items;
       const rootFolder = items.find(item => item.name === TEST_FOLDER_NAME);
       const childFolder = items.find(item => item.name === TEST_CHILD_NAME);
       const grandchild = items.find(item => item.name === TEST_ROOT_NAME);

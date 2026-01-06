@@ -2,7 +2,7 @@ import GetLanguageTool from "../get/get-language.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_LANGUAGE_NAME_1 = "_Test Language Get 1";
@@ -57,6 +57,7 @@ describe("get-language", () => {
     );
 
     // Assert
+    validateToolResponse(GetLanguageTool, result);
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });
@@ -91,6 +92,7 @@ describe("get-language", () => {
     );
 
     // Assert
+    validateToolResponse(GetLanguageTool, result);
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });
@@ -118,6 +120,7 @@ describe("get-language", () => {
     );
 
     // Assert
+    validateToolResponse(GetLanguageTool, result);
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });

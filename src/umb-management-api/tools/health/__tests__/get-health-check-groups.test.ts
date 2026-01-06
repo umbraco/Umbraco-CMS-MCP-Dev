@@ -1,6 +1,6 @@
 import GetHealthCheckGroupsTool from "../get/get-health-check-groups.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_SKIP_VALUE = 0;
@@ -15,6 +15,7 @@ describe("get-health-check-groups", () => {
       take: TEST_TAKE_VALUE
     }, createMockRequestHandlerExtra());
 
+    validateToolResponse(GetHealthCheckGroupsTool, result);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 

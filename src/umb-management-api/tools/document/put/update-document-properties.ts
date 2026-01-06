@@ -16,6 +16,7 @@ import { validatePropertiesBeforeSave } from "./helpers/property-value-validator
 import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators, ToolValidationError } from "@/helpers/mcp/tool-decorators.js";
+import { createToolResult } from "@/helpers/mcp/tool-result.js";
 
 // Output schema for successful responses
 export const updateDocumentPropertiesOutputSchema = z.object({
@@ -301,16 +302,14 @@ const UpdateDocumentPropertiesTool = {
       message = `Successfully updated ${propertiesToUpdate.length} property value(s)`;
     }
 
-    return {
-      structuredContent: {
-        success: true,
-        message,
-        updatedProperties: updatedPropertyKeys,
-        addedProperties: addedPropertyKeys,
-        document: updatedDocument
-      }
-    };
+    return createToolResult({
+      success: true,
+      message,
+      updatedProperties: updatedPropertyKeys,
+      addedProperties: addedPropertyKeys,
+      document: updatedDocument
+    });
   }),
-} satisfies ToolDefinition<typeof updateDocumentPropertiesSchema>;
+} satisfies ToolDefinition<typeof updateDocumentPropertiesSchema, typeof updateDocumentPropertiesOutputSchema>;
 
 export default withStandardDecorators(UpdateDocumentPropertiesTool);

@@ -4,7 +4,7 @@ import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { MemberGroupBuilder } from "../../member-group/__tests__/helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "../../member-group/__tests__/helpers/member-group-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetPublicAccessDocument";
@@ -38,7 +38,7 @@ describe("get-document-public-access", () => {
       createMockRequestHandlerExtra()
     );
     // Get structured content directly
-    const data = result.structuredContent as any;
+    const data = validateToolResponse(GetDocumentPublicAccessTool, result);
     // Normalize IDs for snapshot
     const normalized = {
       ...data,

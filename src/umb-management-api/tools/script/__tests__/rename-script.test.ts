@@ -41,6 +41,7 @@ describe("rename-script", () => {
 
     const params = {
       name: TEST_SCRIPT_NAME, // Just the script name, no extension needed
+      folderPath: undefined,
       newName: TEST_RENAMED_NAME // New name, no extension needed
     };
 
@@ -106,6 +107,7 @@ describe("rename-script", () => {
 
     const params = {
       name: TEST_FOLDER_NAME, // This is actually a folder, not a script
+      folderPath: undefined,
       newName: "_RenamedFolder"
     };
 
@@ -120,6 +122,7 @@ describe("rename-script", () => {
     // Arrange
     const params = {
       name: "NonExistentScript", // Just the name
+      folderPath: undefined,
       newName: "NewName"
     };
 
@@ -169,6 +172,7 @@ describe("rename-script", () => {
 
     const params = {
       name: TEST_SCRIPT_NAME, // Current name
+      folderPath: undefined,
       newName: TEST_SCRIPT_NAME // Same name as original
     };
 

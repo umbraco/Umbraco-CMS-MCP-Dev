@@ -1,9 +1,9 @@
 import FindUserTool from "../get/find-user.js";
 import { UserBuilder } from "./helpers/user-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getFilterUserQueryParams, getFilterUserResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getFilterUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_USER_NAME = "_Test User Find";
 const TEST_USER_EMAIL = `test-user-find-${Math.floor(Math.random() * 10000)}@example.com`;
@@ -41,7 +41,7 @@ describe("find-user", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify expected structure
-    const parsed = validateStructuredContent(result, getFilterUserResponse);
+    const parsed = validateToolResponse(FindUserTool, result);
     expect(parsed).toHaveProperty("items");
     expect(parsed).toHaveProperty("total");
     expect(Array.isArray(parsed.items)).toBe(true);

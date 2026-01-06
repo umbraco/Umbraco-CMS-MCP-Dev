@@ -1,7 +1,7 @@
 import GetMediaTypeFoldersTool from "../items/get/get-media-type-folders.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-media-type-folders", () => {
   setupTestEnvironment();
@@ -14,12 +14,12 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure
-      const parsed = result.structuredContent as any;
       expect(parsed.items).toBeDefined();
       expect(Array.isArray(parsed.items)).toBe(true);
       expect(typeof parsed.total).toBe('number');
@@ -40,12 +40,12 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify pagination worked
-      const parsed = result.structuredContent as any;
       expect(parsed.items.length).toBeLessThanOrEqual(5);
       expect(typeof parsed.total).toBe('number');
     });
@@ -57,12 +57,12 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify pagination parameters worked
-      const parsed = result.structuredContent as any;
       expect(parsed.items).toBeDefined();
       expect(Array.isArray(parsed.items)).toBe(true);
       expect(typeof parsed.total).toBe('number');
@@ -75,12 +75,12 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response is still valid
-      const parsed = result.structuredContent as any;
       expect(parsed.items).toBeDefined();
       expect(Array.isArray(parsed.items)).toBe(true);
       expect(typeof parsed.total).toBe('number');
@@ -94,8 +94,8 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      const parsed = result.structuredContent as any;
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
 
       // Verify response has correct structure
       expect(parsed).toHaveProperty('items');
@@ -126,12 +126,12 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure is correct even with no results
-      const parsed = result.structuredContent as any;
       expect(parsed.items).toBeDefined();
       expect(Array.isArray(parsed.items)).toBe(true);
       expect(parsed.items).toHaveLength(0);
@@ -146,12 +146,12 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify no items returned but total is still available
-      const parsed = result.structuredContent as any;
       expect(parsed.items).toHaveLength(0);
       expect(typeof parsed.total).toBe('number');
       expect(parsed.total).toBeGreaterThanOrEqual(0);
@@ -164,7 +164,7 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      const firstParsed = firstResult.structuredContent as any;
+      const firstParsed = validateToolResponse(GetMediaTypeFoldersTool, firstResult);
       const totalItems = firstParsed.total;
 
       // Act - Test boundary case where skip equals total items
@@ -173,12 +173,12 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify empty results but valid structure
-      const parsed = result.structuredContent as any;
       expect(parsed.items).toHaveLength(0);
       expect(parsed.total).toBe(totalItems);
     });
@@ -190,11 +190,11 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
-      const parsed = result.structuredContent as any;
       expect(parsed.items.length).toBeLessThanOrEqual(1);
       expect(typeof parsed.total).toBe('number');
       expect(parsed.total).toBeGreaterThanOrEqual(0);

@@ -1,7 +1,7 @@
 import GetWebhookItemTool from "../get/get-webhook-by-id-array.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import {
@@ -24,12 +24,12 @@ describe("get-webhook-item", () => {
   it("should get no webhooks for empty request", async () => {
     // Get all webhooks
     const result = await GetWebhookItemTool.handler(
-      {},
+      { id: undefined },
       createMockRequestHandlerExtra()
     );
-    const items = (result.structuredContent as any)?.items ?? [];
+    const data = validateToolResponse(GetWebhookItemTool, result);
 
-    expect(items).toMatchSnapshot();
+    expect(data.items).toMatchSnapshot();
   });
 
   it("should get single webhook by ID", async () => {
@@ -45,9 +45,9 @@ describe("get-webhook-item", () => {
       { id: [builder.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = (result.structuredContent as any)?.items ?? [];
-    expect(items).toHaveLength(1);
-    expect(items[0].name).toBe(TEST_WEBHOOK_NAME);
+    const data = validateToolResponse(GetWebhookItemTool, result);
+    expect(data.items).toHaveLength(1);
+    expect(data.items[0].name).toBe(TEST_WEBHOOK_NAME);
     // Use createSnapshotResult for normalization
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
@@ -75,10 +75,10 @@ describe("get-webhook-item", () => {
       createMockRequestHandlerExtra()
     );
 
-    const items = (result.structuredContent as any)?.items ?? [];
-    expect(items).toHaveLength(2);
-    expect(items[0].name).toBe(TEST_WEBHOOK_NAME);
-    expect(items[1].name).toBe(TEST_WEBHOOK_NAME_2);
+    const data = validateToolResponse(GetWebhookItemTool, result);
+    expect(data.items).toHaveLength(2);
+    expect(data.items[0].name).toBe(TEST_WEBHOOK_NAME);
+    expect(data.items[1].name).toBe(TEST_WEBHOOK_NAME_2);
 
     // Use createSnapshotResult for normalization
     expect(createSnapshotResult(result)).toMatchSnapshot();

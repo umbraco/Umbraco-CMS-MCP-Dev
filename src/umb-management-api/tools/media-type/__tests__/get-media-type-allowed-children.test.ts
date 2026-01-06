@@ -4,7 +4,7 @@ import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-media-type-allowed-children", () => {
   setupTestEnvironment();
@@ -42,15 +42,15 @@ describe("get-media-type-allowed-children", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Parse the response
-    const response = result.structuredContent as any;
+    // Validate response against tool's output schema
+    const response = validateToolResponse(GetMediaTypeAllowedChildrenTool, result);
 
     // Verify the response contains our child media type
     const foundChild = response.items.find(
       (item: any) => item.name === TEST_CHILD_NAME
     );
     expect(foundChild).toBeDefined();
-    expect(foundChild.name).toBe(TEST_CHILD_NAME);
+    expect(foundChild!.name).toBe(TEST_CHILD_NAME);
 
     // Verify the total count
     expect(response.total).toBe(1);
@@ -88,8 +88,8 @@ describe("get-media-type-allowed-children", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Parse and verify empty response
-    const response = result.structuredContent as any;
+    // Validate response against tool's output schema
+    const response = validateToolResponse(GetMediaTypeAllowedChildrenTool, result);
     expect(response.total).toBe(0);
     expect(response.items).toHaveLength(0);
 

@@ -1,8 +1,7 @@
 import GetUserConfigurationTool from "../get/get-user-configuration.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getUserConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 describe("get-user-configuration", () => {
   setupTestEnvironment();
@@ -16,7 +15,7 @@ describe("get-user-configuration", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify expected properties exist
-    const parsed = validateStructuredContent(result, getUserConfigurationResponse);
+    const parsed = validateToolResponse(GetUserConfigurationTool, result);
     expect(parsed).toHaveProperty("canInviteUsers");
     expect(parsed).toHaveProperty("passwordConfiguration");
   });

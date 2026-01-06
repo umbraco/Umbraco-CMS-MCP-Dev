@@ -1,5 +1,5 @@
 import GetLogViewerLevelCountTool from "../get/get-log-viewer-level-count.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-log-viewer-level-count", () => {
@@ -7,29 +7,31 @@ describe("get-log-viewer-level-count", () => {
 
   it("should get log viewer level counts with default parameters", async () => {
     const result = await GetLogViewerLevelCountTool.handler(
-      {},
+      { startDate: undefined, endDate: undefined },
       createMockRequestHandlerExtra()
     );
 
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerLevelCountTool, result);
+
     // Verify response structure (counts are dynamic, so we verify structure not exact values)
-    expect(result.structuredContent).toBeDefined();
-    expect(result.structuredContent).toHaveProperty("debug");
-    expect(result.structuredContent).toHaveProperty("error");
-    expect(result.structuredContent).toHaveProperty("fatal");
-    expect(result.structuredContent).toHaveProperty("information");
-    expect(result.structuredContent).toHaveProperty("warning");
+    expect(content).toHaveProperty("debug");
+    expect(content).toHaveProperty("error");
+    expect(content).toHaveProperty("fatal");
+    expect(content).toHaveProperty("information");
+    expect(content).toHaveProperty("warning");
 
     // Verify all counts are non-negative numbers
-    expect(typeof result.structuredContent.debug).toBe("number");
-    expect(typeof result.structuredContent.error).toBe("number");
-    expect(typeof result.structuredContent.fatal).toBe("number");
-    expect(typeof result.structuredContent.information).toBe("number");
-    expect(typeof result.structuredContent.warning).toBe("number");
-    expect(result.structuredContent.debug).toBeGreaterThanOrEqual(0);
-    expect(result.structuredContent.error).toBeGreaterThanOrEqual(0);
-    expect(result.structuredContent.fatal).toBeGreaterThanOrEqual(0);
-    expect(result.structuredContent.information).toBeGreaterThanOrEqual(0);
-    expect(result.structuredContent.warning).toBeGreaterThanOrEqual(0);
+    expect(typeof content.debug).toBe("number");
+    expect(typeof content.error).toBe("number");
+    expect(typeof content.fatal).toBe("number");
+    expect(typeof content.information).toBe("number");
+    expect(typeof content.warning).toBe("number");
+    expect(content.debug).toBeGreaterThanOrEqual(0);
+    expect(content.error).toBeGreaterThanOrEqual(0);
+    expect(content.fatal).toBeGreaterThanOrEqual(0);
+    expect(content.information).toBeGreaterThanOrEqual(0);
+    expect(content.warning).toBeGreaterThanOrEqual(0);
   });
 
   it("should get log viewer level counts with date range", async () => {
@@ -41,12 +43,14 @@ describe("get-log-viewer-level-count", () => {
       createMockRequestHandlerExtra()
     );
 
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerLevelCountTool, result);
+
     // Verify response structure (counts are dynamic, so we verify structure not exact values)
-    expect(result.structuredContent).toBeDefined();
-    expect(result.structuredContent).toHaveProperty("debug");
-    expect(result.structuredContent).toHaveProperty("error");
-    expect(result.structuredContent).toHaveProperty("fatal");
-    expect(result.structuredContent).toHaveProperty("information");
-    expect(result.structuredContent).toHaveProperty("warning");
+    expect(content).toHaveProperty("debug");
+    expect(content).toHaveProperty("error");
+    expect(content).toHaveProperty("fatal");
+    expect(content).toHaveProperty("information");
+    expect(content).toHaveProperty("warning");
   });
 });

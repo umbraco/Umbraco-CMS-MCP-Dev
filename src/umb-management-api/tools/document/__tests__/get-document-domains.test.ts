@@ -2,9 +2,8 @@ import GetDocumentDomainsTool from "../get/get-document-domains.js";
 import { DocumentBuilder, TEST_DOMAIN } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getDocumentByIdDomainsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_DOCUMENT_NAME = "_Test DomainsDocument";
@@ -41,7 +40,7 @@ describe("get-document-domains", () => {
     const found = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
     expect(found).toBeDefined();
     // Check if domain was added
-    const domains = validateStructuredContent(result, getDocumentByIdDomainsResponse);
+    const domains = validateToolResponse(GetDocumentDomainsTool, result);
     expect(domains.domains).toEqual(
       expect.arrayContaining([expect.objectContaining(TEST_DOMAIN)])
     );
@@ -59,7 +58,7 @@ describe("get-document-domains", () => {
       expect(result.isError).toBe(true);
     } else {
       // API may return empty domains for non-existent document
-      const data = result.structuredContent as { domains: any[] };
+      const data = validateToolResponse(GetDocumentDomainsTool, result);
       expect(data.domains).toEqual([]);
     }
   });

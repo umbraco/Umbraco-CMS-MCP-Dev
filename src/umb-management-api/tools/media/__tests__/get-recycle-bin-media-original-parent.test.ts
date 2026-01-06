@@ -5,7 +5,7 @@ import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import MoveMediaToRecycleBinTool from "../put/move-to-recycle-bin.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media Original Parent";
 const TEST_PARENT_MEDIA_NAME = "_Test Parent Media";
@@ -59,8 +59,8 @@ describe("get-recycle-bin-media-original-parent", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Verify parent information is returned first to get the ID
-    const parsed = result.structuredContent as { id: string };
+    // Validate response against tool's outputSchema and verify parent information
+    const parsed = validateToolResponse(GetRecycleBinMediaOriginalParentTool, result);
     expect(parsed).toHaveProperty('id');
     // Verify the parent ID matches our created parent
     expect(parsed.id).toBe(parentMediaBuilder.getId());
@@ -98,8 +98,7 @@ describe("get-recycle-bin-media-original-parent", () => {
     expect(result).toMatchSnapshot();
 
     // Should return null for root-level items
-    const parsed = result.structuredContent;
-    expect(parsed).toBeNull();
+    expect(result.structuredContent).toBeNull();
   });
 
   it("should handle invalid media id", async () => {

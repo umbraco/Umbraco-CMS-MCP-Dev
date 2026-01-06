@@ -1,8 +1,8 @@
-import CreateDictionaryItemTool, { createDictionaryOutputSchema } from "../post/create-dictionary-item.js";
+import CreateDictionaryItemTool from "../post/create-dictionary-item.js";
 import { DEFAULT_ISO_CODE, DictionaryTestHelper } from "./helpers/dictionary-helper.js";
 import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DICTIONARY_NAME = "_Test Dictionary Created";
 const TEST_DICTIONARY_TRANSLATION = "_Test Translation";
@@ -28,7 +28,7 @@ describe("create-dictionary-item", () => {
     } as any, createMockRequestHandlerExtra());
 
     // Validate structured response
-    const responseData = validateStructuredContent(result, createDictionaryOutputSchema);
+    const responseData = validateToolResponse(CreateDictionaryItemTool, result);
     expect(responseData.message).toBe("Dictionary item created successfully");
 
     // Verify the handler response using snapshot
@@ -74,7 +74,7 @@ describe("create-dictionary-item", () => {
     } as any, createMockRequestHandlerExtra());
 
     // Validate structured response
-    const responseData = validateStructuredContent(result, createDictionaryOutputSchema);
+    const responseData = validateToolResponse(CreateDictionaryItemTool, result);
 
     // Verify the handler response using snapshot (normalize IDs)
     expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();

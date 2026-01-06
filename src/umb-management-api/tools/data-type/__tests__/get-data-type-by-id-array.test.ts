@@ -1,10 +1,8 @@
 import GetDataTypesByIdArrayTool from "../get/get-data-type-by-id-array.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getItemDataTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 describe("get-data-type-by-id-array", () => {
@@ -25,7 +23,8 @@ describe("get-data-type-by-id-array", () => {
     );
 
     // Assert - Verify empty response
-    validateStructuredContent(result, getItemDataTypeResponse);
+    const data = validateToolResponse(GetDataTypesByIdArrayTool, result);
+    expect(data.items).toEqual([]);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
@@ -43,9 +42,9 @@ describe("get-data-type-by-id-array", () => {
     );
 
     // Assert - Verify the data type is returned
-    const items = validateStructuredContent(result, getItemDataTypeResponse);
-    expect(items).toHaveLength(1);
-    expect(items[0].name).toBe(TEST_DATATYPE_NAME);
+    const data = validateToolResponse(GetDataTypesByIdArrayTool, result);
+    expect(data.items).toHaveLength(1);
+    expect(data.items[0].name).toBe(TEST_DATATYPE_NAME);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
@@ -71,10 +70,10 @@ describe("get-data-type-by-id-array", () => {
     );
 
     // Assert - Verify both data types are returned
-    const items = validateStructuredContent(result, getItemDataTypeResponse);
-    expect(items).toHaveLength(2);
-    expect(items[0].name).toBe(TEST_DATATYPE_NAME);
-    expect(items[1].name).toBe(TEST_DATATYPE_NAME_2);
+    const data = validateToolResponse(GetDataTypesByIdArrayTool, result);
+    expect(data.items).toHaveLength(2);
+    expect(data.items[0].name).toBe(TEST_DATATYPE_NAME);
+    expect(data.items[1].name).toBe(TEST_DATATYPE_NAME_2);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 });

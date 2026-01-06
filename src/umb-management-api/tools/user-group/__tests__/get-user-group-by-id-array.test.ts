@@ -1,7 +1,7 @@
 import GetUserGroupByIdArrayTool from "../get/get-user-group-by-id-array.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
 import { UserGroupTestHelper } from "./helpers/user-group-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
@@ -24,9 +24,9 @@ describe("get-user-group-by-id-array", () => {
       { id: [builder.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = (result.structuredContent as any)?.items ?? [];
-    expect(items).toHaveLength(1);
-    expect(items[0].name).toBe(TEST_GROUP_NAME_1);
+    const data = validateToolResponse(GetUserGroupByIdArrayTool, result);
+    expect(data.items).toHaveLength(1);
+    expect(data.items[0].name).toBe(TEST_GROUP_NAME_1);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
@@ -41,10 +41,10 @@ describe("get-user-group-by-id-array", () => {
       { id: [builder1.getId(), builder2.getId()] },
       createMockRequestHandlerExtra()
     );
-    const items = (result.structuredContent as any)?.items ?? [];
-    expect(items).toHaveLength(2);
-    expect(items[0].name).toBe(TEST_GROUP_NAME_1);
-    expect(items[1].name).toBe(TEST_GROUP_NAME_2);
+    const data = validateToolResponse(GetUserGroupByIdArrayTool, result);
+    expect(data.items).toHaveLength(2);
+    expect(data.items[0].name).toBe(TEST_GROUP_NAME_1);
+    expect(data.items[1].name).toBe(TEST_GROUP_NAME_2);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 });

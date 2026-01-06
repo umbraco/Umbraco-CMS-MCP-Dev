@@ -1,7 +1,6 @@
 import CreateUserGroupTool from "../post/create-user-group.js";
-import { createUserGroupOutputSchema } from "../post/create-user-group.js";
 import { UserGroupTestHelper } from "./helpers/user-group-helper.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
@@ -20,16 +19,20 @@ describe("create-user-group", () => {
     const result = await CreateUserGroupTool.handler({
       name: TEST_GROUP_NAME,
       alias: TEST_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
+      icon: undefined,
       sections: ["content"],
       languages: [],
       hasAccessToAllLanguages: true,
+      documentStartNode: undefined,
       documentRootAccess: false,
+      mediaStartNode: undefined,
       mediaRootAccess: false,
       fallbackPermissions: [],
-      permissions: []
+      permissions: [],
+      id: undefined
     }, createMockRequestHandlerExtra());
 
-    const responseData = validateStructuredContent(result, createUserGroupOutputSchema);
+    const responseData = validateToolResponse(CreateUserGroupTool, result);
     expect(responseData.message).toBe("User group created successfully");
     expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
 
@@ -42,26 +45,34 @@ describe("create-user-group", () => {
     await CreateUserGroupTool.handler({
       name: EXISTING_GROUP_NAME,
       alias: EXISTING_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
+      icon: undefined,
       sections: ["content"],
       languages: [],
       hasAccessToAllLanguages: true,
+      documentStartNode: undefined,
       documentRootAccess: false,
+      mediaStartNode: undefined,
       mediaRootAccess: false,
       fallbackPermissions: [],
-      permissions: []
+      permissions: [],
+      id: undefined
     }, createMockRequestHandlerExtra());
 
     // Try to create it again
     const result = await CreateUserGroupTool.handler({
       name: EXISTING_GROUP_NAME,
       alias: EXISTING_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
+      icon: undefined,
       sections: ["content"],
       languages: [],
       hasAccessToAllLanguages: true,
+      documentStartNode: undefined,
       documentRootAccess: false,
+      mediaStartNode: undefined,
       mediaRootAccess: false,
       fallbackPermissions: [],
-      permissions: []
+      permissions: [],
+      id: undefined
     }, createMockRequestHandlerExtra());
 
     expect(result.isError).toBe(true);

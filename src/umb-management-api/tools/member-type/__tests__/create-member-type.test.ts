@@ -24,7 +24,7 @@ describe("create-member-type", () => {
       .withAllowedAsRoot(true);
 
     const result = await CreateMemberTypeTool.handler(
-      builder.build(),
+      builder.build() as Parameters<typeof CreateMemberTypeTool.handler>[0],
       createMockRequestHandlerExtra()
     );
 

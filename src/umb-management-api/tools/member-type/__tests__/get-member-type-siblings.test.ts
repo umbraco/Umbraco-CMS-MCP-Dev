@@ -37,6 +37,9 @@ describe("get-member-type-siblings", () => {
     const result = await GetMemberTypeSiblingsTool.handler(
       {
         target: sibling1Builder.getId(),
+        before: undefined,
+        after: undefined,
+        foldersOnly: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -51,6 +54,9 @@ describe("get-member-type-siblings", () => {
     const result = await GetMemberTypeSiblingsTool.handler(
       {
         target: BLANK_UUID,
+        before: undefined,
+        after: undefined,
+        foldersOnly: undefined,
       },
       createMockRequestHandlerExtra()
     );

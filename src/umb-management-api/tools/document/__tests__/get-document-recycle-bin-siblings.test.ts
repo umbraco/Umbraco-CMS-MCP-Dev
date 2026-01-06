@@ -56,7 +56,9 @@ describe("get-document-recycle-bin-siblings", () => {
     const result = await GetDocumentRecycleBinSiblingsTool.handler(
       {
         target: sibling1InBin!.id,
+        before: undefined,
         after: 100,
+        dataTypeId: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -71,7 +73,9 @@ describe("get-document-recycle-bin-siblings", () => {
     const result = await GetDocumentRecycleBinSiblingsTool.handler(
       {
         target: BLANK_UUID,
+        before: undefined,
         after: 100,
+        dataTypeId: undefined,
       },
       createMockRequestHandlerExtra()
     );

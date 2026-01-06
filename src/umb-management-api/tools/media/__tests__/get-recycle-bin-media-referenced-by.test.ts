@@ -10,7 +10,7 @@ import { DocumentBuilder } from "../../document/__tests__/helpers/document-build
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import MoveMediaToRecycleBinTool from "../put/move-to-recycle-bin.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media Recycle Ref";
 const TEST_MEDIA_NAME_2 = "_Test Media Recycle Ref 2";
@@ -51,8 +51,8 @@ describe("get-recycle-bin-media-referenced-by", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify empty results
-    const parsed = result.structuredContent as { total: number; items: unknown[] };
+    // Validate response against tool's outputSchema and verify empty results
+    const parsed = validateToolResponse(GetRecycleBinMediaReferencedByTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
   });
@@ -115,8 +115,8 @@ describe("get-recycle-bin-media-referenced-by", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify references are detected
-    const parsed = result.structuredContent as { total: number; items: unknown[] };
+    // Validate response against tool's outputSchema and verify references are detected
+    const parsed = validateToolResponse(GetRecycleBinMediaReferencedByTool, result);
     expect(parsed.total).toBeGreaterThan(0);
     expect(parsed.items.length).toBeGreaterThan(0);
   });
@@ -134,8 +134,8 @@ describe("get-recycle-bin-media-referenced-by", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Should return valid result structure
-    const parsed = result.structuredContent as { total: number; items: unknown[] };
+    // Validate response against tool's outputSchema
+    const parsed = validateToolResponse(GetRecycleBinMediaReferencedByTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -153,8 +153,8 @@ describe("get-recycle-bin-media-referenced-by", () => {
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Should return valid result structure
-    const parsed = result.structuredContent as { total: number; items: unknown[] };
+    // Validate response against tool's outputSchema
+    const parsed = validateToolResponse(GetRecycleBinMediaReferencedByTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
   });

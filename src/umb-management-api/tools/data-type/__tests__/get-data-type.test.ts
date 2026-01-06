@@ -2,9 +2,8 @@ import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import GetDataTypeTool from "../get/get-data-type.js";
 import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateStructuredContent, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { getDataTypeByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 describe("get-data-type", () => {
@@ -29,7 +28,7 @@ describe("get-data-type", () => {
     );
 
     // Assert - Verify the handler response
-    validateStructuredContent(result, getDataTypeByIdResponse);
+    validateToolResponse(GetDataTypeTool, result);
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 

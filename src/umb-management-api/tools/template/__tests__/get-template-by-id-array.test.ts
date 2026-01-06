@@ -1,8 +1,7 @@
-import { getItemTemplateQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetTemplatesByIdArrayTool from "../get/get-template-by-id-array.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
@@ -28,12 +27,12 @@ describe("get-template-by-id-array", () => {
     await builder1.withName(TEST_TEMPLATE_NAME_1).create();
     await builder2.withName(TEST_TEMPLATE_NAME_2).create();
 
-    const params = getItemTemplateQueryParams.parse({
+    const result = await GetTemplatesByIdArrayTool.handler({
       id: [builder1.getId(), builder2.getId()]
-    });
+    }, createMockRequestHandlerExtra());
 
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
-
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
   });
@@ -41,39 +40,43 @@ describe("get-template-by-id-array", () => {
   it("should handle single template id", async () => {
     await builder1.withName(TEST_TEMPLATE_NAME_1).create();
 
-    const params = getItemTemplateQueryParams.parse({
+    const result = await GetTemplatesByIdArrayTool.handler({
       id: [builder1.getId()]
-    });
+    }, createMockRequestHandlerExtra());
 
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
-
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
   });
 
   it("should handle empty array", async () => {
-    const params = getItemTemplateQueryParams.parse({ id: [] });
+    const result = await GetTemplatesByIdArrayTool.handler({
+      id: []
+    }, createMockRequestHandlerExtra());
 
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
-
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     expect(result).toMatchSnapshot();
   });
 
   it("should handle non-existent template ids", async () => {
-    const params = getItemTemplateQueryParams.parse({
+    const result = await GetTemplatesByIdArrayTool.handler({
       id: [BLANK_UUID]
-    });
+    }, createMockRequestHandlerExtra());
 
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
-
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     expect(result).toMatchSnapshot();
   });
 
   it("should handle no id parameter", async () => {
-    const params = getItemTemplateQueryParams.parse({});
+    const result = await GetTemplatesByIdArrayTool.handler({
+      id: undefined
+    }, createMockRequestHandlerExtra());
 
-    const result = await GetTemplatesByIdArrayTool.handler(params, createMockRequestHandlerExtra());
-
+    const data = validateToolResponse(GetTemplatesByIdArrayTool, result);
+    expect(data).toBeDefined();
     expect(result).toMatchSnapshot();
   });
 });

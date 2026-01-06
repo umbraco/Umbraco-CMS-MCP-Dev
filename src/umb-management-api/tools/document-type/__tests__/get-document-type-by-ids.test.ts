@@ -1,7 +1,7 @@
 import GetDocumentTypesByIdArrayTool from "../get/get-document-type-by-id-array.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
@@ -20,7 +20,7 @@ describe("get-item-document-type", () => {
     const result = await GetDocumentTypesByIdArrayTool.handler(
       {} as any, createMockRequestHandlerExtra()
     );
-    const data = result.structuredContent as { items: any[] };
+    const data = validateToolResponse(GetDocumentTypesByIdArrayTool, result);
 
     expect(data.items).toMatchSnapshot();
   });
@@ -36,7 +36,7 @@ describe("get-item-document-type", () => {
     const result = await GetDocumentTypesByIdArrayTool.handler(
       { id: [builder.getId()] } as any, createMockRequestHandlerExtra()
     );
-    const data = result.structuredContent as { items: any[] };
+    const data = validateToolResponse(GetDocumentTypesByIdArrayTool, result);
     expect(data.items).toHaveLength(1);
     expect(data.items[0].name).toBe(TEST_DOCTYPE_NAME);
     // Normalize for snapshot
@@ -64,7 +64,7 @@ describe("get-item-document-type", () => {
       } as any, createMockRequestHandlerExtra()
     );
 
-    const data = result.structuredContent as { items: any[] };
+    const data = validateToolResponse(GetDocumentTypesByIdArrayTool, result);
     expect(data.items).toHaveLength(2);
     expect(data.items[0].name).toBe(TEST_DOCTYPE_NAME);
     expect(data.items[1].name).toBe(TEST_DOCTYPE_NAME_2);

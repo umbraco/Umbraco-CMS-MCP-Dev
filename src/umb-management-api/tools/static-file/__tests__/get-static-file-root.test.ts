@@ -1,7 +1,7 @@
 import GetStaticFileRootTool from "../items/get/get-root.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const DEFAULT_TAKE = 100;
@@ -29,16 +29,16 @@ describe("get-static-file-root", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileRootTool, result);
     expect(response).toHaveProperty('items');
-    expect(Array.isArray(response?.items)).toBe(true);
+    expect(Array.isArray(response.items)).toBe(true);
 
     // Verify pagination properties
     expect(response).toHaveProperty('total');
-    expect(typeof response?.total).toBe('number');
+    expect(typeof response.total).toBe('number');
 
     // Verify file system structure if items exist
-    if (response?.items && response.items.length > 0) {
+    if (response.items && response.items.length > 0) {
       const isValidStructure = StaticFileHelper.verifyFileSystemStructure(response.items);
       expect(isValidStructure).toBe(true);
 
@@ -69,12 +69,12 @@ describe("get-static-file-root", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileRootTool, result);
     expect(response).toHaveProperty('items');
-    expect(Array.isArray(response?.items)).toBe(true);
+    expect(Array.isArray(response.items)).toBe(true);
 
     // If there are items, should not exceed the take parameter
-    if (response?.items && response.items.length > 0) {
+    if (response.items && response.items.length > 0) {
       expect(response.items.length).toBeLessThanOrEqual(SMALL_TAKE);
 
       const isValidStructure = StaticFileHelper.verifyFileSystemStructure(response.items);
@@ -89,8 +89,8 @@ describe("get-static-file-root", () => {
       createMockRequestHandlerExtra()
     );
 
-    const initialResponse = initialResult.structuredContent as { items: any[], total: number } | undefined;
-    const totalItems = initialResponse?.total || 0;
+    const initialResponse = validateToolResponse(GetStaticFileRootTool, initialResult);
+    const totalItems = initialResponse.total || 0;
 
     // Only test skip if there are items
     if (totalItems > 1) {
@@ -111,13 +111,13 @@ describe("get-static-file-root", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure
-      const response = result.structuredContent as { items: any[], total: number } | undefined;
+      const response = validateToolResponse(GetStaticFileRootTool, result);
       expect(response).toHaveProperty('items');
-      expect(Array.isArray(response?.items)).toBe(true);
-      expect(response?.total).toBe(totalItems); // Total should remain same
+      expect(Array.isArray(response.items)).toBe(true);
+      expect(response.total).toBe(totalItems); // Total should remain same
 
       // Verify file system structure if items exist
-      if (response?.items && response.items.length > 0) {
+      if (response.items && response.items.length > 0) {
         const isValidStructure = StaticFileHelper.verifyFileSystemStructure(response.items);
         expect(isValidStructure).toBe(true);
       }
@@ -153,12 +153,12 @@ describe("get-static-file-root", () => {
     // Assert - should not fail, should return empty items array
     expect(result).toMatchSnapshot();
 
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileRootTool, result);
     expect(response).toHaveProperty('items');
-    expect(Array.isArray(response?.items)).toBe(true);
-    expect(response?.items.length).toBe(0); // Should be empty due to large skip
+    expect(Array.isArray(response.items)).toBe(true);
+    expect(response.items.length).toBe(0); // Should be empty due to large skip
     expect(response).toHaveProperty('total');
-    expect(typeof response?.total).toBe('number');
+    expect(typeof response.total).toBe('number');
   });
 
   it.skip("should handle zero take parameter", async () => {
@@ -177,12 +177,12 @@ describe("get-static-file-root", () => {
     // Assert - should return empty items but still have total count
     expect(result).toMatchSnapshot();
 
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileRootTool, result);
     expect(response).toHaveProperty('items');
-    expect(Array.isArray(response?.items)).toBe(true);
-    expect(response?.items.length).toBe(0); // Should be empty due to take: 0
+    expect(Array.isArray(response.items)).toBe(true);
+    expect(response.items.length).toBe(0); // Should be empty due to take: 0
     expect(response).toHaveProperty('total');
-    expect(typeof response?.total).toBe('number');
+    expect(typeof response.total).toBe('number');
   });
 
   it("should return items with proper file system properties for root items", async () => {
@@ -199,9 +199,9 @@ describe("get-static-file-root", () => {
     );
 
     // Assert
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileRootTool, result);
 
-    if (response?.items && response.items.length > 0) {
+    if (response.items && response.items.length > 0) {
       // Check first item has expected structure
       const firstItem = response.items[0];
       expect(firstItem).toHaveProperty('path');
@@ -236,12 +236,12 @@ describe("get-static-file-root", () => {
     const helperResult = await StaticFileHelper.getRootItems(skip, take);
 
     // Assert - both should return the same items
-    const toolResponse = toolResult.structuredContent as { items: any[], total: number } | undefined;
+    const toolResponse = validateToolResponse(GetStaticFileRootTool, toolResult);
 
-    expect(toolResponse?.items.length).toBe(helperResult.length);
+    expect(toolResponse.items.length).toBe(helperResult.length);
 
     // If both have items, verify they match
-    if (toolResponse?.items && toolResponse.items.length > 0 && helperResult.length > 0) {
+    if (toolResponse.items && toolResponse.items.length > 0 && helperResult.length > 0) {
       // Check that first item from tool matches first item from helper
       const toolFirstItem = toolResponse.items[0];
       const helperFirstItem = helperResult[0];

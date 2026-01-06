@@ -7,7 +7,7 @@ describe("get-log-viewer-validate-logs-size", () => {
 
   it("should validate logs size with default parameters", async () => {
     const result = await GetLogViewerValidateLogsSizeTool.handler(
-      {},
+      { startDate: undefined, endDate: undefined },
       createMockRequestHandlerExtra()
     );
 

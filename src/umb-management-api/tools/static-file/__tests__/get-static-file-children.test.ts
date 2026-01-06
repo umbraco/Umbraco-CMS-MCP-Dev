@@ -1,7 +1,7 @@
 import GetStaticFileChildrenTool from "../items/get/get-children.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const DEFAULT_TAKE = 100;
@@ -40,21 +40,21 @@ describe("get-static-file-children", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
-    expect(response).toHaveProperty('items');
-    expect(Array.isArray(response?.items)).toBe(true);
+    const data = validateToolResponse(GetStaticFileChildrenTool, result);
+    expect(data).toHaveProperty('items');
+    expect(Array.isArray(data.items)).toBe(true);
 
     // Verify pagination properties
-    expect(response).toHaveProperty('total');
-    expect(typeof response?.total).toBe('number');
+    expect(data).toHaveProperty('total');
+    expect(typeof data.total).toBe('number');
 
     // Verify file system structure if items exist
-    if (response?.items && response.items.length > 0) {
-      const isValidStructure = StaticFileHelper.verifyFileSystemStructure(response.items);
+    if (data.items && data.items.length > 0) {
+      const isValidStructure = StaticFileHelper.verifyFileSystemStructure(data.items);
       expect(isValidStructure).toBe(true);
 
       // Verify all children have the correct parent
-      response.items.forEach((item: any) => {
+      data.items.forEach((item: any) => {
         if (item.parent) {
           expect(item.parent.path).toBe(testFolder.path);
         }
@@ -102,15 +102,15 @@ describe("get-static-file-children", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
-    expect(response).toHaveProperty('items');
-    expect(Array.isArray(response?.items)).toBe(true);
+    const data = validateToolResponse(GetStaticFileChildrenTool, result);
+    expect(data).toHaveProperty('items');
+    expect(Array.isArray(data.items)).toBe(true);
 
     // If there are items, should not exceed the take parameter
-    if (response?.items && response.items.length > 0) {
-      expect(response.items.length).toBeLessThanOrEqual(SMALL_TAKE);
+    if (data.items && data.items.length > 0) {
+      expect(data.items.length).toBeLessThanOrEqual(SMALL_TAKE);
 
-      const isValidStructure = StaticFileHelper.verifyFileSystemStructure(response.items);
+      const isValidStructure = StaticFileHelper.verifyFileSystemStructure(data.items);
       expect(isValidStructure).toBe(true);
     }
   });
@@ -132,8 +132,8 @@ describe("get-static-file-children", () => {
       createMockRequestHandlerExtra()
     );
 
-    const initialResponse = initialResult.structuredContent as { items: any[], total: number } | undefined;
-    const totalItems = initialResponse?.total || 0;
+    const initialData = validateToolResponse(GetStaticFileChildrenTool, initialResult);
+    const totalItems = initialData.total || 0;
 
     // Only test skip if there are items
     if (totalItems > 1) {
@@ -154,10 +154,10 @@ describe("get-static-file-children", () => {
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
-      const response = result.structuredContent as { items: any[], total: number } | undefined;
-      expect(response).toHaveProperty('items');
-      expect(Array.isArray(response?.items)).toBe(true);
-      expect(response?.total).toBe(totalItems); // Total should remain same
+      const data = validateToolResponse(GetStaticFileChildrenTool, result);
+      expect(data).toHaveProperty('items');
+      expect(Array.isArray(data.items)).toBe(true);
+      expect(data.total).toBe(totalItems); // Total should remain same
     } else {
       // Test skip behavior when no children or only one child
       const params = {
@@ -192,11 +192,11 @@ describe("get-static-file-children", () => {
     // Assert - should not fail, may return empty results or error gracefully
     expect(result).toMatchSnapshot();
 
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const data = validateToolResponse(GetStaticFileChildrenTool, result);
 
     // Should still have the expected structure even if empty
-    if (response?.items !== undefined) {
-      expect(Array.isArray(response.items)).toBe(true);
+    if (data.items !== undefined) {
+      expect(Array.isArray(data.items)).toBe(true);
     }
   });
 
@@ -221,9 +221,9 @@ describe("get-static-file-children", () => {
     // Assert - should not fail, should return empty items array
     expect(result).toMatchSnapshot();
 
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileChildrenTool, result);
 
-    if (response?.items !== undefined) {
+    if (response.items !== undefined) {
       expect(Array.isArray(response.items)).toBe(true);
       expect(response.items.length).toBe(0); // Should be empty due to large skip
     }
@@ -250,14 +250,14 @@ describe("get-static-file-children", () => {
     // Assert - should return empty items but still have total count
     expect(result).toMatchSnapshot();
 
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileChildrenTool, result);
 
-    if (response?.items !== undefined) {
+    if (response.items !== undefined) {
       expect(Array.isArray(response.items)).toBe(true);
       expect(response.items.length).toBe(0); // Should be empty due to take: 0
     }
 
-    if (response?.total !== undefined) {
+    if (response.total !== undefined) {
       expect(typeof response.total).toBe('number');
     }
   });
@@ -286,9 +286,9 @@ describe("get-static-file-children", () => {
     );
 
     // Assert
-    const response = result.structuredContent as { items: any[], total: number } | undefined;
+    const response = validateToolResponse(GetStaticFileChildrenTool, result);
 
-    if (response?.items && response.items.length > 0) {
+    if (response.items && response.items.length > 0) {
       // Check first item has expected structure
       const firstChild = response.items[0];
       expect(firstChild).toHaveProperty('path');
@@ -332,12 +332,12 @@ describe("get-static-file-children", () => {
     const helperResult = await StaticFileHelper.getChildren(testFolder.path, skip, take);
 
     // Assert - both should return the same items
-    const toolResponse = toolResult.structuredContent as { items: any[], total: number } | undefined;
+    const toolResponse = validateToolResponse(GetStaticFileChildrenTool, toolResult);
 
-    expect(toolResponse?.items.length).toBe(helperResult.length);
+    expect(toolResponse.items.length).toBe(helperResult.length);
 
     // If both have items, verify they match
-    if (toolResponse?.items && toolResponse.items.length > 0 && helperResult.length > 0) {
+    if (toolResponse.items && toolResponse.items.length > 0 && helperResult.length > 0) {
       // Check that first item from tool matches first item from helper
       const toolFirstItem = toolResponse.items[0];
       const helperFirstItem = helperResult[0];

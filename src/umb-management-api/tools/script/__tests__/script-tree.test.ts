@@ -4,7 +4,7 @@ import GetScriptTreeAncestorsTool from "../get/get-script-tree-ancestors.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 // Generate unique names to avoid conflicts
@@ -80,10 +80,17 @@ describe("script-tree", () => {
     it("should get root level script items", async () => {
       const result = await GetScriptTreeRootTool.handler(
         {
+          skip: undefined,
           take: 100,
         },
         createMockRequestHandlerExtra()
       );
+
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeRootTool, result);
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
   });
@@ -93,10 +100,17 @@ describe("script-tree", () => {
       const result = await GetScriptTreeChildrenTool.handler(
         {
           parentPath: rootFolderBuilder.getPath(),
+          skip: undefined,
           take: 100,
         },
         createMockRequestHandlerExtra()
       );
+
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeChildrenTool, result);
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 
@@ -104,10 +118,17 @@ describe("script-tree", () => {
       const result = await GetScriptTreeChildrenTool.handler(
         {
           parentPath: childFolderBuilder.getPath(),
+          skip: undefined,
           take: 100,
         },
         createMockRequestHandlerExtra()
       );
+
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeChildrenTool, result);
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 
@@ -115,10 +136,17 @@ describe("script-tree", () => {
       const result = await GetScriptTreeChildrenTool.handler(
         {
           parentPath: grandchildScriptBuilder.getPath(),
+          skip: undefined,
           take: 100,
         },
         createMockRequestHandlerExtra()
       );
+
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeChildrenTool, result);
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
   });
@@ -131,6 +159,12 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeAncestorsTool, result);
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 
@@ -141,6 +175,12 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeAncestorsTool, result);
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 
@@ -151,6 +191,12 @@ describe("script-tree", () => {
         },
         createMockRequestHandlerExtra()
       );
+
+      // Validate response against tool's outputSchema
+      const data = validateToolResponse(GetScriptTreeAncestorsTool, result);
+      expect(data.items).toBeArray();
+
+      // Normalize and snapshot the full result
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
   });
