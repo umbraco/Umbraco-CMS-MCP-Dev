@@ -42,8 +42,8 @@ describe("data-type-tree", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert - Verify the children are returned
-      // Tool has ZodObject outputSchema, incompatible with validateToolResponse
+      const data = validateToolResponse(GetDataTypeChildrenTool, result);
+      expect(data.items).toBeArray();
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
 

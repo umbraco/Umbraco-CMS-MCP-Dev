@@ -4,9 +4,6 @@ import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-dec
 import { getTreeDocumentTypeRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 
-// MCP requires all output schemas to be objects, not arrays
-// Wrap the array response in an object with 'items' property
-// Use the same item schema as the getTreeDocumentTypeRoot API
 const outputSchema = z.object({
   items: getTreeDocumentTypeRootResponse.shape.items,
 });
