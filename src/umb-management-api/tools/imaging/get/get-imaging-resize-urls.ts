@@ -1,9 +1,9 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { getImagingResizeUrlsQueryParams, getImagingResizeUrlsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetImagingResizeUrlsParams } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Wrap array response in object (MCP requirement)
 const outputSchema = z.object({
@@ -30,9 +30,9 @@ const GetImagingResizeUrlsTool = {
   },
   slices: ['read'],
   handler: (async (model: GetImagingResizeUrlsParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getImagingResizeUrls(model);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getImagingResizeUrls(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getImagingResizeUrlsQueryParams.shape, typeof outputSchema.shape>;
 

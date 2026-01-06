@@ -12,7 +12,8 @@
  *
  * ## When to Use Helpers
  * - DELETE operations: `executeVoidApiCall`
- * - GET operations: `executeGetApiCall`
+ * - GET single item: `executeGetApiCall`
+ * - GET collections/arrays: `executeGetItemsApiCall`
  * - Simple PUT/POST (no response body): `executeVoidApiCall`
  *
  * ## When to Go Manual
@@ -350,4 +351,50 @@ export function executeVoidApiCallWithOptions(
   options?: VoidApiCallOptions
 ): Promise<CallToolResult> {
   return executeApiCallInternal(apiCall, { ...options, void: true });
+}
+
+
+/**
+ * Executes a GET API call that returns a collection and wraps it as { items: T }.
+ *
+ * ## What This Function Does
+ * 1. Gets the singleton Umbraco client
+ * 2. Executes your API call
+ * 3. Interprets HTTP status: 200-299 = success with data, else = error
+ * 4. Wraps the response as { items: response }
+ * 5. Returns MCP-formatted response
+ *
+ * ## When to Use This
+ * Many Umbraco API endpoints return arrays or collections that need to be wrapped
+ * in an { items: [...] } structure for the MCP response format. Use this helper
+ * for tree operations, collection endpoints, and search results.
+ *
+ * ## IMPORTANT: You MUST pass CAPTURE_RAW_HTTP_RESPONSE
+ * Without it, Axios throws on 400+ errors instead of returning them,
+ * breaking the status code handling in this function.
+ *
+ * @typeParam T - The expected response data type (usually an array or collection)
+ * @param apiCall - Function receiving the client and returning the API promise
+ * @returns MCP tool result with { items: data } on success or ProblemDetails error
+ *
+ * @example Tree ancestors
+ * ```typescript
+ * return executeGetItemsApiCall((client) =>
+ *   client.getTreeDocumentTypeAncestors(params, CAPTURE_RAW_HTTP_RESPONSE)
+ * );
+ * ```
+ *
+ * @example Search results
+ * ```typescript
+ * return executeGetItemsApiCall((client) =>
+ *   client.getFilterDataType(params, CAPTURE_RAW_HTTP_RESPONSE)
+ * );
+ * ```
+ */
+export function executeGetItemsApiCall<T = unknown>(
+  apiCall: (client: UmbracoClient) => Promise<AxiosResponse<T | ProblemDetails> | unknown>
+): Promise<CallToolResult> {
+  return executeApiCallInternal<T>(apiCall, {
+    transformData: (data) => ({ items: data })
+  });
 }

@@ -4,9 +4,7 @@ exports[`get-user-current-permissions-document should get current user document 
 {
   "content": [],
   "structuredContent": {
-    "items": {
-      "permissions": [],
-    },
+    "permissions": [],
   },
 }
 `;

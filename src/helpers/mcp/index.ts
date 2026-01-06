@@ -12,6 +12,7 @@ export {
   processVoidResponse,
   executeVoidApiCall,
   executeGetApiCall,
+  executeGetItemsApiCall,
   executeVoidApiCallWithOptions,
 } from "./api-call-helpers.js";
 

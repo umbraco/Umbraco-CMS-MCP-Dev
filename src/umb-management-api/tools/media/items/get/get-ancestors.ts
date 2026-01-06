@@ -1,9 +1,9 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetTreeMediaAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeMediaAncestorsQueryParams, getTreeMediaAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getTreeMediaAncestorsResponse,
@@ -17,9 +17,9 @@ const GetMediaAncestorsTool = {
   annotations: { readOnlyHint: true },
   slices: ['tree'],
   handler: (async (params: GetTreeMediaAncestorsParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeMediaAncestors(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getTreeMediaAncestors(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getTreeMediaAncestorsQueryParams.shape, typeof outputSchema.shape>;
 

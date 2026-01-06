@@ -1,9 +1,9 @@
 import { GetItemWebhookParams } from "@/umb-management-api/schemas/index.js";
 import { getItemWebhookQueryParams, getItemWebhookResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Wrap array response in object for MCP compliance
 const outputSchema = z.object({
@@ -18,9 +18,9 @@ const GetWebhookItemTool = {
   annotations: { readOnlyHint: true },
   slices: ['list'],
   handler: (async (params: GetItemWebhookParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemWebhook(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemWebhook(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );  
   }),
 } satisfies ToolDefinition<typeof getItemWebhookQueryParams.shape, typeof outputSchema.shape>;
 

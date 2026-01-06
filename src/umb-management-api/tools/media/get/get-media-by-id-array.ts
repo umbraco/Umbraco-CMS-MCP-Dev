@@ -5,8 +5,9 @@ import {
   getItemMediaResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getItemMediaResponse,
@@ -20,9 +21,9 @@ const GetMediaByIdArrayTool = {
   annotations: { readOnlyHint: true },
   slices: ['read'],
   handler: (async (params: GetItemMediaParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemMedia(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemMedia(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getItemMediaQueryParams.shape, typeof outputSchema.shape>;
 

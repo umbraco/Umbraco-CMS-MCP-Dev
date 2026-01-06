@@ -1,9 +1,9 @@
 import { getTreeStaticFileAncestorsQueryParams, getTreeStaticFileAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetTreeStaticFileAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 // Wrap array response in object for MCP compliance
 const outputSchema = z.object({
@@ -18,9 +18,9 @@ const GetStaticFileAncestorsTool = {
   annotations: { readOnlyHint: true },
   slices: ['tree'],
   handler: (async (params: GetTreeStaticFileAncestorsParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeStaticFileAncestors(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getTreeStaticFileAncestors(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getTreeStaticFileAncestorsQueryParams.shape, typeof outputSchema.shape>;
 

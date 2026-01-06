@@ -1,8 +1,8 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getPropertyTypeIsUsedQueryParams, getPropertyTypeIsUsedResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { getPropertyTypeIsUsedQueryParams, getPropertyTypeIsUsedResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 type SchemaParams = z.infer<typeof getPropertyTypeIsUsedQueryParams>;
 
@@ -18,13 +18,13 @@ const GetPropertyTypeIsUsedTool = {
   annotations: { readOnlyHint: true },
   slices: ['read'],
   handler: (async ({ contentTypeId, propertyAlias }: SchemaParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getPropertyTypeIsUsed({
-      contentTypeId,
-      propertyAlias,
-    });
+    return executeGetItemsApiCall((client) =>
+      client.getPropertyTypeIsUsed({
+        contentTypeId,
+        propertyAlias,
+      }, CAPTURE_RAW_HTTP_RESPONSE)
+    );
 
-    return createToolResult({ isUsed: response });
   }),
 } satisfies ToolDefinition<typeof getPropertyTypeIsUsedQueryParams.shape, typeof outputSchema.shape>;
 

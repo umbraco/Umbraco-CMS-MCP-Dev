@@ -1,8 +1,8 @@
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { postDocumentTypeAvailableCompositionsBody, postDocumentTypeAvailableCompositionsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 type SchemaParams = z.infer<typeof postDocumentTypeAvailableCompositionsBody>;
 
@@ -18,9 +18,9 @@ const GetDocumentTypeAvailableCompositionsTool = {
   annotations: { readOnlyHint: true },
   slices: ['read'],
   handler: (async (model: SchemaParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.postDocumentTypeAvailableCompositions(model);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.postDocumentTypeAvailableCompositions(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof postDocumentTypeAvailableCompositionsBody.shape, typeof outputSchema.shape>;
 

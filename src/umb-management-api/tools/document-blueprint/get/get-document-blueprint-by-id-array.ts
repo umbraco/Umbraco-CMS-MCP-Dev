@@ -1,8 +1,8 @@
 import { GetItemDocumentBlueprintParams } from "@/umb-management-api/schemas/index.js";
 import { getItemDocumentBlueprintQueryParams, getItemDocumentBlueprintResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 import { z } from "zod";
 
 const outputSchema = z.object({
@@ -17,9 +17,9 @@ const GetDocumentBlueprintByIdArrayTool = {
   annotations: { readOnlyHint: true },
   slices: ['list'],
   handler: (async (params: GetItemDocumentBlueprintParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemDocumentBlueprint(params);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemDocumentBlueprint(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getItemDocumentBlueprintQueryParams.shape, typeof outputSchema.shape>;
 

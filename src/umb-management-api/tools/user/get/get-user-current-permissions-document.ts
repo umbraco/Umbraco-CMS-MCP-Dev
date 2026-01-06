@@ -4,8 +4,8 @@ import {
   getUserCurrentPermissionsDocumentResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { executeGetApiCall } from "@/helpers/mcp/index.js";
 import { z } from "zod";
 
 // Wrap array response in object for MCP compliance
@@ -21,9 +21,9 @@ const GetUserCurrentPermissionsDocumentTool = {
   annotations: { readOnlyHint: true },
   slices: ['permissions'],
   handler: (async (params: GetUserCurrentPermissionsDocumentParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getUserCurrentPermissionsDocument(params);
-    return createToolResult({ items: response });
+    return executeGetApiCall((client) =>
+      client.getUserCurrentPermissionsDocument(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getUserCurrentPermissionsDocumentQueryParams.shape, typeof outputSchema.shape>;
 

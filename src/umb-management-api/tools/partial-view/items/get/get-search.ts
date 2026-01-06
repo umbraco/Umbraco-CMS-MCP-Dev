@@ -1,9 +1,9 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetItemPartialViewParams } from "@/umb-management-api/schemas/index.js";
 import { getItemPartialViewQueryParams, getItemPartialViewResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getItemPartialViewResponse,
@@ -17,9 +17,9 @@ const GetPartialViewSearchTool = {
   annotations: { readOnlyHint: true },
   slices: ['search'],
   handler: (async (model: GetItemPartialViewParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemPartialView(model);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getItemPartialView(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getItemPartialViewQueryParams.shape, typeof outputSchema.shape>;
 

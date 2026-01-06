@@ -1,8 +1,8 @@
 import { getDocumentByIdNotificationsParams, getDocumentByIdNotificationsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
-import { UmbracoManagementClient } from "@umb-management-client";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 const outputSchema = z.object({
   items: getDocumentByIdNotificationsResponse,
@@ -18,9 +18,9 @@ const GetDocumentNotificationsTool = {
   },
   slices: ['notifications'],
   handler: (async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDocumentByIdNotifications(id);
-    return createToolResult({ items: response });
+    return executeGetItemsApiCall((client) =>
+      client.getDocumentByIdNotifications(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
   }),
 } satisfies ToolDefinition<typeof getDocumentByIdNotificationsParams.shape, typeof outputSchema.shape>;
 
