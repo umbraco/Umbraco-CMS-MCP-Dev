@@ -1,52 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+import { detectFileExtensionFromBuffer } from "@/helpers/file/index.js";
 import { z } from "zod";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
-
-/**
- * Detects file extension from buffer magic bytes.
- * Common file types for media uploads.
- */
-function detectFileExtensionFromBuffer(buffer: Buffer): string {
-  if (buffer.length === 0) return '.bin';
-
-  // Check magic bytes for common file types
-  // PNG
-  if (buffer.length >= 4 && buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4E && buffer[3] === 0x47) {
-    return '.png';
-  }
-  // JPEG
-  if (buffer.length >= 2 && buffer[0] === 0xFF && buffer[1] === 0xD8) {
-    return '.jpg';
-  }
-  // GIF
-  if (buffer.length >= 3 && buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46) {
-    return '.gif';
-  }
-  // WebP
-  if (buffer.length >= 12 && buffer[8] === 0x57 && buffer[9] === 0x45 && buffer[10] === 0x42 && buffer[11] === 0x50) {
-    return '.webp';
-  }
-  // SVG (XML-based, look for "<svg" or "<?xml")
-  const start = buffer.toString('utf8', 0, Math.min(100, buffer.length)).toLowerCase();
-  if (start.includes('<svg') || (start.includes('<?xml') && start.includes('svg'))) {
-    return '.svg';
-  }
-  // PDF
-  if (buffer.length >= 4 && buffer[0] === 0x25 && buffer[1] === 0x50 && buffer[2] === 0x44 && buffer[3] === 0x46) {
-    return '.pdf';
-  }
-  // MP4
-  if (buffer.length >= 12 && buffer[4] === 0x66 && buffer[5] === 0x74 && buffer[6] === 0x79 && buffer[7] === 0x70) {
-    return '.mp4';
-  }
-
-  // Default to .bin if unknown
-  return '.bin';
-}
 
 // MCP-friendly schema that accepts base64 encoded file data
 const createTemporaryFileSchema = z.object({

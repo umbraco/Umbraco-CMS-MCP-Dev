@@ -25,6 +25,8 @@ exports[`get-template-query-settings should get template query settings 1`] = `
       "error",
       "search",
       "xMLSitemap",
+      "invalidAliasWithSpaces",
+      "testMissingFields",
     ],
     "operators": [
       {
