@@ -1,5 +1,5 @@
-import { describe } from "@jest/globals";
-import { setupConsoleMock, createScenarioTest } from "./helpers/index.js";
+import { describe, it } from "@jest/globals";
+import { setupConsoleMock, runScenarioTest } from "./helpers/index.js";
 
 const DOCUMENT_TEMPLATE_TOOLS = [
   "get-document-property-value-template",
@@ -10,12 +10,12 @@ const DOCUMENT_TEMPLATE_TOOLS = [
   "get-all-document-types"
 ] as const;
 
-describe("create-document-with-template e2e tests", () => {
+describe("create-document-with-template eval tests", () => {
   setupConsoleMock();
 
-  createScenarioTest({
-    name: "should create document using property value template",
-    prompt: `Complete these tasks in order:
+  it("should create document using property value template",
+    runScenarioTest({
+      prompt: `Complete these tasks in order:
 - Get the property value template for the Textbox editor
 - Find the document type called 'Article'
 - Get the root document of Umbraco
@@ -28,9 +28,11 @@ describe("create-document-with-template e2e tests", () => {
    - Use the textbox template for the 'subtitle' property with value "Claude AI"
 - Delete the new blog document that we just created
 - When successfully completed all tasks, say 'The document creation with template workflow has completed successfully', nothing else`,
-    tools: DOCUMENT_TEMPLATE_TOOLS,
-    requiredTools: ["get-document-property-value-template", "create-document", "delete-document"],
-    successPattern: "document creation with template workflow has completed successfully",
-    options: { maxTurns: 20 }
-  }, 180000);
+      tools: DOCUMENT_TEMPLATE_TOOLS,
+      requiredTools: ["get-document-property-value-template", "create-document", "delete-document"],
+      successPattern: "document creation with template workflow has completed successfully",
+      options: { maxTurns: 20 }
+    }),
+    180000
+  );
 });

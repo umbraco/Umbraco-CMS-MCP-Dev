@@ -4,6 +4,7 @@ import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_FOLDER_NAME = "_Test Folder Created";
 const TEST_NESTED_FOLDER_NAME = "_Test Nested Folder";
@@ -23,7 +24,8 @@ describe("create-media-folder", () => {
       { name: TEST_FOLDER_NAME } as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    // Normalize the dynamic ID before snapshot
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     const found = await MediaTestHelper.findMedia(TEST_FOLDER_NAME);
     expect(found).toBeDefined();
     expect(MediaTestHelper.getNameFromItem(found)).toBe(TEST_FOLDER_NAME);
@@ -39,7 +41,8 @@ describe("create-media-folder", () => {
       { name: TEST_NESTED_FOLDER_NAME, parentId: parentBuilder.getId() } as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    // Normalize the dynamic ID before snapshot
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     const children = await parentBuilder.getChildren();
     const nestedFolder = children.items.find(
       (item) => MediaTestHelper.getNameFromItem(item) === TEST_NESTED_FOLDER_NAME

@@ -4,6 +4,7 @@ exports[`create-media-folder should create a folder at root level 1`] = `
 {
   "content": [],
   "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
     "message": "Media folder "_Test Folder Created" created successfully",
     "name": "_Test Folder Created",
   },
@@ -14,6 +15,7 @@ exports[`create-media-folder should create a folder inside another folder 1`] = 
 {
   "content": [],
   "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
     "message": "Media folder "_Test Nested Folder" created successfully",
     "name": "_Test Nested Folder",
   },

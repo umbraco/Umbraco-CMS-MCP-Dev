@@ -1,12 +1,12 @@
 /**
- * E2E SDK Test Helpers
+ * Eval Test Helpers
  *
- * Central export for all e2e-sdk test utilities.
+ * Central export for all eval test utilities.
  *
  * Usage:
  * ```typescript
  * import {
- *   createScenarioTest,
+ *   runScenarioTest,
  *   setupConsoleMock
  * } from "./helpers/index.js";
  * ```
@@ -60,6 +60,6 @@ export {
 
 // Scenario runner (high-level test creation)
 export {
-  createScenarioTest,
+  runScenarioTest,
   setupConsoleMock
 } from "./scenario-runner.js";

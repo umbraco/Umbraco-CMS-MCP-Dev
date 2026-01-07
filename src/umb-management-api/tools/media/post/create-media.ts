@@ -27,7 +27,8 @@ type CreateMediaParams = z.infer<typeof createMediaSchema>;
 
 export const createMediaOutputSchema = z.object({
   message: z.string(),
-  name: z.string()
+  name: z.string(),
+  id: z.string().uuid()
 });
 
 const CreateMediaTool = {
@@ -64,7 +65,7 @@ const CreateMediaTool = {
       const client = UmbracoManagementClient.getClient();
       const temporaryFileId = uuidv4();
 
-      const actualName = await uploadMediaFile(client, {
+      const { name: actualName, id } = await uploadMediaFile(client, {
         sourceType: model.sourceType,
         name: model.name,
         mediaTypeName: model.mediaTypeName,
@@ -77,7 +78,8 @@ const CreateMediaTool = {
 
       return createToolResult({
         message: `Media "${actualName}" created successfully`,
-        name: actualName
+        name: actualName,
+        id: id
       });
     } catch (error) {
       return createToolResultError({
