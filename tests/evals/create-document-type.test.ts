@@ -31,13 +31,24 @@ describe("create-document-type eval tests", () => {
   it("should create document type with properties",
     runScenarioTest({
       prompt: `Complete these tasks in order:
-1. Create a new document type called '_TestDocumentType', it should have a textstring property called title (group :) and a richtext property called content.
-2. Delete the document type called '_TestDocumentType'
-3. When successfully completed the tasks, say 'The task has completed successfully', nothing else`,
+1. Find the data type called 'Textbox' (editor alias: 'Umbraco.TextBox') and get its ID
+2. Find the data type called 'Richtext Editor' (editor alias: 'Umbraco.RichText') and get its ID
+3. Create a new document type called '_TestDocumentType' with alias '_testdocumenttype':
+   - Add a property with:
+     * alias: 'title'
+     * name: 'Title'
+     * dataTypeId: [use the ID from step 1 for the Textbox data type]
+   - Add a property with:
+     * alias: 'content'
+     * name: 'Content'
+     * dataTypeId: [use the ID from step 2 for the Richtext Editor data type]
+4. Delete the document type called '_TestDocumentType'
+5. When successfully completed all tasks, say 'The task has completed successfully', nothing else`,
       tools: DOCUMENT_TYPE_TOOLS,
       requiredTools: ["find-data-type", "create-document-type", "delete-document-type"],
       successPattern: "task has completed successfully",
-      options: { maxTurns: 10 }
+      options: { maxTurns: 15 },
+      verbose: true
     }),
     120000
   );
