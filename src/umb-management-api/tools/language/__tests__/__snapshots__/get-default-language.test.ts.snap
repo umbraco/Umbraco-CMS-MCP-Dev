@@ -2,25 +2,23 @@
 
 exports[`get-default-language should get the default language 1`] = `
 {
-  "content": [
-    {
-      "text": "{"name":"English (United States)","isoCode":"en-US"}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "isoCode": "en-US",
+    "name": "English (United States)",
+  },
 }
 `;
 
 exports[`get-default-language should handle error from client 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-default-language:
-{
-  "message": "Simulated error"
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Simulated error",
+    "status": 500,
+    "title": "Error",
+    "type": "Error",
+  },
 }
 `;

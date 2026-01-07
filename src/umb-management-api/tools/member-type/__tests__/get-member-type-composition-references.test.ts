@@ -1,22 +1,17 @@
 import GetMemberTypeCompositionReferencesTool from "../get/get-member-type-composition-references.js";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
-import { jest } from "@jest/globals";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_TYPE_NAME = "_Test MemberType Composition";
 const TEST_COMPOSITION_NAME = "_Test Composition MemberType";
 
 describe("get-member-type-composition-references", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test member types
     await MemberTypeTestHelper.cleanup(TEST_MEMBER_TYPE_NAME);
     await MemberTypeTestHelper.cleanup(TEST_COMPOSITION_NAME);
@@ -35,12 +30,16 @@ describe("get-member-type-composition-references", () => {
       .create();
 
     // Get the composition references
-    const result = await GetMemberTypeCompositionReferencesTool.handler({
-      id: compositionBuilder.getId()
-    }, { signal: new AbortController().signal });
+    const result = await GetMemberTypeCompositionReferencesTool.handler(
+      {
+        id: compositionBuilder.getId(),
+      },
+      createMockRequestHandlerExtra()
+    );
 
-    // Parse the response to get the ID to normalize
-    const parsed = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypeCompositionReferencesTool, result);
+    const parsed = data.items as unknown as any[];
     const idToNormalize = parsed[0]?.id;
 
     // Normalize IDs and dates for snapshot testing
@@ -57,12 +56,16 @@ describe("get-member-type-composition-references", () => {
       .create();
 
     // Get the composition references
-    const result = await GetMemberTypeCompositionReferencesTool.handler({
-      id: memberTypeBuilder.getId()
-    }, { signal: new AbortController().signal });
+    const result = await GetMemberTypeCompositionReferencesTool.handler(
+      {
+        id: memberTypeBuilder.getId(),
+      },
+      createMockRequestHandlerExtra()
+    );
 
-    // Parse the response to get the ID to normalize
-    const parsed = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypeCompositionReferencesTool, result);
+    const parsed = data.items as unknown as any[];
     const idToNormalize = parsed[0]?.id;
 
     // Normalize IDs and dates for snapshot testing

@@ -1,25 +1,22 @@
 import GetUserConfigurationTool from "../get/get-user-configuration.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-user-configuration", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get the user configuration", async () => {
     // Act
-    const result = await GetUserConfigurationTool.handler({ signal: new AbortController().signal });
+    const result = await GetUserConfigurationTool.handler({}, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
+
+    // Verify expected properties exist
+    const parsed = validateToolResponse(GetUserConfigurationTool, result);
+    expect(parsed).toHaveProperty("canInviteUsers");
+    expect(parsed).toHaveProperty("passwordConfiguration");
   });
 });

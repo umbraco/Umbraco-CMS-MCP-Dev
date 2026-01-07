@@ -1,23 +1,17 @@
 import { LanguageBuilder } from "./language-builder.js";
 import { LanguageTestHelper } from "./language-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_LANGUAGE_NAME = '_Test Helper Language';
 const TEST_LANGUAGE_ISO = 'en-GB';
 const TEST_FALLBACK_ISO = 'en';
 
 describe('LanguageTestHelper', () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
     await LanguageTestHelper.cleanup(TEST_FALLBACK_ISO);
-    console.error = originalConsoleError;
   });
 
   describe('verifyLanguage', () => {

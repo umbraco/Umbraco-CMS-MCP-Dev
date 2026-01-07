@@ -1,21 +1,18 @@
 import GetMemberTypeConfigurationTool from "../get/get-member-type-configuration.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-member-type-configuration", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get the global member type configuration", async () => {
-    const result = await GetMemberTypeConfigurationTool.handler({}, { signal: new AbortController().signal });
-    const config = JSON.parse(result.content[0].text as string);
+    const result = await GetMemberTypeConfigurationTool.handler(
+      {} as any,
+      createMockRequestHandlerExtra()
+    );
+
+    // Validate response against tool's output schema
+    const config = validateToolResponse(GetMemberTypeConfigurationTool, result);
     expect(config).toMatchSnapshot();
   });
 }); 

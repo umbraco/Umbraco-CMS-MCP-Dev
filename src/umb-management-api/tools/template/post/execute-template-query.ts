@@ -1,7 +1,7 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { postTemplateQueryExecuteBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { TemplateQueryExecuteModel } from "@/umb-management-api/schemas/index.js";
+import { postTemplateQueryExecuteBody, postTemplateQueryExecuteResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const ExecuteTemplateQueryTool = {
   name: "execute-template-query",
@@ -15,22 +15,15 @@ const ExecuteTemplateQueryTool = {
     "filters": [{"propertyAlias": "Name", "constraintValue": "Blog", "operator": "Contains"},
     "take": 10
   }`,
-  schema: postTemplateQueryExecuteBody.shape,
-  isReadOnly: true,
+  inputSchema: postTemplateQueryExecuteBody.shape,
+  outputSchema: postTemplateQueryExecuteResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['templates'],
-  handler: async (body: any) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.postTemplateQueryExecute(body);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response, null, 2),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof postTemplateQueryExecuteBody.shape>;
+  handler: (async (body: TemplateQueryExecuteModel) => {
+    return executeGetApiCall((client) =>
+      client.postTemplateQueryExecute(body, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof postTemplateQueryExecuteBody.shape, typeof postTemplateQueryExecuteResponse.shape>;
 
 export default withStandardDecorators(ExecuteTemplateQueryTool);

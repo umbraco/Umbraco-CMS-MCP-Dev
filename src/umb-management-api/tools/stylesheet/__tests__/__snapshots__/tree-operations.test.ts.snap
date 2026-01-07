@@ -2,44 +2,102 @@
 
 exports[`stylesheet-tree-operations get-ancestors should get ancestors of a nested item 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_Test Parent","path":"/_Test Parent","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_Test Child","path":"/_Test Parent/_Test Child","parent":{"path":"/_Test Parent","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "",
+        "parent": null,
+        "path": "/",
+      },
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "_Test Parent",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/",
+        },
+        "path": "/_Test Parent",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "_Test Child",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/_Test Parent",
+        },
+        "path": "/_Test Parent/_Test Child",
+      },
+    ],
+  },
 }
 `;
 
 exports[`stylesheet-tree-operations get-children should get child items of a folder 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"name":"_TestTreeStylesheet.css","path":"/_Test Folder/_TestTreeStylesheet.css","parent":{"path":"/_Test Folder","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "_TestTreeStylesheet.css",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/_Test Folder",
+        },
+        "path": "/_Test Folder/_TestTreeStylesheet.css",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`stylesheet-tree-operations get-root should get root level stylesheets 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":2,"items":[{"name":"dropdownStyles.css","path":"/dropdownStyles.css","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"index.css","path":"/index.css","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "dropdownStyles.css",
+        "parent": null,
+        "path": "/dropdownStyles.css",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "index.css",
+        "parent": null,
+        "path": "/index.css",
+      },
+    ],
+    "total": 2,
+  },
 }
 `;
 
 exports[`stylesheet-tree-operations get-search should search for stylesheets 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"isFolder":false,"name":"_TestTreeStylesheet.css","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"path":"/_TestTreeStylesheet.css","id":"00000000-0000-0000-0000-000000000000"}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "isFolder": false,
+        "name": "_TestTreeStylesheet.css",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/",
+        },
+        "path": "/_TestTreeStylesheet.css",
+      },
+    ],
+  },
 }
 `;

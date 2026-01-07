@@ -2,21 +2,16 @@ import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
 import GetDocumentByIdTool from "../get/get-document-by-id.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetDocumentById";
 
 describe("get-document-by-id", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 
@@ -30,9 +25,9 @@ describe("get-document-by-id", () => {
     // Get by ID
     const result = await GetDocumentByIdTool.handler(
       { id },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const doc = JSON.parse(result.content[0].text as string);
+    const doc = validateToolResponse(GetDocumentByIdTool, result);
     expect(doc.id).toBe(id);
     expect(doc.variants[0].name).toBe(TEST_DOCUMENT_NAME);
   });
@@ -40,8 +35,8 @@ describe("get-document-by-id", () => {
   it("should return error for non-existent ID", async () => {
     const result = await GetDocumentByIdTool.handler(
       { id: BLANK_UUID },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    expect(result.content[0].text).toMatch(/error/i);
+    expect(result.isError).toBe(true);
   });
 });

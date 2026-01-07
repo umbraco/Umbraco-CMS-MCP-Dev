@@ -3,7 +3,8 @@ import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.
 import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_FOLDER_NAME = "_TestDeletePartialViewFolder";
 const TEST_PARTIAL_VIEW_NAME = "_TestPartialViewInFolder.cshtml";
@@ -11,13 +12,12 @@ const TEST_CONTENT = "@* Test content in folder *@\n<div><p>Test Content</p></di
 const NON_EXISTENT_PATH = "/_NonExistentFolder";
 
 describe("delete-partial-view-folder", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let folderBuilder: PartialViewFolderBuilder;
   let partialViewBuilder: PartialViewBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     folderBuilder = new PartialViewFolderBuilder();
     partialViewBuilder = new PartialViewBuilder();
   });
@@ -25,7 +25,6 @@ describe("delete-partial-view-folder", () => {
   afterEach(async () => {
     await PartialViewHelper.cleanup(TEST_FOLDER_NAME);
     await PartialViewHelper.cleanup(TEST_PARTIAL_VIEW_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should delete an empty partial view folder", async () => {
@@ -43,7 +42,7 @@ describe("delete-partial-view-folder", () => {
     };
 
     // Act
-    const result = await DeletePartialViewFolderTool.handler(params, { signal: new AbortController().signal });
+    const result = await DeletePartialViewFolderTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -78,7 +77,7 @@ describe("delete-partial-view-folder", () => {
     };
 
     // Act
-    const result = await DeletePartialViewFolderTool.handler(params, { signal: new AbortController().signal });
+    const result = await DeletePartialViewFolderTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert - Error responses don't use createSnapshotResult (folder is not empty)
     expect(result).toMatchSnapshot();
@@ -97,7 +96,7 @@ describe("delete-partial-view-folder", () => {
     };
 
     // Act
-    const result = await DeletePartialViewFolderTool.handler(params, { signal: new AbortController().signal });
+    const result = await DeletePartialViewFolderTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert - Error responses don't use createSnapshotResult
     expect(result).toMatchSnapshot();

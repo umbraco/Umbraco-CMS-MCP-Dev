@@ -1,22 +1,18 @@
 import CopyMemberTypeTool from "../post/copy-member-type.js";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_MEMBER_TYPE_NAME = "_Test MemberType Copy";
 const TEST_MEMBER_TYPE_COPY_NAME = "_Test MemberType Copy (copy)";
 
 describe("copy-member-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test member types
     await MemberTypeTestHelper.cleanup(TEST_MEMBER_TYPE_NAME);
     await MemberTypeTestHelper.cleanup(TEST_MEMBER_TYPE_COPY_NAME);
@@ -34,11 +30,11 @@ describe("copy-member-type", () => {
       {
         id: memberTypeBuilder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Verify the member type was actually copied
     const copiedMemberTypes = await MemberTypeTestHelper.findMemberTypes(
@@ -52,7 +48,7 @@ describe("copy-member-type", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

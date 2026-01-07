@@ -1,22 +1,14 @@
 import DeleteUserGroupTool from "../delete/delete-user-group.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
 import { UserGroupTestHelper } from "./helpers/user-group-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_GROUP_NAME = "_Test User Group Delete";
 
 describe("delete-user-group", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should delete a user group", async () => {
     const builder = await new UserGroupBuilder()
@@ -26,8 +18,9 @@ describe("delete-user-group", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
     const items = await UserGroupTestHelper.findUserGroups(TEST_GROUP_NAME);
     expect(items).toHaveLength(0);
@@ -38,8 +31,9 @@ describe("delete-user-group", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

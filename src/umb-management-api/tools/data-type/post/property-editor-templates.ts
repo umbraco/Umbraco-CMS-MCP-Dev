@@ -686,4 +686,4 @@ export const propertyEditorTemplates: Record<string, PropertyEditorTemplate> =
       }
     ]
   }
-};
+} as any;

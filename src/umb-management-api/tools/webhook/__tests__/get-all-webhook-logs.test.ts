@@ -1,22 +1,15 @@
 import GetAllWebhookLogsTool from "../get/get-all-webhook-logs.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-all-webhook-logs", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get logs for all webhooks", async () => {
     const result = await GetAllWebhookLogsTool.handler({
+      skip: 0,
       take: 100
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
     expect(result).toMatchSnapshot();
   });
 
@@ -24,7 +17,7 @@ describe("get-all-webhook-logs", () => {
     const result = await GetAllWebhookLogsTool.handler({
       skip: 0,
       take: 10
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
     expect(result).toMatchSnapshot();
   });
-}); 
+});

@@ -1,22 +1,20 @@
 import GetWebhookLogsTool from "../get/get-webhook-logs-by-id.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { CONTENT_PUBLISHED_EVENT, TEST_WEBHOOOK_URL } from "./webhook-constants.js";
 
 const TEST_WEBHOOK_NAME = "_Test Webhook Logs";
 
 describe("get-webhook-logs", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let builder: WebhookBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new WebhookBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
   });
 
@@ -30,8 +28,8 @@ describe("get-webhook-logs", () => {
 
     const result = await GetWebhookLogsTool.handler({
       id: builder.getId()
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });
-}); 
+});

@@ -2,33 +2,26 @@
 
 exports[`validate-member should handle validation errors for invalid member data 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using validate-member:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
-    "title": "One or more validation errors occurred.",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "errors": [
       {
         "$.$": [
-          "JSON deserialization for type 'Umbraco.Cms.Api.Management.ViewModels.Member.CreateMemberRequestModel' was missing required properties including: 'memberType'."
-        ]
+          "JSON deserialization for type 'Umbraco.Cms.Api.Management.ViewModels.Member.CreateMemberRequestModel' was missing required properties including: 'memberType'.",
+        ],
       },
       {
         "$.requestModel": [
-          "The requestModel field is required."
-        ]
-      }
+          "The requestModel field is required.",
+        ],
+      },
     ],
-    "traceId": "normalized-trace-id"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "status": 400,
+    "title": "One or more validation errors occurred.",
+    "traceId": "normalized-trace-id",
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  },
 }
 `;
 
@@ -36,7 +29,7 @@ exports[`validate-member should validate a member successfully 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],

@@ -2,7 +2,8 @@ import GetLanguageTool from "../get/get-language.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_LANGUAGE_NAME_1 = "_Test Language Get 1";
 const TEST_LANGUAGE_ISO_1 = "en-AU";
@@ -12,14 +13,13 @@ const TEST_LANGUAGE_NAME_3 = "_Test Language Get 3";
 const TEST_LANGUAGE_ISO_3 = "en-ZA";
 
 describe("get-language", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let builder1: LanguageBuilder;
   let builder2: LanguageBuilder;
   let builder3: LanguageBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder1 = new LanguageBuilder();
     builder2 = new LanguageBuilder();
     builder3 = new LanguageBuilder();
@@ -32,7 +32,6 @@ describe("get-language", () => {
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO_1);
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO_2);
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO_3);
-    console.error = originalConsoleError;
   });
 
   it("should get all languages", async () => {
@@ -51,10 +50,14 @@ describe("get-language", () => {
       .withIsMandatory(false)
       .create();
 
-    // Act - Get all languages (take parameter has default, so empty object is valid)
-    const result = await GetLanguageTool.handler({ take: 100 }, { signal: new AbortController().signal });
+    // Act - Get all languages
+    const result = await GetLanguageTool.handler(
+      { skip: 0, take: 100 },
+      createMockRequestHandlerExtra()
+    );
 
     // Assert
+    validateToolResponse(GetLanguageTool, result);
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });
@@ -85,10 +88,11 @@ describe("get-language", () => {
     // Act - Get languages with skip=1 and take=1
     const result = await GetLanguageTool.handler(
       { skip: 1, take: 1 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
+    validateToolResponse(GetLanguageTool, result);
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });
@@ -111,11 +115,12 @@ describe("get-language", () => {
 
     // Act - Get languages with take=1
     const result = await GetLanguageTool.handler(
-      { take: 1 },
-      { signal: new AbortController().signal }
+      { skip: 0, take: 1 },
+      createMockRequestHandlerExtra()
     );
 
     // Assert
+    validateToolResponse(GetLanguageTool, result);
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });

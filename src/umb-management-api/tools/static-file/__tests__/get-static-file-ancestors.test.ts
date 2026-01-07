@@ -1,22 +1,13 @@
 import GetStaticFileAncestorsTool from "../items/get/get-ancestors.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const INVALID_DESCENDANT_PATH = "/nonexistent/invalid/path/file.txt";
 
 describe("get-static-file-ancestors", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-    // StaticFile is read-only, no cleanup needed
-  });
+  setupTestEnvironment();
 
   it("should get ancestors for a nested file or folder", async () => {
     // Arrange - try to find a deeply nested file/folder by exploring the file system
@@ -48,7 +39,7 @@ describe("get-static-file-ancestors", () => {
     // Act
     const result = await GetStaticFileAncestorsTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -56,7 +47,8 @@ describe("get-static-file-ancestors", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const ancestors = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
 
     // Verify file system structure if ancestors exist
@@ -101,7 +93,7 @@ describe("get-static-file-ancestors", () => {
 
       const result = await GetStaticFileAncestorsTool.handler(
         params,
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -115,7 +107,7 @@ describe("get-static-file-ancestors", () => {
     // Act
     const result = await GetStaticFileAncestorsTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -123,7 +115,8 @@ describe("get-static-file-ancestors", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Root-level items should have minimal ancestors (possibly just root "/")
-    const ancestors = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
 
     // For root items, ancestors should be minimal (may include root and the item itself)
@@ -139,13 +132,14 @@ describe("get-static-file-ancestors", () => {
     // Act
     const result = await GetStaticFileAncestorsTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - should not fail, may return empty array or handle gracefully
     expect(result).toMatchSnapshot();
 
-    const ancestors = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
     // Invalid path should typically return empty ancestors
     expect(ancestors.length).toBe(0);
@@ -177,11 +171,12 @@ describe("get-static-file-ancestors", () => {
     // Act
     const result = await GetStaticFileAncestorsTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
-    const ancestors = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
 
     if (ancestors.length > 0) {
       // Check first ancestor has expected structure
@@ -222,13 +217,14 @@ describe("get-static-file-ancestors", () => {
     // Act
     const result = await GetStaticFileAncestorsTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - root should have no ancestors
     expect(result).toMatchSnapshot();
 
-    const ancestors = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
     expect(ancestors.length).toBe(0); // Root has no ancestors
   });
@@ -257,13 +253,14 @@ describe("get-static-file-ancestors", () => {
     // Act - get results from both tool and helper
     const toolResult = await GetStaticFileAncestorsTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const helperResult = await StaticFileHelper.getAncestors(testPath);
 
     // Assert - both should return the same ancestors
-    const toolAncestors = JSON.parse(toolResult.content[0].text?.toString() ?? "[]");
+    const data = validateToolResponse(GetStaticFileAncestorsTool, toolResult);
+    const toolAncestors = data.items ?? [];
 
     expect(toolAncestors.length).toBe(helperResult.length);
 
@@ -290,11 +287,12 @@ describe("get-static-file-ancestors", () => {
     // Act
     const result = await GetStaticFileAncestorsTool.handler(
       params,
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
-    const ancestors = JSON.parse(result.content[0].text?.toString() ?? "[]");
+    const data = validateToolResponse(GetStaticFileAncestorsTool, result);
+    const ancestors = data.items ?? [];
     expect(Array.isArray(ancestors)).toBe(true);
 
     if (ancestors.length > 0) {

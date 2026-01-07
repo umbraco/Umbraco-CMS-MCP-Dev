@@ -1,4 +1,3 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { UpdateWebhookRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putWebhookByIdBody,
@@ -6,32 +5,24 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
-const updateWebhookSchema = {
+const updateWebhookSchema = z.object({
   id: putWebhookByIdParams.shape.id,
   data: z.object(putWebhookByIdBody.shape),
-};
+});
 
 const UpdateWebhookTool = {
   name: "update-webhook",
   description: "Updates a webhook by id",
-  schema: updateWebhookSchema,
-  isReadOnly: false,
+  inputSchema: updateWebhookSchema.shape,
+  annotations: { idempotentHint: true },
   slices: ['update'],
-  handler: async (model: { id: string; data: UpdateWebhookRequestModel }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.putWebhookById(model.id, model.data);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof updateWebhookSchema>;
+  handler: (async (model: { id: string; data: UpdateWebhookRequestModel }) => {
+    return executeVoidApiCall((client) =>
+      client.putWebhookById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof updateWebhookSchema.shape>;
 
 export default withStandardDecorators(UpdateWebhookTool);

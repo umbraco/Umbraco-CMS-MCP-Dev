@@ -1,33 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { DataTypeTreeItemResponseModel } from "@/umb-management-api/schemas/dataTypeTreeItemResponseModel.js";
 
-export const BLANK_UUID = "00000000-0000-0000-0000-000000000000";
-
 export class DataTypeTestHelper {
   static findByName(
     items: DataTypeTreeItemResponseModel[],
     name: string
   ): DataTypeTreeItemResponseModel | undefined {
     return items.find((item) => item.name === name);
-  }
-
-  static normaliseIds(
-    items:
-      | DataTypeTreeItemResponseModel
-      | DataTypeTreeItemResponseModel[]
-  ): DataTypeTreeItemResponseModel | DataTypeTreeItemResponseModel[] {
-    if (Array.isArray(items)) {
-      return items.map((item) => ({
-        ...item,
-        id: BLANK_UUID,
-        parent: item.parent ? { ...item.parent, id: BLANK_UUID } : item.parent
-      }));
-    }
-    return {
-      ...items,
-      id: BLANK_UUID,
-      parent: items.parent ? { ...items.parent, id: BLANK_UUID } : items.parent
-    };
   }
 
   static async cleanup(name: string): Promise<void> {

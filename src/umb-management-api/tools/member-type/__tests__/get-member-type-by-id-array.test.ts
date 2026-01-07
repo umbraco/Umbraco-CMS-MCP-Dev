@@ -1,27 +1,17 @@
 import GetMemberTypesByIdArrayTool from "../get/get-member-type-by-id-array.js";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-member-types-by-id-array", () => {
+  setupTestEnvironment();
+
   const TEST_MEMBER_TYPE_NAME = "_Test Item MemberType";
   const TEST_MEMBER_TYPE_NAME_2 = "_Test Item MemberType2";
-  let originalConsoleError: typeof console.error;
-
-  // Helper to parse response, handling empty string as empty array
-  const parseItems = (text: string) => {
-    if (!text || text.trim() === "") return [];
-    return JSON.parse(text);
-  };
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberTypeTestHelper.cleanup(TEST_MEMBER_TYPE_NAME);
     await MemberTypeTestHelper.cleanup(TEST_MEMBER_TYPE_NAME_2);
   });
@@ -29,10 +19,13 @@ describe("get-member-types-by-id-array", () => {
   it("should get no member types for empty request", async () => {
     // Get all member types
     const result = await GetMemberTypesByIdArrayTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      { id: undefined },
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypesByIdArrayTool, result);
+    const items = (data.items ?? []) as any[];
 
     expect(items).toMatchSnapshot();
   });
@@ -46,9 +39,12 @@ describe("get-member-types-by-id-array", () => {
     // Get by ID
     const result = await GetMemberTypesByIdArrayTool.handler(
       { id: [builder.getId()] },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const items = parseItems(result.content[0].text as string);
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypesByIdArrayTool, result);
+    const items = (data.items ?? []) as any[];
     expect(items).toHaveLength(1);
     expect(items[0].name).toBe(TEST_MEMBER_TYPE_NAME);
     // Normalize for snapshot
@@ -72,10 +68,12 @@ describe("get-member-types-by-id-array", () => {
       {
         id: [builder1.getId(), builder2.getId()],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    const items = parseItems(result.content[0].text as string);
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetMemberTypesByIdArrayTool, result);
+    const items = (data.items ?? []) as any[];
     expect(items).toHaveLength(2);
     expect(items[0].name).toBe(TEST_MEMBER_TYPE_NAME);
     expect(items[1].name).toBe(TEST_MEMBER_TYPE_NAME_2);

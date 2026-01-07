@@ -1,21 +1,13 @@
 import GetPartialViewSnippetTool from "../get/get-partial-view-snippet.js";
 import GetPartialViewSnippetByIdTool from "../get/get-partial-view-snippet-by-id.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const NON_EXISTENT_SNIPPET_ID = "non-existent-snippet-id";
 
 describe("get-snippets", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   describe("GetPartialViewSnippetTool", () => {
     it("should get partial view snippets with default parameters", async () => {
@@ -23,14 +15,14 @@ describe("get-snippets", () => {
       const params = { take: 10 };
 
       // Act
-      const result = await GetPartialViewSnippetTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetTool.handler(params as any, createMockRequestHandlerExtra());
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure
-      const responseData = JSON.parse(String(result.content[0].text));
+      const responseData = validateToolResponse(GetPartialViewSnippetTool, result);
       expect(responseData).toHaveProperty('items');
       expect(Array.isArray(responseData.items)).toBe(true);
       expect(responseData).toHaveProperty('total');
@@ -45,14 +37,14 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure with pagination
-      const responseData = JSON.parse(String(result.content[0].text));
+      const responseData = validateToolResponse(GetPartialViewSnippetTool, result);
       expect(responseData).toHaveProperty('items');
       expect(Array.isArray(responseData.items)).toBe(true);
       expect(responseData.items.length).toBeLessThanOrEqual(5);
@@ -66,14 +58,14 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure
-      const responseData = JSON.parse(String(result.content[0].text));
+      const responseData = validateToolResponse(GetPartialViewSnippetTool, result);
       expect(responseData).toHaveProperty('items');
       expect(Array.isArray(responseData.items)).toBe(true);
     });
@@ -86,14 +78,14 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure (should return empty items array)
-      const responseData = JSON.parse(String(result.content[0].text));
+      const responseData = validateToolResponse(GetPartialViewSnippetTool, result);
       expect(responseData).toHaveProperty('items');
       expect(Array.isArray(responseData.items)).toBe(true);
       expect(responseData.items.length).toBe(0);
@@ -103,17 +95,17 @@ describe("get-snippets", () => {
   describe("GetPartialViewSnippetByIdTool", () => {
     it("should get a specific partial view snippet by ID", async () => {
       // Arrange - First get available snippets to find a valid ID
-      const listResult = await GetPartialViewSnippetTool.handler({ take: 10 }, { signal: new AbortController().signal });
-      const listResponseData = JSON.parse(String(listResult.content[0].text));
-      
+      const listResult = await GetPartialViewSnippetTool.handler({ take: 10 } as any, createMockRequestHandlerExtra());
+      const listResponseData = validateToolResponse(GetPartialViewSnippetTool, listResult);
+
       // Skip this test if no snippets are available
       if (!listResponseData.items || listResponseData.items.length === 0) {
         console.log('No partial view snippets available for testing');
         return;
       }
 
-      // Use the first available snippet name/identifier as ID 
-      const firstSnippetId = String(listResponseData.items[0].name || listResponseData.items[0].fileName || "layout");
+      // Use the first available snippet name/identifier as ID
+      const firstSnippetId = String(listResponseData.items[0].name || "layout");
       expect(firstSnippetId).toBeDefined();
 
       const params = {
@@ -121,14 +113,14 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetByIdTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetByIdTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response contains expected snippet data
-      const responseData = JSON.parse(String(result.content[0].text));
+      const responseData = validateToolResponse(GetPartialViewSnippetByIdTool, result);
       expect(responseData).toHaveProperty('name');
       expect(responseData).toHaveProperty('content');
     });
@@ -140,7 +132,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetByIdTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetByIdTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -153,7 +145,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetByIdTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetByIdTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -166,7 +158,7 @@ describe("get-snippets", () => {
       };
 
       // Act
-      const result = await GetPartialViewSnippetByIdTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewSnippetByIdTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();

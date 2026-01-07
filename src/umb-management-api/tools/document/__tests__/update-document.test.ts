@@ -1,24 +1,19 @@
 import UpdateDocumentTool from "../put/update-document.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import {
   ROOT_DOCUMENT_TYPE_ID,
   BLANK_UUID,
 } from "../../../../constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("update-document", () => {
   const TEST_DOCUMENT_NAME = "_Test Document Update";
   const UPDATED_DOCUMENT_NAME = "_Test Document Updated";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test documents
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(UPDATED_DOCUMENT_NAME);
@@ -43,7 +38,7 @@ describe("update-document", () => {
         id: builder.getId(),
         data: updateModel,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
@@ -69,7 +64,7 @@ describe("update-document", () => {
         id: BLANK_UUID,
         data: updateModel,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot
@@ -96,7 +91,7 @@ describe("update-document", () => {
         id: builder.getId(),
         data: updateModel,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot

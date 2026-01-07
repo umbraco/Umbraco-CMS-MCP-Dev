@@ -1,6 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateLanguageRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postLanguageBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { LanguageTestHelper } from "./language-helper.js";
 
 export class LanguageBuilder {
   private model: Partial<CreateLanguageRequestModel> = {};
@@ -48,11 +49,11 @@ export class LanguageBuilder {
 
   async cleanup(): Promise<void> {
     if (this.isoCode) {
-      try {
+      // Use helper to check if language exists before deleting (avoids 404 errors)
+      const exists = await LanguageTestHelper.findLanguage(this.isoCode);
+      if (exists) {
         const client = UmbracoManagementClient.getClient();
         await client.deleteLanguageByIsoCode(this.isoCode);
-      } catch (error) {
-        console.error("Error cleaning up language:", error);
       }
     }
   }

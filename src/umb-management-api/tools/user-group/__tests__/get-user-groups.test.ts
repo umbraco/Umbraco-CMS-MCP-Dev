@@ -1,8 +1,11 @@
 import { getUserGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetUserGroupsTool from "../get/get-user-groups.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("GetUserGroupsTool", () => {
+  setupTestEnvironment();
   let builder: UserGroupBuilder;
 
   beforeEach(() => {
@@ -18,18 +21,22 @@ describe("GetUserGroupsTool", () => {
     await builder.withName("Test User Group").create();
 
     // Get all user groups
-    const params = getUserGroupQueryParams.parse({ skip: 0, take: 100 });
-    await GetUserGroupsTool.handler(params, { signal: new AbortController().signal });
+    const result = await GetUserGroupsTool.handler({ skip: 0, take: 100 }, createMockRequestHandlerExtra());
+    const data = validateToolResponse(GetUserGroupsTool, result);
 
-    // No need to test this result as it's dependant on what Umbraco has set up
+    // Verify response structure
+    expect(data).toHaveProperty("items");
+    expect(data).toHaveProperty("total");
   });
 
   it("should handle empty result", async () => {
     // Get all user groups with no groups created
-    const params = getUserGroupQueryParams.parse({ skip: 0, take: 100 });
-    const result = await GetUserGroupsTool.handler(params, { signal: new AbortController().signal });
+    const result = await GetUserGroupsTool.handler({ skip: 0, take: 100 }, createMockRequestHandlerExtra());
+    const data = validateToolResponse(GetUserGroupsTool, result);
 
-    // Verify the response
+    // Verify the response structure
+    expect(data).toHaveProperty("items");
+    expect(data).toHaveProperty("total");
     expect(result).toMatchSnapshot();
   });
-}); 
+});

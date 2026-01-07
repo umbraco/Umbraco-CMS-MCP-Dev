@@ -1,13 +1,14 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import {
   getMediaByIdAuditLogParams,
   getMediaByIdAuditLogQueryParams,
+  getMediaByIdAuditLogResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetMediaByIdAuditLogParams } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
-const schema = {
+const inputSchema = {
   id: getMediaByIdAuditLogParams.shape.id,
   data: z.object(getMediaByIdAuditLogQueryParams.shape),
 };
@@ -15,21 +16,15 @@ const schema = {
 const GetMediaAuditLogTool = {
   name: "get-media-audit-log",
   description: "Fetches the audit log for a media item by Id.",
-  schema,
-  isReadOnly: true,
+  inputSchema,
+  outputSchema: getMediaByIdAuditLogResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['audit'],
-  handler: async (model: { id: string; data: any }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getMediaByIdAuditLog(model.id, model.data);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof schema>;
+  handler: (async (model: { id: string; data: GetMediaByIdAuditLogParams }) => {
+    return executeGetApiCall((client) =>
+      client.getMediaByIdAuditLog(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof inputSchema, typeof getMediaByIdAuditLogResponse.shape>;
 
 export default withStandardDecorators(GetMediaAuditLogTool);

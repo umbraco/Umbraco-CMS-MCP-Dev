@@ -1,31 +1,25 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import {
   getLanguageQueryParams,
   getLanguageResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { GetLanguageParams } from "@/umb-management-api/schemas/index.js";
 
 const GetLanguageTool = {
   name: "get-language",
   description: "Gets all languages with optional pagination",
-  schema: getLanguageQueryParams.shape,
-  isReadOnly: true,
-  slices: ['list'],
-  handler: async (params: GetLanguageParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getLanguage(params);
-    const validated = getLanguageResponse.parse(response);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(validated, null, 2),
-        },
-      ],
-    };
+  inputSchema: getLanguageQueryParams.shape,
+  outputSchema: getLanguageResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getLanguageQueryParams.shape>;
+  slices: ['list'],
+  handler: (async (params: GetLanguageParams) => {
+    return executeGetApiCall((client) =>
+      client.getLanguage(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getLanguageQueryParams.shape, typeof getLanguageResponse.shape>;
 
 export default withStandardDecorators(GetLanguageTool);

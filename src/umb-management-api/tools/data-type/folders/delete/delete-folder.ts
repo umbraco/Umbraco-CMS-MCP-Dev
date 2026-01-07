@@ -1,27 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { deleteDataTypeFolderByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const DeleteDataTypeFolderTool = {
   name: "delete-data-type-folder",
   description: "Deletes a data type folder by Id",
-  schema: deleteDataTypeFolderByIdParams.shape,
-  isReadOnly: false,
-  slices: ['delete', 'folders'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.deleteDataTypeFolderById(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: deleteDataTypeFolderByIdParams.shape,
+  annotations: {
+    destructiveHint: true,
   },
+  slices: ['delete', 'folders'],
+  handler: (async ({ id }: { id: string }) => {
+    return executeVoidApiCall((client) => 
+      client.deleteDataTypeFolderById(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
 } satisfies ToolDefinition<typeof deleteDataTypeFolderByIdParams.shape>;
 
 export default withStandardDecorators(DeleteDataTypeFolderTool);

@@ -1,6 +1,6 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getServerTroubleshootingResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetServerTroubleshootingTool = {
   name: "get-server-troubleshooting",
@@ -62,22 +62,15 @@ const GetServerTroubleshootingTool = {
       }
     ]
   }`,
-  schema: {},
-  isReadOnly: true,
+  inputSchema: {},
+  outputSchema: getServerTroubleshootingResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['server-info'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getServerTroubleshooting();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<{}>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getServerTroubleshooting(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof getServerTroubleshootingResponse.shape>;
 
 export default withStandardDecorators(GetServerTroubleshootingTool);

@@ -2,16 +2,14 @@
 
 exports[`publish-document-with-descendants should handle publishing a non-existent document 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using publish-document-with-descendants:
-{
-  "message": "Request failed with status code 404",
-  "response": ""
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Request failed with status code 404",
+    "status": 500,
+    "title": "AxiosError",
+    "type": "Error",
+  },
 }
 `;
 

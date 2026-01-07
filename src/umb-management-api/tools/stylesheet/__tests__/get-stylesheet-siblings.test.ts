@@ -1,7 +1,8 @@
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import GetStylesheetSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { StylesheetFolderBuilder } from "./helpers/stylesheet-folder-builder.js";
 import { StylesheetBuilder } from "./helpers/stylesheet-builder.js";
 
@@ -11,19 +12,14 @@ describe("get-stylesheet-siblings", () => {
   const TEST_SIBLING_2_NAME = "_TestSibling2.css";
   const TEST_TARGET_NAME = "_TestTargetStylesheet.css";
   const TEST_CONTENT = "/* Test stylesheet content */\nbody { color: red; }";
-  let originalConsoleError: typeof console.error;
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await StylesheetHelper.cleanup(TEST_SIBLING_1_NAME);
     await StylesheetHelper.cleanup(TEST_SIBLING_2_NAME);
     await StylesheetHelper.cleanup(TEST_TARGET_NAME);
     await StylesheetHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get sibling stylesheets", async () => {
@@ -57,8 +53,10 @@ describe("get-stylesheet-siblings", () => {
     const result = await GetStylesheetSiblingsTool.handler(
       {
         path: targetBuilder.getPath(),
+        before: undefined,
+        after: undefined,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify response
@@ -74,8 +72,10 @@ describe("get-stylesheet-siblings", () => {
     const result = await GetStylesheetSiblingsTool.handler(
       {
         path: nonExistentPath,
+        before: undefined,
+        after: undefined,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify error response

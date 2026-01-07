@@ -4,7 +4,7 @@ exports[`delete-data-type should delete a data type 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -13,20 +13,13 @@ exports[`delete-data-type should delete a data type 1`] = `
 
 exports[`delete-data-type should handle non-existent data type 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using delete-data-type:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The data type could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The data type could not be found",
+    "type": "Error",
+  },
 }
 `;

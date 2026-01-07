@@ -1,22 +1,17 @@
 import CreateDocumentTool from "../post/create-document.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createSnapshotResult, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 
 const TEST_DOCUMENT_NAME = "_Test Document Created";
 
 describe("create-document", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 
@@ -25,16 +20,16 @@ describe("create-document", () => {
     const docModel = {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
+      parentId: undefined,
+      cultures: undefined,
       values: [],
     };
 
     // Create the document
-    const result = await CreateDocumentTool.handler(docModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateDocumentTool.handler(docModel, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    // Validate and extract response
+    const responseData = validateToolResponse(CreateDocumentTool, result);
     const documentId = responseData.id;
 
     // Verify the handler response using snapshot
@@ -44,7 +39,7 @@ describe("create-document", () => {
     const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
     expect(item).toBeDefined();
     const norm = {
-      ...DocumentTestHelper.normaliseIds(item!),
+      ...normalizeObject(item!),
       createDate: "NORMALIZED_DATE",
     };
     expect(norm).toMatchSnapshot();
@@ -55,6 +50,8 @@ describe("create-document", () => {
     const docModel = {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
+      parentId: undefined,
+      cultures: undefined,
       values: [
         {
           editorAlias: "Umbraco.TextBox",
@@ -66,12 +63,10 @@ describe("create-document", () => {
       ],
     };
 
-    const result = await CreateDocumentTool.handler(docModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateDocumentTool.handler(docModel, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    // Validate and extract response
+    const responseData = validateToolResponse(CreateDocumentTool, result);
     const documentId = responseData.id;
 
     // Verify the handler response using snapshot
@@ -80,7 +75,7 @@ describe("create-document", () => {
     const item = await DocumentTestHelper.findDocument(TEST_DOCUMENT_NAME);
     expect(item).toBeDefined();
     const norm = {
-      ...DocumentTestHelper.normaliseIds(item!),
+      ...normalizeObject(item!),
       createDate: "NORMALIZED_DATE",
     };
     expect(norm).toMatchSnapshot();
@@ -126,16 +121,15 @@ describe("create-document", () => {
       const docModel = {
         documentTypeId: ROOT_DOCUMENT_TYPE_ID,
         name: TEST_DOCUMENT_NAME,
+        parentId: undefined,
         cultures: ["en-US", "da-DK"],
         values: [],
       };
 
-      const result = await CreateDocumentTool.handler(docModel, {
-        signal: new AbortController().signal,
-      });
+      const result = await CreateDocumentTool.handler(docModel, createMockRequestHandlerExtra());
 
-      // Extract ID for normalization
-      const responseData = JSON.parse(result.content[0].text as string);
+      // Validate and extract response
+      const responseData = validateToolResponse(CreateDocumentTool, result);
       const documentId = responseData.id;
 
       // Verify the handler response using snapshot
@@ -181,16 +175,15 @@ describe("create-document", () => {
     const docModel = {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
+      parentId: undefined,
       cultures: [],
       values: [],
     };
 
-    const result = await CreateDocumentTool.handler(docModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateDocumentTool.handler(docModel, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    // Validate and extract response
+    const responseData = validateToolResponse(CreateDocumentTool, result);
     const documentId = responseData.id;
 
     // Verify the handler response using snapshot

@@ -1,24 +1,20 @@
 import CreateMemberTool from "../post/create-member.js";
 import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
-import { jest } from "@jest/globals";
 import { Default_Memeber_TYPE_ID } from "../../../../constants/constants.js";
 import { MemberTypeBuilder } from "../../member-type/__tests__/helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "../../member-type/__tests__/helpers/member-type-helper.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_MEMBER_EMAIL = "test@example.com";
 const TEST_MEMBER_TYPE_NAME = "Test Member Type";
 
 describe("create-member", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberTypeTestHelper.cleanup(TEST_MEMBER_TYPE_NAME);
     await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
   });
@@ -34,9 +30,10 @@ describe("create-member", () => {
       .build();
 
     // Create the member
-    const result = await CreateMemberTool.handler(memberModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateMemberTool.handler(
+      memberModel as Parameters<typeof CreateMemberTool.handler>[0],
+      createMockRequestHandlerExtra()
+    );
 
     // Verify the created member exists and matches expected values
     const member = await MemberTestHelper.findMember(TEST_MEMBER_EMAIL);
@@ -63,11 +60,12 @@ describe("create-member", () => {
       .withValue("customfield", "customValue")
       .build();
 
-    const result = await CreateMemberTool.handler(memberModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateMemberTool.handler(
+      memberModel as Parameters<typeof CreateMemberTool.handler>[0],
+      createMockRequestHandlerExtra()
+    );
 
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     const member = await MemberTestHelper.findMember(TEST_MEMBER_EMAIL);
     expect(member).toBeDefined();

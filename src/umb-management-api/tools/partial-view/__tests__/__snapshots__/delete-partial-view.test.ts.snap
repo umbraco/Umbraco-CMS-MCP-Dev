@@ -4,7 +4,7 @@ exports[`delete-partial-view should delete a partial view 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -13,21 +13,14 @@ exports[`delete-partial-view should delete a partial view 1`] = `
 
 exports[`delete-partial-view should handle non-existent partial view 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using delete-partial-view:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Partial view not found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The partial view was not found.",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Partial view not found",
+    "type": "Error",
+  },
 }
 `;

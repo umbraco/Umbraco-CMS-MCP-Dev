@@ -2,32 +2,35 @@
 
 exports[`get-member-type should get a member type by id 1`] = `
 {
-  "content": [
-    {
-      "text": "{"compositions":[],"id":"PLACEHOLDER_ID","alias":"testmembertype","name":"_Test Member Type","description":"Test member type description","icon":"icon-user","allowedAsRoot":true,"variesByCulture":false,"variesBySegment":false,"collection":null,"isElement":false,"properties":[],"containers":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "alias": "testmembertype",
+    "allowedAsRoot": true,
+    "collection": null,
+    "compositions": [],
+    "containers": [],
+    "description": "Test member type description",
+    "icon": "icon-user",
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isElement": false,
+    "name": "_Test Member Type",
+    "properties": [],
+    "variesByCulture": false,
+    "variesBySegment": false,
+  },
 }
 `;
 
 exports[`get-member-type should handle non-existent member type 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-member-type:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Not Found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified member type was not found",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not Found",
+    "type": "Error",
+  },
 }
 `;

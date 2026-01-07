@@ -1,6 +1,6 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getServerInformationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetServerInformationTool = {
   name: "get-server-information",
@@ -18,22 +18,15 @@ const GetServerInformationTool = {
     "baseUtcOffset": "-07:00:00",
     "runtimeMode": "BackofficeDevelopment"
   }`,
-  schema: {},
-  isReadOnly: true,
+  inputSchema: {},
+  outputSchema: getServerInformationResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['server-info'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getServerInformation();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<{}>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getServerInformation(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof getServerInformationResponse.shape>;
 
 export default withStandardDecorators(GetServerInformationTool);

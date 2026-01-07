@@ -2,15 +2,11 @@
 
 exports[`create-element-type should create an element type 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "message": "Element type created successfully",
-  "id": "00000000-0000-0000-0000-000000000000"
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Element type created successfully",
+  },
 }
 `;
 
@@ -29,15 +25,11 @@ exports[`create-element-type should create an element type 2`] = `
 
 exports[`create-element-type should create an element type with properties 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "message": "Element type created successfully",
-  "id": "00000000-0000-0000-0000-000000000000"
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Element type created successfully",
+  },
 }
 `;
 
@@ -164,12 +156,37 @@ exports[`create-element-type should create separate groups for same group name i
 
 exports[`create-element-type should handle existing element type 1`] = `
 {
-  "content": [
-    {
-      "text": "{"message":"Failed to create element type","status":400,"error":{"type":"Error","title":"Duplicate alias","status":400,"detail":"The specified document type alias is already in use","operationStatus":"DuplicateAlias"}}",
-      "type": "text",
-    },
-  ],
+  "content": [],
   "isError": true,
+  "structuredContent": {
+    "detail": "The specified document type alias is already in use",
+    "operationStatus": "DuplicateAlias",
+    "status": 400,
+    "title": "Duplicate alias",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`create-element-type should reject property without tab or group 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "[
+  {
+    "code": "custom",
+    "path": [
+      "properties",
+      0,
+      "tab"
+    ],
+    "message": "Property must specify either 'tab' or 'group' (or both) to appear in Umbraco UI. Properties without a container are invisible."
+  }
+]",
+    "status": 500,
+    "title": "ZodError",
+    "type": "Error",
+  },
 }
 `;

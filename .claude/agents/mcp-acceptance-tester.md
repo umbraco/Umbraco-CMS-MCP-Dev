@@ -36,7 +36,7 @@ When helping users create acceptance tests:
 
 4. **Follow Project Patterns**: Align with the project's established testing conventions:
    - Use consistent naming for test files and test cases
-   - Create a new directory in the tests/e2e folder for each scenario
+   - Create a new directory in the tests/evals folder for each scenario
    - Create a config file for each scenario that only contains the required tools
    - Create a package json run script for each scenario that follows existing patterns
 

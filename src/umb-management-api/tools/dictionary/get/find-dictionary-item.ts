@@ -1,28 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetDictionaryParams } from "@/umb-management-api/schemas/index.js";
-import { getDictionaryQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDictionaryQueryParams, getDictionaryResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const FindDictionaryItemTool = {
   name: "find-dictionary",
   description: "Finds a dictionary by Id or name",
-  schema: getDictionaryQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getDictionaryQueryParams.shape,
+  outputSchema: getDictionaryResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['search'],
-  handler: async (model: GetDictionaryParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDictionary(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getDictionaryQueryParams.shape>;
+  handler: (async (model: GetDictionaryParams) => {
+    return executeGetApiCall((client) =>
+      client.getDictionary(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getDictionaryQueryParams.shape, typeof getDictionaryResponse.shape>;
 
 export default withStandardDecorators(FindDictionaryItemTool);

@@ -1,28 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetRelationTypeParams } from "@/umb-management-api/schemas/index.js";
-import { getRelationTypeQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getRelationTypeQueryParams, getRelationTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetRelationTypeTool = {
   name: "get-relation-type",
   description: "Gets all relation types with pagination",
-  schema: getRelationTypeQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getRelationTypeQueryParams.shape,
+  outputSchema: getRelationTypeResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['list'],
-  handler: async (model: GetRelationTypeParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getRelationType(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getRelationTypeQueryParams.shape>;
+  handler: (async (model: GetRelationTypeParams) => {
+    return executeGetApiCall((client) =>
+      client.getRelationType(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getRelationTypeQueryParams.shape, typeof getRelationTypeResponse.shape>;
 
 export default withStandardDecorators(GetRelationTypeTool);

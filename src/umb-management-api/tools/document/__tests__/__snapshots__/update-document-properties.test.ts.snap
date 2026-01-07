@@ -2,265 +2,244 @@
 
 exports[`update-document-properties should handle non-existent document 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using update-document-properties:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The document could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "ContentNotFound",
     "status": 404,
-    "operationStatus": "ContentNotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The document could not be found",
+    "type": "Error",
+  },
 }
 `;
 
 exports[`update-document-properties should return error on invalid alias 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "success": false,
-  "error": "Invalid property aliases",
-  "message": "The following properties do not exist on this document type: nonExistentProperty",
-  "invalidAliases": [
-    "nonExistentProperty"
-  ],
-  "availableProperties": [
-    {
-      "alias": "mainImage",
-      "name": "Main Image",
-      "variesByCulture": false,
-      "variesBySegment": false
-    },
-    {
-      "alias": "title",
-      "name": "Title",
-      "variesByCulture": false,
-      "variesBySegment": false
-    },
-    {
-      "alias": "subtitle",
-      "name": "Subtitle",
-      "variesByCulture": false,
-      "variesBySegment": false
-    },
-    {
-      "alias": "contentRows",
-      "name": "Content Rows",
-      "variesByCulture": false,
-      "variesBySegment": false
-    },
-    {
-      "alias": "socialIconLinks",
-      "name": "Social Icon Links",
-      "variesByCulture": false,
-      "variesBySegment": false
-    },
-    {
-      "alias": "metaName",
-      "name": "Meta Name",
-      "variesByCulture": false,
-      "variesBySegment": false
-    },
-    {
-      "alias": "metaDescription",
-      "name": "Meta Description",
-      "variesByCulture": false,
-      "variesBySegment": false
-    },
-    {
-      "alias": "metaKeywords",
-      "name": "Meta Keywords",
-      "variesByCulture": false,
-      "variesBySegment": false
-    },
-    {
-      "alias": "isIndexable",
-      "name": "Is Indexable",
-      "variesByCulture": false,
-      "variesBySegment": false
-    },
-    {
-      "alias": "isFollowable",
-      "name": "Is Followable",
-      "variesByCulture": false,
-      "variesBySegment": false
-    }
-  ]
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "availableProperties": [
+      {
+        "alias": "socialIconLinks",
+        "name": "Social Icon Links",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "title",
+        "name": "Title",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "subtitle",
+        "name": "Subtitle",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "contentRows",
+        "name": "Content Rows",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "mainImage",
+        "name": "Main Image",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "metaName",
+        "name": "Meta Name",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "metaDescription",
+        "name": "Meta Description",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "metaKeywords",
+        "name": "Meta Keywords",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "isIndexable",
+        "name": "Is Indexable",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "isFollowable",
+        "name": "Is Followable",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+    ],
+    "detail": "The following properties do not exist on this document type: nonExistentProperty",
+    "invalidAliases": [
+      "nonExistentProperty",
+    ],
+    "status": 400,
+    "title": "Invalid property aliases",
+    "type": "https://httpstatuses.com/400",
+  },
 }
 `;
 
 exports[`update-document-properties should update property and preserve initial value 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "success": true,
-  "message": "Successfully updated 1 property value(s)",
-  "updatedProperties": [
-    "title"
-  ],
-  "addedProperties": [],
-  "document": {
-    "template": {
-      "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6"
-    },
-    "isTrashed": false,
-    "documentType": {
-      "id": "00000000-0000-0000-0000-000000000000",
-      "icon": "icon-home color-blue",
-      "collection": null
-    },
-    "id": "00000000-0000-0000-0000-000000000000",
-    "flags": [],
-    "values": [
-      {
-        "editorAlias": "Umbraco.TextBox",
-        "culture": null,
-        "segment": null,
-        "alias": "title",
-        "value": "_Updated Title"
-      }
-    ],
-    "variants": [
-      {
-        "state": "Draft",
-        "publishDate": null,
-        "scheduledPublishDate": null,
-        "scheduledUnpublishDate": null,
+  "content": [],
+  "structuredContent": {
+    "addedProperties": [],
+    "document": {
+      "documentType": {
+        "collection": null,
+        "icon": "icon-home color-blue",
         "id": "00000000-0000-0000-0000-000000000000",
-        "flags": [],
-        "createDate": "NORMALIZED_DATE",
-        "updateDate": "NORMALIZED_DATE",
-        "culture": null,
-        "segment": null,
-        "name": "_Test Document Properties"
-      }
-    ]
-  }
-}",
-      "type": "text",
+      },
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isTrashed": false,
+      "template": {
+        "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6",
+      },
+      "values": [
+        {
+          "alias": "title",
+          "culture": null,
+          "editorAlias": "Umbraco.TextBox",
+          "segment": null,
+          "value": "_Updated Title",
+        },
+      ],
+      "variants": [
+        {
+          "createDate": "NORMALIZED_DATE",
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test Document Properties",
+          "publishDate": null,
+          "scheduledPublishDate": null,
+          "scheduledUnpublishDate": null,
+          "segment": null,
+          "state": "Draft",
+          "updateDate": "NORMALIZED_DATE",
+        },
+      ],
     },
-  ],
+    "message": "Successfully updated 1 property value(s)",
+    "success": true,
+    "updatedProperties": [
+      "title",
+    ],
+  },
 }
 `;
 
 exports[`update-document-properties should update property value twice 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "success": true,
-  "message": "Successfully updated 1 property value(s)",
-  "updatedProperties": [
-    "title"
-  ],
-  "addedProperties": [],
-  "document": {
-    "template": {
-      "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6"
-    },
-    "isTrashed": false,
-    "documentType": {
-      "id": "00000000-0000-0000-0000-000000000000",
-      "icon": "icon-home color-blue",
-      "collection": null
-    },
-    "id": "00000000-0000-0000-0000-000000000000",
-    "flags": [],
-    "values": [
-      {
-        "editorAlias": "Umbraco.TextBox",
-        "culture": null,
-        "segment": null,
-        "alias": "title",
-        "value": "_Second Updated Title"
-      }
-    ],
-    "variants": [
-      {
-        "state": "Draft",
-        "publishDate": null,
-        "scheduledPublishDate": null,
-        "scheduledUnpublishDate": null,
+  "content": [],
+  "structuredContent": {
+    "addedProperties": [],
+    "document": {
+      "documentType": {
+        "collection": null,
+        "icon": "icon-home color-blue",
         "id": "00000000-0000-0000-0000-000000000000",
-        "flags": [],
-        "createDate": "NORMALIZED_DATE",
-        "updateDate": "NORMALIZED_DATE",
-        "culture": null,
-        "segment": null,
-        "name": "_Test Document Properties"
-      }
-    ]
-  }
-}",
-      "type": "text",
+      },
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isTrashed": false,
+      "template": {
+        "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6",
+      },
+      "values": [
+        {
+          "alias": "title",
+          "culture": null,
+          "editorAlias": "Umbraco.TextBox",
+          "segment": null,
+          "value": "_Second Updated Title",
+        },
+      ],
+      "variants": [
+        {
+          "createDate": "NORMALIZED_DATE",
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test Document Properties",
+          "publishDate": null,
+          "scheduledPublishDate": null,
+          "scheduledUnpublishDate": null,
+          "segment": null,
+          "state": "Draft",
+          "updateDate": "NORMALIZED_DATE",
+        },
+      ],
     },
-  ],
+    "message": "Successfully updated 1 property value(s)",
+    "success": true,
+    "updatedProperties": [
+      "title",
+    ],
+  },
 }
 `;
 
 exports[`update-document-properties should update single property value 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "success": true,
-  "message": "Successfully updated 1 property value(s)",
-  "updatedProperties": [
-    "title"
-  ],
-  "addedProperties": [],
-  "document": {
-    "template": {
-      "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6"
-    },
-    "isTrashed": false,
-    "documentType": {
-      "id": "00000000-0000-0000-0000-000000000000",
-      "icon": "icon-home color-blue",
-      "collection": null
-    },
-    "id": "00000000-0000-0000-0000-000000000000",
-    "flags": [],
-    "values": [
-      {
-        "editorAlias": "Umbraco.TextBox",
-        "culture": null,
-        "segment": null,
-        "alias": "title",
-        "value": "_Updated Title"
-      }
-    ],
-    "variants": [
-      {
-        "state": "Draft",
-        "publishDate": null,
-        "scheduledPublishDate": null,
-        "scheduledUnpublishDate": null,
+  "content": [],
+  "structuredContent": {
+    "addedProperties": [],
+    "document": {
+      "documentType": {
+        "collection": null,
+        "icon": "icon-home color-blue",
         "id": "00000000-0000-0000-0000-000000000000",
-        "flags": [],
-        "createDate": "NORMALIZED_DATE",
-        "updateDate": "NORMALIZED_DATE",
-        "culture": null,
-        "segment": null,
-        "name": "_Test Document Properties"
-      }
-    ]
-  }
-}",
-      "type": "text",
+      },
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isTrashed": false,
+      "template": {
+        "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6",
+      },
+      "values": [
+        {
+          "alias": "title",
+          "culture": null,
+          "editorAlias": "Umbraco.TextBox",
+          "segment": null,
+          "value": "_Updated Title",
+        },
+      ],
+      "variants": [
+        {
+          "createDate": "NORMALIZED_DATE",
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test Document Properties",
+          "publishDate": null,
+          "scheduledPublishDate": null,
+          "scheduledUnpublishDate": null,
+          "segment": null,
+          "state": "Draft",
+          "updateDate": "NORMALIZED_DATE",
+        },
+      ],
     },
-  ],
+    "message": "Successfully updated 1 property value(s)",
+    "success": true,
+    "updatedProperties": [
+      "title",
+    ],
+  },
 }
 `;

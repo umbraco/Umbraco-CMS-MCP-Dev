@@ -2,21 +2,19 @@ import { getTemporaryFileByIdParams } from "@/umb-management-api/temporary-file/
 import GetTemporaryFileTool from "../get/get-temporary-file.js";
 import { TemporaryFileBuilder } from "./helpers/temporary-file-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("get-temporary-file", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let builder: TemporaryFileBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new TemporaryFileBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
   });
 
@@ -24,9 +22,7 @@ describe("get-temporary-file", () => {
     await builder.withExampleFile().create();
 
     const params = getTemporaryFileByIdParams.parse({ id: builder.getId() });
-    const result = await GetTemporaryFileTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetTemporaryFileTool.handler(params, createMockRequestHandlerExtra());
 
     const snapshot = createSnapshotResult(result, builder.getId());
     expect(snapshot).toMatchSnapshot();
@@ -34,9 +30,8 @@ describe("get-temporary-file", () => {
 
   it("should handle non-existent temporary file", async () => {
     const params = getTemporaryFileByIdParams.parse({ id: BLANK_UUID });
-    const result = await GetTemporaryFileTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetTemporaryFileTool.handler(params, createMockRequestHandlerExtra());
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

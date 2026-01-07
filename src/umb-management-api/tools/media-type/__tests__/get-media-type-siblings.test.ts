@@ -1,30 +1,26 @@
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import GetMediaTypeSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { MediaTypeFolderTestHelper } from "./helpers/media-type-folder-helper.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-media-type-siblings", () => {
+  setupTestEnvironment();
+
   const TEST_FOLDER_NAME = "_Test Folder for Siblings";
   const TEST_SIBLING_1_NAME = "_Test Sibling 1";
   const TEST_SIBLING_2_NAME = "_Test Sibling 2";
   const TEST_TARGET_NAME = "_Test Target MediaType";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     await MediaTypeTestHelper.cleanup(TEST_SIBLING_1_NAME);
     await MediaTypeTestHelper.cleanup(TEST_SIBLING_2_NAME);
     await MediaTypeTestHelper.cleanup(TEST_TARGET_NAME);
     await MediaTypeFolderTestHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get sibling media types", async () => {
@@ -55,8 +51,8 @@ describe("get-media-type-siblings", () => {
     const result = await GetMediaTypeSiblingsTool.handler(
       {
         target: targetBuilder.getId(),
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify response
@@ -72,8 +68,8 @@ describe("get-media-type-siblings", () => {
     const result = await GetMediaTypeSiblingsTool.handler(
       {
         target: nonExistentId,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify error response

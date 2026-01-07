@@ -8,15 +8,25 @@ export class MemberTestHelper {
   }
 
   static async cleanup(username: string): Promise<void> {
-    try {
-      const member = await this.findMember(username);
-      if (member) {
+    // Small delay to avoid database lock contention
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const member = await this.findMember(username);
+        if (!member) return;
+
         const client = UmbracoManagementClient.getClient();
         await client.deleteMemberById(member.id);
+        return; // Success
+      } catch (error) {
+        const isDeadlock = String(error).toLowerCase().includes('deadlock');
+        if (isDeadlock && attempt === 0) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        } else {
+          return; // Give up
+        }
       }
-    } catch (error) {
-      // Ignore errors during cleanup
-      console.error("Error during member cleanup:", error);
     }
   }
 

@@ -1,23 +1,19 @@
 import GetDocumentUrlsTool from "../get/get-document-urls.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { normalizeObject } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetDocumentUrls";
 const TEST_PARENT_DOCUMENT_NAME = "_Test GetDocumentUrls Parent";
 const TEST_CHILD_DOCUMENT_NAME = "_Test GetDocumentUrls Child";
 
 describe("get-document-urls", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(TEST_PARENT_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(TEST_CHILD_DOCUMENT_NAME);
@@ -32,19 +28,19 @@ describe("get-document-urls", () => {
     const item = builder.getCreatedItem();
     const result = await GetDocumentUrlsTool.handler(
       { id: [item.id] },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(DocumentTestHelper.normaliseIds(parsed)).toMatchSnapshot();
+    const data = validateToolResponse(GetDocumentUrlsTool, result);
+    expect(normalizeObject(data.items)).toMatchSnapshot();
   });
 
   it("should handle non-existent document id", async () => {
     const result = await GetDocumentUrlsTool.handler(
       { id: [BLANK_UUID] },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(DocumentTestHelper.normaliseIds(parsed)).toMatchSnapshot();
+    const data = validateToolResponse(GetDocumentUrlsTool, result);
+    expect(normalizeObject(data.items)).toMatchSnapshot();
   });
 
   it("should get URLs for a child document", async () => {
@@ -64,9 +60,9 @@ describe("get-document-urls", () => {
     const childItem = childBuilder.getCreatedItem();
     const result = await GetDocumentUrlsTool.handler(
       { id: [childItem.id] },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(DocumentTestHelper.normaliseIds(parsed)).toMatchSnapshot();
+    const data = validateToolResponse(GetDocumentUrlsTool, result);
+    expect(normalizeObject(data.items)).toMatchSnapshot();
   });
 });

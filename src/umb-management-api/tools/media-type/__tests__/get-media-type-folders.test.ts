@@ -1,33 +1,25 @@
 import GetMediaTypeFoldersTool from "../items/get/get-media-type-folders.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-media-type-folders", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   describe("successful retrieval", () => {
     it("should get media type folders with default pagination", async () => {
       // Act
       const result = await GetMediaTypeFoldersTool.handler(
-        { take: 100 },
-        { signal: new AbortController().signal }
+        { take: 100 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure
-      const parsed = JSON.parse(result.content[0].text as string);
       expect(parsed.items).toBeDefined();
       expect(Array.isArray(parsed.items)).toBe(true);
       expect(typeof parsed.total).toBe('number');
@@ -44,16 +36,16 @@ describe("get-media-type-folders", () => {
     it("should get media type folders with custom pagination parameters", async () => {
       // Act
       const result = await GetMediaTypeFoldersTool.handler(
-        { skip: 0, take: 5 },
-        { signal: new AbortController().signal }
+        { skip: 0, take: 5 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify pagination worked
-      const parsed = JSON.parse(result.content[0].text as string);
       expect(parsed.items.length).toBeLessThanOrEqual(5);
       expect(typeof parsed.total).toBe('number');
     });
@@ -61,16 +53,16 @@ describe("get-media-type-folders", () => {
     it("should get media type folders with skip parameter", async () => {
       // Act - Skip first item
       const result = await GetMediaTypeFoldersTool.handler(
-        { skip: 1, take: 10 },
-        { signal: new AbortController().signal }
+        { skip: 1, take: 10 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify pagination parameters worked
-      const parsed = JSON.parse(result.content[0].text as string);
       expect(parsed.items).toBeDefined();
       expect(Array.isArray(parsed.items)).toBe(true);
       expect(typeof parsed.total).toBe('number');
@@ -79,16 +71,16 @@ describe("get-media-type-folders", () => {
     it("should handle large pagination values", async () => {
       // Act - Request more items than likely exist
       const result = await GetMediaTypeFoldersTool.handler(
-        { skip: 0, take: 1000 },
-        { signal: new AbortController().signal }
+        { skip: 0, take: 1000 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response is still valid
-      const parsed = JSON.parse(result.content[0].text as string);
       expect(parsed.items).toBeDefined();
       expect(Array.isArray(parsed.items)).toBe(true);
       expect(typeof parsed.total).toBe('number');
@@ -98,12 +90,12 @@ describe("get-media-type-folders", () => {
     it("should verify response structure and properties", async () => {
       // Act
       const result = await GetMediaTypeFoldersTool.handler(
-        { skip: 0, take: 100 },
-        { signal: new AbortController().signal }
+        { skip: 0, take: 100 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      // Assert
-      const parsed = JSON.parse(result.content[0].text as string);
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
 
       // Verify response has correct structure
       expect(parsed).toHaveProperty('items');
@@ -130,16 +122,16 @@ describe("get-media-type-folders", () => {
     it("should handle empty results when skip exceeds available items", async () => {
       // Act - Request with high skip value to get empty results
       const result = await GetMediaTypeFoldersTool.handler(
-        { skip: 10000, take: 10 },
-        { signal: new AbortController().signal }
+        { skip: 10000, take: 10 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure is correct even with no results
-      const parsed = JSON.parse(result.content[0].text as string);
       expect(parsed.items).toBeDefined();
       expect(Array.isArray(parsed.items)).toBe(true);
       expect(parsed.items).toHaveLength(0);
@@ -150,16 +142,16 @@ describe("get-media-type-folders", () => {
     it("should handle zero take parameter", async () => {
       // Act
       const result = await GetMediaTypeFoldersTool.handler(
-        { skip: 0, take: 0 },
-        { signal: new AbortController().signal }
+        { skip: 0, take: 0 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify no items returned but total is still available
-      const parsed = JSON.parse(result.content[0].text as string);
       expect(parsed.items).toHaveLength(0);
       expect(typeof parsed.total).toBe('number');
       expect(parsed.total).toBeGreaterThanOrEqual(0);
@@ -168,25 +160,25 @@ describe("get-media-type-folders", () => {
     it("should handle boundary pagination values", async () => {
       // Arrange - First get the total number of items
       const firstResult = await GetMediaTypeFoldersTool.handler(
-        { skip: 0, take: 100 },
-        { signal: new AbortController().signal }
+        { skip: 0, take: 100 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      const firstParsed = JSON.parse(firstResult.content[0].text as string);
+      const firstParsed = validateToolResponse(GetMediaTypeFoldersTool, firstResult);
       const totalItems = firstParsed.total;
 
       // Act - Test boundary case where skip equals total items
       const result = await GetMediaTypeFoldersTool.handler(
-        { skip: totalItems, take: 10 },
-        { signal: new AbortController().signal }
+        { skip: totalItems, take: 10 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify empty results but valid structure
-      const parsed = JSON.parse(result.content[0].text as string);
       expect(parsed.items).toHaveLength(0);
       expect(parsed.total).toBe(totalItems);
     });
@@ -194,15 +186,15 @@ describe("get-media-type-folders", () => {
     it("should handle pagination with skip and small take values", async () => {
       // Act - Test with small pagination window
       const result = await GetMediaTypeFoldersTool.handler(
-        { skip: 0, take: 1 },
-        { signal: new AbortController().signal }
+        { skip: 0, take: 1 } as any,
+        createMockRequestHandlerExtra()
       );
 
-      // Assert
+      // Assert - Validate response against tool's output schema
+      const parsed = validateToolResponse(GetMediaTypeFoldersTool, result);
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
-      const parsed = JSON.parse(result.content[0].text as string);
       expect(parsed.items.length).toBeLessThanOrEqual(1);
       expect(typeof parsed.total).toBe('number');
       expect(parsed.total).toBeGreaterThanOrEqual(0);

@@ -1,31 +1,23 @@
 import GetRelationByRelationTypeIdTool from "../get/get-relation-by-relation-type-id.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_RELATION_TYPE_ID = "4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf";
 const TEST_SKIP_VALUE = 0;
 const TEST_TAKE_VALUE = 10;
 
 describe("get-relation-by-relation-type-id", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get relations by relation type ID", async () => {
     const result = await GetRelationByRelationTypeIdTool.handler({
       id: TEST_RELATION_TYPE_ID,
       skip: TEST_SKIP_VALUE,
       take: TEST_TAKE_VALUE
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
-    const response = JSON.parse((result.content[0] as any).text);
+    const response = validateToolResponse(GetRelationByRelationTypeIdTool, result);
 
     // Verify response structure
     expect(response).toHaveProperty('total');
@@ -42,7 +34,7 @@ describe("get-relation-by-relation-type-id", () => {
       id: "00000000-0000-0000-0000-000000000000",
       skip: TEST_SKIP_VALUE,
       take: TEST_TAKE_VALUE
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });

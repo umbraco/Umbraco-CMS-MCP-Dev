@@ -1,42 +1,29 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import {
   postDocumentByIdPublicAccessParams,
   postDocumentByIdPublicAccessBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+
+const inputSchema = {
+  id: postDocumentByIdPublicAccessParams.shape.id,
+  data: z.object(postDocumentByIdPublicAccessBody.shape),
+};
 
 const PostDocumentPublicAccessTool = {
   name: "post-document-public-access",
   description: "Adds public access settings to a document by Id.",
-  schema: {
-    id: postDocumentByIdPublicAccessParams.shape.id,
-    data: z.object(postDocumentByIdPublicAccessBody.shape),
-  },
-  isReadOnly: false,
+  inputSchema: inputSchema,
   slices: ['public-access'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.PublicAccess),
-  handler: async (model: { id: string; data: any }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.postDocumentByIdPublicAccess(
-      model.id,
-      model.data
+  handler: (async (model: { id: string; data: any }) => {
+    return executeVoidApiCall((client) =>
+      client.postDocumentByIdPublicAccess(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<{
-  id: typeof postDocumentByIdPublicAccessParams.shape.id;
-  data: ReturnType<typeof z.object<typeof postDocumentByIdPublicAccessBody.shape>>;
-}>;
+  }),
+} satisfies ToolDefinition<typeof inputSchema>;
 
 export default withStandardDecorators(PostDocumentPublicAccessTool);

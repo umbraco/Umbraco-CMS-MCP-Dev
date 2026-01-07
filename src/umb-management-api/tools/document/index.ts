@@ -58,7 +58,7 @@ export const DocumentCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-  const tools: ToolDefinition<any>[] = [];
+  const tools: ToolDefinition<any, any>[] = [];
 
   if (AuthorizationPolicies.TreeAccessDocuments(user)) {
     tools.push(GetDocumentByIdTool);

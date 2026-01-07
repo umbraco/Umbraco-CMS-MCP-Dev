@@ -2,11 +2,119 @@
 
 exports[`get-indexer should list all indexes with default parameters 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":5,"items":[{"name":"DeliveryApiContentIndex","healthStatus":{"status":"Healthy","message":null},"canRebuild":true,"searcherName":"DeliveryApiContentSearcher","documentCount":"NORMALIZED_COUNT","fieldCount":"NORMALIZED_COUNT","providerProperties":{"CommitCount":0,"DefaultAnalyzer":"StandardAnalyzer","LuceneDirectory":"NRTCachingDirectory","LuceneIndexFolder":"/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/deliveryapicontentindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/deliveryapicontentindex","DirectoryFactory":"Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory","EnableDefaultEventHandler":false,"PublishedValuesOnly":false}},{"name":"ExternalIndex","healthStatus":{"status":"Healthy","message":null},"canRebuild":true,"searcherName":"ExternalSearcher","documentCount":"NORMALIZED_COUNT","fieldCount":"NORMALIZED_COUNT","providerProperties":{"CommitCount":0,"DefaultAnalyzer":"StandardAnalyzer","LuceneDirectory":"NRTCachingDirectory","LuceneIndexFolder":"/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/externalindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/externalindex","DirectoryFactory":"Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory","EnableDefaultEventHandler":true,"PublishedValuesOnly":true,"SupportProtectedContent":false}},{"name":"InternalIndex","healthStatus":{"status":"Healthy","message":null},"canRebuild":true,"searcherName":"InternalSearcher","documentCount":"NORMALIZED_COUNT","fieldCount":"NORMALIZED_COUNT","providerProperties":{"CommitCount":0,"DefaultAnalyzer":"CultureInvariantWhitespaceAnalyzer","LuceneDirectory":"NRTCachingDirectory","LuceneIndexFolder":"/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/internalindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/internalindex","DirectoryFactory":"Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory","EnableDefaultEventHandler":true,"PublishedValuesOnly":false,"SupportProtectedContent":true}},{"name":"MembersIndex","healthStatus":{"status":"Healthy","message":null},"canRebuild":true,"searcherName":"MembersSearcher","documentCount":"NORMALIZED_COUNT","fieldCount":"NORMALIZED_COUNT","providerProperties":{"CommitCount":0,"DefaultAnalyzer":"CultureInvariantWhitespaceAnalyzer","LuceneDirectory":"NRTCachingDirectory","LuceneIndexFolder":"/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/membersindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/membersindex","DirectoryFactory":"Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory","EnableDefaultEventHandler":true,"PublishedValuesOnly":false,"IncludeFields":["id","nodeName","updateDate","loginName","email","__Key"]}},{"name":"PDFIndex","healthStatus":{"status":"Healthy","message":null},"canRebuild":true,"searcherName":"PDFSearcher","documentCount":"NORMALIZED_COUNT","fieldCount":"NORMALIZED_COUNT","providerProperties":{"CommitCount":0,"DefaultAnalyzer":"StandardAnalyzer","LuceneDirectory":"NRTCachingDirectory","LuceneIndexFolder":"/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/pdfindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/pdfindex","DirectoryFactory":"Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory"}}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "canRebuild": true,
+        "documentCount": "NORMALIZED_COUNT",
+        "fieldCount": "NORMALIZED_COUNT",
+        "healthStatus": {
+          "message": null,
+          "status": "Healthy",
+        },
+        "name": "DeliveryApiContentIndex",
+        "providerProperties": {
+          "CommitCount": 0,
+          "DefaultAnalyzer": "StandardAnalyzer",
+          "DirectoryFactory": "Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory",
+          "EnableDefaultEventHandler": false,
+          "LuceneDirectory": "NRTCachingDirectory",
+          "LuceneIndexFolder": "/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/deliveryapicontentindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/deliveryapicontentindex",
+          "PublishedValuesOnly": false,
+        },
+        "searcherName": "DeliveryApiContentSearcher",
+      },
+      {
+        "canRebuild": true,
+        "documentCount": "NORMALIZED_COUNT",
+        "fieldCount": "NORMALIZED_COUNT",
+        "healthStatus": {
+          "message": null,
+          "status": "Healthy",
+        },
+        "name": "ExternalIndex",
+        "providerProperties": {
+          "CommitCount": 0,
+          "DefaultAnalyzer": "StandardAnalyzer",
+          "DirectoryFactory": "Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory",
+          "EnableDefaultEventHandler": true,
+          "LuceneDirectory": "NRTCachingDirectory",
+          "LuceneIndexFolder": "/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/externalindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/externalindex",
+          "PublishedValuesOnly": true,
+          "SupportProtectedContent": false,
+        },
+        "searcherName": "ExternalSearcher",
+      },
+      {
+        "canRebuild": true,
+        "documentCount": "NORMALIZED_COUNT",
+        "fieldCount": "NORMALIZED_COUNT",
+        "healthStatus": {
+          "message": null,
+          "status": "Healthy",
+        },
+        "name": "InternalIndex",
+        "providerProperties": {
+          "CommitCount": 0,
+          "DefaultAnalyzer": "CultureInvariantWhitespaceAnalyzer",
+          "DirectoryFactory": "Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory",
+          "EnableDefaultEventHandler": true,
+          "LuceneDirectory": "NRTCachingDirectory",
+          "LuceneIndexFolder": "/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/internalindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/internalindex",
+          "PublishedValuesOnly": false,
+          "SupportProtectedContent": true,
+        },
+        "searcherName": "InternalSearcher",
+      },
+      {
+        "canRebuild": true,
+        "documentCount": "NORMALIZED_COUNT",
+        "fieldCount": "NORMALIZED_COUNT",
+        "healthStatus": {
+          "message": null,
+          "status": "Healthy",
+        },
+        "name": "MembersIndex",
+        "providerProperties": {
+          "CommitCount": 0,
+          "DefaultAnalyzer": "CultureInvariantWhitespaceAnalyzer",
+          "DirectoryFactory": "Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory",
+          "EnableDefaultEventHandler": true,
+          "IncludeFields": [
+            "id",
+            "nodeName",
+            "updateDate",
+            "loginName",
+            "email",
+            "__Key",
+          ],
+          "LuceneDirectory": "NRTCachingDirectory",
+          "LuceneIndexFolder": "/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/membersindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/membersindex",
+          "PublishedValuesOnly": false,
+        },
+        "searcherName": "MembersSearcher",
+      },
+      {
+        "canRebuild": true,
+        "documentCount": "NORMALIZED_COUNT",
+        "fieldCount": "NORMALIZED_COUNT",
+        "healthStatus": {
+          "message": null,
+          "status": "Healthy",
+        },
+        "name": "PDFIndex",
+        "providerProperties": {
+          "CommitCount": 0,
+          "DefaultAnalyzer": "StandardAnalyzer",
+          "DirectoryFactory": "Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory",
+          "LuceneDirectory": "NRTCachingDirectory",
+          "LuceneIndexFolder": "/niofsdirectory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/pdfindex lockfactory=noprefixsimplefslockfactory@/users/philw/projects/umbraco-mcp/infrastructure/test-umbraco/mcptestsite/umbraco/data/temp/examineindexes/pdfindex",
+        },
+        "searcherName": "PDFSearcher",
+      },
+    ],
+    "total": 5,
+  },
 }
 `;

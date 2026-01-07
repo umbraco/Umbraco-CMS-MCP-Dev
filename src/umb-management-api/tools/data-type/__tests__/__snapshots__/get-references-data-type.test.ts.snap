@@ -2,33 +2,43 @@
 
 exports[`get-references-data-type should get references for a data type used in document type property 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"$type":"DocumentTypePropertyTypeReferenceResponseModel","documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-document","alias":"testdoctypeforreferences","name":"_Test DocType For References"},"alias":"testProperty","id":"00000000-0000-0000-0000-000000000000","name":"Test Property"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "$type": "DocumentTypePropertyTypeReferenceResponseModel",
+        "alias": "testProperty",
+        "documentType": {
+          "alias": "testdoctypeforreferences",
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test DocType For References",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Test Property",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-references-data-type should handle non-existent data type 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`get-references-data-type should return empty array for unreferenced data type 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

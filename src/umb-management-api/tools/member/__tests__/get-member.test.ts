@@ -5,20 +5,15 @@ import {
 import GetMemberTool from "../get/get-member.js";
 import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test GetMember";
 
 describe("get-member", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberTestHelper.cleanup("test@example.com");
   });
 
@@ -37,9 +32,11 @@ describe("get-member", () => {
     // Get by ID
     const result = await GetMemberTool.handler(
       { id },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const member = JSON.parse(result.content[0].text as string);
+
+    // Validate response against tool's output schema
+    const member = validateToolResponse(GetMemberTool, result);
 
     expect(member.id).toBe(id);
     expect(member.username).toBe("test@example.com");
@@ -48,8 +45,8 @@ describe("get-member", () => {
   it("should return error for non-existent ID", async () => {
     const result = await GetMemberTool.handler(
       { id: BLANK_UUID },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    expect(result.content[0].text).toMatch(/error/i);
+    expect(result.isError).toBe(true);
   });
 });

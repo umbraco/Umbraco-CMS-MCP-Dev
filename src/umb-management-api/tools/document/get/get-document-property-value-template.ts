@@ -35,10 +35,12 @@ IMPORTANT: Templates only provide editorAlias and value structure. When using wi
 - alias: The property alias from your document type
 
 Note: Some templates (BlockList, BlockGrid, ImageCropper, UploadField) have special requirements indicated in their _notes.`,
-  schema: propertyValueTemplateSchema.shape,
-  isReadOnly: true,
+  inputSchema: propertyValueTemplateSchema.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
   slices: ['read'],
-  handler: async (model: PropertyValueTemplateParams) => {
+  handler: (async (model: PropertyValueTemplateParams) => {
     try {
       // If no editorAlias provided, return list of available editors
       if (!model.editorAlias) {
@@ -107,7 +109,7 @@ Note: Some templates (BlockList, BlockGrid, ImageCropper, UploadField) have spec
         isError: true,
       };
     }
-  },
+  }),
 } satisfies ToolDefinition<typeof propertyValueTemplateSchema.shape>;
 
 function buildTemplateResponse(editorKey: string, template: PropertyValueTemplate) {

@@ -1,25 +1,20 @@
 import GetRecycleBinDocumentByIdOriginalParentTool from "../get/get-recycle-bin-document-original-parent.js";
 import GetRecycleBinDocumentReferencedByTool from "../get/get-recycle-bin-document-referenced-by.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCUMENT_NAME = "_Test Recycle Bin Document";
 
 describe("recycle-bin-reference-tests", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up both regular and recycle bin documents
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTestHelper.emptyRecycleBin();
-    console.error = originalConsoleError;
   });
 
   describe("get-recycle-bin-document-original-parent", () => {
@@ -40,12 +35,12 @@ describe("recycle-bin-reference-tests", () => {
       // Act: Get original parent for the recycled document
       const result = await GetRecycleBinDocumentByIdOriginalParentTool.handler(
         { id: recycleBinDocument!.id },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Verify the response (might be null if no original parent)
-      const responseText = result.content[0].text;
-      if (responseText === "null" || responseText === null) {
+      const data = result.structuredContent;
+      if (data === null || data === undefined) {
         // Handle null response - no original parent found
         expect(result).toMatchSnapshot();
       } else {
@@ -58,7 +53,7 @@ describe("recycle-bin-reference-tests", () => {
       // Act: Try to get original parent for non-existent recycled document
       const result = await GetRecycleBinDocumentByIdOriginalParentTool.handler(
         { id: "00000000-0000-0000-0000-000000000000" },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Should handle gracefully
@@ -83,8 +78,8 @@ describe("recycle-bin-reference-tests", () => {
 
       // Act: Get references for the recycled document
       const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { take: 20 },
-        { signal: new AbortController().signal }
+        { take: 20, skip: 0 },
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Verify the response
@@ -109,7 +104,7 @@ describe("recycle-bin-reference-tests", () => {
       // Act: Get references with pagination
       const result = await GetRecycleBinDocumentReferencedByTool.handler(
         { skip: 0, take: 10 },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Verify the response
@@ -120,8 +115,8 @@ describe("recycle-bin-reference-tests", () => {
     it("should handle non-existent recycled document", async () => {
       // Act: Try to get references for non-existent recycled document
       const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { take: 20 },
-        { signal: new AbortController().signal }
+        { take: 20, skip: 0 },
+        createMockRequestHandlerExtra()
       );
 
       // Assert: Should handle gracefully

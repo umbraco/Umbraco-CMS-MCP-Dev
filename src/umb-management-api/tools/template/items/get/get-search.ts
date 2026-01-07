@@ -1,27 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getItemTemplateSearchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetItemTemplateSearchParams } from "@/umb-management-api/schemas/index.js";
+import { getItemTemplateSearchQueryParams, getItemTemplateSearchResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetTemplateSearchTool = {
   name: "get-template-search",
   description: "Searches the template tree for a template by name. It does NOT allow for searching for template folders.",
-  schema: getItemTemplateSearchQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getItemTemplateSearchQueryParams.shape,
+  outputSchema: getItemTemplateSearchResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['search'],
-  handler: async (params: any) => {
-    const client = UmbracoManagementClient.getClient();
-    var response = await client.getItemTemplateSearch(params);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getItemTemplateSearchQueryParams.shape>;
+  handler: (async (params: GetItemTemplateSearchParams) => {
+    return executeGetApiCall((client) =>
+      client.getItemTemplateSearch(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getItemTemplateSearchQueryParams.shape, typeof getItemTemplateSearchResponse.shape>;
 
 export default withStandardDecorators(GetTemplateSearchTool);

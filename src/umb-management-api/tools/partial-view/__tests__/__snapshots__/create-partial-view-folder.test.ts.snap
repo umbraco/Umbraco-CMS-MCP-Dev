@@ -2,12 +2,11 @@
 
 exports[`create-partial-view-folder should create a partial view folder 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "message": "Partial view folder created successfully",
+    "path": "/_TestCreateFolder",
+  },
 }
 `;
 
@@ -26,21 +25,14 @@ exports[`create-partial-view-folder should create a partial view folder 2`] = `
 
 exports[`create-partial-view-folder should handle existing folder name 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-partial-view-folder:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Folder already exists",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The folder already exists",
-    "operationStatus": "AlreadyExists"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "AlreadyExists",
+    "status": 400,
+    "title": "Folder already exists",
+    "type": "Error",
+  },
 }
 `;

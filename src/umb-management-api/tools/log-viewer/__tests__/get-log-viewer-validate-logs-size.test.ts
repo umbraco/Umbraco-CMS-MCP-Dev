@@ -1,27 +1,18 @@
 import GetLogViewerValidateLogsSizeTool from "../get/get-log-viewer-validate-logs-size.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-log-viewer-validate-logs-size", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should validate logs size with default parameters", async () => {
     const result = await GetLogViewerValidateLogsSizeTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      { startDate: undefined, endDate: undefined },
+      createMockRequestHandlerExtra()
     );
 
-    // Parse the response
-    const response = result.content[0].text as string;
-    expect(response).toEqual("allowed access");
+    // Verify operation result using snapshot
+    expect(result).toMatchSnapshot();
   });
 
   it("should validate logs size with custom date range", async () => {
@@ -35,11 +26,10 @@ describe("get-log-viewer-validate-logs-size", () => {
         startDate: oneMonthAgo.toISOString(),
         endDate: now.toISOString(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Parse the response
-    const response = result.content[0].text as string;
-    expect(response).toEqual("allowed access");
+    // Verify operation result using snapshot
+    expect(result).toMatchSnapshot();
   });
 });

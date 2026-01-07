@@ -1,20 +1,20 @@
 import GetRecycleBinMediaChildrenTool from "../items/get/get-recycle-bin-children.js";
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+
+const TEST_MEDIA_NAME = "_Test Media Children";
+const TEST_CHILD_NAME = "_Test Media Child";
 
 describe("get-recycle-bin-media-children", () => {
-  const TEST_MEDIA_NAME = "_Test Media Children";
-  const TEST_CHILD_NAME = "_Test Media Child";
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let tempFileBuilder: TemporaryFileBuilder;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     await MediaTestHelper.emptyRecycleBin();
 
     tempFileBuilder = await new TemporaryFileBuilder()
@@ -23,7 +23,6 @@ describe("get-recycle-bin-media-children", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test media
     await MediaTestHelper.emptyRecycleBin();
   });
@@ -51,24 +50,16 @@ describe("get-recycle-bin-media-children", () => {
       {
         parentId: parentBuilder.getId(),
         take: 10,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
-    const response = JSON.parse(result.content[0].text as string);
-    const normalizedResponse = {
-      ...response,
-      items: response.items.map((item: any) => ({
-        ...item,
-        id: "normalized-id",
-        createDate: "normalized-date",
-        parent: item.parent ? { id: "normalized-parent-id" } : null,
-      })),
-    };
+    // Use createSnapshotResult for normalized snapshot
+    const normalizedResult = createSnapshotResult(result);
+    expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the handler response using snapshot
-    expect(normalizedResponse).toMatchSnapshot();
-
+    // Validate response against tool's outputSchema
+    const response = validateToolResponse(GetRecycleBinMediaChildrenTool, result);
     expect(response.items).toHaveLength(1);
     expect(response.items[0].variants[0].name).toBe(TEST_CHILD_NAME);
   });
@@ -78,8 +69,8 @@ describe("get-recycle-bin-media-children", () => {
       {
         parentId: BLANK_UUID,
         take: 10,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

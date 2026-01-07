@@ -2,53 +2,34 @@
 
 exports[`is-used-data-type should check if a data type is used 1`] = `
 {
-  "content": [
-    {
-      "text": "true",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": true,
 }
 `;
 
 exports[`is-used-data-type should handle non-existent data type 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using is-used-data-type:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The data type could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The data type could not be found",
+    "type": "Error",
+  },
 }
 `;
 
 exports[`is-used-data-type should return false when data type is not used 1`] = `
 {
-  "content": [
-    {
-      "text": "false",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": false,
 }
 `;
 
 exports[`is-used-data-type should return true when data type is used in document type without documents 1`] = `
 {
-  "content": [
-    {
-      "text": "false",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": false,
 }
 `;

@@ -37,12 +37,11 @@ exports[`create-member should create a member 1`] = `
 
 exports[`create-member should create a member with additional properties 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Member created successfully",
+  },
 }
 `;
 

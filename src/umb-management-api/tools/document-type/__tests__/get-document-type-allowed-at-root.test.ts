@@ -2,21 +2,16 @@ import GetDocumentTypeAllowedAtRootTool from "../get/get-document-type-allowed-a
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { DocumentTypeResponseModel } from "@/umb-management-api/schemas/index.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Root";
 
 describe("get-document-type-allowed-at-root", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test document types
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
   });
@@ -34,12 +29,11 @@ describe("get-document-type-allowed-at-root", () => {
       {
         skip: 0,
         take: 10,
-      },
-      { signal: new AbortController().signal }
+      } as any, createMockRequestHandlerExtra()
     );
 
     // Parse and find our test document type
-    const parsed = JSON.parse(result.content[0].text as string) as {
+    const parsed = validateToolResponse(GetDocumentTypeAllowedAtRootTool, result) as unknown as {
       items: DocumentTypeResponseModel[];
     };
     const testDocType = parsed.items.find(

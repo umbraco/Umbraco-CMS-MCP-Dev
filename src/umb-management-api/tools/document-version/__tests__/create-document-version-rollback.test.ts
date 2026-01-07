@@ -1,8 +1,9 @@
 import CreateDocumentVersionRollbackTool from "../post/create-document-version-rollback.js";
 import { DocumentVersionBuilder } from "./helpers/document-version-builder.js";
 import { DocumentVersionVerificationHelper } from "./helpers/document-version-verification-helper.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 
@@ -10,13 +11,8 @@ const TEST_DOCUMENT_NAME = "_Test Document for Rollback";
 const TEST_VARIANT_DOCUMENT_TYPE_NAME = "_Test Variant DocType for Rollback";
 
 describe("create-document-version-rollback", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let documentBuilder: DocumentVersionBuilder;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     // Clean up any test documents
@@ -24,7 +20,6 @@ describe("create-document-version-rollback", () => {
     await DocumentVersionVerificationHelper.cleanup(TEST_DOCUMENT_NAME + " With Culture");
     // Clean up the variant document type (must be after document cleanup)
     await DocumentTypeTestHelper.cleanup(TEST_VARIANT_DOCUMENT_TYPE_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should rollback document to a specific version", async () => {
@@ -50,11 +45,11 @@ describe("create-document-version-rollback", () => {
     const result = await CreateDocumentVersionRollbackTool.handler({
       id: versionId,
       culture: undefined
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
-    const normalizedResult = createSnapshotResult(result, versionId);
-    expect(normalizedResult).toMatchSnapshot();
+    expect(result.isError).toBeFalsy();
+    expect(result).toMatchSnapshot();
   });
 
   it("should rollback document to a specific version with culture", async () => {
@@ -94,11 +89,11 @@ describe("create-document-version-rollback", () => {
     const result = await CreateDocumentVersionRollbackTool.handler({
       id: versionId,
       culture: "en-US"
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
-    const normalizedResult = createSnapshotResult(result, versionId);
-    expect(normalizedResult).toMatchSnapshot();
+    expect(result.isError).toBeFalsy();
+    expect(result).toMatchSnapshot();
   });
 
   it("should handle non-existent version ID", async () => {
@@ -106,9 +101,10 @@ describe("create-document-version-rollback", () => {
     const result = await CreateDocumentVersionRollbackTool.handler({
       id: "non-existent-version-id",
       culture: undefined
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert - Use normalizeErrorResponse for error responses
+    expect(result.isError).toBe(true);
     const normalizedResult = normalizeErrorResponse(result);
     expect(normalizedResult).toMatchSnapshot();
   });

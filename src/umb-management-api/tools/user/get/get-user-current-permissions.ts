@@ -1,28 +1,23 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getUserCurrentPermissionsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetUserCurrentPermissionsParams } from "@/umb-management-api/schemas/index.js";
+import {
+  getUserCurrentPermissionsQueryParams,
+  getUserCurrentPermissionsResponse,
+} from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetUserCurrentPermissionsTool = {
   name: "get-user-current-permissions",
   description: "Gets the current user's permissions for the specified entity",
-  schema: getUserCurrentPermissionsQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getUserCurrentPermissionsQueryParams.shape,
+  outputSchema: getUserCurrentPermissionsResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['permissions'],
-  handler: async (params: GetUserCurrentPermissionsParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getUserCurrentPermissions(params);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getUserCurrentPermissionsQueryParams.shape>;
+  handler: (async (params: GetUserCurrentPermissionsParams) => {
+    return executeGetApiCall((client) =>
+      client.getUserCurrentPermissions(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getUserCurrentPermissionsQueryParams.shape, typeof getUserCurrentPermissionsResponse.shape>;
 
 export default withStandardDecorators(GetUserCurrentPermissionsTool);

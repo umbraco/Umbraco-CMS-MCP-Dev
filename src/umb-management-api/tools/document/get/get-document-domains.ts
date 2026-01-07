@@ -1,26 +1,21 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getDocumentByIdDomainsParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDocumentByIdDomainsParams, getDocumentByIdDomainsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDocumentDomainsTool = {
   name: "get-document-domains",
   description: "Gets the domains assigned to a document by Id.",
-  schema: getDocumentByIdDomainsParams.shape,
-  isReadOnly: true,
-  slices: ['domains'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDocumentByIdDomains(id);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getDocumentByIdDomainsParams.shape,
+  outputSchema: getDocumentByIdDomainsResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getDocumentByIdDomainsParams.shape>;
+  slices: ['domains'],
+  handler: (async ({ id }: { id: string }) => {
+    return executeGetApiCall((client) =>
+      client.getDocumentByIdDomains(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getDocumentByIdDomainsParams.shape, typeof getDocumentByIdDomainsResponse.shape>;
 
 export default withStandardDecorators(GetDocumentDomainsTool);

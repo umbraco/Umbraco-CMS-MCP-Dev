@@ -2,35 +2,24 @@
 
 exports[`create-language should create a language 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "success": true,
-  "isoCode": "en-GB"
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "isoCode": "en-GB",
+    "message": "Language created successfully",
+  },
 }
 `;
 
 exports[`create-language should handle existing language 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-language:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Duplicate ISO code",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "Another language already exists with the attempted ISO code.",
-    "operationStatus": "DuplicateIsoCode"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "DuplicateIsoCode",
+    "status": 400,
+    "title": "Duplicate ISO code",
+    "type": "Error",
+  },
 }
 `;

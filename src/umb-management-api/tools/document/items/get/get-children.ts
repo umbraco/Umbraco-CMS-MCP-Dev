@@ -1,27 +1,22 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getTreeDocumentChildrenQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getTreeDocumentChildrenQueryParams, getTreeDocumentChildrenResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 
 const GetDocumentChildrenTool = {
   name: "get-document-children",
   description: "Gets child items for a document.",
-  schema: getTreeDocumentChildrenQueryParams.shape,
-  isReadOnly: true,
-  slices: ['tree'],
-  handler: async (params: z.infer<typeof getTreeDocumentChildrenQueryParams>) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeDocumentChildren(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getTreeDocumentChildrenQueryParams.shape,
+  outputSchema: getTreeDocumentChildrenResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getTreeDocumentChildrenQueryParams.shape>;
+  slices: ['tree'],
+  handler: (async (params: z.infer<typeof getTreeDocumentChildrenQueryParams>) => {
+    return executeGetApiCall((client) =>
+      client.getTreeDocumentChildren(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeDocumentChildrenQueryParams.shape, typeof getTreeDocumentChildrenResponse.shape>;
 
 export default withStandardDecorators(GetDocumentChildrenTool);

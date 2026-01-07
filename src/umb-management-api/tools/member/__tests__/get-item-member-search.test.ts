@@ -3,7 +3,8 @@ import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import { Default_Memeber_TYPE_ID } from "../../../../constants/constants.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Item Member Search";
 const TEST_MEMBER_EMAIL = "itemsearch@example.com";
@@ -13,17 +14,17 @@ const TEST_MEMBER_EMAIL_2 = "itemsearch2@example.com";
 const TEST_MEMBER_USERNAME_2 = "itemsearch2@example.com";
 
 describe("get-item-member-search", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
+  beforeEach(async () => {
+    // Ensure cleanup before each test to prevent test pollution
+    await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME);
+    await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME_2);
   });
 
   afterEach(async () => {
     await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME);
     await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME_2);
-    console.error = originalConsoleError;
   });
 
   it("should search for member items", async () => {
@@ -38,8 +39,8 @@ describe("get-item-member-search", () => {
 
     // Act - Search for the member
     const result = await GetItemMemberSearchTool.handler(
-      { query: TEST_MEMBER_USERNAME, take: 100 },
-      { signal: new AbortController().signal }
+      { query: TEST_MEMBER_USERNAME, take: 100, skip: undefined, allowedMemberTypes: undefined },
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify results contain our member
@@ -48,14 +49,15 @@ describe("get-item-member-search", () => {
   });
 
   it("should return empty results for non-existent search query", async () => {
-    // Act - Search for a member that doesn't exist
+    // Act - Search for a member that doesn't exist using a very unique string
+    const uniqueQuery = `xYz_NoNe_ExIsT_${Date.now()}_${Math.random().toString(36).substring(7)}@nowhere.invalid`;
     const result = await GetItemMemberSearchTool.handler(
-      { query: "nonexistent_member_" + Date.now(), take: 100 },
-      { signal: new AbortController().signal }
+      { query: uniqueQuery, take: 100, skip: undefined, allowedMemberTypes: undefined },
+      createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify empty results
-    const data = JSON.parse(result.content[0].text as string);
+    // Assert - Validate response against tool's output schema
+    const data = validateToolResponse(GetItemMemberSearchTool, result);
     expect(data.total).toBe(0);
     expect(data.items).toEqual([]);
   });
@@ -80,12 +82,12 @@ describe("get-item-member-search", () => {
 
     // Act - Search with pagination (take only 1 result)
     const result = await GetItemMemberSearchTool.handler(
-      { query: "itemsearch", skip: 0, take: 1 },
-      { signal: new AbortController().signal }
+      { query: "itemsearch", skip: 0, take: 1, allowedMemberTypes: undefined },
+      createMockRequestHandlerExtra()
     );
 
-    // Assert - Verify only one item is returned
-    const data = JSON.parse(result.content[0].text as string);
+    // Assert - Validate response against tool's output schema
+    const data = validateToolResponse(GetItemMemberSearchTool, result);
     expect(data.items.length).toBeLessThanOrEqual(1);
   });
 });

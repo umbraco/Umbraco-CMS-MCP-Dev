@@ -1,28 +1,22 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetItemDataTypeSearchParams } from "@/umb-management-api/schemas/index.js";
-import { getItemDataTypeSearchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getItemDataTypeSearchQueryParams, getItemDataTypeSearchResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypeSearchTool = {
   name: "get-data-type-search",
   description: "Searches the data type tree for a data type by name. It does NOT allow for searching for data type folders.",
-  schema: getItemDataTypeSearchQueryParams.shape,
-  isReadOnly: true,
-  slices: ['search'],
-  handler: async (params: GetItemDataTypeSearchParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemDataTypeSearch(params);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getItemDataTypeSearchQueryParams.shape,
+  outputSchema: getItemDataTypeSearchResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getItemDataTypeSearchQueryParams.shape>;
+  slices: ['search'],
+  handler: (async (params: GetItemDataTypeSearchParams) => {
+    return executeGetApiCall((client) =>
+      client.getItemDataTypeSearch(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getItemDataTypeSearchQueryParams.shape, typeof getItemDataTypeSearchResponse.shape>;
 
 export default withStandardDecorators(GetDataTypeSearchTool);

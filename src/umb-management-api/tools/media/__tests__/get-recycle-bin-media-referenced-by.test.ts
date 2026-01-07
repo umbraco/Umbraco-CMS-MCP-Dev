@@ -2,7 +2,6 @@ import GetRecycleBinMediaReferencedByTool from "../get/get-recycle-bin-media-ref
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MEDIA_PICKER_DATA_TYPE_ID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
@@ -10,6 +9,8 @@ import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/do
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import MoveMediaToRecycleBinTool from "../put/move-to-recycle-bin.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media Recycle Ref";
 const TEST_MEDIA_NAME_2 = "_Test Media Recycle Ref 2";
@@ -18,13 +19,10 @@ const TEST_DOCUMENT_NAME = "_Test Document Recycle Media";
 const TEST_DOCUMENT_NAME_2 = "_Test Document Recycle Media 2";
 
 describe("get-recycle-bin-media-referenced-by", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let tempFileBuilder: TemporaryFileBuilder;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     tempFileBuilder = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
@@ -39,7 +37,6 @@ describe("get-recycle-bin-media-referenced-by", () => {
       DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME_2),
       DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME)
     ]);
-    console.error = originalConsoleError;
   }, 15000); // Increase timeout for cleanup
 
   it("should return empty when no deleted media has references", async () => {
@@ -47,15 +44,15 @@ describe("get-recycle-bin-media-referenced-by", () => {
       {
         skip: 0,
         take: 10
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify empty results
-    const parsed = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's outputSchema and verify empty results
+    const parsed = validateToolResponse(GetRecycleBinMediaReferencedByTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
   });
@@ -102,8 +99,8 @@ describe("get-recycle-bin-media-referenced-by", () => {
     await MoveMediaToRecycleBinTool.handler(
       {
         id: mediaBuilder.getId()
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Check for references to deleted media
@@ -111,15 +108,15 @@ describe("get-recycle-bin-media-referenced-by", () => {
       {
         skip: 0,
         take: 10
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify references are detected
-    const parsed = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's outputSchema and verify references are detected
+    const parsed = validateToolResponse(GetRecycleBinMediaReferencedByTool, result);
     expect(parsed.total).toBeGreaterThan(0);
     expect(parsed.items.length).toBeGreaterThan(0);
   });
@@ -130,15 +127,15 @@ describe("get-recycle-bin-media-referenced-by", () => {
       {
         skip: 5,
         take: 5
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Should return valid result structure
-    const parsed = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's outputSchema
+    const parsed = validateToolResponse(GetRecycleBinMediaReferencedByTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -149,15 +146,15 @@ describe("get-recycle-bin-media-referenced-by", () => {
     const result = await GetRecycleBinMediaReferencedByTool.handler(
       {
         take: 20
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Should return valid result structure
-    const parsed = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's outputSchema
+    const parsed = validateToolResponse(GetRecycleBinMediaReferencedByTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
   });

@@ -7,7 +7,8 @@ import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/docum
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test Member Are Referenced";
 const TEST_MEMBER_EMAIL = "test-are-referenced@example.com";
@@ -15,12 +16,7 @@ const TEST_DOCUMENT_TYPE_NAME = "_Test DocType Member Are Ref";
 const TEST_DOCUMENT_NAME = "_Test Document Member Are Ref";
 
 describe("get-member-are-referenced", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up in parallel to speed up tests
@@ -31,7 +27,6 @@ describe("get-member-are-referenced", () => {
       DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME),
       DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME)
     ]);
-    console.error = originalConsoleError;
   }, 15000);
 
   it("should check member references using real member picker", async () => {
@@ -60,14 +55,14 @@ describe("get-member-are-referenced", () => {
 
     const result = await GetMemberAreReferencedTool.handler(
       { id: [memberBuilder.getId()], skip: 0, take: 10 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the API returns proper structure with found reference
-    const parsed = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's output schema
+    const parsed = validateToolResponse(GetMemberAreReferencedTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -94,14 +89,14 @@ describe("get-member-are-referenced", () => {
 
     const result = await GetMemberAreReferencedTool.handler(
       { id: [builder1.getId(), builder2.getId()], skip: 0, take: 10 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify the API returns proper structure with expected zero results
-    const parsed = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's output schema
+    const parsed = validateToolResponse(GetMemberAreReferencedTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
     expect(Array.isArray(parsed.items)).toBe(true);

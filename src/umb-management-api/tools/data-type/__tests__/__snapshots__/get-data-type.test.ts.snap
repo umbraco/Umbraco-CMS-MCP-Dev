@@ -2,13 +2,39 @@
 
 exports[`get-data-type should get a data type by ID 1`] = `
 {
-  "canIgnoreStartNodes": true,
-  "editorAlias": "Umbraco.TextBox",
-  "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
-  "id": "00000000-0000-0000-0000-000000000000",
-  "isDeletable": true,
-  "name": "_Test Get DataType",
-  "parent": undefined,
-  "values": [],
+  "content": [],
+  "structuredContent": {
+    "canIgnoreStartNodes": true,
+    "editorAlias": "Umbraco.TextBox",
+    "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isDeletable": true,
+    "name": "_Test Get DataType",
+    "values": [],
+  },
+}
+`;
+
+exports[`get-data-type should handle invalid ID format 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
+}
+`;
+
+exports[`get-data-type should handle non-existent data type 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The data type could not be found",
+    "type": "Error",
+  },
 }
 `;

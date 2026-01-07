@@ -5,22 +5,17 @@ import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/do
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { TAG_DATA_TYPE_ID } from "@/constants/constants.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test Tag Document";
 const TEST_TAG_1 = "test-tag";
 const NON_EXISTENT_TAG = "NonExistentTag_12345";
 
 describe("get-tag", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
@@ -44,9 +39,13 @@ describe("get-tag", () => {
     // Test the get-tags tool with a common search term
     const result = await GetTagsTool.handler(
       {
+        query: undefined,
+        tagGroup: undefined,
+        culture: undefined,
+        skip: undefined,
         take: 50,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize the result for snapshot testing
@@ -73,9 +72,12 @@ describe("get-tag", () => {
     const result = await GetTagsTool.handler(
       {
         query: NON_EXISTENT_TAG,
+        tagGroup: undefined,
+        culture: undefined,
+        skip: undefined,
         take: 100,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();
@@ -100,9 +102,12 @@ describe("get-tag", () => {
     const result = await GetTagsTool.handler(
       {
         query: "test",
+        tagGroup: undefined,
+        culture: undefined,
+        skip: undefined,
         take: 100,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize the result for snapshot testing

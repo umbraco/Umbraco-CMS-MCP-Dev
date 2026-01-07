@@ -1,6 +1,6 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getServerUpgradeCheckResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetServerUpgradeCheckTool = {
   name: "get-server-upgrade-check",
@@ -16,22 +16,15 @@ const GetServerUpgradeCheckTool = {
     "comment": "A new version of Umbraco is available",
     "url": "https://our.umbraco.com/download/releases/15.3.2"
   }`,
-  schema: {},
-  isReadOnly: true,
+  inputSchema: {},
+  outputSchema: getServerUpgradeCheckResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['server-info'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getServerUpgradeCheck();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<{}>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getServerUpgradeCheck(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof getServerUpgradeCheckResponse.shape>;
 
 export default withStandardDecorators(GetServerUpgradeCheckTool);

@@ -1,27 +1,25 @@
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import GetMediaByIdArrayTool from "../get/get-media-by-id-array.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+
+const TEST_MEDIA_NAME = "_Test Media";
 
 describe("get-media-by-id-array", () => {
-  const TEST_MEDIA_NAME = "_Test Media";
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let tempFileBuilder: TemporaryFileBuilder;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     tempFileBuilder = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MediaTestHelper.cleanup(TEST_MEDIA_NAME);
   });
 
@@ -36,8 +34,8 @@ describe("get-media-by-id-array", () => {
     const result = await GetMediaByIdArrayTool.handler(
       {
         id: [mediaBuilder.getId()],
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     const normalizedItems = createSnapshotResult(result);
@@ -48,8 +46,8 @@ describe("get-media-by-id-array", () => {
     const result = await GetMediaByIdArrayTool.handler(
       {
         id: [BLANK_UUID],
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();
@@ -59,8 +57,8 @@ describe("get-media-by-id-array", () => {
     const result = await GetMediaByIdArrayTool.handler(
       {
         id: [],
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();

@@ -2,21 +2,16 @@ import GetDocumentTypeAllowedChildrenTool from "../get/get-document-type-allowed
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("get-document-type-allowed-children", () => {
   const TEST_PARENT_NAME = "_Test Parent DocumentType";
   const TEST_CHILD_NAME = "_Test Child DocumentType";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test document types
     await DocumentTypeTestHelper.cleanup(TEST_PARENT_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_CHILD_NAME);
@@ -45,19 +40,18 @@ describe("get-document-type-allowed-children", () => {
         id: parentBuilder.getId(),
         skip: 0,
         take: 100,
-      },
-      { signal: new AbortController().signal }
+      } as any, createMockRequestHandlerExtra()
     );
 
     // Parse the response
-    const response = JSON.parse(result.content[0].text as string);
+    const response = validateToolResponse(GetDocumentTypeAllowedChildrenTool, result);
 
     // Verify the response contains our child document type
     const foundChild = response.items.find(
       (item: any) => item.name === TEST_CHILD_NAME
     );
     expect(foundChild).toBeDefined();
-    expect(foundChild.name).toBe(TEST_CHILD_NAME);
+    expect(foundChild!.name).toBe(TEST_CHILD_NAME);
 
     // Verify the total count
     expect(response.total).toBe(1);
@@ -73,8 +67,7 @@ describe("get-document-type-allowed-children", () => {
         id: BLANK_UUID,
         skip: 0,
         take: 100,
-      },
-      { signal: new AbortController().signal }
+      } as any, createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();
@@ -92,12 +85,11 @@ describe("get-document-type-allowed-children", () => {
         id: parentBuilder.getId(),
         skip: 0,
         take: 100,
-      },
-      { signal: new AbortController().signal }
+      } as any, createMockRequestHandlerExtra()
     );
 
     // Parse and verify empty response
-    const response = JSON.parse(result.content[0].text as string);
+    const response = validateToolResponse(GetDocumentTypeAllowedChildrenTool, result);
     expect(response.total).toBe(0);
     expect(response.items).toHaveLength(0);
 

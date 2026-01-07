@@ -2,11 +2,83 @@
 
 exports[`get-relation-type should get relation types with default pagination 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":6,"items":[{"id":"00000000-0000-0000-0000-000000000000","alias":"relateDocumentOnCopy","parentObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"childObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"name":"Relate Document On Copy","isBidirectional":true,"isDependency":false},{"id":"00000000-0000-0000-0000-000000000000","alias":"relateParentDocumentOnDelete","parentObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"childObject":{"name":"Document","id":"c66ba18e-eaf3-4cff-8a22-41b16d66a972"},"name":"Relate Parent Document On Delete","isBidirectional":false,"isDependency":false},{"id":"00000000-0000-0000-0000-000000000000","alias":"relateParentMediaFolderOnDelete","parentObject":{"name":"Media","id":"b796f64c-1f99-4ffb-b886-4bf4bc011a9c"},"childObject":{"name":"Media","id":"b796f64c-1f99-4ffb-b886-4bf4bc011a9c"},"name":"Relate Parent Media Folder On Delete","isBidirectional":false,"isDependency":false},{"id":"00000000-0000-0000-0000-000000000000","alias":"umbDocument","parentObject":null,"childObject":null,"name":"Related Document","isBidirectional":false,"isDependency":true},{"id":"00000000-0000-0000-0000-000000000000","alias":"umbMedia","parentObject":null,"childObject":null,"name":"Related Media","isBidirectional":false,"isDependency":true},{"id":"00000000-0000-0000-0000-000000000000","alias":"umbMember","parentObject":null,"childObject":null,"name":"Related Member","isBidirectional":false,"isDependency":true}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "relateDocumentOnCopy",
+        "childObject": {
+          "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972",
+          "name": "Document",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": true,
+        "isDependency": false,
+        "name": "Relate Document On Copy",
+        "parentObject": {
+          "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972",
+          "name": "Document",
+        },
+      },
+      {
+        "alias": "relateParentDocumentOnDelete",
+        "childObject": {
+          "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972",
+          "name": "Document",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": false,
+        "isDependency": false,
+        "name": "Relate Parent Document On Delete",
+        "parentObject": {
+          "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972",
+          "name": "Document",
+        },
+      },
+      {
+        "alias": "relateParentMediaFolderOnDelete",
+        "childObject": {
+          "id": "b796f64c-1f99-4ffb-b886-4bf4bc011a9c",
+          "name": "Media",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": false,
+        "isDependency": false,
+        "name": "Relate Parent Media Folder On Delete",
+        "parentObject": {
+          "id": "b796f64c-1f99-4ffb-b886-4bf4bc011a9c",
+          "name": "Media",
+        },
+      },
+      {
+        "alias": "umbDocument",
+        "childObject": null,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": false,
+        "isDependency": true,
+        "name": "Related Document",
+        "parentObject": null,
+      },
+      {
+        "alias": "umbMedia",
+        "childObject": null,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": false,
+        "isDependency": true,
+        "name": "Related Media",
+        "parentObject": null,
+      },
+      {
+        "alias": "umbMember",
+        "childObject": null,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": false,
+        "isDependency": true,
+        "name": "Related Member",
+        "parentObject": null,
+      },
+    ],
+    "total": 6,
+  },
 }
 `;

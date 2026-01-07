@@ -1,24 +1,23 @@
 import GetLanguageItemsTool from "../get/get-language-items.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-language-items", () => {
+  setupTestEnvironment();
+
   const TEST_LANGUAGE_NAME = "_Test Language Items";
   const TEST_LANGUAGE_ISO = "en-GB";
-  let originalConsoleError: typeof console.error;
   let builder: LanguageBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new LanguageBuilder();
   });
 
   afterEach(async () => {
     await builder.cleanup();
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
-    console.error = originalConsoleError;
   });
 
   it("should get language item by isoCode", async () => {
@@ -30,12 +29,19 @@ describe("get-language-items", () => {
       .withIsMandatory(false)
       .create();
 
-    const result = await GetLanguageItemsTool.handler({ isoCode: [TEST_LANGUAGE_ISO] }, { signal: new AbortController().signal });
+    const result = await GetLanguageItemsTool.handler(
+      { isoCode: [TEST_LANGUAGE_ISO] },
+      createMockRequestHandlerExtra()
+    );
+    validateToolResponse(GetLanguageItemsTool, result);
     expect(result).toMatchSnapshot();
   });
 
   it("should handle non-existent isoCode", async () => {
-    const result = await GetLanguageItemsTool.handler({ isoCode: ["xx-NOTFOUND"] }, { signal: new AbortController().signal });
+    const result = await GetLanguageItemsTool.handler(
+      { isoCode: ["xx-NOTFOUND"] },
+      createMockRequestHandlerExtra()
+    );
     expect(result).toMatchSnapshot();
   });
-}); 
+});

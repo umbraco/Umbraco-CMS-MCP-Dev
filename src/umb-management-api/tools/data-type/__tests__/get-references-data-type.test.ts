@@ -4,26 +4,21 @@ import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType References";
 const TEST_DOCUMENT_TYPE_NAME = "_Test DocType For References";
 
 describe("get-references-data-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await Promise.all([
       DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME),
       DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME),
     ]);
-    console.error = originalConsoleError;
   });
 
   it("should get references for a data type used in document type property", async () => {
@@ -42,7 +37,7 @@ describe("get-references-data-type", () => {
 
     const result = await GetReferencesDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
@@ -58,18 +53,17 @@ describe("get-references-data-type", () => {
 
     const result = await GetReferencesDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
-
   });
 
   it("should handle non-existent data type", async () => {
     const result = await GetReferencesDataTypeTool.handler(
       { id: BLANK_UUID },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

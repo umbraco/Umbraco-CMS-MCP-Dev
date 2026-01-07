@@ -2,7 +2,8 @@ import CreateStylesheetTool from "../post/create-stylesheet.js";
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import { StylesheetFolderBuilder } from "./helpers/stylesheet-folder-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_STYLESHEET_NAME = "_TestCreateStylesheet.css";
 const TEST_CONTENT = "/* Test create stylesheet */\nbody { color: blue; }\n.test { margin: 10px; }";
@@ -11,29 +12,24 @@ const EXISTING_CONTENT = "/* Existing content */\np { font-size: 14px; }";
 const TEST_STYLESHEET_PARENT_FOLDER = "_TestStylesheetParentFolder";
 
 describe("create-stylesheet", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await StylesheetHelper.cleanup(TEST_STYLESHEET_PARENT_FOLDER);
     await StylesheetHelper.cleanup(TEST_STYLESHEET_NAME);
     await StylesheetHelper.cleanup(EXISTING_STYLESHEET_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should create a stylesheet", async () => {
     // Arrange
     const params = {
       name: TEST_STYLESHEET_NAME,
+      path: undefined,
       content: TEST_CONTENT
     };
 
     // Act
-    const result = await CreateStylesheetTool.handler(params, { signal: new AbortController().signal });
+    const result = await CreateStylesheetTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -48,14 +44,16 @@ describe("create-stylesheet", () => {
     // Arrange - First create the stylesheet
     await CreateStylesheetTool.handler({
       name: EXISTING_STYLESHEET_NAME,
+      path: undefined,
       content: EXISTING_CONTENT
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Act - Try to create it again with same name
     const result = await CreateStylesheetTool.handler({
       name: EXISTING_STYLESHEET_NAME,
+      path: undefined,
       content: TEST_CONTENT
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -75,7 +73,7 @@ describe("create-stylesheet", () => {
     };
 
     // Act
-    const result = await CreateStylesheetTool.handler(params, { signal: new AbortController().signal });
+    const result = await CreateStylesheetTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);

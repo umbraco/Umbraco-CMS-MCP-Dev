@@ -2,55 +2,170 @@
 
 exports[`partial-view-tree-operations get-ancestors should get ancestor items 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_Test Parent","path":"/_Test Parent","parent":{"path":"/","id":"00000000-0000-0000-0000-000000000000"},"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"_Test Child.cshtml","path":"/_Test Parent/_Test Child.cshtml","parent":{"path":"/_Test Parent","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "",
+        "parent": null,
+        "path": "/",
+      },
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "_Test Parent",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/",
+        },
+        "path": "/_Test Parent",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "_Test Child.cshtml",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/_Test Parent",
+        },
+        "path": "/_Test Parent/_Test Child.cshtml",
+      },
+    ],
+  },
 }
 `;
 
 exports[`partial-view-tree-operations get-ancestors should handle non-existent descendant path 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true},{"name":"_NonExistent","path":"/_NonExistent","parent":{"path":"/"},"isFolder":true,"hasChildren":false},{"name":"test.cshtml","path":"/_NonExistent/test.cshtml","parent":{"path":"/_NonExistent"},"isFolder":true,"hasChildren":false}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "",
+        "parent": null,
+        "path": "/",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "_NonExistent",
+        "parent": {
+          "path": "/",
+        },
+        "path": "/_NonExistent",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "test.cshtml",
+        "parent": {
+          "path": "/_NonExistent",
+        },
+        "path": "/_NonExistent/test.cshtml",
+      },
+    ],
+  },
 }
 `;
 
 exports[`partial-view-tree-operations get-children should get child items of a folder 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"name":"_Test Child.cshtml","path":"/_Test Folder/_Test Child.cshtml","parent":{"path":"/_Test Folder","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "_Test Child.cshtml",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/_Test Folder",
+        },
+        "path": "/_Test Folder/_Test Child.cshtml",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`partial-view-tree-operations get-children should handle non-existent parent path 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`partial-view-tree-operations get-root should get root level partial views 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":8,"items":[{"name":"blockgrid","path":"/blockgrid","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"blocklist","path":"/blocklist","parent":null,"isFolder":true,"hasChildren":true,"id":"00000000-0000-0000-0000-000000000000"},{"name":"authors.cshtml","path":"/authors.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"footer.cshtml","path":"/footer.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"mainNavigation.cshtml","path":"/mainNavigation.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"metaData.cshtml","path":"/metaData.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"pageHeader.cshtml","path":"/pageHeader.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"},{"name":"xmlSitemap.cshtml","path":"/xmlSitemap.cshtml","parent":null,"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "blockgrid",
+        "parent": null,
+        "path": "/blockgrid",
+      },
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "blocklist",
+        "parent": null,
+        "path": "/blocklist",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "authors.cshtml",
+        "parent": null,
+        "path": "/authors.cshtml",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "footer.cshtml",
+        "parent": null,
+        "path": "/footer.cshtml",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "mainNavigation.cshtml",
+        "parent": null,
+        "path": "/mainNavigation.cshtml",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "metaData.cshtml",
+        "parent": null,
+        "path": "/metaData.cshtml",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "pageHeader.cshtml",
+        "parent": null,
+        "path": "/pageHeader.cshtml",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": false,
+        "name": "xmlSitemap.cshtml",
+        "parent": null,
+        "path": "/xmlSitemap.cshtml",
+      },
+    ],
+    "total": 8,
+  },
 }
 `;

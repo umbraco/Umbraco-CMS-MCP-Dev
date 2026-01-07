@@ -1,10 +1,9 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getDocumentByIdReferencedDescendantsParams, getDocumentByIdReferencedDescendantsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDocumentByIdReferencedDescendantsParams, getDocumentByIdReferencedDescendantsQueryParams, getDocumentByIdReferencedDescendantsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
-const schema = z.object({
+const inputSchema = z.object({
   ...getDocumentByIdReferencedDescendantsParams.shape,
   ...getDocumentByIdReferencedDescendantsQueryParams.shape,
 });
@@ -18,21 +17,17 @@ const GetDocumentByIdReferencedDescendantsTool = {
   • Impact analysis: Before deleting a document folder, see what content would be affected
   • Dependency tracking: Find all content using documents from a specific folder hierarchy
   • Content auditing: Identify which descendant document items are actually being used`,
-  schema: schema.shape,
-  isReadOnly: true,
-  slices: ['references'],
-  handler: async ({ id, skip, take }: z.infer<typeof schema>) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDocumentByIdReferencedDescendants(id, { skip, take });
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: inputSchema.shape,
+  outputSchema: getDocumentByIdReferencedDescendantsResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof schema.shape>;
+  slices: ['references'],
+  handler: (async ({ id, skip, take }: z.infer<typeof inputSchema>) => {
+    return executeGetApiCall((client) =>
+      client.getDocumentByIdReferencedDescendants(id, { skip, take }, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof inputSchema.shape, typeof getDocumentByIdReferencedDescendantsResponse.shape>;
 
 export default withStandardDecorators(GetDocumentByIdReferencedDescendantsTool);

@@ -1,27 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { deleteTemplateByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const DeleteTemplateTool = {
   name: "delete-template",
   description: "Deletes a template by Id",
-  schema: deleteTemplateByIdParams.shape,
-  isReadOnly: false,
-  slices: ['delete'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    var response = await client.deleteTemplateById(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: deleteTemplateByIdParams.shape,
+  annotations: {
+    destructiveHint: true,
   },
+  slices: ['delete'],
+  handler: (async ({ id }: { id: string }) => {
+    return executeVoidApiCall((client) =>
+      client.deleteTemplateById(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
 } satisfies ToolDefinition<typeof deleteTemplateByIdParams.shape>;
 
 export default withStandardDecorators(DeleteTemplateTool);

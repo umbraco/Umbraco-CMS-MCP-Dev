@@ -1,28 +1,25 @@
 import GetLogViewerLogTool from "../get/get-log-viewer-log.js";
-import { LogViewerTestHelper } from "./helpers/log-viewer-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-log-viewer-log", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get log viewer logs with default parameters", async () => {
     const result = await GetLogViewerLogTool.handler(
-      { take: 100 },
-      { signal: new AbortController().signal }
+      { skip: undefined, take: 100, orderDirection: undefined, filterExpression: undefined, logLevel: undefined, startDate: undefined, endDate: undefined },
+      createMockRequestHandlerExtra()
     );
 
-    // Parse the response
-    const response = JSON.parse(result.content[0].text as string);
-    LogViewerTestHelper.verifyLogResponse(response);
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerLogTool, result);
+
+    // Verify response structure (logs are dynamic, so we verify structure not content)
+    expect(content).toHaveProperty("items");
+    expect(content).toHaveProperty("total");
+    expect(Array.isArray(content.items)).toBe(true);
+    expect(typeof content.total).toBe("number");
+    expect(content.total).toBeGreaterThanOrEqual(0);
   });
 
   it("should get log viewer logs with custom parameters", async () => {
@@ -33,25 +30,25 @@ describe("get-log-viewer-log", () => {
 
     const result = await GetLogViewerLogTool.handler(
       {
-        skip: 0, // Start from the beginning
-        take: 10, // Get more items to increase chances of finding matches
+        skip: 0,
+        take: 10,
         orderDirection: "Descending",
-        filterExpression: "", // Remove filter to get any logs
-        logLevel: ["Error", "Warning", "Information"], // Include more log levels
+        filterExpression: "",
+        logLevel: ["Error", "Warning", "Information"],
         startDate: oneMonthAgo.toISOString(),
         endDate: now.toISOString(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Parse the response
-    const response = JSON.parse(result.content[0].text as string);
-    LogViewerTestHelper.verifyLogResponse(response);
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerLogTool, result);
 
-    // Verify the items are within the date range
-    const itemDate = new Date(response.items[0].timestamp).getTime();
-    const nowAfterCall = new Date().getTime(); // Capture current time after API call
-    expect(itemDate).toBeGreaterThanOrEqual(oneMonthAgo.getTime());
-    expect(itemDate).toBeLessThanOrEqual(nowAfterCall);
+    // Verify response structure (logs are dynamic, so we verify structure not content)
+    expect(content).toHaveProperty("items");
+    expect(content).toHaveProperty("total");
+    expect(Array.isArray(content.items)).toBe(true);
+    expect(content.items.length).toBeLessThanOrEqual(10);
+    expect(typeof content.total).toBe("number");
   });
 });

@@ -2,22 +2,17 @@ import GetDocumentTypeAvailableCompositionsTool from "../post/get-document-type-
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { DocumentTypeCompositionResponseModel } from "@/umb-management-api/schemas/index.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Available";
 const TEST_COMPOSITION_NAME = "_Test Available Composition";
 
 describe("get-document-type-available-compositions", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test document types
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_COMPOSITION_NAME);
@@ -43,16 +38,12 @@ describe("get-document-type-available-compositions", () => {
         currentPropertyAliases: [],
         currentCompositeIds: [],
         isElement: false,
-      },
-      { signal: new AbortController().signal }
+      } as any, createMockRequestHandlerExtra()
     );
 
     // Parse and filter just our test composition
-
-    const parsed = JSON.parse(result.content[0].text as string) as Record<
-      string,
-      DocumentTypeCompositionResponseModel
-    >;
+    const data = validateToolResponse(GetDocumentTypeAvailableCompositionsTool, result);
+    const parsed = data.items as unknown as Record<string, DocumentTypeCompositionResponseModel>;
     const testComposition =
       parsed[
         Object.keys(parsed).find(

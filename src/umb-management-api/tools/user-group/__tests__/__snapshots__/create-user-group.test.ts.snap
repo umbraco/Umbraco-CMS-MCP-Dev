@@ -2,56 +2,52 @@
 
 exports[`create-user-group should create a user group 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "User group created successfully",
+  },
 }
 `;
 
 exports[`create-user-group should create a user group 2`] = `
-[
-  {
-    "alias": "testUserGroupCreated",
-    "aliasCanBeChanged": true,
-    "documentRootAccess": false,
-    "documentStartNode": null,
-    "fallbackPermissions": [],
-    "hasAccessToAllLanguages": true,
-    "icon": null,
-    "id": "NORMALIZED_ID",
-    "isDeletable": true,
-    "languages": [],
-    "mediaRootAccess": false,
-    "mediaStartNode": null,
-    "name": "_Test User Group Created",
-    "permissions": [],
-    "sections": [
-      "Umb.Section.Content",
+{
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "testUserGroupCreated",
+        "aliasCanBeChanged": true,
+        "documentRootAccess": false,
+        "documentStartNode": null,
+        "fallbackPermissions": [],
+        "hasAccessToAllLanguages": true,
+        "icon": null,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "languages": [],
+        "mediaRootAccess": false,
+        "mediaStartNode": null,
+        "name": "_Test User Group Created",
+        "permissions": [],
+        "sections": [
+          "Umb.Section.Content",
+        ],
+      },
     ],
   },
-]
+}
 `;
 
 exports[`create-user-group should handle existing user group 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-user-group:
-{
-  "message": "Request failed with status code 409",
-  "response": {
-    "type": "Error",
-    "title": "Duplicate alias",
-    "status": 409,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "A user group already exists with the attempted alias.",
-    "operationStatus": "DuplicateAlias"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "DuplicateAlias",
+    "status": 409,
+    "title": "Duplicate alias",
+    "type": "Error",
+  },
 }
 `;

@@ -1,28 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { postHealthCheckExecuteActionBody, postHealthCheckExecuteActionResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { HealthCheckActionRequestModel } from "@/umb-management-api/schemas/index.js";
-import { postHealthCheckExecuteActionBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const ExecuteHealthCheckActionTool = {
   name: "execute-health-check-action",
   description: "Executes remedial actions for health issues. WARNING: This performs system remedial actions that may modify system configuration, files, or database content. Use with caution.",
-  schema: postHealthCheckExecuteActionBody.shape,
-  isReadOnly: false,
+  inputSchema: postHealthCheckExecuteActionBody.shape,
+  outputSchema: postHealthCheckExecuteActionResponse.shape,
   slices: ['diagnostics'],
-  handler: async (model: HealthCheckActionRequestModel) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.postHealthCheckExecuteAction(model);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof postHealthCheckExecuteActionBody.shape>;
+  handler: (async (model: HealthCheckActionRequestModel) => {
+    return executeGetApiCall((client) =>
+      client.postHealthCheckExecuteAction(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof postHealthCheckExecuteActionBody.shape, typeof postHealthCheckExecuteActionResponse.shape>;
 
 export default withStandardDecorators(ExecuteHealthCheckActionTool);

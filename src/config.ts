@@ -37,10 +37,128 @@ export interface UmbracoServerConfig {
   };
 }
 
+// ============================================================================
+// Configuration Field Definitions - Table-Driven Approach
+// ============================================================================
+
+type ConfigFieldType = "string" | "boolean" | "csv" | "csv-path";
+
+interface ConfigFieldDefinition {
+  name: string;
+  envVar: string;
+  cliFlag: string;
+  type: ConfigFieldType;
+  required?: boolean;
+  isAuth?: boolean;
+  isSecret?: boolean;
+}
+
+const CONFIG_FIELDS: ConfigFieldDefinition[] = [
+  // Auth fields (required)
+  { name: "clientId", envVar: "UMBRACO_CLIENT_ID", cliFlag: "umbraco-client-id", type: "string", required: true, isAuth: true },
+  { name: "clientSecret", envVar: "UMBRACO_CLIENT_SECRET", cliFlag: "umbraco-client-secret", type: "string", required: true, isAuth: true, isSecret: true },
+  { name: "baseUrl", envVar: "UMBRACO_BASE_URL", cliFlag: "umbraco-base-url", type: "string", required: true, isAuth: true },
+  // Optional fields
+  { name: "toolModes", envVar: "UMBRACO_TOOL_MODES", cliFlag: "umbraco-tool-modes", type: "csv" },
+  { name: "includeToolCollections", envVar: "UMBRACO_INCLUDE_TOOL_COLLECTIONS", cliFlag: "umbraco-include-tool-collections", type: "csv" },
+  { name: "excludeToolCollections", envVar: "UMBRACO_EXCLUDE_TOOL_COLLECTIONS", cliFlag: "umbraco-exclude-tool-collections", type: "csv" },
+  { name: "includeSlices", envVar: "UMBRACO_INCLUDE_SLICES", cliFlag: "umbraco-include-slices", type: "csv" },
+  { name: "excludeSlices", envVar: "UMBRACO_EXCLUDE_SLICES", cliFlag: "umbraco-exclude-slices", type: "csv" },
+  { name: "includeTools", envVar: "UMBRACO_INCLUDE_TOOLS", cliFlag: "umbraco-include-tools", type: "csv" },
+  { name: "excludeTools", envVar: "UMBRACO_EXCLUDE_TOOLS", cliFlag: "umbraco-exclude-tools", type: "csv" },
+  { name: "allowedMediaPaths", envVar: "UMBRACO_ALLOWED_MEDIA_PATHS", cliFlag: "umbraco-allowed-media-paths", type: "csv-path" },
+  { name: "readonly", envVar: "UMBRACO_READONLY", cliFlag: "umbraco-readonly", type: "boolean" },
+];
+
+// ============================================================================
+// Helper Functions
+// ============================================================================
+
 function maskSecret(secret: string): string {
   if (!secret || secret.length <= 4) return "****";
   return `****${secret.slice(-4)}`;
 }
+
+function parseValue(value: string | boolean | undefined, type: ConfigFieldType, fromCli: boolean): string | string[] | boolean | undefined {
+  if (value === undefined) return undefined;
+
+  switch (type) {
+    case "string":
+      return String(value);
+    case "boolean":
+      // Original behavior: only set to true if explicitly true, otherwise undefined
+      // CLI: yargs returns boolean directly, trust it if truthy
+      // ENV: only "true" (case-insensitive) sets the value
+      if (fromCli) {
+        return value ? true : undefined;
+      }
+      return String(value).toLowerCase() === "true" ? true : undefined;
+    case "csv":
+      return String(value).split(",").map(v => v.trim()).filter(Boolean);
+    case "csv-path":
+      return String(value).split(",").map(p => resolve(p.trim())).filter(Boolean);
+    default:
+      return String(value);
+  }
+}
+
+interface ResolveResult {
+  value: string | string[] | boolean | undefined;
+  source: "cli" | "env" | "none";
+}
+
+function resolveConfigField(
+  argv: CliArgs,
+  field: ConfigFieldDefinition
+): ResolveResult {
+  const cliKey = field.cliFlag as keyof CliArgs;
+  const cliValue = argv[cliKey];
+  const envValue = process.env[field.envVar];
+
+  if (cliValue !== undefined) {
+    const value = parseValue(cliValue, field.type, true);
+    // For boolean fields, undefined means "not set" - fall through to env
+    if (value !== undefined) {
+      return { value, source: "cli" };
+    }
+  }
+
+  if (envValue !== undefined) {
+    const value = parseValue(envValue, field.type, false);
+    if (value !== undefined) {
+      return { value, source: "env" };
+    }
+  }
+
+  return { value: undefined, source: "none" };
+}
+
+function formatValueForLog(value: unknown, field: ConfigFieldDefinition): string {
+  if (field.isSecret && typeof value === "string") {
+    return maskSecret(value);
+  }
+  if (Array.isArray(value)) {
+    return value.join(", ");
+  }
+  return String(value);
+}
+
+function logConfigField(
+  value: unknown,
+  source: "cli" | "env" | "none",
+  field: ConfigFieldDefinition
+): void {
+  // Skip fields with no value set (except auth fields which are always logged)
+  if (value === undefined && !field.isAuth) return;
+  if (value === undefined) return;
+
+  const displayValue = formatValueForLog(value, field);
+  console.log(`- ${field.envVar}: ${displayValue} (source: ${source})`);
+}
+
+// ============================================================================
+// CLI Arguments Interface
+// ============================================================================
 
 interface CliArgs {
   "umbraco-client-id"?: string;
@@ -57,6 +175,10 @@ interface CliArgs {
   "umbraco-readonly"?: boolean;
   env?: string;
 }
+
+// ============================================================================
+// Main Configuration Function
+// ============================================================================
 
 export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
   // Parse command line arguments
@@ -135,283 +257,70 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
   // Override anything auto-loaded from .env if a custom file is provided.
   loadEnv({ path: envFilePath, override: true });
 
+  // Initialize config structures
   const auth: UmbracoAuthConfig = {
     clientId: "",
     clientSecret: "",
     baseUrl: "",
   };
 
-  const config: Omit<UmbracoServerConfig, "auth"> = {
-    toolModes: undefined,
-    includeToolCollections: undefined,
-    excludeToolCollections: undefined,
-    includeSlices: undefined,
-    excludeSlices: undefined,
-    includeTools: undefined,
-    excludeTools: undefined,
-    allowedMediaPaths: undefined,
-    readonly: undefined,
-    configSources: {
-      clientId: "env",
-      clientSecret: "env",
-      baseUrl: "env",
-      toolModes: "none",
-      includeToolCollections: "none",
-      excludeToolCollections: "none",
-      includeSlices: "none",
-      excludeSlices: "none",
-      includeTools: "none",
-      excludeTools: "none",
-      allowedMediaPaths: "none",
-      readonly: "none",
-      envFile: envFileSource,
-    },
+  const configSources: UmbracoServerConfig["configSources"] = {
+    clientId: "env",
+    clientSecret: "env",
+    baseUrl: "env",
+    toolModes: "none",
+    includeToolCollections: "none",
+    excludeToolCollections: "none",
+    includeSlices: "none",
+    excludeSlices: "none",
+    includeTools: "none",
+    excludeTools: "none",
+    allowedMediaPaths: "none",
+    readonly: "none",
+    envFile: envFileSource,
   };
 
-  // Handle UMBRACO_CLIENT_ID
-  if (argv["umbraco-client-id"]) {
-    auth.clientId = argv["umbraco-client-id"];
-    config.configSources.clientId = "cli";
-  } else if (process.env.UMBRACO_CLIENT_ID) {
-    auth.clientId = process.env.UMBRACO_CLIENT_ID;
-    config.configSources.clientId = "env";
+  const config: Partial<Omit<UmbracoServerConfig, "auth" | "configSources">> = {};
+
+  // Resolve all config fields using table-driven approach
+  const resolvedValues: Record<string, ResolveResult> = {};
+
+  for (const field of CONFIG_FIELDS) {
+    const result = resolveConfigField(argv, field);
+    resolvedValues[field.name] = result;
+
+    if (result.value !== undefined) {
+      if (field.isAuth) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (auth as any)[field.name] = result.value;
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (config as any)[field.name] = result.value;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (configSources as any)[field.name] = result.source;
+    }
   }
 
-  // Handle UMBRACO_CLIENT_SECRET
-  if (argv["umbraco-client-secret"]) {
-    auth.clientSecret = argv["umbraco-client-secret"];
-    config.configSources.clientSecret = "cli";
-  } else if (process.env.UMBRACO_CLIENT_SECRET) {
-    auth.clientSecret = process.env.UMBRACO_CLIENT_SECRET;
-    config.configSources.clientSecret = "env";
-  }
-
-  // Handle UMBRACO_BASE_URL
-  if (argv["umbraco-base-url"]) {
-    auth.baseUrl = argv["umbraco-base-url"];
-    config.configSources.baseUrl = "cli";
-  } else if (process.env.UMBRACO_BASE_URL) {
-    auth.baseUrl = process.env.UMBRACO_BASE_URL;
-    config.configSources.baseUrl = "env";
-  }
-
-  // Handle UMBRACO_TOOL_MODES
-  if (argv["umbraco-tool-modes"]) {
-    config.toolModes = argv["umbraco-tool-modes"]
-      .split(",")
-      .map((m) => m.trim())
-      .filter(Boolean);
-    config.configSources.toolModes = "cli";
-  } else if (process.env.UMBRACO_TOOL_MODES) {
-    config.toolModes = process.env.UMBRACO_TOOL_MODES
-      .split(",")
-      .map((m) => m.trim())
-      .filter(Boolean);
-    config.configSources.toolModes = "env";
-  }
-
-  // Handle UMBRACO_INCLUDE_TOOL_COLLECTIONS
-  if (argv["umbraco-include-tool-collections"]) {
-    config.includeToolCollections = argv["umbraco-include-tool-collections"]
-      .split(",")
-      .map((c) => c.trim())
-      .filter(Boolean);
-    config.configSources.includeToolCollections = "cli";
-  } else if (process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS) {
-    config.includeToolCollections = process.env.UMBRACO_INCLUDE_TOOL_COLLECTIONS
-      .split(",")
-      .map((c) => c.trim())
-      .filter(Boolean);
-    config.configSources.includeToolCollections = "env";
-  }
-
-  // Handle UMBRACO_EXCLUDE_TOOL_COLLECTIONS
-  if (argv["umbraco-exclude-tool-collections"]) {
-    config.excludeToolCollections = argv["umbraco-exclude-tool-collections"]
-      .split(",")
-      .map((c) => c.trim())
-      .filter(Boolean);
-    config.configSources.excludeToolCollections = "cli";
-  } else if (process.env.UMBRACO_EXCLUDE_TOOL_COLLECTIONS) {
-    config.excludeToolCollections = process.env.UMBRACO_EXCLUDE_TOOL_COLLECTIONS
-      .split(",")
-      .map((c) => c.trim())
-      .filter(Boolean);
-    config.configSources.excludeToolCollections = "env";
-  }
-
-  // Handle UMBRACO_INCLUDE_SLICES
-  if (argv["umbraco-include-slices"]) {
-    config.includeSlices = argv["umbraco-include-slices"]
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-    config.configSources.includeSlices = "cli";
-  } else if (process.env.UMBRACO_INCLUDE_SLICES) {
-    config.includeSlices = process.env.UMBRACO_INCLUDE_SLICES
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-    config.configSources.includeSlices = "env";
-  }
-
-  // Handle UMBRACO_EXCLUDE_SLICES
-  if (argv["umbraco-exclude-slices"]) {
-    config.excludeSlices = argv["umbraco-exclude-slices"]
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-    config.configSources.excludeSlices = "cli";
-  } else if (process.env.UMBRACO_EXCLUDE_SLICES) {
-    config.excludeSlices = process.env.UMBRACO_EXCLUDE_SLICES
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-    config.configSources.excludeSlices = "env";
-  }
-
-  // Handle UMBRACO_INCLUDE_TOOLS
-  if (argv["umbraco-include-tools"]) {
-    config.includeTools = argv["umbraco-include-tools"]
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-    config.configSources.includeTools = "cli";
-  } else if (process.env.UMBRACO_INCLUDE_TOOLS) {
-    config.includeTools = process.env.UMBRACO_INCLUDE_TOOLS
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-    config.configSources.includeTools = "env";
-  }
-
-  // Handle UMBRACO_EXCLUDE_TOOLS
-  if (argv["umbraco-exclude-tools"]) {
-    config.excludeTools = argv["umbraco-exclude-tools"]
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-    config.configSources.excludeTools = "cli";
-  } else if (process.env.UMBRACO_EXCLUDE_TOOLS) {
-    config.excludeTools = process.env.UMBRACO_EXCLUDE_TOOLS
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-    config.configSources.excludeTools = "env";
-  }
-
-  // Handle UMBRACO_ALLOWED_MEDIA_PATHS
-  if (argv["umbraco-allowed-media-paths"]) {
-    config.allowedMediaPaths = argv["umbraco-allowed-media-paths"]
-      .split(",")
-      .map((p) => resolve(p.trim()))
-      .filter(Boolean);
-    config.configSources.allowedMediaPaths = "cli";
-  } else if (process.env.UMBRACO_ALLOWED_MEDIA_PATHS) {
-    config.allowedMediaPaths = process.env.UMBRACO_ALLOWED_MEDIA_PATHS
-      .split(",")
-      .map((p) => resolve(p.trim()))
-      .filter(Boolean);
-    config.configSources.allowedMediaPaths = "env";
-  }
-
-  // Handle UMBRACO_READONLY
-  if (argv["umbraco-readonly"]) {
-    config.readonly = true;
-    config.configSources.readonly = "cli";
-  } else if (process.env.UMBRACO_READONLY?.toLowerCase() === "true") {
-    config.readonly = true;
-    config.configSources.readonly = "env";
-  }
-
-  // Validate configuration
-  if (!auth.clientId) {
-    console.error(
-      "UMBRACO_CLIENT_ID is required (via CLI argument --umbraco-client-id or .env file)",
-    );
-    process.exit(1);
-  }
-
-  if (!auth.clientSecret) {
-    console.error(
-      "UMBRACO_CLIENT_SECRET is required (via CLI argument --umbraco-client-secret or .env file)",
-    );
-    process.exit(1);
-  }
-
-  if (!auth.baseUrl) {
-    console.error(
-      "UMBRACO_BASE_URL is required (via CLI argument --umbraco-base-url or .env file)",
-    );
-    process.exit(1);
+  // Validate required fields
+  for (const field of CONFIG_FIELDS.filter(f => f.required)) {
+    const result = resolvedValues[field.name];
+    if (!result?.value) {
+      console.error(
+        `${field.envVar} is required (via CLI argument --${field.cliFlag} or .env file)`
+      );
+      process.exit(1);
+    }
   }
 
   // Log configuration sources
   if (!isStdioMode) {
     console.log("\nUmbraco MCP Configuration:");
-    console.log(`- ENV_FILE: ${envFilePath} (source: ${config.configSources.envFile})`);
-    console.log(
-      `- UMBRACO_CLIENT_ID: ${auth.clientId} (source: ${config.configSources.clientId})`,
-    );
-    console.log(
-      `- UMBRACO_CLIENT_SECRET: ${maskSecret(auth.clientSecret)} (source: ${config.configSources.clientSecret})`,
-    );
-    console.log(
-      `- UMBRACO_BASE_URL: ${auth.baseUrl} (source: ${config.configSources.baseUrl})`,
-    );
+    console.log(`- ENV_FILE: ${envFilePath} (source: ${configSources.envFile})`);
 
-    if (config.toolModes) {
-      console.log(
-        `- UMBRACO_TOOL_MODES: ${config.toolModes.join(", ")} (source: ${config.configSources.toolModes})`,
-      );
-    }
-
-    if (config.includeToolCollections) {
-      console.log(
-        `- UMBRACO_INCLUDE_TOOL_COLLECTIONS: ${config.includeToolCollections.join(", ")} (source: ${config.configSources.includeToolCollections})`,
-      );
-    }
-
-    if (config.excludeToolCollections) {
-      console.log(
-        `- UMBRACO_EXCLUDE_TOOL_COLLECTIONS: ${config.excludeToolCollections.join(", ")} (source: ${config.configSources.excludeToolCollections})`,
-      );
-    }
-
-    if (config.includeSlices) {
-      console.log(
-        `- UMBRACO_INCLUDE_SLICES: ${config.includeSlices.join(", ")} (source: ${config.configSources.includeSlices})`,
-      );
-    }
-
-    if (config.excludeSlices) {
-      console.log(
-        `- UMBRACO_EXCLUDE_SLICES: ${config.excludeSlices.join(", ")} (source: ${config.configSources.excludeSlices})`,
-      );
-    }
-
-    if (config.includeTools) {
-      console.log(
-        `- UMBRACO_INCLUDE_TOOLS: ${config.includeTools.join(", ")} (source: ${config.configSources.includeTools})`,
-      );
-    }
-
-    if (config.excludeTools) {
-      console.log(
-        `- UMBRACO_EXCLUDE_TOOLS: ${config.excludeTools.join(", ")} (source: ${config.configSources.excludeTools})`,
-      );
-    }
-
-    if (config.allowedMediaPaths) {
-      console.log(
-        `- UMBRACO_ALLOWED_MEDIA_PATHS: ${config.allowedMediaPaths.join(", ")} (source: ${config.configSources.allowedMediaPaths})`,
-      );
-    }
-
-    if (config.readonly) {
-      console.log(
-        `- UMBRACO_READONLY: true (source: ${config.configSources.readonly})`,
-      );
+    for (const field of CONFIG_FIELDS) {
+      const result = resolvedValues[field.name];
+      logConfigField(result.value, result.source, field);
     }
 
     console.log(); // Empty line for better readability
@@ -420,5 +329,6 @@ export function getServerConfig(isStdioMode: boolean): UmbracoServerConfig {
   return {
     ...config,
     auth,
+    configSources,
   };
 }

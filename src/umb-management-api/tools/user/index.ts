@@ -26,7 +26,7 @@ export const UserCollection: ToolCollectionExport = {
     dependencies: ['temporary-file']
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     // Self-service tools (available to all authenticated users)
     tools.push(GetUserCurrentTool);

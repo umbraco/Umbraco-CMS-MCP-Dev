@@ -1,44 +1,24 @@
 import CreateLanguageTool from "../post/create-language.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_LANGUAGE_NAME = '_Test Create Language';
 const TEST_LANGUAGE_ISO = 'en-GB';
 const EXISTING_LANGUAGE_NAME = '_Existing Language';
 const EXISTING_LANGUAGE_ISO = 'en';
 
-// Helper to parse tool response
-function parseResult(result: any) {
-  try {
-    return JSON.parse(result.content[0].text);
-  } catch {
-    return result.content[0].text;
-  }
-}
-
 describe("create-language", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
     await LanguageTestHelper.cleanup(EXISTING_LANGUAGE_ISO);
-    console.error = originalConsoleError;
   });
 
   it("should create a language", async () => {
     // Create language model using builder
-    const builder = new LanguageBuilder()
-      .withName(TEST_LANGUAGE_NAME)
-      .withIsoCode(TEST_LANGUAGE_ISO)
-      .withIsDefault(false)
-      .withIsMandatory(false);
-    // Use a build() method to get a fully-typed model
     const languageModel = {
       name: TEST_LANGUAGE_NAME,
       isoCode: TEST_LANGUAGE_ISO,
@@ -48,11 +28,13 @@ describe("create-language", () => {
     };
 
     // Create the language
-    const result = await CreateLanguageTool.handler(languageModel, {
-      signal: new AbortController().signal
-    });
+    const result = await CreateLanguageTool.handler(
+      languageModel,
+      createMockRequestHandlerExtra()
+    );
 
     // Verify the handler response using snapshot
+    validateToolResponse(CreateLanguageTool, result);
     expect(result).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
@@ -65,11 +47,6 @@ describe("create-language", () => {
 
   it("should handle existing language", async () => {
     // Create language model
-    await new LanguageBuilder()
-      .withName(EXISTING_LANGUAGE_NAME)
-      .withIsoCode(EXISTING_LANGUAGE_ISO)
-      .withIsDefault(false)
-      .withIsMandatory(false);
     const languageModel = {
       name: EXISTING_LANGUAGE_NAME,
       isoCode: EXISTING_LANGUAGE_ISO,
@@ -79,16 +56,18 @@ describe("create-language", () => {
     };
 
     // First create the language
-    await CreateLanguageTool.handler(languageModel, {
-      signal: new AbortController().signal
-    });
+    await CreateLanguageTool.handler(
+      languageModel,
+      createMockRequestHandlerExtra()
+    );
 
     // Try to create it again
-    const result = await CreateLanguageTool.handler(languageModel, {
-      signal: new AbortController().signal
-    });
+    const result = await CreateLanguageTool.handler(
+      languageModel,
+      createMockRequestHandlerExtra()
+    );
 
     // Verify the error response using snapshot
     expect(result).toMatchSnapshot();
   });
-}); 
+});

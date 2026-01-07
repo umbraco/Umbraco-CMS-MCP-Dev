@@ -1,22 +1,17 @@
 import GetMediaTypeCompositionReferencesTool from "../get/get-media-type-composition-references.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
-import { jest } from "@jest/globals";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_TYPE_NAME = "_Test MediaType Composition";
 const TEST_COMPOSITION_NAME = "_Test Composition MediaType";
 
 describe("get-media-type-composition-references", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test media types
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME);
     await MediaTypeTestHelper.cleanup(TEST_COMPOSITION_NAME);
@@ -29,7 +24,7 @@ describe("get-media-type-composition-references", () => {
       .create();
 
     // Create a parent media type that uses the composition
-    const parentBuilder = await new MediaTypeBuilder()
+    await new MediaTypeBuilder()
       .withName(TEST_MEDIA_TYPE_NAME)
       .withComposition(compositionBuilder.getId())
       .create();
@@ -37,14 +32,10 @@ describe("get-media-type-composition-references", () => {
     // Get the composition references
     const result = await GetMediaTypeCompositionReferencesTool.handler({
       id: compositionBuilder.getId()
-    }, { signal: new AbortController().signal });
-
-    // Parse the response to get the ID to normalize
-    const parsed = JSON.parse(result.content[0].text as string);
-    const idToNormalize = parsed[0]?.id;
+    }, createMockRequestHandlerExtra());
 
     // Normalize IDs and dates for snapshot testing
-    const normalizedResult = createSnapshotResult(result, idToNormalize);
+    const normalizedResult = createSnapshotResult(result);
 
     // Verify the handler response using snapshot
     expect(normalizedResult).toMatchSnapshot();
@@ -59,16 +50,12 @@ describe("get-media-type-composition-references", () => {
     // Get the composition references
     const result = await GetMediaTypeCompositionReferencesTool.handler({
       id: mediaTypeBuilder.getId()
-    }, { signal: new AbortController().signal });
-
-    // Parse the response to get the ID to normalize
-    const parsed = JSON.parse(result.content[0].text as string);
-    const idToNormalize = parsed[0]?.id;
+    }, createMockRequestHandlerExtra());
 
     // Normalize IDs and dates for snapshot testing
-    const normalizedResult = createSnapshotResult(result, idToNormalize);
+    const normalizedResult = createSnapshotResult(result);
 
     // Verify the handler response using snapshot
     expect(normalizedResult).toMatchSnapshot();
   });
-}); 
+});

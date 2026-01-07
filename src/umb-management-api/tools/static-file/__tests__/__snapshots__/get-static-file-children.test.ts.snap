@@ -13,12 +13,11 @@ exports[`get-static-file-children should get children of a valid folder with def
 
 exports[`get-static-file-children should handle invalid parent path gracefully 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 

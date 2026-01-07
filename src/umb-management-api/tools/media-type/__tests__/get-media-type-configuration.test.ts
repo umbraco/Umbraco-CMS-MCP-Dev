@@ -1,21 +1,18 @@
 import GetMediaTypeConfigurationTool from "../get/get-media-type-configuration.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-media-type-configuration", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get the global media type configuration", async () => {
-    const result = await GetMediaTypeConfigurationTool.handler({}, { signal: new AbortController().signal });
-    const config = JSON.parse(result.content[0].text as string);
+    const result = await GetMediaTypeConfigurationTool.handler(
+      {} as any,
+      createMockRequestHandlerExtra()
+    );
+
+    // Validate response against tool's output schema
+    const config = validateToolResponse(GetMediaTypeConfigurationTool, result);
     expect(config).toMatchSnapshot();
   });
-}); 
+});

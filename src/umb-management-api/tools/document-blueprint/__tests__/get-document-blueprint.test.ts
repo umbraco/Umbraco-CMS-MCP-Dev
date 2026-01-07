@@ -1,20 +1,16 @@
 import GetDocumentBlueprintTool from "../get/get-blueprint.js";
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
-import { jest } from "@jest/globals";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("get-document-blueprint", () => {
   const TEST_BLUEPRINT_NAME = "_Test Blueprint Get";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
   });
 
@@ -29,35 +25,11 @@ describe("get-document-blueprint", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Normalize dates and IDs in the response
-    const normalizedResult = {
-      ...result,
-      content: result.content.map((content) => {
-        const parsed = JSON.parse(content.text as string);
-        return {
-          ...content,
-          text: JSON.stringify({
-            ...parsed,
-            id: BLANK_UUID,
-            documentType: {
-              ...parsed.documentType,
-              id: BLANK_UUID,
-            },
-            variants: parsed.variants.map((variant: any) => ({
-              ...variant,
-              createDate: "2000-01-01T00:00:00.000Z",
-              updateDate: "2000-01-01T00:00:00.000Z",
-            })),
-          }),
-        };
-      }),
-    };
-
     // Verify the handler response using snapshot
-    expect(normalizedResult).toMatchSnapshot();
+    expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
   });
 
   it("should handle non-existent document blueprint", async () => {
@@ -65,7 +37,7 @@ describe("get-document-blueprint", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

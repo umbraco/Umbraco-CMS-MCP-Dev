@@ -2,22 +2,17 @@ import FindMemberTool from "../get/find-member.js";
 import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import { Default_Memeber_TYPE_ID } from "../../../../constants/constants.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test FindMember";
 const TEST_MEMBER_EMAIL = "findmember@example.com";
 const TEST_MEMBER_USERNAME = "findmember@example.com";
 
 describe("find-member", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberTestHelper.cleanup(TEST_MEMBER_USERNAME);
     await MemberTestHelper.cleanup("findmember2@example.com");
   });
@@ -34,16 +29,18 @@ describe("find-member", () => {
 
     // Use the tool to find by username
     const result = await FindMemberTool.handler(
-      { filter: TEST_MEMBER_USERNAME, orderBy: "username", take: 100 },
-      { signal: new AbortController().signal }
+      { filter: TEST_MEMBER_USERNAME, orderBy: "username", take: 100, memberTypeId: undefined, memberGroupName: undefined, isApproved: undefined, isLockedOut: undefined, orderDirection: undefined, skip: undefined },
+      createMockRequestHandlerExtra()
     );
-    const data = JSON.parse(result.content[0].text as string);
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(FindMemberTool, result);
     expect(data.total).toBeGreaterThan(0);
     const found = data.items.find(
       (m: any) => m.username === TEST_MEMBER_USERNAME
     );
     expect(found).toBeTruthy();
-    expect(found.email).toBe(TEST_MEMBER_EMAIL);
+    expect(found!.email).toBe(TEST_MEMBER_EMAIL);
   });
 
   it("should return no results for a non-existent filter", async () => {
@@ -52,10 +49,18 @@ describe("find-member", () => {
         filter: "nonexistentuser_" + Date.now(),
         orderBy: "username",
         take: 100,
+        memberTypeId: undefined,
+        memberGroupName: undefined,
+        isApproved: undefined,
+        isLockedOut: undefined,
+        orderDirection: undefined,
+        skip: undefined,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const data = JSON.parse(result.content[0].text as string);
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(FindMemberTool, result);
     expect(data.total).toBe(0);
     expect(data.items.length).toBe(0);
   });
@@ -79,10 +84,12 @@ describe("find-member", () => {
 
     // Use the tool to get only one result
     const result = await FindMemberTool.handler(
-      { filter: "findmember@example.com", orderBy: "username", take: 1 },
-      { signal: new AbortController().signal }
+      { filter: "findmember@example.com", orderBy: "username", take: 1, memberTypeId: undefined, memberGroupName: undefined, isApproved: undefined, isLockedOut: undefined, orderDirection: undefined, skip: undefined },
+      createMockRequestHandlerExtra()
     );
-    const data = JSON.parse(result.content[0].text as string);
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(FindMemberTool, result);
     expect(data.items.length).toBeLessThanOrEqual(1);
   });
 });

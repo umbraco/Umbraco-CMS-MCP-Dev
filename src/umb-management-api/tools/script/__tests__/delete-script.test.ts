@@ -3,7 +3,8 @@ import DeleteScriptFolderTool from "../delete/delete-script-folder.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
 import { ScriptTestHelper } from "./helpers/script-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_SCRIPT_NAME = "_TestScriptDelete";
 const TEST_SCRIPT_CONTENT = "console.log('test script delete');";
@@ -11,19 +12,14 @@ const TEST_FOLDER_NAME = "_TestFolderDelete";
 const NONEXISTENT_PATH = "/NonExistentScript.js";
 
 describe("delete-script", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let scriptBuilder: ScriptBuilder;
   let folderBuilder: ScriptFolderBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     scriptBuilder = new ScriptBuilder();
     folderBuilder = new ScriptFolderBuilder();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
   });
 
   describe("delete-script", () => {
@@ -38,7 +34,7 @@ describe("delete-script", () => {
         {
           path: scriptBuilder.getPath(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Verify the handler response using snapshot
@@ -54,7 +50,7 @@ describe("delete-script", () => {
         {
           path: NONEXISTENT_PATH,
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Verify the error response using snapshot
@@ -73,7 +69,7 @@ describe("delete-script", () => {
         {
           path: folderBuilder.getPath(),
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Verify the handler response using snapshot
@@ -89,7 +85,7 @@ describe("delete-script", () => {
         {
           path: "/NonExistentFolder",
         },
-        { signal: new AbortController().signal }
+        createMockRequestHandlerExtra()
       );
 
       // Verify the error response using snapshot

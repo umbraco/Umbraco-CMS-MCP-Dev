@@ -2,38 +2,30 @@
 
 exports[`create-webhook should create a webhook 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Webhook created successfully",
+  },
 }
 `;
 
 exports[`create-webhook should handle invalid webhook data 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-webhook:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
-    "title": "One or more validation errors occurred.",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "errors": [
       {
         "$.url": [
-          "The Url field is required."
-        ]
-      }
+          "The Url field is required.",
+        ],
+      },
     ],
-    "traceId": "normalized-trace-id"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "status": 400,
+    "title": "One or more validation errors occurred.",
+    "traceId": "normalized-trace-id",
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  },
 }
 `;

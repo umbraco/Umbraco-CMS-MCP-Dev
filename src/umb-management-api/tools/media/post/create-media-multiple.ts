@@ -11,7 +11,7 @@ import {
   MEDIA_TYPE_FILE
 } from "@/constants/constants.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 
 const createMediaMultipleSchema = z.object({
   sourceType: z.enum(["filePath", "url"]).describe("Media source type: 'filePath' for local files (most efficient), 'url' for web files. Base64 not supported for batch uploads due to token usage."),
@@ -32,6 +32,15 @@ interface UploadResult {
   error?: string;
 }
 
+export const createMediaMultipleOutputSchema = z.object({
+  summary: z.string(),
+  results: z.array(z.object({
+    success: z.boolean(),
+    name: z.string(),
+    error: z.string().optional()
+  }))
+});
+
 const CreateMediaMultipleTool = {
   name: "create-media-multiple",
   description: `Batch upload multiple media files to Umbraco (maximum 20 files per batch).
@@ -49,19 +58,15 @@ const CreateMediaMultipleTool = {
 
   The tool processes files sequentially and returns detailed results for each file.
   If some files fail, others will continue processing (continue-on-error strategy).`,
-  schema: createMediaMultipleSchema.shape,
-  isReadOnly: false,
+  inputSchema: createMediaMultipleSchema.shape,
+  outputSchema: createMediaMultipleOutputSchema.shape,
   slices: ['create'],
-  handler: async (model: CreateMediaMultipleParams) => {
+  handler: (async (model: CreateMediaMultipleParams) => {
     // Validate batch size
     if (model.files.length > 20) {
-      return {
-        content: [{
-          type: "text" as const,
-          text: `Batch upload limited to 20 files per call. You provided ${model.files.length} files. Please split into multiple batches.`
-        }],
-        isError: true
-      };
+      return createToolResultError({
+        detail: `Batch upload limited to 20 files per call. You provided ${model.files.length} files. Please split into multiple batches.`
+      });
     }
 
     const results: UploadResult[] = [];
@@ -101,18 +106,11 @@ const CreateMediaMultipleTool = {
     const successCount = results.filter(r => r.success).length;
     const failureCount = results.filter(r => !r.success).length;
 
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify({
-            summary: `Processed ${model.files.length} files: ${successCount} succeeded, ${failureCount} failed`,
-            results
-          }, null, 2),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof createMediaMultipleSchema.shape>;
+    return createToolResult({
+      summary: `Processed ${model.files.length} files: ${successCount} succeeded, ${failureCount} failed`,
+      results
+    });
+  }),
+} satisfies ToolDefinition<typeof createMediaMultipleSchema.shape, typeof createMediaMultipleOutputSchema.shape>;
 
 export default withStandardDecorators(CreateMediaMultipleTool);

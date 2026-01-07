@@ -1,26 +1,22 @@
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import GetMemberTypeSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-member-type-siblings", () => {
+  setupTestEnvironment();
+
   const TEST_SIBLING_1_NAME = "_Test Sibling 1 MemberType";
   const TEST_SIBLING_2_NAME = "_Test Sibling 2 MemberType";
   const TEST_SIBLING_3_NAME = "_Test Sibling 3 MemberType";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     await MemberTypeTestHelper.cleanup(TEST_SIBLING_1_NAME);
     await MemberTypeTestHelper.cleanup(TEST_SIBLING_2_NAME);
     await MemberTypeTestHelper.cleanup(TEST_SIBLING_3_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get sibling member types at root level", async () => {
@@ -41,8 +37,11 @@ describe("get-member-type-siblings", () => {
     const result = await GetMemberTypeSiblingsTool.handler(
       {
         target: sibling1Builder.getId(),
+        before: undefined,
+        after: undefined,
+        foldersOnly: undefined,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert - Verify the siblings are returned
@@ -55,8 +54,11 @@ describe("get-member-type-siblings", () => {
     const result = await GetMemberTypeSiblingsTool.handler(
       {
         target: BLANK_UUID,
+        before: undefined,
+        after: undefined,
+        foldersOnly: undefined,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert

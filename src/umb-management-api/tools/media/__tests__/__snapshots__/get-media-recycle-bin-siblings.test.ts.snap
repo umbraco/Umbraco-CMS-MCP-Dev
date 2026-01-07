@@ -2,26 +2,42 @@
 
 exports[`get-media-recycle-bin-siblings should get sibling media items in recycle bin 1`] = `
 {
-  "content": [
-    {
-      "text": "{"totalBefore":0,"totalAfter":1,"items":[{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-picture","collection":null},"variants":[{"name":"_Test Sibling Recycle Bin 1","culture":null}],"id":"00000000-0000-0000-0000-000000000000","createDate":"NORMALIZED_DATE","hasChildren":false,"parent":{"id":"00000000-0000-0000-0000-000000000000"}}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "collection": null,
+          "icon": "icon-picture",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "variants": [
+          {
+            "culture": null,
+            "name": "_Test Sibling Recycle Bin 1",
+          },
+        ],
+      },
+    ],
+    "totalAfter": 1,
+    "totalBefore": 0,
+  },
 }
 `;
 
 exports[`get-media-recycle-bin-siblings should handle non-existent target in recycle bin 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-media-recycle-bin-siblings:
-{
-  "message": "Request failed with status code 404",
-  "response": ""
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
 }
 `;

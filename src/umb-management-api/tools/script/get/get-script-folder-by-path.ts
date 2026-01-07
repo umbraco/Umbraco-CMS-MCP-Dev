@@ -1,27 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getScriptFolderByPathParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getScriptFolderByPathParams, getScriptFolderByPathResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetScriptFolderByPathTool = {
   name: "get-script-folder-by-path",
   description: "Gets a script folder by path",
-  schema: getScriptFolderByPathParams.shape,
-  isReadOnly: true,
+  inputSchema: getScriptFolderByPathParams.shape,
+  outputSchema: getScriptFolderByPathResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read', 'folders'],
-  handler: async ({ path }: { path: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getScriptFolderByPath(path);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getScriptFolderByPathParams.shape>;
+  handler: (async ({ path }: { path: string }) => {
+    return executeGetApiCall((client) =>
+      client.getScriptFolderByPath(path, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getScriptFolderByPathParams.shape, typeof getScriptFolderByPathResponse.shape>;
 
 export default withStandardDecorators(GetScriptFolderByPathTool);

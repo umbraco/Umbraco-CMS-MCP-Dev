@@ -1,8 +1,9 @@
 import GetWebhookTool from "../get/get-webhook.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
-import { jest } from "@jest/globals";
-import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import {
   CONTENT_PUBLISHED_EVENT,
   TEST_WEBHOOOK_URL,
@@ -10,15 +11,10 @@ import {
 
 describe("get-webhook", () => {
   const TEST_WEBHOOK_NAME = "_Test Webhook";
-  let originalConsoleError: typeof console.error;
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await WebhookTestHelper.cleanup(TEST_WEBHOOK_NAME);
   });
 
@@ -26,9 +22,9 @@ describe("get-webhook", () => {
     // Get paged webhooks
     const result = await GetWebhookTool.handler(
       { skip: 0, take: 10 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const response = JSON.parse(result.content[0].text as string);
+    const response = validateToolResponse(GetWebhookTool, result);
 
     expect(response).toHaveProperty('total');
     expect(response).toHaveProperty('items');
@@ -47,9 +43,9 @@ describe("get-webhook", () => {
     // Get paged webhooks
     const result = await GetWebhookTool.handler(
       { skip: 0, take: 10 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const response = JSON.parse(result.content[0].text as string);
+    const response = validateToolResponse(GetWebhookTool, result);
 
     expect(response).toHaveProperty('total');
     expect(response).toHaveProperty('items');
@@ -60,22 +56,19 @@ describe("get-webhook", () => {
     // Find our webhook in the results
     const ourWebhook = response.items.find((item: any) => item.name === TEST_WEBHOOK_NAME);
     expect(ourWebhook).toBeDefined();
-    expect(ourWebhook.name).toBe(TEST_WEBHOOK_NAME);
+    expect(ourWebhook?.name).toBe(TEST_WEBHOOK_NAME);
 
-    // Normalize IDs for snapshot
-    response.items.forEach((item: any) => {
-      item.id = BLANK_UUID;
-    });
-    expect(response).toMatchSnapshot();
+    // Use createSnapshotResult for normalization
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should use pagination parameters", async () => {
     // Get webhooks with pagination parameters
     const result = await GetWebhookTool.handler(
       { skip: 0, take: 100 },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    const response = JSON.parse(result.content[0].text as string);
+    const response = validateToolResponse(GetWebhookTool, result);
 
     expect(response).toHaveProperty('total');
     expect(response).toHaveProperty('items');

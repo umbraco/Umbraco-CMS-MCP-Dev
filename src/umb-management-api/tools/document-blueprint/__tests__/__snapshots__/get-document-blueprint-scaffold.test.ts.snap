@@ -2,20 +2,13 @@
 
 exports[`get-document-blueprint-scaffold should handle non-existent blueprint 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-document-blueprint-scaffold:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The document blueprint could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The document blueprint could not be found",
+    "type": "Error",
+  },
 }
 `;

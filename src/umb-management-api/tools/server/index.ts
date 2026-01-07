@@ -16,7 +16,7 @@ export const ServerCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     // Always available (AllowAnonymous in Umbraco, available to all authenticated users in MCP)
     tools.push(GetServerStatusTool);

@@ -4,7 +4,7 @@ exports[`Redirect Management Tools DeleteRedirectTool should delete a redirect 1
 {
   "content": [
     {
-      "text": "Redirect deleted successfully",
+      "text": "",
       "type": "text",
     },
   ],
@@ -13,25 +13,31 @@ exports[`Redirect Management Tools DeleteRedirectTool should delete a redirect 1
 
 exports[`Redirect Management Tools DeleteRedirectTool should delete a redirect 2`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "total": 0,
-  "items": []
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`Redirect Management Tools GetRedirectByIdTool should get a redirect by ID 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"id":"00000000-0000-0000-0000-000000000000","originalUrl":"/_test-redirect-document/","destinationUrl":"/_test-redirect-document-renamed/","created":"NORMALIZED_DATE","document":{"id":"00000000-0000-0000-0000-000000000000"},"culture":""}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "created": "NORMALIZED_DATE",
+        "culture": "",
+        "destinationUrl": "/_test-redirect-document-renamed/",
+        "document": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "originalUrl": "/_test-redirect-document/",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;

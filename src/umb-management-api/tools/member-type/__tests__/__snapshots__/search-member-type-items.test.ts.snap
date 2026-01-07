@@ -2,11 +2,17 @@
 
 exports[`search-member-type-items should search for member type items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[{"icon":"icon-user","name":"_Test Item MemberType Search","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "icon": "icon-user",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Item MemberType Search",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;

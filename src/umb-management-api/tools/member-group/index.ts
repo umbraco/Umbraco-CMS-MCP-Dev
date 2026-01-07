@@ -18,7 +18,7 @@ export const MemberGroupCollection: ToolCollectionExport = {
     dependencies: ['member', 'member-type']
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     tools.push(GetMemberGroupTool);
     tools.push(GetMemberGroupByIdArrayTool);

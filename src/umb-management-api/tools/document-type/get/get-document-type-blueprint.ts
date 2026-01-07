@@ -1,27 +1,19 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
-import { getDocumentTypeByIdBlueprintParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { getDocumentTypeByIdBlueprintParams, getDocumentTypeByIdBlueprintResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const GetDocumentTypeBlueprintTool = {
   name: "get-document-type-blueprint",
   description: "Gets the blueprints for a document type",
-  schema: getDocumentTypeByIdBlueprintParams.shape,
-  isReadOnly: true,
+  inputSchema: getDocumentTypeByIdBlueprintParams.shape,
+  outputSchema: getDocumentTypeByIdBlueprintResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['blueprints'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDocumentTypeByIdBlueprint(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getDocumentTypeByIdBlueprintParams.shape>;
+  handler: (async ({ id }: { id: string }) => {
+    return executeGetApiCall((client) =>
+      client.getDocumentTypeByIdBlueprint(id, {}, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getDocumentTypeByIdBlueprintParams.shape, typeof getDocumentTypeByIdBlueprintResponse.shape>;
 
 export default withStandardDecorators(GetDocumentTypeBlueprintTool);

@@ -1,33 +1,31 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getPropertyTypeIsUsedQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { getPropertyTypeIsUsedQueryParams, getPropertyTypeIsUsedResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 
 type SchemaParams = z.infer<typeof getPropertyTypeIsUsedQueryParams>;
+
+const outputSchema = z.object({
+  isUsed: getPropertyTypeIsUsedResponse,
+});
 
 const GetPropertyTypeIsUsedTool = {
   name: "get-property-type-is-used",
   description: "Checks if a property type is used within Umbraco",
-  schema: getPropertyTypeIsUsedQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getPropertyTypeIsUsedQueryParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async ({ contentTypeId, propertyAlias }: SchemaParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getPropertyTypeIsUsed({
-      contentTypeId,
-      propertyAlias,
-    });
+  handler: (async ({ contentTypeId, propertyAlias }: SchemaParams) => {
+    return executeGetItemsApiCall((client) =>
+      client.getPropertyTypeIsUsed({
+        contentTypeId,
+        propertyAlias,
+      }, CAPTURE_RAW_HTTP_RESPONSE)
+    );
 
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getPropertyTypeIsUsedQueryParams.shape>;
+  }),
+} satisfies ToolDefinition<typeof getPropertyTypeIsUsedQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetPropertyTypeIsUsedTool);

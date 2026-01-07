@@ -1,11 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { CreateDocumentRequestModel, CurrentUserResponseModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { AxiosResponse } from "axios";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+
+export const createOutputSchema = z.object({
+  message: z.string(),
+  id: z.string().uuid()
+});
 
 const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
@@ -99,11 +104,11 @@ const CreateDocumentTool = {
 
   Note: Some property editors (BlockList, BlockGrid, ImageCropper, UploadField) have special requirements - check their templates for important notes.
   `,
-  schema: createDocumentSchema.shape,
-  isReadOnly: false,
+  inputSchema: createDocumentSchema.shape,
+  outputSchema: createOutputSchema.shape,
   slices: ['create'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Create),
-  handler: async (model: z.infer<typeof createDocumentSchema>) => {
+  handler: (async (model: z.infer<typeof createDocumentSchema>) => {
     const client = UmbracoManagementClient.getClient();
 
     const documentId = uuidv4();
@@ -142,42 +147,22 @@ const CreateDocumentTool = {
     };
 
     // Get full response to check status
-    const response = await client.postDocument(payload, {
-      returnFullResponse: true,
-      validateStatus: () => true // Don't throw on any status
-    }) as unknown as AxiosResponse<void>;
+    const response = await client.postDocument(payload, CAPTURE_RAW_HTTP_RESPONSE) as unknown as AxiosResponse<ProblemDetails | void>;
 
     // Check if the document was created successfully (201 Created)
     if (response.status === 201) {
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              message: "Document created successfully",
-              id: documentId
-            }),
-          },
-        ],
-      };
+      return createToolResult({
+        message: "Document created successfully",
+        id: documentId
+      });
     } else {
       // Document creation failed
-      const errorData = response.data as any;
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              message: "Failed to create document",
-              status: response.status,
-              error: errorData || response.statusText
-            }),
-          },
-        ],
-        isError: true,
-      };
+      return createToolResultError(response.data || {
+        status: response.status,
+        detail: response.statusText
+      });
     }
-  },
-} satisfies ToolDefinition<typeof createDocumentSchema.shape>;
+  }),
+} satisfies ToolDefinition<typeof createDocumentSchema.shape, typeof createOutputSchema.shape>;
 
 export default withStandardDecorators(CreateDocumentTool);

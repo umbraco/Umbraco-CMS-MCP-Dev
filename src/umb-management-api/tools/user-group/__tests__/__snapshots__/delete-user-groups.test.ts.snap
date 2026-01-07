@@ -4,7 +4,7 @@ exports[`delete-user-groups should delete multiple user groups 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -15,7 +15,7 @@ exports[`delete-user-groups should handle empty array of user groups 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],

@@ -1,8 +1,7 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { RenameScriptRequestModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const renameScriptSchema = z.object({
   name: z.string().min(1, "Current script name is required"),
@@ -15,12 +14,10 @@ type RenameScriptSchema = z.infer<typeof renameScriptSchema>;
 const RenameScriptTool = {
   name: "rename-script",
   description: "Renames a script by name and folder path",
-  schema: renameScriptSchema.shape,
-  isReadOnly: false,
+  inputSchema: renameScriptSchema.shape,
+  annotations: { idempotentHint: true },
   slices: ['rename'],
-  handler: async (model: RenameScriptSchema) => {
-    const client = UmbracoManagementClient.getClient();
-
+  handler: (async (model: RenameScriptSchema) => {
     // Ensure script names have .js extension
     const currentName = model.name.endsWith('.js') ? model.name : `${model.name}.js`;
     const newName = model.newName.endsWith('.js') ? model.newName : `${model.newName}.js`;
@@ -41,17 +38,10 @@ const RenameScriptTool = {
       name: newName
     };
 
-    const response = await client.putScriptByPathRename(encodedPath, renameModel);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
+    return executeVoidApiCall((client) =>
+      client.putScriptByPathRename(encodedPath, renameModel, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
 } satisfies ToolDefinition<typeof renameScriptSchema.shape>;
 
 export default withStandardDecorators(RenameScriptTool);

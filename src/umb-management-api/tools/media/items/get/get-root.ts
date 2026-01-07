@@ -1,29 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getTreeMediaRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetTreeMediaRootParams } from "@/umb-management-api/schemas/index.js";
+import { getTreeMediaRootQueryParams, getTreeMediaRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
-import { z } from "zod";
-
-type GetTreeMediaRootParams = z.infer<typeof getTreeMediaRootQueryParams>;
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetMediaRootTool = {
   name: "get-media-root",
   description: "Gets root items for media.",
-  schema: getTreeMediaRootQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeMediaRootQueryParams.shape,
+  outputSchema: getTreeMediaRootResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (params: GetTreeMediaRootParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeMediaRoot(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getTreeMediaRootQueryParams.shape>;
+  handler: (async (params: GetTreeMediaRootParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeMediaRoot(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeMediaRootQueryParams.shape, typeof getTreeMediaRootResponse.shape>;
 
 export default withStandardDecorators(GetMediaRootTool);

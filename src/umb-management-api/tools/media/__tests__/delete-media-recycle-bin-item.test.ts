@@ -1,26 +1,20 @@
 import DeleteMediaRecycleBinItemTool from "../delete/delete-recycle-bin-item.js";
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media Delete Recycle Bin";
 
 describe("delete-media-recycle-bin-item", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up any remaining test media
     await MediaTestHelper.restoreFromRecycleBin(TEST_MEDIA_NAME);
     await MediaTestHelper.cleanup(TEST_MEDIA_NAME);
-
-    console.error = originalConsoleError;
   });
 
   it("should permanently delete a media item from recycle bin", async () => {
@@ -45,11 +39,12 @@ describe("delete-media-recycle-bin-item", () => {
     const result = await DeleteMediaRecycleBinItemTool.handler(
       {
         id: mediaInRecycleBin!.id,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify the handler response using snapshot
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
 
     // Verify the media no longer exists in recycle bin
@@ -62,11 +57,12 @@ describe("delete-media-recycle-bin-item", () => {
     const result = await DeleteMediaRecycleBinItemTool.handler(
       {
         id: BLANK_UUID,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify the error response using snapshot
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

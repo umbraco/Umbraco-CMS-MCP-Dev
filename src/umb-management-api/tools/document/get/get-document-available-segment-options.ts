@@ -1,10 +1,9 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getDocumentByIdAvailableSegmentOptionsParams, getDocumentByIdAvailableSegmentOptionsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDocumentByIdAvailableSegmentOptionsParams, getDocumentByIdAvailableSegmentOptionsQueryParams, getDocumentByIdAvailableSegmentOptionsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
-const schema = z.object({
+const inputSchema = z.object({
   ...getDocumentByIdAvailableSegmentOptionsParams.shape,
   ...getDocumentByIdAvailableSegmentOptionsQueryParams.shape,
 });
@@ -19,21 +18,17 @@ const GetDocumentAvailableSegmentOptionsTool = {
   • Understanding what content variations are available for a document
   • Determining which segments can be used when creating or editing document content
   • Viewing segment names, aliases, and associated cultures`,
-  schema: schema.shape,
-  isReadOnly: true,
-  slices: ['read'],
-  handler: async ({ id, skip, take }: z.infer<typeof schema>) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDocumentByIdAvailableSegmentOptions(id, { skip, take });
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: inputSchema.shape,
+  outputSchema: getDocumentByIdAvailableSegmentOptionsResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof schema.shape>;
+  slices: ['read'],
+  handler: (async ({ id, skip, take }: z.infer<typeof inputSchema>) => {
+    return executeGetApiCall((client) =>
+      client.getDocumentByIdAvailableSegmentOptions(id, { skip, take }, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof inputSchema.shape, typeof getDocumentByIdAvailableSegmentOptionsResponse.shape>;
 
 export default withStandardDecorators(GetDocumentAvailableSegmentOptionsTool);

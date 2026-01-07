@@ -2,7 +2,7 @@ import { ROOT_DOCUMENT_TYPE_ID } from "../../../../../constants/constants.js";
 import { DocumentBlueprintBuilder } from "./document-blueprint-builder.js";
 import { DocumentBlueprintFolderBuilder } from "./document-blueprint-folder-builder.js";
 import { DocumentBlueprintTestHelper } from "./document-blueprint-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("DocumentBlueprintBuilder", () => {
   const TEST_BLUEPRINT_NAME = "_Test Builder Blueprint";
@@ -12,15 +12,9 @@ describe("DocumentBlueprintBuilder", () => {
   const TEST_VARIANT_NAME = "testVariant";
   const TEST_FROM_DOCUMENT_BLUEPRINT_NAME = "_Test From Document Blueprint";
   const TEST_SCAFFOLD_BLUEPRINT_NAME = "_Test Scaffold Blueprint";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_PARENT_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_FROM_DOCUMENT_BLUEPRINT_NAME);

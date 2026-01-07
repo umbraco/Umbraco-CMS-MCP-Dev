@@ -3,8 +3,9 @@
  * This is the SINGLE SOURCE OF TRUTH for slice names.
  *
  * Slices are assigned explicitly on each tool via the `slices` property.
+ * Exported for runtime validation (e.g., checking user config values).
  */
-const toolSliceNames = [
+export const toolSliceNames = [
   // CRUD
   'create', 'read', 'update', 'delete',
   // Navigation

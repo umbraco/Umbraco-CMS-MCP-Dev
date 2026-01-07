@@ -27,7 +27,7 @@ export const DocumentBlueprintCollection: ToolCollectionExport = {
     dependencies: ['document-type', 'document']
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessDocumentTypes(user)) {
       // Blueprint CRUD

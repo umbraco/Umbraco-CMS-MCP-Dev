@@ -1,26 +1,18 @@
 import GetRelationTypeTool from "../get/get-relation-type.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-relation-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get relation types with default pagination", async () => {
     const result = await GetRelationTypeTool.handler({
       skip: 0,
       take: 10
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
-    const response = JSON.parse((result.content[0] as any).text);
+    const response = validateToolResponse(GetRelationTypeTool, result);
 
     // Verify response structure
     expect(response).toHaveProperty('total');

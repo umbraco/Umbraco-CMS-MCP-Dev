@@ -1,27 +1,18 @@
 import CopyDocumentTool from "../post/copy-document.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test Document Copy";
 const TEST_DOCUMENT_COPY_NAME = "_Test Document Copy (1)";
 
-// Helper to get the copied document name (Umbraco appends ' (copy)' by default)
-function getCopyName(name: string) {
-  return `${name} (copy)`;
-}
-
 describe("copy-document", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test documents
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_COPY_NAME);
@@ -37,27 +28,17 @@ describe("copy-document", () => {
     // Copy the document to root (no parentId means root)
     const result = await CopyDocumentTool.handler(
       {
+        parentId: undefined,
         idToCopy: docBuilder.getId(),
         relateToOriginal: false,
         includeDescendants: false,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Normalize IDs in the response
-    const normalizedResult = {
-      ...result,
-      content: result.content.map((content) => {
-        const parsed = JSON.parse(content.text as string);
-        return {
-          ...content,
-          text: JSON.stringify(DocumentTestHelper.normaliseIds(parsed)),
-        };
-      }),
-    };
-
-    // Verify the handler response using snapshot
-    expect(normalizedResult).toMatchSnapshot();
+    // Verify the handler response - copy is a void operation
+    expect(result.isError).toBeFalsy();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
 
     // Verify the document was actually copied to root
     const copiedDoc = await DocumentTestHelper.findDocument(
@@ -70,14 +51,16 @@ describe("copy-document", () => {
   it("should handle non-existent document", async () => {
     const result = await CopyDocumentTool.handler(
       {
+        parentId: undefined,
         idToCopy: BLANK_UUID,
         relateToOriginal: false,
         includeDescendants: false,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Verify the error response using snapshot
+    // Verify the error response
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

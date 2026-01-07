@@ -2,31 +2,23 @@
 
 exports[`create-member-group should create a member group 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Member group created successfully",
+  },
 }
 `;
 
 exports[`create-member-group should handle existing member group 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-member-group:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Duplicate name",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Another group with the same name already exists.",
     "status": 400,
-    "detail": "Another group with the same name already exists."
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "Duplicate name",
+    "type": "Error",
+  },
 }
 `;

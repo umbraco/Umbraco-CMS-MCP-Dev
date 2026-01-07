@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-media-by-id should get a media item by ID 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "flags": [],
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isTrashed": false,
+    "mediaType": {
+      "collection": null,
+      "icon": "icon-picture",
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "values": [
+      {
+        "alias": "umbracoFile",
+        "culture": null,
+        "editorAlias": "Umbraco.ImageCropper",
+        "segment": null,
+        "value": {
+          "crops": [],
+          "focalPoint": {
+            "left": 0,
+            "top": 0.5,
+          },
+          "src": "/media/NORMALIZED_PATH/example.jpg",
+        },
+      },
+      {
+        "alias": "umbracoWidth",
+        "culture": null,
+        "editorAlias": "Umbraco.Label",
+        "segment": null,
+        "value": "267",
+      },
+      {
+        "alias": "umbracoHeight",
+        "culture": null,
+        "editorAlias": "Umbraco.Label",
+        "segment": null,
+        "value": "189",
+      },
+      {
+        "alias": "umbracoBytes",
+        "culture": null,
+        "editorAlias": "Umbraco.Label",
+        "segment": null,
+        "value": "9425",
+      },
+      {
+        "alias": "umbracoExtension",
+        "culture": null,
+        "editorAlias": "Umbraco.Label",
+        "segment": null,
+        "value": "jpg",
+      },
+    ],
+    "variants": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "culture": null,
+        "name": "_Test GetMediaById",
+        "segment": null,
+        "updateDate": "NORMALIZED_DATE",
+      },
+    ],
+  },
+}
+`;
+
+exports[`get-media-by-id should return error for non-existent ID 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The requested Media could not be found",
+    "type": "Error",
+  },
+}
+`;

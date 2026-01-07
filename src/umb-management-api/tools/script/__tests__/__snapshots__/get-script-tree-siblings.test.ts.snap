@@ -2,22 +2,29 @@
 
 exports[`get-script-tree-siblings should get sibling scripts 1`] = `
 {
-  "content": [
+  "items": [
     {
-      "text": "{"totalBefore":2,"totalAfter":0,"items":[{"name":"_TestTargetScript.js","path":"/_TestFolderForSiblings/_TestTargetScript.js","parent":{"path":"/_TestFolderForSiblings","id":"00000000-0000-0000-0000-000000000000"},"isFolder":false,"hasChildren":false,"id":"00000000-0000-0000-0000-000000000000"}]}",
-      "type": "text",
+      "hasChildren": false,
+      "isFolder": false,
+      "name": "_TestTargetScript.js",
+      "parent": {
+        "path": "/_TestFolderForSiblings",
+      },
+      "path": "/_TestFolderForSiblings/_TestTargetScript.js",
     },
   ],
+  "totalAfter": 0,
+  "totalBefore": 2,
 }
 `;
 
 exports[`get-script-tree-siblings should handle non-existent script 1`] = `
 {
-  "content": [
-    {
-      "text": "{"totalBefore":0,"totalAfter":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "totalAfter": 0,
+    "totalBefore": 0,
+  },
 }
 `;
