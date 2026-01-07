@@ -4,7 +4,7 @@ exports[`create-document-blueprint should create a document blueprint 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -16,7 +16,7 @@ exports[`create-document-blueprint should create a document blueprint 2`] = `
   "documentType": {
     "collection": null,
     "icon": "icon-home color-blue",
-    "id": "a95360e8-ff04-40b1-8f46-7aa4b5983096",
+    "id": "00000000-0000-0000-0000-000000000000",
   },
   "flags": [],
   "hasChildren": false,
@@ -31,7 +31,7 @@ exports[`create-document-blueprint should create a document blueprint with paren
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -43,7 +43,7 @@ exports[`create-document-blueprint should create a document blueprint with paren
   "documentType": {
     "collection": null,
     "icon": "icon-home color-blue",
-    "id": "a95360e8-ff04-40b1-8f46-7aa4b5983096",
+    "id": "00000000-0000-0000-0000-000000000000",
   },
   "flags": [],
   "hasChildren": false,
@@ -58,21 +58,14 @@ exports[`create-document-blueprint should create a document blueprint with paren
 
 exports[`create-document-blueprint should handle existing document blueprint 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-document-blueprint:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Duplicate name",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The supplied name is already in use for the same content type.",
-    "operationStatus": "DuplicateName"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "DuplicateName",
+    "status": 400,
+    "title": "Duplicate name",
+    "type": "Error",
+  },
 }
 `;

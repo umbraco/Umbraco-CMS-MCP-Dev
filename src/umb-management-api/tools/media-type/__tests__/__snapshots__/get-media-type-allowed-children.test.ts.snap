@@ -2,43 +2,41 @@
 
 exports[`get-media-type-allowed-children should get allowed children for a media type 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"id":"00000000-0000-0000-0000-000000000000","name":"_Test Child MediaType","description":null,"icon":"icon-picture"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "description": null,
+        "icon": "icon-picture",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Child MediaType",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-media-type-allowed-children should handle media type with no allowed children 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`get-media-type-allowed-children should handle non-existent media type 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-media-type-allowed-children:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Not Found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified media type was not found",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not Found",
+    "type": "Error",
+  },
 }
 `;

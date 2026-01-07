@@ -1,113 +1,102 @@
 import GetDataTypePropertyEditorTemplateTool from "../get/get-data-type-property-editor-template.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-data-type-property-editor-template", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
+  setupTestEnvironment();
   it("should list all available property editors when no editorName is provided", async () => {
-    // Act
+    // Act - Get property editors without specifying a name
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      {} as any,
+      createMockRequestHandlerExtra()
     );
 
-    // Assert
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
-    expect(text).toContain("Available Property Editor Templates:");
-    expect(text).toContain("Textbox");
-    expect(text).toContain("Toggle");
-    expect(text).toContain("RichTextEditor_TinyMCE");
-    expect(text).toContain("get-data-type-property-editor-template with a specific editorName");
+    // Assert - Verify list of available editors is returned
+    const structured: { type: string; availableEditors: Array<{ name: string; notes?: string }> } =
+      result.structuredContent as any;
+    expect(structured.type).toBe("list");
+    expect(structured.availableEditors).toBeDefined();
+    const editorNames = structured.availableEditors.map(e => e.name);
+    expect(editorNames).toContain("Textbox");
+    expect(editorNames).toContain("Toggle");
+    expect(editorNames).toContain("RichTextEditor_TinyMCE");
   });
 
   it("should return template for a specific property editor", async () => {
-    // Act
+    // Act - Get template for Textbox editor
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "Textbox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Assert
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
-    expect(text).toContain("Property Editor Template: Textbox");
-    expect(text).toContain("editorAlias");
-    expect(text).toContain("editorUiAlias");
-    expect(text).toContain("Umbraco.TextBox");
-    expect(text).toContain("Umb.PropertyEditorUi.TextBox");
-    expect(text).toContain("Usage with create-data-type:");
+    // Assert - Verify template is returned with correct properties
+    const structured: { type: string; name: string; template: any } =
+      result.structuredContent as any;
+    expect(structured.type).toBe("template");
+    expect(structured.name).toBe("Textbox");
+    expect(structured.template.editorAlias).toBe("Umbraco.TextBox");
+    expect(structured.template.editorUiAlias).toBe("Umb.PropertyEditorUi.TextBox");
   });
 
   it("should be case-insensitive when finding property editors", async () => {
-    // Act
+    // Act - Get template using lowercase name
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "textbox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Assert
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
-    expect(text).toContain("Property Editor Template: Textbox");
+    // Assert - Verify template is found regardless of case
+    const structured: { type: string; name: string; template: any } =
+      result.structuredContent as any;
+    expect(structured.type).toBe("template");
+    expect(structured.name).toBe("Textbox");
   });
 
   it("should include notes for editors that have special requirements", async () => {
-    // Act
+    // Act - Get template for BlockList editor
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "BlockList" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Assert
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
-    expect(text).toContain("IMPORTANT NOTES:");
-    expect(text).toContain("when creating new block list data types always create the required element types first");
+    // Assert - Verify notes are included for complex editors
+    const structured: { type: string; name: string; template: any } =
+      result.structuredContent as any;
+    expect(structured.type).toBe("template");
+    expect(structured.template._notes).toBeDefined();
+    expect(structured.template._notes).toContain("when creating new block list data types always create the required element types first");
   });
 
   it("should return error for non-existent property editor", async () => {
-    // Act
+    // Act - Try to get template for non-existent editor
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "NonExistentEditor" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Assert
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
+    // Assert - Verify error response with available templates
     expect(result.isError).toBe(true);
-    const text = result.content[0].text as string;
-    expect(text).toContain("not found");
-    expect(text).toContain("Available templates:");
+    const structured: { title: string; detail: string; availableTemplates: string[] } =
+      result.structuredContent as any;
+    expect(structured.title).toBe("Property editor template not found");
+    expect(structured.detail).toContain("not found");
+    expect(structured.availableTemplates).toBeDefined();
   });
 
   it("should include configuration values for editors with settings", async () => {
-    // Act
+    // Act - Get template for Toggle editor
     const result = await GetDataTypePropertyEditorTemplateTool.handler(
       { editorName: "Toggle" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Assert
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
-    expect(text).toContain("values");
-    expect(text).toContain("default");
-    expect(text).toContain("showLabels");
+    // Assert - Verify configuration values are included
+    const structured: { type: string; name: string; template: any } =
+      result.structuredContent as any;
+    expect(structured.type).toBe("template");
+    expect(structured.template.values).toBeDefined();
+    const aliases = structured.template.values.map((v: any) => v.alias);
+    expect(aliases).toContain("default");
+    expect(aliases).toContain("showLabels");
   });
 });

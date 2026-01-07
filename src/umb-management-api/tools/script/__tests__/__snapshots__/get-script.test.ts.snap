@@ -2,64 +2,47 @@
 
 exports[`get-script get-script-by-path should get a script by path 1`] = `
 {
-  "content": [
-    {
-      "text": "{"content":"console.log('test script get');","name":"_TestScriptGet.js","parent":null,"path":"/_TestScriptGet.js"}",
-      "type": "text",
-    },
-  ],
+  "content": "console.log('test script get');",
+  "name": "_TestScriptGet.js",
+  "parent": null,
+  "path": "/_TestScriptGet.js",
 }
 `;
 
 exports[`get-script get-script-by-path should handle non-existent script 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-script-by-path:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The script could not be found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The script was not found.",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The script could not be found",
+    "type": "Error",
+  },
 }
 `;
 
 exports[`get-script get-script-folder-by-path should get a script folder by path 1`] = `
 {
-  "content": [
-    {
-      "text": "{"name":"_TestFolderGet","parent":{"path":"/"},"path":"/_TestFolderGet"}",
-      "type": "text",
-    },
-  ],
+  "name": "_TestFolderGet",
+  "parent": {
+    "path": "/",
+  },
+  "path": "/_TestFolderGet",
 }
 `;
 
 exports[`get-script get-script-folder-by-path should handle non-existent script folder 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-script-folder-by-path:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Not found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified folder was not found.",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not found",
+    "type": "Error",
+  },
 }
 `;

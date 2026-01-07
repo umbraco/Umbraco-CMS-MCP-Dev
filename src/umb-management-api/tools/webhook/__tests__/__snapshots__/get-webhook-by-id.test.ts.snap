@@ -2,30 +2,39 @@
 
 exports[`get-webhook-by-id should get a webhook by id 1`] = `
 {
-  "content": [
-    {
-      "text": "{"id":"PLACEHOLDER_ID","events":[{"eventName":"content.deleted","eventType":"Other","alias":"content.deleted"},{"eventName":"content.published","eventType":"Other","alias":"content.published"}],"enabled":true,"name":"_Test Webhook","description":null,"url":"https://example.com/webhook","contentTypeKeys":[],"headers":{}}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "contentTypeKeys": [],
+    "description": null,
+    "enabled": true,
+    "events": [
+      {
+        "alias": "content.deleted",
+        "eventName": "content.deleted",
+        "eventType": "Other",
+      },
+      {
+        "alias": "content.published",
+        "eventName": "content.published",
+        "eventType": "Other",
+      },
+    ],
+    "headers": {},
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "_Test Webhook",
+    "url": "https://example.com/webhook",
+  },
 }
 `;
 
 exports[`get-webhook-by-id should handle non-existent webhook 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-webhook-by-id:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "status": 404,
     "title": "The webhook could not be found",
-    "status": 404
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "type": "Error",
+  },
 }
 `;

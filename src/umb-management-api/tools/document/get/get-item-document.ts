@@ -1,28 +1,27 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getItemDocumentQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getItemDocumentQueryParams, getItemDocumentResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
+
+const outputSchema = z.object({
+  items: getItemDocumentResponse,
+});
 
 const GetItemDocumentTool = {
   name: "get-item-document",
   description: "Gets document items by their ids",
-  schema: getItemDocumentQueryParams.shape,
-  isReadOnly: true,
-  slices: ['list'],
-  handler: async (params: z.infer<typeof getItemDocumentQueryParams>) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemDocument(params);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getItemDocumentQueryParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getItemDocumentQueryParams.shape>;
+  slices: ['list'],
+  handler: (async (params: z.infer<typeof getItemDocumentQueryParams>) => {
+    return executeGetItemsApiCall((client) =>
+      client.getItemDocument(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getItemDocumentQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetItemDocumentTool);

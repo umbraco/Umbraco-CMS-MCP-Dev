@@ -1,20 +1,14 @@
 import { DocumentTypeFolderBuilder } from "./document-type-folder-builder.js";
 import { DocumentTypeTestHelper } from "./document-type-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe('DocumentTypeFolderBuilder', () => {
   const TEST_FOLDER_NAME = '_Test Folder';
   const TEST_PARENT_NAME = '_Test Parent Folder';
   const TEST_CHILD_NAME = '_Test Child Folder';
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTypeTestHelper.cleanup(TEST_FOLDER_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_CHILD_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_PARENT_NAME);

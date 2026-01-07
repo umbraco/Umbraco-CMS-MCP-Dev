@@ -1,6 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+import { detectFileExtensionFromBuffer } from "@/helpers/file/index.js";
 import { z } from "zod";
 import * as fs from "fs";
 import * as os from "os";
@@ -15,6 +16,11 @@ const createTemporaryFileSchema = z.object({
 
 type CreateTemporaryFileParams = z.infer<typeof createTemporaryFileSchema>;
 
+export const createTemporaryFileOutputSchema = z.object({
+  message: z.string(),
+  id: z.string().uuid()
+});
+
 const CreateTemporaryFileTool = {
   name: "create-temporary-file",
   description: `Creates a new temporary file. The file will be deleted after 10 minutes.
@@ -24,18 +30,25 @@ const CreateTemporaryFileTool = {
   - Use the temporary file id when creating a media item using the media post endpoint
 
   Provide the file content as a base64 encoded string.`,
-  schema: createTemporaryFileSchema.shape,
-  isReadOnly: false,
+  inputSchema: createTemporaryFileSchema.shape,
+  outputSchema: createTemporaryFileOutputSchema.shape,
   slices: ['create'],
-  handler: async (model: CreateTemporaryFileParams) => {
+  handler: (async (model: CreateTemporaryFileParams) => {
     let tempFilePath: string | null = null;
 
     try {
       // Convert base64 to Buffer
       const fileContent = Buffer.from(model.fileAsBase64, 'base64');
 
+      // Ensure fileName has an extension - add one based on magic bytes if missing
+      let fileName = model.fileName;
+      if (!fileName.includes('.')) {
+        const extension = detectFileExtensionFromBuffer(fileContent);
+        fileName = `${fileName}${extension}`;
+      }
+
       // Write to temp file (required for fs.ReadStream which the API client needs)
-      tempFilePath = path.join(os.tmpdir(), `umbraco-upload-${model.id}-${model.fileName}`);
+      tempFilePath = path.join(os.tmpdir(), `umbraco-upload-${model.id}-${fileName}`);
       fs.writeFileSync(tempFilePath, fileContent);
 
       // Create ReadStream for Umbraco API
@@ -47,24 +60,14 @@ const CreateTemporaryFileTool = {
         File: readStream,
       });
 
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({ id: model.id }),
-          },
-        ],
-      };
+      return createToolResult({
+        message: "Temporary file created successfully",
+        id: model.id
+      });
     } catch (error) {
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: `Error creating temporary file: ${(error as Error).message}`,
-          },
-        ],
-        isError: true,
-      };
+      return createToolResultError({
+        detail: `Error creating temporary file: ${(error as Error).message}`,
+      });
     } finally {
       // Cleanup temp file
       if (tempFilePath && fs.existsSync(tempFilePath)) {
@@ -75,7 +78,7 @@ const CreateTemporaryFileTool = {
         }
       }
     }
-  }
-} satisfies ToolDefinition<typeof createTemporaryFileSchema.shape>;
+  }),
+} satisfies ToolDefinition<typeof createTemporaryFileSchema.shape, typeof createTemporaryFileOutputSchema.shape>;
 
 export default withStandardDecorators(CreateTemporaryFileTool);

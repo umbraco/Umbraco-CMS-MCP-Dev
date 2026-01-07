@@ -2,28 +2,26 @@ import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import GetMediaAncestorsTool from "../items/get/get-ancestors.js";
 import GetMediaChildrenTool from "../items/get/get-children.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+
+const TEST_ROOT_NAME = "_Test Root Media";
+const TEST_CHILD_NAME = "_Test Child Media";
 
 describe("media-tree", () => {
-  const TEST_ROOT_NAME = "_Test Root Media";
-  const TEST_CHILD_NAME = "_Test Child Media";
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let tempFileBuilder: TemporaryFileBuilder;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     tempFileBuilder = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MediaTestHelper.cleanup(TEST_ROOT_NAME);
     await MediaTestHelper.cleanup(TEST_CHILD_NAME);
   });
@@ -48,8 +46,8 @@ describe("media-tree", () => {
         {
           take: 100,
           parentId: parentBuilder.getId(),
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       const normalizedItems = createSnapshotResult(result);
@@ -61,8 +59,8 @@ describe("media-tree", () => {
         {
           take: 100,
           parentId: BLANK_UUID,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();
@@ -88,8 +86,8 @@ describe("media-tree", () => {
       const result = await GetMediaAncestorsTool.handler(
         {
           descendantId: childBuilder.getId(),
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       const normalizedItems = createSnapshotResult(result);
@@ -100,8 +98,8 @@ describe("media-tree", () => {
       const result = await GetMediaAncestorsTool.handler(
         {
           descendantId: BLANK_UUID,
-        },
-        { signal: new AbortController().signal }
+        } as any,
+        createMockRequestHandlerExtra()
       );
 
       expect(result).toMatchSnapshot();

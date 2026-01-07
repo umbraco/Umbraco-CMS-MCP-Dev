@@ -1,4 +1,3 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { MoveDocumentBlueprintRequestModel } from "@/umb-management-api/schemas/moveDocumentBlueprintRequestModel.js";
 import {
   putDocumentBlueprintByIdMoveParams,
@@ -6,34 +5,30 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
-const moveDocumentBlueprintSchema = {
+const moveDocumentBlueprintSchema = z.object({
   id: putDocumentBlueprintByIdMoveParams.shape.id,
   data: z.object(putDocumentBlueprintByIdMoveBody.shape),
-};
+});
+
+type MoveDocumentBlueprintParams = z.infer<typeof moveDocumentBlueprintSchema>;
 
 const MoveDocumentBlueprintTool = {
   name: "move-document-blueprint",
   description: "Moves a document blueprint by Id",
-  schema: moveDocumentBlueprintSchema,
-  isReadOnly: false,
+  inputSchema: moveDocumentBlueprintSchema.shape,
+  annotations: {},
   slices: ['move'],
-  handler: async (model: { id: string; data: MoveDocumentBlueprintRequestModel }) => {
-    const client = UmbracoManagementClient.getClient();
-    var response = await client.putDocumentBlueprintByIdMove(
-      model.id,
-      model.data
+  handler: (async (model: MoveDocumentBlueprintParams) => {
+    return executeVoidApiCall((client) =>
+      client.putDocumentBlueprintByIdMove(
+        model.id,
+        model.data as MoveDocumentBlueprintRequestModel,
+        CAPTURE_RAW_HTTP_RESPONSE
+      )
     );
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof moveDocumentBlueprintSchema>;
+  }),
+} satisfies ToolDefinition<typeof moveDocumentBlueprintSchema.shape>;
 
 export default withStandardDecorators(MoveDocumentBlueprintTool);

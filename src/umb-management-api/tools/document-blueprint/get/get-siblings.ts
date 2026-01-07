@@ -1,29 +1,21 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getTreeDocumentBlueprintSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetTreeDocumentBlueprintSiblingsParams } from "@/umb-management-api/schemas/index.js";
+import { getTreeDocumentBlueprintSiblingsQueryParams, getTreeDocumentBlueprintSiblingsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE, executeGetApiCall } from "@/helpers/mcp/index.js";
 import { z } from "zod";
-
-type SchemaParams = z.infer<typeof getTreeDocumentBlueprintSiblingsQueryParams>;
 
 const GetDocumentBlueprintSiblingsTool = {
   name: "get-document-blueprint-siblings",
   description: "Gets sibling document blueprints for a given descendant id",
-  schema: getTreeDocumentBlueprintSiblingsQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getTreeDocumentBlueprintSiblingsQueryParams.shape,
+  outputSchema: getTreeDocumentBlueprintSiblingsResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree'],
-  handler: async (params: SchemaParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeDocumentBlueprintSiblings(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getTreeDocumentBlueprintSiblingsQueryParams.shape>;
+  handler: (async (params: GetTreeDocumentBlueprintSiblingsParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeDocumentBlueprintSiblings(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeDocumentBlueprintSiblingsQueryParams.shape, typeof getTreeDocumentBlueprintSiblingsResponse.shape>;
 
 export default withStandardDecorators(GetDocumentBlueprintSiblingsTool);

@@ -1,0 +1,374 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Normalization Golden Files - Edge cases should handle array structuredContent 1`] = `
+{
+  "structuredContent": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "Item 1",
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "Item 2",
+    },
+  ],
+}
+`;
+
+exports[`Normalization Golden Files - Edge cases should handle deeply nested items recursively 1`] = `
+{
+  "structuredContent": {
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "items": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "id": "00000000-0000-0000-0000-000000000000",
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`Normalization Golden Files - Edge cases should handle empty arrays 1`] = `
+{
+  "structuredContent": {
+    "ancestors": [],
+    "avatarUrls": [],
+    "id": "00000000-0000-0000-0000-000000000000",
+    "items": [],
+    "urlInfos": [],
+    "variants": [],
+  },
+}
+`;
+
+exports[`Normalization Golden Files - Edge cases should handle null and undefined values 1`] = `
+{
+  "structuredContent": {
+    "document": undefined,
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": null,
+    "parent": null,
+  },
+}
+`;
+
+exports[`Normalization Golden Files - Edge cases should handle primitive structuredContent 1`] = `
+{
+  "structuredContent": "just a string",
+}
+`;
+
+exports[`Normalization Golden Files - Edge cases should preserve non-normalized fields 1`] = `
+{
+  "structuredContent": {
+    "arrayOfStrings": [
+      "a",
+      "b",
+      "c",
+    ],
+    "customField": "should be preserved",
+    "id": "00000000-0000-0000-0000-000000000000",
+    "nestedObject": {
+      "baz": 123,
+      "foo": "bar",
+    },
+  },
+}
+`;
+
+exports[`Normalization Golden Files - Error response structuredContent format should normalize traceId in structuredContent 1`] = `
+{
+  "isError": true,
+  "structuredContent": {
+    "status": 400,
+    "title": "Bad Request",
+    "traceId": "normalized-trace-id",
+    "type": "error",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Complex nested structures should normalize deeply nested document with all fields 1`] = `
+{
+  "structuredContent": {
+    "ancestors": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Root",
+      },
+    ],
+    "createDate": "NORMALIZED_DATE",
+    "document": {
+      "documentType": {
+        "alias": "blogPost",
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "id": "00000000-0000-0000-0000-000000000000",
+    "parent": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "path": "/root/blog_NORMALIZED_TIMESTAMP",
+    },
+    "user": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "Editor",
+    },
+    "variants": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "culture": "en-US",
+        "publishDate": "NORMALIZED_DATE",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Date normalization should normalize all date fields 1`] = `
+{
+  "structuredContent": {
+    "createDate": "NORMALIZED_DATE",
+    "id": "00000000-0000-0000-0000-000000000000",
+    "lastLockoutDate": "NORMALIZED_DATE",
+    "lastLoginDate": "NORMALIZED_DATE",
+    "lastPasswordChangeDate": "NORMALIZED_DATE",
+    "publishDate": "NORMALIZED_DATE",
+    "updateDate": "NORMALIZED_DATE",
+    "versionDate": "NORMALIZED_DATE",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Date normalization should normalize dates in variants array 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "variants": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "culture": "en-US",
+        "publishDate": "NORMALIZED_DATE",
+        "updateDate": "NORMALIZED_DATE",
+        "versionDate": "NORMALIZED_DATE",
+      },
+      {
+        "createDate": "NORMALIZED_DATE",
+        "culture": "da-DK",
+        "publishDate": "NORMALIZED_DATE",
+        "updateDate": "NORMALIZED_DATE",
+        "versionDate": "NORMALIZED_DATE",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format ID normalization should normalize ancestors array ids 1`] = `
+{
+  "structuredContent": {
+    "ancestors": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Root",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Middle",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Parent",
+      },
+    ],
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format ID normalization should normalize basic id field 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "Test Item",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format ID normalization should normalize document.id 1`] = `
+{
+  "structuredContent": {
+    "document": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "My Document",
+    },
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format ID normalization should normalize documentType.id 1`] = `
+{
+  "structuredContent": {
+    "documentType": {
+      "alias": "myDocType",
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format ID normalization should normalize id with specific idToReplace 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "Test Item",
+    "otherId": "99999999-9999-9999-9999-999999999999",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format ID normalization should normalize mediaType.id 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "mediaType": {
+      "alias": "Image",
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format ID normalization should normalize parent.id 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "Child",
+    "parent": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "Parent",
+    },
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format ID normalization should normalize user.id 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "user": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "Admin User",
+    },
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Nested items array should normalize items in nested items array 1`] = `
+{
+  "structuredContent": {
+    "items": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Item 1",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+      {
+        "createDate": "NORMALIZED_DATE",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Item 2",
+        "parent": null,
+      },
+    ],
+    "total": 2,
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Regex normalizations should normalize avatarUrls with hash 1`] = `
+{
+  "structuredContent": {
+    "avatarUrls": [
+      "/umbraco/assets/avatars/NORMALIZED_AVATAR.jpg",
+      "/umbraco/assets/avatars/NORMALIZED_AVATAR.jpg",
+    ],
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Regex normalizations should normalize email with random numbers 1`] = `
+{
+  "structuredContent": {
+    "email": "test-NORMALIZED@example.com",
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Regex normalizations should normalize name with timestamp 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "Test_NORMALIZED_TIMESTAMP_Item",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Regex normalizations should normalize parent.path with timestamp 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "parent": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "path": "/root/folder_NORMALIZED_TIMESTAMP/parent",
+    },
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Regex normalizations should normalize path with timestamp 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "path": "/root/folder_NORMALIZED_TIMESTAMP/subfolder_NORMALIZED_TIMESTAMP/file.js",
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Regex normalizations should normalize urlInfos with media path 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "urlInfos": [
+      {
+        "culture": "en-US",
+        "url": "/media/NORMALIZED_PATH/image.jpg",
+      },
+      {
+        "culture": "da-DK",
+        "url": "/media/NORMALIZED_PATH/image.jpg",
+      },
+    ],
+  },
+}
+`;
+
+exports[`Normalization Golden Files - structuredContent format Regex normalizations should normalize userName with random numbers 1`] = `
+{
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "userName": "testuser-NORMALIZED@domain.com",
+  },
+}
+`;

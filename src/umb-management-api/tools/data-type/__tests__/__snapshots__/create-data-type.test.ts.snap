@@ -2,15 +2,11 @@
 
 exports[`create-data-type should create a data type 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "message": "Data type created successfully",
-  "id": "00000000-0000-0000-0000-000000000000"
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Data type created successfully",
+  },
 }
 `;
 
@@ -29,15 +25,11 @@ exports[`create-data-type should create a data type 2`] = `
 
 exports[`create-data-type should create a data type with parent folder 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "message": "Data type created successfully",
-  "id": "00000000-0000-0000-0000-000000000000"
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Data type created successfully",
+  },
 }
 `;
 

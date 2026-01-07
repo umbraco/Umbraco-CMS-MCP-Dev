@@ -5,27 +5,22 @@ import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/docum
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType IsUsed";
 const TEST_DOCUMENT_TYPE_NAME = "_Test DocType For IsUsed";
 const TEST_DOCUMENT_NAME = "_Test Document For IsUsed";
 
 describe("is-used-data-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await Promise.all([
       DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME),
       DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME),
     ]);
-    console.error = originalConsoleError;
   });
 
   it("should check if a data type is used", async () => {
@@ -53,7 +48,7 @@ describe("is-used-data-type", () => {
 
     const result = await IsUsedDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
@@ -76,7 +71,7 @@ describe("is-used-data-type", () => {
 
     const result = await IsUsedDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
@@ -92,7 +87,7 @@ describe("is-used-data-type", () => {
 
     const result = await IsUsedDataTypeTool.handler(
       { id: dataTypeBuilder.getId() },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     const normalizedResult = createSnapshotResult(result);
@@ -102,7 +97,7 @@ describe("is-used-data-type", () => {
   it("should handle non-existent data type", async () => {
     const result = await IsUsedDataTypeTool.handler(
       { id: BLANK_UUID },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

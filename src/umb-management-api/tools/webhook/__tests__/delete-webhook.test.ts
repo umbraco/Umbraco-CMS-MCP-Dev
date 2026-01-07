@@ -1,7 +1,8 @@
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
 import DeleteWebhookTool from "../delete/delete-webhook.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
 import {
@@ -11,15 +12,10 @@ import {
 
 describe("delete-webhook", () => {
   const TEST_WEBHOOK_NAME = "_Test Webhook";
-  let originalConsoleError: typeof console.error;
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await WebhookTestHelper.cleanup(TEST_WEBHOOK_NAME);
   });
 
@@ -35,10 +31,11 @@ describe("delete-webhook", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Normalize and verify response
+    // Verify response
+    expect(result.isError).toBeFalsy();
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
 
@@ -52,9 +49,10 @@ describe("delete-webhook", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

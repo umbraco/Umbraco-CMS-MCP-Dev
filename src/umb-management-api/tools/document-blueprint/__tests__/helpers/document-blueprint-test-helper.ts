@@ -1,6 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { DocumentBlueprintTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 
 export class DocumentBlueprintTestHelper {
   private static findByName(
@@ -10,27 +9,6 @@ export class DocumentBlueprintTestHelper {
     return items.find((item: any) => item.name === name);
   }
 
-  static normaliseIds(
-    items:
-      | DocumentBlueprintTreeItemResponseModel
-      | DocumentBlueprintTreeItemResponseModel[]
-  ):
-    | DocumentBlueprintTreeItemResponseModel
-    | DocumentBlueprintTreeItemResponseModel[] {
-    if (Array.isArray(items)) {
-      return items.map((item) => ({
-        ...item,
-        id: BLANK_UUID,
-        parent: item.parent ? { ...item.parent, id: BLANK_UUID } : item.parent
-      }));
-    }
-    return {
-      ...items,
-      id: BLANK_UUID,
-      parent: items.parent ? { ...items.parent, id: BLANK_UUID } : items.parent
-    };
-  }
-
   static async cleanup(name: string): Promise<void> {
     try {
       const client = UmbracoManagementClient.getClient();
@@ -38,6 +16,16 @@ export class DocumentBlueprintTestHelper {
 
       if (item) {
         try {
+          if (item.isFolder && item.hasChildren) {
+            // Delete children first
+            const childrenResponse = await client.getTreeDocumentBlueprintChildren({
+              parentId: item.id,
+            });
+            for (const child of childrenResponse.items) {
+              await this.cleanup(child.name);
+            }
+          }
+
           if (item.isFolder) {
             await client.deleteDocumentBlueprintFolderById(item.id);
           } else {

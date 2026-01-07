@@ -1,11 +1,11 @@
 import { DocumentBuilder } from "./document-builder.js";
 import { DocumentTestHelper } from "./document-test-helper.js";
-import { jest } from "@jest/globals";
 import { TEST_DOMAIN } from "./document-builder.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { MemberGroupBuilder } from "../../../member-group/__tests__/helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "../../../member-group/__tests__/helpers/member-group-helper.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test DocumentBuilder";
 const TEST_RECYCLE_BIN_DOCUMENT_NAME = "_Test DocumentBuilder RecycleBin";
@@ -17,15 +17,9 @@ const TEST_UPDATE_DOCUMENT_NAME = "_Test Document Builder Update";
 const TEST_UPDATED_DOCUMENT_NAME = "_Test Document Builder Updated";
 
 describe("DocumentBuilder", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(TEST_RECYCLE_BIN_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(TEST_PUBLISHED_DOCUMENT_NAME);

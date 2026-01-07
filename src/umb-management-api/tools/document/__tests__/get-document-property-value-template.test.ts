@@ -1,29 +1,21 @@
 import GetDocumentPropertyValueTemplateTool from "../get/get-document-property-value-template.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-document-property-value-template", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
+  setupTestEnvironment();
   it("should list all available property value templates when no editorAlias is provided", async () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      { editorAlias: undefined },
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Available Property Value Templates:");
     expect(text).toContain("Textbox");
     expect(text).toContain("BlockList");
@@ -36,13 +28,14 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.TextBox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: Textbox");
     expect(text).toContain("editorAlias");
     expect(text).toContain("Umbraco.TextBox");
@@ -57,13 +50,14 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Textbox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: Textbox");
     expect(text).toContain("Umbraco.TextBox");
   });
@@ -72,13 +66,14 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "umbraco.textbox" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: Textbox");
   });
 
@@ -86,13 +81,14 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.BlockList" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("IMPORTANT NOTES:");
     expect(text).toContain("Complex structure");
   });
@@ -101,14 +97,15 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "NonExistent.Editor" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
     expect(result.isError).toBe(true);
-    const text = result.content[0].text as string;
+    const text = textContent.text;
     expect(text).toContain("not found");
     expect(text).toContain("Available editor aliases:");
   });
@@ -117,13 +114,14 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.BlockGrid" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: BlockGrid");
     expect(text).toContain("layout");
     expect(text).toContain("contentData");
@@ -136,13 +134,14 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.RichText" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("Property Value Template: RichTextEditor");
     expect(text).toContain("markup");
     expect(text).toContain("blocks");
@@ -152,13 +151,14 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.ImageCropper" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("IMPORTANT NOTES:");
     expect(text).toContain("temporary file");
     expect(text).toContain("temporaryFileId");
@@ -168,13 +168,14 @@ describe("get-document-property-value-template", () => {
     // Act
     const result = await GetDocumentPropertyValueTemplateTool.handler(
       { editorAlias: "Umbraco.MediaPicker3" },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
     expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe("text");
-    const text = result.content[0].text as string;
+    const textContent = result.content[0] as { type: "text"; text: string };
+    expect(textContent.type).toBe("text");
+    const text = textContent.text;
     expect(text).toContain("mediaKey");
     expect(text).toContain("key");
   });

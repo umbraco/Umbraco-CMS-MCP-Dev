@@ -1,29 +1,18 @@
 import GetSearcherTool from "../get/get-searcher.js";
-import { UmbracoManagementClient } from "@umb-management-client";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-searcher", () => {
-  let originalConsoleError: typeof console.error;
-  let originalGetClient: typeof UmbracoManagementClient.getClient;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-    originalGetClient = UmbracoManagementClient.getClient;
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-    UmbracoManagementClient.getClient = originalGetClient;
-  });
+  setupTestEnvironment();
 
   it("should list all searchers with default parameters", async () => {
     const result = await GetSearcherTool.handler(
-      { take: 100 },
-      { signal: new AbortController().signal }
+      { skip: undefined, take: 100 },
+      createMockRequestHandlerExtra()
     );
-    // Verify the handler response using snapshot
-    expect(result).toMatchSnapshot();
+    // Validate response against tool's outputSchema
+    const data = validateToolResponse(GetSearcherTool, result);
+    expect(data).toMatchSnapshot();
   });
 
 });

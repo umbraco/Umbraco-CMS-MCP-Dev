@@ -2,23 +2,21 @@
 
 exports[`media-type-folder create should create a folder 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Media type folder created successfully",
+  },
 }
 `;
 
 exports[`media-type-folder create should create a folder with parent 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Media type folder created successfully",
+  },
 }
 `;
 
@@ -26,7 +24,7 @@ exports[`media-type-folder delete should delete a folder 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -35,41 +33,27 @@ exports[`media-type-folder delete should delete a folder 1`] = `
 
 exports[`media-type-folder delete should handle non-existent folder 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using delete-media-type-folder:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The folder could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The folder could not be found",
+    "type": "Error",
+  },
 }
 `;
 
 exports[`media-type-folder update should handle non-existent folder 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using update-media-type-folder:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The folder could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The folder could not be found",
+    "type": "Error",
+  },
 }
 `;
 
@@ -77,7 +61,7 @@ exports[`media-type-folder update should update a folder name 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],

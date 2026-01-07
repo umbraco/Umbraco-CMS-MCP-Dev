@@ -130,7 +130,20 @@ export class MemberTypeBuilder {
   }
 
   build(): CreateMemberTypeRequestModel {
-    return this.model as CreateMemberTypeRequestModel;
+    // Ensure all optional properties are explicitly set for TypeScript compatibility
+    return {
+      alias: this.model.alias ?? "",
+      name: this.model.name ?? "",
+      description: this.model.description ?? undefined,
+      icon: this.model.icon ?? "icon-user",
+      allowedAsRoot: this.model.allowedAsRoot ?? false,
+      variesByCulture: this.model.variesByCulture ?? false,
+      variesBySegment: this.model.variesBySegment ?? false,
+      isElement: this.model.isElement ?? false,
+      properties: this.model.properties ?? [],
+      containers: this.model.containers ?? [],
+      compositions: this.model.compositions ?? [],
+    } as CreateMemberTypeRequestModel;
   }
 
   async cleanup(): Promise<void> {

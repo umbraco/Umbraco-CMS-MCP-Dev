@@ -4,7 +4,8 @@ import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_PARTIAL_VIEW_NAME = "_TestGetPartialView.cshtml";
 const TEST_FOLDER_NAME = "_TestGetPartialViewFolder";
@@ -13,13 +14,12 @@ const NON_EXISTENT_PARTIAL_VIEW_PATH = "/_NonExistentPartialView.cshtml";
 const NON_EXISTENT_FOLDER_PATH = "/_NonExistentFolder";
 
 describe("get-partial-view", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let partialViewBuilder: PartialViewBuilder;
   let folderBuilder: PartialViewFolderBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     partialViewBuilder = new PartialViewBuilder();
     folderBuilder = new PartialViewFolderBuilder();
   });
@@ -27,7 +27,6 @@ describe("get-partial-view", () => {
   afterEach(async () => {
     await PartialViewHelper.cleanup(TEST_PARTIAL_VIEW_NAME);
     await PartialViewHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   describe("GetPartialViewByPathTool", () => {
@@ -43,14 +42,14 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewByPathTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewByPathTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response contains expected partial view data
-      const responseData = JSON.parse(String(result.content[0].text));
+      const responseData = validateToolResponse(GetPartialViewByPathTool, result);
       expect(responseData).toHaveProperty('name', TEST_PARTIAL_VIEW_NAME);
       expect(responseData).toHaveProperty('content', TEST_CONTENT);
       expect(responseData).toHaveProperty('path', partialViewBuilder.getPath());
@@ -73,14 +72,14 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewByPathTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewByPathTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response contains expected data
-      const responseData = JSON.parse(String(result.content[0].text));
+      const responseData = validateToolResponse(GetPartialViewByPathTool, result);
       expect(responseData).toHaveProperty('name', TEST_PARTIAL_VIEW_NAME);
       expect(responseData).toHaveProperty('content', TEST_CONTENT);
       expect(responseData.path).toContain(TEST_FOLDER_NAME);
@@ -93,7 +92,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewByPathTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewByPathTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -106,7 +105,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewByPathTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewByPathTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -125,14 +124,14 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewFolderByPathTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewFolderByPathTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response contains expected folder data
-      const responseData = JSON.parse(String(result.content[0].text));
+      const responseData = validateToolResponse(GetPartialViewFolderByPathTool, result);
       expect(responseData).toHaveProperty('name', TEST_FOLDER_NAME);
       expect(responseData).toHaveProperty('path', folderBuilder.getPath());
     });
@@ -144,7 +143,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewFolderByPathTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewFolderByPathTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();
@@ -162,7 +161,7 @@ describe("get-partial-view", () => {
       };
 
       // Act
-      const result = await GetPartialViewFolderByPathTool.handler(params, { signal: new AbortController().signal });
+      const result = await GetPartialViewFolderByPathTool.handler(params, createMockRequestHandlerExtra());
 
       // Assert - Error responses don't use createSnapshotResult
       expect(result).toMatchSnapshot();

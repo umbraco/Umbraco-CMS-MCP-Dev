@@ -2,32 +2,43 @@
 
 exports[`get-document-type should get a document type by id 1`] = `
 {
-  "content": [
-    {
-      "text": "{"allowedTemplates":[],"defaultTemplate":null,"cleanup":{"preventCleanup":false,"keepAllVersionsNewerThanDays":null,"keepLatestVersionPerDayForDays":null},"allowedDocumentTypes":[],"compositions":[],"id":"00000000-0000-0000-0000-000000000000","alias":"testdocumenttypeget","name":"_Test DocumentType Get","description":null,"icon":"icon-document","allowedAsRoot":false,"variesByCulture":false,"variesBySegment":false,"collection":null,"isElement":false,"properties":[],"containers":[]}",
-      "type": "text",
+  "content": [],
+  "structuredContent": {
+    "alias": "testdocumenttypeget",
+    "allowedAsRoot": false,
+    "allowedDocumentTypes": [],
+    "allowedTemplates": [],
+    "cleanup": {
+      "keepAllVersionsNewerThanDays": null,
+      "keepLatestVersionPerDayForDays": null,
+      "preventCleanup": false,
     },
-  ],
+    "collection": null,
+    "compositions": [],
+    "containers": [],
+    "defaultTemplate": null,
+    "description": null,
+    "icon": "icon-document",
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isElement": false,
+    "name": "_Test DocumentType Get",
+    "properties": [],
+    "variesByCulture": false,
+    "variesBySegment": false,
+  },
 }
 `;
 
 exports[`get-document-type should handle non-existent document type 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-document-type-by-id:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Not Found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified document type was not found",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not Found",
+    "type": "Error",
+  },
 }
 `;

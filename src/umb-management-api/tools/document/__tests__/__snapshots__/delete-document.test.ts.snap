@@ -4,7 +4,7 @@ exports[`delete-document should delete a document 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -13,20 +13,13 @@ exports[`delete-document should delete a document 1`] = `
 
 exports[`delete-document should handle non-existent document 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using delete-document:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The content could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The content could not be found",
+    "type": "Error",
+  },
 }
 `;

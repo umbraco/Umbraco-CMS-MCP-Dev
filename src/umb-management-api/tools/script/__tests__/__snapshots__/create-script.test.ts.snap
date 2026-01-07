@@ -2,64 +2,42 @@
 
 exports[`create-script create-script should create a script 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "message": "Script created successfully",
+  "path": "/_TestScript.js",
 }
 `;
 
 exports[`create-script create-script should handle existing script 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-script:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Script already exists",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "A script with the same path already exists",
-    "operationStatus": "AlreadyExists"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "AlreadyExists",
+    "status": 400,
+    "title": "Script already exists",
+    "type": "Error",
+  },
 }
 `;
 
 exports[`create-script create-script-folder should create a script folder 1`] = `
 {
-  "content": [
-    {
-      "text": """",
-      "type": "text",
-    },
-  ],
+  "message": "Script folder created successfully",
+  "path": "/_TestFolder",
 }
 `;
 
 exports[`create-script create-script-folder should handle existing script folder 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-script-folder:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Folder already exists",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The folder already exists",
-    "operationStatus": "AlreadyExists"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "AlreadyExists",
+    "status": 400,
+    "title": "Folder already exists",
+    "type": "Error",
+  },
 }
 `;

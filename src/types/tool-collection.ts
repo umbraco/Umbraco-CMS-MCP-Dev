@@ -10,5 +10,5 @@ export interface ToolCollectionMetadata {
 
 export interface ToolCollectionExport {
   metadata: ToolCollectionMetadata;
-  tools: (user: CurrentUserResponseModel) => ToolDefinition<any>[];
+  tools: (user: CurrentUserResponseModel) => ToolDefinition<any, any>[];
 }

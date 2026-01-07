@@ -1,27 +1,21 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getHealthCheckGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getHealthCheckGroupQueryParams, getHealthCheckGroupResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetHealthCheckGroupsTool = {
   name: "get-health-check-groups",
   description: "Gets a paged list of health check groups for system monitoring",
-  schema: getHealthCheckGroupQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getHealthCheckGroupQueryParams.shape,
+  outputSchema: getHealthCheckGroupResponse.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
   slices: ['diagnostics'],
-  handler: async (params: { skip?: number; take?: number }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getHealthCheckGroup(params);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof getHealthCheckGroupQueryParams.shape>;
+  handler: (async (params: { skip?: number; take?: number }) => {
+    return executeGetApiCall((client) =>
+      client.getHealthCheckGroup(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getHealthCheckGroupQueryParams.shape, typeof getHealthCheckGroupResponse.shape>;
 
 export default withStandardDecorators(GetHealthCheckGroupsTool);

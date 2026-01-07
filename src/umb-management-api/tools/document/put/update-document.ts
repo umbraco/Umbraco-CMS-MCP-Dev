@@ -1,4 +1,3 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import {
   putDocumentByIdParams,
   putDocumentByIdBody,
@@ -7,9 +6,9 @@ import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
-const updateDocumentSchema = {
+const inputSchema = {
   id: putDocumentByIdParams.shape.id,
   data: z.object(putDocumentByIdBody.shape),
 };
@@ -29,22 +28,17 @@ const UpdateDocumentTool = {
   - Always read the current document value first
   - Only update the required values
   - Don't miss any properties from the original document`,
-  schema: updateDocumentSchema,
-  isReadOnly: false,
+  inputSchema: inputSchema,
+  annotations: {
+    idempotentHint: true,
+  },
   slices: ['update'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Update),
-  handler: async (model: { id: string; data: any }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.putDocumentById(model.id, model.data);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof updateDocumentSchema>;
+  handler: (async (model: { id: string; data: any }) => {
+    return executeVoidApiCall((client) =>
+      client.putDocumentById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof inputSchema>;
 
 export default withStandardDecorators(UpdateDocumentTool);

@@ -1,28 +1,22 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { GetTreeDataTypeSiblingsParams } from "@/umb-management-api/schemas/index.js";
-import { getTreeDataTypeSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getTreeDataTypeSiblingsQueryParams, getTreeDataTypeSiblingsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetDataTypeSiblingsTool = {
   name: "get-data-type-siblings",
   description: "Gets sibling data types or data type folders for a given descendant id",
-  schema: getTreeDataTypeSiblingsQueryParams.shape,
-  isReadOnly: true,
-  slices: ['tree'],
-  handler: async (params: GetTreeDataTypeSiblingsParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTreeDataTypeSiblings(params);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getTreeDataTypeSiblingsQueryParams.shape,
+  outputSchema: getTreeDataTypeSiblingsResponse.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getTreeDataTypeSiblingsQueryParams.shape>;
+  slices: ['tree'],
+  handler: (async (params: GetTreeDataTypeSiblingsParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeDataTypeSiblings(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeDataTypeSiblingsQueryParams.shape, typeof getTreeDataTypeSiblingsResponse.shape>;
 
 export default withStandardDecorators(GetDataTypeSiblingsTool);

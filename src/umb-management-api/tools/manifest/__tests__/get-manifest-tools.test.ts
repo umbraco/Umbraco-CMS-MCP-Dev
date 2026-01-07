@@ -2,23 +2,15 @@ import GetManifestManifestTool from "../get/get-manifest-manifest.js";
 import GetManifestManifestPrivateTool from "../get/get-manifest-manifest-private.js";
 import GetManifestManifestPublicTool from "../get/get-manifest-manifest-public.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("manifest tools", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   describe("get-manifest-manifest", () => {
     it("should get all manifests", async () => {
-      const result = await GetManifestManifestTool.handler({}, { signal: new AbortController().signal });
+      const result = await GetManifestManifestTool.handler({}, createMockRequestHandlerExtra());
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -26,7 +18,7 @@ describe("manifest tools", () => {
 
   describe("get-manifest-manifest-private", () => {
     it("should get private manifests", async () => {
-      const result = await GetManifestManifestPrivateTool.handler({}, { signal: new AbortController().signal });
+      const result = await GetManifestManifestPrivateTool.handler({}, createMockRequestHandlerExtra());
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });
@@ -34,7 +26,7 @@ describe("manifest tools", () => {
 
   describe("get-manifest-manifest-public", () => {
     it("should get public manifests", async () => {
-      const result = await GetManifestManifestPublicTool.handler({}, { signal: new AbortController().signal });
+      const result = await GetManifestManifestPublicTool.handler({}, createMockRequestHandlerExtra());
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
     });

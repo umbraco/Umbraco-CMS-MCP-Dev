@@ -1,21 +1,17 @@
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import GetMediaTypeByIdTool from "../get/get-media-type-by-id.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-media-type-by-id", () => {
-  const TEST_MEDIA_TYPE_NAME = "_Test Media Type";
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  const TEST_MEDIA_TYPE_NAME = "_Test Media Type";
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME);
   });
 
@@ -31,16 +27,11 @@ describe("get-media-type-by-id", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize and verify response
-    const normalizedItems = createSnapshotResult(result);
-    // Replace the dynamic ID with a placeholder
-    const normalizedResponse = JSON.parse(normalizedItems.content[0].text);
-    normalizedResponse.id = "PLACEHOLDER_ID";
-    normalizedItems.content[0].text = JSON.stringify(normalizedResponse);
-    expect(normalizedItems).toMatchSnapshot();
+    expect(createSnapshotResult(result, builder.getId())).toMatchSnapshot();
   });
 
   it("should handle non-existent media type", async () => {
@@ -48,7 +39,7 @@ describe("get-media-type-by-id", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();

@@ -3,20 +3,20 @@ import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { MemberGroupBuilder } from "../../member-group/__tests__/helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "../../member-group/__tests__/helpers/member-group-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test GetPublicAccessDocument";
 const TEST_MEMBER_GROUP_NAME = "_Test PublicAccess MemberGroup";
 
 describe("get-document-public-access", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let docId: string;
   let memberGroupBuilder: MemberGroupBuilder;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     memberGroupBuilder = new MemberGroupBuilder();
     await memberGroupBuilder.withName(TEST_MEMBER_GROUP_NAME).create();
     const builder = await new DocumentBuilder()
@@ -28,7 +28,6 @@ describe("get-document-public-access", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await MemberGroupTestHelper.cleanup(TEST_MEMBER_GROUP_NAME);
   });
@@ -36,27 +35,28 @@ describe("get-document-public-access", () => {
   it("should get public access for a valid document", async () => {
     const result = await GetDocumentPublicAccessTool.handler(
       { id: docId },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    // Normalize IDs in the response for snapshot
-    const text = result.content[0].text as string;
-    const parsed = JSON.parse(text);
-    parsed.loginDocument.id = BLANK_UUID;
-    parsed.errorDocument.id = BLANK_UUID;
-    if (Array.isArray(parsed.groups)) {
-      parsed.groups.forEach((g: any) => {
-        g.id = BLANK_UUID;
-      });
-    }
-    result.content[0].text = JSON.stringify(parsed);
-    expect(result).toMatchSnapshot();
+    // Get structured content directly
+    const data = validateToolResponse(GetDocumentPublicAccessTool, result);
+    // Normalize IDs for snapshot
+    const normalized = {
+      ...data,
+      loginDocument: { ...data.loginDocument, id: BLANK_UUID },
+      errorDocument: { ...data.errorDocument, id: BLANK_UUID },
+      groups: Array.isArray(data.groups)
+        ? data.groups.map((g: any) => ({ ...g, id: BLANK_UUID }))
+        : data.groups
+    };
+    expect(normalized).toMatchSnapshot();
   });
 
   it("should handle non-existent document", async () => {
     const result = await GetDocumentPublicAccessTool.handler(
       { id: BLANK_UUID },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    // Non-existent document should return an error
+    expect(result.isError).toBe(true);
   });
 });

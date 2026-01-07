@@ -1,22 +1,18 @@
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
 import GetDocumentBlueprintSiblingsTool from "../get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBlueprintFolderBuilder } from "./helpers/document-blueprint-folder-builder.js";
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-document-blueprint-siblings", () => {
   const TEST_FOLDER_NAME = "_Test Siblings Folder";
   const TEST_BLUEPRINT_1 = "_Test Sibling Blueprint 1";
   const TEST_BLUEPRINT_2 = "_Test Sibling Blueprint 2";
   const TEST_BLUEPRINT_3 = "_Test Sibling Blueprint 3";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up test items - must delete children before parent
@@ -26,7 +22,6 @@ describe("get-document-blueprint-siblings", () => {
     await DocumentBlueprintTestHelper.cleanup(TEST_FOLDER_NAME);
 
     // Restore console.error after cleanup
-    console.error = originalConsoleError;
   }, 15000);
 
   it("should get sibling blueprints", async () => {
@@ -52,8 +47,8 @@ describe("get-document-blueprint-siblings", () => {
     const result = await GetDocumentBlueprintSiblingsTool.handler(
       {
         target: blueprint1.getId(),
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Normalize and verify response
@@ -66,8 +61,8 @@ describe("get-document-blueprint-siblings", () => {
     const result = await GetDocumentBlueprintSiblingsTool.handler(
       {
         target: BLANK_UUID,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify error response

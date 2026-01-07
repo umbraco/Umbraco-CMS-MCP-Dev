@@ -1,21 +1,15 @@
 import { CompositionTypeModel } from "@/umb-management-api/schemas/compositionTypeModel.js";
 import { DocumentTypeBuilder } from "./document-type-builder.js";
 import { DocumentTypeTestHelper } from "./document-type-test-helper.js";
-import { jest } from "@jest/globals";
 import { TextString_DATA_TYPE_ID, MEDIA_PICKER_DATA_TYPE_ID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe('DocumentTypeBuilder', () => {
   const TEST_DOCTYPE_NAME = '_Test Builder DocumentType';
   const TEST_PARENT_NAME = '_Test Parent DocumentType';
-  let originalConsoleError: typeof console.error;
-  
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTypeTestHelper.cleanup(TEST_DOCTYPE_NAME);
     await DocumentTypeTestHelper.cleanup(TEST_PARENT_NAME);
   });

@@ -1,29 +1,22 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getMediaTypeConfigurationResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const emptySchema = z.object({});
 
 const GetMediaTypeConfigurationTool = {
   name: "get-media-type-configuration",
   description: "Gets the configuration for media types",
-  schema: emptySchema.shape,
-  isReadOnly: true,
+  inputSchema: emptySchema.shape,
+  outputSchema: getMediaTypeConfigurationResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['configuration'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getMediaTypeConfiguration();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof emptySchema.shape>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getMediaTypeConfiguration(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof emptySchema.shape, typeof getMediaTypeConfigurationResponse.shape>;
 
 export default withStandardDecorators(GetMediaTypeConfigurationTool);

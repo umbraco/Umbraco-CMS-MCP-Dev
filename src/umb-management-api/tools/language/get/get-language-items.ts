@@ -1,31 +1,31 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import {
   getItemLanguageQueryParams,
   getItemLanguageResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { z } from "zod";
 import { GetItemLanguageParams } from "@/umb-management-api/schemas/index.js";
+import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
+
+const outputSchema = z.object({
+  items: getItemLanguageResponse,
+});
 
 const GetLanguageItemsTool = {
   name: "get-language-items",
   description: "Gets language items (optionally filtered by isoCode)",
-  schema: getItemLanguageQueryParams.shape,
-  isReadOnly: true,
-  slices: ['list'],
-  handler: async (params: GetItemLanguageParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getItemLanguage(params);
-    const validated = getItemLanguageResponse.parse(response);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(validated),
-        },
-      ],
-    };
+  inputSchema: getItemLanguageQueryParams.shape,
+  outputSchema: outputSchema.shape,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getItemLanguageQueryParams.shape>;
+  slices: ['list'],
+  handler: (async (params: GetItemLanguageParams) => {
+    return executeGetItemsApiCall((client) =>
+      client.getItemLanguage(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getItemLanguageQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetLanguageItemsTool);

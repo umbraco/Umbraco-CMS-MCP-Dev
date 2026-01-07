@@ -18,7 +18,7 @@ export const LanguageCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     tools.push(GetLanguageItemsTool);
     tools.push(GetDefaultLanguageTool);

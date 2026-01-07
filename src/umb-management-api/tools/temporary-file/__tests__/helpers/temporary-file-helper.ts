@@ -26,7 +26,8 @@ export class TemporaryFileTestHelper {
 
   static cleanFilePaths(response: CallToolResult) {
     response.content = response.content.map((r) => {
-      let lines = (r.text as string).split("\n");
+      const textContent = r as { type: "text"; text: string };
+      let lines = textContent.text.split("\n");
       const text = lines.shift();
       const jsonText = lines.join("\n");
 
@@ -37,7 +38,7 @@ export class TemporaryFileTestHelper {
       obj.path = "<image path>";
       obj.message = obj.message.replace(/["'].*["']/g, "<image path>");
 
-      r.text = text + "\n" + JSON.stringify(obj, null, 2);
+      textContent.text = text + "\n" + JSON.stringify(obj, null, 2);
       return r;
     });
 

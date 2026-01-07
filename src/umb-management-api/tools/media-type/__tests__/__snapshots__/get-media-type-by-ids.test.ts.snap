@@ -2,32 +2,60 @@
 
 exports[`get-media-type-by-ids should get media types by ids 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"allowedMediaTypes":[],"compositions":[],"isDeletable":true,"aliasCanBeChanged":true,"id":"PLACEHOLDER_ID","alias":"testmediatype1","name":"_Test Media Type 1","description":"Test media type 1 description","icon":"icon-folder","allowedAsRoot":true,"variesByCulture":false,"variesBySegment":false,"collection":null,"isElement":false,"properties":[],"containers":[]},{"allowedMediaTypes":[],"compositions":[],"isDeletable":true,"aliasCanBeChanged":true,"id":"PLACEHOLDER_ID","alias":"testmediatype2","name":"_Test Media Type 2","description":"Test media type 2 description","icon":"icon-folder","allowedAsRoot":true,"variesByCulture":false,"variesBySegment":false,"collection":null,"isElement":false,"properties":[],"containers":[]}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "testmediatype1",
+        "aliasCanBeChanged": true,
+        "allowedAsRoot": true,
+        "allowedMediaTypes": [],
+        "collection": null,
+        "compositions": [],
+        "containers": [],
+        "description": "Test media type 1 description",
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "isElement": false,
+        "name": "_Test Media Type 1",
+        "properties": [],
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "testmediatype2",
+        "aliasCanBeChanged": true,
+        "allowedAsRoot": true,
+        "allowedMediaTypes": [],
+        "collection": null,
+        "compositions": [],
+        "containers": [],
+        "description": "Test media type 2 description",
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "isElement": false,
+        "name": "_Test Media Type 2",
+        "properties": [],
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+    ],
+  },
 }
 `;
 
 exports[`get-media-type-by-ids should handle non-existent media types 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-media-type-by-ids:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Not Found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified media type was not found",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Not Found",
+    "type": "Error",
+  },
 }
 `;

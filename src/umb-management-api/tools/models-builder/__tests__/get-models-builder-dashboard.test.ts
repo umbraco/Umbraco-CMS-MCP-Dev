@@ -1,29 +1,22 @@
 import GetModelsBuilderDashboardTool from "../get/get-models-builder-dashboard.js";
-import { UmbracoManagementClient } from "@umb-management-client";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-models-builder-dashboard", () => {
-  let originalConsoleError: typeof console.error;
-  let originalGetClient: typeof UmbracoManagementClient.getClient;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-    originalGetClient = UmbracoManagementClient.getClient;
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-    UmbracoManagementClient.getClient = originalGetClient;
-  });
+  setupTestEnvironment();
 
   it("should get the models builder dashboard", async () => {
     const result = await GetModelsBuilderDashboardTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      {} as any,
+      createMockRequestHandlerExtra()
     );
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetModelsBuilderDashboardTool, result);
+    expect(data).toHaveProperty("mode");
+    expect(data).toHaveProperty("canGenerate");
+
     // Verify the handler response using snapshot
     expect(result).toMatchSnapshot();
   });
-
 });

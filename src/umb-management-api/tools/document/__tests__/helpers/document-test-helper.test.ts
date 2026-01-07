@@ -1,41 +1,16 @@
 import { DocumentTestHelper } from "./document-test-helper.js";
 import { DocumentBuilder } from "./document-builder.js";
-import { jest } from "@jest/globals";
-import type { DocumentTreeItemResponseModel } from "@/umb-management-api/schemas/documentTreeItemResponseModel.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test DocumentHelper";
 const TEST_RECYCLE_BIN_DOCUMENT_NAME = "_Test DocumentHelper RecycleBin";
 
 describe("DocumentTestHelper", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
     await DocumentTestHelper.cleanup(TEST_RECYCLE_BIN_DOCUMENT_NAME);
-  });
-
-  it("normaliseIds should blank out id for single and array", async () => {
-    const builder = await new DocumentBuilder()
-      .withName(TEST_DOCUMENT_NAME)
-      .withRootDocumentType()
-      .create();
-    const item = builder.getCreatedItem();
-    const normSingle = DocumentTestHelper.normaliseIds(
-      item
-    ) as DocumentTreeItemResponseModel;
-    expect(normSingle.id).toBe(BLANK_UUID);
-    const normArray = DocumentTestHelper.normaliseIds([
-      item,
-    ]) as DocumentTreeItemResponseModel[];
-    expect(normArray[0].id).toBe(BLANK_UUID);
   });
 
   it("getNameFromItem should return the name from the first variant", async () => {

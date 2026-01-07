@@ -2,88 +2,108 @@
 
 exports[`get-media-type-folders edge cases should handle boundary pagination values 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-media-type-folders edge cases should handle empty results when skip exceeds available items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-media-type-folders edge cases should handle pagination with skip and small take values 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Folder",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-media-type-folders edge cases should handle zero take parameter 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-media-type-folders successful retrieval should get media type folders with custom pagination parameters 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Folder",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-media-type-folders successful retrieval should get media type folders with default pagination 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Folder",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-media-type-folders successful retrieval should get media type folders with skip parameter 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-media-type-folders successful retrieval should handle large pagination values 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[{"icon":"icon-folder","name":"Folder","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Folder",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;

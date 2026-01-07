@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-media-audit-log should handle non-existent media 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
+}
+`;

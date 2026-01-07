@@ -5,6 +5,8 @@ import axios from "axios";
 import mime from "mime-types";
 import { STANDARD_MEDIA_TYPES, MEDIA_TYPE_IMAGE, MEDIA_TYPE_VECTOR_GRAPHICS } from "@/constants/constants.js";
 import { validateFilePath } from "./validate-file-path.js";
+import { CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { detectFileExtensionFromBuffer } from "@/helpers/file/index.js";
 
 /**
  * Maps MIME types to file extensions using the mime-types library.
@@ -203,8 +205,16 @@ export async function createFileStream(
         throw new Error("fileAsBase64 is required when sourceType is 'base64'");
       }
       const fileContent = Buffer.from(fileAsBase64, 'base64');
+
+      // Ensure fileName has an extension - add one based on magic bytes if missing
+      let fileNameWithExtension = fileName;
+      if (!fileName.includes('.')) {
+        const extension = detectFileExtensionFromBuffer(fileContent);
+        fileNameWithExtension = `${fileName}${extension}`;
+      }
+
       // Use just the filename so Umbraco can parse it correctly
-      tempFilePath = path.join(os.tmpdir(), fileName);
+      tempFilePath = path.join(os.tmpdir(), fileNameWithExtension);
       fs.writeFileSync(tempFilePath, fileContent);
       readStream = fs.createReadStream(tempFilePath);
       break;
@@ -229,7 +239,7 @@ export function cleanupTempFile(tempFilePath: string | null): void {
 /**
  * Uploads media file to Umbraco.
  * Handles the complete workflow: file stream creation, temporary file upload, and media creation.
- * Returns the actual name used (with extension if added from URL).
+ * Returns the media item name and ID.
  */
 export async function uploadMediaFile(
   client: any,
@@ -243,7 +253,7 @@ export async function uploadMediaFile(
     parentId?: string;
     temporaryFileId: string;
   }
-): Promise<string> {
+): Promise<{name: string, id: string}> {
   let tempFilePath: string | null = null;
 
   try {
@@ -287,8 +297,9 @@ export async function uploadMediaFile(
     const valueStructure = buildValueStructure(validatedMediaTypeName, params.temporaryFileId);
 
     // Step 6: Create media item
+    let response: any;
     try {
-      await client.postMedia({
+      response = await client.postMedia({
         mediaType: { id: mediaTypeId },
         variants: [
           {
@@ -299,14 +310,33 @@ export async function uploadMediaFile(
         ],
         values: [valueStructure] as any,
         parent: params.parentId ? { id: params.parentId } : null,
-      });
+      }, CAPTURE_RAW_HTTP_RESPONSE);
     } catch (error) {
       const err = error as any;
       throw new Error(`Failed to create media item: ${err.response?.status || 'Unknown error'} - ${JSON.stringify(err.response?.data) || err.message}`);
     }
 
-    // Return the original name (not the temp filename with extension)
-    return params.name;
+    // Check if request was successful (status 200-299)
+    if (response.status < 200 || response.status >= 300) {
+      throw new Error(`Request failed with status code ${response.status}`);
+    }
+
+    // Extract ID from Location header (standard REST pattern)
+    const locationHeader = response.headers?.location || response.headers?.Location;
+    if (!locationHeader) {
+      throw new Error("No Location header in response - cannot determine created media ID");
+    }
+
+    // Location header format: /umbraco/management/api/v1/media/{id}
+    const idMatch = locationHeader.match(/\/([a-f0-9-]{36})$/i);
+    if (!idMatch) {
+      throw new Error(`Could not extract ID from Location header: ${locationHeader}`);
+    }
+
+    const mediaId = idMatch[1];
+
+    // Return the original name and the created media ID
+    return { name: params.name, id: mediaId };
   } finally {
     cleanupTempFile(tempFilePath);
   }

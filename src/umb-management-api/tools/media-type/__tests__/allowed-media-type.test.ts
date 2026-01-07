@@ -1,36 +1,28 @@
 import GetAllowedMediaTypeTool from "../get/get-allowed.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("allowed-media-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   describe("get allowed", () => {
     it("should filter by file extension", async () => {
       const result = await GetAllowedMediaTypeTool.handler({
         take: 100,
         fileExtension: 'jpg'
-      }, { signal: new AbortController().signal });
+      } as any, createMockRequestHandlerExtra());
 
       expect(createSnapshotResult(result)).toMatchSnapshot();
 
-      // Verify the response structure
-      const response = JSON.parse((result.content[0] as { text: string }).text);
+      // Validate response against tool's output schema
+      const response = validateToolResponse(GetAllowedMediaTypeTool, result);
       expect(Array.isArray(response.items)).toBe(true);
-      
+
       // Verify all returned items include jpg in their extensions
       response.items.forEach((item: any) => {
         expect(item.name).toContain('Image');
       });
     });
   });
-}); 
+});

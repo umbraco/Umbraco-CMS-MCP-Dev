@@ -1,29 +1,20 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getRecycleBinMediaSiblingsQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetRecycleBinMediaSiblingsParams } from "@/umb-management-api/schemas/index.js";
+import { getRecycleBinMediaSiblingsQueryParams, getRecycleBinMediaSiblingsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
-import { z } from "zod";
-
-type GetRecycleBinMediaSiblingsParams = z.infer<typeof getRecycleBinMediaSiblingsQueryParams>;
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetMediaRecycleBinSiblingsTool = {
   name: "get-media-recycle-bin-siblings",
   description: "Gets sibling media items in the recycle bin for a given descendant id",
-  schema: getRecycleBinMediaSiblingsQueryParams.shape,
-  isReadOnly: true,
+  inputSchema: getRecycleBinMediaSiblingsQueryParams.shape,
+  outputSchema: getRecycleBinMediaSiblingsResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['tree', 'recycle-bin'],
-  handler: async (params: GetRecycleBinMediaSiblingsParams) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getRecycleBinMediaSiblings(params);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof getRecycleBinMediaSiblingsQueryParams.shape>;
+  handler: (async (params: GetRecycleBinMediaSiblingsParams) => {
+    return executeGetApiCall((client) =>
+      client.getRecycleBinMediaSiblings(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getRecycleBinMediaSiblingsQueryParams.shape, typeof getRecycleBinMediaSiblingsResponse.shape>;
 
 export default withStandardDecorators(GetMediaRecycleBinSiblingsTool);

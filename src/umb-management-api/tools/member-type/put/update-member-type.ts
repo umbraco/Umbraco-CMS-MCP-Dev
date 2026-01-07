@@ -1,4 +1,3 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { UpdateMemberTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putMemberTypeByIdBody,
@@ -6,33 +5,24 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+
+const inputSchema = z.object({
+  id: putMemberTypeByIdParams.shape.id,
+  data: z.object(putMemberTypeByIdBody.shape),
+});
 
 const UpdateMemberTypeTool = {
   name: "update-member-type",
   description: "Updates a member type by id",
-  schema: {
-    id: putMemberTypeByIdParams.shape.id,
-    data: z.object(putMemberTypeByIdBody.shape),
-  },
-  isReadOnly: false,
+  inputSchema: inputSchema.shape,
+  annotations: { idempotentHint: true },
   slices: ['update'],
-  handler: async (model: { id: string; data: UpdateMemberTypeRequestModel }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.putMemberTypeById(model.id, model.data);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<{
-  id: typeof putMemberTypeByIdParams.shape.id;
-  data: ReturnType<typeof z.object<typeof putMemberTypeByIdBody.shape>>;
-}>;
+  handler: (async (model: { id: string; data: UpdateMemberTypeRequestModel }) => {
+    return executeVoidApiCall((client) =>
+      client.putMemberTypeById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof inputSchema.shape>;
 
 export default withStandardDecorators(UpdateMemberTypeTool);

@@ -1,22 +1,18 @@
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import GetMediaTypeByIdsTool from "../get/get-media-type-by-ids.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("get-media-type-by-ids", () => {
+  setupTestEnvironment();
+
   const TEST_MEDIA_TYPE_NAME_1 = "_Test Media Type 1";
   const TEST_MEDIA_TYPE_NAME_2 = "_Test Media Type 2";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME_1);
     await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME_2);
   });
@@ -39,18 +35,11 @@ describe("get-media-type-by-ids", () => {
       {
         ids: [builder1.getId(), builder2.getId()],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Normalize and verify response
-    const normalizedItems = createSnapshotResult(result);
-    // Replace the dynamic IDs with placeholders
-    const normalizedResponse = JSON.parse(normalizedItems.content[0].text);
-    normalizedResponse.forEach((item: any) => {
-      item.id = "PLACEHOLDER_ID";
-    });
-    normalizedItems.content[0].text = JSON.stringify(normalizedResponse);
-    expect(normalizedItems).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should handle non-existent media types", async () => {
@@ -58,7 +47,7 @@ describe("get-media-type-by-ids", () => {
       {
         ids: [BLANK_UUID],
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();

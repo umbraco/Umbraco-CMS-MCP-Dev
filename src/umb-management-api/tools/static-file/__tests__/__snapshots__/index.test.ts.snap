@@ -8,21 +8,3 @@ exports[`static-file-tool-index should have all tools when user has no permissio
   "get-static-file-ancestors",
 ]
 `;
-
-exports[`static-file-tool-index should have all tools when user has settings section access 1`] = `
-[
-  "get-static-files",
-  "get-static-file-root",
-  "get-static-file-children",
-  "get-static-file-ancestors",
-]
-`;
-
-exports[`static-file-tool-index should have no tools when user has no settings access 1`] = `
-[
-  "get-static-files",
-  "get-static-file-root",
-  "get-static-file-children",
-  "get-static-file-ancestors",
-]
-`;

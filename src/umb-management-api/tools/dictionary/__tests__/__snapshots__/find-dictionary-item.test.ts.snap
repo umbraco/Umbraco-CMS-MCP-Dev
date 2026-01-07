@@ -2,22 +2,29 @@
 
 exports[`find-dictionary-item should find a dictionary item by name 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"name":"_Test Dictionary Find","id":"00000000-0000-0000-0000-000000000000","parent":null,"translatedIsoCodes":["en-US"]}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Dictionary Find",
+        "parent": null,
+        "translatedIsoCodes": [
+          "en-US",
+        ],
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`find-dictionary-item should handle non-existent dictionary item 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

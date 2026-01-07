@@ -2,33 +2,46 @@
 
 exports[`get-media-by-id-array should get media items by id array 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"isTrashed":false,"parent":null,"hasChildren":false,"mediaType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-picture","collection":null},"variants":[{"name":"_Test Media","culture":null}],"id":"00000000-0000-0000-0000-000000000000","flags":[]}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isTrashed": false,
+        "mediaType": {
+          "collection": null,
+          "icon": "icon-picture",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "name": "_Test Media",
+          },
+        ],
+      },
+    ],
+  },
 }
 `;
 
 exports[`get-media-by-id-array should handle empty id array 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
 exports[`get-media-by-id-array should handle non-existent media 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;

@@ -2,22 +2,24 @@
 
 exports[`get-member-are-referenced should check member references using real member picker 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"id":"00000000-0000-0000-0000-000000000000"}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-member-are-referenced should handle multiple member IDs with no tracked references 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;

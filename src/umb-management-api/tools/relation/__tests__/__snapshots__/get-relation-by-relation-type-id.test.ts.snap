@@ -1,44 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`get-relation-by-relation-type-id should get relations by relation type ID 1`] = `
-{
-  "content": [
-    {
-      "text": "{"total":36,"items":[{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"5598b628-b390-4532-8bb5-dab06089e9d7","name":"Bluetooth white keyboard"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"6921a6b4-3a02-4354-83bf-344074c4d00d","name":"Github Alt"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"7639bb90-3ba4-4765-bec5-655bc3485c06","name":"Umbraco"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"c08eb6e5-fbb7-4e57-b9b3-d35a9b088069","name":"Twitter"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"48bc7fab-611a-410d-a9eb-1cf82d811711","name":"Share Nodes"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"87163027-204d-44bd-a74c-c1363368d92f","name":"Discord"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"fbdf1674-1658-4449-8029-0b11bf7f20ab","name":"Paypal"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"d6e58148-8678-4bc4-8cdb-5366ae75065f","name":"Mastodon"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Features"},"child":{"id":"861ac5a3-aca5-4db8-85f2-a7ad05e0de30","name":"Desktop notebook glasses"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Features"},"child":{"id":"bbf2800f-1cc5-4ea9-8d2e-b33ff1d5efbe","name":"Phone pen binder"},"createDate":"NORMALIZED_DATE","comment":""}]}",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`get-relation-by-relation-type-id should handle invalid relation type ID 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-relation-by-relation-type-id:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Relation type not found",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The relation type could not be found.",
-    "operationStatus": "RelationTypeNotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
-}
-`;
-
-exports[`get-relation-by-relation-type-id should handle pagination parameters 1`] = `
-{
-  "content": [
-    {
-      "text": "{"total":36,"items":[{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"5598b628-b390-4532-8bb5-dab06089e9d7","name":"Bluetooth white keyboard"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"6921a6b4-3a02-4354-83bf-344074c4d00d","name":"Github Alt"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"7639bb90-3ba4-4765-bec5-655bc3485c06","name":"Umbraco"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"c08eb6e5-fbb7-4e57-b9b3-d35a9b088069","name":"Twitter"},"createDate":"NORMALIZED_DATE","comment":""},{"id":"00000000-0000-0000-0000-000000000000","relationType":{"id":"4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf"},"parent":{"id":"00000000-0000-0000-0000-000000000000","name":"Home"},"child":{"id":"48bc7fab-611a-410d-a9eb-1cf82d811711","name":"Share Nodes"},"createDate":"NORMALIZED_DATE","comment":""}]}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "RelationTypeNotFound",
+    "status": 400,
+    "title": "Relation type not found",
+    "type": "Error",
+  },
 }
 `;

@@ -1,19 +1,13 @@
 import { DocumentBlueprintFolderBuilder } from "./document-blueprint-folder-builder.js";
 import { DocumentBlueprintTestHelper } from "./document-blueprint-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe('DocumentBlueprintFolderBuilder', () => {
   const TEST_FOLDER_NAME = '_Test Builder Folder';
   const TEST_PARENT_FOLDER_NAME = '_Test Parent Folder';
-  let originalConsoleError: typeof console.error;
-  
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentBlueprintTestHelper.cleanup(TEST_FOLDER_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_PARENT_FOLDER_NAME);
   });
@@ -89,7 +83,6 @@ describe('DocumentBlueprintFolderBuilder', () => {
       expect(item.parent).toBeDefined();
       expect(item.parent!.id).toBe(parentBuilder.getId());
     });
-
 
     it('should handle creation failure', async () => {
       // Create folder with same name twice

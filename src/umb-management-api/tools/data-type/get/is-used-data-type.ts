@@ -1,27 +1,21 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { getDataTypeByIdIsUsedParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getDataTypeByIdIsUsedParams, getDataTypeByIdIsUsedResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const IsUsedDataTypeTool = {
   name: "is-used-data-type",
   description: "Checks if a data type is used within Umbraco",
-  schema: getDataTypeByIdIsUsedParams.shape,
-  isReadOnly: true,
-  slices: ['references'],
-  handler: async ({ id }: { id: string }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getDataTypeByIdIsUsed(id);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema: getDataTypeByIdIsUsedParams.shape,
+  outputSchema: getDataTypeByIdIsUsedResponse,
+  annotations: {
+    readOnlyHint: true,
   },
-} satisfies ToolDefinition<typeof getDataTypeByIdIsUsedParams.shape>;
+  slices: ['references'],
+  handler: (async ({ id }: { id: string }) => {  
+    return executeGetApiCall((client) =>
+      client.getDataTypeByIdIsUsed(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getDataTypeByIdIsUsedParams.shape, typeof getDataTypeByIdIsUsedResponse>;
 
 export default withStandardDecorators(IsUsedDataTypeTool);

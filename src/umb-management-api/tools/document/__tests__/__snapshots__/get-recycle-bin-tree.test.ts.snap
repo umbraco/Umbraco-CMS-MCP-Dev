@@ -2,33 +2,51 @@
 
 exports[`recycle-bin-tree children should get recycle bin child items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`recycle-bin-tree children should handle non-existent parent in recycle bin 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`recycle-bin-tree root should get recycle bin root items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"documentType":{"id":"00000000-0000-0000-0000-000000000000","icon":"icon-home color-blue","collection":null},"variants":[{"id":"00000000-0000-0000-0000-000000000000","flags":[],"state":"Trashed","name":"_Test RecycleBin Root","culture":null}],"id":"00000000-0000-0000-0000-000000000000","createDate":"NORMALIZED_DATE","hasChildren":false,"parent":null}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-home color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test RecycleBin Root",
+            "state": "Trashed",
+          },
+        ],
+      },
+    ],
+    "total": 1,
+  },
 }
 `;

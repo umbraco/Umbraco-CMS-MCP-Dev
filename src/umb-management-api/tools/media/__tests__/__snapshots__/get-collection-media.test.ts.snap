@@ -2,87 +2,632 @@
 
 exports[`get-collection-media should get a collection of media items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":5,"items":[{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":0,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Social Icons"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":1,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Sample Images"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":2,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Authors"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Image","icon":"icon-picture","collection":null},"creator":"MCP User","sortOrder":3,"id":"00000000-0000-0000-0000-000000000000","flags":[],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"_Test Collection Media"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Image","icon":"icon-picture","collection":null},"creator":"MCP User","sortOrder":4,"id":"00000000-0000-0000-0000-000000000000","flags":[],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"_Test Collection Media 2"}]}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 0,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Social Icons",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 1,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Sample Images",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 2,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Authors",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "MCP User",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Image",
+          "collection": null,
+          "icon": "icon-picture",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 3,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "_Test Collection Media",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "MCP User",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Image",
+          "collection": null,
+          "icon": "icon-picture",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 4,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "_Test Collection Media 2",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+    ],
+    "total": 5,
+  },
 }
 `;
 
 exports[`get-collection-media should handle filtering by media type 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":4,"items":[{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Image","icon":"icon-picture","collection":null},"creator":"MCP User","sortOrder":3,"id":"00000000-0000-0000-0000-000000000000","flags":[],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"_Test Collection Media"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":2,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Authors"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":1,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Sample Images"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":0,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Social Icons"}]}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "creator": "MCP User",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Image",
+          "collection": null,
+          "icon": "icon-picture",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 3,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "_Test Collection Media",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 2,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Authors",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 1,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Sample Images",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 0,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Social Icons",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+    ],
+    "total": 4,
+  },
 }
 `;
 
 exports[`get-collection-media should handle filtering by name 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Image","icon":"icon-picture","collection":null},"creator":"MCP User","sortOrder":3,"id":"00000000-0000-0000-0000-000000000000","flags":[],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"_Test Collection Media"}]}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "creator": "MCP User",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Image",
+          "collection": null,
+          "icon": "icon-picture",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 3,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "_Test Collection Media",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`get-collection-media should handle non-existent data type ID 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-collection-media:
-{
-  "message": "Request failed with status code 400",
-  "response": {
-    "type": "Error",
-    "title": "Missing media when specifying a collection data type",
-    "status": 400,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The specified collection data type needs to be used in conjunction with a media item.",
-    "operationStatus": "DataTypeWithoutContentType"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "DataTypeWithoutContentType",
+    "status": 400,
+    "title": "Missing media when specifying a collection data type",
+    "type": "Error",
+  },
 }
 `;
 
 exports[`get-collection-media should handle ordering direction 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":4,"items":[{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":0,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Social Icons"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":1,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Sample Images"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":2,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Authors"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Image","icon":"icon-picture","collection":null},"creator":"MCP User","sortOrder":3,"id":"00000000-0000-0000-0000-000000000000","flags":[],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"_Test Collection Media"}]}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 0,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Social Icons",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 1,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Sample Images",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 2,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Authors",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "MCP User",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Image",
+          "collection": null,
+          "icon": "icon-picture",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 3,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "_Test Collection Media",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+    ],
+    "total": 4,
+  },
 }
 `;
 
 exports[`get-collection-media should handle pagination parameters 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":4,"items":[{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":0,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Social Icons"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":1,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Sample Images"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":2,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Authors"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Image","icon":"icon-picture","collection":null},"creator":"MCP User","sortOrder":3,"id":"00000000-0000-0000-0000-000000000000","flags":[],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"_Test Collection Media"}]}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 0,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Social Icons",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 1,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Sample Images",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 2,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Authors",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "MCP User",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Image",
+          "collection": null,
+          "icon": "icon-picture",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 3,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "_Test Collection Media",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+    ],
+    "total": 4,
+  },
 }
 `;
 
 exports[`get-collection-media should use default values when minimal parameters provided 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":3,"items":[{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":0,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Social Icons"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":1,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Sample Images"}]},{"mediaType":{"id":"00000000-0000-0000-0000-000000000000","alias":"Folder","icon":"icon-folder","collection":{"id":"3a0156c4-3b8c-4803-bdc1-6871faa83fff"}},"creator":"Administrator","sortOrder":2,"id":"00000000-0000-0000-0000-000000000000","flags":[{"alias":"Umb.HasCollection"}],"values":[],"variants":[{"createDate":"NORMALIZED_DATE","updateDate":"NORMALIZED_DATE","culture":null,"segment":null,"name":"Authors"}]}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 0,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Social Icons",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 1,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Sample Images",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "creator": "Administrator",
+        "flags": [
+          {
+            "alias": "Umb.HasCollection",
+          },
+        ],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "mediaType": {
+          "alias": "Folder",
+          "collection": {
+            "id": "3a0156c4-3b8c-4803-bdc1-6871faa83fff",
+          },
+          "icon": "icon-folder",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "sortOrder": 2,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "name": "Authors",
+            "segment": null,
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+    ],
+    "total": 3,
+  },
 }
 `;

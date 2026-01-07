@@ -1,13 +1,12 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import {
   putMediaTypeFolderByIdParams,
   putMediaTypeFolderByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
-const updateMediaTypeFolderSchema = z.object({
+const inputSchema = z.object({
   id: putMediaTypeFolderByIdParams.shape.id,
   data: z.object(putMediaTypeFolderByIdBody.shape),
 });
@@ -15,22 +14,14 @@ const updateMediaTypeFolderSchema = z.object({
 const UpdateMediaTypeFolderTool = {
   name: "update-media-type-folder",
   description: "Updates a media type folder by Id",
-  schema: updateMediaTypeFolderSchema.shape,
-  isReadOnly: false,
+  inputSchema: inputSchema.shape,
+  annotations: { idempotentHint: true },
   slices: ['update', 'folders'],
-  handler: async (model: { id: string; data: { name: string } }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.putMediaTypeFolderById(model.id, model.data);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
-} satisfies ToolDefinition<typeof updateMediaTypeFolderSchema.shape>;
+  handler: (async (model: { id: string; data: { name: string } }) => {
+    return executeVoidApiCall((client) =>
+      client.putMediaTypeFolderById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof inputSchema.shape>;
 
 export default withStandardDecorators(UpdateMediaTypeFolderTool);

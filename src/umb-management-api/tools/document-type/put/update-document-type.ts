@@ -1,12 +1,11 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
 import { UpdateDocumentTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putDocumentTypeByIdParams,
   putDocumentTypeByIdBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import { ToolDefinition } from "types/tool-definition.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const updateDocumentTypeSchema = {
   id: putDocumentTypeByIdParams.shape.id,
@@ -16,22 +15,16 @@ const updateDocumentTypeSchema = {
 const UpdateDocumentTypeTool = {
   name: "update-document-type",
   description: "Updates a document type by Id",
-  schema: updateDocumentTypeSchema,
-  isReadOnly: false,
+  inputSchema: updateDocumentTypeSchema,
+  annotations: {
+    idempotentHint: true,
+  },
   slices: ['update'],
-  handler: async (model: { id: string; data: UpdateDocumentTypeRequestModel }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.putDocumentTypeById(model.id, model.data);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
+  handler: (async (model: { id: string; data: UpdateDocumentTypeRequestModel }) => {
+    return executeVoidApiCall((client) =>
+      client.putDocumentTypeById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
 } satisfies ToolDefinition<typeof updateDocumentTypeSchema>;
 
 export default withStandardDecorators(UpdateDocumentTypeTool);

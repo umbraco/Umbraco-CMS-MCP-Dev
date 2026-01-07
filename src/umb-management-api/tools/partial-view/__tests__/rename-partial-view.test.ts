@@ -2,7 +2,8 @@ import RenamePartialViewTool from "../put/rename-partial-view.js";
 import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_PARTIAL_VIEW_NAME = "_TestRenamePartialView.cshtml";
 const TEST_RENAMED_NAME = "_TestRenamedPartialView.cshtml";
@@ -10,13 +11,12 @@ const TEST_CONTENT = "@* Test rename content *@\n<div><p>Rename Test Content</p>
 const TEST_FOLDER_NAME = "_TestRenameFolder";
 
 describe("rename-partial-view", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let partialViewBuilder: PartialViewBuilder;
   let folderBuilder: PartialViewFolderBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     partialViewBuilder = new PartialViewBuilder();
     folderBuilder = new PartialViewFolderBuilder();
   });
@@ -25,7 +25,6 @@ describe("rename-partial-view", () => {
     await PartialViewHelper.cleanup(TEST_PARTIAL_VIEW_NAME);
     await PartialViewHelper.cleanup(TEST_RENAMED_NAME);
     await PartialViewHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should rename a partial view", async () => {
@@ -41,11 +40,13 @@ describe("rename-partial-view", () => {
 
     const params = {
       path: partialViewBuilder.getPath(),
-      name: TEST_RENAMED_NAME
+      data: {
+        name: TEST_RENAMED_NAME
+      }
     };
 
     // Act
-    const result = await RenamePartialViewTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenamePartialViewTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -78,11 +79,13 @@ describe("rename-partial-view", () => {
 
     const params = {
       path: partialViewBuilder.getPath(),
-      name: TEST_RENAMED_NAME
+      data: {
+        name: TEST_RENAMED_NAME
+      }
     };
 
     // Act
-    const result = await RenamePartialViewTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenamePartialViewTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -105,11 +108,13 @@ describe("rename-partial-view", () => {
 
     const params = {
       path: folderBuilder.getPath(),
-      name: "_RenamedFolder"
+      data: {
+        name: "_RenamedFolder"
+      }
     };
 
     // Act
-    const result = await RenamePartialViewTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenamePartialViewTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert
     expect(result).toMatchSnapshot();
@@ -119,11 +124,13 @@ describe("rename-partial-view", () => {
     // Arrange
     const params = {
       path: "/NonExistentPartialView.cshtml",
-      name: "NewName.cshtml"
+      data: {
+        name: "NewName.cshtml"
+      }
     };
 
     // Act
-    const result = await RenamePartialViewTool.handler(params, { signal: new AbortController().signal });
+    const result = await RenamePartialViewTool.handler(params, createMockRequestHandlerExtra());
 
     // Assert - Error responses don't use createSnapshotResult
     expect(result).toMatchSnapshot();

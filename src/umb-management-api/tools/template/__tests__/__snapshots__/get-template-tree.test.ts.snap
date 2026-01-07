@@ -2,66 +2,107 @@
 
 exports[`template-tree ancestors should get ancestor items 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"_Test Parent Template","id":"00000000-0000-0000-0000-000000000000","parent":null,"flags":[],"hasChildren":true},{"name":"_Test Child Template","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Parent Template",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Child Template",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+  },
 }
 `;
 
 exports[`template-tree ancestors should handle non-existent item 1`] = `
 {
-  "content": [
-    {
-      "text": "[]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
 }
 `;
 
 exports[`template-tree children should get child items 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":1,"items":[{"name":"_Test Child Template","id":"00000000-0000-0000-0000-000000000000","parent":{"id":"00000000-0000-0000-0000-000000000000"},"flags":[],"hasChildren":false}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Child Template",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+      },
+    ],
+    "total": 1,
+  },
 }
 `;
 
 exports[`template-tree children should handle non-existent parent 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "total": 0,
+  },
 }
 `;
 
 exports[`template-tree get-root should get root level templates 1`] = `
 {
-  "content": [
-    {
-      "text": "{"total":2,"items":[{"name":"Master","id":"ee0257b9-9fb0-4e90-bc99-f8ab75c6100e","parent":null,"flags":[],"hasChildren":true},{"name":"XMLSitemap","id":"72f84ac5-d043-4035-937f-2f0a99d6afbe","parent":null,"flags":[],"hasChildren":false}]}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": true,
+        "id": "ee0257b9-9fb0-4e90-bc99-f8ab75c6100e",
+        "name": "Master",
+        "parent": null,
+      },
+      {
+        "flags": [],
+        "hasChildren": false,
+        "id": "72f84ac5-d043-4035-937f-2f0a99d6afbe",
+        "name": "XMLSitemap",
+        "parent": null,
+      },
+    ],
+    "total": 2,
+  },
 }
 `;
 
 exports[`template-tree get-search should search for templates by name 1`] = `
 {
-  "content": [
-    {
-      "text": "{"items":[{"alias":"_testRootTemplate","name":"_Test Root Template","id":"00000000-0000-0000-0000-000000000000","flags":[]}],"total":1}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "_testRootTemplate",
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Root Template",
+      },
+    ],
+    "total": 1,
+  },
 }
 `;

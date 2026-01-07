@@ -11,7 +11,7 @@ export const TagCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [GetTagsTool];
+    const tools: ToolDefinition<any, any>[] = [GetTagsTool];
     return tools;
   }
 };

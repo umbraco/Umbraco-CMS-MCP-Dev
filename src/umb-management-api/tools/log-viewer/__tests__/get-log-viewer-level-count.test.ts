@@ -1,37 +1,37 @@
 import GetLogViewerLevelCountTool from "../get/get-log-viewer-level-count.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-log-viewer-level-count", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get log viewer level counts with default parameters", async () => {
     const result = await GetLogViewerLevelCountTool.handler(
-      {},
-      { signal: new AbortController().signal }
+      { startDate: undefined, endDate: undefined },
+      createMockRequestHandlerExtra()
     );
 
-    // Parse the response
-    const response = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerLevelCountTool, result);
 
-    // Verify the response structure
-    expect(response).toEqual(
-      expect.objectContaining({
-        information: expect.any(Number),
-        debug: expect.any(Number),
-        warning: expect.any(Number),
-        error: expect.any(Number),
-        fatal: expect.any(Number),
-      })
-    );
+    // Verify response structure (counts are dynamic, so we verify structure not exact values)
+    expect(content).toHaveProperty("debug");
+    expect(content).toHaveProperty("error");
+    expect(content).toHaveProperty("fatal");
+    expect(content).toHaveProperty("information");
+    expect(content).toHaveProperty("warning");
+
+    // Verify all counts are non-negative numbers
+    expect(typeof content.debug).toBe("number");
+    expect(typeof content.error).toBe("number");
+    expect(typeof content.fatal).toBe("number");
+    expect(typeof content.information).toBe("number");
+    expect(typeof content.warning).toBe("number");
+    expect(content.debug).toBeGreaterThanOrEqual(0);
+    expect(content.error).toBeGreaterThanOrEqual(0);
+    expect(content.fatal).toBeGreaterThanOrEqual(0);
+    expect(content.information).toBeGreaterThanOrEqual(0);
+    expect(content.warning).toBeGreaterThanOrEqual(0);
   });
 
   it("should get log viewer level counts with date range", async () => {
@@ -40,21 +40,17 @@ describe("get-log-viewer-level-count", () => {
         startDate: "2024-01-01T00:00:00Z",
         endDate: "2024-12-31T23:59:59Z",
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
-    // Parse the response
-    const response = JSON.parse(result.content[0].text as string);
+    // Validate response against tool's outputSchema
+    const content = validateToolResponse(GetLogViewerLevelCountTool, result);
 
-    // Verify the response structure
-    expect(response).toEqual(
-      expect.objectContaining({
-        information: expect.any(Number),
-        debug: expect.any(Number),
-        warning: expect.any(Number),
-        error: expect.any(Number),
-        fatal: expect.any(Number),
-      })
-    );
+    // Verify response structure (counts are dynamic, so we verify structure not exact values)
+    expect(content).toHaveProperty("debug");
+    expect(content).toHaveProperty("error");
+    expect(content).toHaveProperty("fatal");
+    expect(content).toHaveProperty("information");
+    expect(content).toHaveProperty("warning");
   });
 });

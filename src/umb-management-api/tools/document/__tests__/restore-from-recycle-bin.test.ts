@@ -1,22 +1,20 @@
 import RestoreFromRecycleBinTool from "../put/restore-from-recycle-bin.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("restore-document-from-recycle-bin", () => {
+  setupTestEnvironment();
+
   const TEST_DOCUMENT_NAME = "_Test Document Restore";
-  let originalConsoleError: typeof console.error;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     await DocumentTestHelper.emptyRecycleBin();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test documents
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
@@ -35,7 +33,7 @@ describe("restore-document-from-recycle-bin", () => {
       {
         id: builder.getId(),
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
@@ -52,7 +50,7 @@ describe("restore-document-from-recycle-bin", () => {
       {
         id: BLANK_UUID,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot

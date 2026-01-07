@@ -1,23 +1,18 @@
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import GetDocumentAvailableSegmentOptionsTool from "../get/get-document-available-segment-options.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DOCUMENT_NAME = "_Test Document Segment Options";
 
 describe("get-document-available-segment-options", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get available segment options for document", async () => {
@@ -34,7 +29,7 @@ describe("get-document-available-segment-options", () => {
         skip: 0,
         take: 100,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -50,7 +45,7 @@ describe("get-document-available-segment-options", () => {
         skip: 0,
         take: 100,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert

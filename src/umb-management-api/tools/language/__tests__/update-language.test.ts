@@ -1,34 +1,25 @@
 import UpdateLanguageTool from "../put/update-language.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_LANGUAGE_NAME = '_Test Update Language';
 const TEST_LANGUAGE_ISO = 'en-GB';
 const UPDATED_LANGUAGE_NAME = '_Test Updated Language';
 
-function parseResult(result: any) {
-  try {
-    return JSON.parse(result.content[0].text);
-  } catch {
-    return result.content[0].text;
-  }
-}
-
 describe("update-language", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let builder: LanguageBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new LanguageBuilder();
   });
 
   afterEach(async () => {
     await builder.cleanup();
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
-    console.error = originalConsoleError;
   });
 
   it("should update an existing language", async () => {
@@ -49,13 +40,16 @@ describe("update-language", () => {
     };
 
     // Update the language
-    const result = await UpdateLanguageTool.handler({
-      isoCode: builder.getIsoCode(),
-      data: updateModel
-    }, { signal: new AbortController().signal });
+    const result = await UpdateLanguageTool.handler(
+      {
+        isoCode: builder.getIsoCode(),
+        data: updateModel
+      },
+      createMockRequestHandlerExtra()
+    );
 
     // Verify the handler response using snapshot
-    expect(parseResult(result)).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
 
     // Verify the language was updated
     const exists = await LanguageTestHelper.verifyLanguage(TEST_LANGUAGE_ISO);
@@ -74,12 +68,15 @@ describe("update-language", () => {
       fallbackIsoCode: null
     };
 
-    const result = await UpdateLanguageTool.handler({
-      isoCode: nonExistentIso,
-      data: updateModel
-    }, { signal: new AbortController().signal });
+    const result = await UpdateLanguageTool.handler(
+      {
+        isoCode: nonExistentIso,
+        data: updateModel
+      },
+      createMockRequestHandlerExtra()
+    );
 
     // Verify the error response using snapshot
     expect(result).toMatchSnapshot();
   });
-}); 
+});

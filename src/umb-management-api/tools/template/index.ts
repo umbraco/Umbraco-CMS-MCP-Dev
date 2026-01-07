@@ -29,7 +29,7 @@ export const TemplateCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessTemplates(user)) {
       tools.push(GetTemplateTool);

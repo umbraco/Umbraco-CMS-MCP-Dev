@@ -2,8 +2,9 @@ import CreateDataTypeTool from "../post/create-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createSnapshotResult, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DATATYPE_NAME = "_Test DataType Created";
 const EXISTING_DATATYPE_NAME = "_Existing DataType";
@@ -11,80 +12,65 @@ const TEST_FOLDER_NAME = "_Test DataType Folder For Creation";
 const TEST_DATATYPE_WITH_PARENT_NAME = "_Test DataType With Parent";
 
 describe("create-data-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    // Clean up any test data types
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(EXISTING_DATATYPE_NAME);
     await DataTypeTestHelper.cleanup(TEST_DATATYPE_WITH_PARENT_NAME);
     await DataTypeTestHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
-
   });
 
   it("should create a data type", async () => {
-    // Create data type model using builder
+    // Arrange - Create data type model using builder
     const dataTypeModel = new DataTypeBuilder()
       .withName(TEST_DATATYPE_NAME)
       .withTextbox()
       .build();
 
-    // Create the data type
-    const result = await CreateDataTypeTool.handler(dataTypeModel, {
-      signal: new AbortController().signal
-    });
+    // Act - Create the data type
+    const result = await CreateDataTypeTool.handler(dataTypeModel as any, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    // Assert - Verify the handler response
+    const responseData = validateToolResponse(CreateDataTypeTool, result);
     const dataTypeId = responseData.id;
-
-    // Verify the handler response using snapshot
+    expect(responseData.message).toBe("Data type created successfully");
     expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();
 
-    // Verify the created item exists and matches expected values
+    // Assert - Verify the created item exists and matches expected values
     const item = await DataTypeTestHelper.findDataType(TEST_DATATYPE_NAME);
     expect(item).toBeDefined();
-    expect(DataTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should create a data type with parent folder", async () => {
-    // Arrange: Create parent folder
+    // Arrange - Create parent folder
     const folderBuilder = await new DataTypeFolderBuilder(
       TEST_FOLDER_NAME
     ).create();
 
-    // Arrange: Create data type with flattened parentId for tool
+    // Act - Create data type with parent
     const result = await CreateDataTypeTool.handler({
       name: TEST_DATATYPE_WITH_PARENT_NAME,
       editorAlias: "Umbraco.TextBox",
       editorUiAlias: "Umb.PropertyEditorUi.TextBox",
       values: [],
-      parentId: folderBuilder.getId()  // Flattened parent ID
-    }, {
-      signal: new AbortController().signal,
-    });
+      parentId: folderBuilder.getId()
+    }, createMockRequestHandlerExtra());
 
-    // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    // Assert - Verify the handler response
+    const responseData = validateToolResponse(CreateDataTypeTool, result);
     const dataTypeId = responseData.id;
-
-    // Assert: Verify the handler response
+    expect(responseData.message).toBe("Data type created successfully");
     expect(createSnapshotResult(result, dataTypeId)).toMatchSnapshot();
 
-    // Assert: Verify the created item exists with correct parent
+    // Assert - Verify the created item exists with correct parent
     const item = await DataTypeTestHelper.findDataType(
       TEST_DATATYPE_WITH_PARENT_NAME
     );
     expect(item).toBeDefined();
     expect(item!.parent).toBeDefined();
     expect(item!.parent!.id).toBe(folderBuilder.getId());
-    expect(DataTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
-
 }); 

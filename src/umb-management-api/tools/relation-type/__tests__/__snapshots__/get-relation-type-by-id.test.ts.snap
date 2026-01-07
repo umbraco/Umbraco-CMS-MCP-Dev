@@ -2,46 +2,35 @@
 
 exports[`get-relation-type-by-id should get relation type by ID 1`] = `
 {
-  "content": [
-    {
-      "text": "{
-  "id": "00000000-0000-0000-0000-000000000000",
-  "alias": "relateDocumentOnCopy",
-  "parentObject": {
-    "name": "Document",
-    "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972"
-  },
-  "childObject": {
-    "name": "Document",
-    "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972"
-  },
-  "name": "Relate Document On Copy",
-  "isBidirectional": true,
-  "isDependency": false
-}",
-      "type": "text",
+  "content": [],
+  "structuredContent": {
+    "alias": "relateDocumentOnCopy",
+    "childObject": {
+      "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972",
+      "name": "Document",
     },
-  ],
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isBidirectional": true,
+    "isDependency": false,
+    "name": "Relate Document On Copy",
+    "parentObject": {
+      "id": "c66ba18e-eaf3-4cff-8a22-41b16d66a972",
+      "name": "Document",
+    },
+  },
 }
 `;
 
 exports[`get-relation-type-by-id should handle invalid relation type ID 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using get-relation-type-by-id:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Relation type not found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "A relation type with the given key does not exist",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Relation type not found",
+    "type": "Error",
+  },
 }
 `;

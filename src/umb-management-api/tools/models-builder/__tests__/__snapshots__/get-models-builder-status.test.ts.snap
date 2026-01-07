@@ -2,11 +2,9 @@
 
 exports[`get-models-builder-status should get the models builder status 1`] = `
 {
-  "content": [
-    {
-      "text": "{"status":"Unknown"}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "status": "Unknown",
+  },
 }
 `;

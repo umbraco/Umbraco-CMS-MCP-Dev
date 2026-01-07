@@ -57,13 +57,25 @@ export class TemporaryFileBuilder {
     return this.id;
   }
 
+  /**
+   * Mark the temporary file as consumed (e.g., after avatar upload).
+   * This prevents cleanup from attempting to delete it.
+   */
+  markConsumed(): void {
+    this.id = undefined;
+  }
+
   async cleanup(): Promise<void> {
     if (this.id) {
       try {
         const client = UmbracoManagementClient.getClient();
         await client.deleteTemporaryFileById(this.id);
-      } catch (error) {
-        console.error("Error cleaning up temporary file:", error);
+      } catch (error: any) {
+        // Silently ignore 404 errors - the temporary file may have already been consumed
+        // (e.g., when used for avatar uploads, the file is deleted after use)
+        if (error?.response?.status !== 404) {
+          console.error("Error cleaning up temporary file:", error);
+        }
       }
     }
   }

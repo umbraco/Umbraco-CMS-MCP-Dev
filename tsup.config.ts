@@ -8,7 +8,7 @@ export default defineConfig({
   splitting: true,
   sourcemap: true,
   clean: true,
-  dts: true,
+  dts: false,
   esbuildOptions(options) {
     options.resolveExtensions = ['.ts', '.tsx', '.js', '.jsx', '.md'];
     options.mainFields = ['module', 'main'];

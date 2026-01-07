@@ -1,28 +1,28 @@
 import GetDefaultLanguageTool from "../get/get-default-language.js";
 import { UmbracoManagementClient } from "@umb-management-client";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-default-language", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let originalGetClient: typeof UmbracoManagementClient.getClient;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     originalGetClient = UmbracoManagementClient.getClient;
   });
 
   afterEach(() => {
-    console.error = originalConsoleError;
     UmbracoManagementClient.getClient = originalGetClient;
   });
 
   it("should get the default language", async () => {
     const result = await GetDefaultLanguageTool.handler(
       {},
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     // Verify the handler response using snapshot
+    validateToolResponse(GetDefaultLanguageTool, result);
     expect(result).toMatchSnapshot();
   });
 
@@ -36,7 +36,7 @@ describe("get-default-language", () => {
       } as any);
     const result = await GetDefaultLanguageTool.handler(
       {},
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     expect(result).toMatchSnapshot();
   });

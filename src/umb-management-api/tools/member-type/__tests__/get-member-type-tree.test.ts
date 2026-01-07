@@ -1,20 +1,16 @@
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import GetMemberTypeRootTool from "../items/get/get-root.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 describe("member-type-tree", () => {
-  const TEST_ROOT_NAME = "_Test Root MemberType";
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
 
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  const TEST_ROOT_NAME = "_Test Root MemberType";
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await MemberTypeTestHelper.cleanup(TEST_ROOT_NAME);
   });
 
@@ -26,9 +22,12 @@ describe("member-type-tree", () => {
         .withIcon("icon-user")
         .create();
 
-      const result = await GetMemberTypeRootTool.handler({
-        take: 100
-      }, { signal: new AbortController().signal });
+      const result = await GetMemberTypeRootTool.handler(
+        {
+          take: 100,
+        } as any,
+        createMockRequestHandlerExtra()
+      );
 
       // Normalize and verify response
       const normalizedItems = createSnapshotResult(result);

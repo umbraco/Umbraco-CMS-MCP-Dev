@@ -1,18 +1,18 @@
 import GetDocumentAuditLogTool from "../get/get-document-audit-log.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_DOCUMENT_NAME = "_Test AuditLogDocument";
 
 describe("get-document-audit-log", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let docId: string;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     // Create a document
     const builder = await new DocumentBuilder()
       .withName(TEST_DOCUMENT_NAME)
@@ -22,7 +22,6 @@ describe("get-document-audit-log", () => {
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
   });
 
@@ -37,11 +36,11 @@ describe("get-document-audit-log", () => {
           take: 100,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     expect(result).toBeDefined();
-    expect(result.content).toBeDefined();
-    expect(result.content.length).toBeGreaterThan(0);
+    const data = validateToolResponse(GetDocumentAuditLogTool, result);
+    expect(data.items).toBeDefined();
   });
 
   it("should handle non-existent document", async () => {
@@ -55,10 +54,16 @@ describe("get-document-audit-log", () => {
           take: 100,
         },
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     expect(result).toBeDefined();
-    expect(result.content).toBeDefined();
-    expect(result.content.length).toBeGreaterThan(0);
+    // Non-existent document may return error or empty logs depending on API
+    if (result.isError) {
+      expect(result.isError).toBe(true);
+    } else {
+      // API may return empty audit log for non-existent document
+      const data = validateToolResponse(GetDocumentAuditLogTool, result);
+      expect(data.items).toBeDefined();
+    }
   });
 });

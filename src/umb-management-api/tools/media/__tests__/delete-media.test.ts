@@ -1,27 +1,24 @@
 import DeleteMediaTool from "../delete/delete-media.js";
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
-import { jest } from "@jest/globals";
 import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEDIA_NAME = "_Test Media Delete";
 
 describe("delete-media", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let tempFileBuilder: TemporaryFileBuilder;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     tempFileBuilder = await new TemporaryFileBuilder()
       .withExampleFile()
       .create();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any remaining test media
     await MediaTestHelper.cleanup(TEST_MEDIA_NAME);
   });
@@ -38,11 +35,12 @@ describe("delete-media", () => {
     const result = await DeleteMediaTool.handler(
       {
         id: builder.getId(),
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Verify the handler response using snapshot
+    expect(result.isError).toBeFalsy();
     expect(result).toMatchSnapshot();
 
     // Verify the media no longer exists
@@ -54,11 +52,12 @@ describe("delete-media", () => {
     const result = await DeleteMediaTool.handler(
       {
         id: BLANK_UUID,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Verify the error response using snapshot
+    expect(result.isError).toBe(true);
     expect(result).toMatchSnapshot();
   });
 });

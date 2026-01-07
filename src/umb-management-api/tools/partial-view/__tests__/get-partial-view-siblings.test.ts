@@ -1,29 +1,25 @@
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import GetPartialViewSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
 import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 
 describe("get-partial-view-siblings", () => {
+  setupTestEnvironment();
+
   const TEST_FOLDER_NAME = "_TestFolderForSiblings";
   const TEST_SIBLING_1_NAME = "_TestSibling1.cshtml";
   const TEST_SIBLING_2_NAME = "_TestSibling2.cshtml";
   const TEST_TARGET_NAME = "_TestTargetPartialView.cshtml";
   const TEST_CONTENT = "@* Test partial view content *@\n<p>Test content</p>";
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     await PartialViewHelper.cleanup(TEST_SIBLING_1_NAME);
     await PartialViewHelper.cleanup(TEST_SIBLING_2_NAME);
     await PartialViewHelper.cleanup(TEST_TARGET_NAME);
     await PartialViewHelper.cleanup(TEST_FOLDER_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get sibling partial views", async () => {
@@ -57,11 +53,14 @@ describe("get-partial-view-siblings", () => {
     const result = await GetPartialViewSiblingsTool.handler(
       {
         path: targetBuilder.getPath(),
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
-    // Assert: Verify response
+    // Assert: Validate response against tool's output schema
+    const data = validateToolResponse(GetPartialViewSiblingsTool, result);
+    expect(data).toHaveProperty('items');
+
     const normalizedItems = createSnapshotResult(result);
     expect(normalizedItems).toMatchSnapshot();
   });
@@ -74,8 +73,8 @@ describe("get-partial-view-siblings", () => {
     const result = await GetPartialViewSiblingsTool.handler(
       {
         path: nonExistentPath,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     // Assert: Verify error response

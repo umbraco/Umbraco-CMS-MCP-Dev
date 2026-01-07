@@ -5,21 +5,13 @@ import {
 import DeleteMemberTool from "../delete/delete-member.js";
 import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_NAME = "_Test DeleteMember";
 
 describe("delete-member", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(async () => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should delete a member by ID", async () => {
     // Create a member
@@ -36,7 +28,7 @@ describe("delete-member", () => {
     // Delete the member
     const result = await DeleteMemberTool.handler(
       { id },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     expect(result).toMatchSnapshot();
 
@@ -48,7 +40,7 @@ describe("delete-member", () => {
   it("should return error for non-existent ID", async () => {
     const result = await DeleteMemberTool.handler(
       { id: BLANK_UUID },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     expect(result).toMatchSnapshot();
   });

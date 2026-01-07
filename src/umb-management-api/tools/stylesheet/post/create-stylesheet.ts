@@ -1,8 +1,9 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CreateStylesheetRequestModel } from "@/umb-management-api/schemas/index.js";
+import { CreateStylesheetRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import { AxiosResponse } from "axios";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
 const createStylesheetSchema = z.object({
@@ -13,13 +14,18 @@ const createStylesheetSchema = z.object({
 
 type CreateStylesheetSchema = z.infer<typeof createStylesheetSchema>;
 
+export const createStylesheetOutputSchema = z.object({
+  message: z.string(),
+  path: z.string()
+});
+
 const CreateStylesheetTool = {
   name: "create-stylesheet",
   description: `Creates a new stylesheet.`,
-  schema: createStylesheetSchema.shape,
-  isReadOnly: false,
+  inputSchema: createStylesheetSchema.shape,
+  outputSchema: createStylesheetOutputSchema.shape,
   slices: ['create'],
-  handler: async (model: CreateStylesheetSchema) => {
+  handler: (async (model: CreateStylesheetSchema) => {
     const client = UmbracoManagementClient.getClient();
 
     // Normalize path to ensure it starts with /
@@ -39,17 +45,34 @@ const CreateStylesheetTool = {
       parent: normalizedPath ? { path: normalizedPath } : undefined,
     };
 
-    const response = await client.postStylesheet(payload);
+    const response = await client.postStylesheet(payload, {
+      returnFullResponse: true,
+      validateStatus: () => true,
+    }) as unknown as AxiosResponse<ProblemDetails | void>;
 
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<typeof createStylesheetSchema.shape>;
+    if (response.status === 201) {
+      // Extract path from Location header
+      const locationHeader = response.headers['location'] || response.headers['Location'];
+      let createdPath = '';
+      if (locationHeader) {
+        // Location header format: /umbraco/management/api/v1/stylesheet/{encodedPath}
+        const pathMatch = locationHeader.match(/stylesheet\/(.+)$/);
+        if (pathMatch) {
+          createdPath = decodeURIComponent(pathMatch[1]);
+        }
+      }
+      return createToolResult({
+        message: "Stylesheet created successfully",
+        path: createdPath
+      });
+    } else {
+      const errorData: ProblemDetails = response.data || {
+        status: response.status,
+        detail: response.statusText,
+      };
+      return createToolResultError(errorData);
+    }
+  }),
+} satisfies ToolDefinition<typeof createStylesheetSchema.shape, typeof createStylesheetOutputSchema.shape>;
 
 export default withStandardDecorators(CreateStylesheetTool);

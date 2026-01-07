@@ -1,25 +1,24 @@
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import UpdateMemberTypeTool from "../put/update-member-type.js";
-import { jest } from "@jest/globals";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_MEMBER_TYPE_NAME = "_Test Member Type Update";
 const UPDATED_MEMBER_TYPE_NAME = "_Updated Member Type";
 const NON_EXISTENT_MEMBER_TYPE_NAME = "_Non Existent Member Type";
 
 describe("update-member-type", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let builder: MemberTypeBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     builder = new MemberTypeBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await builder.cleanup();
     await MemberTypeTestHelper.cleanup(UPDATED_MEMBER_TYPE_NAME);
   });
@@ -34,7 +33,7 @@ describe("update-member-type", () => {
         id: builder.getId(),
         data: model,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     expect(result).toMatchSnapshot();
     const items = await MemberTypeTestHelper.findMemberTypes(
@@ -56,7 +55,7 @@ describe("update-member-type", () => {
         id: BLANK_UUID,
         data: model,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
     expect(result).toMatchSnapshot();
   });

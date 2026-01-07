@@ -1,27 +1,22 @@
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import GetDocumentSiblingsTool from "../items/get/get-siblings.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { BLANK_UUID } from "@/constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_PARENT_NAME = "_Test Siblings Parent";
 const TEST_SIBLING_1_NAME = "_Test Sibling 1";
 const TEST_SIBLING_2_NAME = "_Test Sibling 2";
 
 describe("get-document-siblings", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await DocumentTestHelper.cleanup(TEST_SIBLING_1_NAME);
     await DocumentTestHelper.cleanup(TEST_SIBLING_2_NAME);
     await DocumentTestHelper.cleanup(TEST_PARENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should get sibling documents", async () => {
@@ -47,9 +42,11 @@ describe("get-document-siblings", () => {
     const result = await GetDocumentSiblingsTool.handler(
       {
         target: sibling1Builder.getId(),
+        before: undefined,
         after: 100,
+        dataTypeId: undefined,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert
@@ -62,9 +59,11 @@ describe("get-document-siblings", () => {
     const result = await GetDocumentSiblingsTool.handler(
       {
         target: BLANK_UUID,
+        before: undefined,
         after: 100,
+        dataTypeId: undefined,
       },
-      { signal: new AbortController().signal }
+      createMockRequestHandlerExtra()
     );
 
     // Assert

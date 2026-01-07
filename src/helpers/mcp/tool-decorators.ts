@@ -1,19 +1,58 @@
+/**
+ * Tool Decorators
+ *
+ * This module provides decorator functions for wrapping MCP tool handlers
+ * with cross-cutting concerns like error handling and version checking.
+ */
+
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { ZodRawShape } from "zod";
-import { ToolDefinition } from "../../types/tool-definition.js";
+import { ZodRawShape, ZodType } from "zod";
+import { ToolDefinition, ToolAnnotations } from "../../types/tool-definition.js";
 import {
   getVersionCheckMessage,
   clearVersionCheckMessage,
   isToolExecutionBlocked
 } from "../version-check/check-umbraco-version.js";
+import { createToolResultError } from "./tool-result.js";
+
+// Re-export everything from split modules for backwards compatibility
+export {
+  createToolResult,
+  createToolResultError,
+} from "./tool-result.js";
+
+export { ToolValidationError, type ValidationErrorDetails } from "./tool-validation-error.js";
+
+export {
+  CAPTURE_RAW_HTTP_RESPONSE,
+  processVoidResponse,
+  executeVoidApiCall,
+  executeGetApiCall,
+  executeVoidApiCallWithOptions,
+  UmbracoApiError,
+  type ApiCallOptions,
+  type VoidApiCallOptions,
+  type UmbracoClient,
+  type ApiCallFn,
+} from "./api-call-helpers.js";
+
+import { UmbracoApiError } from "./api-call-helpers.js";
+import { ToolValidationError } from "./tool-validation-error.js";
 
 /**
  * Wraps a tool handler with standardized error handling.
- * Catches errors and returns them in a consistent format.
+ * Catches all errors and converts them to MCP tool error results.
+ *
+ * Error handling priority:
+ * 1. ToolValidationError - Business logic validation errors with context
+ * 2. UmbracoApiError - API errors with ProblemDetails (from helpers)
+ * 3. Axios errors - Network/HTTP errors with response data
+ * 4. Standard errors - JavaScript errors with message
+ * 5. Unknown errors - Anything else
  */
-export function withErrorHandling<Args extends undefined | ZodRawShape>(
-  tool: ToolDefinition<Args>
-): ToolDefinition<Args> {
+export function withErrorHandling<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodType = undefined>(
+  tool: ToolDefinition<Args, OutputArgs>
+): ToolDefinition<Args, OutputArgs> {
   const originalHandler = tool.handler;
 
   return {
@@ -24,16 +63,40 @@ export function withErrorHandling<Args extends undefined | ZodRawShape>(
       } catch (error) {
         console.error(`Error in tool ${tool.name}:`, error);
 
-        const errorDetails = error instanceof Error
-          ? { message: error.message, cause: error.cause, response: (error as any).response?.data }
-          : error;
+        let errorResult;
 
-        return {
-          content: [{
-            type: "text" as const,
-            text: `Error using ${tool.name}:\n${JSON.stringify(errorDetails, null, 2)}`,
-          }]
-        };
+        // ToolValidationError - business logic validation errors with context
+        if (error instanceof ToolValidationError) {
+          errorResult = createToolResultError(error.toProblemDetails());
+        }
+        // UmbracoApiError - thrown by helpers with ProblemDetails
+        else if (error instanceof UmbracoApiError) {
+          errorResult = createToolResultError(error.problemDetails);
+        }
+        // Axios error with response data (network succeeded but got error response)
+        else if (error instanceof Error && (error as any).response?.data) {
+          errorResult = createToolResultError((error as any).response.data);
+        }
+        // Standard Error - convert to ProblemDetails format
+        else if (error instanceof Error) {
+          errorResult = createToolResultError({
+            type: "Error",
+            title: error.name || "Error",
+            detail: error.message,
+            status: 500
+          });
+        }
+        // Unknown error type - convert to ProblemDetails format
+        else {
+          errorResult = createToolResultError({
+            type: "Error",
+            title: "Unknown Error",
+            detail: String(error),
+            status: 500
+          });
+        }
+
+        return errorResult;
       }
     }) as ToolCallback<Args>,
   };
@@ -43,9 +106,9 @@ export function withErrorHandling<Args extends undefined | ZodRawShape>(
  * Wraps a tool handler with version check blocking.
  * Blocks execution if there's a version incompatibility warning.
  */
-export function withVersionCheck<Args extends undefined | ZodRawShape>(
-  tool: ToolDefinition<Args>
-): ToolDefinition<Args> {
+export function withVersionCheck<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodType = undefined>(
+  tool: ToolDefinition<Args, OutputArgs>
+): ToolDefinition<Args, OutputArgs> {
   const originalHandler = tool.handler;
 
   return {
@@ -77,11 +140,32 @@ export function withVersionCheck<Args extends undefined | ZodRawShape>(
  * compose(withErrorHandling, withVersionCheck)(myTool)
  * // Equivalent to: withErrorHandling(withVersionCheck(myTool))
  */
-export function compose<Args extends undefined | ZodRawShape>(
-  ...decorators: Array<(tool: ToolDefinition<Args>) => ToolDefinition<Args>>
-): (tool: ToolDefinition<Args>) => ToolDefinition<Args> {
-  return (tool: ToolDefinition<Args>) =>
+export function compose<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodType = undefined>(
+  ...decorators: Array<(tool: ToolDefinition<Args, OutputArgs>) => ToolDefinition<Args, OutputArgs>>
+): (tool: ToolDefinition<Args, OutputArgs>) => ToolDefinition<Args, OutputArgs> {
+  return (tool: ToolDefinition<Args, OutputArgs>) =>
     decorators.reduceRight((decorated, decorator) => decorator(decorated), tool);
+}
+
+/**
+ * Creates annotations for a tool, ensuring openWorldHint is always true.
+ * Tools should explicitly define their annotations with only true values (readOnlyHint, destructiveHint, idempotentHint).
+ * This function ensures openWorldHint is set to true and provides defaults for missing values.
+ *
+ * @param tool - The tool definition
+ * @returns Complete annotations object with defaults applied
+ */
+export function createToolAnnotations(tool: ToolDefinition<any, any>): ToolAnnotations {
+  // Tool annotations only contain explicit true values
+  const toolAnnotations = tool.annotations || {};
+
+  return {
+    readOnlyHint: toolAnnotations.readOnlyHint ?? false,  // Default to false if not specified
+    destructiveHint: toolAnnotations.destructiveHint ?? false,  // Default to false if not specified
+    idempotentHint: toolAnnotations.idempotentHint ?? false,  // Default to false if not specified
+    openWorldHint: true,  // Always true - all tools interact with external Umbraco API
+    ...(toolAnnotations.title && { title: toolAnnotations.title }),  // Include title if provided
+  };
 }
 
 /**
@@ -91,8 +175,8 @@ export function compose<Args extends undefined | ZodRawShape>(
  * @example
  * export default withStandardDecorators(myTool);
  */
-export function withStandardDecorators<Args extends undefined | ZodRawShape>(
-  tool: ToolDefinition<Args>
-): ToolDefinition<Args> {
-  return compose(withErrorHandling, withVersionCheck)(tool);
+export function withStandardDecorators<Args extends undefined | ZodRawShape, OutputArgs extends undefined | ZodRawShape | ZodType = undefined>(
+  tool: ToolDefinition<Args, OutputArgs>
+): ToolDefinition<Args, OutputArgs> {
+  return compose<Args, OutputArgs>(withErrorHandling, withVersionCheck)(tool);
 }

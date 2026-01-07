@@ -3,8 +3,8 @@ import type { UmbracoServerConfig } from "../../config.js";
 import { expandModesToCollections, validateModeNames } from "./mode-expander.js";
 import { validateSliceNames } from "./slice-matcher.js";
 
-export class CollectionConfigLoader {
-  static loadFromConfig(config: UmbracoServerConfig): CollectionConfiguration {
+export const CollectionConfigLoader = {
+  loadFromConfig: (config: UmbracoServerConfig): CollectionConfiguration => {
     // Start with direct collection includes
     let enabledCollections = config.includeToolCollections ?? [];
 
@@ -56,4 +56,4 @@ export class CollectionConfigLoader {
       disabledTools: config.excludeTools ?? DEFAULT_COLLECTION_CONFIG.disabledTools,
     };
   }
-}
+};

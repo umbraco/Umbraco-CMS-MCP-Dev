@@ -1,7 +1,8 @@
-import { normalizeErrorResponse, createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import { normalizeErrorResponse, createSnapshotResult , normalizeObject} from "@/test-helpers/create-snapshot-result.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import CreateElementTypeTool from "../post/create-element-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { v4 as uuidv4 } from "uuid";
 import { TextString_DATA_TYPE_ID } from "@/constants/constants.js";
 
@@ -9,15 +10,9 @@ const TEST_ELEMENT_NAME = "_Test ElementType Created";
 const EXISTING_ELEMENT_NAME = "_Existing ElementType";
 
 describe("create-element-type", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     // Clean up any test element types
     await DocumentTypeTestHelper.cleanup(TEST_ELEMENT_NAME);
     await DocumentTypeTestHelper.cleanup(EXISTING_ELEMENT_NAME);
@@ -33,15 +28,14 @@ describe("create-element-type", () => {
     };
 
     // Create the element type
-    const result = await CreateElementTypeTool.handler(elementModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    const responseData = validateToolResponse(CreateElementTypeTool, result);
     const elementTypeId = responseData.id;
 
     // Verify the handler response using snapshot
+    expect(responseData.message).toBe("Element type created successfully");
     expect(createSnapshotResult(result, elementTypeId)).toMatchSnapshot();
 
     // Verify the created item exists and matches expected values
@@ -49,7 +43,7 @@ describe("create-element-type", () => {
       TEST_ELEMENT_NAME
     );
     expect(item).toBeDefined();
-    expect(DocumentTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should handle existing element type", async () => {
@@ -62,14 +56,10 @@ describe("create-element-type", () => {
     };
 
     // First create the element type
-    const rsp = await CreateElementTypeTool.handler(elementModel, {
-      signal: new AbortController().signal,
-    });
+    const rsp = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
 
     // Try to create it again
-    const result = await CreateElementTypeTool.handler(elementModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
 
     // Verify the error response using snapshot
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
@@ -93,22 +83,21 @@ describe("create-element-type", () => {
       ],
     };
 
-    const result = await CreateElementTypeTool.handler(elementModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
 
     // Extract ID for normalization
-    const responseData = JSON.parse(result.content[0].text as string);
+    const responseData = validateToolResponse(CreateElementTypeTool, result);
     const elementTypeId = responseData.id;
 
     // Verify the handler response using snapshot
+    expect(responseData.message).toBe("Element type created successfully");
     expect(createSnapshotResult(result, elementTypeId)).toMatchSnapshot();
 
     const item = await DocumentTypeTestHelper.findDocumentType(
       TEST_ELEMENT_NAME
     );
     expect(item).toBeDefined();
-    expect(DocumentTypeTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should reject property without tab or group", async () => {
@@ -127,14 +116,10 @@ describe("create-element-type", () => {
       ]
     };
 
-    const result = await CreateElementTypeTool.handler(elementModel, {
-      signal: new AbortController().signal
-    });
-
-    // The tool catches validation errors and returns them as error responses
-    const errorText = result.content[0].text as string;
-    expect(errorText).toContain("Property must specify either 'tab' or 'group'");
-    expect(errorText).toContain("Properties without a container are invisible");
+    // The zod schema validation should fail and return an error result
+    const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
+    expect(result.isError).toBe(true);
+    expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
 
   it("should create separate groups for same group name in different tabs", async () => {
@@ -161,11 +146,9 @@ describe("create-element-type", () => {
       ]
     };
 
-    const result = await CreateElementTypeTool.handler(elementModel, {
-      signal: new AbortController().signal
-    });
+    const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
 
-    const responseData = JSON.parse(result.content[0].text as string);
+    const responseData = validateToolResponse(CreateElementTypeTool, result);
     const fullElementType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
 
     // Should have 2 tabs

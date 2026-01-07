@@ -1,32 +1,27 @@
-import { UmbracoManagementClient } from "@umb-management-client";
-import { putMediaByIdMoveBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { MoveMediaRequestModel } from "@/umb-management-api/schemas/index.js";
+import { putMediaByIdMoveParams, putMediaByIdMoveBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
-const schema = {
-  id: z.string().uuid(),
+const inputSchema = {
+  id: putMediaByIdMoveParams.shape.id,
   data: z.object(putMediaByIdMoveBody.shape),
 };
 
 const MoveMediaTool = {
   name: "move-media",
   description: "Move a media item to a new location",
-  schema,
-  isReadOnly: false,
-  slices: ['move'],
-  handler: async (model: { id: string; data: any }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.putMediaByIdMove(model.id, model.data);
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
+  inputSchema,
+  annotations: {
+    idempotentHint: true,
   },
-} satisfies ToolDefinition<typeof schema>;
+  slices: ['move'],
+  handler: (async (model: { id: string; data: MoveMediaRequestModel }) => {
+    return executeVoidApiCall((client) =>
+      client.putMediaByIdMove(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof inputSchema>;
 
 export default withStandardDecorators(MoveMediaTool);

@@ -1,6 +1,9 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getModelsBuilderDashboardResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+
+const emptySchema = z.object({});
 
 const GetModelsBuilderDashboardTool = {
   name: "get-models-builder-dashboard",
@@ -13,22 +16,15 @@ const GetModelsBuilderDashboardTool = {
   - version: Version information (string | null)
   - modelsNamespace: Namespace for generated models (string | null)
   - trackingOutOfDateModels: Whether tracking is enabled (boolean)`,
-  schema: {},
-  isReadOnly: true,
+  inputSchema: emptySchema.shape,
+  outputSchema: getModelsBuilderDashboardResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['diagnostics'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getModelsBuilderDashboard();
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<{}>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getModelsBuilderDashboard(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof emptySchema.shape, typeof getModelsBuilderDashboardResponse.shape>;
 
 export default withStandardDecorators(GetModelsBuilderDashboardTool);

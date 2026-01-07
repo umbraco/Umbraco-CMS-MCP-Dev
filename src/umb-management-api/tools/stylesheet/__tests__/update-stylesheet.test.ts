@@ -2,7 +2,8 @@ import UpdateStylesheetTool from "../put/update-stylesheet.js";
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import { StylesheetBuilder } from "./helpers/stylesheet-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 const TEST_STYLESHEET_NAME = "_TestUpdateStylesheet.css";
 const ORIGINAL_CONTENT = "/* Original content */\nbody { color: black; }";
@@ -10,16 +11,10 @@ const UPDATED_CONTENT = "/* Updated content */\nbody { color: blue; }\n.new-clas
 const NON_EXISTENT_STYLESHEET_PATH = "/_NonExistentStylesheet.css";
 
 describe("update-stylesheet", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     await StylesheetHelper.cleanup(TEST_STYLESHEET_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should update a stylesheet", async () => {
@@ -35,7 +30,7 @@ describe("update-stylesheet", () => {
     const result = await UpdateStylesheetTool.handler({ 
       path: stylesheetPath, 
       content: UPDATED_CONTENT 
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
@@ -53,7 +48,7 @@ describe("update-stylesheet", () => {
     const result = await UpdateStylesheetTool.handler({ 
       path: NON_EXISTENT_STYLESHEET_PATH, 
       content: UPDATED_CONTENT 
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     // Assert
     expect(result).toMatchSnapshot();

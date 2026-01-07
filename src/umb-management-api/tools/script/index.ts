@@ -24,7 +24,7 @@ export const ScriptCollection: ToolCollectionExport = {
     dependencies: []
   },
   tools: (user: CurrentUserResponseModel) => {
-    const tools: ToolDefinition<any>[] = [];
+    const tools: ToolDefinition<any, any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessScripts(user)) {
       tools.push(GetScriptByPathTool);

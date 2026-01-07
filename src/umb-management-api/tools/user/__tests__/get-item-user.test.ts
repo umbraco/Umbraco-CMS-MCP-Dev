@@ -1,25 +1,22 @@
 import GetItemUserTool from "../get/get-item-user.js";
 import { UserBuilder } from "./helpers/user-builder.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { getItemUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 
 const TEST_USER_NAME = "_Test User Item";
 const TEST_USER_EMAIL = `test-user-item-${Math.floor(Math.random() * 10000)}@example.com`;
 
 describe("get-item-user", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let userBuilder: UserBuilder;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
 
   afterEach(async () => {
     if (userBuilder) {
       await userBuilder.cleanup();
+      userBuilder = undefined!;
     }
-    console.error = originalConsoleError;
   });
 
   it("should get user items with default parameters", async () => {
@@ -32,23 +29,24 @@ describe("get-item-user", () => {
     await userBuilder.create();
 
     // Act
-    const result = await GetItemUserTool.handler({
-    }, { signal: new AbortController().signal });
+    const params = getItemUserQueryParams.parse({});
+    const result = await GetItemUserTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
 
-    // Verify expected structure
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(Array.isArray(parsed)).toBe(true);
+    // Verify expected structure - tool returns { items: [...] }
+    const data = validateToolResponse(GetItemUserTool, result);
+    expect(Array.isArray(data.items)).toBe(true);
+    const items = data.items;
 
     // Should contain user items
-    if (parsed.length > 0) {
-      expect(parsed[0]).toHaveProperty("id");
-      expect(parsed[0]).toHaveProperty("name");
-      expect(typeof parsed[0].id).toBe("string");
-      expect(typeof parsed[0].name).toBe("string");
+    if (items.length > 0) {
+      expect(items[0]).toHaveProperty("id");
+      expect(items[0]).toHaveProperty("name");
+      expect(typeof items[0].id).toBe("string");
+      expect(typeof items[0].name).toBe("string");
     }
   });
 
@@ -63,29 +61,32 @@ describe("get-item-user", () => {
     const userId = userBuilder.getId();
 
     // Act
-    const result = await GetItemUserTool.handler({
+    const params = getItemUserQueryParams.parse({
       id: [userId]
-    }, { signal: new AbortController().signal });
+    });
+    const result = await GetItemUserTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(Array.isArray(parsed)).toBe(true);
+    const data = validateToolResponse(GetItemUserTool, result);
+    expect(Array.isArray(data.items)).toBe(true);
+    const items = data.items;
 
     // Should find the specific user
-    const foundUser = parsed.find((user: any) => user.id === userId);
+    const foundUser = items.find((user: any) => user.id === userId);
     expect(foundUser).toBeDefined();
-    expect(foundUser.name).toBe(TEST_USER_NAME);
+    expect(foundUser?.name).toBe(TEST_USER_NAME);
   });
 
   it("should return empty array for non-existent user IDs", async () => {
     // Act
-    const result = await GetItemUserTool.handler({
+    const params = getItemUserQueryParams.parse({
       id: ["00000000-0000-0000-0000-000000000000"]
-    }, { signal: new AbortController().signal });
+    });
+    const result = await GetItemUserTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
-    const parsed = JSON.parse(result.content[0].text as string);
-    expect(Array.isArray(parsed)).toBe(true);
-    expect(parsed).toHaveLength(0);
+    const data = validateToolResponse(GetItemUserTool, result);
+    expect(Array.isArray(data.items)).toBe(true);
+    expect(data.items).toHaveLength(0);
   });
 });

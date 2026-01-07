@@ -2,20 +2,17 @@ import CreateDocumentBlueprintTool from "../post/create-blueprint.js";
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
 import { DocumentBlueprintFolderBuilder } from "./helpers/document-blueprint-folder-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
-import { jest } from "@jest/globals";
 import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { normalizeObject } from "@/test-helpers/create-snapshot-result.js";
 const TEST_BLUEPRINT_NAME = "_Test Blueprint Created";
 const EXISTING_BLUEPRINT_NAME = "_Existing Blueprint";
 const TEST_FOLDER_NAME = "_Test Blueprint Folder";
 const TEST_BLUEPRINT_WITH_PARENT_NAME = "_Test Blueprint With Parent";
 
 describe("create-document-blueprint", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
+  setupTestEnvironment();
 
   afterEach(async () => {
     // Clean up any test blueprints
@@ -23,7 +20,6 @@ describe("create-document-blueprint", () => {
     await DocumentBlueprintTestHelper.cleanup(EXISTING_BLUEPRINT_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_FOLDER_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_BLUEPRINT_WITH_PARENT_NAME);
-    console.error = originalConsoleError;
   });
 
   it("should create a document blueprint", async () => {
@@ -33,9 +29,10 @@ describe("create-document-blueprint", () => {
       .build();
 
     // Create the blueprint
-    const result = await CreateDocumentBlueprintTool.handler(blueprintModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateDocumentBlueprintTool.handler(
+      blueprintModel,
+      createMockRequestHandlerExtra()
+    );
 
     // Verify the handler response using snapshot
     expect(result).toMatchSnapshot();
@@ -45,7 +42,7 @@ describe("create-document-blueprint", () => {
       TEST_BLUEPRINT_NAME
     );
     expect(item).toBeDefined();
-    expect(DocumentBlueprintTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
   it("should handle existing document blueprint", async () => {
@@ -55,14 +52,16 @@ describe("create-document-blueprint", () => {
       .build();
 
     // First create the blueprint
-    await CreateDocumentBlueprintTool.handler(blueprintModel, {
-      signal: new AbortController().signal,
-    });
+    await CreateDocumentBlueprintTool.handler(
+      blueprintModel,
+      createMockRequestHandlerExtra()
+    );
 
     // Try to create it again
-    const result = await CreateDocumentBlueprintTool.handler(blueprintModel, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateDocumentBlueprintTool.handler(
+      blueprintModel,
+      createMockRequestHandlerExtra()
+    );
 
     // Verify the error response using snapshot
     expect(result).toMatchSnapshot();
@@ -75,20 +74,21 @@ describe("create-document-blueprint", () => {
     ).create();
 
     // Arrange: Create blueprint with flattened parentId for tool
-    const result = await CreateDocumentBlueprintTool.handler({
-      values: [],
-      variants: [{
-        culture: null,
-        segment: null,
-        name: TEST_BLUEPRINT_WITH_PARENT_NAME
-      }],
-      documentType: {
-        id: ROOT_DOCUMENT_TYPE_ID
-      },
-      parentId: folderBuilder.getId()  // Flattened parent ID
-    }, {
-      signal: new AbortController().signal,
-    });
+    const result = await CreateDocumentBlueprintTool.handler(
+      {
+        values: [],
+        variants: [{
+          culture: null,
+          segment: null,
+          name: TEST_BLUEPRINT_WITH_PARENT_NAME
+        }],
+        documentType: {
+          id: ROOT_DOCUMENT_TYPE_ID
+        },
+        parentId: folderBuilder.getId()  // Flattened parent ID
+      } as any,
+      createMockRequestHandlerExtra()
+    );
 
     // Assert: Verify the handler response
     expect(result).toMatchSnapshot();
@@ -100,6 +100,6 @@ describe("create-document-blueprint", () => {
     expect(item).toBeDefined();
     expect(item!.parent).toBeDefined();
     expect(item!.parent!.id).toBe(folderBuilder.getId());
-    expect(DocumentBlueprintTestHelper.normaliseIds(item!)).toMatchSnapshot();
+    expect(normalizeObject(item!)).toMatchSnapshot();
   });
 });

@@ -136,11 +136,9 @@ export class DocumentVersionBuilder {
 
   async cleanup(): Promise<void> {
     if (this.createdItem) {
-      try {
-        const client = UmbracoManagementClient.getClient();
-        await client.deleteDocumentById(this.createdItem.id);
-      } catch (error) {
-        console.error("Error cleaning up document:", error);
+      const name = this.model.variants?.[0]?.name;
+      if (name) {
+        await DocumentTestHelper.cleanup(name);
       }
     }
   }

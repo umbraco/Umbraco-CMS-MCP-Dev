@@ -4,24 +4,19 @@ import {
   createSnapshotResult,
   normalizeErrorResponse,
 } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { PropertyTypeTestHelper } from "./helpers/property-type-test-helper.js";
 
 describe("get-property-type-is-used", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
+
   let headerControlsId: string | null;
   const titlePropertyAlias = "title";
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-
     // Get the headerControls document type ID and title property alias
     headerControlsId = await PropertyTypeTestHelper.getHeaderControlsId();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
   });
 
   it.skip("should check if a property type is used with both parameters", async () => {
@@ -29,17 +24,18 @@ describe("get-property-type-is-used", () => {
       contentTypeId: headerControlsId!,
       propertyAlias: titlePropertyAlias,
     });
-    const result = await GetPropertyTypeIsUsedTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetPropertyTypeIsUsedTool.handler(params as any, createMockRequestHandlerExtra());
+
+    // Validate response against tool's output schema
+    const data = validateToolResponse(GetPropertyTypeIsUsedTool, result);
+    expect(data).toHaveProperty("isUsed");
+
     expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should handle empty parameters", async () => {
     const params = getPropertyTypeIsUsedQueryParams.parse({});
-    const result = await GetPropertyTypeIsUsedTool.handler(params, {
-      signal: new AbortController().signal,
-    });
+    const result = await GetPropertyTypeIsUsedTool.handler(params as any, createMockRequestHandlerExtra());
     expect(normalizeErrorResponse(result)).toMatchSnapshot();
   });
 });

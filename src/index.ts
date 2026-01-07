@@ -4,7 +4,6 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { UmbracoMcpServer } from "./server/umbraco-mcp-server.js";
 
 import { UmbracoToolFactory } from "./umb-management-api/tools/tool-factory.js";
-import { ResourceFactory } from "./umb-management-api/resources/resource-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
 import { getServerConfig } from "./config.js";
@@ -27,7 +26,6 @@ const main = async () => {
   // Check Umbraco version compatibility (logs result internally)
   await checkUmbracoVersion(client);
 
-  ResourceFactory(server);
   UmbracoToolFactory(server, user, config);
 
   // Start receiving messages on stdin and sending messages on stdout

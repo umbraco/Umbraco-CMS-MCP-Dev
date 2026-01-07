@@ -2,16 +2,12 @@
 
 exports[`create-document-version-rollback should handle non-existent version ID 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using create-document-version-rollback:
-{
-  "message": "Request failed with status code 404",
-  "response": ""
-}",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
 }
 `;
 
@@ -19,7 +15,7 @@ exports[`create-document-version-rollback should rollback document to a specific
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -30,7 +26,7 @@ exports[`create-document-version-rollback should rollback document to a specific
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],

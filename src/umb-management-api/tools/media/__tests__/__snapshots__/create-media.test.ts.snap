@@ -1,69 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`create-media filename extension detection for base64 should auto-detect JPEG extension for base64 media 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Media "_Test Base64 JPEG No Ext" created successfully",
+    "name": "_Test Base64 JPEG No Ext",
+  },
+}
+`;
+
+exports[`create-media filename extension detection for base64 should auto-detect PNG extension when creating media without extension 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Media "_Test Base64 No Extension" created successfully",
+    "name": "_Test Base64 No Extension",
+  },
+}
+`;
+
+exports[`create-media filename extension detection for base64 should preserve extension when provided in base64 media creation 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Media "_Test Base64 With Ext.png" created successfully",
+    "name": "_Test Base64 With Ext.png",
+  },
+}
+`;
+
 exports[`create-media should create file media 1`] = `
 {
-  "content": [
-    {
-      "text": "Media "_Test File Upload" created successfully",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Media "_Test File Upload" created successfully",
+    "name": "_Test File Upload",
+  },
 }
 `;
 
 exports[`create-media should create image media 1`] = `
 {
-  "content": [
-    {
-      "text": "Media "_Test Image Upload" created successfully",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Media "_Test Image Upload" created successfully",
+    "name": "_Test Image Upload",
+  },
 }
 `;
 
 exports[`create-media should create media from URL 1`] = `
 {
-  "content": [
-    {
-      "text": "Media "_Test URL Image Upload" created successfully",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Media "_Test URL Image Upload" created successfully",
+    "name": "_Test URL Image Upload",
+  },
 }
 `;
 
 exports[`create-media should create media from base64 1`] = `
 {
-  "content": [
-    {
-      "text": "Media "_Test Base64 Image Upload.png" created successfully",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Media "_Test Base64 Image Upload.png" created successfully",
+    "name": "_Test Base64 Image Upload.png",
+  },
 }
 `;
 
 exports[`create-media should handle invalid media type 1`] = `
 {
-  "content": [
-    {
-      "text": "Error creating media: Media type 'NonExistentMediaType' not found. Available types: None found",
-      "type": "text",
-    },
-  ],
+  "content": [],
   "isError": true,
+  "structuredContent": {
+    "detail": "Error creating media: Media type 'NonExistentMediaType' not found. Available types: None found",
+  },
 }
 `;
 
 exports[`create-media should handle non-existent file path 1`] = `
 {
-  "content": [
-    {
-      "text": "Error creating media: File path "/non/existent/file.jpg" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp",
-      "type": "text",
-    },
-  ],
+  "content": [],
   "isError": true,
+  "structuredContent": {
+    "detail": "Error creating media: File path "/non/existent/file.jpg" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp-template",
+  },
 }
 `;

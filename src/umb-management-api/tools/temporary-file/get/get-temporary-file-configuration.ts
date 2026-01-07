@@ -1,6 +1,6 @@
-import { UmbracoManagementClient } from "@umb-management-client";
+import { getTemporaryFileConfigurationResponse } from "@/umb-management-api/temporary-file/types.zod.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const GetTemporaryFileConfigurationTool = {
   name: "get-temporary-file-configuration",
@@ -11,21 +11,15 @@ const GetTemporaryFileConfigurationTool = {
   - allowedUploadedFileExtensions - which file extensions are allowed to be uploaded
   - maxFileSize - the maximum file size in bytes, if null then there is no limit
   `,
-  schema: {},
-  isReadOnly: true,
+  inputSchema: {},
+  outputSchema: getTemporaryFileConfigurationResponse.shape,
+  annotations: { readOnlyHint: true },
   slices: ['read'],
-  handler: async () => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.getTemporaryFileConfiguration();
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  }
-} satisfies ToolDefinition<{}>;
+  handler: (async () => {
+    return executeGetApiCall((client) =>
+      client.getTemporaryFileConfiguration(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof getTemporaryFileConfigurationResponse.shape>;
 
 export default withStandardDecorators(GetTemporaryFileConfigurationTool);

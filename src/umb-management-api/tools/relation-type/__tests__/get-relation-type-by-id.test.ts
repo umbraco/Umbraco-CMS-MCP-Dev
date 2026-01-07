@@ -1,28 +1,20 @@
 import GetRelationTypeByIdTool from "../get/get-relation-type-by-id.js";
 import GetRelationTypeTool from "../get/get-relation-type.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("get-relation-type-by-id", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
+  setupTestEnvironment();
 
   it("should get relation type by ID", async () => {
     // First get available relation types to get a valid ID
     const listResult = await GetRelationTypeTool.handler({
       skip: 0,
       take: 1
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
-    const listResponse = JSON.parse((listResult.content[0] as any).text);
+    const listResponse = validateToolResponse(GetRelationTypeTool, listResult);
 
     // Skip test if no relation types available
     if (listResponse.items.length === 0) {
@@ -35,9 +27,9 @@ describe("get-relation-type-by-id", () => {
     // Now get the specific relation type
     const result = await GetRelationTypeByIdTool.handler({
       id: testRelationTypeId
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
-    const response = JSON.parse((result.content[0] as any).text);
+    const response = validateToolResponse(GetRelationTypeByIdTool, result);
 
     // Verify response structure
     expect(response).toHaveProperty('id');
@@ -52,7 +44,7 @@ describe("get-relation-type-by-id", () => {
   it("should handle invalid relation type ID", async () => {
     const result = await GetRelationTypeByIdTool.handler({
       id: "00000000-0000-0000-0000-000000000000"
-    }, { signal: new AbortController().signal });
+    }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();
   });

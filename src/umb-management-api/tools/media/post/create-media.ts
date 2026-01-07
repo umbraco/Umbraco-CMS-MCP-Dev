@@ -11,7 +11,7 @@ import {
   MEDIA_TYPE_FILE
 } from "@/constants/constants.js";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 
 const createMediaSchema = z.object({
   sourceType: z.enum(["filePath", "url", "base64"]).describe("Media source type: 'filePath' for local files (most efficient), 'url' for web files, 'base64' for embedded data (small files only)"),
@@ -24,6 +24,12 @@ const createMediaSchema = z.object({
 });
 
 type CreateMediaParams = z.infer<typeof createMediaSchema>;
+
+export const createMediaOutputSchema = z.object({
+  message: z.string(),
+  name: z.string(),
+  id: z.string().uuid()
+});
 
 const CreateMediaTool = {
   name: "create-media",
@@ -51,15 +57,15 @@ const CreateMediaTool = {
   - Detects and validates media types (auto-corrects SVG vs Image)
   - Configures correct property editors (ImageCropper vs UploadField)
   - Cleans up temporary files`,
-  schema: createMediaSchema.shape,
-  isReadOnly: false,
+  inputSchema: createMediaSchema.shape,
+  outputSchema: createMediaOutputSchema.shape,
   slices: ['create'],
-  handler: async (model: CreateMediaParams) => {
+  handler: (async (model: CreateMediaParams) => {
     try {
       const client = UmbracoManagementClient.getClient();
       const temporaryFileId = uuidv4();
 
-      const actualName = await uploadMediaFile(client, {
+      const { name: actualName, id } = await uploadMediaFile(client, {
         sourceType: model.sourceType,
         name: model.name,
         mediaTypeName: model.mediaTypeName,
@@ -70,26 +76,17 @@ const CreateMediaTool = {
         temporaryFileId,
       });
 
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: `Media "${actualName}" created successfully`,
-          },
-        ],
-      };
+      return createToolResult({
+        message: `Media "${actualName}" created successfully`,
+        name: actualName,
+        id: id
+      });
     } catch (error) {
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: `Error creating media: ${(error as Error).message}`,
-          },
-        ],
-        isError: true,
-      };
+      return createToolResultError({
+        detail: `Error creating media: ${(error as Error).message}`,
+      });
     }
-  },
-} satisfies ToolDefinition<typeof createMediaSchema.shape>;
+  }),
+} satisfies ToolDefinition<typeof createMediaSchema.shape, typeof createMediaOutputSchema.shape>;
 
 export default withStandardDecorators(CreateMediaTool);

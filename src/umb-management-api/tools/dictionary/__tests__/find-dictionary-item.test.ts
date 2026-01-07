@@ -2,23 +2,21 @@ import FindDictionaryItemTool from "../get/find-dictionary-item.js";
 import { DictionaryBuilder } from "./helpers/dictionary-builder.js";
 import { DEFAULT_ISO_CODE } from "./helpers/dictionary-helper.js";
 import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 
 const TEST_DICTIONARY_NAME = "_Test Dictionary Find";
 const TEST_DICTIONARY_TRANSLATION = "_Test Translation Find";
 
 describe("find-dictionary-item", () => {
-  let originalConsoleError: typeof console.error;
+  setupTestEnvironment();
   let helper: DictionaryBuilder;
 
   beforeEach(() => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     helper = new DictionaryBuilder();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await helper.cleanup();
   });
 
@@ -33,8 +31,8 @@ describe("find-dictionary-item", () => {
       {
         filter: TEST_DICTIONARY_NAME,
         take: 100,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -45,8 +43,8 @@ describe("find-dictionary-item", () => {
       {
         filter: "Non Existent Dictionary",
         take: 100,
-      },
-      { signal: new AbortController().signal }
+      } as any,
+      createMockRequestHandlerExtra()
     );
 
     expect(result).toMatchSnapshot();

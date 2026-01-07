@@ -3,13 +3,56 @@ import {
   checkUmbracoVersion,
   getVersionCheckMessage,
   clearVersionCheckMessage,
-  isToolExecutionBlocked
+  isToolExecutionBlocked,
+  versionCheckService,
+  VersionCheckService
 } from "../check-umbraco-version.js";
+
+describe("VersionCheckService", () => {
+  let service: VersionCheckService;
+
+  beforeEach(() => {
+    service = new VersionCheckService();
+  });
+
+  it("should start with null message and not blocked", () => {
+    expect(service.getMessage()).toBeNull();
+    expect(service.isBlocked()).toBe(false);
+  });
+
+  it("should set and get message", () => {
+    service.setMessage("test message");
+    expect(service.getMessage()).toBe("test message");
+  });
+
+  it("should set and get blocked state", () => {
+    service.setBlocked(true);
+    expect(service.isBlocked()).toBe(true);
+    service.setBlocked(false);
+    expect(service.isBlocked()).toBe(false);
+  });
+
+  it("should clear message and blocked state", () => {
+    service.setMessage("test message");
+    service.setBlocked(true);
+    service.clear();
+    expect(service.getMessage()).toBeNull();
+    expect(service.isBlocked()).toBe(false);
+  });
+
+  it("should reset state", () => {
+    service.setMessage("test message");
+    service.setBlocked(true);
+    service.reset();
+    expect(service.getMessage()).toBeNull();
+    expect(service.isBlocked()).toBe(false);
+  });
+});
 
 describe("checkUmbracoVersion", () => {
   beforeEach(() => {
-    // Clear any previous messages and reset blocked state
-    clearVersionCheckMessage();
+    // Reset the singleton service state between tests
+    versionCheckService.reset();
   });
 
   it("should not store message when major versions match", async () => {

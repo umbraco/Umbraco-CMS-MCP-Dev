@@ -1,20 +1,19 @@
 import EmptyRecycleBinTool from "../put/empty-recycle-bin.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { jest } from "@jest/globals";
+import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("empty-recycle-bin", () => {
+  setupTestEnvironment();
+
   const TEST_RECYCLE_BIN_NAME = "_Test EmptyRecycleBinTool";
-  let originalConsoleError: typeof console.error;
 
   beforeEach(async () => {
-    originalConsoleError = console.error;
-    console.error = jest.fn();
     await DocumentTestHelper.emptyRecycleBin();
   });
 
   afterEach(async () => {
-    console.error = originalConsoleError;
     await DocumentTestHelper.cleanup(TEST_RECYCLE_BIN_NAME);
   });
 
@@ -31,7 +30,7 @@ describe("empty-recycle-bin", () => {
     expect(found).toBeDefined();
 
     // Call the tool
-    const result = await EmptyRecycleBinTool.handler({}, { signal: new AbortController().signal });
+    const result = await EmptyRecycleBinTool.handler({}, createMockRequestHandlerExtra());
     expect(result).toMatchSnapshot();
 
     // Should not be found after emptying
@@ -41,7 +40,7 @@ describe("empty-recycle-bin", () => {
 
   it("should handle emptying an already empty recycle bin", async () => {
     // Call the tool on an empty recycle bin
-    const result = await EmptyRecycleBinTool.handler({}, { signal: new AbortController().signal });
+    const result = await EmptyRecycleBinTool.handler({}, createMockRequestHandlerExtra());
     expect(result).toMatchSnapshot();
   });
 }); 

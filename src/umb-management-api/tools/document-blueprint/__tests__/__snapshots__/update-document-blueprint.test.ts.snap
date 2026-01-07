@@ -2,21 +2,14 @@
 
 exports[`update-document-blueprint should handle non-existent document blueprint 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using update-document-blueprint:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "The content could not be found",
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
     "status": 404,
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "title": "The content could not be found",
+    "type": "Error",
+  },
 }
 `;
 
@@ -24,7 +17,7 @@ exports[`update-document-blueprint should update a document blueprint 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],

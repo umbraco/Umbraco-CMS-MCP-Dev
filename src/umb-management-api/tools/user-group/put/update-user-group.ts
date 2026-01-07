@@ -1,4 +1,3 @@
-import { UmbracoManagementClient } from "@umb-management-client";
 import { UpdateUserGroupRequestModel } from "@/umb-management-api/schemas/index.js";
 import {
   putUserGroupByIdBody,
@@ -6,7 +5,7 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 
 const updateUserGroupSchema = z.object({
   id: putUserGroupByIdParams.shape.id,
@@ -16,22 +15,14 @@ const updateUserGroupSchema = z.object({
 const UpdateUserGroupTool = {
   name: "update-user-group",
   description: "Updates a user group by Id",
-  schema: updateUserGroupSchema.shape,
-  isReadOnly: false,
+  inputSchema: updateUserGroupSchema.shape,
+  annotations: { idempotentHint: true },
   slices: ['update'],
-  handler: async (model: { id: string; data: UpdateUserGroupRequestModel }) => {
-    const client = UmbracoManagementClient.getClient();
-    const response = await client.putUserGroupById(model.id, model.data);
-
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(response),
-        },
-      ],
-    };
-  },
+  handler: (async (model: { id: string; data: UpdateUserGroupRequestModel }) => {
+    return executeVoidApiCall((client) =>
+      client.putUserGroupById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
 } satisfies ToolDefinition<typeof updateUserGroupSchema.shape>;
 
 export default withStandardDecorators(UpdateUserGroupTool);

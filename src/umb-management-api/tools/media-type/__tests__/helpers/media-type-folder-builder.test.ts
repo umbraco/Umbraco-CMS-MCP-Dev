@@ -1,10 +1,11 @@
 import { MediaTypeFolderBuilder } from "./media-type-folder-builder.js";
-import { jest } from "@jest/globals";
+import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 
 describe("MediaTypeFolderBuilder", () => {
+  setupTestEnvironment();
+
   let builder: MediaTypeFolderBuilder;
   let parentBuilder: MediaTypeFolderBuilder;
-  let originalConsoleError: typeof console.error;
 
   const TEST_MEDIA_TYPE_FOLDER_NAME = "_Test Media Type Folder";
   const TEST_MEDIA_TYPE_PARENT_FOLDER_NAME = "_Test Media Type Parent Folder";
@@ -13,14 +14,11 @@ describe("MediaTypeFolderBuilder", () => {
   beforeEach(() => {
     builder = new MediaTypeFolderBuilder();
     parentBuilder = new MediaTypeFolderBuilder();
-    originalConsoleError = console.error;
-    console.error = jest.fn();
   });
 
   afterEach(async () => {
     await builder.cleanup();
     await parentBuilder.cleanup();
-    console.error = originalConsoleError;
   });
 
   it("should create a folder with name", async () => {

@@ -4,7 +4,7 @@ exports[`delete-stylesheet should delete a stylesheet 1`] = `
 {
   "content": [
     {
-      "text": """",
+      "text": "",
       "type": "text",
     },
   ],
@@ -13,21 +13,14 @@ exports[`delete-stylesheet should delete a stylesheet 1`] = `
 
 exports[`delete-stylesheet should handle non-existent stylesheet 1`] = `
 {
-  "content": [
-    {
-      "text": "Error using delete-stylesheet:
-{
-  "message": "Request failed with status code 404",
-  "response": {
-    "type": "Error",
-    "title": "Stylesheet not found",
-    "status": 404,
+  "content": [],
+  "isError": true,
+  "structuredContent": {
     "detail": "The stylesheet was not found.",
-    "operationStatus": "NotFound"
-  }
-}",
-      "type": "text",
-    },
-  ],
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "Stylesheet not found",
+    "type": "Error",
+  },
 }
 `;

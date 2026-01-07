@@ -1,7 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { DocumentTypeTreeItemResponseModel, DocumentTypeResponseModel } from "@/umb-management-api/schemas/index.js";
 
-export const BLANK_UUID = "00000000-0000-0000-0000-000000000000";
+import { BLANK_UUID } from "@/constants/constants.js";
 
 export class DocumentTypeTestHelper {
   static findByName(
@@ -11,23 +11,22 @@ export class DocumentTypeTestHelper {
     return items.find((item) => item.name === name);
   }
 
-  static normaliseIds(
-    items:
-      | DocumentTypeTreeItemResponseModel
-      | DocumentTypeTreeItemResponseModel[]
-  ): DocumentTypeTreeItemResponseModel | DocumentTypeTreeItemResponseModel[] {
-    if (Array.isArray(items)) {
-      return items.map((item) => ({ ...item, id: BLANK_UUID }));
-    }
-    return { ...items, id: BLANK_UUID };
-  }
-
   static async cleanup(name: string): Promise<void> {
     try {
       const item = await this.findDocumentType(name);
       if (item) {
         const client = UmbracoManagementClient.getClient();
         try {
+          // If it's a folder with children, delete children first
+          if (item.isFolder && item.hasChildren) {
+            const childrenResponse = await client.getTreeDocumentTypeChildren({
+              parentId: item.id,
+            });
+            for (const child of childrenResponse.items) {
+              await this.cleanup(child.name);
+            }
+          }
+
           if (item.isFolder) {
             await client.deleteDocumentTypeFolderById(item.id);
           } else {
