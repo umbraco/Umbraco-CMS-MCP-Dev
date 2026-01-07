@@ -4,11 +4,13 @@ import { join } from "path";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_IMAGE_NAME = "_Test Image Upload";
 const TEST_FILE_NAME = "_Test File Upload";
 const TEST_URL_IMAGE_NAME = "_Test URL Image Upload";
 const TEST_BASE64_IMAGE_NAME = "_Test Base64 Image Upload";
+const TEST_BASE64_NO_EXT_NAME = "_Test Base64 No Extension";
 
 const TEST_IMAGE_PATH = join(process.cwd(), EXAMPLE_IMAGE_PATH);
 const TEST_PDF_PATH = join(process.cwd(), "/src/umb-management-api/tools/media/__tests__/test-files/example.pdf");
@@ -23,6 +25,7 @@ describe("create-media", () => {
     await MediaTestHelper.cleanup(TEST_FILE_NAME);
     await MediaTestHelper.cleanup(TEST_URL_IMAGE_NAME);
     await MediaTestHelper.cleanup(`${TEST_BASE64_IMAGE_NAME}.png`);
+    await MediaTestHelper.cleanup(TEST_BASE64_NO_EXT_NAME);
   });
 
   it("should create image media", async () => {
@@ -30,7 +33,7 @@ describe("create-media", () => {
       { sourceType: "filePath", name: TEST_IMAGE_NAME, mediaTypeName: "Image", filePath: TEST_IMAGE_PATH } as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     const found = await MediaTestHelper.findMedia(TEST_IMAGE_NAME);
     expect(found).toBeDefined();
     expect(MediaTestHelper.getNameFromItem(found!)).toBe(TEST_IMAGE_NAME);
@@ -41,7 +44,7 @@ describe("create-media", () => {
       { sourceType: "filePath", name: TEST_FILE_NAME, mediaTypeName: "File", filePath: TEST_PDF_PATH } as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     const found = await MediaTestHelper.findMedia(TEST_FILE_NAME);
     expect(found).toBeDefined();
   });
@@ -51,7 +54,7 @@ describe("create-media", () => {
       { sourceType: "filePath", name: TEST_IMAGE_NAME, mediaTypeName: "Image", filePath: "/non/existent/file.jpg" } as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     expect(result.isError).toBe(true);
   });
 
@@ -60,7 +63,7 @@ describe("create-media", () => {
       { sourceType: "filePath", name: TEST_IMAGE_NAME, mediaTypeName: "NonExistentMediaType", filePath: TEST_IMAGE_PATH } as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     expect(result.isError).toBe(true);
   });
 
@@ -69,7 +72,7 @@ describe("create-media", () => {
       { sourceType: "url", name: TEST_URL_IMAGE_NAME, mediaTypeName: "Image", fileUrl: TEST_IMAGE_URL } as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     const found = await MediaTestHelper.findMedia(TEST_URL_IMAGE_NAME);
     expect(found).toBeDefined();
   });
@@ -79,8 +82,65 @@ describe("create-media", () => {
       { sourceType: "base64", name: `${TEST_BASE64_IMAGE_NAME}.png`, mediaTypeName: "Image", fileAsBase64: TEST_BASE64_IMAGE } as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     const found = await MediaTestHelper.findMedia(`${TEST_BASE64_IMAGE_NAME}.png`);
     expect(found).toBeDefined();
+  });
+
+  describe("filename extension detection for base64", () => {
+    it("should auto-detect PNG extension when creating media without extension", async () => {
+      // 1x1 PNG image
+      const pngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+
+      const result = await CreateMediaTool.handler(
+        { sourceType: "base64", name: TEST_BASE64_NO_EXT_NAME, mediaTypeName: "Image", fileAsBase64: pngBase64 } as any,
+        createMockRequestHandlerExtra()
+      );
+
+      expect(createSnapshotResult(result)).toMatchSnapshot();
+
+      // The media should be created (extension auto-added internally for temp file)
+      const found = await MediaTestHelper.findMedia(TEST_BASE64_NO_EXT_NAME);
+      expect(found).toBeDefined();
+      expect(MediaTestHelper.getNameFromItem(found!)).toBe(TEST_BASE64_NO_EXT_NAME);
+    });
+
+    it("should preserve extension when provided in base64 media creation", async () => {
+      const testName = "_Test Base64 With Ext";
+      const pngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+
+      const result = await CreateMediaTool.handler(
+        { sourceType: "base64", name: `${testName}.png`, mediaTypeName: "Image", fileAsBase64: pngBase64 } as any,
+        createMockRequestHandlerExtra()
+      );
+
+      expect(createSnapshotResult(result)).toMatchSnapshot();
+
+      const found = await MediaTestHelper.findMedia(`${testName}.png`);
+      expect(found).toBeDefined();
+      expect(MediaTestHelper.getNameFromItem(found!)).toBe(`${testName}.png`);
+
+      // Cleanup
+      await MediaTestHelper.cleanup(`${testName}.png`);
+    });
+
+    it("should auto-detect JPEG extension for base64 media", async () => {
+      const testName = "_Test Base64 JPEG No Ext";
+      // Minimal JPEG (just headers)
+      const jpegBase64 = Buffer.from([0xFF, 0xD8, 0xFF, 0xE0]).toString('base64');
+
+      const result = await CreateMediaTool.handler(
+        { sourceType: "base64", name: testName, mediaTypeName: "Image", fileAsBase64: jpegBase64 } as any,
+        createMockRequestHandlerExtra()
+      );
+
+      expect(createSnapshotResult(result)).toMatchSnapshot();
+
+      const found = await MediaTestHelper.findMedia(testName);
+      expect(found).toBeDefined();
+
+      // Cleanup
+      await MediaTestHelper.cleanup(testName);
+    });
   });
 });

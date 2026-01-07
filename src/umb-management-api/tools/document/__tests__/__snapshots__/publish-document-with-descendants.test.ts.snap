@@ -5,8 +5,10 @@ exports[`publish-document-with-descendants should handle publishing a non-existe
   "content": [],
   "isError": true,
   "structuredContent": {
-    "message": "Request failed with status code 404",
-    "name": "AxiosError",
+    "detail": "Request failed with status code 404",
+    "status": 500,
+    "title": "AxiosError",
+    "type": "Error",
   },
 }
 `;

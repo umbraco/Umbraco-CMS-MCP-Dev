@@ -15,8 +15,10 @@ exports[`get-default-language should handle error from client 1`] = `
   "content": [],
   "isError": true,
   "structuredContent": {
-    "message": "Simulated error",
-    "name": "Error",
+    "detail": "Simulated error",
+    "status": 500,
+    "title": "Error",
+    "type": "Error",
   },
 }
 `;

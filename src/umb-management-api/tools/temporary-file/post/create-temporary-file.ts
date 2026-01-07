@@ -1,6 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { ToolDefinition } from "types/tool-definition.js";
 import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+import { detectFileExtensionFromBuffer } from "@/helpers/file/index.js";
 import { z } from "zod";
 import * as fs from "fs";
 import * as os from "os";
@@ -39,8 +40,15 @@ const CreateTemporaryFileTool = {
       // Convert base64 to Buffer
       const fileContent = Buffer.from(model.fileAsBase64, 'base64');
 
+      // Ensure fileName has an extension - add one based on magic bytes if missing
+      let fileName = model.fileName;
+      if (!fileName.includes('.')) {
+        const extension = detectFileExtensionFromBuffer(fileContent);
+        fileName = `${fileName}${extension}`;
+      }
+
       // Write to temp file (required for fs.ReadStream which the API client needs)
-      tempFilePath = path.join(os.tmpdir(), `umbraco-upload-${model.id}-${model.fileName}`);
+      tempFilePath = path.join(os.tmpdir(), `umbraco-upload-${model.id}-${fileName}`);
       fs.writeFileSync(tempFilePath, fileContent);
 
       // Create ReadStream for Umbraco API

@@ -1,5 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`create-temporary-file filename extension detection should auto-detect GIF extension when filename has no extension 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Temporary file created successfully",
+  },
+}
+`;
+
+exports[`create-temporary-file filename extension detection should auto-detect JPEG extension when filename has no extension 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Temporary file created successfully",
+  },
+}
+`;
+
+exports[`create-temporary-file filename extension detection should auto-detect PNG extension when filename has no extension 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Temporary file created successfully",
+  },
+}
+`;
+
+exports[`create-temporary-file filename extension detection should auto-detect PNG extension when filename has no extension 2`] = `
+{
+  "structuredContent": {
+    "items": [
+      {
+        "availableUntil": "NORMALIZED_DATE",
+        "fileName": "umbraco-upload-NORMALIZED-test-no-extension.png",
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+    ],
+  },
+}
+`;
+
+exports[`create-temporary-file filename extension detection should preserve existing extension when provided 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Temporary file created successfully",
+  },
+}
+`;
+
 exports[`create-temporary-file should create a temporary file 1`] = `
 {
   "content": [],

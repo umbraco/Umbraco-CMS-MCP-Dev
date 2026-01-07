@@ -1,34 +1,35 @@
 import { jest } from "@jest/globals";
 import { runAgentTest, logTestResult } from "./agent-runner.js";
 import { verifyRequiredToolCalls, verifySuccessMessage } from "./verification.js";
-import { DEFAULT_TIMEOUT_MS, getVerbosity } from "./config.js";
+import { getVerbosity } from "./config.js";
 import type { TestScenario } from "./types.js";
 
 /**
- * Creates a Jest test from a scenario
+ * Creates a test body function from a scenario (for IDE test discovery)
  *
  * Usage:
  * ```typescript
  * describe("my tests", () => {
- *   createScenarioTest({
- *     name: "should create and delete a data type",
- *     prompt: `Complete these tasks:
- *       1. Create a data type called '_Test'
- *       2. Delete the data type
- *       3. Say 'The task has completed successfully'`,
- *     tools: ["create-data-type", "delete-data-type"],
- *     requiredTools: ["create-data-type", "delete-data-type"],
- *     successPattern: "task has completed successfully",
- *     verbose: true  // or debug: true - see full conversation trace
- *   });
+ *   it("should create and delete a data type",
+ *     runScenarioTest({
+ *       prompt: `Complete these tasks:
+ *         1. Create a data type called '_Test'
+ *         2. Delete the data type
+ *         3. Say 'The task has completed successfully'`,
+ *       tools: ["create-data-type", "delete-data-type"],
+ *       requiredTools: ["create-data-type", "delete-data-type"],
+ *       successPattern: "task has completed successfully",
+ *       verbose: true
+ *     }),
+ *     120000
+ *   );
  * });
  * ```
  */
-export function createScenarioTest(
-  scenario: TestScenario,
-  timeout: number = DEFAULT_TIMEOUT_MS
-): void {
-  it(scenario.name, async () => {
+export function runScenarioTest(
+  scenario: Omit<TestScenario, "name">
+): () => Promise<void> {
+  return async () => {
     const verbosity = getVerbosity({
       verbose: scenario.verbose || scenario.debug,
       verbosity: scenario.verbosity
@@ -36,7 +37,7 @@ export function createScenarioTest(
 
     // Only log "Starting test" in normal or verbose mode
     if (verbosity !== "quiet") {
-      console.log(`Starting test: ${scenario.name}`);
+      console.log(`Starting test`);
     }
 
     const result = await runAgentTest(
@@ -47,7 +48,7 @@ export function createScenarioTest(
 
     // Only show detailed result in normal or verbose mode
     if (verbosity !== "quiet") {
-      logTestResult(result, scenario.name);
+      logTestResult(result);
     }
 
     // Verify required tools were called
@@ -65,8 +66,9 @@ export function createScenarioTest(
     }
 
     expect(result.success).toBe(true);
-  }, timeout);
+  };
 }
+
 
 /**
  * Setup helper for beforeEach/afterEach console mocking

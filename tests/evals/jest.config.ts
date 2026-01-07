@@ -1,10 +1,10 @@
 import type { Config } from "jest";
 
 /**
- * Jest configuration for e2e-sdk tests
+ * Jest configuration for eval tests
  *
  * This config extends the main jest config but customizes settings
- * for long-running e2e tests:
+ * for long-running eval tests:
  * - Higher timeout (120s)
  * - Disabled slow test warnings
  * - Silent mode for clean output (controlled by scenario-runner)
@@ -33,14 +33,14 @@ const config: Config = {
       },
     ],
   },
-  testMatch: ["<rootDir>/tests/e2e/**/*.test.ts"],
+  testMatch: ["<rootDir>/tests/evals/**/*.test.ts"],
   setupFilesAfterEnv: [
     "jest-extended/all",
-    "<rootDir>/tests/e2e/helpers/e2e-setup.ts"
+    "<rootDir>/tests/evals/helpers/e2e-setup.ts"
   ],
   setupFiles: ["<rootDir>/jest.setup.ts"],
 
-  // E2E specific settings
+  // Eval specific settings
   maxConcurrency: 1,
   maxWorkers: 1,
   testTimeout: 120000, // 2 minute timeout for long-running tests

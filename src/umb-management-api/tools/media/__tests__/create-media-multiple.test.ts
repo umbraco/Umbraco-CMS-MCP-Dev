@@ -4,6 +4,7 @@ import { join } from "path";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 
 const TEST_BATCH_IMAGE_1 = "_Test Batch Image 1";
 const TEST_BATCH_IMAGE_2 = "_Test Batch Image 2";
@@ -38,7 +39,7 @@ describe("create-media-multiple", () => {
       ]} as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     expect(await MediaTestHelper.findMedia(TEST_BATCH_IMAGE_1)).toBeDefined();
     expect(await MediaTestHelper.findMedia(TEST_BATCH_IMAGE_2)).toBeDefined();
   });
@@ -51,7 +52,7 @@ describe("create-media-multiple", () => {
       ]} as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     expect(await MediaTestHelper.findMedia(TEST_MIXED_IMAGE)).toBeDefined();
     expect(await MediaTestHelper.findMedia(TEST_MIXED_FILE)).toBeDefined();
   });
@@ -61,7 +62,7 @@ describe("create-media-multiple", () => {
       { sourceType: "filePath", files: [{ name: TEST_BATCH_FILE_1, filePath: TEST_PDF_PATH }]} as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     expect(await MediaTestHelper.findMedia(TEST_BATCH_FILE_1)).toBeDefined();
   });
 
@@ -73,7 +74,7 @@ describe("create-media-multiple", () => {
       { sourceType: "filePath", files } as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     expect(result.isError).toBe(true);
   });
 
@@ -85,7 +86,7 @@ describe("create-media-multiple", () => {
       ]} as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     expect(await MediaTestHelper.findMedia(TEST_BATCH_IMAGE_1)).toBeDefined();
     expect(await MediaTestHelper.findMedia(TEST_BATCH_IMAGE_2)).toBeUndefined();
   });
@@ -98,7 +99,7 @@ describe("create-media-multiple", () => {
       ]} as any,
       createMockRequestHandlerExtra()
     );
-    expect(result).toMatchSnapshot();
+    expect(createSnapshotResult(result)).toMatchSnapshot();
     expect(await MediaTestHelper.findMedia(TEST_URL_BATCH_IMAGE_1)).toBeDefined();
     expect(await MediaTestHelper.findMedia(TEST_URL_BATCH_IMAGE_2)).toBeDefined();
   });

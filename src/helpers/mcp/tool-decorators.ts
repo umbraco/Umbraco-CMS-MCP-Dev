@@ -63,31 +63,40 @@ export function withErrorHandling<Args extends undefined | ZodRawShape, OutputAr
       } catch (error) {
         console.error(`Error in tool ${tool.name}:`, error);
 
+        let errorResult;
+
         // ToolValidationError - business logic validation errors with context
         if (error instanceof ToolValidationError) {
-          return createToolResultError(error.toProblemDetails());
+          errorResult = createToolResultError(error.toProblemDetails());
         }
-
         // UmbracoApiError - thrown by helpers with ProblemDetails
-        if (error instanceof UmbracoApiError) {
-          return createToolResultError(error.problemDetails);
+        else if (error instanceof UmbracoApiError) {
+          errorResult = createToolResultError(error.problemDetails);
         }
-
         // Axios error with response data (network succeeded but got error response)
-        if (error instanceof Error && (error as any).response?.data) {
-          return createToolResultError((error as any).response.data);
+        else if (error instanceof Error && (error as any).response?.data) {
+          errorResult = createToolResultError((error as any).response.data);
         }
-
-        // Standard Error
-        if (error instanceof Error) {
-          return createToolResultError({
-            message: error.message,
-            name: error.name
+        // Standard Error - convert to ProblemDetails format
+        else if (error instanceof Error) {
+          errorResult = createToolResultError({
+            type: "Error",
+            title: error.name || "Error",
+            detail: error.message,
+            status: 500
+          });
+        }
+        // Unknown error type - convert to ProblemDetails format
+        else {
+          errorResult = createToolResultError({
+            type: "Error",
+            title: "Unknown Error",
+            detail: String(error),
+            status: 500
           });
         }
 
-        // Unknown error type
-        return createToolResultError({ message: String(error) });
+        return errorResult;
       }
     }) as ToolCallback<Args>,
   };
