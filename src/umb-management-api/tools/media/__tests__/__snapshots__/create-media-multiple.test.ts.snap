@@ -6,7 +6,6 @@ exports[`create-media-multiple should continue processing on individual file err
   "structuredContent": {
     "results": [
       {
-        "contentKey": undefined,
         "name": {
           "id": "00000000-0000-0000-0000-000000000000",
           "name": "_Test Batch Image 1",
@@ -14,7 +13,6 @@ exports[`create-media-multiple should continue processing on individual file err
         "success": true,
       },
       {
-        "contentKey": undefined,
         "error": "File path "/non/existent/file.jpg" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp-template",
         "name": "_Test Batch Image 2",
         "success": false,
@@ -31,7 +29,6 @@ exports[`create-media-multiple should create multiple files with mixed media typ
   "structuredContent": {
     "results": [
       {
-        "contentKey": undefined,
         "name": {
           "id": "00000000-0000-0000-0000-000000000000",
           "name": "_Test Mixed Image",
@@ -39,7 +36,6 @@ exports[`create-media-multiple should create multiple files with mixed media typ
         "success": true,
       },
       {
-        "contentKey": undefined,
         "name": {
           "id": "00000000-0000-0000-0000-000000000000",
           "name": "_Test Mixed File",
@@ -58,7 +54,6 @@ exports[`create-media-multiple should create multiple images in batch 1`] = `
   "structuredContent": {
     "results": [
       {
-        "contentKey": undefined,
         "name": {
           "id": "00000000-0000-0000-0000-000000000000",
           "name": "_Test Batch Image 1",
@@ -66,7 +61,6 @@ exports[`create-media-multiple should create multiple images in batch 1`] = `
         "success": true,
       },
       {
-        "contentKey": undefined,
         "name": {
           "id": "00000000-0000-0000-0000-000000000000",
           "name": "_Test Batch Image 2",
@@ -85,7 +79,6 @@ exports[`create-media-multiple should create multiple media from URLs 1`] = `
   "structuredContent": {
     "results": [
       {
-        "contentKey": undefined,
         "name": {
           "id": "00000000-0000-0000-0000-000000000000",
           "name": "_Test URL Batch Image 1",
@@ -93,7 +86,6 @@ exports[`create-media-multiple should create multiple media from URLs 1`] = `
         "success": true,
       },
       {
-        "contentKey": undefined,
         "name": {
           "id": "00000000-0000-0000-0000-000000000000",
           "name": "_Test URL Batch Image 2",
@@ -122,7 +114,6 @@ exports[`create-media-multiple should use default File media type when not speci
   "structuredContent": {
     "results": [
       {
-        "contentKey": undefined,
         "name": {
           "id": "00000000-0000-0000-0000-000000000000",
           "name": "_Test Batch File 1",
