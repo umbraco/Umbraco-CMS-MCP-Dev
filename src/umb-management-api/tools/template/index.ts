@@ -18,8 +18,10 @@ import GetTemplateSiblingsTool from "./items/get/get-siblings.js";
 
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
+import {
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const TemplateCollection: ToolCollectionExport = {
   metadata: {

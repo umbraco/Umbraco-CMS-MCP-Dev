@@ -3,8 +3,10 @@ import GetTemporaryFileTool from "./get/get-temporary-file.js";
 import DeleteTemporaryFileTool from "./delete/delete-temporary-file.js";
 import GetTemporaryFileConfigurationTool from "./get/get-temporary-file-configuration.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/currentUserResponseModel.js";
-import { ToolDefinition } from "types/tool-definition.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
+import {
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const TemporaryFileCollection: ToolCollectionExport = {
   metadata: {

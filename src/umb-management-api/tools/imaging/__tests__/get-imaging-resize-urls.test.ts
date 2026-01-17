@@ -1,6 +1,9 @@
 import GetImagingResizeUrlsTool from "../get/get-imaging-resize-urls.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_MEDIA_UID = "3c6c415c-35a0-4629-891e-683506250c31";
 

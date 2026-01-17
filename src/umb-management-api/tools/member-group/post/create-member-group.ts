@@ -1,11 +1,16 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateMemberGroupRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { postMemberGroupBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const createOutputSchema = z.object({
   message: z.string(),

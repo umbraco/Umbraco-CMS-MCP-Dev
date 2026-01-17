@@ -2,12 +2,17 @@ import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import GetDocumentTypeAncestorsTool from "../items/get/get-ancestors.js";
 import GetDocumentTypeChildrenTool from "../items/get/get-children.js";
 import GetAllDocumentTypesTool from "../items/get/get-all.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("document-type-tree", () => {
   const TEST_ROOT_NAME = "_Test Root DocumentType";

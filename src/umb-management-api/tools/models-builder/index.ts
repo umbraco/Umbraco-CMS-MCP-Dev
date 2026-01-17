@@ -4,7 +4,9 @@ import GetModelsBuilderStatusTool from "./get/get-models-builder-status.js";
 import PostModelsBuilderBuildTool from "./post/post-models-builder-build.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
-import { ToolDefinition } from "types/tool-definition.js";
+import {
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const ModelsBuilderCollection: ToolCollectionExport = {
   metadata: {

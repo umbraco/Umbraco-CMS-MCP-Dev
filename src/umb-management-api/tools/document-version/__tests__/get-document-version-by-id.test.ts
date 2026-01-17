@@ -1,9 +1,12 @@
 import GetDocumentVersionByIdTool from "../get/get-document-version-by-id.js";
 import { DocumentVersionBuilder } from "./helpers/document-version-builder.js";
 import { DocumentVersionVerificationHelper } from "./helpers/document-version-verification-helper.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCUMENT_NAME = "_Test Document for Version By ID";
 

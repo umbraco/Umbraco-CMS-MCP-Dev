@@ -1,9 +1,11 @@
 import FindDictionaryItemTool from "../get/find-dictionary-item.js";
 import { DictionaryBuilder } from "./helpers/dictionary-builder.js";
 import { DEFAULT_ISO_CODE } from "./helpers/dictionary-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DICTIONARY_NAME = "_Test Dictionary Find";
 const TEST_DICTIONARY_TRANSLATION = "_Test Translation Find";

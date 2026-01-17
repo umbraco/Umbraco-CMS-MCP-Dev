@@ -4,8 +4,12 @@ import {
   putMediaByIdValidateBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeVoidApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const inputSchema = {
   id: putMediaByIdValidateParams.shape.id,

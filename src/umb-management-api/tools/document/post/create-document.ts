@@ -3,9 +3,14 @@ import { CreateDocumentRequestModel, CurrentUserResponseModel, ProblemDetails } 
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { AxiosResponse } from "axios";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const createOutputSchema = z.object({
   message: z.string(),

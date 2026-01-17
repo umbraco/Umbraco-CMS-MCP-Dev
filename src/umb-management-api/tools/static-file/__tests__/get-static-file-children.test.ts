@@ -1,8 +1,11 @@
 import GetStaticFileChildrenTool from "../items/get/get-children.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const DEFAULT_TAKE = 100;
 const SMALL_TAKE = 5;

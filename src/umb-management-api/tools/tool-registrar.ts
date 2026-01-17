@@ -1,8 +1,10 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition, ToolSliceName } from "types/tool-definition.js";
 import { CollectionConfiguration } from "../../types/collection-configuration.js";
-import { createToolAnnotations } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  createToolAnnotations,
+} from "@umbraco-cms/mcp-server-sdk";
 
 /**
  * Handles tool filtering and registration with the MCP server.
@@ -13,7 +15,7 @@ export const ToolRegistrar = {
    * Tools with empty slices array are ALWAYS included.
    */
   isToolAllowedBySlices: (
-    toolSlices: ToolSliceName[],
+    toolSlices: string[],
     enabledSlices: string[],
     disabledSlices: string[]
   ): boolean => {

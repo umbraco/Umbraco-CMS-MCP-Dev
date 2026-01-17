@@ -1,9 +1,12 @@
 import GetMemberTypeCompositionReferencesTool from "../get/get-member-type-composition-references.js";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_MEMBER_TYPE_NAME = "_Test MemberType Composition";
 const TEST_COMPOSITION_NAME = "_Test Composition MemberType";

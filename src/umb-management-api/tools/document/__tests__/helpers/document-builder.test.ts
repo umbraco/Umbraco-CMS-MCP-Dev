@@ -4,8 +4,12 @@ import { TEST_DOMAIN } from "./document-builder.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { MemberGroupBuilder } from "../../../member-group/__tests__/helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "../../../member-group/__tests__/helpers/member-group-helper.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCUMENT_NAME = "_Test DocumentBuilder";
 const TEST_RECYCLE_BIN_DOCUMENT_NAME = "_Test DocumentBuilder RecycleBin";

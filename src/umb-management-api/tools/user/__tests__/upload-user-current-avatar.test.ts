@@ -1,12 +1,18 @@
 import UploadUserCurrentAvatarTool from "../post/upload-user-current-avatar.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { EXAMPLE_IMAGE_PATH, BLANK_UUID } from "@/constants/constants.js";
+import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import { createReadStream } from "fs";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("upload-user-current-avatar", () => {
   setupTestEnvironment();

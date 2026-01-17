@@ -1,14 +1,18 @@
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
 import DeleteWebhookTool from "../delete/delete-webhook.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import {
   CONTENT_PUBLISHED_EVENT,
   TEST_WEBHOOOK_URL,
 } from "./webhook-constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("delete-webhook", () => {
   const TEST_WEBHOOK_NAME = "_Test Webhook";

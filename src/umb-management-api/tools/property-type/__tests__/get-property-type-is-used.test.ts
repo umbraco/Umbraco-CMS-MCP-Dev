@@ -1,12 +1,13 @@
 import { getPropertyTypeIsUsedQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetPropertyTypeIsUsedTool from "../get/get-property-type-is-used.js";
+import { PropertyTypeTestHelper } from "./helpers/property-type-test-helper.js";
 import {
+  createMockRequestHandlerExtra,
   createSnapshotResult,
   normalizeErrorResponse,
-} from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { PropertyTypeTestHelper } from "./helpers/property-type-test-helper.js";
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-property-type-is-used", () => {
   setupTestEnvironment();

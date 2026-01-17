@@ -2,11 +2,15 @@ import CopyMediaTypeTool from "../post/copy-media-type.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { MediaTypeFolderTestHelper } from "./helpers/media-type-folder-helper.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_MEDIATYPE_NAME = "_Test MediaType Copy";
 const TEST_MEDIATYPE_COPY_NAME = "_Test MediaType Copy (copy)";

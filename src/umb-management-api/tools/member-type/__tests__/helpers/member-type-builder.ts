@@ -2,8 +2,10 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateMemberTypeRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postMemberTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { MemberTypeTestHelper } from "./member-type-helper.js";
-import { TextString_DATA_TYPE_ID } from "../../../../../constants/constants.js";
 import { v4 as uuidv4 } from "uuid";
+import {
+  TextString_DATA_TYPE_ID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export class MemberTypeBuilder {
   private model: Partial<CreateMemberTypeRequestModel> = {

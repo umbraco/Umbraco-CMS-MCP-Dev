@@ -2,11 +2,15 @@ import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-h
 import CreateDocumentBlueprintFolderTool from "../folders/post/create-folder.js";
 import DeleteDocumentBlueprintFolderTool from "../folders/delete/delete-folder.js";
 import UpdateDocumentBlueprintFolderTool from "../folders/put/update-folder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBlueprintFolderBuilder } from "./helpers/document-blueprint-folder-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("document-blueprint-folder", () => {
   const TEST_FOLDER_NAME = "_Test Blueprint Folder";

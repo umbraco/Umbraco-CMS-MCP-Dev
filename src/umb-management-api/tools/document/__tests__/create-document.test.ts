@@ -1,10 +1,14 @@
 import CreateDocumentTool from "../post/create-document.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { createSnapshotResult, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeObject,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCUMENT_NAME = "_Test Document Created";
 

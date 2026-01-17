@@ -1,9 +1,11 @@
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import GetMemberTypeRootTool from "../items/get/get-root.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("member-type-tree", () => {
   setupTestEnvironment();

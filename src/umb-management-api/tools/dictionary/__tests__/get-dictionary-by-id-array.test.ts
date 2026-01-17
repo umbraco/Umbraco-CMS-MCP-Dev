@@ -4,9 +4,12 @@ import {
   DictionaryTestHelper,
   DEFAULT_ISO_CODE,
 } from "./helpers/dictionary-helper.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-item-dictionary", () => {
   const TEST_DICTIONARY_NAME = "_Test Item Dictionary";

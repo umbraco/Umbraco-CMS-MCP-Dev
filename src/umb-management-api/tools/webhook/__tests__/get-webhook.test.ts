@@ -1,13 +1,16 @@
 import GetWebhookTool from "../get/get-webhook.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { WebhookTestHelper } from "./helpers/webhook-helper.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import {
   CONTENT_PUBLISHED_EVENT,
   TEST_WEBHOOOK_URL,
 } from "./webhook-constants.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-webhook", () => {
   const TEST_WEBHOOK_NAME = "_Test Webhook";

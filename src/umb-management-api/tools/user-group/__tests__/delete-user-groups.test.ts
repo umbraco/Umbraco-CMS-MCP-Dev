@@ -1,8 +1,10 @@
 import DeleteUserGroupsTool from "../delete/delete-user-groups.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
 import { UserGroupTestHelper } from "./helpers/user-group-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_GROUP_NAMES = ["_Test User Group 1", "_Test User Group 2", "_Test User Group 3"];
 

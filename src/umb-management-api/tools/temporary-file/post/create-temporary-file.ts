@@ -1,11 +1,15 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { detectFileExtensionFromBuffer } from "@/helpers/file/index.js";
 import { z } from "zod";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // MCP-friendly schema that accepts base64 encoded file data
 const createTemporaryFileSchema = z.object({

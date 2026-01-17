@@ -1,8 +1,10 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import type { MediaTreeItemResponseModel } from "@/umb-management-api/schemas/mediaTreeItemResponseModel.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { MediaRecycleBinItemResponseModel } from "@/umb-management-api/schemas/mediaRecycleBinItemResponseModel.js";
 import { VariantItemResponseModel } from "@/umb-management-api/schemas/variantItemResponseModel.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export class MediaTestHelper {
   private static findByName(

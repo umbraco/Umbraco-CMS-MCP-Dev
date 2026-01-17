@@ -1,8 +1,11 @@
 import { getUserCurrentLoginProvidersResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
-import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 import { z } from "zod";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetItemsApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // Wrap array response in object for MCP compliance
 const outputSchema = z.object({

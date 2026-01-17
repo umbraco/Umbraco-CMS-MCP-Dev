@@ -1,9 +1,14 @@
 import GetMemberGroupByIdArrayTool from "../get/get-member-group-by-id-array.js";
 import { MemberGroupBuilder } from "./helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "./helpers/member-group-helper.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-item-member-group", () => {
   const TEST_GROUP_NAME_1 = "_Test Item Member Group 1";

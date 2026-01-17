@@ -1,9 +1,12 @@
 import { GetItemDocumentBlueprintParams } from "@/umb-management-api/schemas/index.js";
 import { getItemDocumentBlueprintQueryParams, getItemDocumentBlueprintResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
-import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
 import { z } from "zod";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetItemsApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const outputSchema = z.object({
   items: getItemDocumentBlueprintResponse,

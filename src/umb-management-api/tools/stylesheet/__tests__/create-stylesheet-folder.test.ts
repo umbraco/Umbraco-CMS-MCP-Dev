@@ -1,9 +1,11 @@
 import CreateStylesheetFolderTool from "../post/create-stylesheet-folder.js";
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import { StylesheetFolderBuilder } from "./helpers/stylesheet-folder-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_FOLDER_NAME = "_TestCreateStylesheetFolder";
 const EXISTING_FOLDER_NAME = "_ExistingStylesheetFolder";

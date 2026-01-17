@@ -1,6 +1,8 @@
 import { DocumentBlueprintFolderBuilder } from "./document-blueprint-folder-builder.js";
 import { DocumentBlueprintTestHelper } from "./document-blueprint-test-helper.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe('DocumentBlueprintFolderBuilder', () => {
   const TEST_FOLDER_NAME = '_Test Builder Folder';

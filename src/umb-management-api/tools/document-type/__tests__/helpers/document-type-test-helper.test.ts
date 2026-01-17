@@ -1,6 +1,8 @@
 import { DocumentTypeTestHelper } from "./document-type-test-helper.js";
 import { DocumentTypeBuilder } from "./document-type-builder.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("DocumentTypeTestHelper", () => {
   const TEST_DOCTYPE_NAME = "_Test Helper DocumentType";

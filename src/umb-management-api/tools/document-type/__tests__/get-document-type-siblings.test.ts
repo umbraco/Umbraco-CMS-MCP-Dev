@@ -1,11 +1,16 @@
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import GetDocumentTypeSiblingsTool from "../items/get/get-siblings.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  getResultText,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-document-type-siblings", () => {
   const TEST_FOLDER_NAME = "_Test Folder for Siblings";

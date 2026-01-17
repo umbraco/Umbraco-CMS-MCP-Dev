@@ -3,9 +3,12 @@ import GetScriptTreeChildrenTool from "../get/get-script-tree-children.js";
 import GetScriptTreeAncestorsTool from "../get/get-script-tree-ancestors.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 // Generate unique names to avoid conflicts
 const timestamp = Date.now();

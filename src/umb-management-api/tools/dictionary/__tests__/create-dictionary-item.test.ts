@@ -1,8 +1,12 @@
 import CreateDictionaryItemTool from "../post/create-dictionary-item.js";
 import { DEFAULT_ISO_CODE, DictionaryTestHelper } from "./helpers/dictionary-helper.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DICTIONARY_NAME = "_Test Dictionary Created";
 const TEST_DICTIONARY_TRANSLATION = "_Test Translation";

@@ -6,9 +6,11 @@ import CreateLanguageTool from "./post/create-language.js";
 import UpdateLanguageTool from "./put/update-language.js";
 import DeleteLanguageTool from "./delete/delete-language.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
+import {
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const LanguageCollection: ToolCollectionExport = {
   metadata: {

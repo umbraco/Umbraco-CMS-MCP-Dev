@@ -2,10 +2,16 @@ import CopyDataTypeTool from "../post/copy-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { DataTypeFolderBuilder } from "./helpers/data-type-folder-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateErrorResult, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateErrorResult,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DATATYPE_NAME = "_Test DataType Copy";
 const TEST_DATATYPE_COPY_NAME = "_Test DataType Copy (copy)";

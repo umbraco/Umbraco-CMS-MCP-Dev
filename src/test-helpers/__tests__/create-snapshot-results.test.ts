@@ -1,10 +1,12 @@
+import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 import {
   createSnapshotResult,
   normalizeErrorResponse,
   normalizeObject,
-} from "@/test-helpers/create-snapshot-result.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("createSnapshotResult", () => {
   const TEST_UUID = "12345678-1234-1234-1234-123456789012";

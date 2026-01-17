@@ -1,6 +1,8 @@
 import { DocumentTestHelper } from "./document-test-helper.js";
 import { DocumentBuilder } from "./document-builder.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCUMENT_NAME = "_Test DocumentHelper";
 const TEST_RECYCLE_BIN_DOCUMENT_NAME = "_Test DocumentHelper RecycleBin";

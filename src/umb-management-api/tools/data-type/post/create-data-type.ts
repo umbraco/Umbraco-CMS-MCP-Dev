@@ -3,8 +3,12 @@ import { CreateDataTypeRequestModel, ProblemDetails } from "@/umb-management-api
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
 const createDataTypeSchema = z.object({

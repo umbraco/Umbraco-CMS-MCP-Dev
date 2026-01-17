@@ -1,9 +1,12 @@
 import GetItemUserTool from "../get/get-item-user.js";
 import { UserBuilder } from "./helpers/user-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getItemUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_USER_NAME = "_Test User Item";
 const TEST_USER_EMAIL = `test-user-item-${Math.floor(Math.random() * 10000)}@example.com`;

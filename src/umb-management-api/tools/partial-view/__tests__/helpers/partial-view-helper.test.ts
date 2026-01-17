@@ -1,8 +1,10 @@
 import { PartialViewHelper } from "./partial-view-helper.js";
 import { PartialViewBuilder } from "./partial-view-builder.js";
 import { PartialViewFolderBuilder } from "./partial-view-folder-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { jest } from "@jest/globals";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const TEST_PARTIAL_VIEW_NAME = "_TestHelperPartialView";
 const TEST_FOLDER_NAME = "_TestHelperFolder";

@@ -6,8 +6,12 @@ import {
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { AxiosResponse } from "axios";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const copyDocumentTypeSchema = {
   id: postDocumentTypeByIdCopyParams.shape.id,

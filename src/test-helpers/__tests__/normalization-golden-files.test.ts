@@ -1,3 +1,11 @@
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createSnapshotResult,
+  normalizeErrorResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
+
 /**
  * Normalization Golden File Tests
  *
@@ -7,9 +15,6 @@
  * IMPORTANT: These snapshots were created with the ORIGINAL implementation.
  * After refactoring, if these tests fail, the refactored code has different behavior.
  */
-
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 
 describe("Normalization Golden Files - structuredContent format", () => {
   describe("ID normalization", () => {

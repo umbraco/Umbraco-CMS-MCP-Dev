@@ -1,6 +1,8 @@
 import { LanguageBuilder } from "./language-builder.js";
 import { LanguageTestHelper } from "./language-helper.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_LANGUAGE_NAME = '_Test Helper Language';
 const TEST_LANGUAGE_ISO = 'en-GB';

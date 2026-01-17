@@ -11,9 +11,11 @@ import GetMemberTypeRootTool from "./items/get/get-root.js";
 import GetMemberTypeSiblingsTool from "./items/get/get-siblings.js";
 import SearchMemberTypeItemsTool from "./get/get-item-member-type-search.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
+import {
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const MemberTypeCollection: ToolCollectionExport = {
   metadata: {

@@ -1,10 +1,16 @@
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import GetDataTypeTool from "../get/get-data-type.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateToolResponse, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateErrorResult,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test Get DataType";

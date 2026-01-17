@@ -3,9 +3,11 @@ import GetDictionaryChildrenTool from "../items/get/get-children.js";
 import GetDictionaryAncestorsTool from "../items/get/get-ancestors.js";
 import { DictionaryBuilder } from "./helpers/dictionary-builder.js";
 import { DEFAULT_ISO_CODE } from "./helpers/dictionary-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const ROOT_DICTIONARY_NAME = "_Root Dictionary";
 const ROOT_DICTIONARY_TRANSLATION = "_Root Translation";

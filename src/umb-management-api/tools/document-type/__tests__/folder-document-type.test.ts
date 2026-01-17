@@ -2,11 +2,16 @@ import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import CreateDocumentTypeFolderTool from "../folders/post/create-folder.js";
 import DeleteDocumentTypeFolderTool from "../folders/delete/delete-folder.js";
 import UpdateDocumentTypeFolderTool from "../folders/put/update-folder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  getResultText,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("document-type-folder", () => {
   const TEST_FOLDER_NAME = "_Test DocumentType Folder";

@@ -1,7 +1,10 @@
 import GetRelationByRelationTypeIdTool from "../get/get-relation-by-relation-type-id.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_RELATION_TYPE_ID = "4954ce93-3bf9-3d1e-9cd2-21bf9f9c2abf";
 const TEST_SKIP_VALUE = 0;

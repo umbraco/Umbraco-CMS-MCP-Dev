@@ -1,9 +1,14 @@
 import DeleteDataTypeTool from "../delete/delete-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateErrorResult,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("delete-data-type", () => {
   const TEST_DATATYPE_NAME = "_Test DataType Delete";

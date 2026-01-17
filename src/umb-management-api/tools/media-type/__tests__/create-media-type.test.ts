@@ -1,14 +1,14 @@
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { MediaTypeFolderTestHelper } from "./helpers/media-type-folder-helper.js";
 import CreateMediaTypeTool from "../post/create-media-type.js";
-import {
-  createSnapshotResult,
-  normalizeErrorResponse,
-} from "@/test-helpers/create-snapshot-result.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("create-media-type", () => {
   setupTestEnvironment();

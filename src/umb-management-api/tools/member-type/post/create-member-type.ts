@@ -2,9 +2,13 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateMemberTypeRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { postMemberTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { AxiosResponse } from "axios";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const createMemberTypeOutputSchema = z.object({
   message: z.string(),

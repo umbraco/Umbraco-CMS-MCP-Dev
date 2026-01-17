@@ -1,6 +1,9 @@
 import GetLogViewerLevelCountTool from "../get/get-log-viewer-level-count.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-log-viewer-level-count", () => {
   setupTestEnvironment();

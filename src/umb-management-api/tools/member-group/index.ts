@@ -6,9 +6,11 @@ import CreateMemberGroupTool from "./post/create-member-group.js";
 import UpdateMemberGroupTool from "./put/update-member-group.js";
 import DeleteMemberGroupTool from "./delete/delete-member-group.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
+import {
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const MemberGroupCollection: ToolCollectionExport = {
   metadata: {

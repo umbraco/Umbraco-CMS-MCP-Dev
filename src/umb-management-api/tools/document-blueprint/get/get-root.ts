@@ -1,7 +1,11 @@
 import { GetTreeDocumentBlueprintRootParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDocumentBlueprintRootQueryParams, getTreeDocumentBlueprintRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE, executeGetApiCall } from "@/helpers/mcp/index.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const GetDocumentBlueprintRootTool = {
   name: "get-document-blueprint-root",

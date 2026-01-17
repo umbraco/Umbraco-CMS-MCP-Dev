@@ -32,8 +32,10 @@ import GetRecycleBinMediaReferencedByTool from "./get/get-recycle-bin-media-refe
 import GetRecycleBinMediaOriginalParentTool from "./get/get-recycle-bin-media-original-parent.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
-import { ToolDefinition } from "types/tool-definition.js";
 import { ToolCollectionExport } from "types/tool-collection.js";
+import {
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const MediaCollection: ToolCollectionExport = {
   metadata: {

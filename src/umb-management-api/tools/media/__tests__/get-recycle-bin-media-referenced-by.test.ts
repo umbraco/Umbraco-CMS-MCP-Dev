@@ -1,16 +1,21 @@
 import GetRecycleBinMediaReferencedByTool from "../get/get-recycle-bin-media-referenced-by.js";
 import { MediaBuilder } from "./helpers/media-builder.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { MEDIA_PICKER_DATA_TYPE_ID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../document/__tests__/helpers/document-test-helper.js";
 import MoveMediaToRecycleBinTool from "../put/move-to-recycle-bin.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  MEDIA_PICKER_DATA_TYPE_ID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_MEDIA_NAME = "_Test Media Recycle Ref";
 const TEST_MEDIA_NAME_2 = "_Test Media Recycle Ref 2";

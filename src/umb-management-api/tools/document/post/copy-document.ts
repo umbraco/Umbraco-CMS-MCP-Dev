@@ -2,9 +2,13 @@ import { z } from "zod";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CopyDocumentRequestModel, CurrentUserResponseModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { AxiosResponse } from "axios";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const copyDocumentSchema = z.object({
   parentId: z.string().uuid("Must be a valid document UUID of the parent node").optional(),

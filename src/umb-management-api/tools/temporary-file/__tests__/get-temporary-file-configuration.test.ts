@@ -1,7 +1,9 @@
 import GetTemporaryFileConfigurationTool from "../get/get-temporary-file-configuration.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-temporary-file-configuration", () => {
   setupTestEnvironment();

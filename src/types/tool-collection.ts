@@ -1,5 +1,5 @@
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "./tool-definition.js";
+import { type ToolDefinition } from "@umbraco-cms/mcp-server-sdk";
 
 export interface ToolCollectionMetadata {
   name: string;           // Collection key (e.g., 'culture', 'data-type')

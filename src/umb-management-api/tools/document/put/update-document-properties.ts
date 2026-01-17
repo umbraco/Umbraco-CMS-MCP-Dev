@@ -14,9 +14,12 @@ import {
 } from "./helpers/document-type-properties-resolver.js";
 import { validatePropertiesBeforeSave } from "./helpers/property-value-validator.js";
 import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, ToolValidationError } from "@/helpers/mcp/tool-decorators.js";
-import { createToolResult } from "@/helpers/mcp/tool-result.js";
+import {
+  type ToolDefinition,
+  createToolResult,
+  ToolValidationError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // Output schema for successful responses
 export const updateDocumentPropertiesOutputSchema = z.object({

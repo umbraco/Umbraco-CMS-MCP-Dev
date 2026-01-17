@@ -3,10 +3,15 @@ import { DocumentTestHelper } from "../../document/__tests__/helpers/document-te
 import GetRedirectByIdTool from "../get/get-redirect-by-id.js";
 import DeleteRedirectTool from "../delete/delete-redirect.js";
 import GetAllRedirectsTool from "../get/get-all-redirects.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCUMENT_NAME = "_Test Redirect Document";
 const RENAMED_DOCUMENT_NAME = "_Test Redirect Document Renamed";

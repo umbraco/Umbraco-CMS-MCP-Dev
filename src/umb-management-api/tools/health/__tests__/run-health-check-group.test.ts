@@ -1,6 +1,8 @@
 import RunHealthCheckGroupTool from "../post/run-health-check-group.js";
 import { postHealthCheckGroupByNameCheckParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_VALID_GROUP_NAME = "Data Integrity";
 const TEST_INVALID_GROUP_NAME = "_NonExistentHealthCheckGroup";

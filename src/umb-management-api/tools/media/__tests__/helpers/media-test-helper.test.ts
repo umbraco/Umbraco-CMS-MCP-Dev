@@ -2,8 +2,10 @@ import { MediaTestHelper } from "./media-test-helper.js";
 import { MediaBuilder } from "./media-builder.js";
 import { jest } from "@jest/globals";
 import type { MediaTreeItemResponseModel } from "@/umb-management-api/schemas/mediaTreeItemResponseModel.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../../temporary-file/__tests__/helpers/temporary-file-builder.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const TEST_MEDIA_NAME = "_Test MediaHelper";
 const TEST_RECYCLE_BIN_MEDIA_NAME = "_Test MediaHelper RecycleBin";

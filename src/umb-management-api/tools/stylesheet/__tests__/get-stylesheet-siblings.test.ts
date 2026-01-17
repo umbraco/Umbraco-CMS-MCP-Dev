@@ -1,10 +1,12 @@
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import GetStylesheetSiblingsTool from "../items/get/get-siblings.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { StylesheetFolderBuilder } from "./helpers/stylesheet-folder-builder.js";
 import { StylesheetBuilder } from "./helpers/stylesheet-builder.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-stylesheet-siblings", () => {
   const TEST_FOLDER_NAME = "_TestFolderForSiblings";

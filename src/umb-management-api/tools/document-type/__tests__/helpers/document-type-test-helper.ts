@@ -1,7 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { DocumentTypeTreeItemResponseModel, DocumentTypeResponseModel } from "@/umb-management-api/schemas/index.js";
-
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export class DocumentTypeTestHelper {
   static findByName(
