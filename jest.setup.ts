@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import { initializeUmbracoAxios } from './src/orval/client/umbraco-axios.js';
+import { UmbracoManagementClient } from './src/umb-management-api/umbraco-management-client.js';
+import { configureApiClient } from '@umbraco-cms/mcp-server-sdk';
 import { resolve } from 'path';
 
 // Load environment variables from .env
@@ -16,3 +18,6 @@ initializeUmbracoAxios({
   clientSecret: process.env.UMBRACO_CLIENT_SECRET || '',
   baseUrl: process.env.UMBRACO_BASE_URL || ''
 });
+
+// Configure API client for SDK helpers (executeVoidApiCall, etc.)
+configureApiClient(() => UmbracoManagementClient.getClient());

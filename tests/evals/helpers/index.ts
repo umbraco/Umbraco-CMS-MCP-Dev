@@ -1,65 +1,55 @@
 /**
  * Eval Test Helpers
  *
- * Central export for all eval test utilities.
- *
- * Usage:
- * ```typescript
- * import {
- *   runScenarioTest,
- *   setupConsoleMock
- * } from "./helpers/index.js";
- * ```
+ * Re-exports from @umbraco-cms/mcp-server-sdk/evals.
+ * Configuration is set up in e2e-setup.ts.
  */
 
-// Configuration
+// Re-export everything from SDK evals
 export {
-  MCP_SERVER_PATH,
-  MCP_SERVER_NAME,
-  UMBRACO_CLIENT_ID,
-  UMBRACO_CLIENT_SECRET,
-  UMBRACO_BASE_URL,
-  DEFAULT_MODEL,
-  DEFAULT_MAX_TURNS,
-  DEFAULT_MAX_BUDGET_USD,
-  DEFAULT_TIMEOUT_MS,
-  DEFAULT_VERBOSITY,
+  // Configuration
+  configureEvals,
+  getEvalConfig,
+  getMcpServerPath,
+  getMcpServerName,
+  getServerEnv,
+  getDefaultModel,
+  getDefaultMaxTurns,
+  getDefaultMaxBudgetUsd,
+  getDefaultTimeoutMs,
+  getDefaultVerbosity,
   getToolsString,
   getVerbosity,
-  type VerbosityLevel
-} from "./config.js";
+  type VerbosityLevel,
+  type EvalConfig,
 
-// Types
-export type {
-  AgentTestResult,
-  ToolCall,
-  AgentTestOptions,
-  ToolVerificationResult,
-  TestScenario
-} from "./types.js";
+  // Types
+  type AgentTestResult,
+  type ToolCall,
+  type AgentTestOptions,
+  type ToolVerificationResult,
+  type TestScenario,
 
-// Agent runner
-export {
+  // Agent runner
   runAgentTest,
   getShortToolName,
   getFullToolName,
   formatToolCalls,
-  logTestResult
-} from "./agent-runner.js";
+  logTestResult,
 
-// Verification helpers
-export {
+  // Verification helpers
   verifyRequiredToolCalls,
   verifySuccessMessage,
   verifyMcpConnection,
   verifyToolsAvailable,
   verifyToolCalledWithParams,
   getToolCalls,
-  assertTestPassed
-} from "./verification.js";
+  assertTestPassed,
 
-// Scenario runner (high-level test creation)
-export {
+  // Scenario runner
   runScenarioTest,
-  setupConsoleMock
-} from "./scenario-runner.js";
+  setupConsoleMock,
+
+  // Model constants
+  ClaudeModels,
+} from "@umbraco-cms/mcp-server-sdk/evals";

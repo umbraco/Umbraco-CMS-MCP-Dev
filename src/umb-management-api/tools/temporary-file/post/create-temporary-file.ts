@@ -1,5 +1,4 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { detectFileExtensionFromBuffer } from "@/helpers/file/index.js";
 import { z } from "zod";
 import * as fs from "fs";
 import * as os from "os";
@@ -9,6 +8,7 @@ import {
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  detectFileExtensionFromBuffer,
 } from "@umbraco-cms/mcp-server-sdk";
 
 // MCP-friendly schema that accepts base64 encoded file data

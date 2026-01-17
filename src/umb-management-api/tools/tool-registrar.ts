@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { CollectionConfiguration } from "../../types/collection-configuration.js";
 import {
+  type CollectionConfiguration,
   type ToolDefinition,
   createToolAnnotations,
 } from "@umbraco-cms/mcp-server-sdk";

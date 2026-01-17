@@ -1,7 +1,7 @@
 import qs from "qs";
 import Axios from "axios";
 import https from "https";
-import type { UmbracoAuthConfig } from "../../config.js";
+import type { UmbracoAuthConfig } from "@umbraco-cms/mcp-server-sdk";
 
 // Module-level variables for configuration
 let authConfig: UmbracoAuthConfig | null = null;

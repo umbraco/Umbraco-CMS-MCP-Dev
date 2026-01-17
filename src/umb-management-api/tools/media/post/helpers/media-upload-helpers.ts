@@ -4,12 +4,12 @@ import * as path from "path";
 import axios from "axios";
 import mime from "mime-types";
 import { validateFilePath } from "./validate-file-path.js";
-import { detectFileExtensionFromBuffer } from "@/helpers/file/index.js";
 import {
   CAPTURE_RAW_HTTP_RESPONSE,
   MEDIA_TYPE_IMAGE,
   MEDIA_TYPE_VECTOR_GRAPHICS,
   STANDARD_MEDIA_TYPES,
+  detectFileExtensionFromBuffer,
 } from "@umbraco-cms/mcp-server-sdk";
 
 /**

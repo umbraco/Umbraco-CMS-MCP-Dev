@@ -6,16 +6,21 @@ import { UmbracoMcpServer } from "./server/umbraco-mcp-server.js";
 import { UmbracoToolFactory } from "./umb-management-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { getServerConfig } from "./config.js";
+import { getServerConfig, checkUmbracoVersion, configureApiClient } from "@umbraco-cms/mcp-server-sdk";
 import { initializeUmbracoAxios } from "./orval/client/umbraco-axios.js";
-import { checkUmbracoVersion } from "./helpers/version-check/check-umbraco-version.js";
+
+// Version from package.json - used for version compatibility checking
+const MCP_VERSION = "17.0.1-beta.3";
 
 const main = async () => {
-  // Load and validate configuration
-  const config = getServerConfig(true); // true = stdio mode (no logging)
+  // Load and validate configuration using SDK
+  const { config } = getServerConfig(true); // true = stdio mode (no logging)
 
   // Initialize Axios client with configuration
   initializeUmbracoAxios(config.auth);
+
+  // Configure API client for SDK helpers (executeVoidApiCall, etc.)
+  configureApiClient(() => UmbracoManagementClient.getClient());
 
   // Create an MCP server
   const server = UmbracoMcpServer.GetServer();
@@ -24,7 +29,10 @@ const main = async () => {
   const user = await client.getUserCurrent();
 
   // Check Umbraco version compatibility (logs result internally)
-  await checkUmbracoVersion(client);
+  await checkUmbracoVersion({
+    mcpVersion: MCP_VERSION,
+    client: { getServerInformation: () => client.getServerInformation() }
+  });
 
   UmbracoToolFactory(server, user, config);
 

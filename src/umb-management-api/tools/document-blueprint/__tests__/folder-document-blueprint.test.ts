@@ -22,6 +22,8 @@ describe("document-blueprint-folder", () => {
   afterEach(async () => {
     await DocumentBlueprintTestHelper.cleanup(TEST_FOLDER_NAME);
     await DocumentBlueprintTestHelper.cleanup(TEST_PARENT_FOLDER_NAME);
+    await DocumentBlueprintTestHelper.cleanup(UPDATE_FOLDER_NAME);
+    await DocumentBlueprintTestHelper.cleanup(UPDATED_FOLDER_NAME);
   });
 
   describe("create", () => {
@@ -95,7 +97,6 @@ describe("document-blueprint-folder", () => {
       );
       expect(found).toBeDefined();
       expect(found!.name).toBe(UPDATED_FOLDER_NAME);
-      await DocumentBlueprintTestHelper.cleanup(UPDATED_FOLDER_NAME);
     });
 
     it("should handle non-existent folder", async () => {

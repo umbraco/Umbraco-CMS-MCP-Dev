@@ -31,6 +31,7 @@ type CreateMediaMultipleParams = z.infer<typeof createMediaMultipleSchema>;
 interface UploadResult {
   success: boolean;
   name: string;
+  id?: string;
   error?: string;
 }
 
@@ -39,6 +40,7 @@ export const createMediaMultipleOutputSchema = z.object({
   results: z.array(z.object({
     success: z.boolean(),
     name: z.string(),
+    id: z.string().uuid().optional(),
     error: z.string().optional()
   }))
 });
@@ -80,7 +82,7 @@ const CreateMediaMultipleTool = {
         const temporaryFileId = uuidv4();
         const defaultMediaType = file.mediaTypeName || MEDIA_TYPE_FILE;
 
-        const { name: actualName } = await uploadMediaFile(client, {
+        const { name: actualName, id: mediaId } = await uploadMediaFile(client, {
           sourceType: model.sourceType,
           name: file.name,
           mediaTypeName: defaultMediaType,
@@ -94,6 +96,7 @@ const CreateMediaMultipleTool = {
         results.push({
           success: true,
           name: actualName,
+          id: mediaId,
         });
 
       } catch (error) {

@@ -1,5 +1,5 @@
 import { ToolCollectionExport } from "types/tool-collection.js";
-import { CollectionConfiguration } from "../../types/collection-configuration.js";
+import { type CollectionConfiguration } from "@umbraco-cms/mcp-server-sdk";
 
 /**
  * Handles collection filtering and dependency resolution.

@@ -20,7 +20,6 @@ const config: Config = {
     "^@/config\\.js$": "<rootDir>/src/config.ts",
     "^@/clients/(.*)\\.js$": "<rootDir>/src/clients/$1",
     "^@/helpers/(.*)\\.js$": "<rootDir>/src/helpers/$1",
-    "@/test-helpers/(.*)\\.js$": "<rootDir>/src/test-helpers/$1",
     "^@/constants/(.*)\\.js$": "<rootDir>/src/constants/$1",
     "^@/umb-management-api/(.*)\\.js$": "<rootDir>/src/umb-management-api/api/$1",
     "^@umb-management-client": "<rootDir>/src/umb-management-api/umbraco-management-client.ts",
