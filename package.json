@@ -19,7 +19,11 @@
     "patch-publish-alpha": "npm version prerelease --preid=alpha && npm publish --tag alpha --access public",
     "test:e2e-sdk": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --silent --forceExit 2>/dev/null",
     "test:e2e-sdk:verbose": "E2E_VERBOSITY=verbose node --experimental-vm-modules node_modules/jest/bin/jest.js tests/e2e-sdk --runInBand --testTimeout=120000 --forceExit",
-    "test:e2e-sdk:debug": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --detectOpenHandles"
+    "test:e2e-sdk:debug": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --detectOpenHandles",
+    "dotnet:setup-proxy": "bash .claude/scripts/setup-dotnet-proxy.sh",
+    "dotnet:restore": "bash .claude/scripts/dotnet-with-proxy.sh restore infrastructure/test-umbraco/MCPTestSite/MCPTestSite.csproj",
+    "dotnet:build": "bash .claude/scripts/dotnet-with-proxy.sh build infrastructure/test-umbraco/MCPTestSite/MCPTestSite.csproj",
+    "dotnet:run": "bash .claude/scripts/dotnet-with-proxy.sh run --project infrastructure/test-umbraco/MCPTestSite/MCPTestSite.csproj"
   },
   "engines": {
     "node": ">=22.0.0"
