@@ -17,7 +17,7 @@ export const UMBRACO_CLIENT_SECRET = process.env.UMBRACO_CLIENT_SECRET || "12345
 export const UMBRACO_BASE_URL = process.env.UMBRACO_BASE_URL || "http://localhost:56472";
 
 // Agent SDK defaults
-export const DEFAULT_MODEL = "claude-3-5-haiku-20241022";
+export const DEFAULT_MODEL = "claude-haiku-4-5-20251001";
 export const DEFAULT_MAX_TURNS = 15;
 export const DEFAULT_MAX_BUDGET_USD = 0.50;
 export const DEFAULT_TIMEOUT_MS = 120000;
