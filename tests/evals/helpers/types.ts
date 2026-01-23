@@ -50,7 +50,7 @@ export interface AgentTestOptions {
   maxTurns?: number;
   /** Maximum budget in USD (default: 0.50) */
   maxBudget?: number;
-  /** Model to use (default: claude-3-5-haiku-20241022) */
+  /** Model to use (default: claude-haiku-4-5-20251001) */
   model?: string;
   /** @deprecated Use verbosity instead */
   verbose?: boolean;
