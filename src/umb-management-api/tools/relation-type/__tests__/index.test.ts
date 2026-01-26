@@ -1,4 +1,4 @@
-import { sections } from "@/helpers/auth/umbraco-auth-policies.js";
+import { sections } from "auth/umbraco-auth-policies.js";
 import { RelationTypeTools } from "../index.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/currentUserResponseModel.js";
 

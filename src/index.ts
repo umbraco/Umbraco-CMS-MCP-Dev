@@ -1,20 +1,22 @@
 #!/usr/bin/env node
 
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { UmbracoMcpServer } from "./server/umbraco-mcp-server.js";
+import packageJson from "../package.json" with { type: "json" };
 
 import { UmbracoToolFactory } from "./umb-management-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { getServerConfig, checkUmbracoVersion, configureApiClient } from "@umbraco-cms/mcp-server-sdk";
-import { initializeUmbracoAxios } from "./orval/client/umbraco-axios.js";
-
-// Version from package.json - used for version compatibility checking
-const MCP_VERSION = "17.0.1-beta.3";
+import { checkUmbracoVersion, configureApiClient, initializeUmbracoAxios } from "@umbraco-cms/mcp-server-sdk";
+import { loadServerConfig, clearConfigCache } from "./config/index.js";
 
 const main = async () => {
-  // Load and validate configuration using SDK
-  const { config } = getServerConfig(true); // true = stdio mode (no logging)
+  // Clear config cache to ensure fresh config for each server start
+  clearConfigCache();
+
+  // Load and validate configuration
+  const serverConfig = loadServerConfig(true); // true = stdio mode (no logging)
+  const config = serverConfig.umbraco;
 
   // Initialize Axios client with configuration
   initializeUmbracoAxios(config.auth);
@@ -23,14 +25,17 @@ const main = async () => {
   configureApiClient(() => UmbracoManagementClient.getClient());
 
   // Create an MCP server
-  const server = UmbracoMcpServer.GetServer();
+  const server = new McpServer({
+    name: "Umbraco CMS Developer MCP Server",
+    version: packageJson.version,
+  });
   const client = UmbracoManagementClient.getClient();
 
   const user = await client.getUserCurrent();
 
   // Check Umbraco version compatibility (logs result internally)
   await checkUmbracoVersion({
-    mcpVersion: MCP_VERSION,
+    mcpVersion: packageJson.version,
     client: { getServerInformation: () => client.getServerInformation() }
   });
 

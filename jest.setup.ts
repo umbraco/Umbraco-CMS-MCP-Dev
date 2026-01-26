@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
-import { initializeUmbracoAxios } from './src/orval/client/umbraco-axios.js';
+import { initializeUmbracoAxios, configureApiClient } from '@umbraco-cms/mcp-server-sdk';
 import { UmbracoManagementClient } from './src/umb-management-api/umbraco-management-client.js';
-import { configureApiClient } from '@umbraco-cms/mcp-server-sdk';
 import { resolve } from 'path';
 
 // Load environment variables from .env

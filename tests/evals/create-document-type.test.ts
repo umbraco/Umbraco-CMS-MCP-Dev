@@ -1,5 +1,5 @@
 import { describe, it } from "@jest/globals";
-import { setupConsoleMock, runScenarioTest } from "./helpers/index.js";
+import { setupConsoleMock, runScenarioTest } from "@umbraco-cms/mcp-server-sdk/evals";
 
 const DOCUMENT_TYPE_TOOLS = [
   "create-document-type",

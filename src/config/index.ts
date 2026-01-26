@@ -20,3 +20,13 @@ export {
   allModes,
   allModeNames,
 } from "./mode-registry.js";
+
+export {
+  loadServerConfig,
+  clearConfigCache,
+} from "./server-config.js";
+
+export type {
+  ServerConfig,
+  CustomServerConfig,
+} from "./server-config.js";

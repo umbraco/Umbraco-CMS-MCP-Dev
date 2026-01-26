@@ -8,9 +8,9 @@ import GetAllWebhookLogsTool from "./get/get-all-webhook-logs.js";
 import CreateWebhookTool from "./post/create-webhook.js";
 import GetWebhookLogsTool from "./get/get-webhook-logs-by-id.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
+import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import {
+  type ToolCollectionExport,
   type ToolDefinition,
 } from "@umbraco-cms/mcp-server-sdk";
 

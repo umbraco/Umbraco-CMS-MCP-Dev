@@ -3,7 +3,7 @@ import {
   TemporaryFileResponseModel,
   TemporaryFileConfigurationResponseModel,
 } from "./schemas/index.js";
-import { UmbracoManagementClient } from "../../../orval/client/mutators/umbraco-management.js";
+import { UmbracoManagementClient } from "@umbraco-cms/mcp-server-sdk";
 import FormData from "form-data";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];

@@ -2,9 +2,9 @@ import GetIndexerTool from "./get/get-indexer.js";
 import GetIndexerByIndexNameTool from "./get/get-indexer-by-index-name.js";
 import PostIndexerByIndexNameRebuildTool from "./post/post-indexer-by-index-name-rebuild.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
-import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
+import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import {
+  type ToolCollectionExport,
   type ToolDefinition,
 } from "@umbraco-cms/mcp-server-sdk";
 

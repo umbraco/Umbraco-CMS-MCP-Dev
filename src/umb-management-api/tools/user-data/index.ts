@@ -4,8 +4,8 @@ import GetUserDataTool from "./get/get-user-data.js";
 import GetUserDataByIdTool from "./get/get-user-data-by-id.js";
 import DeleteUserDataTool from "./delete/delete-user-data.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
 import {
+  type ToolCollectionExport,
   type ToolDefinition,
 } from "@umbraco-cms/mcp-server-sdk";
 
