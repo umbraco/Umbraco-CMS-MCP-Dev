@@ -1,9 +1,14 @@
 import UpdateDocumentTypeTool from "../put/update-document-type.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { createMockRequestHandlerExtra, getResultText } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  getResultText,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 describe("update-document-type", () => {
   const TEST_DOCTYPE_NAME = "_Test DocumentType Update";
   const UPDATED_DOCTYPE_NAME = "_Test DocumentType Updated";

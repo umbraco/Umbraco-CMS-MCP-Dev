@@ -1,9 +1,12 @@
 import GetStylesheetFolderByPathTool from "../get/get-stylesheet-folder-by-path.js";
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import { StylesheetFolderBuilder } from "./helpers/stylesheet-folder-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_FOLDER_NAME = "_TestGetStylesheetFolder";
 const NON_EXISTENT_FOLDER_PATH = "/_NonExistentFolder";

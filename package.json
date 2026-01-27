@@ -49,6 +49,7 @@
     "@modelcontextprotocol/sdk": "^1.25.1",
     "@types/uuid": "^10.0.0",
     "@types/yargs": "^17.0.33",
+    "@umbraco-cms/mcp-server-sdk": "^17.0.0-beta.1",
     "axios": "^1.8.4",
     "dotenv": "^16.5.0",
     "form-data": "^4.0.4",

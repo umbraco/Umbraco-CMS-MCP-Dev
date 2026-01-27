@@ -1,9 +1,12 @@
 import { getImagingResizeUrlsQueryParams, getImagingResizeUrlsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetImagingResizeUrlsParams } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
-import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetItemsApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // Wrap array response in object (MCP requirement)
 const outputSchema = z.object({

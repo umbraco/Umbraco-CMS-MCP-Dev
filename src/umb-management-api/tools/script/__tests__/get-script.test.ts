@@ -2,9 +2,12 @@ import GetScriptByPathTool from "../get/get-script-by-path.js";
 import GetScriptFolderByPathTool from "../get/get-script-folder-by-path.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_SCRIPT_NAME = "_TestScriptGet";
 const TEST_SCRIPT_CONTENT = "console.log('test script get');";

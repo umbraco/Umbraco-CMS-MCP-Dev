@@ -1,8 +1,11 @@
 import { getUserGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetUserGroupsTool from "../get/get-user-groups.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("GetUserGroupsTool", () => {
   setupTestEnvironment();

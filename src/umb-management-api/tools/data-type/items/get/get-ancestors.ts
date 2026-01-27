@@ -1,8 +1,12 @@
 import { GetTreeDataTypeAncestorsParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDataTypeAncestorsQueryParams, getTreeDataTypeAncestorsResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetItemsApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/index.js";
 import { z } from "zod";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetItemsApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const outputSchema = z.object({
   items: getTreeDataTypeAncestorsResponse,

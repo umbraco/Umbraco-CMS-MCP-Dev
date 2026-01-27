@@ -3,9 +3,11 @@ import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.j
 import { DocumentBlueprintFolderBuilder } from "./helpers/document-blueprint-folder-builder.js";
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
 import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { normalizeObject } from "@/test-helpers/create-snapshot-result.js";
+import {
+  createMockRequestHandlerExtra,
+  normalizeObject,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 const TEST_BLUEPRINT_NAME = "_Test Blueprint Created";
 const EXISTING_BLUEPRINT_NAME = "_Existing Blueprint";
 const TEST_FOLDER_NAME = "_Test Blueprint Folder";

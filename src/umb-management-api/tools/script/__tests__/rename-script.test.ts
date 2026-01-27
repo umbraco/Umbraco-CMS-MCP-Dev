@@ -2,9 +2,12 @@ import RenameScriptTool from "../put/rename-script.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
 import { ScriptTestHelper } from "./helpers/script-test-helper.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_SCRIPT_NAME = "_TestRenameScript";
 const TEST_RENAMED_NAME = "_TestRenamedScript";

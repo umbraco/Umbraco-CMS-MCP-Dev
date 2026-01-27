@@ -3,9 +3,11 @@ import GetDocumentVersionByIdTool from "./get/get-document-version-by-id.js";
 import UpdateDocumentVersionPreventCleanupTool from "./put/update-document-version-prevent-cleanup.js";
 import CreateDocumentVersionRollbackTool from "./post/create-document-version-rollback.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
+import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
+import {
+  type ToolCollectionExport,
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const DocumentVersionCollection: ToolCollectionExport = {
   metadata: {

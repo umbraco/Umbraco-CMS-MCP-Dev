@@ -3,7 +3,9 @@ import {
   getDictionaryByIdResponse,
   getDictionaryResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const DEFAULT_ISO_CODE = "en-US";
 

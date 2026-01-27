@@ -1,10 +1,12 @@
 import GetRecycleBinDocumentByIdOriginalParentTool from "../get/get-recycle-bin-document-original-parent.js";
 import GetRecycleBinDocumentReferencedByTool from "../get/get-recycle-bin-document-referenced-by.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCUMENT_NAME = "_Test Recycle Bin Document";
 

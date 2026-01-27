@@ -1,8 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
-import { FOLDER_MEDIA_TYPE_ID } from "@/constants/constants.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import { AxiosResponse } from "axios";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  createToolResult,
+  createToolResultError,
+  FOLDER_MEDIA_TYPE_ID,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const createMediaFolderSchema = z.object({
   name: z.string().describe("The name of the folder"),
@@ -27,6 +33,7 @@ const CreateMediaFolderTool = {
     try {
       const client = UmbracoManagementClient.getClient();
 
+      // Cast needed: Orval types don't reflect that CAPTURE_RAW_HTTP_RESPONSE returns AxiosResponse
       const response = await client.postMedia({
         values: [],
         variants: [
@@ -38,7 +45,7 @@ const CreateMediaFolderTool = {
         ],
         parent: model.parentId ? { id: model.parentId } : null,
         mediaType: { id: FOLDER_MEDIA_TYPE_ID },
-      }, CAPTURE_RAW_HTTP_RESPONSE);
+      }, CAPTURE_RAW_HTTP_RESPONSE) as unknown as AxiosResponse;
 
       // Check if request was successful (status 200-299)
       if (response.status < 200 || response.status >= 300) {

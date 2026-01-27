@@ -3,8 +3,11 @@ import { DocumentTypeBuilder } from "../../../document-type/__tests__/helpers/do
 import { DocumentTypeTestHelper } from "../../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DocumentBuilder } from "../../../document/__tests__/helpers/document-builder.js";
 import { DocumentTestHelper } from "../../../document/__tests__/helpers/document-test-helper.js";
-import { TAG_DATA_TYPE_ID, BLANK_UUID } from "@/constants/constants.js";
 import { jest } from "@jest/globals";
+import {
+  BLANK_UUID,
+  TAG_DATA_TYPE_ID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const TEST_DOCUMENT_NAME = "_Test Tag Builder Document";
 const TEST_TAG_1 = "builder-test-tag";
@@ -33,7 +36,6 @@ describe("TagTestBuilder", () => {
 
     expect(model).toMatchSnapshot();
   });
-
 
   it("should find specific tag", async () => {
     // Create test document with tags first

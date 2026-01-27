@@ -1,5 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const DEFAULT_LANGUAGE_ISO_CODE = "en-US";
 

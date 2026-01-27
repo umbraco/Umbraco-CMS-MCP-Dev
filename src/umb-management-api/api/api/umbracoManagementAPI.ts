@@ -455,7 +455,7 @@ import type {
   WebhookResponseModel
 } from '../schemas/index.js';
 
-import { UmbracoManagementClient } from '../../../orval/client/mutators/umbraco-management.js';
+import { UmbracoManagementClient } from '@umbraco-cms/mcp-server-sdk';
 
 // https://stackoverflow.com/questions/49579094/typescript-conditional-types-filter-out-readonly-properties-pick-only-requir/49579497#49579497
 type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X ? 1 : 2) extends <

@@ -2,8 +2,12 @@ import { putDocumentByIdUnpublishBody } from "@/umb-management-api/umbracoManage
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeVoidApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const inputSchema = {
   id: z.string().uuid(),

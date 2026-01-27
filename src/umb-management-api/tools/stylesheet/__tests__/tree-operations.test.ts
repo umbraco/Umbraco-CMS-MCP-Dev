@@ -3,11 +3,13 @@ import GetStylesheetAncestorsTool from "../items/get/get-ancestors.js";
 import GetStylesheetChildrenTool from "../items/get/get-children.js";
 import GetStylesheetRootTool from "../items/get/get-root.js";
 import GetStylesheetSearchTool from "../items/get/get-search.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { StylesheetBuilder } from "./helpers/stylesheet-builder.js";
 import { StylesheetFolderBuilder } from "./helpers/stylesheet-folder-builder.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("stylesheet-tree-operations", () => {
   const TEST_FOLDER_NAME = "_Test Folder";

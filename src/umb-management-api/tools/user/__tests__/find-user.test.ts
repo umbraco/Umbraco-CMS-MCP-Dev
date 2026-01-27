@@ -1,9 +1,12 @@
 import FindUserTool from "../get/find-user.js";
 import { UserBuilder } from "./helpers/user-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getFilterUserQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_USER_NAME = "_Test User Find";
 const TEST_USER_EMAIL = `test-user-find-${Math.floor(Math.random() * 10000)}@example.com`;

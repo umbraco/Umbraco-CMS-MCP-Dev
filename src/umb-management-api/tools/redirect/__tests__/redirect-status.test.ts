@@ -1,7 +1,10 @@
 import GetRedirectStatusTool from "../get/get-redirect-status.js";
 import UpdateRedirectStatusTool from "../post/update-redirect-status.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("Redirect Status Tools", () => {
   setupTestEnvironment();

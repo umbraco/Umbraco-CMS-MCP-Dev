@@ -1,9 +1,12 @@
 import CreatePartialViewTool from "../post/create-partial-view.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_PARTIAL_VIEW_NAME = "_TestCreatePartialView.cshtml";
 const TEST_CONTENT = "@* Test create partial view *@\n<div><p>Create Test Content</p></div>";

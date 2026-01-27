@@ -1,5 +1,5 @@
 import { defineConfig } from "orval";
-import { importFixer } from "./helpers.js";
+import { orvalImportFixer } from "@umbraco-cms/mcp-server-sdk";
 
 export const UmbManagementApiOrvalConfig = defineConfig({
   "umbraco-management-api": {
@@ -19,16 +19,13 @@ export const UmbManagementApiOrvalConfig = defineConfig({
       client: "axios",
       override: {
         mutator: {
-          path: "./src/orval/client/mutators/umbraco-management.ts",
+          path: "@umbraco-cms/mcp-server-sdk",
           name: "UmbracoManagementClient",
-          extension: ".js",
         },
       },
     },
     hooks: {
-      afterAllFilesWrite: (files) => {
-        importFixer(files);
-      },
+      afterAllFilesWrite: orvalImportFixer,
     },
   },
   "umbraco-management-api-zod": {

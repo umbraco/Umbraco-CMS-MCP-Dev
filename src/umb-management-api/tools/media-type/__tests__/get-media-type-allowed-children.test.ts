@@ -1,10 +1,15 @@
 import GetMediaTypeAllowedChildrenTool from "../get/get-media-type-allowed-children.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-media-type-allowed-children", () => {
   setupTestEnvironment();

@@ -1,13 +1,20 @@
 import UploadUserAvatarByIdTool from "../post/upload-user-avatar-by-id.js";
 import { UserBuilder } from "./helpers/user-builder.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { WRITERS_USER_GROUP_ID, EXAMPLE_IMAGE_PATH, BLANK_UUID } from "@/constants/constants.js";
+import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import { createReadStream } from "fs";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
+import {
+  BLANK_UUID,
+  WRITERS_USER_GROUP_ID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_USER_NAME = "_Test Avatar User";
 const TEST_USER_EMAIL = `test-avatar-user-${Math.floor(Math.random() * 10000)}@example.com`;

@@ -1,10 +1,16 @@
 import GetDocumentTypeTool from "../get/get-document-type-by-ids.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateToolResponse, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateErrorResult,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-document-type", () => {
   const TEST_DOCTYPE_NAME = "_Test DocumentType Get";

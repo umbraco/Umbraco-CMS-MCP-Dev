@@ -1,8 +1,10 @@
 import PostLogViewerSavedSearchTool from "../post/post-log-viewer-saved-search.js";
 import { LogViewerSavedSearchBuilder } from "./helpers/log-viewer-saved-search-builder.js";
 import { LogViewerTestHelper } from "./helpers/log-viewer-test-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_SEARCH_NAME = "_Test Saved Search";
 const EXISTING_SEARCH_NAME = "_Existing Saved Search";

@@ -13,10 +13,12 @@ import GetUserByIdCalculateStartNodesTool from "./get/get-user-by-id-calculate-s
 import UploadUserAvatarByIdTool from "./post/upload-user-avatar-by-id.js";
 import UploadUserCurrentAvatarTool from "./post/upload-user-current-avatar.js";
 import DeleteUserAvatarByIdTool from "./delete/delete-user-avatar-by-id.js";
-import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
+import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
+import {
+  type ToolCollectionExport,
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const UserCollection: ToolCollectionExport = {
   metadata: {

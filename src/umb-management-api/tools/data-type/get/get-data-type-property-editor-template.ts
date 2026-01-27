@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { propertyEditorTemplates } from "../post/property-editor-templates.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // Zod schema for the tool parameters
 const propertyEditorTemplateSchema = z.object({

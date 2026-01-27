@@ -3,10 +3,14 @@ import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { DocumentBlueprintBuilder } from "../../document-blueprint/__tests__/helpers/document-blueprint-builder.js";
 import { DocumentBlueprintTestHelper } from "../../document-blueprint/__tests__/helpers/document-blueprint-test-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { normalizeObject } from "@/test-helpers/create-snapshot-result.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  normalizeObject,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Blueprint";
 const TEST_BLUEPRINT_NAME = "_Test Blueprint For DocumentType";

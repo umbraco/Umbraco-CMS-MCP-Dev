@@ -6,10 +6,12 @@ import CreateUserGroupTool from "./post/create-user-group.js";
 import UpdateUserGroupTool from "./put/update-user-group.js";
 import DeleteUserGroupTool from "./delete/delete-user-group.js";
 import DeleteUserGroupsTool from "./delete/delete-user-groups.js";
-import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
+import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
+import {
+  type ToolCollectionExport,
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const UserGroupCollection: ToolCollectionExport = {
   metadata: {

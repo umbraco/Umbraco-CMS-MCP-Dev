@@ -1,6 +1,8 @@
 import GetDocumentPropertyValueTemplateTool from "../get/get-document-property-value-template.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-document-property-value-template", () => {
   setupTestEnvironment();

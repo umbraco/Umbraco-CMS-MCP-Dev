@@ -1,6 +1,8 @@
 import GetAllWebhookLogsTool from "../get/get-all-webhook-logs.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-all-webhook-logs", () => {
   setupTestEnvironment();

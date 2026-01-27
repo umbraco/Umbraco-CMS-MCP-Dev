@@ -6,16 +6,19 @@ import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/do
 import { DataTypeBuilder } from "../../data-type/__tests__/helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "../../data-type/__tests__/helpers/data-type-test-helper.js";
 import CreateElementTypeTool from "../../document-type/post/create-element-type.js";
-import {
-  ROOT_DOCUMENT_TYPE_ID,
-  BLANK_UUID,
-  TextString_DATA_TYPE_ID,
-} from "../../../../constants/constants.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { v4 as uuidv4 } from "uuid";
+import {
+  BLANK_UUID,
+  TextString_DATA_TYPE_ID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 // Test constants
 const TEST_DOCUMENT_NAME = "_Test Block Property Document";

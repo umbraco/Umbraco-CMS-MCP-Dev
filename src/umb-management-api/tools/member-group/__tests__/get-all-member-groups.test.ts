@@ -1,9 +1,12 @@
 import GetAllMemberGroupsTool from "../get/get-all-member-groups.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { MemberGroupBuilder } from "./helpers/member-group-builder.js";
 import { MemberGroupTestHelper } from "./helpers/member-group-helper.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_GROUP_NAME_1 = "_Test Get All Member Groups 1";
 const TEST_GROUP_NAME_2 = "_Test Get All Member Groups 2";

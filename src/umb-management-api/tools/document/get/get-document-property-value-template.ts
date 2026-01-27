@@ -1,7 +1,9 @@
 import { z } from "zod";
 import { propertyValueTemplates, type PropertyValueTemplate } from "../post/property-value-templates.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // Zod schema for the tool parameters
 const propertyValueTemplateSchema = z.object({

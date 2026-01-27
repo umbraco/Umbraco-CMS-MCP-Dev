@@ -1,11 +1,13 @@
 import CreateDocumentVersionRollbackTool from "../post/create-document-version-rollback.js";
 import { DocumentVersionBuilder } from "./helpers/document-version-builder.js";
 import { DocumentVersionVerificationHelper } from "./helpers/document-version-verification-helper.js";
-import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
+import {
+  createMockRequestHandlerExtra,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCUMENT_NAME = "_Test Document for Rollback";
 const TEST_VARIANT_DOCUMENT_TYPE_NAME = "_Test Variant DocType for Rollback";

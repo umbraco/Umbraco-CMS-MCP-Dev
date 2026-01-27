@@ -3,8 +3,10 @@ import DeleteScriptFolderTool from "../delete/delete-script-folder.js";
 import { ScriptBuilder } from "./helpers/script-builder.js";
 import { ScriptFolderBuilder } from "./helpers/script-folder-builder.js";
 import { ScriptTestHelper } from "./helpers/script-test-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_SCRIPT_NAME = "_TestScriptDelete";
 const TEST_SCRIPT_CONTENT = "console.log('test script delete');";

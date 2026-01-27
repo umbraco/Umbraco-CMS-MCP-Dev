@@ -2,9 +2,13 @@ import {
   getTreeMemberGroupRootQueryParams,
   getTreeMemberGroupRootResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { GetTreeMemberGroupRootParams } from "@/umb-management-api/schemas/index.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const GetMemberGroupRootTool = {
   name: "get-member-group-root",

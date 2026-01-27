@@ -1,9 +1,12 @@
 import GetUserByIdCalculateStartNodesTool from "../get/get-user-by-id-calculate-start-nodes.js";
 import { UserBuilder } from "./helpers/user-builder.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { getUserByIdCalculateStartNodesParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_USER_NAME = "_Test User Start Nodes";
 const TEST_USER_EMAIL = `test-user-start-nodes-${Math.floor(Math.random() * 10000)}@example.com`;

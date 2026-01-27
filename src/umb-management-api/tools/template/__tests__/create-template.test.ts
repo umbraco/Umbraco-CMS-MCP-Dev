@@ -1,8 +1,11 @@
 import CreateTemplateTool from "../post/create-template.js";
 import { TemplateTestHelper } from "./helpers/template-helper.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_TEMPLATE_NAME = "_Test Template Created";
 const EXISTING_TEMPLATE_NAME = "_Existing Template";

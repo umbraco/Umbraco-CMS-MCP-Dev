@@ -1,8 +1,12 @@
 import { RenamePartialViewRequestModel } from "@/umb-management-api/schemas/index.js";
 import { putPartialViewByPathRenameParams, putPartialViewByPathRenameBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeVoidApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const renamePartialViewSchema = z.object({
   path: putPartialViewByPathRenameParams.shape.path,

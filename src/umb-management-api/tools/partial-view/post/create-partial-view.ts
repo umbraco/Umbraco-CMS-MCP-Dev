@@ -1,9 +1,13 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CreatePartialViewRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { AxiosResponse } from "axios";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const createPartialViewSchema = z.object({
   name: z.string().min(1, "Name is required"),

@@ -1,8 +1,12 @@
 import { GetTreeDocumentBlueprintChildrenParams } from "@/umb-management-api/schemas/index.js";
 import { getTreeDocumentBlueprintChildrenQueryParams, getTreeDocumentBlueprintChildrenResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE, executeGetApiCall } from "@/helpers/mcp/index.js";
 import { z } from "zod";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const GetDocumentBlueprintChildrenTool = {
   name: "get-document-blueprint-children",

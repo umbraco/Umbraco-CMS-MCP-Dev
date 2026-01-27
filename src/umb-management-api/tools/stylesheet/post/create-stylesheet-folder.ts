@@ -1,10 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateStylesheetFolderRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { postStylesheetFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 import { AxiosResponse } from "axios";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const createStylesheetFolderOutputSchema = z.object({
   message: z.string(),

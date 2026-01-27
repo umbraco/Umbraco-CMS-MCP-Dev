@@ -2,9 +2,11 @@ import CreateMediaMultipleTool from "../post/create-media-multiple.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
 import { join } from "path";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_BATCH_IMAGE_1 = "_Test Batch Image 1";
 const TEST_BATCH_IMAGE_2 = "_Test Batch Image 2";

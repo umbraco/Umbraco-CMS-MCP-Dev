@@ -1,6 +1,8 @@
 import { DataTypeFolderBuilder } from "./data-type-folder-builder.js";
 import { DataTypeTestHelper } from "./data-type-test-helper.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe('DataTypeFolderBuilder', () => {
   const TEST_FOLDER_NAME = '_Test Builder DataType Folder';

@@ -3,8 +3,10 @@ import { putDocumentByIdPublishWithDescendantsBody } from "@/umb-management-api/
 import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const inputSchema = {
   id: z.string().uuid(),

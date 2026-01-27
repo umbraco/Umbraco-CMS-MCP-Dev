@@ -1,9 +1,12 @@
 import GetDataTypesByIdArrayTool from "../get/get-data-type-by-id-array.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-data-type-by-id-array", () => {
   const TEST_DATATYPE_NAME = "_Test Item DataType";
