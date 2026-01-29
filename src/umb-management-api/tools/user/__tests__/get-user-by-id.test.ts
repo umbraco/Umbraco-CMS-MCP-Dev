@@ -1,10 +1,15 @@
 import GetUserByIdTool from "../get/get-user-by-id.js";
 import { UserBuilder } from "./helpers/user-builder.js";
-import { createSnapshotResult, normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { getUserByIdParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_USER_NAME = "_Test User Get By ID";
 const TEST_USER_EMAIL = `test-user-get-${Math.floor(Math.random() * 10000)}@example.com`;

@@ -1,8 +1,13 @@
 import { CompositionTypeModel } from "@/umb-management-api/schemas/compositionTypeModel.js";
 import { DocumentTypeBuilder } from "./document-type-builder.js";
 import { DocumentTypeTestHelper } from "./document-type-test-helper.js";
-import { TextString_DATA_TYPE_ID, MEDIA_PICKER_DATA_TYPE_ID } from "@/constants/constants.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  MEDIA_PICKER_DATA_TYPE_ID,
+  TextString_DATA_TYPE_ID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe('DocumentTypeBuilder', () => {
   const TEST_DOCTYPE_NAME = '_Test Builder DocumentType';

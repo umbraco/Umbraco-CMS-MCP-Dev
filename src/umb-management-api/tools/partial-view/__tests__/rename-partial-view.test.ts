@@ -2,8 +2,10 @@ import RenamePartialViewTool from "../put/rename-partial-view.js";
 import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_PARTIAL_VIEW_NAME = "_TestRenamePartialView.cshtml";
 const TEST_RENAMED_NAME = "_TestRenamedPartialView.cshtml";

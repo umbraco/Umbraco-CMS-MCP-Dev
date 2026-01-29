@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as fs from "fs";
-import { getServerConfig } from "../../../../../config.js";
+import { getServerConfig } from "@umbraco-cms/mcp-server-sdk";
 
 /**
  * Validates file path is within allowed directories (UMBRACO_ALLOWED_MEDIA_PATHS).
@@ -9,7 +9,7 @@ import { getServerConfig } from "../../../../../config.js";
  */
 export function validateFilePath(filePath: string, allowedPaths?: string[]): string {
   // Get configuration (in stdio mode, this won't log) or use provided paths
-  const allowedMediaPaths = allowedPaths ?? getServerConfig(true).allowedMediaPaths;
+  const allowedMediaPaths = allowedPaths ?? getServerConfig(true).config.allowedMediaPaths;
 
   // Check if UMBRACO_ALLOWED_MEDIA_PATHS is configured
   if (!allowedMediaPaths || allowedMediaPaths.length === 0) {

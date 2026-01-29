@@ -1,9 +1,11 @@
 import { MemberBuilder } from "./member-builder.js";
 import { MemberTestHelper } from "./member-test-helper.js";
 import { jest } from "@jest/globals";
-import { Default_Memeber_TYPE_ID } from "../../../../../constants/constants.js";
 import { MemberTypeBuilder } from "../../../member-type/__tests__/helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "../../../member-type/__tests__/helpers/member-type-helper.js";
+import {
+  Default_Memeber_TYPE_ID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const TEST_MEMBER_NAME = "_Test MemberBuilder";
 const TEST_MEMBER_EMAIL = "test@example.com";

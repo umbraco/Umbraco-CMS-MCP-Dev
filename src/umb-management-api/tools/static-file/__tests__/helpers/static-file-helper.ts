@@ -1,6 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { StaticFileItemResponseModel } from "@/umb-management-api/schemas/staticFileItemResponseModel.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import {
+  createSnapshotResult,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 export class StaticFileHelper {
   /**

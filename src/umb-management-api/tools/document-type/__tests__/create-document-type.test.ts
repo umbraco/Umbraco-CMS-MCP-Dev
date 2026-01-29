@@ -1,12 +1,19 @@
 import CreateDocumentTypeTool from "../post/create-document-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
-import { createSnapshotResult, normalizeErrorResponse, normalizeObject } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import type { CreateDocumentTypeModel } from "../post/create-document-type.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
 import type { DocumentTypeTreeItemResponseModel } from "@/umb-management-api/schemas/index.js";
-import { TextString_DATA_TYPE_ID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  TextString_DATA_TYPE_ID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  normalizeErrorResponse,
+  normalizeObject,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Created";
 const EXISTING_DOCTYPE_NAME = "_Existing DocumentType";

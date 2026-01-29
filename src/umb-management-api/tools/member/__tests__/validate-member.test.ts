@@ -1,8 +1,10 @@
 import ValidateMemberTool from "../post/validate-member.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
-import { normalizeErrorResponse } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  normalizeErrorResponse,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_MEMBER_NAME = "_Test Member Validation";
 const TEST_MEMBER_EMAIL = "_test_member_validation@example.com";

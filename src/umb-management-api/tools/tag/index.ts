@@ -1,7 +1,9 @@
-import { ToolDefinition } from "types/tool-definition.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
 import GetTagsTool from "./get/get-tags.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import {
+  type ToolCollectionExport,
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const TagCollection: ToolCollectionExport = {
   metadata: {

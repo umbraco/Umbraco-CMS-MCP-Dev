@@ -1,10 +1,15 @@
 import DeleteUserDataTool from "../delete/delete-user-data.js";
 import CreateUserDataTool from "../post/create-user-data.js";
 import GetUserDataTool from "../get/get-user-data.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { UmbracoManagementClient } from "@umb-management-client";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_USER_DATA_GROUP = "_TestUserDataDelete";
 const TEST_USER_DATA_IDENTIFIER = "_test-identifier";

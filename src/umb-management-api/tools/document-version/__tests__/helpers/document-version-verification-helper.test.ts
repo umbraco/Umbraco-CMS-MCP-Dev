@@ -1,7 +1,9 @@
 import { DocumentVersionVerificationHelper } from "./document-version-verification-helper.js";
 import { DocumentVersionBuilder } from "./document-version-builder.js";
 import { jest } from "@jest/globals";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const TEST_DOCUMENT_NAME = "_Test Document for Version Helper";
 

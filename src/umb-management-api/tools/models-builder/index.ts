@@ -1,10 +1,12 @@
-import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
+import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import GetModelsBuilderDashboardTool from "./get/get-models-builder-dashboard.js";
 import GetModelsBuilderStatusTool from "./get/get-models-builder-status.js";
 import PostModelsBuilderBuildTool from "./post/post-models-builder-build.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
-import { ToolDefinition } from "types/tool-definition.js";
+import {
+  type ToolCollectionExport,
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const ModelsBuilderCollection: ToolCollectionExport = {
   metadata: {

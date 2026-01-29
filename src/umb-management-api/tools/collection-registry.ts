@@ -34,7 +34,8 @@ import { UserCollection } from "./user/index.js";
 import { UserDataCollection } from "./user-data/index.js";
 import { UserGroupCollection } from "./user-group/index.js";
 import { WebhookCollection } from "./webhook/index.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
+import type { ToolCollectionExport } from "@umbraco-cms/mcp-server-sdk";
+import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 
 /**
  * Registry of all available tool collections.

@@ -1,8 +1,11 @@
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { getDocumentTypeByIdCompositionReferencesParams, getDocumentTypeByIdCompositionReferencesResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
-import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetItemsApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const outputSchema = z.object({
   items: getDocumentTypeByIdCompositionReferencesResponse,

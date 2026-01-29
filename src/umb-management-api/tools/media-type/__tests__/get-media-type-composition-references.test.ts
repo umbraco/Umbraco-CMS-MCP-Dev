@@ -1,9 +1,11 @@
 import GetMediaTypeCompositionReferencesTool from "../get/get-media-type-composition-references.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_MEDIA_TYPE_NAME = "_Test MediaType Composition";
 const TEST_COMPOSITION_NAME = "_Test Composition MediaType";

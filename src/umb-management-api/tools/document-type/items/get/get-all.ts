@@ -1,8 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
 import { getTreeDocumentTypeRootResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
+import {
+  type ToolDefinition,
+  createToolResult,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const outputSchema = z.object({
   items: getTreeDocumentTypeRootResponse.shape.items,

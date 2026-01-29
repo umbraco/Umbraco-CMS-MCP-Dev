@@ -1,9 +1,11 @@
 import CreateStylesheetTool from "../post/create-stylesheet.js";
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import { StylesheetFolderBuilder } from "./helpers/stylesheet-folder-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_STYLESHEET_NAME = "_TestCreateStylesheet.css";
 const TEST_CONTENT = "/* Test create stylesheet */\nbody { color: blue; }\n.test { margin: 10px; }";

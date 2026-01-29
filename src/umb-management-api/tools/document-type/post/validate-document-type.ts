@@ -1,7 +1,11 @@
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { postDocumentTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { CreateDocumentTypeRequestModel } from "@/umb-management-api/schemas/index.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeVoidApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const ValidateDocumentTypePostTool = {
   name: "validate-document-type-post",

@@ -1,12 +1,16 @@
 import { DocumentBlueprintTestHelper } from "./helpers/document-blueprint-test-helper.js";
 import GetDocumentBlueprintAncestorsTreeTool from "../get/get-ancestors.js";
 import GetDocumentBlueprintChildrenTreeTool from "../get/get-children.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { DocumentBlueprintFolderBuilder } from "./helpers/document-blueprint-folder-builder.js";
 import { DocumentBlueprintBuilder } from "./helpers/document-blueprint-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 describe("document-blueprint-tree", () => {
   const TEST_ROOT_NAME = "_Test Root Blueprint";
   const TEST_FOLDER_NAME = "_Test Folder Blueprint";

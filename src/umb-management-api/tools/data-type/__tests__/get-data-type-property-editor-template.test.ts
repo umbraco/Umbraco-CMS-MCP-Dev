@@ -1,6 +1,8 @@
 import GetDataTypePropertyEditorTemplateTool from "../get/get-data-type-property-editor-template.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-data-type-property-editor-template", () => {
   setupTestEnvironment();

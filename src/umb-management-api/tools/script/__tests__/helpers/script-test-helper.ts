@@ -1,6 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { ScriptItemResponseModel } from "@/umb-management-api/schemas/scriptItemResponseModel.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export class ScriptTestHelper {
   static findByName(

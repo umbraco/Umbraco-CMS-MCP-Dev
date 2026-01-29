@@ -1,8 +1,10 @@
 import DeleteStylesheetTool from "../delete/delete-stylesheet.js";
 import { StylesheetHelper } from "./helpers/stylesheet-helper.js";
 import { StylesheetBuilder } from "./helpers/stylesheet-builder.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_STYLESHEET_NAME = "_TestDeleteStylesheet.css";
 const TEST_CONTENT = "/* Test delete stylesheet */\nbody { color: red; }";

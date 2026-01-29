@@ -3,9 +3,12 @@ import GetPartialViewFolderByPathTool from "../get/get-partial-view-folder-by-pa
 import { PartialViewBuilder } from "./helpers/partial-view-builder.js";
 import { PartialViewFolderBuilder } from "./helpers/partial-view-folder-builder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_PARTIAL_VIEW_NAME = "_TestGetPartialView.cshtml";
 const TEST_FOLDER_NAME = "_TestGetPartialViewFolder";

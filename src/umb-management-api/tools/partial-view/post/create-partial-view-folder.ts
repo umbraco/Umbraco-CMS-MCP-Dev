@@ -1,10 +1,14 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CreatePartialViewFolderRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { postPartialViewFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { AxiosResponse } from "axios";
 import { z } from "zod";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const createPartialViewFolderOutputSchema = z.object({
   message: z.string(),

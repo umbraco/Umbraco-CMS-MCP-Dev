@@ -1,12 +1,16 @@
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import GetMediaTypeSiblingsTool from "../items/get/get-siblings.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { MediaTypeFolderTestHelper } from "./helpers/media-type-folder-helper.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-media-type-siblings", () => {
   setupTestEnvironment();

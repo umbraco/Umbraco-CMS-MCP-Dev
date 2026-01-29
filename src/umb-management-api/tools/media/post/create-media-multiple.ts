@@ -3,15 +3,17 @@ import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
 import {
-  MEDIA_TYPE_IMAGE,
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
   MEDIA_TYPE_ARTICLE,
   MEDIA_TYPE_AUDIO,
-  MEDIA_TYPE_VIDEO,
+  MEDIA_TYPE_FILE,
+  MEDIA_TYPE_IMAGE,
   MEDIA_TYPE_VECTOR_GRAPHICS,
-  MEDIA_TYPE_FILE
-} from "@/constants/constants.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
+  MEDIA_TYPE_VIDEO,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const createMediaMultipleSchema = z.object({
   sourceType: z.enum(["filePath", "url"]).describe("Media source type: 'filePath' for local files (most efficient), 'url' for web files. Base64 not supported for batch uploads due to token usage."),
@@ -29,6 +31,7 @@ type CreateMediaMultipleParams = z.infer<typeof createMediaMultipleSchema>;
 interface UploadResult {
   success: boolean;
   name: string;
+  id?: string;
   error?: string;
 }
 
@@ -37,6 +40,7 @@ export const createMediaMultipleOutputSchema = z.object({
   results: z.array(z.object({
     success: z.boolean(),
     name: z.string(),
+    id: z.string().uuid().optional(),
     error: z.string().optional()
   }))
 });
@@ -78,7 +82,7 @@ const CreateMediaMultipleTool = {
         const temporaryFileId = uuidv4();
         const defaultMediaType = file.mediaTypeName || MEDIA_TYPE_FILE;
 
-        const actualName = await uploadMediaFile(client, {
+        const { name: actualName, id: mediaId } = await uploadMediaFile(client, {
           sourceType: model.sourceType,
           name: file.name,
           mediaTypeName: defaultMediaType,
@@ -92,6 +96,7 @@ const CreateMediaMultipleTool = {
         results.push({
           success: true,
           name: actualName,
+          id: mediaId,
         });
 
       } catch (error) {

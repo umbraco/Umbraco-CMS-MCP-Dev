@@ -1,9 +1,12 @@
 import { getItemMemberTypeQueryParams, getItemMemberTypeResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { GetItemMemberTypeParams } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
-import { executeGetItemsApiCall } from "@/helpers/mcp/index.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetItemsApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // Array responses must be wrapped in an object
 const outputSchema = z.object({

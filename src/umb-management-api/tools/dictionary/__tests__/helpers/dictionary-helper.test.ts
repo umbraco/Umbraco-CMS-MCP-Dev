@@ -1,7 +1,9 @@
 import { DictionaryTestHelper, DEFAULT_ISO_CODE } from "./dictionary-helper.js";
 import { DictionaryBuilder } from "./dictionary-builder.js";
 import { jest } from "@jest/globals";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const TEST_DICTIONARY_NAME = "_Test Dictionary Helper";
 const TEST_DICTIONARY_TRANSLATION = "_Test Translation Helper";

@@ -3,10 +3,14 @@ import * as os from "os";
 import * as path from "path";
 import axios from "axios";
 import mime from "mime-types";
-import { STANDARD_MEDIA_TYPES, MEDIA_TYPE_IMAGE, MEDIA_TYPE_VECTOR_GRAPHICS } from "@/constants/constants.js";
 import { validateFilePath } from "./validate-file-path.js";
-import { CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
-import { detectFileExtensionFromBuffer } from "@/helpers/file/index.js";
+import {
+  CAPTURE_RAW_HTTP_RESPONSE,
+  MEDIA_TYPE_IMAGE,
+  MEDIA_TYPE_VECTOR_GRAPHICS,
+  STANDARD_MEDIA_TYPES,
+  detectFileExtensionFromBuffer,
+} from "@umbraco-cms/mcp-server-sdk";
 
 /**
  * Maps MIME types to file extensions using the mime-types library.

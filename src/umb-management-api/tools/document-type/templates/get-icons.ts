@@ -1,6 +1,9 @@
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
+import {
+  type ToolDefinition,
+  createToolResult,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 //TODO: This really should be an endpoint
 

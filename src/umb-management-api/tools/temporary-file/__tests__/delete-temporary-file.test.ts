@@ -1,10 +1,14 @@
 import DeleteTemporaryFileTool from "../delete/delete-temporary-file.js";
 import { TemporaryFileBuilder } from "./helpers/temporary-file-builder.js";
 import { TemporaryFileTestHelper } from "./helpers/temporary-file-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("delete-temporary-file", () => {
   setupTestEnvironment();

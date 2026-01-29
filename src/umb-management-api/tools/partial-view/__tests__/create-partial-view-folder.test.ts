@@ -1,9 +1,14 @@
 import CreatePartialViewFolderTool from "../post/create-partial-view-folder.js";
 import { PartialViewHelper } from "./helpers/partial-view-helper.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_FOLDER_NAME = "_TestCreateFolder";
 const EXISTING_FOLDER_NAME = "_ExistingFolder";

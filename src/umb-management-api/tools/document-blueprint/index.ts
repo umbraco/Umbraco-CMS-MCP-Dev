@@ -14,10 +14,12 @@ import CreateDocumentBlueprintFolderTool from "./folders/post/create-folder.js";
 import GetDocumentBlueprintFolderTool from "./folders/get/get-folder.js";
 import UpdateDocumentBlueprintFolderTool from "./folders/put/update-folder.js";
 import DeleteDocumentBlueprintFolderTool from "./folders/delete/delete-folder.js";
-import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
+import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
+import {
+  type ToolCollectionExport,
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const DocumentBlueprintCollection: ToolCollectionExport = {
   metadata: {

@@ -2,9 +2,14 @@ import GetMediaTypeAvailableCompositionsTool from "../post/get-media-type-availa
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { MediaTypeCompositionResponseModel } from "@/umb-management-api/schemas/index.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_MEDIA_TYPE_NAME = "_Test MediaType Available";
 const TEST_COMPOSITION_NAME = "_Test Available Composition";

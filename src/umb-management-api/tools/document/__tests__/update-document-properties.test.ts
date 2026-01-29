@@ -5,15 +5,18 @@ import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { LanguageBuilder } from "../../language/__tests__/helpers/language-builder.js";
+import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
+import { UmbracoManagementClient } from "@umb-management-client";
 import {
-  ROOT_DOCUMENT_TYPE_ID,
   BLANK_UUID,
   TextString_DATA_TYPE_ID,
-} from "../../../../constants/constants.js";
-import { UmbracoManagementClient } from "@umb-management-client";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateStructuredContent,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("update-document-properties", () => {
   const TEST_DOCUMENT_NAME = "_Test Document Properties";

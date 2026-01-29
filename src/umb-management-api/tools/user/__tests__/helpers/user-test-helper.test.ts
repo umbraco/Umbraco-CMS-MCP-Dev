@@ -1,7 +1,9 @@
 import { UserTestHelper, DEFAULT_LANGUAGE_ISO_CODE } from "./user-test-helper.js";
 import { UserBuilder } from "./user-builder.js";
 import { jest } from "@jest/globals";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const TEST_USER_NAME = "_Test User Helper";
 const TEST_USER_EMAIL = "testhelper@example.com";

@@ -1,12 +1,14 @@
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import CreateTemporaryFileTool from "../post/create-temporary-file.js";
 import { TemporaryFileTestHelper } from "./helpers/temporary-file-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { v4 as uuidv4 } from "uuid";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("create-temporary-file", () => {
   setupTestEnvironment();

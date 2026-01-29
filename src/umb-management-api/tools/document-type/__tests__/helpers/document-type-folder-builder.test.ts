@@ -1,6 +1,8 @@
 import { DocumentTypeFolderBuilder } from "./document-type-folder-builder.js";
 import { DocumentTypeTestHelper } from "./document-type-test-helper.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe('DocumentTypeFolderBuilder', () => {
   const TEST_FOLDER_NAME = '_Test Folder';

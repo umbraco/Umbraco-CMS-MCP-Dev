@@ -1,10 +1,12 @@
 import { WebhookBuilder } from "./webhook-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { jest } from "@jest/globals";
 import {
   CONTENT_DELETED_EVENT,
   CONTENT_PUBLISHED_EVENT,
 } from "../webhook-constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 describe("webhook-builder", () => {
   const TEST_WEBHOOK_NAME = "_Test Webhook";

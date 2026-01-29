@@ -1,9 +1,12 @@
 import FindDataTypeTool from "../get/find-data-type.js";
 import { DataTypeBuilder } from "./helpers/data-type-builder.js";
 import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
 import { GetFilterDataTypeParams } from "@/umb-management-api/schemas/index.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DATATYPE_NAME = "_Test FindDataType";
 const TEST_DATATYPE_NAME_2 = "_Test FindDataType 2";

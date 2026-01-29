@@ -1,10 +1,14 @@
 import { getTemporaryFileByIdParams } from "@/umb-management-api/temporary-file/types.zod.js";
 import GetTemporaryFileTool from "../get/get-temporary-file.js";
 import { TemporaryFileBuilder } from "./helpers/temporary-file-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-temporary-file", () => {
   setupTestEnvironment();

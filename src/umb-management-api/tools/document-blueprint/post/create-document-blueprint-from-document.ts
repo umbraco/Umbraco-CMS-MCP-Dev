@@ -1,7 +1,11 @@
 import { CreateDocumentBlueprintFromDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, executeVoidApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeVoidApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // Note: The Umbraco API schema includes a 'parent' parameter, but testing shows it is not
 // respected by the API - blueprints created from documents are always created at the root level.

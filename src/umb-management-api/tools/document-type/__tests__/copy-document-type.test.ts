@@ -2,10 +2,15 @@ import CopyDocumentTypeTool from "../post/copy-document-type.js";
 import { DocumentTypeBuilder } from "./helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
-import { createMockRequestHandlerExtra, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+  validateErrorResult,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCTYPE_NAME = "_Test DocumentType Copy";
 const TEST_DOCTYPE_COPY_NAME = "_Test DocumentType Copy (copy)";

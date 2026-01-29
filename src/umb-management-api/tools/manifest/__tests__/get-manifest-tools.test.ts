@@ -1,9 +1,11 @@
 import GetManifestManifestTool from "../get/get-manifest-manifest.js";
 import GetManifestManifestPrivateTool from "../get/get-manifest-manifest-private.js";
 import GetManifestManifestPublicTool from "../get/get-manifest-manifest-public.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("manifest tools", () => {
   setupTestEnvironment();

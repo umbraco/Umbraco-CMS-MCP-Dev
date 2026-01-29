@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   FOLDER_MEDIA_TYPE_ID,
   IMAGE_MEDIA_TYPE_ID,
-} from "../../../../../constants/constants.js";
+} from "@umbraco-cms/mcp-server-sdk";
 
 export class MediaBuilder {
   private model: Partial<CreateMediaRequestModel> = {

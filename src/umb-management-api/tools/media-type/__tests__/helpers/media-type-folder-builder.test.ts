@@ -1,5 +1,7 @@
 import { MediaTypeFolderBuilder } from "./media-type-folder-builder.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("MediaTypeFolderBuilder", () => {
   setupTestEnvironment();

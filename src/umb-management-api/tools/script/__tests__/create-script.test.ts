@@ -1,8 +1,11 @@
 import CreateScriptTool from "../post/create-script.js";
 import CreateScriptFolderTool from "../post/create-script-folder.js";
 import { ScriptTestHelper } from "./helpers/script-test-helper.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_SCRIPT_NAME = "_TestScript";
 const TEST_SCRIPT_CONTENT = "console.log('test script');";

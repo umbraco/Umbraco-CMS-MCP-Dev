@@ -1,13 +1,17 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { ProblemDetails } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { AxiosResponse } from "axios";
 import {
   createContainerHierarchy,
 } from "./helpers/create-container-hierarchy.js";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
 const createDocumentTypeSchema = z.object({

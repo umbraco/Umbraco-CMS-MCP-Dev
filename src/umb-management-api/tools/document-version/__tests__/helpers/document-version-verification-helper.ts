@@ -1,6 +1,8 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { BLANK_UUID } from "@/constants/constants.js";
 import { DocumentTestHelper } from "../../../document/__tests__/helpers/document-test-helper.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export class DocumentVersionVerificationHelper {
   static async findDocumentVersions(

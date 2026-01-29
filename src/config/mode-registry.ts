@@ -1,4 +1,4 @@
-import { ToolModeDefinition } from "../../types/tool-mode.js";
+import { type ToolModeDefinition } from "@umbraco-cms/mcp-server-sdk";
 
 /**
  * Base modes - map directly to collections

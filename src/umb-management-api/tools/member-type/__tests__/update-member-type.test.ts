@@ -1,9 +1,13 @@
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import UpdateMemberTypeTool from "../put/update-member-type.js";
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_MEMBER_TYPE_NAME = "_Test Member Type Update";
 const UPDATED_MEMBER_TYPE_NAME = "_Updated Member Type";

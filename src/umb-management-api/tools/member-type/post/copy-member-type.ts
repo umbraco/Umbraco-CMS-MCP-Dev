@@ -1,9 +1,13 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
 import { ProblemDetails } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { withStandardDecorators, createToolResult, createToolResultError } from "@/helpers/mcp/tool-decorators.js";
 import { AxiosResponse } from "axios";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
 
 const inputSchema = z.object({
   id: z.string().uuid(),

@@ -2,9 +2,14 @@ import GetMemberTypeAvailableCompositionsTool from "../post/get-member-type-avai
 import { MemberTypeBuilder } from "./helpers/member-type-builder.js";
 import { MemberTypeTestHelper } from "./helpers/member-type-helper.js";
 import { MemberTypeCompositionResponseModel } from "@/umb-management-api/schemas/index.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra, validateToolResponse } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  setupTestEnvironment,
+  validateToolResponse,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_MEMBER_TYPE_NAME = "_Test MemberType Available";
 const TEST_COMPOSITION_NAME = "_Test Available Composition";

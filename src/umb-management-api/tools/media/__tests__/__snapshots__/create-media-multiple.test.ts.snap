@@ -6,10 +6,8 @@ exports[`create-media-multiple should continue processing on individual file err
   "structuredContent": {
     "results": [
       {
-        "name": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "name": "_Test Batch Image 1",
-        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Batch Image 1",
         "success": true,
       },
       {
@@ -29,17 +27,13 @@ exports[`create-media-multiple should create multiple files with mixed media typ
   "structuredContent": {
     "results": [
       {
-        "name": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "name": "_Test Mixed Image",
-        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Mixed Image",
         "success": true,
       },
       {
-        "name": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "name": "_Test Mixed File",
-        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Mixed File",
         "success": true,
       },
     ],
@@ -54,17 +48,13 @@ exports[`create-media-multiple should create multiple images in batch 1`] = `
   "structuredContent": {
     "results": [
       {
-        "name": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "name": "_Test Batch Image 1",
-        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Batch Image 1",
         "success": true,
       },
       {
-        "name": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "name": "_Test Batch Image 2",
-        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Batch Image 2",
         "success": true,
       },
     ],
@@ -79,17 +69,13 @@ exports[`create-media-multiple should create multiple media from URLs 1`] = `
   "structuredContent": {
     "results": [
       {
-        "name": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "name": "_Test URL Batch Image 1",
-        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test URL Batch Image 1",
         "success": true,
       },
       {
-        "name": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "name": "_Test URL Batch Image 2",
-        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test URL Batch Image 2",
         "success": true,
       },
     ],
@@ -114,10 +100,8 @@ exports[`create-media-multiple should use default File media type when not speci
   "structuredContent": {
     "results": [
       {
-        "name": {
-          "id": "00000000-0000-0000-0000-000000000000",
-          "name": "_Test Batch File 1",
-        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Batch File 1",
         "success": true,
       },
     ],

@@ -2,12 +2,16 @@ import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import CreateMediaTypeFolderTool from "../folders/post/create-folder.js";
 import DeleteMediaTypeFolderTool from "../folders/delete/delete-folder.js";
 import UpdateMediaTypeFolderTool from "../folders/put/update-folder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
 import { MediaTypeFolderTestHelper } from "./helpers/media-type-folder-helper.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("media-type-folder", () => {
   setupTestEnvironment();

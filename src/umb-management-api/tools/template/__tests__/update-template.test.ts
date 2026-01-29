@@ -1,10 +1,14 @@
 import UpdateTemplateTool from "../put/update-template.js";
 import { TemplateBuilder } from "./helpers/template-builder.js";
 import { TemplateTestHelper } from "./helpers/template-helper.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
-import { BLANK_UUID } from "@/constants/constants.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_TEMPLATE_NAME = "_Test Template Update";
 const UPDATED_TEMPLATE_NAME = "_Updated Template";

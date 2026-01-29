@@ -20,10 +20,12 @@ import GetDataTypeChildrenTool from "./items/get/get-children.js";
 import GetDataTypeSiblingsTool from "./items/get/get-siblings.js";
 import GetDataTypeAncestorsTool from "./items/get/get-ancestors.js";
 import GetAllDataTypesTool from "./items/get/get-all.js";
-import { AuthorizationPolicies } from "@/helpers/auth/umbraco-auth-policies.js";
+import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { ToolDefinition } from "types/tool-definition.js";
-import { ToolCollectionExport } from "types/tool-collection.js";
+import {
+  type ToolCollectionExport,
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const DataTypeCollection: ToolCollectionExport = {
   metadata: {

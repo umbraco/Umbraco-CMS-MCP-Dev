@@ -4,10 +4,14 @@ import { DataTypeTestHelper } from "./helpers/data-type-test-helper.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 import { DocumentBuilder } from "../../document/__tests__/helpers/document-builder.js";
-import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
-import { BLANK_UUID } from "@/constants/constants.js";
-import { createMockRequestHandlerExtra } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  BLANK_UUID,
+} from "@umbraco-cms/mcp-server-sdk";
+import {
+  createMockRequestHandlerExtra,
+  createSnapshotResult,
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DATATYPE_NAME = "_Test DataType IsUsed";
 const TEST_DOCUMENT_TYPE_NAME = "_Test DocType For IsUsed";

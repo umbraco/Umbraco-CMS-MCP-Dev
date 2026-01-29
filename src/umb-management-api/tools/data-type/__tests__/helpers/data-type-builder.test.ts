@@ -1,6 +1,8 @@
 import { DataTypeBuilder } from "./data-type-builder.js";
 import { DataTypeTestHelper } from "./data-type-test-helper.js";
-import { setupTestEnvironment } from "@/test-helpers/setup-test-environment.js";
+import {
+  setupTestEnvironment,
+} from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe('DataTypeBuilder', () => {
   const TEST_DATATYPE_NAME = '_Test Builder DataType';
