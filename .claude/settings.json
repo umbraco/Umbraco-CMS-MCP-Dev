@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "bash .claude/scripts/setup-dotnet-proxy.sh"
+      }
+    ]
+  }
+}
