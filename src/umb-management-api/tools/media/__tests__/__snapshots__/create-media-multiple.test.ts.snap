@@ -11,7 +11,7 @@ exports[`create-media-multiple should continue processing on individual file err
         "success": true,
       },
       {
-        "error": "File path "/non/existent/file.jpg" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp-template",
+        "error": "File path "/non/existent/file.jpg" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp",
         "name": "_Test Batch Image 2",
         "success": false,
       },
