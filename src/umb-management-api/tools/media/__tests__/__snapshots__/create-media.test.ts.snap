@@ -92,7 +92,7 @@ exports[`create-media should handle non-existent file path 1`] = `
   "content": [],
   "isError": true,
   "structuredContent": {
-    "detail": "Error creating media: File path "/non/existent/file.jpg" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp-template",
+    "detail": "Error creating media: File path "/non/existent/file.jpg" is not in an allowed directory. Allowed directories: /Users/philw/Projects/umbraco-mcp",
   },
 }
 `;
