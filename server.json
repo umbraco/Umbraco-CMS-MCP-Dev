@@ -9,12 +9,12 @@
     "url": "https://github.com/umbraco/Umbraco-CMS-MCP-Dev",
     "source": "github"
   },
-  "version": "17.0.1-beta.4",
+  "version": "17.1.0",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@umbraco-cms/mcp-dev",
-      "version": "17.0.1-beta.4",
+      "version": "17.1.0",
       "transport": {
         "type": "stdio"
       },
