@@ -144,7 +144,7 @@ stages:
           displayName: 'Install mcp-publisher'
 
         - script: |
-            ./mcp-publisher login --token=$(MCP_REGISTRY_GITHUB_TOKEN)
+            ./mcp-publisher login github --token=$(MCP_REGISTRY_GITHUB_TOKEN)
           displayName: 'Authenticate with MCP Registry'
 
         - script: |
