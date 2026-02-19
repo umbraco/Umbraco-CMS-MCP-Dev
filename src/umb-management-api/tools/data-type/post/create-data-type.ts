@@ -43,11 +43,10 @@ const CreateDataTypeTool = {
   *** PROPERTY EDITOR CONFIGURATION ***
   When creating a new data type you will need to assign a property editor with the correct configuration.
 
-  IMPORTANT: Use the get-data-type-property-editor-template tool to:
-  - View all available property editors (call without parameters)
-  - Get the correct configuration template for a specific property editor (call with editorName parameter)
-  - Each template shows the required editorAlias, editorUiAlias, and values configuration
-  - Customize the template values to match your specific requirements
+  IMPORTANT: Use the get-data-type-schema tool to:
+  - Get the JSON Schema for an existing data type by its Id to understand its configuration structure
+  - Or use get-data-type-schemas to fetch schemas for multiple data types in a batch
+  - The schema describes the expected value structure for the property editor
 
   *** VALIDATION ***
   If you are not asked for a property editor then stop and ask the user to provide one.

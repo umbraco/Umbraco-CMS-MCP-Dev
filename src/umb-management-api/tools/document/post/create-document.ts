@@ -92,22 +92,19 @@ const CreateDocumentTool = {
 
   When creating documents, you need to provide property values that match the property editors defined in the document type.
 
-  IMPORTANT: Use the get-document-property-value-template tool to:
-  - View all available property editors (call without parameters)
-  - Get the correct value structure for a specific property editor (call with editorAlias parameter)
-  - Each template provides the editorAlias and value format
-  - You must add culture, segment, and alias based on your document's specific requirements
+  IMPORTANT: Use the get-document-type-schema tool to:
+  - Get the JSON Schema describing the expected property structure for a specific document type
+  - The schema includes all property definitions and their value formats
+  - Use the schema to construct the correct values array for your document
 
   The values parameter is an array of property value objects following this structure:
   {
-    "editorAlias": "Umbraco.TextBox",  // From template - the property editor type
+    "editorAlias": "Umbraco.TextBox",  // The property editor type
     "culture": null,                    // Document-specific - culture code or null
     "segment": null,                    // Document-specific - segment or null
-    "alias": "propertyAlias",          // Document-specific - property alias from document type
-    "value": "your value here"         // From template - customize the value structure
+    "alias": "propertyAlias",          // Property alias from document type
+    "value": "your value here"         // Value matching the schema structure
   }
-
-  Note: Some property editors (BlockList, BlockGrid, ImageCropper, UploadField) have special requirements - check their templates for important notes.
   `,
   inputSchema: createDocumentSchema.shape,
   outputSchema: createOutputSchema.shape,

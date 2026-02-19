@@ -30,6 +30,7 @@ import GetMediaByIdReferencedDescendantsTool from "./get/get-media-by-id-referen
 import GetCollectionMediaTool from "./get/get-collection-media.js";
 import GetRecycleBinMediaReferencedByTool from "./get/get-recycle-bin-media-referenced-by.js";
 import GetRecycleBinMediaOriginalParentTool from "./get/get-recycle-bin-media-original-parent.js";
+import GetMediaTypeSchemaTool from "./get/get-media-type-schema.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import {
@@ -84,6 +85,7 @@ export const MediaCollection: ToolCollectionExport = {
       tools.push(GetCollectionMediaTool);
       tools.push(GetRecycleBinMediaReferencedByTool);
       tools.push(GetRecycleBinMediaOriginalParentTool);
+      tools.push(GetMediaTypeSchemaTool);
     }
 
     return tools;

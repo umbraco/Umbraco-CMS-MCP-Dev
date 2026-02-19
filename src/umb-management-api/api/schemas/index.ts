@@ -197,6 +197,7 @@ export * from './getCollectionDocumentByIdParams.js';
 export * from './getCollectionMediaParams.js';
 export * from './getCultureParams.js';
 export * from './getDataTypeByIdReferencedByParams.js';
+export * from './getDataTypeSchemaParams.js';
 export * from './getDictionaryByIdExportParams.js';
 export * from './getDictionaryParams.js';
 export * from './getDocumentAreReferencedParams.js';
