@@ -1,0 +1,43 @@
+# Cloudflare Worker Configuration for Hosted MCP Server
+#
+# Setup:
+# 1. Create KV namespace: npx wrangler kv namespace create OAUTH_KV
+# 2. Set secrets:
+#    npx wrangler secret put UMBRACO_BASE_URL
+#    npx wrangler secret put UMBRACO_OAUTH_CLIENT_ID
+#    npx wrangler secret put COOKIE_ENCRYPTION_KEY
+# 3. Deploy: npx wrangler deploy
+#
+# Local dev: npx wrangler dev
+# (Create .dev.vars with secrets for local development)
+
+name = "umbraco-cms-mcp"
+main = "src/worker.ts"
+compatibility_date = "2025-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+# KV Namespaces for token storage
+# Run: npx wrangler kv namespace create OAUTH_KV
+# Then replace the id below with the output
+[[kv_namespaces]]
+binding = "OAUTH_KV"
+id = "YOUR_KV_NAMESPACE_ID"
+
+# Durable Objects for stateful MCP sessions
+[durable_objects]
+bindings = [
+  { name = "MCP_AGENT", class_name = "UmbracoMcpAgent" }
+]
+
+# Durable Object migrations
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["UmbracoMcpAgent"]
+
+# Environment variables (non-secret)
+# Secrets should be set via `npx wrangler secret put` or .dev.vars file
+[vars]
+# UMBRACO_TOOL_MODES = "content,media"
+# UMBRACO_INCLUDE_SLICES = ""
+# UMBRACO_EXCLUDE_SLICES = ""
+# UMBRACO_READONLY = "false"

@@ -60,13 +60,16 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
-    "@anthropic-ai/claude-agent-sdk": "^0.1.76",
+    "@anthropic-ai/claude-agent-sdk": "^0.2.39",
+    "@cloudflare/workers-oauth-provider": "^0.2.3",
+    "@cloudflare/workers-types": "^4.20260305.0",
     "@jest/types": "^29.6.3",
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^29.5.14",
     "@types/mime-types": "^3.0.1",
     "@types/node": "^22.14.1",
     "@types/qs": "^6.9.18",
+    "agents": "^0.6.0",
     "copyfiles": "^2.4.1",
     "glob": "^11.0.2",
     "jest": "^29.7.0",
@@ -76,6 +79,7 @@
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "wrangler": "^4.68.1"
   }
 }
