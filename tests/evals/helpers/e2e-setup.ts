@@ -11,7 +11,7 @@ configureEvals({
   serverEnv: {
     UMBRACO_CLIENT_ID: process.env.UMBRACO_CLIENT_ID || "umbraco-back-office-mcp",
     UMBRACO_CLIENT_SECRET: process.env.UMBRACO_CLIENT_SECRET || "1234567890",
-    UMBRACO_BASE_URL: process.env.UMBRACO_BASE_URL || "http://localhost:56472",
+    UMBRACO_BASE_URL: process.env.UMBRACO_BASE_URL || "http://localhost:11000",
     NODE_TLS_REJECT_UNAUTHORIZED: "0",
   },
   defaultModel: ClaudeModels.Haiku,

@@ -12,6 +12,7 @@ builder.CreateUmbracoBuilder()
     .AddComposers()
     .Build();
 
+
 WebApplication app = builder.Build();
 
 await app.BootUmbracoAsync();
