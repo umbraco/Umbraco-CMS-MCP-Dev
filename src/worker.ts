@@ -39,11 +39,33 @@ import { UmbracoManagementClient } from "./umb-management-api/umbraco-management
 import { allModes, allModeNames, allSliceNames } from "./config/index.js";
 
 // ============================================================================
+// Multi-Site Configuration (uncomment to enable)
+// ============================================================================
+
+// const multiSite: MultiSiteConfig = {
+//   sites: [
+//     {
+//       id: "prod",
+//       displayName: "Production",
+//       baseUrl: "https://prod.example.com",
+//       oauthClientId: "umbraco-back-office-mcp",
+//     },
+//     {
+//       id: "staging",
+//       displayName: "Staging",
+//       baseUrl: "https://staging.example.com",
+//       oauthClientId: "umbraco-back-office-mcp",
+//       readOnly: "true",
+//     },
+//   ],
+// };
+
+// ============================================================================
 // Server Configuration
 // ============================================================================
 
 const options = {
-  name: "umbraco-cms-mcp",
+  name: "umbraco-cms-developer-mcp",
   version: "1.0.0",
   collections: availableCollections,
   modeRegistry: allModes,
@@ -53,6 +75,8 @@ const options = {
   // (e.g., client.getTreeDataTypeRoot()) via configureApiClient().
   // The underlying transport is automatically set to fetch by createPerRequestServer.
   clientFactory: () => UmbracoManagementClient.getClient(),
+  // Uncomment to enable multi-site:
+  // multiSite,
 };
 
 const serverOptions = getServerOptions(options);
@@ -68,6 +92,8 @@ const serverOptions = getServerOptions(options);
  */
 export class UmbracoMcpAgent extends McpAgent<HostedMcpEnv, unknown, AuthProps> {
   server!: McpServer;
+  // env is available at runtime via Durable Object context but not declared in agents types
+  declare env: HostedMcpEnv;
 
   async init() {
     this.server = await createPerRequestServer(

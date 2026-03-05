@@ -17,11 +17,12 @@ compatibility_date = "2025-02-24"
 compatibility_flags = ["nodejs_compat"]
 
 # KV Namespaces for token storage
-# Run: npx wrangler kv namespace create OAUTH_KV
-# Then replace the id below with the output
+# For production: npx wrangler kv namespace create OAUTH_KV
+# and replace preview_id with a real id
 [[kv_namespaces]]
 binding = "OAUTH_KV"
-id = "YOUR_KV_NAMESPACE_ID"
+id = "local-dev-placeholder"
+preview_id = "local-dev-preview"
 
 # Durable Objects for stateful MCP sessions
 [durable_objects]
@@ -37,6 +38,8 @@ new_sqlite_classes = ["UmbracoMcpAgent"]
 # Environment variables (non-secret)
 # Secrets should be set via `npx wrangler secret put` or .dev.vars file
 [vars]
+ENABLE_CONSENT_TOOL_SELECTION = "true"
+ENABLE_INFO_ENDPOINT = "true"
 # UMBRACO_TOOL_MODES = "content,media"
 # UMBRACO_INCLUDE_SLICES = ""
 # UMBRACO_EXCLUDE_SLICES = ""
