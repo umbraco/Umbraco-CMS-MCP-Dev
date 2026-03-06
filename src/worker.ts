@@ -23,6 +23,7 @@ import OAuthProvider from "@cloudflare/workers-oauth-provider";
 // Hosted MCP building blocks
 import {
   createDefaultHandler,
+  createWorkerExport,
   createPerRequestServer,
   getServerOptions,
   type HostedMcpEnv,
@@ -75,6 +76,8 @@ const options = {
   // (e.g., client.getTreeDataTypeRoot()) via configureApiClient().
   // The underlying transport is automatically set to fetch by createPerRequestServer.
   clientFactory: () => UmbracoManagementClient.getClient(),
+  // Show "Log in as different user" button on consent screen (after first auth)
+  authOptions: { showReauthButton: true },
   // Uncomment to enable multi-site:
   // multiSite,
 };
@@ -118,7 +121,7 @@ export class UmbracoMcpAgent extends McpAgent<HostedMcpEnv, unknown, AuthProps> 
  * - /register (dynamic client registration - RFC 7591)
  * - /mcp (MCP protocol via Streamable HTTP, authenticated)
  */
-export default new OAuthProvider({
+const oauthProvider = new OAuthProvider({
   apiRoute: "/mcp",
   apiHandler: UmbracoMcpAgent.serve("/mcp", { binding: "MCP_AGENT" }),
   defaultHandler: createDefaultHandler(options),
@@ -126,3 +129,11 @@ export default new OAuthProvider({
   tokenEndpoint: "/token",
   clientRegistrationEndpoint: "/register",
 });
+
+/**
+ * Worker export wrapped with createWorkerExport:
+ * - Browser GET to `/` → landing page
+ * - MCP requests to `/` → rewritten to `/mcp` for OAuthProvider
+ * - Everything else → passed through to OAuthProvider
+ */
+export default createWorkerExport(oauthProvider, options);
