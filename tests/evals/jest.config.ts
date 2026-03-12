@@ -39,8 +39,6 @@ const config: Config = {
   setupFiles: ["<rootDir>/jest.setup.ts"],
 
   // Eval specific settings
-  maxConcurrency: 1,
-  maxWorkers: 1,
   testTimeout: 120000, // 2 minute timeout for long-running tests
 
   // Disable slow test warnings (these are expected to be slow)

@@ -32,6 +32,7 @@ exports[`update-member-type should update a member type 2`] = `
     "hasChildren": false,
     "icon": "icon-user",
     "id": "00000000-0000-0000-0000-000000000000",
+    "isFolder": false,
     "name": "_Updated Member Type",
     "parent": null,
   },

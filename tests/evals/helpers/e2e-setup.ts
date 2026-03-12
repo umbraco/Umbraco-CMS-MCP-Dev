@@ -3,23 +3,28 @@ import { ClaudeModels, configureEvals, getDefaultVerbosity } from "@umbraco-cms/
 
 /**
  * Configure the SDK eval framework with project-specific settings.
- * This runs before any tests via setupFilesAfterEnv in jest.config.ts.
+ * Imported directly by each eval test file for self-contained setup.
+ * Guard prevents duplicate configuration when also loaded via setupFilesAfterEnv.
  */
-configureEvals({
-  mcpServerPath: path.resolve(process.cwd(), "dist/index.js"),
-  mcpServerName: "umbraco-mcp",
-  serverEnv: {
-    UMBRACO_CLIENT_ID: process.env.UMBRACO_CLIENT_ID || "umbraco-back-office-mcp",
-    UMBRACO_CLIENT_SECRET: process.env.UMBRACO_CLIENT_SECRET || "1234567890",
-    UMBRACO_BASE_URL: process.env.UMBRACO_BASE_URL || "http://localhost:56472",
-    NODE_TLS_REJECT_UNAUTHORIZED: "0",
-  },
-  defaultModel: ClaudeModels.Haiku,
-  defaultMaxTurns: 15,
-  defaultMaxBudgetUsd: 0.50,
-  defaultTimeoutMs: 120000,
-  defaultVerbosity: (process.env.E2E_VERBOSITY as "quiet" | "normal" | "verbose") || "quiet",
-});
+if (!(globalThis as any).__evalConfigured) {
+  (globalThis as any).__evalConfigured = true;
+
+  configureEvals({
+    mcpServerPath: path.resolve(process.cwd(), "dist/index.js"),
+    mcpServerName: "umbraco-mcp",
+    serverEnv: {
+      UMBRACO_CLIENT_ID: process.env.UMBRACO_CLIENT_ID || "umbraco-back-office-mcp",
+      UMBRACO_CLIENT_SECRET: process.env.UMBRACO_CLIENT_SECRET || "1234567890",
+      UMBRACO_BASE_URL: process.env.UMBRACO_BASE_URL || "http://localhost:56472",
+      NODE_TLS_REJECT_UNAUTHORIZED: "0",
+    },
+    defaultModel: ClaudeModels.Haiku,
+    defaultMaxTurns: 15,
+    defaultMaxBudgetUsd: 0.50,
+    defaultTimeoutMs: 120000,
+    defaultVerbosity: (process.env.E2E_VERBOSITY as "quiet" | "normal" | "verbose") || "quiet",
+  });
+}
 
 // Track test results for summary
 let testResults: { name: string; passed: boolean }[] = [];

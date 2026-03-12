@@ -23,9 +23,10 @@ const config: import("ts-jest").JestConfigWithTsJest = {
     ],
   },
   testMatch: ["**/src/**/__tests__/**/*.test.ts", "**/tests/evals/**/*.test.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "\\.claude/worktrees/"],
   setupFilesAfterEnv: ["jest-extended/all"],
   setupFiles: ["<rootDir>/jest.setup.ts"],
-  maxConcurrency: 1, // we have to this because Umbraco using SQLite and it doesn't support concurrent connections
+  maxConcurrency: 1, // Umbraco uses SQLite which doesn't support concurrent connections
   maxWorkers: 1,
   testTimeout: 60000, // 60 second timeout for integration tests
 };

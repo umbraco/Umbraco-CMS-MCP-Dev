@@ -1,5 +1,6 @@
 import { describe, it } from "@jest/globals";
 import { setupConsoleMock, runScenarioTest } from "@umbraco-cms/mcp-server-sdk/evals";
+import "./helpers/e2e-setup.js";
 
 const MEDIA_LIFECYCLE_TOOLS = [
   // Creation
