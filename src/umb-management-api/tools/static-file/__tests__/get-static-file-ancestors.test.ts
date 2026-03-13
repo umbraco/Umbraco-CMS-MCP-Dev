@@ -148,7 +148,7 @@ describe("get-static-file-ancestors", () => {
     expect(ancestors.length).toBe(0);
   });
 
-  it.skip("should return ancestors with proper breadcrumb properties", async () => {
+  it("should return ancestors with proper breadcrumb properties", async () => {
     // Arrange - find a nested path by exploring the file system
     let deepPath: string | undefined = undefined;
 

@@ -9,7 +9,7 @@ exports[`manifest tools get-manifest-manifest should get all manifests 1`] = `
         "extensions": [],
         "id": null,
         "name": "@umbraco-cms/backoffice",
-        "version": "17.0.0",
+        "version": "17.2.2",
       },
       {
         "extensions": [
@@ -33,7 +33,7 @@ exports[`manifest tools get-manifest-manifest-private should get private manifes
         "extensions": [],
         "id": null,
         "name": "@umbraco-cms/backoffice",
-        "version": "17.0.0",
+        "version": "17.2.2",
       },
       {
         "extensions": [

@@ -13,24 +13,64 @@ exports[`get-static-file-ancestors should get ancestors for a nested file or fol
         "path": "/",
       },
       {
-        "hasChildren": true,
+        "hasChildren": false,
         "isFolder": true,
-        "name": "bin",
+        "name": "App_Plugins",
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
           "path": "/",
         },
-        "path": "/bin",
+        "path": "/App_Plugins",
       },
       {
-        "hasChildren": true,
+        "hasChildren": false,
         "isFolder": true,
-        "name": "Debug",
+        "name": "UmbracoEmbeddedResource",
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
-          "path": "/bin",
+          "path": "/App_Plugins",
         },
-        "path": "/bin/Debug",
+        "path": "/App_Plugins/UmbracoEmbeddedResource",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "BackOffice",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/App_Plugins/UmbracoEmbeddedResource",
+        },
+        "path": "/App_Plugins/UmbracoEmbeddedResource/BackOffice",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "Default",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/App_Plugins/UmbracoEmbeddedResource/BackOffice",
+        },
+        "path": "/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "css",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default",
+        },
+        "path": "/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default/css",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "application.css",
+        "parent": {
+          "id": "00000000-0000-0000-0000-000000000000",
+          "path": "/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default/css",
+        },
+        "path": "/App_Plugins/UmbracoEmbeddedResource/BackOffice/Default/css/application.css",
       },
     ],
   },
@@ -50,12 +90,54 @@ exports[`get-static-file-ancestors should handle empty or root descendant path 1
 
 exports[`get-static-file-ancestors should handle invalid descendant path gracefully 1`] = `
 {
-  "content": [
-    {
-      "text": "[{"name":"","path":"/","parent":null,"isFolder":true,"hasChildren":true},{"name":"nonexistent","path":"/nonexistent","parent":{"path":"/"},"isFolder":true,"hasChildren":false},{"name":"invalid","path":"/nonexistent/invalid","parent":{"path":"/nonexistent"},"isFolder":true,"hasChildren":false},{"name":"path","path":"/nonexistent/invalid/path","parent":{"path":"/nonexistent/invalid"},"isFolder":true,"hasChildren":false},{"name":"file.txt","path":"/nonexistent/invalid/path/file.txt","parent":{"path":"/nonexistent/invalid/path"},"isFolder":true,"hasChildren":false}]",
-      "type": "text",
-    },
-  ],
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "hasChildren": true,
+        "isFolder": true,
+        "name": "",
+        "parent": null,
+        "path": "/",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "nonexistent",
+        "parent": {
+          "path": "/",
+        },
+        "path": "/nonexistent",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "invalid",
+        "parent": {
+          "path": "/nonexistent",
+        },
+        "path": "/nonexistent/invalid",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "path",
+        "parent": {
+          "path": "/nonexistent/invalid",
+        },
+        "path": "/nonexistent/invalid/path",
+      },
+      {
+        "hasChildren": false,
+        "isFolder": true,
+        "name": "file.txt",
+        "parent": {
+          "path": "/nonexistent/invalid/path",
+        },
+        "path": "/nonexistent/invalid/path/file.txt",
+      },
+    ],
+  },
 }
 `;
 
@@ -72,14 +154,14 @@ exports[`get-static-file-ancestors should handle root-level item path gracefully
         "path": "/",
       },
       {
-        "hasChildren": true,
+        "hasChildren": false,
         "isFolder": true,
-        "name": "bin",
+        "name": "App_Plugins",
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
           "path": "/",
         },
-        "path": "/bin",
+        "path": "/App_Plugins",
       },
     ],
   },
