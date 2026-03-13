@@ -8,6 +8,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "admin",
         "aliasCanBeChanged": false,
+        "description": "",
         "documentRootAccess": true,
         "documentStartNode": null,
         "fallbackPermissions": [
@@ -56,6 +57,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "editor",
         "aliasCanBeChanged": true,
+        "description": "",
         "documentRootAccess": true,
         "documentStartNode": null,
         "fallbackPermissions": [
@@ -96,6 +98,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "sensitiveData",
         "aliasCanBeChanged": false,
+        "description": "",
         "documentRootAccess": false,
         "documentStartNode": null,
         "fallbackPermissions": [],
@@ -113,6 +116,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "translator",
         "aliasCanBeChanged": false,
+        "description": "",
         "documentRootAccess": true,
         "documentStartNode": null,
         "fallbackPermissions": [
@@ -137,6 +141,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "writer",
         "aliasCanBeChanged": true,
+        "description": "",
         "documentRootAccess": true,
         "documentStartNode": null,
         "fallbackPermissions": [

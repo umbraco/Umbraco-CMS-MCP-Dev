@@ -10,6 +10,7 @@ exports[`get-member-type-siblings should get sibling member types at root level 
         "hasChildren": false,
         "icon": "icon-user",
         "id": "00000000-0000-0000-0000-000000000000",
+        "isFolder": false,
         "name": "_Test Sibling 1 MemberType",
         "parent": null,
       },
