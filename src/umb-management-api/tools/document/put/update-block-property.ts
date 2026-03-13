@@ -12,7 +12,6 @@ import {
   validateCultureSegment,
   type ResolvedProperty
 } from "./helpers/document-type-properties-resolver.js";
-import { validatePropertiesBeforeSave } from "./helpers/property-value-validator.js";
 import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
 import {
   discoverAllBlockArrays,
@@ -200,23 +199,6 @@ const UpdateBlockPropertyTool = {
 
       // Load Element Type properties for validation
       const elementTypeProperties = await getElementTypeProperties(foundBlock.block.contentTypeKey);
-
-      // Validate property values against Data Type configuration before processing
-      if (elementTypeProperties.length > 0) {
-        const propsToValidate = update.properties
-          .map(p => {
-            const def = elementTypeProperties.find(d => d.alias === p.alias);
-            return { alias: p.alias, value: p.value, dataTypeId: def?.dataTypeId ?? '' };
-          })
-          .filter(p => p.dataTypeId);
-
-        if (propsToValidate.length > 0) {
-          const valueValidation = await validatePropertiesBeforeSave(propsToValidate);
-          if (!valueValidation.isValid) {
-            errors.push(...valueValidation.errors);
-          }
-        }
-      }
 
       for (const propUpdate of update.properties) {
         const blockProperty = foundBlock.block.values.find(v =>

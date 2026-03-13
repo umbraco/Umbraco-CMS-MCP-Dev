@@ -11,6 +11,7 @@ exports[`member-tool-index should have all tools when user has members section a
   "get-member-are-referenced",
   "get-member-by-id-referenced-by",
   "get-member-by-id-referenced-descendants",
+  "get-member-type-schema",
   "find-member",
   "get-item-member-search",
 ]

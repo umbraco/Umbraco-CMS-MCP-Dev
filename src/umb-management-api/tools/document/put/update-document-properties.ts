@@ -12,7 +12,6 @@ import {
   validateCultureSegment,
   type ResolvedProperty
 } from "./helpers/document-type-properties-resolver.js";
-import { validatePropertiesBeforeSave } from "./helpers/property-value-validator.js";
 import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
 import {
   type ToolDefinition,
@@ -204,34 +203,7 @@ const UpdateDocumentPropertiesTool = {
       });
     }
 
-    // Step 4: Validate property values against Data Type configuration
-    const allPropertiesToValidate = [...propertiesToUpdate, ...propertiesToAdd];
-    if (allPropertiesToValidate.length > 0) {
-      // Get document type properties if not already loaded (needed for dataTypeId lookup)
-      const docTypeProps = await getDocumentTypeProperties();
-
-      const propsToValidate = allPropertiesToValidate
-        .map(p => {
-          const def = docTypeProps.find(d => d.alias === p.alias);
-          return { alias: p.alias, value: p.value, dataTypeId: def?.dataTypeId ?? '' };
-        })
-        .filter(p => p.dataTypeId);
-
-      if (propsToValidate.length > 0) {
-        const valueValidation = await validatePropertiesBeforeSave(propsToValidate);
-        if (!valueValidation.isValid) {
-          throw new ToolValidationError({
-            title: "Property value validation failed",
-            detail: valueValidation.errors.join("; "),
-            extensions: {
-              errors: valueValidation.errors
-            }
-          });
-        }
-      }
-    }
-
-    // Step 5: Merge updated properties with existing values
+    // Step 4: Merge updated properties with existing values
     const updatedValues: DocumentValueModel[] = currentDocument.values.map(existingValue => {
       // Find if this property should be updated
       const updateProp = propertiesToUpdate.find(p =>
@@ -257,7 +229,7 @@ const UpdateDocumentPropertiesTool = {
       };
     });
 
-    // Step 6: Add new properties
+    // Step 5: Add new properties
     for (const newProp of propertiesToAdd) {
       updatedValues.push({
         alias: newProp.alias,
@@ -267,27 +239,27 @@ const UpdateDocumentPropertiesTool = {
       });
     }
 
-    // Step 7: Convert variants from response format to request format
+    // Step 6: Convert variants from response format to request format
     const variants: DocumentVariantRequestModel[] = currentDocument.variants.map(v => ({
       culture: v.culture,
       segment: v.segment,
       name: v.name
     }));
 
-    // Step 8: Build the update payload
+    // Step 7: Build the update payload
     const updatePayload: UpdateDocumentRequestModel = {
       values: updatedValues,
       variants: variants,
       template: currentDocument.template
     };
 
-    // Step 9: Update the document
+    // Step 8: Update the document
     await client.putDocumentById(model.id, updatePayload);
 
-    // Step 10: Re-fetch the document to return the updated state
+    // Step 9: Re-fetch the document to return the updated state
     const updatedDocument = await client.getDocumentById(model.id);
 
-    // Step 11: Build lists for the success message
+    // Step 10: Build lists for the success message
     const updatedPropertyKeys = propertiesToUpdate.map(p =>
       getPropertyKey(p.alias, p.culture, p.segment)
     );

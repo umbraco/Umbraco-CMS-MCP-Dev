@@ -4,7 +4,8 @@ import FindDataTypeTool from "./get/find-data-type.js";
 import GetDataTypeTool from "./get/get-data-type.js";
 import GetDataTypesByIdArrayTool from "./get/get-data-type-by-id-array.js";
 import GetDataTypeConfigurationTool from "./get/get-data-type-configuration.js";
-import GetDataTypePropertyEditorTemplateTool from "./get/get-data-type-property-editor-template.js";
+import GetDataTypeSchemaTool from "./get/get-data-type-schema.js";
+import GetDataTypeSchemasTool from "./get/get-data-type-schemas.js";
 import UpdateDataTypeTool from "./put/update-data-type.js";
 import CopyDataTypeTool from "./post/copy-data-type.js";
 import IsUsedDataTypeTool from "./get/is-used-data-type.js";
@@ -43,7 +44,8 @@ export const DataTypeCollection: ToolCollectionExport = {
       tools.push(GetDataTypeTool);
       tools.push(GetDataTypesByIdArrayTool);
       tools.push(GetDataTypeConfigurationTool);
-      tools.push(GetDataTypePropertyEditorTemplateTool);
+      tools.push(GetDataTypeSchemaTool);
+      tools.push(GetDataTypeSchemasTool);
     }
 
     if (AuthorizationPolicies.TreeAccessDataTypes(user)) {
