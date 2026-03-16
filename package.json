@@ -3,7 +3,11 @@
   "version": "17.1.0",
   "type": "module",
   "description": "A model context protocol (MCP) server for Umbraco CMS",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./collections": "./dist/collections.js"
+  },
   "mcpName": "io.github.umbraco/Umbraco-CMS-MCP-Dev",
   "bin": {
     "umbraco": "dist/index.js"
