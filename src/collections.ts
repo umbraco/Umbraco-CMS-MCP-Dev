@@ -22,3 +22,4 @@
 export { availableCollections as collections } from "./umb-management-api/tools/collection-registry.js";
 export { allModes, allModeNames } from "./config/mode-registry.js";
 export { allSliceNames } from "./config/slice-registry.js";
+export { UmbracoManagementClient } from "./umb-management-api/umbraco-management-client.js";

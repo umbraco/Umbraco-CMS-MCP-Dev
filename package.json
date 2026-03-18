@@ -6,7 +6,10 @@
   "main": "dist/index.js",
   "exports": {
     ".": "./dist/index.js",
-    "./collections": "./dist/collections.js"
+    "./collections": {
+      "types": "./collections.d.ts",
+      "import": "./dist/collections.js"
+    }
   },
   "mcpName": "io.github.umbraco/Umbraco-CMS-MCP-Dev",
   "bin": {
@@ -29,7 +32,8 @@
     "node": ">=22.0.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "collections.d.ts"
   ],
   "repository": {
     "type": "git",

@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
 import { ProblemDetails } from "@/umb-management-api/schemas/index.js";
-import { AxiosResponse } from "axios";
 import {
   type ToolDefinition,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 const inputSchema = z.object({
@@ -26,14 +26,14 @@ const CopyMemberTypeTool = {
   slices: ['copy'],
   handler: (async (model: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
-    const response = await client.postMemberTypeByIdCopy(model.id, {
+    const response = await client.postMemberTypeByIdCopy(model.id, {}, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       // Extract ID from Location header
-      const locationHeader = response.headers['location'] || response.headers['Location'];
+      const locationHeader = response.headers?.['location'] || response.headers?.['Location'];
       let createdId = '';
       if (locationHeader) {
         const idMatch = locationHeader.match(/([0-9a-f-]{36})$/i);

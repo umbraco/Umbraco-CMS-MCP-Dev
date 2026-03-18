@@ -1,13 +1,13 @@
 import { z } from "zod";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CopyDocumentRequestModel, CurrentUserResponseModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
-import { AxiosResponse } from "axios";
 import { UmbracoDocumentPermissions } from "../constants.js";
 import {
   type ToolDefinition,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 const copyDocumentSchema = z.object({
@@ -52,7 +52,7 @@ const CopyDocumentTool = {
     const response = await client.postDocumentByIdCopy(model.idToCopy, payload, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       // Extract new ID from Location header: /umbraco/management/api/v1/document/{guid}

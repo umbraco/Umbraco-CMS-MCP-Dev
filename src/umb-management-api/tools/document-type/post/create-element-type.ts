@@ -2,7 +2,6 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { AxiosResponse } from "axios";
 import {
   createContainerHierarchy,
   type Property,
@@ -12,6 +11,7 @@ import {
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 // Schema for creating an element type
@@ -144,7 +144,7 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
     const response = await client.postDocumentType(payload, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       const output = {

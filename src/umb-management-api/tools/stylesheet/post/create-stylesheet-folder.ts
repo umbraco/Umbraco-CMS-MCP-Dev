@@ -2,12 +2,12 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateStylesheetFolderRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { postStylesheetFolderBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
-import { AxiosResponse } from "axios";
 import {
   type ToolDefinition,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 export const createStylesheetFolderOutputSchema = z.object({
@@ -27,11 +27,11 @@ const CreateStylesheetFolderTool = {
     const response = await client.postStylesheetFolder(model, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       // Extract path from Location header
-      const locationHeader = response.headers['location'] || response.headers['Location'];
+      const locationHeader = response.headers?.['location'] || response.headers?.['Location'];
       let createdPath = '';
       if (locationHeader) {
         // Location header format: /umbraco/management/api/v1/stylesheet/folder/{encodedPath}

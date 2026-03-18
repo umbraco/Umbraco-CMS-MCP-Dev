@@ -3,13 +3,13 @@ import { CreateMemberGroupRequestModel, ProblemDetails } from "@/umb-management-
 import { postMemberGroupBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { AxiosResponse } from "axios";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 export const createOutputSchema = z.object({
@@ -30,7 +30,7 @@ const CreateMemberGroupTool = {
     const memberGroupId = model.id || uuidv4();
     const payload = { ...model, id: memberGroupId };
 
-    const response = await client.postMemberGroup(payload, CAPTURE_RAW_HTTP_RESPONSE) as unknown as AxiosResponse<ProblemDetails | void>;
+    const response = await client.postMemberGroup(payload, CAPTURE_RAW_HTTP_RESPONSE) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       return createToolResult({
