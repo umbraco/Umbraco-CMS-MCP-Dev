@@ -12,6 +12,17 @@ builder.CreateUmbracoBuilder()
     .AddComposers()
     .Build();
 
+// Allow HTTP for token endpoint in development (workerd can't verify self-signed certs).
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddOpenIddict()
+        .AddServer(options =>
+        {
+            options.UseAspNetCore()
+                .DisableTransportSecurityRequirement();
+        });
+}
+
 WebApplication app = builder.Build();
 
 await app.BootUmbracoAsync();

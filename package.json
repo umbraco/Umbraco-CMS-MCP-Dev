@@ -26,7 +26,8 @@
     "patch-publish-alpha": "npm version prerelease --preid=alpha && npm publish --tag alpha --access public",
     "test:e2e-sdk": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --silent --forceExit 2>/dev/null",
     "test:e2e-sdk:verbose": "E2E_VERBOSITY=verbose node --experimental-vm-modules node_modules/jest/bin/jest.js tests/e2e-sdk --runInBand --testTimeout=120000 --forceExit",
-    "test:e2e-sdk:debug": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --detectOpenHandles"
+    "test:e2e-sdk:debug": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --detectOpenHandles",
+    "test:e2e": "npx playwright test --config tests/cms-hosted-e2e/playwright.config.ts"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -75,6 +76,10 @@
     "@types/mime-types": "^3.0.1",
     "@types/node": "^22.14.1",
     "@types/qs": "^6.9.18",
+    "@cloudflare/workers-oauth-provider": "^0.2.3",
+    "@playwright/test": "^1.52.0",
+    "@umbraco-cms/mcp-hosted": "file:../umbraco-mcp-base/packages/hosted-mcp",
+    "agents": "^0.6.0",
     "copyfiles": "^2.4.1",
     "glob": "^11.0.2",
     "jest": "^29.7.0",
@@ -84,6 +89,7 @@
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "wrangler": "^4.69.0"
   }
 }
