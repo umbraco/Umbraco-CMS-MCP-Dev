@@ -75,7 +75,7 @@ const UpdateDocumentPropertiesTool = {
   - Update with culture: { id: "...", properties: [{ alias: "title", value: "Nuevo Título", culture: "es-ES" }] }
   - Mix update and add: { id: "...", properties: [{ alias: "title", value: "New" }, { alias: "newProp", value: "Value" }] }`,
   inputSchema: updateDocumentPropertiesSchema,
-  outputSchema: updateDocumentPropertiesOutputSchema.shape,
+  outputSchema: updateDocumentPropertiesOutputSchema,
   annotations: {
     idempotentHint: true,
   },
@@ -313,6 +313,6 @@ const UpdateDocumentPropertiesTool = {
       document: updatedDocument
     });
   }),
-} satisfies ToolDefinition<typeof updateDocumentPropertiesSchema, typeof updateDocumentPropertiesOutputSchema.shape>;
+} satisfies ToolDefinition<typeof updateDocumentPropertiesSchema, typeof updateDocumentPropertiesOutputSchema>;
 
 export default withStandardDecorators(UpdateDocumentPropertiesTool);
