@@ -106,18 +106,11 @@ Tools
 ### 8. Push and create PR
 
 - Push the branch to origin
-- Create a PR targeting `dev` with:
+- Create a PR targeting `main` with:
   - Title: `Release/<version>`
   - Body: the changelog from step 7
 
-### 9. Remind the user about the two-PR flow
-
-This project uses a two-PR release process:
-
-1. **PR 1** (just created): `release/<version>` → `dev` — version bump + changelog
-2. **PR 2** (after PR 1 merges): `dev` → `main` — this is the actual release
-
-Merging to `main` triggers the npm publish via GitHub Actions, so the second PR is what makes the release live.
+Merging to `main` triggers the npm publish via GitHub Actions.
 
 ## Files touched
 
