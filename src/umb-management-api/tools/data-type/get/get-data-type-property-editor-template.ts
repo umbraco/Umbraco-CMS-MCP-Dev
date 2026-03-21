@@ -27,21 +27,16 @@ const propertyEditorTemplateItemSchema = z.object({
   _notes: z.string().optional(),
 });
 
-// Output schema: union of available editors list or specific template
-const propertyEditorTemplateOutputSchema = z.union([
-  z.object({
-    type: z.literal("list"),
-    availableEditors: z.array(z.object({
-      name: z.string(),
-      notes: z.string().optional(),
-    })),
-  }),
-  z.object({
-    type: z.literal("template"),
+// Output schema for structured responses
+const propertyEditorTemplateOutputSchema = z.object({
+  type: z.enum(["list", "template"]).describe("Whether this is a list of available editors or a specific template"),
+  availableEditors: z.array(z.object({
     name: z.string(),
-    template: propertyEditorTemplateItemSchema,
-  }),
-]);
+    notes: z.string().optional(),
+  })).optional().describe("Available editors (when type is 'list')"),
+  name: z.string().optional().describe("Editor name (when type is 'template')"),
+  template: propertyEditorTemplateItemSchema.optional().describe("Editor template (when type is 'template')"),
+});
 
 const GetDataTypePropertyEditorTemplateTool = {
   name: "get-data-type-property-editor-template",
@@ -65,7 +60,7 @@ The templates include:
 
 Note: Some templates (like BlockList, BlockGrid) have _notes indicating you must create element types first before creating the data type.`,
   inputSchema: propertyEditorTemplateSchema.shape,
-  outputSchema: propertyEditorTemplateOutputSchema,
+  outputSchema: propertyEditorTemplateOutputSchema.shape,
   annotations: {
     readOnlyHint: true
   },
@@ -137,6 +132,6 @@ Note: Some templates (like BlockList, BlockGrid) have _notes indicating you must
 
     return createToolResult(structuredOutput);
   }),
-} satisfies ToolDefinition<typeof propertyEditorTemplateSchema.shape, typeof propertyEditorTemplateOutputSchema>;
+} satisfies ToolDefinition<typeof propertyEditorTemplateSchema.shape, typeof propertyEditorTemplateOutputSchema.shape>;
 
 export default withStandardDecorators(GetDataTypePropertyEditorTemplateTool);
