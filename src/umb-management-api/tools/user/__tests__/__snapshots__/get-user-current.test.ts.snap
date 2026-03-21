@@ -22,7 +22,7 @@ exports[`get-user-current should get current authenticated user information 1`] 
       "https://localhost:44391/media/UserAvatars/NORMALIZED_AVATAR.jpg?rmode=crop&width=300&height=300",
     ],
     "documentStartNodeIds": [],
-    "email": "a@a.co.uk",
+    "email": "pjw@umbraco.dk",
     "fallbackPermissions": [
       "Umb.Document.Create",
       "Umb.Document.Update",
@@ -62,7 +62,7 @@ exports[`get-user-current should get current authenticated user information 1`] 
         "id": "e5e7f6c8-7f9c-4b5b-8d5d-9e1e5a4f7e4d",
       },
     ],
-    "userName": "a@a.co.uk",
+    "userName": "pjw@umbraco.dk",
   },
 }
 `;
