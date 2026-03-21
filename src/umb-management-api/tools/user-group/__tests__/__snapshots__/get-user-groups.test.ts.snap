@@ -8,7 +8,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "admin",
         "aliasCanBeChanged": false,
-        "description": "",
+        "description": "Users with full access to all sections and functionality",
         "documentRootAccess": true,
         "documentStartNode": null,
         "fallbackPermissions": [
@@ -57,7 +57,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "editor",
         "aliasCanBeChanged": true,
-        "description": "",
+        "description": "Users with full permission to create, update and publish content",
         "documentRootAccess": true,
         "documentStartNode": null,
         "fallbackPermissions": [
@@ -98,7 +98,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "sensitiveData",
         "aliasCanBeChanged": false,
-        "description": "",
+        "description": "Users with the specific permission to be able to manage properties and data marked as sensitive",
         "documentRootAccess": false,
         "documentStartNode": null,
         "fallbackPermissions": [],
@@ -116,7 +116,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "translator",
         "aliasCanBeChanged": false,
-        "description": "",
+        "description": "Users with permission to manage dictionary entries",
         "documentRootAccess": true,
         "documentStartNode": null,
         "fallbackPermissions": [
@@ -141,7 +141,7 @@ exports[`GetUserGroupsTool should handle empty result 1`] = `
       {
         "alias": "writer",
         "aliasCanBeChanged": true,
-        "description": "",
+        "description": "Users with permission to create and update but not publish content",
         "documentRootAccess": true,
         "documentStartNode": null,
         "fallbackPermissions": [
