@@ -13,14 +13,13 @@ builder.CreateUmbracoBuilder()
     .Build();
 
 // Allow HTTP for token endpoint in development (workerd can't verify self-signed certs).
+// Uses Configure<T> after Umbraco's builder so the setting isn't overridden.
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddOpenIddict()
-        .AddServer(options =>
-        {
-            options.UseAspNetCore()
-                .DisableTransportSecurityRequirement();
-        });
+    builder.Services.Configure<OpenIddict.Server.AspNetCore.OpenIddictServerAspNetCoreOptions>(options =>
+    {
+        options.DisableTransportSecurityRequirement = true;
+    });
 }
 
 WebApplication app = builder.Build();

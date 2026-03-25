@@ -1,8 +1,8 @@
 /**
- * Test Worker for CMS MCP E2E Tests
+ * Cloudflare Worker for hosted Umbraco CMS MCP.
  *
  * Wraps the CMS tool collections in a Cloudflare Worker with OAuth
- * authentication for testing the hosted deployment path.
+ * authentication via the Umbraco backoffice.
  */
 
 // Wrangler virtual modules
@@ -21,21 +21,23 @@ import {
 } from "@umbraco-cms/mcp-hosted";
 
 // CMS collections and registries
-import { collections, allModes, allModeNames, allSliceNames } from "../../src/collections.js";
+import { collections, allModes, allModeNames, allSliceNames } from "./collections.js";
+import { UmbracoManagementClient } from "./umb-management-api/umbraco-management-client.js";
 
 // ============================================================================
 // Server Configuration
 // ============================================================================
 
 const options = {
-  name: "umbraco-cms-mcp-e2e",
-  version: "1.0.0",
+  name: "umbraco-cms-mcp",
+  version: "17.1.2",
   collections,
   modeRegistry: allModes,
   allModeNames,
   allSliceNames,
   enableConsentToolSelection: true,
   authOptions: { showReauthButton: true },
+  clientFactory: () => UmbracoManagementClient.getClient(),
 };
 
 const serverOptions = getServerOptions(options);

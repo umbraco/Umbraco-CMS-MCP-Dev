@@ -35,8 +35,8 @@ function killPortIfBusy(port: number): void {
 export async function startWorker(varsOverride?: Record<string, string>): Promise<string> {
   killPortIfBusy(8787);
 
-  worker = await unstable_dev("tests/cms-hosted-e2e/worker.ts", {
-    config: "tests/cms-hosted-e2e/wrangler.e2e.toml",
+  worker = await unstable_dev("src/worker.ts", {
+    config: "wrangler.toml",
     port: 8787,
     experimental: { disableExperimentalWarning: true },
     vars: { ...BASE_VARS, ...varsOverride },

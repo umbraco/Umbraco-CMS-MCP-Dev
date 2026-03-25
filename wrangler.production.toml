@@ -1,16 +1,17 @@
-# Wrangler config for E2E tests.
+# Production Wrangler config for deploying to Cloudflare Workers.
+# Usage: wrangler deploy --config wrangler.production.toml
 
-name = "umbraco-cms-mcp-e2e"
-main = "worker.ts"
+name = "umbraco-cms-mcp"
+main = "src/worker.ts"
 compatibility_date = "2025-04-01"
 compatibility_flags = ["nodejs_compat_v2"]
 
-# Use find_additional_modules to handle yargs resolution
 find_additional_modules = true
 
 [[kv_namespaces]]
 binding = "OAUTH_KV"
-id = "e2e-test-kv"
+# Replace with your production KV namespace ID from: wrangler kv namespace create OAUTH_KV
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
 
 [durable_objects]
 bindings = [
