@@ -5,9 +5,9 @@ exports[`publish-document-with-descendants should handle publishing a non-existe
   "content": [],
   "isError": true,
   "structuredContent": {
-    "detail": "Request failed with status code 404",
+    "detail": "Request failed with status 404: Not Found",
     "status": 500,
-    "title": "AxiosError",
+    "title": "Error",
     "type": "Error",
   },
 }
