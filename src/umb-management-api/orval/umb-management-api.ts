@@ -19,7 +19,7 @@ export const UmbManagementApiOrvalConfig = defineConfig({
       client: "axios",
       override: {
         mutator: {
-          path: "@umbraco-cms/mcp-server-sdk",
+          path: "./src/umb-management-api/api/client.ts",
           name: "UmbracoManagementClient",
         },
       },

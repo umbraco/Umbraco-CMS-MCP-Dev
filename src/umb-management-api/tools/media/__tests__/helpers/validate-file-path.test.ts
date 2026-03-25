@@ -49,67 +49,67 @@ describe("validate-file-path", () => {
   });
 
   describe("when UMBRACO_ALLOWED_MEDIA_PATHS is not configured", () => {
-    it("should reject all file path uploads with clear error message", () => {
-      expect(() => validateFilePath(testFile, undefined)).toThrow(
+    it("should reject all file path uploads with clear error message", async () => {
+      await expect(validateFilePath(testFile, undefined)).rejects.toThrow(
         "File path uploads are disabled. To enable, set UMBRACO_ALLOWED_MEDIA_PATHS environment variable"
       );
     });
   });
 
   describe("when UMBRACO_ALLOWED_MEDIA_PATHS is empty array", () => {
-    it("should reject all file path uploads", () => {
-      expect(() => validateFilePath(testFile, [])).toThrow(
+    it("should reject all file path uploads", async () => {
+      await expect(validateFilePath(testFile, [])).rejects.toThrow(
         "File path uploads are disabled"
       );
     });
   });
 
   describe("when UMBRACO_ALLOWED_MEDIA_PATHS is configured", () => {
-    it("should allow files within allowed directory", () => {
-      const result = validateFilePath(testFile, [tempDir]);
+    it("should allow files within allowed directory", async () => {
+      const result = await validateFilePath(testFile, [tempDir]);
       expect(result).toBe(path.resolve(testFile));
     });
 
-    it("should reject files outside allowed directories", () => {
-      expect(() => validateFilePath(outsideFile, [tempDir])).toThrow(
+    it("should reject files outside allowed directories", async () => {
+      await expect(validateFilePath(outsideFile, [tempDir])).rejects.toThrow(
         `File path "${outsideFile}" is not in an allowed directory`
       );
     });
 
-    it("should prevent path traversal attacks", () => {
+    it("should prevent path traversal attacks", async () => {
       const traversalPath = path.join(tempDir, "..", "..", "etc", "passwd");
-      expect(() => validateFilePath(traversalPath, [tempDir])).toThrow(
+      await expect(validateFilePath(traversalPath, [tempDir])).rejects.toThrow(
         "is not in an allowed directory"
       );
     });
 
-    it("should reject non-existent files", () => {
+    it("should reject non-existent files", async () => {
       const nonExistent = path.join(tempDir, "nonexistent.jpg");
-      expect(() => validateFilePath(nonExistent, [tempDir])).toThrow(
+      await expect(validateFilePath(nonExistent, [tempDir])).rejects.toThrow(
         "File not found"
       );
     });
 
-    it("should normalize relative paths before validation", () => {
+    it("should normalize relative paths before validation", async () => {
       const relativePath = path.relative(process.cwd(), testFile);
-      const result = validateFilePath(relativePath, [tempDir]);
+      const result = await validateFilePath(relativePath, [tempDir]);
       expect(result).toBe(path.resolve(testFile));
     });
   });
 
   describe("symlink handling", () => {
-    it("should allow symlinks pointing to files within allowed directories", () => {
+    it("should allow symlinks pointing to files within allowed directories", async () => {
       fs.symlinkSync(testFile, testSymlink);
-      const result = validateFilePath(testSymlink, [tempDir]);
+      const result = await validateFilePath(testSymlink, [tempDir]);
       expect(result).toBe(path.resolve(testSymlink));
     });
 
-    it("should reject symlinks pointing to files outside allowed directories", () => {
+    it("should reject symlinks pointing to files outside allowed directories", async () => {
       fs.symlinkSync(outsideFile, testSymlink);
-      expect(() => validateFilePath(testSymlink, [tempDir])).toThrow(
+      await expect(validateFilePath(testSymlink, [tempDir])).rejects.toThrow(
         "is a symbolic link to"
       );
-      expect(() => validateFilePath(testSymlink, [tempDir])).toThrow(
+      await expect(validateFilePath(testSymlink, [tempDir])).rejects.toThrow(
         "which is outside allowed directories"
       );
     });
@@ -134,18 +134,18 @@ describe("validate-file-path", () => {
       }
     });
 
-    it("should allow files from first allowed directory", () => {
-      const result = validateFilePath(testFile, [tempDir, secondTempDir]);
+    it("should allow files from first allowed directory", async () => {
+      const result = await validateFilePath(testFile, [tempDir, secondTempDir]);
       expect(result).toBe(path.resolve(testFile));
     });
 
-    it("should allow files from second allowed directory", () => {
-      const result = validateFilePath(secondTestFile, [tempDir, secondTempDir]);
+    it("should allow files from second allowed directory", async () => {
+      const result = await validateFilePath(secondTestFile, [tempDir, secondTempDir]);
       expect(result).toBe(path.resolve(secondTestFile));
     });
 
-    it("should reject files outside all allowed directories", () => {
-      expect(() => validateFilePath(outsideFile, [tempDir, secondTempDir])).toThrow(
+    it("should reject files outside all allowed directories", async () => {
+      await expect(validateFilePath(outsideFile, [tempDir, secondTempDir])).rejects.toThrow(
         "is not in an allowed directory"
       );
     });

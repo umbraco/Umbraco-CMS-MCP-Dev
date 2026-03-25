@@ -1,12 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateDictionaryItemRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
-import { AxiosResponse } from "axios";
 import {
   type ToolDefinition,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 const createDictionarySchema = z.object({
@@ -46,11 +46,11 @@ const CreateDictionaryItemTool = {
     const response = await client.postDictionary(payload, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       // Extract ID from Location header
-      const locationHeader = response.headers['location'] || response.headers['Location'];
+      const locationHeader = response.headers?.['location'] || response.headers?.['Location'];
       let createdId = model.id || '';
       if (locationHeader) {
         const idMatch = locationHeader.match(/([0-9a-f-]{36})$/i);

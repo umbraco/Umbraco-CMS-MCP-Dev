@@ -22,6 +22,7 @@ describe("create-user-group", () => {
     const result = await CreateUserGroupTool.handler({
       name: TEST_GROUP_NAME,
       alias: TEST_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
+      description: undefined,
       icon: undefined,
       sections: ["content"],
       languages: [],
@@ -48,6 +49,7 @@ describe("create-user-group", () => {
     await CreateUserGroupTool.handler({
       name: EXISTING_GROUP_NAME,
       alias: EXISTING_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
+      description: undefined,
       icon: undefined,
       sections: ["content"],
       languages: [],
@@ -65,6 +67,7 @@ describe("create-user-group", () => {
     const result = await CreateUserGroupTool.handler({
       name: EXISTING_GROUP_NAME,
       alias: EXISTING_GROUP_NAME.toLowerCase().replace(/\s+/g, "-"),
+      description: undefined,
       icon: undefined,
       sections: ["content"],
       languages: [],

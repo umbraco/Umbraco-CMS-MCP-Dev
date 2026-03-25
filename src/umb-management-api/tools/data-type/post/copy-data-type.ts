@@ -5,12 +5,12 @@ import {
   postDataTypeByIdCopyBody,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
-import { AxiosResponse } from "axios";
 import {
   type ToolDefinition,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 const copyDataTypeSchema = {
@@ -35,7 +35,7 @@ const CopyDataTypeTool = {
     const response = await client.postDataTypeByIdCopy(id, body, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       // Extract new ID from Location header: /umbraco/management/api/v1/data-type/{guid}
