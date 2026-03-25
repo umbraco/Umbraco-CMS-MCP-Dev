@@ -145,7 +145,7 @@ export async function createFileStream(
         throw new Error("filePath is required when sourceType is 'filePath'");
       }
       // Validate file path is within allowed directories (security check)
-      const validatedPath = validateFilePath(filePath);
+      const validatedPath = await validateFilePath(filePath);
       readStream = fs.createReadStream(validatedPath);
       break;
 
