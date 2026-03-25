@@ -15,7 +15,7 @@ const main = async () => {
   clearConfigCache();
 
   // Load and validate configuration
-  const serverConfig = loadServerConfig(true); // true = stdio mode (no logging)
+  const serverConfig = await loadServerConfig(true); // true = stdio mode (no logging)
   const config = serverConfig.umbraco;
 
   // Initialize fetch client with configuration
