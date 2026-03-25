@@ -2,12 +2,12 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateUserGroupRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { postUserGroupBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
-import { AxiosResponse } from "axios";
 import {
   type ToolDefinition,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 export const createUserGroupOutputSchema = z.object({
@@ -26,11 +26,11 @@ const CreateUserGroupTool = {
     const response = await client.postUserGroup(model, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       // Extract ID from Location header
-      const locationHeader = response.headers['location'] || response.headers['Location'];
+      const locationHeader = response.headers?.['location'] || response.headers?.['Location'];
       let createdId = '';
       if (locationHeader) {
         // Location header format: /umbraco/management/api/v1/user-group/{id}

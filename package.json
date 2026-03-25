@@ -3,7 +3,14 @@
   "version": "17.1.2",
   "type": "module",
   "description": "A model context protocol (MCP) server for Umbraco CMS",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./collections": {
+      "types": "./collections.d.ts",
+      "import": "./dist/collections.js"
+    }
+  },
   "mcpName": "io.github.umbraco/Umbraco-CMS-MCP-Dev",
   "bin": {
     "umbraco": "dist/index.js"
@@ -19,13 +26,18 @@
     "patch-publish-alpha": "npm version prerelease --preid=alpha && npm publish --tag alpha --access public",
     "test:e2e-sdk": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --silent --forceExit 2>/dev/null",
     "test:e2e-sdk:verbose": "E2E_VERBOSITY=verbose node --experimental-vm-modules node_modules/jest/bin/jest.js tests/e2e-sdk --runInBand --testTimeout=120000 --forceExit",
-    "test:e2e-sdk:debug": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --detectOpenHandles"
+    "test:e2e-sdk:debug": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --detectOpenHandles",
+    "test:e2e": "npx playwright test --config tests/cms-hosted-e2e/playwright.config.ts",
+    "umbraco:start": "dotnet run --project infrastructure/test-umbraco/MCPTestSite",
+    "umbraco:stop": "lsof -ti :44391 | xargs kill 2>/dev/null; lsof -ti :56472 | xargs kill 2>/dev/null",
+    "dev:hosted": "wrangler dev"
   },
   "engines": {
     "node": ">=22.0.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "collections.d.ts"
   ],
   "repository": {
     "type": "git",
@@ -49,7 +61,7 @@
     "@modelcontextprotocol/sdk": "^1.25.1",
     "@types/uuid": "^10.0.0",
     "@types/yargs": "^17.0.33",
-    "@umbraco-cms/mcp-server-sdk": "^17.0.0-beta.4",
+    "@umbraco-cms/mcp-server-sdk": "^17.0.0-beta.5",
     "axios": "^1.8.4",
     "dotenv": "^16.5.0",
     "form-data": "^4.0.4",
@@ -61,12 +73,16 @@
   },
   "devDependencies": {
     "@anthropic-ai/claude-agent-sdk": "0.2.39",
+    "@cloudflare/workers-oauth-provider": "^0.2.3",
     "@jest/types": "^29.6.3",
+    "@playwright/test": "^1.58.2",
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^29.5.14",
     "@types/mime-types": "^3.0.1",
     "@types/node": "^22.14.1",
     "@types/qs": "^6.9.18",
+    "@umbraco-cms/mcp-hosted": "^17.0.0-beta.5",
+    "agents": "^0.6.0",
     "copyfiles": "^2.4.1",
     "glob": "^11.0.2",
     "jest": "^29.7.0",
@@ -76,6 +92,7 @@
     "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "wrangler": "^4.69.0"
   }
 }

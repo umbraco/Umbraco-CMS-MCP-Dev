@@ -47,3 +47,4 @@ dist
 **/.roo/mcp.json
 .wrangler
 .dev.vars
+test-results

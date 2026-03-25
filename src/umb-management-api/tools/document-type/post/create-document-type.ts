@@ -2,7 +2,6 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { AxiosResponse } from "axios";
 import {
   createContainerHierarchy,
 } from "./helpers/create-container-hierarchy.js";
@@ -11,6 +10,7 @@ import {
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
@@ -160,7 +160,7 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
     const response = await client.postDocumentType(payload, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       const output = {

@@ -1,3 +1,8 @@
+// Allow self-signed certificates for local Umbraco dev instances.
+// Must be set here (before any modules load) because Jest's VM modules
+// may initialize TLS before setupFiles run.
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 const config: import("ts-jest").JestConfigWithTsJest = {
   preset: "ts-jest/presets/js-with-ts-esm",
   testEnvironment: "node",
@@ -23,7 +28,7 @@ const config: import("ts-jest").JestConfigWithTsJest = {
     ],
   },
   testMatch: ["**/src/**/__tests__/**/*.test.ts", "**/tests/evals/**/*.test.ts"],
-  testPathIgnorePatterns: ["/node_modules/", "\\.claude/worktrees/"],
+  testPathIgnorePatterns: ["/node_modules/"],
   setupFilesAfterEnv: ["jest-extended/all"],
   setupFiles: ["<rootDir>/jest.setup.ts"],
   maxConcurrency: 1, // Umbraco uses SQLite which doesn't support concurrent connections

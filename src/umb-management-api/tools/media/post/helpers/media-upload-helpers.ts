@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
-import axios from "axios";
 import mime from "mime-types";
 import { validateFilePath } from "./validate-file-path.js";
 import {
@@ -155,15 +154,20 @@ export async function createFileStream(
         throw new Error("fileUrl is required when sourceType is 'url'");
       }
       try {
-        const response = await axios.get(fileUrl, {
-          responseType: 'arraybuffer',
-          timeout: 30000,
-          validateStatus: (status) => status < 500, // Don't throw on 4xx errors
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+        let response: Response;
+        try {
+          response = await fetch(fileUrl, { signal: controller.signal });
+        } finally {
+          clearTimeout(timeoutId);
+        }
 
         if (response.status >= 400) {
           throw new Error(`Failed to fetch file from URL: HTTP ${response.status} ${response.statusText}`);
         }
+
+        const arrayBuffer = await response.arrayBuffer();
 
         // Extract extension from URL, or try to detect from Content-Type header
         let fileNameWithExtension = fileName;
@@ -176,7 +180,7 @@ export async function createFileStream(
             fileNameWithExtension = `${fileName}${urlExtension}`;
           } else {
             // Try to detect extension from Content-Type header
-            const contentType = response.headers['content-type'] as string | undefined;
+            const contentType = response.headers.get('content-type') ?? undefined;
             const extensionFromMime = getExtensionFromMimeType(contentType);
             if (extensionFromMime) {
               fileNameWithExtension = `${fileName}${extensionFromMime}`;
@@ -189,16 +193,11 @@ export async function createFileStream(
 
         // Use the filename with extension so Umbraco can parse it correctly
         tempFilePath = path.join(os.tmpdir(), fileNameWithExtension);
-        fs.writeFileSync(tempFilePath, response.data);
+        fs.writeFileSync(tempFilePath, Buffer.from(arrayBuffer));
         readStream = fs.createReadStream(tempFilePath);
       } catch (error) {
-        const axiosError = error as any;
-        if (axiosError.response) {
-          throw new Error(`Failed to fetch URL: HTTP ${axiosError.response.status} - ${axiosError.response.statusText} (${fileUrl})`);
-        } else if (axiosError.code === 'ECONNABORTED') {
+        if ((error as any).name === 'AbortError') {
           throw new Error(`Request timeout after 30s fetching URL: ${fileUrl}`);
-        } else if (axiosError.code) {
-          throw new Error(`Network error (${axiosError.code}) fetching URL: ${fileUrl} - ${axiosError.message}`);
         }
         throw new Error(`Failed to fetch URL: ${fileUrl} - ${(error as Error).message}`);
       }

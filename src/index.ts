@@ -7,7 +7,7 @@ import packageJson from "../package.json" with { type: "json" };
 import { UmbracoToolFactory } from "./umb-management-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { checkUmbracoVersion, configureApiClient, initializeUmbracoAxios } from "@umbraco-cms/mcp-server-sdk";
+import { checkUmbracoVersion, configureApiClient, initializeUmbracoFetch } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache } from "./config/index.js";
 
 const main = async () => {
@@ -18,8 +18,8 @@ const main = async () => {
   const serverConfig = loadServerConfig(true); // true = stdio mode (no logging)
   const config = serverConfig.umbraco;
 
-  // Initialize Axios client with configuration
-  initializeUmbracoAxios(config.auth);
+  // Initialize fetch client with configuration
+  initializeUmbracoFetch(config.auth);
 
   // Configure API client for SDK helpers (executeVoidApiCall, etc.)
   configureApiClient(() => UmbracoManagementClient.getClient());
