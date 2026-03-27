@@ -3,7 +3,6 @@ import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
 import {
   createMockRequestHandlerExtra,
-  createSnapshotResult,
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
@@ -22,7 +21,10 @@ describe("get-language", () => {
   let builder2: LanguageBuilder;
   let builder3: LanguageBuilder;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO_1);
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO_2);
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO_3);
     builder1 = new LanguageBuilder();
     builder2 = new LanguageBuilder();
     builder3 = new LanguageBuilder();
@@ -59,10 +61,12 @@ describe("get-language", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert
-    validateToolResponse(GetLanguageTool, result);
-    const normalizedResult = createSnapshotResult(result);
-    expect(normalizedResult).toMatchSnapshot();
+    // Assert - don't snapshot full list as other parallel tests may add languages
+    const data = validateToolResponse(GetLanguageTool, result);
+    expect(data.items.length).toBeGreaterThanOrEqual(3); // default + 2 test languages
+    const isoCodes = data.items.map((item: any) => item.isoCode);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_1);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_2);
   });
 
   it("should get languages with pagination - skip and take", async () => {
@@ -94,10 +98,10 @@ describe("get-language", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert
-    validateToolResponse(GetLanguageTool, result);
-    const normalizedResult = createSnapshotResult(result);
-    expect(normalizedResult).toMatchSnapshot();
+    // Assert - pagination should return exactly 1 item
+    const data = validateToolResponse(GetLanguageTool, result);
+    expect(data.items).toHaveLength(1);
+    expect(data.total).toBeGreaterThanOrEqual(4); // default + 3 test languages
   });
 
   it("should get languages with take parameter only", async () => {
@@ -122,9 +126,9 @@ describe("get-language", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert
-    validateToolResponse(GetLanguageTool, result);
-    const normalizedResult = createSnapshotResult(result);
-    expect(normalizedResult).toMatchSnapshot();
+    // Assert - take=1 should return exactly 1 item
+    const data = validateToolResponse(GetLanguageTool, result);
+    expect(data.items).toHaveLength(1);
+    expect(data.total).toBeGreaterThanOrEqual(3); // default + 2 test languages
   });
 });

@@ -19,8 +19,14 @@ describe("get-member-by-id-referenced-descendants", () => {
   // The API exists for completeness and potential future use cases with custom member hierarchies
   setupTestEnvironment();
 
+  beforeEach(async () => {
+    await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
+    await MemberTestHelper.cleanup("nodesc_" + TEST_MEMBER_EMAIL);
+  });
+
   afterEach(async () => {
     await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
+    await MemberTestHelper.cleanup("nodesc_" + TEST_MEMBER_EMAIL);
   });
 
   it("should get descendant references for a member", async () => {
