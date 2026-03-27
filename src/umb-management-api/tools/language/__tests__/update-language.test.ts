@@ -7,7 +7,7 @@ import {
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_LANGUAGE_NAME = '_Test Update Language';
-const TEST_LANGUAGE_ISO = 'en-GB';
+const TEST_LANGUAGE_ISO = 'en-SG';
 const UPDATED_LANGUAGE_NAME = '_Test Updated Language';
 
 describe("update-language", () => {
@@ -15,7 +15,8 @@ describe("update-language", () => {
 
   let builder: LanguageBuilder;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
     builder = new LanguageBuilder();
   });
 

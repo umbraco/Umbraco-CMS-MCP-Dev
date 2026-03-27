@@ -20,9 +20,16 @@ describe("media-type-tree", () => {
   const TEST_FOLDER_NAME = "_Test Folder MediaType";
   const TEST_CHILD_NAME = "_Test Child MediaType";
 
-  afterEach(async () => {
-    await MediaTypeTestHelper.cleanup(TEST_ROOT_NAME);
+  beforeEach(async () => {
+    // Clean up any leftover media types from previous runs
     await MediaTypeTestHelper.cleanup(TEST_CHILD_NAME);
+    await MediaTypeTestHelper.cleanup(TEST_ROOT_NAME);
+    await MediaTypeFolderTestHelper.cleanup(TEST_FOLDER_NAME);
+  });
+
+  afterEach(async () => {
+    await MediaTypeTestHelper.cleanup(TEST_CHILD_NAME);
+    await MediaTypeTestHelper.cleanup(TEST_ROOT_NAME);
     await MediaTypeFolderTestHelper.cleanup(TEST_FOLDER_NAME);
   });
 

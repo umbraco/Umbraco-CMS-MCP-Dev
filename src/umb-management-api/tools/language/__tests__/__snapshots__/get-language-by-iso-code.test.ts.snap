@@ -7,7 +7,7 @@ exports[`get-language-by-iso-code should get a language by isoCode 1`] = `
     "fallbackIsoCode": null,
     "isDefault": false,
     "isMandatory": false,
-    "isoCode": "en-Gb",
+    "isoCode": "en-ZW",
     "name": "_Test Language",
   },
 }

@@ -1,6 +1,7 @@
 import { getFilterUserGroupQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetFilterUserGroupTool from "../get/get-filter-user-group.js";
 import { UserGroupBuilder } from "./helpers/user-group-builder.js";
+import { UserGroupTestHelper } from "./helpers/user-group-helper.js";
 import {
   createMockRequestHandlerExtra,
   setupTestEnvironment,
@@ -21,6 +22,10 @@ describe("GetFilterUserGroupTool", () => {
 
   beforeEach(async () => {
     builders = [];
+    // Clean up any leftover test groups from previous runs
+    for (const name of TEST_GROUP_NAMES) {
+      await UserGroupTestHelper.cleanup(name);
+    }
     // Create test user groups
     for (const name of TEST_GROUP_NAMES) {
       const builder = new UserGroupBuilder();

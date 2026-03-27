@@ -6,7 +6,7 @@ exports[`get-language-items should get language item by isoCode 1`] = `
   "structuredContent": {
     "items": [
       {
-        "isoCode": "en-GB",
+        "isoCode": "en-IE",
         "name": "_Test Language Items",
       },
     ],

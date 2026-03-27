@@ -5,11 +5,16 @@ import {
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_LANGUAGE_NAME = '_Test Helper Language';
-const TEST_LANGUAGE_ISO = 'en-GB';
+const TEST_LANGUAGE_ISO = 'en-PH';
 const TEST_FALLBACK_ISO = 'en';
 
 describe('LanguageTestHelper', () => {
   setupTestEnvironment();
+
+  beforeEach(async () => {
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
+    await LanguageTestHelper.cleanup(TEST_FALLBACK_ISO);
+  });
 
   afterEach(async () => {
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
