@@ -58,7 +58,7 @@
   },
   "homepage": "https://github.com/umbraco/Umbraco-CMS-MCP-Dev#readme",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.25.1",
+    "@modelcontextprotocol/sdk": "^1.28.0",
     "@types/uuid": "^10.0.0",
     "@types/yargs": "^17.0.33",
     "@umbraco-cms/mcp-server-sdk": "^17.0.0-beta.5",
