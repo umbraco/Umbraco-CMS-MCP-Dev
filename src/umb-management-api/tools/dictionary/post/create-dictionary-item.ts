@@ -23,7 +23,7 @@ type CreateDictionarySchema = z.infer<typeof createDictionarySchema>;
 
 export const createDictionaryOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateDictionaryItemTool = {

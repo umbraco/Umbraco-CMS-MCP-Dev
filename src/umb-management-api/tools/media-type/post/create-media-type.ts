@@ -40,7 +40,7 @@ type CreateMediaTypeSchema = z.infer<typeof createMediaTypeSchema>;
 
 export const createMediaTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateMediaTypeTool = {

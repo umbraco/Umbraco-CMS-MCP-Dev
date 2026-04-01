@@ -1,5 +1,5 @@
 {
-  "name": "umbraco-mcp-server",
-  "version": "17.0.0-beta.8",
+  "name": "umb-cms-mcp",
+  "version": "17.2.2",
   "description": "Skills for CLI operation of Umbraco MCP servers - CLI setup, tool filtering, introspection, and runtime modes"
 }

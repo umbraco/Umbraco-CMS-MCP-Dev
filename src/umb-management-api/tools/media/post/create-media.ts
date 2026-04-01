@@ -30,7 +30,7 @@ type CreateMediaParams = z.infer<typeof createMediaSchema>;
 export const createMediaOutputSchema = z.object({
   message: z.string(),
   name: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateMediaTool = {
