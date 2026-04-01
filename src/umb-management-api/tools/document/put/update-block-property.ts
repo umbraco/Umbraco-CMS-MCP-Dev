@@ -29,7 +29,7 @@ import {
 // Output schema for successful responses
 const blockUpdateResultSchema = z.object({
   success: z.boolean(),
-  contentKey: z.string().uuid(),
+  contentKey: z.string().guid(),
   message: z.string(),
   updatedCount: z.number().optional(),
   addedCount: z.number().optional(),

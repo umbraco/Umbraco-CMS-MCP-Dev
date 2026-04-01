@@ -12,7 +12,7 @@ import {
 
 export const createUserDataOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateUserDataTool = {

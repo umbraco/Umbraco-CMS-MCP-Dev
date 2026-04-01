@@ -40,7 +40,7 @@ export const createMediaMultipleOutputSchema = z.object({
   results: z.array(z.object({
     success: z.boolean(),
     name: z.string(),
-    id: z.string().uuid().optional(),
+    id: z.string().guid().optional(),
     error: z.string().optional()
   }))
 });
