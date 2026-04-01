@@ -20,7 +20,7 @@ const createMediaSchema = z.object({
   name: z.string().describe("The name of the media item"),
   mediaTypeName: z.string().describe(`Media type: '${MEDIA_TYPE_IMAGE}', '${MEDIA_TYPE_ARTICLE}', '${MEDIA_TYPE_AUDIO}', '${MEDIA_TYPE_VIDEO}', '${MEDIA_TYPE_VECTOR_GRAPHICS}', '${MEDIA_TYPE_FILE}', or custom media type name`),
   filePath: z.string().optional().describe("Absolute path to the file (required if sourceType is 'filePath')"),
-  fileUrl: z.string().url().optional().describe("URL to fetch the file from (required if sourceType is 'url')"),
+  fileUrl: z.string().url().optional().describe("[raw] URL to fetch the file from (required if sourceType is 'url')"),
   fileAsBase64: z.string().optional().describe("Base64 encoded file data (required if sourceType is 'base64')"),
   parentId: z.string().uuid().optional().describe("Parent folder ID (defaults to root)"),
 });

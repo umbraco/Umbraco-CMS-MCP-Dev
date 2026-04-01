@@ -2,6 +2,7 @@ import MoveMediaTypeTool from "../put/move-media-type.js";
 import { MediaTypeBuilder } from "./helpers/media-type-builder.js";
 import { MediaTypeTestHelper } from "./helpers/media-type-helper.js";
 import { MediaTypeFolderBuilder } from "./helpers/media-type-folder-builder.js";
+import { MediaTypeFolderTestHelper } from "./helpers/media-type-folder-helper.js";
 import {
   BLANK_UUID,
 } from "@umbraco-cms/mcp-server-sdk";
@@ -21,17 +22,17 @@ describe("move-media-type", () => {
   let sourceFolderBuilder: MediaTypeFolderBuilder;
   let targetFolderBuilder: MediaTypeFolderBuilder;
 
+  beforeEach(async () => {
+    // Clean up any leftover data from previous runs
+    await MediaTypeTestHelper.cleanup(TEST_MEDIATYPE_NAME);
+    await MediaTypeFolderTestHelper.cleanup(TEST_FOLDER_NAME);
+    await MediaTypeFolderTestHelper.cleanup(TEST_TARGET_FOLDER_NAME);
+  });
+
   afterEach(async () => {
-    // Clean up any test media types and folders
-    if (mediaTypeBuilder) {
-      await mediaTypeBuilder.cleanup();
-    }
-    if (sourceFolderBuilder) {
-      await sourceFolderBuilder.cleanup();
-    }
-    if (targetFolderBuilder) {
-      await targetFolderBuilder.cleanup();
-    }
+    await MediaTypeTestHelper.cleanup(TEST_MEDIATYPE_NAME);
+    await MediaTypeFolderTestHelper.cleanup(TEST_FOLDER_NAME);
+    await MediaTypeFolderTestHelper.cleanup(TEST_TARGET_FOLDER_NAME);
   });
 
   it("should move a media type to a folder", async () => {

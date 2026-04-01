@@ -80,6 +80,7 @@ export class UserGroupBuilder {
   async create(): Promise<UserGroupBuilder> {
     const client = UmbracoManagementClient.getClient();
     const validatedModel = postUserGroupBody.parse(this.model);
+
     await client.postUserGroup(validatedModel);
     // Get the created user group by name
     const response = await client.getUserGroup({ skip: 0, take: 100 });

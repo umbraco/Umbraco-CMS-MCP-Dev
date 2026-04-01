@@ -15,6 +15,11 @@ const EXISTING_LANGUAGE_ISO = 'en';
 describe("create-language", () => {
   setupTestEnvironment();
 
+  beforeEach(async () => {
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
+    await LanguageTestHelper.cleanup(EXISTING_LANGUAGE_ISO);
+  });
+
   afterEach(async () => {
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
     await LanguageTestHelper.cleanup(EXISTING_LANGUAGE_ISO);

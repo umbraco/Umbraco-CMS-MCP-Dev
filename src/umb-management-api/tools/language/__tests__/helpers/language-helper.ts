@@ -23,13 +23,22 @@ export class LanguageTestHelper {
   }
 
   static async cleanup(isoCode: string): Promise<void> {
-    // Check if language exists before attempting to delete to avoid 404 errors
-    const exists = await this.findLanguage(isoCode);
-    if (!exists) {
-      return;
-    }
+    try {
+      // Check if language exists before attempting to delete to avoid 404 errors
+      const exists = await this.findLanguage(isoCode);
+      if (!exists) {
+        return;
+      }
 
-    const client = UmbracoManagementClient.getClient();
-    await client.deleteLanguageByIsoCode(isoCode);
+      // Don't delete the default language
+      if (exists.isDefault) {
+        return;
+      }
+
+      const client = UmbracoManagementClient.getClient();
+      await client.deleteLanguageByIsoCode(isoCode);
+    } catch (error) {
+      // Silently ignore cleanup errors (e.g. race conditions, default language)
+    }
   }
 }

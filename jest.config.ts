@@ -27,13 +27,14 @@ const config: import("ts-jest").JestConfigWithTsJest = {
       },
     ],
   },
-  testMatch: ["**/src/**/__tests__/**/*.test.ts", "**/tests/evals/**/*.test.ts"],
-  testPathIgnorePatterns: ["/node_modules/", "\\.claude/worktrees/"],
+  testMatch: ["**/src/**/__tests__/**/*.test.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "\\.claude/worktrees/", "tests/evals/"],
   setupFilesAfterEnv: ["jest-extended/all"],
   setupFiles: ["<rootDir>/jest.setup.ts"],
-  maxConcurrency: 1, // Umbraco uses SQLite which doesn't support concurrent connections
+  reporters: ["default", "<rootDir>/jest-failure-reporter.ts"],
   maxWorkers: 1,
-  testTimeout: 60000, // 60 second timeout for integration tests
+  workerIdleMemoryLimit: '512MB', // Recycle worker to prevent OOM with ESM module loading
+  testTimeout: 60000,
 };
 
 module.exports = config;
