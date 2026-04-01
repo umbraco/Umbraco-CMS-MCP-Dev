@@ -11,13 +11,13 @@ import {
 } from "@umbraco-cms/mcp-server-sdk";
 
 const inputSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().guid(),
   data: z.object(postMediaTypeByIdCopyBody.shape),
 });
 
 export const copyMediaTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CopyMediaTypeTool = {

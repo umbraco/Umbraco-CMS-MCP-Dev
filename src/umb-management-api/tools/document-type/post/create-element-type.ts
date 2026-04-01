@@ -46,7 +46,7 @@ type CreateElementTypeModel = z.infer<typeof createElementTypeSchema>;
 
 export const createElementTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateElementTypeTool = {

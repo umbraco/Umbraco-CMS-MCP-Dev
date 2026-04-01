@@ -10,7 +10,7 @@ import {
 } from "@umbraco-cms/mcp-server-sdk";
 
 const inputSchema = {
-  id: z.string().uuid(),
+  id: z.string().guid(),
   data: z.object(putDocumentByIdUnpublishBody.shape),
 };
 

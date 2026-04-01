@@ -2,22 +2,22 @@ import { ReadStream } from "fs";
 import { z as zod } from "zod";
 
 export const postTemporaryFileBody = zod.object({
-  Id: zod.string().uuid(),
+  Id: zod.string().guid(),
   File: zod.instanceof(ReadStream),
 });
 
 export const getTemporaryFileByIdParams = zod.object({
-  id: zod.string().uuid(),
+  id: zod.string().guid(),
 });
 
 export const getTemporaryFileByIdResponse = zod.object({
-  id: zod.string().uuid(),
+  id: zod.string().guid(),
   availableUntil: zod.string().datetime({ local: true }).nullish(),
   fileName: zod.string().min(1),
 });
 
 export const deleteTemporaryFileByIdParams = zod.object({
-  id: zod.string().uuid(),
+  id: zod.string().guid(),
 });
 
 export const getTemporaryFileConfigurationResponse = zod.object({

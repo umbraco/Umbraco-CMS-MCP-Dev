@@ -20,7 +20,7 @@ const createDocumentTypeSchema = z.object({
   description: z.string().optional(),
   icon: z.string().min(1, "Icon is required"),
   allowedAsRoot: z.boolean().default(false),
-  parentId: z.string().uuid().optional(),
+  parentId: z.string().guid().optional(),
   compositions: z
     .array(z.string().uuid("Must be a valid document type UUID"))
     .default([]),
@@ -56,7 +56,7 @@ export type { CreateDocumentTypeModel };
 
 export const createDocumentTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateDocumentTypeTool = {

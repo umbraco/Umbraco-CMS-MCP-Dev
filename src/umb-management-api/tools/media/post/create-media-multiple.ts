@@ -23,7 +23,7 @@ const createMediaMultipleSchema = z.object({
     fileUrl: z.string().url().optional().describe("URL to fetch the file from (required if sourceType is 'url')"),
     mediaTypeName: z.string().optional().describe(`Optional override: '${MEDIA_TYPE_IMAGE}', '${MEDIA_TYPE_ARTICLE}', '${MEDIA_TYPE_AUDIO}', '${MEDIA_TYPE_VIDEO}', '${MEDIA_TYPE_VECTOR_GRAPHICS}', '${MEDIA_TYPE_FILE}', or custom media type name. If not specified, defaults to '${MEDIA_TYPE_FILE}'`),
   })).describe("Array of files to upload (maximum 20 files per batch)"),
-  parentId: z.string().uuid().optional().describe("Parent folder ID (defaults to root)"),
+  parentId: z.string().guid().optional().describe("Parent folder ID (defaults to root)"),
 });
 
 type CreateMediaMultipleParams = z.infer<typeof createMediaMultipleSchema>;
@@ -40,7 +40,7 @@ export const createMediaMultipleOutputSchema = z.object({
   results: z.array(z.object({
     success: z.boolean(),
     name: z.string(),
-    id: z.string().uuid().optional(),
+    id: z.string().guid().optional(),
     error: z.string().optional()
   }))
 });

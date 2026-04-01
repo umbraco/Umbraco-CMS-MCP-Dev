@@ -22,7 +22,7 @@ const createMediaSchema = z.object({
   filePath: z.string().optional().describe("Absolute path to the file (required if sourceType is 'filePath')"),
   fileUrl: z.string().url().optional().describe("[raw] URL to fetch the file from (required if sourceType is 'url')"),
   fileAsBase64: z.string().optional().describe("Base64 encoded file data (required if sourceType is 'base64')"),
-  parentId: z.string().uuid().optional().describe("Parent folder ID (defaults to root)"),
+  parentId: z.string().guid().optional().describe("Parent folder ID (defaults to root)"),
 });
 
 type CreateMediaParams = z.infer<typeof createMediaSchema>;
@@ -30,7 +30,7 @@ type CreateMediaParams = z.infer<typeof createMediaSchema>;
 export const createMediaOutputSchema = z.object({
   message: z.string(),
   name: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateMediaTool = {

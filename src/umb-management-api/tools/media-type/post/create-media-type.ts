@@ -29,8 +29,8 @@ const createMediaTypeSchema = z.object({
   isElement: z.boolean(),
   properties: propertySchema,
   containers: containerSchema,
-  id: z.string().uuid().nullish(),
-  parentId: z.string().uuid().optional(),  // Flattened parent ID
+  id: z.string().guid().nullish(),
+  parentId: z.string().guid().optional(),  // Flattened parent ID
   allowedMediaTypes: allowedMediaTypeSchema,
   compositions: compositionSchema,
   collection: collectionSchema
@@ -40,7 +40,7 @@ type CreateMediaTypeSchema = z.infer<typeof createMediaTypeSchema>;
 
 export const createMediaTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateMediaTypeTool = {

@@ -19,14 +19,14 @@ const createDataTypeSchema = z.object({
     alias: z.string(),
     value: z.any().nullish()
   })),
-  parentId: z.string().uuid().optional()  // Flattened parent ID
+  parentId: z.string().guid().optional()  // Flattened parent ID
 });
 
 type CreateDataTypeSchema = z.infer<typeof createDataTypeSchema>;
 
 export const createDataTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateDataTypeTool = {

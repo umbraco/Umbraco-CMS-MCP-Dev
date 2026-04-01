@@ -13,7 +13,7 @@ import {
 
 // MCP-friendly schema that accepts base64 encoded file data
 const createTemporaryFileSchema = z.object({
-  id: z.string().uuid().describe("Unique identifier for the temporary file"),
+  id: z.string().guid().describe("Unique identifier for the temporary file"),
   fileName: z.string().describe("Name of the file"),
   fileAsBase64: z.string().describe("File content encoded as base64 string"),
 });
@@ -22,7 +22,7 @@ type CreateTemporaryFileParams = z.infer<typeof createTemporaryFileSchema>;
 
 export const createTemporaryFileOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateTemporaryFileTool = {

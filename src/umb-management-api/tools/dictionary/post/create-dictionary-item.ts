@@ -11,19 +11,19 @@ import {
 
 const createDictionarySchema = z.object({
   name: z.string().min(1, "Name is required"),
-  parentId: z.string().uuid().optional(),
+  parentId: z.string().guid().optional(),
   translations: z.array(z.object({
     isoCode: z.string().min(1, "ISO code is required"),
     translation: z.string()
   })),
-  id: z.string().uuid().nullish()
+  id: z.string().guid().nullish()
 });
 
 type CreateDictionarySchema = z.infer<typeof createDictionarySchema>;
 
 export const createDictionaryOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateDictionaryItemTool = {
