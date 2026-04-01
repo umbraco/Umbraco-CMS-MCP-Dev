@@ -31,6 +31,7 @@ const config: import("ts-jest").JestConfigWithTsJest = {
   testPathIgnorePatterns: ["/node_modules/", "\\.claude/worktrees/", "tests/evals/"],
   setupFilesAfterEnv: ["jest-extended/all"],
   setupFiles: ["<rootDir>/jest.setup.ts"],
+  reporters: ["default", "<rootDir>/jest-failure-reporter.ts"],
   maxWorkers: 1,
   workerIdleMemoryLimit: '512MB', // Recycle worker to prevent OOM with ESM module loading
   testTimeout: 60000,
