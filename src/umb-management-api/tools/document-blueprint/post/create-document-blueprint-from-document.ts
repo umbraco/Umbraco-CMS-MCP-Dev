@@ -12,9 +12,9 @@ import {
 // Therefore we exclude the parent parameter from this tool to avoid confusion.
 const createDocumentBlueprintFromDocumentSchema = z.object({
   document: z.object({
-    id: z.string().guid()
+    id: z.string().uuid()
   }),
-  id: z.string().guid().optional(),
+  id: z.string().uuid().optional(),
   name: z.string()
 });
 

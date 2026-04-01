@@ -29,8 +29,8 @@ const createMediaTypeSchema = z.object({
   isElement: z.boolean(),
   properties: propertySchema,
   containers: containerSchema,
-  id: z.string().guid().nullish(),
-  parentId: z.string().guid().optional(),  // Flattened parent ID
+  id: z.string().uuid().nullish(),
+  parentId: z.string().uuid().optional(),  // Flattened parent ID
   allowedMediaTypes: allowedMediaTypeSchema,
   compositions: compositionSchema,
   collection: collectionSchema

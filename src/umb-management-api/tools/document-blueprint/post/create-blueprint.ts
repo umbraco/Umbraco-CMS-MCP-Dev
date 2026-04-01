@@ -22,10 +22,10 @@ const createDocumentBlueprintSchema = z.object({
     name: z.string().min(1)
   })),
   documentType: z.object({
-    id: z.string().guid()
+    id: z.string().uuid()
   }),
-  id: z.string().guid().nullish(),
-  parentId: z.string().guid().optional()  // Flattened parent ID
+  id: z.string().uuid().nullish(),
+  parentId: z.string().uuid().optional()  // Flattened parent ID
 });
 
 type CreateDocumentBlueprintSchema = z.infer<typeof createDocumentBlueprintSchema>;

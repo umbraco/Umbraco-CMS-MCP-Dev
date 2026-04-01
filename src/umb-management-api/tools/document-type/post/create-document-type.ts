@@ -20,7 +20,7 @@ const createDocumentTypeSchema = z.object({
   description: z.string().optional(),
   icon: z.string().min(1, "Icon is required"),
   allowedAsRoot: z.boolean().default(false),
-  parentId: z.string().guid().optional(),
+  parentId: z.string().uuid().optional(),
   compositions: z
     .array(z.string().uuid("Must be a valid document type UUID"))
     .default([]),

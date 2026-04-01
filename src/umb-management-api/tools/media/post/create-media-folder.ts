@@ -12,7 +12,7 @@ import {
 
 const createMediaFolderSchema = z.object({
   name: z.string().describe("The name of the folder"),
-  parentId: z.string().guid().optional().describe("Parent folder ID. If not provided, the folder will be created at the root of the media library."),
+  parentId: z.string().uuid().optional().describe("Parent folder ID. If not provided, the folder will be created at the root of the media library."),
 });
 
 type CreateMediaFolderParams = z.infer<typeof createMediaFolderSchema>;

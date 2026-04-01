@@ -40,7 +40,7 @@ const propertySchema = z.object({
 
 // Define the input schema
 const updateDocumentPropertiesSchema = {
-  id: z.string().guid().describe("The unique identifier of the document to update"),
+  id: z.string().uuid().describe("The unique identifier of the document to update"),
   properties: z.array(propertySchema).min(1).describe("Array of properties to update or add - at least one property is required")
 };
 

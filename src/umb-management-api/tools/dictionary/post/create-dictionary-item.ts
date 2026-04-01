@@ -11,12 +11,12 @@ import {
 
 const createDictionarySchema = z.object({
   name: z.string().min(1, "Name is required"),
-  parentId: z.string().guid().optional(),
+  parentId: z.string().uuid().optional(),
   translations: z.array(z.object({
     isoCode: z.string().min(1, "ISO code is required"),
     translation: z.string()
   })),
-  id: z.string().guid().nullish()
+  id: z.string().uuid().nullish()
 });
 
 type CreateDictionarySchema = z.infer<typeof createDictionarySchema>;

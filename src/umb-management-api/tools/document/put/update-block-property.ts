@@ -52,13 +52,13 @@ const blockPropertyUpdateSchema = z.object({
 });
 
 const blockUpdateSchema = z.object({
-  contentKey: z.string().guid().describe("The unique key (UUID) identifying the block"),
+  contentKey: z.string().uuid().describe("The unique key (UUID) identifying the block"),
   blockType: z.enum(["content", "settings"]).describe("'content' for contentData, 'settings' for settingsData"),
   properties: z.array(blockPropertyUpdateSchema).min(1).describe("Properties to update within this block"),
 });
 
 const updateBlockPropertySchema = {
-  documentId: z.string().guid().describe("The document containing the block"),
+  documentId: z.string().uuid().describe("The document containing the block"),
   propertyAlias: z.string().min(1).describe("Document property alias containing BlockList/BlockGrid"),
   culture: z.string().nullish().describe("Optional culture for variant document properties"),
   segment: z.string().nullish().describe("Optional segment for variant document properties"),

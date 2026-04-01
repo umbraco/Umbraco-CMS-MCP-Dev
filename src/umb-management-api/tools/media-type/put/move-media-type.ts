@@ -9,7 +9,7 @@ import {
 } from "@umbraco-cms/mcp-server-sdk";
 
 const inputSchema = z.object({
-  id: z.string().guid(),
+  id: z.string().uuid(),
   data: z.object(putMediaTypeByIdMoveBody.shape),
 });
 
