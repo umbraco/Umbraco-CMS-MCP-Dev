@@ -12,7 +12,7 @@ import {
 const createPartialViewSchema = z.object({
   name: z.string().min(1, "Name is required"),
   path: z.string().optional(),
-  content: z.string().min(1, "Content is required")
+  content: z.string().min(1, "Content is required").describe("[raw]")
 });
 
 type CreatePartialViewSchema = z.infer<typeof createPartialViewSchema>;
