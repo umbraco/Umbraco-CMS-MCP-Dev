@@ -9,12 +9,17 @@ This MCP server runs as a CLI tool. The CLI handles authentication and configura
 
 ## Detecting the CLI Command
 
-The CLI command depends on context:
+Determine the CLI command in a single check:
 
-- **Local development** (when `dist/index.js` exists): `node dist/index.js`
-- **Installed package**: `npx @umbraco-cms/mcp-dev`
+```bash
+# One command to detect context — check for local build AND .env together
+ls dist/index.js .env 2>/dev/null
+```
 
-Check for `dist/index.js` to determine which to use. All examples below use `<cli>` as a placeholder — substitute the correct command.
+- If `dist/index.js` exists: use `node dist/index.js`
+- Otherwise: use `npx @umbraco-cms/mcp-dev@latest`
+
+All examples below use `<cli>` as a placeholder — substitute the correct command.
 
 ## Quick Reference
 
@@ -98,6 +103,40 @@ These print output and exit immediately — they do not start the MCP server.
 | `--call-args <json>` | JSON arguments for `--call` (default: `{}`) |
 
 Introspection respects all filtering. `--list-tools` with `UMBRACO_READONLY=true` shows exactly what the LLM would see.
+
+## Efficient CLI Usage
+
+Every CLI call costs time and tokens. The CLI has built-in filtering so you don't need to fetch everything and grep locally. Follow these principles:
+
+**1. Filter server-side, not locally.** Instead of `--list-tools | grep document`, use the filtering flags:
+```bash
+# Bad — fetches all tools then filters locally
+<cli> --list-tools | grep document
+
+# Good — server returns only what you need
+<cli> --list-tools --umbraco-include-tool-collections document
+```
+
+You can combine filters to narrow further:
+```bash
+<cli> --list-tools --umbraco-include-tool-collections document --umbraco-include-slices read,search
+```
+
+**2. Use search tools before tree traversal.** When looking for a specific item by name, prefer `search-document` over walking the tree with `get-document-root` → `get-document-by-id`. Search is one call instead of two.
+
+**3. Batch independent shell commands.** Combine checks that don't depend on each other:
+```bash
+# Bad — two separate calls
+ls dist/index.js
+ls .env
+
+# Good — one call
+ls dist/index.js .env 2>/dev/null
+```
+
+**4. Use `--describe-tool` before guessing parameters.** If you're unsure what a tool accepts, describe it first rather than making a call that might fail.
+
+For more workflow examples, read `references/workflow-patterns.md`.
 
 ## Input Sanitization
 
