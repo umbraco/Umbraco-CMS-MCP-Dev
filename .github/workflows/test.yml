@@ -112,10 +112,7 @@ jobs:
         env:
           JEST_JUNIT_OUTPUT_DIR: ${{ github.workspace }}/test-results
           JEST_JUNIT_OUTPUT_NAME: jest-results.xml
-        run: |
-          mkdir -p $JEST_JUNIT_OUTPUT_DIR
-          npm test -- --no-coverage --reporters=default --reporters=jest-junit
-          ls -la $JEST_JUNIT_OUTPUT_DIR || echo "Output dir not found"
+        run: npm test -- --no-coverage --reporters=default --reporters=jest-junit
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
@@ -128,7 +125,7 @@ jobs:
         if: always()
         with:
           name: Test Results
-          path: ${{ github.workspace }}/test-results/jest-results.xml
+          path: 'test-results/*.xml'
           reporter: jest-junit
 
   evals:
