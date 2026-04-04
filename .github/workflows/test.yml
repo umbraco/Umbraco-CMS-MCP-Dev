@@ -60,6 +60,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Setup .NET dev certs
+        run: dotnet dev-certs https
+
       - name: Configure Umbraco for CI
         run: |
           cat > infrastructure/test-umbraco/MCPTestSite/appsettings.local.json << 'EOF'
@@ -74,7 +77,10 @@ jobs:
       - name: Start Umbraco
         run: |
           cd infrastructure/test-umbraco/MCPTestSite
-          dotnet run --launch-profile "Umbraco.Web.UI" &
+          ASPNETCORE_ENVIRONMENT=Development \
+          ASPNETCORE_URLS="http://localhost:56472;https://localhost:44391" \
+          dotnet run > /tmp/umbraco.log 2>&1 &
+          echo $! > /tmp/umbraco.pid
 
       - name: Wait for Umbraco
         run: |
@@ -84,10 +90,17 @@ jobs:
               echo "Umbraco is ready!"
               exit 0
             fi
+            # Check if process died
+            if ! kill -0 $(cat /tmp/umbraco.pid) 2>/dev/null; then
+              echo "Umbraco process died! Last 50 lines of log:"
+              tail -50 /tmp/umbraco.log
+              exit 1
+            fi
             echo "Attempt $i/60 - waiting 5s..."
             sleep 5
           done
-          echo "Umbraco failed to start within 5 minutes"
+          echo "Umbraco failed to start within 5 minutes. Last 50 lines of log:"
+          tail -50 /tmp/umbraco.log
           exit 1
         timeout-minutes: 6
 
@@ -159,6 +172,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Setup .NET dev certs
+        run: dotnet dev-certs https
+
       - name: Configure Umbraco for CI
         run: |
           cat > infrastructure/test-umbraco/MCPTestSite/appsettings.local.json << 'EOF'
@@ -173,7 +189,10 @@ jobs:
       - name: Start Umbraco
         run: |
           cd infrastructure/test-umbraco/MCPTestSite
-          dotnet run --launch-profile "Umbraco.Web.UI" &
+          ASPNETCORE_ENVIRONMENT=Development \
+          ASPNETCORE_URLS="http://localhost:56472;https://localhost:44391" \
+          dotnet run > /tmp/umbraco.log 2>&1 &
+          echo $! > /tmp/umbraco.pid
 
       - name: Wait for Umbraco
         run: |
@@ -183,10 +202,17 @@ jobs:
               echo "Umbraco is ready!"
               exit 0
             fi
+            # Check if process died
+            if ! kill -0 $(cat /tmp/umbraco.pid) 2>/dev/null; then
+              echo "Umbraco process died! Last 50 lines of log:"
+              tail -50 /tmp/umbraco.log
+              exit 1
+            fi
             echo "Attempt $i/60 - waiting 5s..."
             sleep 5
           done
-          echo "Umbraco failed to start within 5 minutes"
+          echo "Umbraco failed to start within 5 minutes. Last 50 lines of log:"
+          tail -50 /tmp/umbraco.log
           exit 1
         timeout-minutes: 6
 
