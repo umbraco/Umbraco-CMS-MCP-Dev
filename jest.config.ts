@@ -29,7 +29,7 @@ const config: import("ts-jest").JestConfigWithTsJest = {
   },
   testMatch: ["**/src/**/__tests__/**/*.test.ts"],
   testPathIgnorePatterns: ["/node_modules/", "\\.claude/worktrees/", "tests/evals/"],
-  setupFilesAfterEnv: ["jest-extended/all"],
+  setupFilesAfterEnv: ["jest-extended/all", "<rootDir>/jest.setup-after-env.ts"],
   setupFiles: ["<rootDir>/jest.setup.ts"],
   reporters: ["default", "<rootDir>/jest-failure-reporter.ts"],
   maxWorkers: 1,
