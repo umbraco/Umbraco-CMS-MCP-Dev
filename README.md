@@ -43,7 +43,7 @@ Download and install the [Claude Desktop app](https://claude.ai/download), then 
 
 For complete installation instructions, configuration options, tool listings, and usage examples, see the full documentation:
 
-**[Umbraco MCP Documentation](https://docs.umbraco.com/umbraco-cms/reference/developer-mcp)**
+**[Umbraco MCP Documentation](https://docs.umbraco.com/umbraco-developer-mcp)**
 
 ## Contributing with AI Tools
 

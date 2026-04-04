@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Claude Code plugins for Umbraco CMS MCP Server - CLI operation, tool filtering, and runtime configuration",
-    "version": "17.2.1",
+    "version": "17.2.2",
     "homepage": "https://github.com/umbraco/Umbraco-MCP-CMS"
   },
   "plugins": [
@@ -14,7 +14,7 @@
       "name": "umb-cms-mcp",
       "source": "./plugins-server",
       "description": "Skills for CLI operation of Umbraco MCP servers - CLI setup, tool filtering, introspection, and runtime modes",
-      "version": "17.2.1",
+      "version": "17.2.2",
       "category": "operations",
       "author": {
         "name": "Phil W",
