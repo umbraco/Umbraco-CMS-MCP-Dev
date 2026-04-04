@@ -109,13 +109,24 @@ jobs:
 
       - name: Run tests
         id: unit-integration
-        run: npm test -- --no-coverage
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ./test-results
+          JEST_JUNIT_OUTPUT_NAME: jest-results.xml
+        run: npm test -- --no-coverage --reporters=default --reporters=jest-junit
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Run Playwright E2E tests
         run: npm run test:e2e
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Test Results
+          path: test-results/jest-results.xml
+          reporter: jest-junit
 
   evals:
     name: LLM Eval Tests
