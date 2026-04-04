@@ -109,7 +109,7 @@ jobs:
 
       - name: Run tests
         id: unit-integration
-        run: npm test -- --no-coverage -u
+        run: npm test -- --no-coverage
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
