@@ -104,6 +104,9 @@ jobs:
           exit 1
         timeout-minutes: 6
 
+      - name: Create API user
+        run: node infrastructure/ci/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
+
       - name: Run tests
         run: npm test -- --no-coverage
 
@@ -215,6 +218,9 @@ jobs:
           tail -50 /tmp/umbraco.log
           exit 1
         timeout-minutes: 6
+
+      - name: Create API user
+        run: node infrastructure/ci/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
 
       - name: Run eval tests
         run: npm run test:evals
