@@ -108,15 +108,19 @@ jobs:
         run: node infrastructure/ci/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
 
       - name: Run tests
+        id: unit-integration
         run: npm test -- --no-coverage
 
       - name: Run E2E SDK tests
+        if: always() && steps.unit-integration.outcome != 'cancelled'
         run: npm run test:e2e-sdk
 
       - name: Install Playwright browsers
+        if: always() && steps.unit-integration.outcome != 'cancelled'
         run: npx playwright install --with-deps
 
       - name: Run Playwright E2E tests
+        if: always() && steps.unit-integration.outcome != 'cancelled'
         run: npm run test:e2e
 
   evals:
