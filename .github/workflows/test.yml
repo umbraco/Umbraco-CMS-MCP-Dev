@@ -110,7 +110,7 @@ jobs:
       - name: Run tests
         id: unit-integration
         env:
-          JEST_JUNIT_OUTPUT_DIR: ./test-results
+          JEST_JUNIT_OUTPUT_DIR: ${{ github.workspace }}/test-results
           JEST_JUNIT_OUTPUT_NAME: jest-results.xml
         run: npm test -- --no-coverage --reporters=default --reporters=jest-junit
 
@@ -125,7 +125,7 @@ jobs:
         if: always()
         with:
           name: Test Results
-          path: test-results/jest-results.xml
+          path: ${{ github.workspace }}/test-results/jest-results.xml
           reporter: jest-junit
 
   evals:
