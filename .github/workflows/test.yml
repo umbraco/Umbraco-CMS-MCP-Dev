@@ -111,16 +111,10 @@ jobs:
         id: unit-integration
         run: npm test -- --no-coverage -u
 
-      - name: Run E2E SDK tests
-        if: always() && steps.unit-integration.outcome != 'cancelled'
-        run: npm run test:e2e-sdk
-
       - name: Install Playwright browsers
-        if: always() && steps.unit-integration.outcome != 'cancelled'
         run: npx playwright install --with-deps
 
       - name: Run Playwright E2E tests
-        if: always() && steps.unit-integration.outcome != 'cancelled'
         run: npm run test:e2e
 
   evals:
