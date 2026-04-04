@@ -109,24 +109,21 @@ jobs:
 
       - name: Run tests
         id: unit-integration
-        env:
-          JEST_JUNIT_OUTPUT_DIR: ${{ github.workspace }}/test-results
-          JEST_JUNIT_OUTPUT_NAME: jest-results.xml
-        run: npm test -- --no-coverage --reporters=default --reporters=jest-junit
+        run: npm test -- --no-coverage
+
+      - name: Test failure report
+        if: failure() && steps.unit-integration.outcome == 'failure'
+        run: |
+          echo "## Test Failures" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat test-failures.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "No failure log found"
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Run Playwright E2E tests
         run: npm run test:e2e
-
-      - name: Publish test results
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Test Results
-          path: 'test-results/*.xml'
-          reporter: jest-junit
 
   evals:
     name: LLM Eval Tests
