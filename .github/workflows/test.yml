@@ -109,7 +109,7 @@ jobs:
 
       - name: Run tests
         id: unit-integration
-        run: npm test -- --no-coverage
+        run: npm test -- --no-coverage -u
 
       - name: Run E2E SDK tests
         if: always() && steps.unit-integration.outcome != 'cancelled'
