@@ -251,11 +251,44 @@ async function main() {
     throw new Error("API user was created but auth verification failed");
   }
 
-  // Verify user details and sections
+  // Check admin group sections
+  console.log("  Checking admin group details...");
+  const groupRes = await fetch(`${BASE_URL}/umbraco/management/api/v1/user-group/${ADMIN_GROUP_KEY}`, {
+    headers: { Authorization: `Bearer ${bearerToken}` },
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (groupRes.ok) {
+    const group = await groupRes.json();
+    console.log(`  Admin group sections: ${JSON.stringify(group.sections || [])}`);
+  }
+
+  // Check user details
   console.log("  Checking user details...");
   const userDetails = await getUserDetails(bearerToken, userId);
   console.log(`  User sections: ${JSON.stringify(userDetails.allowedSections || [])}`);
   console.log(`  User groups: ${JSON.stringify((userDetails.userGroupIds || []).map(g => g.id))}`);
+
+  // Also check via getCurrentUser using the API user's own token
+  console.log("  Checking user via own token...");
+  const tokenRes = await fetch(`${BASE_URL}${TOKEN_PATH}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ grant_type: "client_credentials", client_id: CLIENT_ID, client_secret: CLIENT_SECRET }),
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (tokenRes.ok) {
+    const { access_token } = await tokenRes.json();
+    const currentRes = await fetch(`${BASE_URL}/umbraco/management/api/v1/user/current`, {
+      headers: { Authorization: `Bearer ${access_token}` },
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (currentRes.ok) {
+      const current = await currentRes.json();
+      console.log(`  Current user sections: ${JSON.stringify(current.allowedSections || [])}`);
+      console.log(`  Current user isAdmin: ${current.isAdmin}`);
+    }
+  }
+
   console.log("API user created and verified successfully");
 }
 
