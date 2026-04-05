@@ -127,8 +127,9 @@ jobs:
 
   evals:
     name: LLM Eval Tests
-    # TODO: revert after verifying eval fixes
-    if: true
+    if: >-
+      github.event.pull_request.base.ref == 'main' &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
 
     services:
