@@ -28,17 +28,21 @@ describe("error handling eval tests", () => {
 
   it("should return proper error details for non-existent entity",
     runScenarioTest({
-      prompt: `Complete this task:
-- Try to update a member with ID "00000000-0000-0000-0000-000000000000" (a non-existent member)
-- Use any valid member data for the update, for example:
-  - email: "test@example.com"
-  - username: "test"
-  - password: "TestPass123!@#"
-  - isApproved: true
-  - variants: [{ "name": "Test" }]
-- The update will fail because the member doesn't exist
-- When you receive the error, describe what error details you received (mention if you got type, title, status, detail fields)
-- Say 'Error handling test completed' when done`,
+      prompt: `You MUST call the update-member tool. This is required.
+
+Call update-member with these exact parameters:
+- id: "00000000-0000-0000-0000-000000000000"
+- email: "test@example.com"
+- userName: "test"
+- password: "TestPass123!@#"
+- isApproved: true
+- memberType: { "id": "00000000-0000-0000-0000-000000000000" }
+- variants: [{ "name": "Test", "culture": null, "segment": null }]
+- values: []
+
+The update will fail because the member doesn't exist.
+When you receive the error, describe the error fields you received.
+Say 'Error handling test completed' when done.`,
       tools: ERROR_HANDLING_TOOLS,
       requiredTools: ["update-member"],
       successPattern: "Error handling test completed",
@@ -64,11 +68,21 @@ describe("error handling eval tests", () => {
 
   it("should handle multiple error scenarios gracefully",
     runScenarioTest({
-      prompt: `Complete these tasks and report on each error:
-1. Try to update a member with ID "00000000-0000-0000-0000-000000000000" (non-existent)
-2. Try to delete a data type folder with ID "00000000-0000-0000-0000-000000000000" (non-existent)
-3. For each error, briefly note that you received an error
-4. Say 'Multiple error test completed' when done`,
+      prompt: `You MUST call both tools listed below. This is required.
+
+Step 1: Call update-member with these parameters:
+- id: "00000000-0000-0000-0000-000000000000"
+- email: "test@example.com"
+- userName: "test"
+- password: "TestPass123!@#"
+- isApproved: true
+- memberType: { "id": "00000000-0000-0000-0000-000000000000" }
+- variants: [{ "name": "Test", "culture": null, "segment": null }]
+- values: []
+
+Step 2: Call delete-data-type-folder with id "00000000-0000-0000-0000-000000000000"
+
+Both will fail. Briefly note each error, then say 'Multiple error test completed'.`,
       tools: ERROR_HANDLING_TOOLS,
       requiredTools: ["update-member", "delete-data-type-folder"],
       successPattern: "Multiple error test completed",
