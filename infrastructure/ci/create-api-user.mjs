@@ -204,6 +204,19 @@ async function setClientCredentials(bearerToken, userId) {
   }
 }
 
+// ---- Step 6: Get user details ----
+
+async function getUserDetails(bearerToken, userId) {
+  const res = await fetch(`${BASE_URL}${USER_PATH}/${userId}`, {
+    headers: { Authorization: `Bearer ${bearerToken}` },
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to get user details: HTTP ${res.status}`);
+  }
+  return await res.json();
+}
+
 // ---- Main ----
 
 async function main() {
@@ -232,13 +245,18 @@ async function main() {
   console.log("  Setting client credentials...");
   await setClientCredentials(bearerToken, userId);
 
-  // Verify
-  console.log("  Verifying...");
-  if (await checkExisting()) {
-    console.log("API user created and verified successfully");
-  } else {
-    throw new Error("API user was created but verification failed");
+  // Verify auth works
+  console.log("  Verifying auth...");
+  if (!await checkExisting()) {
+    throw new Error("API user was created but auth verification failed");
   }
+
+  // Verify user details and sections
+  console.log("  Checking user details...");
+  const userDetails = await getUserDetails(bearerToken, userId);
+  console.log(`  User sections: ${JSON.stringify(userDetails.allowedSections || [])}`);
+  console.log(`  User groups: ${JSON.stringify((userDetails.userGroupIds || []).map(g => g.id))}`);
+  console.log("API user created and verified successfully");
 }
 
 main().catch((err) => {
