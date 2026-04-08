@@ -3,6 +3,7 @@ import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import {
   Default_Memeber_TYPE_ID,
+  withCursorPagination,
 } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
@@ -41,8 +42,9 @@ describe("get-member-by-id-referenced-descendants", () => {
 
     const id = builder.getId();
 
-    const result = await GetMemberByIdReferencedDescendantsTool.handler(
-      { id, skip: 0, take: 10 },
+    const cursorTool = withCursorPagination(GetMemberByIdReferencedDescendantsTool);
+    const result = await cursorTool.handler(
+      { id },
       createMockRequestHandlerExtra()
     );
 
@@ -50,7 +52,7 @@ describe("get-member-by-id-referenced-descendants", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Validate response against tool's output schema
-    const parsed = validateToolResponse(GetMemberByIdReferencedDescendantsTool, result);
+    const parsed = validateToolResponse(cursorTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -67,8 +69,9 @@ describe("get-member-by-id-referenced-descendants", () => {
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
 
-    const result = await GetMemberByIdReferencedDescendantsTool.handler(
-      { id: builder.getId(), skip: 0, take: 10 },
+    const cursorTool = withCursorPagination(GetMemberByIdReferencedDescendantsTool);
+    const result = await cursorTool.handler(
+      { id: builder.getId() },
       createMockRequestHandlerExtra()
     );
 
@@ -76,7 +79,7 @@ describe("get-member-by-id-referenced-descendants", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Validate response against tool's output schema
-    const parsed = validateToolResponse(GetMemberByIdReferencedDescendantsTool, result);
+    const parsed = validateToolResponse(cursorTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
 

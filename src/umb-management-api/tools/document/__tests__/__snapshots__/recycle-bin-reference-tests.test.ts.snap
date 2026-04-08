@@ -25,6 +25,7 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by shou
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -35,6 +36,7 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by shou
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -45,6 +47,7 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by shou
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

@@ -4,18 +4,20 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
+import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 
 describe("get-log-viewer-log", () => {
   setupTestEnvironment();
 
   it("should get log viewer logs with default parameters", async () => {
-    const result = await GetLogViewerLogTool.handler(
-      { skip: undefined, take: 100, orderDirection: undefined, filterExpression: undefined, logLevel: undefined, startDate: undefined, endDate: undefined },
+    const cursorTool = withCursorPagination(GetLogViewerLogTool);
+    const result = await cursorTool.handler(
+      { orderDirection: undefined, filterExpression: undefined, logLevel: undefined, startDate: undefined, endDate: undefined },
       createMockRequestHandlerExtra()
     );
 
     // Validate response against tool's outputSchema
-    const content = validateToolResponse(GetLogViewerLogTool, result);
+    const content = validateToolResponse(cursorTool, result);
 
     // Verify response structure (logs are dynamic, so we verify structure not content)
     expect(content).toHaveProperty("items");
@@ -31,10 +33,9 @@ describe("get-log-viewer-log", () => {
     const oneMonthAgo = new Date(now);
     oneMonthAgo.setMonth(now.getMonth() - 1);
 
-    const result = await GetLogViewerLogTool.handler(
+    const cursorTool = withCursorPagination({ ...GetLogViewerLogTool, pageSize: 10 });
+    const result = await cursorTool.handler(
       {
-        skip: 0,
-        take: 10,
         orderDirection: "Descending",
         filterExpression: "",
         logLevel: ["Error", "Warning", "Information"],
@@ -45,7 +46,7 @@ describe("get-log-viewer-log", () => {
     );
 
     // Validate response against tool's outputSchema
-    const content = validateToolResponse(GetLogViewerLogTool, result);
+    const content = validateToolResponse(cursorTool, result);
 
     // Verify response structure (logs are dynamic, so we verify structure not content)
     expect(content).toHaveProperty("items");

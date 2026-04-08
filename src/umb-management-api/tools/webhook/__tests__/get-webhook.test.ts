@@ -11,6 +11,7 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
+import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 
 describe("get-webhook", () => {
   const TEST_WEBHOOK_NAME = "_Test Webhook";
@@ -23,11 +24,12 @@ describe("get-webhook", () => {
 
   it("should get empty paged webhooks", async () => {
     // Get paged webhooks
-    const result = await GetWebhookTool.handler(
-      { skip: 0, take: 10 },
+    const cursorTool = withCursorPagination(GetWebhookTool);
+    const result = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
-    const response = validateToolResponse(GetWebhookTool, result);
+    const response = validateToolResponse(cursorTool, result);
 
     expect(response).toHaveProperty('total');
     expect(response).toHaveProperty('items');
@@ -44,11 +46,12 @@ describe("get-webhook", () => {
       .create();
 
     // Get paged webhooks
-    const result = await GetWebhookTool.handler(
-      { skip: 0, take: 10 },
+    const cursorTool = withCursorPagination(GetWebhookTool);
+    const result = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
-    const response = validateToolResponse(GetWebhookTool, result);
+    const response = validateToolResponse(cursorTool, result);
 
     expect(response).toHaveProperty('total');
     expect(response).toHaveProperty('items');
@@ -67,11 +70,12 @@ describe("get-webhook", () => {
 
   it("should use pagination parameters", async () => {
     // Get webhooks with pagination parameters
-    const result = await GetWebhookTool.handler(
-      { skip: 0, take: 100 },
+    const cursorTool = withCursorPagination(GetWebhookTool);
+    const result = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
-    const response = validateToolResponse(GetWebhookTool, result);
+    const response = validateToolResponse(cursorTool, result);
 
     expect(response).toHaveProperty('total');
     expect(response).toHaveProperty('items');

@@ -5,18 +5,20 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
+import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 
 describe("get-indexer", () => {
   setupTestEnvironment();
 
   it("should list all indexes with default parameters", async () => {
-    const result = await GetIndexerTool.handler(
-      { skip: undefined, take: 100 },
+    const cursorTool = withCursorPagination(GetIndexerTool);
+    const result = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
 
     // Validate the response schema
-    validateToolResponse(GetIndexerTool, result);
+    validateToolResponse(cursorTool, result);
 
     // Normalize dynamic values that change based on content/schema
     const snapshot = createSnapshotResult(result);

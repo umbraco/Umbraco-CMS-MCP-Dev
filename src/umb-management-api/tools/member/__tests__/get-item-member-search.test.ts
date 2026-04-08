@@ -3,6 +3,7 @@ import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import {
   Default_Memeber_TYPE_ID,
+  withCursorPagination,
 } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
@@ -43,8 +44,9 @@ describe("get-item-member-search", () => {
       .create();
 
     // Act - Search for the member
-    const result = await GetItemMemberSearchTool.handler(
-      { query: TEST_MEMBER_USERNAME, take: 100, skip: undefined, allowedMemberTypes: undefined },
+    const cursorTool = withCursorPagination(GetItemMemberSearchTool);
+    const result = await cursorTool.handler(
+      { query: TEST_MEMBER_USERNAME },
       createMockRequestHandlerExtra()
     );
 
@@ -56,13 +58,14 @@ describe("get-item-member-search", () => {
   it("should return empty results for non-existent search query", async () => {
     // Act - Search for a member that doesn't exist using a very unique string
     const uniqueQuery = `xYz_NoNe_ExIsT_${Date.now()}_${Math.random().toString(36).substring(7)}@nowhere.invalid`;
-    const result = await GetItemMemberSearchTool.handler(
-      { query: uniqueQuery, take: 100, skip: undefined, allowedMemberTypes: undefined },
+    const cursorTool = withCursorPagination(GetItemMemberSearchTool);
+    const result = await cursorTool.handler(
+      { query: uniqueQuery },
       createMockRequestHandlerExtra()
     );
 
     // Assert - Validate response against tool's output schema
-    const data = validateToolResponse(GetItemMemberSearchTool, result);
+    const data = validateToolResponse(cursorTool, result);
     expect(data.total).toBe(0);
     expect(data.items).toEqual([]);
   });
@@ -86,13 +89,14 @@ describe("get-item-member-search", () => {
       .create();
 
     // Act - Search with pagination (take only 1 result)
-    const result = await GetItemMemberSearchTool.handler(
-      { query: "itemsearch", skip: 0, take: 1, allowedMemberTypes: undefined },
+    const cursorTool = withCursorPagination({ ...GetItemMemberSearchTool, pageSize: 1 });
+    const result = await cursorTool.handler(
+      { query: "itemsearch" },
       createMockRequestHandlerExtra()
     );
 
     // Assert - Validate response against tool's output schema
-    const data = validateToolResponse(GetItemMemberSearchTool, result);
+    const data = validateToolResponse(cursorTool, result);
     expect(data.items.length).toBeLessThanOrEqual(1);
   });
 });

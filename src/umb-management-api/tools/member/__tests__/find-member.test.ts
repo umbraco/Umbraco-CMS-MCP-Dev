@@ -3,6 +3,7 @@ import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import {
   Default_Memeber_TYPE_ID,
+  withCursorPagination,
 } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
@@ -33,13 +34,14 @@ describe("find-member", () => {
       .create();
 
     // Use the tool to find by username
-    const result = await FindMemberTool.handler(
-      { filter: TEST_MEMBER_USERNAME, orderBy: "username", take: 100, memberTypeId: undefined, memberGroupName: undefined, isApproved: undefined, isLockedOut: undefined, orderDirection: undefined, skip: undefined },
+    const cursorTool = withCursorPagination(FindMemberTool);
+    const result = await cursorTool.handler(
+      { filter: TEST_MEMBER_USERNAME, orderBy: "username" },
       createMockRequestHandlerExtra()
     );
 
     // Validate response against tool's output schema
-    const data = validateToolResponse(FindMemberTool, result);
+    const data = validateToolResponse(cursorTool, result);
     expect(data.total).toBeGreaterThan(0);
     const found = data.items.find(
       (m: any) => m.username === TEST_MEMBER_USERNAME
@@ -49,23 +51,17 @@ describe("find-member", () => {
   });
 
   it("should return no results for a non-existent filter", async () => {
-    const result = await FindMemberTool.handler(
+    const cursorTool = withCursorPagination(FindMemberTool);
+    const result = await cursorTool.handler(
       {
         filter: "nonexistentuser_" + Date.now(),
         orderBy: "username",
-        take: 100,
-        memberTypeId: undefined,
-        memberGroupName: undefined,
-        isApproved: undefined,
-        isLockedOut: undefined,
-        orderDirection: undefined,
-        skip: undefined,
       },
       createMockRequestHandlerExtra()
     );
 
     // Validate response against tool's output schema
-    const data = validateToolResponse(FindMemberTool, result);
+    const data = validateToolResponse(cursorTool, result);
     expect(data.total).toBe(0);
     expect(data.items.length).toBe(0);
   });
@@ -88,13 +84,14 @@ describe("find-member", () => {
       .create();
 
     // Use the tool to get only one result
-    const result = await FindMemberTool.handler(
-      { filter: "findmember@example.com", orderBy: "username", take: 1, memberTypeId: undefined, memberGroupName: undefined, isApproved: undefined, isLockedOut: undefined, orderDirection: undefined, skip: undefined },
+    const cursorTool = withCursorPagination({ ...FindMemberTool, pageSize: 1 });
+    const result = await cursorTool.handler(
+      { filter: "findmember@example.com", orderBy: "username" },
       createMockRequestHandlerExtra()
     );
 
     // Validate response against tool's output schema
-    const data = validateToolResponse(FindMemberTool, result);
+    const data = validateToolResponse(cursorTool, result);
     expect(data.items.length).toBeLessThanOrEqual(1);
   });
 });

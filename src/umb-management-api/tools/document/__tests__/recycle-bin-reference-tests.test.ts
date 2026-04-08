@@ -2,6 +2,7 @@ import GetRecycleBinDocumentByIdOriginalParentTool from "../get/get-recycle-bin-
 import GetRecycleBinDocumentReferencedByTool from "../get/get-recycle-bin-document-referenced-by.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
+import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
   createSnapshotResult,
@@ -64,6 +65,8 @@ describe("recycle-bin-reference-tests", () => {
   });
 
   describe("get-recycle-bin-document-referenced-by", () => {
+    const cursorTool = withCursorPagination(GetRecycleBinDocumentReferencedByTool);
+
     it("should get references for recycled document", async () => {
       // Arrange: Create and delete a document to move it to recycle bin
       const builder = await new DocumentBuilder()
@@ -79,8 +82,8 @@ describe("recycle-bin-reference-tests", () => {
       expect(recycleBinDocument).toBeDefined();
 
       // Act: Get references for the recycled document
-      const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { take: 20, skip: 0 },
+      const result = await cursorTool.handler(
+        {},
         createMockRequestHandlerExtra()
       );
 
@@ -104,8 +107,9 @@ describe("recycle-bin-reference-tests", () => {
       expect(recycleBinDocument).toBeDefined();
 
       // Act: Get references with pagination
-      const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { skip: 0, take: 10 },
+      const smallPageTool = withCursorPagination({ ...GetRecycleBinDocumentReferencedByTool, pageSize: 10 });
+      const result = await smallPageTool.handler(
+        {},
         createMockRequestHandlerExtra()
       );
 
@@ -116,8 +120,8 @@ describe("recycle-bin-reference-tests", () => {
 
     it("should handle non-existent recycled document", async () => {
       // Act: Try to get references for non-existent recycled document
-      const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { take: 20, skip: 0 },
+      const result = await cursorTool.handler(
+        {},
         createMockRequestHandlerExtra()
       );
 

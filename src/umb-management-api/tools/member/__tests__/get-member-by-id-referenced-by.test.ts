@@ -8,6 +8,7 @@ import { DocumentTestHelper } from "../../document/__tests__/helpers/document-te
 import {
   Default_Memeber_TYPE_ID,
   MEMBER_PICKER_DATA_TYPE_ID,
+  withCursorPagination,
 } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
@@ -63,8 +64,9 @@ describe("get-member-by-id-referenced-by", () => {
       .withValue("memberPicker", memberBuilder.getId())
       .create();
 
-    const result = await GetMemberByIdReferencedByTool.handler(
-      { id: memberBuilder.getId(), skip: 0, take: 10 },
+    const cursorTool = withCursorPagination(GetMemberByIdReferencedByTool);
+    const result = await cursorTool.handler(
+      { id: memberBuilder.getId() },
       createMockRequestHandlerExtra()
     );
 
@@ -72,7 +74,7 @@ describe("get-member-by-id-referenced-by", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Validate response against tool's output schema
-    const parsed = validateToolResponse(GetMemberByIdReferencedByTool, result);
+    const parsed = validateToolResponse(cursorTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -89,8 +91,9 @@ describe("get-member-by-id-referenced-by", () => {
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
 
-    const result = await GetMemberByIdReferencedByTool.handler(
-      { id: memberBuilder.getId(), skip: 0, take: 10 },
+    const cursorTool = withCursorPagination(GetMemberByIdReferencedByTool);
+    const result = await cursorTool.handler(
+      { id: memberBuilder.getId() },
       createMockRequestHandlerExtra()
     );
 
@@ -98,7 +101,7 @@ describe("get-member-by-id-referenced-by", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Validate response against tool's output schema
-    const parsed = validateToolResponse(GetMemberByIdReferencedByTool, result);
+    const parsed = validateToolResponse(cursorTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
 

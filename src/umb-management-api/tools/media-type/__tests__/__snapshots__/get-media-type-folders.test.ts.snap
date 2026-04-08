@@ -5,22 +5,24 @@ exports[`get-media-type-folders edge cases should handle boundary pagination val
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
 `;
 
-exports[`get-media-type-folders edge cases should handle empty results when skip exceeds available items 1`] = `
+exports[`get-media-type-folders edge cases should handle empty results when cursor exceeds available items 1`] = `
 {
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
 `;
 
-exports[`get-media-type-folders edge cases should handle pagination with skip and small take values 1`] = `
+exports[`get-media-type-folders edge cases should handle pagination with small page size 1`] = `
 {
   "content": [],
   "structuredContent": {
@@ -32,16 +34,7 @@ exports[`get-media-type-folders edge cases should handle pagination with skip an
         "name": "Folder",
       },
     ],
-    "total": 1,
-  },
-}
-`;
-
-exports[`get-media-type-folders edge cases should handle zero take parameter 1`] = `
-{
-  "content": [],
-  "structuredContent": {
-    "items": [],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -59,6 +52,7 @@ exports[`get-media-type-folders successful retrieval should get media type folde
         "name": "Folder",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -76,16 +70,7 @@ exports[`get-media-type-folders successful retrieval should get media type folde
         "name": "Folder",
       },
     ],
-    "total": 1,
-  },
-}
-`;
-
-exports[`get-media-type-folders successful retrieval should get media type folders with skip parameter 1`] = `
-{
-  "content": [],
-  "structuredContent": {
-    "items": [],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -103,6 +88,7 @@ exports[`get-media-type-folders successful retrieval should handle large paginat
         "name": "Folder",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
