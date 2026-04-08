@@ -8,9 +8,9 @@ import {
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
 
-// Fix: Umbraco returns some cultures with empty name strings, but the generated
+// WORKAROUND: Umbraco returns some cultures with empty name strings, but the generated
 // schema has .min(1). Override to allow empty strings.
-// TODO: Report to Umbraco CMS — GET /culture returns cultures with empty name field
+// Fixed in Umbraco 17.4 — remove this override and revert to getCultureResponse.shape after upgrade.
 const outputSchema = z.object({
   total: z.number(),
   items: z.array(z.object({
