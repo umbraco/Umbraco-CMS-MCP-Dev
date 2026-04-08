@@ -4,6 +4,7 @@ import {
   type CollectionConfiguration,
   type ToolDefinition,
   createToolAnnotations,
+  withCursorPagination,
 } from "@umbraco-cms/mcp-server-sdk";
 
 /**
@@ -72,17 +73,20 @@ export const ToolRegistrar = {
       if (config.disabledTools?.includes(tool.name)) return;
       if (config.enabledTools?.length && !config.enabledTools.includes(tool.name)) return;
 
+      // Apply cursor-based pagination (replaces skip/take with opaque cursor)
+      const paginatedTool = withCursorPagination(tool);
+
       // Build annotations from tool definition
       // openWorldHint is always true since all tools use the Umbraco API
-      const annotations = createToolAnnotations(tool);
+      const annotations = createToolAnnotations(paginatedTool);
 
       // Register the tool using the new registerTool API (supports outputSchema and annotations)
-      server.registerTool(tool.name, {
-        description: tool.description,
-        inputSchema: tool.inputSchema,
-        outputSchema: tool.outputSchema,
+      server.registerTool(paginatedTool.name, {
+        description: paginatedTool.description,
+        inputSchema: paginatedTool.inputSchema,
+        outputSchema: paginatedTool.outputSchema,
         annotations,
-      }, tool.handler);
+      }, paginatedTool.handler);
     });
   },
 };
