@@ -4,6 +4,7 @@ import { LanguageTestHelper } from "./helpers/language-helper.js";
 import {
   createMockRequestHandlerExtra,
   setupTestEnvironment,
+  validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 
@@ -62,10 +63,10 @@ describe("get-language", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert - don't snapshot full list as other parallel tests may add languages
-    const sc = result.structuredContent as any;
-    expect(sc.items.length).toBeGreaterThanOrEqual(3); // default + 2 test languages
-    const isoCodes = sc.items.map((item: any) => item.isoCode);
+    // Assert - validate response against cursor-wrapped output schema
+    const data = validateToolResponse(cursorTool, result);
+    expect(data.items.length).toBeGreaterThanOrEqual(3); // default + 2 test languages
+    const isoCodes = data.items.map((item: any) => item.isoCode);
     expect(isoCodes).toContain(TEST_LANGUAGE_ISO_1);
     expect(isoCodes).toContain(TEST_LANGUAGE_ISO_2);
   });
@@ -100,23 +101,23 @@ describe("get-language", () => {
       createMockRequestHandlerExtra()
     );
 
-    // Assert - first page should return 1 item with nextCursor
-    const sc1 = page1.structuredContent as any;
-    expect(sc1.items).toHaveLength(1);
-    expect(sc1.total).toBeGreaterThanOrEqual(4); // default + 3 test languages
-    expect(sc1.nextCursor).toBeDefined();
+    // Assert - validate against cursor-wrapped output schema
+    const data1 = validateToolResponse(cursorTool, page1);
+    expect(data1.items).toHaveLength(1);
+    expect(data1.total).toBeGreaterThanOrEqual(4); // default + 3 test languages
+    expect(data1.nextCursor).toBeDefined();
 
     // Act - Get second page using cursor
     const page2 = await cursorTool.handler(
-      { cursor: sc1.nextCursor },
+      { cursor: data1.nextCursor },
       createMockRequestHandlerExtra()
     );
 
-    // Assert - second page should have different items
-    const sc2 = page2.structuredContent as any;
-    expect(sc2.items).toHaveLength(1);
-    expect(sc2.total).toBe(sc1.total);
-    expect(sc2.items[0].isoCode).not.toBe(sc1.items[0].isoCode);
+    // Assert - validate and check different items
+    const data2 = validateToolResponse(cursorTool, page2);
+    expect(data2.items).toHaveLength(1);
+    expect(data2.total).toBe(data1.total);
+    expect(data2.items[0].isoCode).not.toBe(data1.items[0].isoCode);
   });
 
   it("should not expose skip and take in cursor tool schema", async () => {
