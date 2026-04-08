@@ -7,6 +7,7 @@ import {
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
+import { type CursorPaginatedResult } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_LANGUAGE_NAME_1 = "_Test Language Get 1";
 const TEST_LANGUAGE_ISO_1 = "en-AU";
@@ -102,7 +103,7 @@ describe("get-language", () => {
     );
 
     // Assert - validate against cursor-wrapped output schema
-    const data1 = validateToolResponse(cursorTool, page1);
+    const data1 = validateToolResponse(cursorTool, page1) as CursorPaginatedResult;
     expect(data1.items).toHaveLength(1);
     expect(data1.total).toBeGreaterThanOrEqual(4); // default + 3 test languages
     expect(data1.nextCursor).toBeDefined();
@@ -114,10 +115,10 @@ describe("get-language", () => {
     );
 
     // Assert - validate and check different items
-    const data2 = validateToolResponse(cursorTool, page2);
+    const data2 = validateToolResponse(cursorTool, page2) as CursorPaginatedResult;
     expect(data2.items).toHaveLength(1);
     expect(data2.total).toBe(data1.total);
-    expect(data2.items[0].isoCode).not.toBe(data1.items[0].isoCode);
+    expect((data2.items[0] as any).isoCode).not.toBe((data1.items[0] as any).isoCode);
   });
 
   it("should not expose skip and take in cursor tool schema", async () => {

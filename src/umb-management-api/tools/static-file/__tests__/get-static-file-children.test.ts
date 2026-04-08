@@ -6,6 +6,7 @@ import {
   createSnapshotResult,
   setupTestEnvironment,
   validateToolResponse,
+  type CursorPaginatedResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const LARGE_SKIP = 1000;
@@ -121,7 +122,7 @@ describe("get-static-file-children", () => {
       createMockRequestHandlerExtra()
     );
 
-    const initialData = validateToolResponse(cursorTool, initialResult);
+    const initialData = validateToolResponse(cursorTool, initialResult) as CursorPaginatedResult;
     const totalItems = initialData.total || 0;
 
     // Only test cursor if there are items and a next page

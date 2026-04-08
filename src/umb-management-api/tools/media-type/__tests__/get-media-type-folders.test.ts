@@ -5,6 +5,7 @@ import {
   createSnapshotResult,
   setupTestEnvironment,
   validateToolResponse,
+  type CursorPaginatedResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-media-type-folders", () => {
@@ -65,7 +66,7 @@ describe("get-media-type-folders", () => {
         createMockRequestHandlerExtra()
       );
 
-      const firstParsed = validateToolResponse(smallPageTool, firstResult);
+      const firstParsed = validateToolResponse(smallPageTool, firstResult) as CursorPaginatedResult;
 
       // If there's a next page, fetch it
       if (firstParsed.nextCursor) {
