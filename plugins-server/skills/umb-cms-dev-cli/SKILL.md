@@ -1,5 +1,5 @@
 ---
-name: umb-cms-cli
+name: umb-cms-dev-cli
 description: Guide for running and debugging this Umbraco MCP server via the CLI. Use when the user wants to list tools, call tools, configure filtering, dry-run, readonly mode, or debug configuration.
 ---
 
