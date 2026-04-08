@@ -4,8 +4,8 @@ import { LanguageTestHelper } from "./helpers/language-helper.js";
 import {
   createMockRequestHandlerExtra,
   setupTestEnvironment,
-  validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
+import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 
 const TEST_LANGUAGE_NAME_1 = "_Test Language Get 1";
 const TEST_LANGUAGE_ISO_1 = "en-AU";
@@ -55,21 +55,22 @@ describe("get-language", () => {
       .withIsMandatory(false)
       .create();
 
-    // Act - Get all languages
-    const result = await GetLanguageTool.handler(
-      { skip: 0, take: 100 },
+    // Act - Get all languages (no cursor = first page)
+    const cursorTool = withCursorPagination(GetLanguageTool);
+    const result = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
 
     // Assert - don't snapshot full list as other parallel tests may add languages
-    const data = validateToolResponse(GetLanguageTool, result);
-    expect(data.items.length).toBeGreaterThanOrEqual(3); // default + 2 test languages
-    const isoCodes = data.items.map((item: any) => item.isoCode);
+    const sc = result.structuredContent as any;
+    expect(sc.items.length).toBeGreaterThanOrEqual(3); // default + 2 test languages
+    const isoCodes = sc.items.map((item: any) => item.isoCode);
     expect(isoCodes).toContain(TEST_LANGUAGE_ISO_1);
     expect(isoCodes).toContain(TEST_LANGUAGE_ISO_2);
   });
 
-  it("should get languages with pagination - skip and take", async () => {
+  it("should paginate using cursor", async () => {
     // Arrange - Create test languages
     await builder1
       .withName(TEST_LANGUAGE_NAME_1)
@@ -92,43 +93,37 @@ describe("get-language", () => {
       .withIsMandatory(false)
       .create();
 
-    // Act - Get languages with skip=1 and take=1
-    const result = await GetLanguageTool.handler(
-      { skip: 1, take: 1 },
+    // Act - Get first page with pageSize=1
+    const cursorTool = withCursorPagination({ ...GetLanguageTool, pageSize: 1 });
+    const page1 = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
 
-    // Assert - pagination should return exactly 1 item
-    const data = validateToolResponse(GetLanguageTool, result);
-    expect(data.items).toHaveLength(1);
-    expect(data.total).toBeGreaterThanOrEqual(4); // default + 3 test languages
+    // Assert - first page should return 1 item with nextCursor
+    const sc1 = page1.structuredContent as any;
+    expect(sc1.items).toHaveLength(1);
+    expect(sc1.total).toBeGreaterThanOrEqual(4); // default + 3 test languages
+    expect(sc1.nextCursor).toBeDefined();
+
+    // Act - Get second page using cursor
+    const page2 = await cursorTool.handler(
+      { cursor: sc1.nextCursor },
+      createMockRequestHandlerExtra()
+    );
+
+    // Assert - second page should have different items
+    const sc2 = page2.structuredContent as any;
+    expect(sc2.items).toHaveLength(1);
+    expect(sc2.total).toBe(sc1.total);
+    expect(sc2.items[0].isoCode).not.toBe(sc1.items[0].isoCode);
   });
 
-  it("should get languages with take parameter only", async () => {
-    // Arrange - Create test languages
-    await builder1
-      .withName(TEST_LANGUAGE_NAME_1)
-      .withIsoCode(TEST_LANGUAGE_ISO_1)
-      .withIsDefault(false)
-      .withIsMandatory(false)
-      .create();
+  it("should not expose skip and take in cursor tool schema", async () => {
+    const cursorTool = withCursorPagination(GetLanguageTool);
 
-    await builder2
-      .withName(TEST_LANGUAGE_NAME_2)
-      .withIsoCode(TEST_LANGUAGE_ISO_2)
-      .withIsDefault(false)
-      .withIsMandatory(false)
-      .create();
-
-    // Act - Get languages with take=1
-    const result = await GetLanguageTool.handler(
-      { skip: 0, take: 1 },
-      createMockRequestHandlerExtra()
-    );
-
-    // Assert - take=1 should return exactly 1 item
-    const data = validateToolResponse(GetLanguageTool, result);
-    expect(data.items).toHaveLength(1);
-    expect(data.total).toBeGreaterThanOrEqual(3); // default + 2 test languages
+    expect(cursorTool.inputSchema).toHaveProperty("cursor");
+    expect(cursorTool.inputSchema).not.toHaveProperty("skip");
+    expect(cursorTool.inputSchema).not.toHaveProperty("take");
   });
 });
