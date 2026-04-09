@@ -1,7 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import { query } from "@anthropic-ai/claude-agent-sdk";
 
-const SKILL_PATH = "plugins-server/skills/umb-cms-cli/SKILL.md";
+const SKILL_PATH = "plugins-server/skills/umb-cms-dev-cli/SKILL.md";
 
 describe("cli skill smoke test", () => {
   it("should call a tool using the skill", async () => {
