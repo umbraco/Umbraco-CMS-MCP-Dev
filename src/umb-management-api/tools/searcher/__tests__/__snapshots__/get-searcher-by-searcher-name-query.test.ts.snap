@@ -3,6 +3,7 @@
 exports[`get-searcher-by-searcher-name-query should get searcher query results by searcher name 1`] = `
 {
   "items": [],
+  "nextCursor": undefined,
   "total": 0,
 }
 `;

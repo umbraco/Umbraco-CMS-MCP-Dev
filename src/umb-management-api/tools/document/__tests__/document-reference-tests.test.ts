@@ -3,6 +3,7 @@ import GetDocumentByIdReferencedByTool from "../get/get-document-by-id-reference
 import GetDocumentByIdReferencedDescendantsTool from "../get/get-document-by-id-referenced-descendants.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
+import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
   createSnapshotResult,
@@ -21,6 +22,8 @@ describe("document-reference-tests", () => {
   });
 
   describe("get-document-are-referenced", () => {
+    const cursorTool = withCursorPagination(GetDocumentAreReferencedTool);
+
     it("should check if documents are referenced", async () => {
       // Arrange: Create documents
       const builder1 = await new DocumentBuilder()
@@ -34,8 +37,8 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Check if documents are referenced
-      const result = await GetDocumentAreReferencedTool.handler(
-        { id: [builder1.getId(), builder2.getId()], skip: undefined, take: 20 },
+      const result = await cursorTool.handler(
+        { id: [builder1.getId(), builder2.getId()] },
         createMockRequestHandlerExtra()
       );
 
@@ -52,8 +55,9 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Check if single document is referenced
-      const result = await GetDocumentAreReferencedTool.handler(
-        { id: [builder.getId()], skip: 0, take: 10 },
+      const smallPageTool = withCursorPagination({ ...GetDocumentAreReferencedTool, pageSize: 10 });
+      const result = await smallPageTool.handler(
+        { id: [builder.getId()] },
         createMockRequestHandlerExtra()
       );
 
@@ -64,6 +68,8 @@ describe("document-reference-tests", () => {
   });
 
   describe("get-document-by-id-referenced-by", () => {
+    const cursorTool = withCursorPagination(GetDocumentByIdReferencedByTool);
+
     it("should get documents that reference a document by ID", async () => {
       // Arrange: Create a document
       const builder = await new DocumentBuilder()
@@ -72,8 +78,8 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Get documents that reference this document
-      const result = await GetDocumentByIdReferencedByTool.handler(
-        { id: builder.getId(), skip: undefined, take: 20 },
+      const result = await cursorTool.handler(
+        { id: builder.getId() },
         createMockRequestHandlerExtra()
       );
 
@@ -90,8 +96,9 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Get references with pagination
-      const result = await GetDocumentByIdReferencedByTool.handler(
-        { id: builder.getId(), skip: 0, take: 10 },
+      const smallPageTool = withCursorPagination({ ...GetDocumentByIdReferencedByTool, pageSize: 10 });
+      const result = await smallPageTool.handler(
+        { id: builder.getId() },
         createMockRequestHandlerExtra()
       );
 
@@ -102,8 +109,8 @@ describe("document-reference-tests", () => {
 
     it("should handle non-existent document", async () => {
       // Act: Try to get references for non-existent document
-      const result = await GetDocumentByIdReferencedByTool.handler(
-        { id: "00000000-0000-0000-0000-000000000000", skip: undefined, take: 20 },
+      const result = await cursorTool.handler(
+        { id: "00000000-0000-0000-0000-000000000000" },
         createMockRequestHandlerExtra()
       );
 
@@ -113,6 +120,8 @@ describe("document-reference-tests", () => {
   });
 
   describe("get-document-by-id-referenced-descendants", () => {
+    const cursorTool = withCursorPagination(GetDocumentByIdReferencedDescendantsTool);
+
     it("should get descendants that are referenced", async () => {
       // Arrange: Create a document
       const builder = await new DocumentBuilder()
@@ -121,8 +130,8 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Get referenced descendants
-      const result = await GetDocumentByIdReferencedDescendantsTool.handler(
-        { id: builder.getId(), skip: undefined, take: 20 },
+      const result = await cursorTool.handler(
+        { id: builder.getId() },
         createMockRequestHandlerExtra()
       );
 
@@ -139,8 +148,9 @@ describe("document-reference-tests", () => {
         .create();
 
       // Act: Get referenced descendants with pagination
-      const result = await GetDocumentByIdReferencedDescendantsTool.handler(
-        { id: builder.getId(), skip: 0, take: 10 },
+      const smallPageTool = withCursorPagination({ ...GetDocumentByIdReferencedDescendantsTool, pageSize: 10 });
+      const result = await smallPageTool.handler(
+        { id: builder.getId() },
         createMockRequestHandlerExtra()
       );
 
@@ -152,8 +162,8 @@ describe("document-reference-tests", () => {
     it("should handle non-existent document", async () => {
       // Act: Try to get referenced descendants for non-existent document
       // Using a random UUID that doesn't exist
-      const result = await GetDocumentByIdReferencedDescendantsTool.handler(
-        { id: crypto.randomUUID(), skip: undefined, take: 20 },
+      const result = await cursorTool.handler(
+        { id: crypto.randomUUID() },
         createMockRequestHandlerExtra()
       );
 

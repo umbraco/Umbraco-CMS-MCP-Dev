@@ -3,6 +3,7 @@
 exports[`get-webhook should get empty paged webhooks 1`] = `
 {
   "items": [],
+  "nextCursor": undefined,
   "total": 0,
 }
 `;
@@ -29,6 +30,7 @@ exports[`get-webhook should get paged webhooks with created webhook 1`] = `
         "url": "https://example.com/webhook",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -37,6 +39,7 @@ exports[`get-webhook should get paged webhooks with created webhook 1`] = `
 exports[`get-webhook should use pagination parameters 1`] = `
 {
   "items": [],
+  "nextCursor": undefined,
   "total": 0,
 }
 `;

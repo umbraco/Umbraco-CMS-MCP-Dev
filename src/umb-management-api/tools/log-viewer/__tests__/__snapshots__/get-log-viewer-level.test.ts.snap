@@ -6,10 +6,15 @@ exports[`get-log-viewer-level should get log viewer levels with custom paginatio
   "structuredContent": {
     "items": [
       {
+        "level": "Information",
+        "name": "Global",
+      },
+      {
         "level": "Verbose",
         "name": "UmbracoFile",
       },
     ],
+    "nextCursor": undefined,
     "total": 2,
   },
 }
@@ -29,6 +34,7 @@ exports[`get-log-viewer-level should get log viewer levels with default paramete
         "name": "UmbracoFile",
       },
     ],
+    "nextCursor": undefined,
     "total": 2,
   },
 }

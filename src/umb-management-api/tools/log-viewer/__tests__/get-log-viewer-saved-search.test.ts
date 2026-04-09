@@ -6,6 +6,7 @@ import {
   createSnapshotResult,
   setupTestEnvironment,
 } from "@umbraco-cms/mcp-server-sdk/testing";
+import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 
 const TEST_SEARCH_NAME = "_Test Saved Search";
 const TEST_SEARCH_NAME_2 = "_Test Saved Search 2";
@@ -31,8 +32,9 @@ describe("get-log-viewer-saved-search", () => {
       .withQuery("level:Warning")
       .create();
 
-    const result = await GetLogViewerSavedSearchTool.handler(
-      { skip: undefined, take: 100 },
+    const cursorTool = withCursorPagination(GetLogViewerSavedSearchTool);
+    const result = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
 
@@ -52,8 +54,9 @@ describe("get-log-viewer-saved-search", () => {
       .withQuery("level:Warning")
       .create();
 
-    const result = await GetLogViewerSavedSearchTool.handler(
-      { skip: 0, take: 10 },
+    const cursorTool = withCursorPagination({ ...GetLogViewerSavedSearchTool, pageSize: 10 });
+    const result = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
 
@@ -62,8 +65,9 @@ describe("get-log-viewer-saved-search", () => {
   });
 
   it("should handle empty result set", async () => {
-    const result = await GetLogViewerSavedSearchTool.handler(
-      { skip: undefined, take: 100 },
+    const cursorTool = withCursorPagination(GetLogViewerSavedSearchTool);
+    const result = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
 

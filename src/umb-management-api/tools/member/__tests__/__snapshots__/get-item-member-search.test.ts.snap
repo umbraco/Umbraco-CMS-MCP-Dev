@@ -5,6 +5,7 @@ exports[`get-item-member-search should search for member items 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

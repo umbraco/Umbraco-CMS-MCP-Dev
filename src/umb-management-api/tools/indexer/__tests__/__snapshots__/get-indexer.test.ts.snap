@@ -114,6 +114,7 @@ exports[`get-indexer should list all indexes with default parameters 1`] = `
         "searcherName": "PDFSearcher",
       },
     ],
+    "nextCursor": undefined,
     "total": 5,
   },
 }
