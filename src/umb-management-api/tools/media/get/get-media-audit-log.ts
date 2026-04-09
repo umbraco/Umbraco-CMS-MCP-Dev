@@ -3,8 +3,6 @@ import {
   getMediaByIdAuditLogQueryParams,
   getMediaByIdAuditLogResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { GetMediaByIdAuditLogParams } from "@/umb-management-api/schemas/index.js";
-import { z } from "zod";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
@@ -14,7 +12,7 @@ import {
 
 const inputSchema = {
   id: getMediaByIdAuditLogParams.shape.id,
-  data: z.object(getMediaByIdAuditLogQueryParams.shape),
+  ...getMediaByIdAuditLogQueryParams.shape,
 };
 
 const GetMediaAuditLogTool = {
@@ -24,9 +22,10 @@ const GetMediaAuditLogTool = {
   outputSchema: getMediaByIdAuditLogResponse.shape,
   annotations: { readOnlyHint: true },
   slices: ['audit'],
-  handler: (async (model: { id: string; data: GetMediaByIdAuditLogParams }) => {
+  handler: (async (model: { id: string; orderDirection?: string; sinceDate?: string; skip?: number; take?: number }) => {
+    const { id, ...queryParams } = model;
     return executeGetApiCall((client) =>
-      client.getMediaByIdAuditLog(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+      client.getMediaByIdAuditLog(id, queryParams, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof inputSchema, typeof getMediaByIdAuditLogResponse.shape>;

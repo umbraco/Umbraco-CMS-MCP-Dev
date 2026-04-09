@@ -4,17 +4,19 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
+import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 
 describe("get-searcher", () => {
   setupTestEnvironment();
 
   it("should list all searchers with default parameters", async () => {
-    const result = await GetSearcherTool.handler(
-      { skip: undefined, take: 100 },
+    const cursorTool = withCursorPagination(GetSearcherTool);
+    const result = await cursorTool.handler(
+      {},
       createMockRequestHandlerExtra()
     );
     // Validate response against tool's outputSchema
-    const data = validateToolResponse(GetSearcherTool, result);
+    const data = validateToolResponse(cursorTool, result);
     expect(data).toMatchSnapshot();
   });
 

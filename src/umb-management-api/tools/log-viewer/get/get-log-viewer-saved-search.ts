@@ -15,6 +15,7 @@ const GetLogViewerSavedSearchTool = {
   annotations: {
     readOnlyHint: true,
   },
+  pageSize: 50,
   slices: ['diagnostics'],
   handler: (async (model: GetLogViewerSavedSearchParams) => {
     return executeGetApiCall((client) =>

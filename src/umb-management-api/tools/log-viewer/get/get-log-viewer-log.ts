@@ -15,6 +15,7 @@ const GetLogViewerLogTool = {
   annotations: {
     readOnlyHint: true,
   },
+  pageSize: 50,
   slices: ['diagnostics'],
   handler: (async (model: GetLogViewerLogParams) => {
     return executeGetApiCall((client) =>

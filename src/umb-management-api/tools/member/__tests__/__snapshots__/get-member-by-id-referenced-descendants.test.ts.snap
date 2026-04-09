@@ -5,6 +5,7 @@ exports[`get-member-by-id-referenced-descendants should get descendant reference
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -15,6 +16,7 @@ exports[`get-member-by-id-referenced-descendants should handle empty results for
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
