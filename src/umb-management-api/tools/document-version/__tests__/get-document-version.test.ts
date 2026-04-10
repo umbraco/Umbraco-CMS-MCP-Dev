@@ -33,8 +33,6 @@ describe("get-document-version", () => {
     const result = await GetDocumentVersionTool.handler({
       documentId: documentBuilder.getId(),
       culture: undefined,
-      skip: 0,
-      take: 10
     }, createMockRequestHandlerExtra());
 
     // Assert
@@ -56,8 +54,6 @@ describe("get-document-version", () => {
     const result = await GetDocumentVersionTool.handler({
       documentId: documentBuilder.getId(),
       culture: undefined,
-      skip: 1,
-      take: 1
     }, createMockRequestHandlerExtra());
 
     // Assert
@@ -70,8 +66,6 @@ describe("get-document-version", () => {
     const result = await GetDocumentVersionTool.handler({
       documentId: "non-existent-id",
       culture: undefined,
-      skip: 0,
-      take: 10
     }, createMockRequestHandlerExtra());
 
     // Assert - Use normalizeErrorResponse for error responses

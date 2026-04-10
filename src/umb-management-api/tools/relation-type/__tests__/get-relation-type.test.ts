@@ -11,8 +11,6 @@ describe("get-relation-type", () => {
 
   it("should get relation types with default pagination", async () => {
     const result = await GetRelationTypeTool.handler({
-      skip: 0,
-      take: 10
     }, createMockRequestHandlerExtra());
 
     const response = validateToolResponse(GetRelationTypeTool, result);

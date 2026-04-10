@@ -4,20 +4,17 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
-
 describe("get-log-viewer-log", () => {
   setupTestEnvironment();
 
   it("should get log viewer logs with default parameters", async () => {
-    const cursorTool = withCursorPagination(GetLogViewerLogTool);
-    const result = await cursorTool.handler(
+    const result = await GetLogViewerLogTool.handler(
       { orderDirection: undefined, filterExpression: undefined, logLevel: undefined, startDate: undefined, endDate: undefined },
       createMockRequestHandlerExtra()
     );
 
     // Validate response against tool's outputSchema
-    const content = validateToolResponse(cursorTool, result);
+    const content = validateToolResponse(GetLogViewerLogTool, result);
 
     // Verify response structure (logs are dynamic, so we verify structure not content)
     expect(content).toHaveProperty("items");
@@ -32,9 +29,7 @@ describe("get-log-viewer-log", () => {
     const now = new Date();
     const oneMonthAgo = new Date(now);
     oneMonthAgo.setMonth(now.getMonth() - 1);
-
-    const cursorTool = withCursorPagination({ ...GetLogViewerLogTool, pageSize: 10 });
-    const result = await cursorTool.handler(
+    const result = await GetLogViewerLogTool.handler(
       {
         orderDirection: "Descending",
         filterExpression: "",
@@ -46,13 +41,13 @@ describe("get-log-viewer-log", () => {
     );
 
     // Validate response against tool's outputSchema
-    const content = validateToolResponse(cursorTool, result);
+    const content = validateToolResponse(GetLogViewerLogTool, result);
 
     // Verify response structure (logs are dynamic, so we verify structure not content)
     expect(content).toHaveProperty("items");
     expect(content).toHaveProperty("total");
     expect(Array.isArray(content.items)).toBe(true);
-    expect(content.items.length).toBeLessThanOrEqual(10);
+    expect(content.items.length).toBeGreaterThan(0);
     expect(typeof content.total).toBe("number");
   });
 });

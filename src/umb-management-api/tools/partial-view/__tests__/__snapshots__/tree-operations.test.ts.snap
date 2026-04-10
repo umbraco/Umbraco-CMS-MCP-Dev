@@ -88,6 +88,7 @@ exports[`partial-view-tree-operations get-children should get child items of a f
         "path": "/_Test Folder/_Test Child.cshtml",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -98,6 +99,7 @@ exports[`partial-view-tree-operations get-children should handle non-existent pa
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -165,6 +167,7 @@ exports[`partial-view-tree-operations get-root should get root level partial vie
         "path": "/xmlSitemap.cshtml",
       },
     ],
+    "nextCursor": undefined,
     "total": 8,
   },
 }

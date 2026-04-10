@@ -50,8 +50,6 @@ describe("get-collection-media", () => {
     const result = await GetCollectionMediaTool.handler(
       {
         orderBy: "updateDate",
-        take: 100,
-        skip: 0
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -76,7 +74,6 @@ describe("get-collection-media", () => {
     const result = await GetCollectionMediaTool.handler(
       {
         orderBy: "name",
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -99,8 +96,6 @@ describe("get-collection-media", () => {
 
     const result = await GetCollectionMediaTool.handler(
       {
-        skip: 0,
-        take: 5,
         orderBy: "updateDate"
       } as any,
       createMockRequestHandlerExtra()
@@ -124,7 +119,6 @@ describe("get-collection-media", () => {
       {
         orderBy: "name",
         orderDirection: "Descending",
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -146,7 +140,6 @@ describe("get-collection-media", () => {
       {
         filter: "Test Collection",
         orderBy: "name",
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -163,7 +156,6 @@ describe("get-collection-media", () => {
       {
         dataTypeId: BLANK_UUID,
         orderBy: "name",
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -175,7 +167,6 @@ describe("get-collection-media", () => {
     const result = await GetCollectionMediaTool.handler(
       {
         orderBy: "updateDate", // Using default orderBy value
-        take: 100
       } as any,
       createMockRequestHandlerExtra()
     );

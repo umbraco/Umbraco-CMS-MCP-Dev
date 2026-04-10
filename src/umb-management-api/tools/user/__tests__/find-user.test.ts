@@ -34,8 +34,6 @@ describe("find-user", () => {
     // Act
     const params = getFilterUserQueryParams.parse({
       filter: TEST_USER_NAME,
-      skip: 0,
-      take: 10
     });
     const result = await FindUserTool.handler(params as any, createMockRequestHandlerExtra());
 
@@ -58,8 +56,6 @@ describe("find-user", () => {
     // Act
     const params = getFilterUserQueryParams.parse({
       filter: "NonExistentUser123",
-      skip: 0,
-      take: 10
     });
     const result = await FindUserTool.handler(params as any, createMockRequestHandlerExtra());
 

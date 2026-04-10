@@ -31,8 +31,6 @@ describe("get-media-type-allowed-at-root", () => {
     // Get media types allowed at root
     const result = await GetMediaTypeAllowedAtRootTool.handler(
       {
-        skip: 0,
-        take: 10,
       } as any,
       createMockRequestHandlerExtra()
     );

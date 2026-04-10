@@ -12,6 +12,7 @@ exports[`get-media-type-allowed-children should get allowed children for a media
         "name": "_Test Child MediaType",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -22,6 +23,7 @@ exports[`get-media-type-allowed-children should handle media type with no allowe
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

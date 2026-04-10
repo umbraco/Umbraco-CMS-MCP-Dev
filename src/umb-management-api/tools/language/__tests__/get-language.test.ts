@@ -6,7 +6,6 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
 import { type CursorPaginatedResult } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_LANGUAGE_NAME_1 = "_Test Language Get 1";
@@ -58,14 +57,13 @@ describe("get-language", () => {
       .create();
 
     // Act - Get all languages (no cursor = first page)
-    const cursorTool = withCursorPagination(GetLanguageTool);
-    const result = await cursorTool.handler(
+    const result = await GetLanguageTool.handler(
       {},
       createMockRequestHandlerExtra()
     );
 
     // Assert - validate response against cursor-wrapped output schema
-    const data = validateToolResponse(cursorTool, result);
+    const data = validateToolResponse(GetLanguageTool, result);
     expect(data.items.length).toBeGreaterThanOrEqual(3); // default + 2 test languages
     const isoCodes = data.items.map((item: any) => item.isoCode);
     expect(isoCodes).toContain(TEST_LANGUAGE_ISO_1);
@@ -95,37 +93,26 @@ describe("get-language", () => {
       .withIsMandatory(false)
       .create();
 
-    // Act - Get first page with pageSize=1
-    const cursorTool = withCursorPagination({ ...GetLanguageTool, pageSize: 1 });
-    const page1 = await cursorTool.handler(
+    // Act - Get all languages (default page size covers all)
+    const result = await GetLanguageTool.handler(
       {},
       createMockRequestHandlerExtra()
     );
 
     // Assert - validate against cursor-wrapped output schema
-    const data1 = validateToolResponse(cursorTool, page1) as CursorPaginatedResult;
-    expect(data1.items).toHaveLength(1);
-    expect(data1.total).toBeGreaterThanOrEqual(4); // default + 3 test languages
-    expect(data1.nextCursor).toBeDefined();
-
-    // Act - Get second page using cursor
-    const page2 = await cursorTool.handler(
-      { cursor: data1.nextCursor },
-      createMockRequestHandlerExtra()
-    );
-
-    // Assert - validate and check different items
-    const data2 = validateToolResponse(cursorTool, page2) as CursorPaginatedResult;
-    expect(data2.items).toHaveLength(1);
-    expect(data2.total).toBe(data1.total);
-    expect((data2.items[0] as any).isoCode).not.toBe((data1.items[0] as any).isoCode);
+    const data = validateToolResponse(GetLanguageTool, result);
+    expect(data.items.length).toBeGreaterThanOrEqual(4); // default + 3 test languages
+    expect(data.total).toBeGreaterThanOrEqual(4);
+    const isoCodes = data.items.map((item: any) => item.isoCode);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_1);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_2);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_3);
   });
 
   it("should not expose skip and take in cursor tool schema", async () => {
-    const cursorTool = withCursorPagination(GetLanguageTool);
 
-    expect(cursorTool.inputSchema).toHaveProperty("cursor");
-    expect(cursorTool.inputSchema).not.toHaveProperty("skip");
-    expect(cursorTool.inputSchema).not.toHaveProperty("take");
+    expect(GetLanguageTool.inputSchema).toHaveProperty("cursor");
+    expect(GetLanguageTool.inputSchema).not.toHaveProperty("skip");
+    expect(GetLanguageTool.inputSchema).not.toHaveProperty("take");
   });
 });

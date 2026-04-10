@@ -51,7 +51,6 @@ describe("media-type-tree", () => {
 
       const result = await GetMediaTypeChildrenTool.handler(
         {
-          take: 100,
           parentId: folderBuilder.getId(),
         } as any,
         createMockRequestHandlerExtra()
@@ -65,7 +64,6 @@ describe("media-type-tree", () => {
     it("should handle non-existent parent", async () => {
       const result = await GetMediaTypeChildrenTool.handler(
         {
-          take: 100,
           parentId: BLANK_UUID,
         } as any,
         createMockRequestHandlerExtra()

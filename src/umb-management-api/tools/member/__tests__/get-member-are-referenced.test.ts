@@ -8,7 +8,6 @@ import { DocumentTestHelper } from "../../document/__tests__/helpers/document-te
 import {
   Default_Memeber_TYPE_ID,
   MEMBER_PICKER_DATA_TYPE_ID,
-  withCursorPagination,
 } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
@@ -59,9 +58,7 @@ describe("get-member-are-referenced", () => {
       .withDocumentType(docTypeBuilder.getId())
       .withValue("memberPicker", memberBuilder.getId())
       .create();
-
-    const cursorTool = withCursorPagination(GetMemberAreReferencedTool);
-    const result = await cursorTool.handler(
+    const result = await GetMemberAreReferencedTool.handler(
       { id: [memberBuilder.getId()] },
       createMockRequestHandlerExtra()
     );
@@ -70,7 +67,7 @@ describe("get-member-are-referenced", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Validate response against tool's output schema
-    const parsed = validateToolResponse(cursorTool, result);
+    const parsed = validateToolResponse(GetMemberAreReferencedTool, result);
     expect(parsed).toHaveProperty('total');
     expect(parsed).toHaveProperty('items');
     expect(Array.isArray(parsed.items)).toBe(true);
@@ -94,9 +91,7 @@ describe("get-member-are-referenced", () => {
       .withPassword("test123@Longer")
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
-
-    const cursorTool = withCursorPagination(GetMemberAreReferencedTool);
-    const result = await cursorTool.handler(
+    const result = await GetMemberAreReferencedTool.handler(
       { id: [builder1.getId(), builder2.getId()] },
       createMockRequestHandlerExtra()
     );
@@ -105,7 +100,7 @@ describe("get-member-are-referenced", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Validate response against tool's output schema
-    const parsed = validateToolResponse(cursorTool, result);
+    const parsed = validateToolResponse(GetMemberAreReferencedTool, result);
     expect(parsed.total).toBe(0);
     expect(parsed.items).toHaveLength(0);
     expect(Array.isArray(parsed.items)).toBe(true);

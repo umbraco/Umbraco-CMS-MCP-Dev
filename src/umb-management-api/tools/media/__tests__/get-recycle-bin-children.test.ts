@@ -54,7 +54,6 @@ describe("get-recycle-bin-media-children", () => {
     const result = await GetRecycleBinMediaChildrenTool.handler(
       {
         parentId: parentBuilder.getId(),
-        take: 10,
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -73,7 +72,6 @@ describe("get-recycle-bin-media-children", () => {
     const result = await GetRecycleBinMediaChildrenTool.handler(
       {
         parentId: BLANK_UUID,
-        take: 10,
       } as any,
       createMockRequestHandlerExtra()
     );

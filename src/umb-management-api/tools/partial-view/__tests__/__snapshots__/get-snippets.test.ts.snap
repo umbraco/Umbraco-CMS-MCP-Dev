@@ -165,7 +165,48 @@ exports[`get-snippets GetPartialViewSnippetTool should get partial view snippets
         "id": "00000000-0000-0000-0000-000000000000",
         "name": "List Child Pages From Current Page",
       },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Child Pages Ordered By Date",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Child Pages Ordered By Name",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Child Pages With Doctype",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Descendants From Current Page",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Login",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Login Status",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Multinode Tree-picker",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Navigation",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Register Member",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Site Map",
+      },
     ],
+    "nextCursor": undefined,
     "total": 15,
   },
 }
@@ -216,7 +257,28 @@ exports[`get-snippets GetPartialViewSnippetTool should get partial view snippets
         "id": "00000000-0000-0000-0000-000000000000",
         "name": "Login",
       },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Login Status",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Multinode Tree-picker",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Navigation",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Register Member",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Site Map",
+      },
     ],
+    "nextCursor": undefined,
     "total": 15,
   },
 }
@@ -227,6 +289,26 @@ exports[`get-snippets GetPartialViewSnippetTool should get partial view snippets
   "content": [],
   "structuredContent": {
     "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Breadcrumb",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Edit Profile",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Empty",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Ancestors From Current Page",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Child Pages From Current Page",
+      },
       {
         "id": "00000000-0000-0000-0000-000000000000",
         "name": "List Child Pages Ordered By Date",
@@ -268,6 +350,7 @@ exports[`get-snippets GetPartialViewSnippetTool should get partial view snippets
         "name": "Site Map",
       },
     ],
+    "nextCursor": undefined,
     "total": 15,
   },
 }
@@ -277,7 +360,69 @@ exports[`get-snippets GetPartialViewSnippetTool should handle edge case with ver
 {
   "content": [],
   "structuredContent": {
-    "items": [],
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Breadcrumb",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Edit Profile",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Empty",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Ancestors From Current Page",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Child Pages From Current Page",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Child Pages Ordered By Date",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Child Pages Ordered By Name",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Child Pages With Doctype",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "List Descendants From Current Page",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Login",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Login Status",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Multinode Tree-picker",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Navigation",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Register Member",
+      },
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "Site Map",
+      },
+    ],
+    "nextCursor": undefined,
     "total": 15,
   },
 }

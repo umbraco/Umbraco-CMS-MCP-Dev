@@ -3,7 +3,6 @@ import { MemberBuilder } from "./helpers/member-builder.js";
 import { MemberTestHelper } from "./helpers/member-test-helper.js";
 import {
   Default_Memeber_TYPE_ID,
-  withCursorPagination,
 } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
@@ -44,9 +43,8 @@ describe("get-item-member-search", () => {
       .create();
 
     // Act - Search for the member
-    const cursorTool = withCursorPagination(GetItemMemberSearchTool);
-    const result = await cursorTool.handler(
-      { query: TEST_MEMBER_USERNAME },
+    const result = await GetItemMemberSearchTool.handler(
+      { query: TEST_MEMBER_USERNAME } as any,
       createMockRequestHandlerExtra()
     );
 
@@ -58,14 +56,13 @@ describe("get-item-member-search", () => {
   it("should return empty results for non-existent search query", async () => {
     // Act - Search for a member that doesn't exist using a very unique string
     const uniqueQuery = `xYz_NoNe_ExIsT_${Date.now()}_${Math.random().toString(36).substring(7)}@nowhere.invalid`;
-    const cursorTool = withCursorPagination(GetItemMemberSearchTool);
-    const result = await cursorTool.handler(
-      { query: uniqueQuery },
+    const result = await GetItemMemberSearchTool.handler(
+      { query: uniqueQuery } as any,
       createMockRequestHandlerExtra()
     );
 
     // Assert - Validate response against tool's output schema
-    const data = validateToolResponse(cursorTool, result);
+    const data = validateToolResponse(GetItemMemberSearchTool, result);
     expect(data.total).toBe(0);
     expect(data.items).toEqual([]);
   });
@@ -89,14 +86,13 @@ describe("get-item-member-search", () => {
       .create();
 
     // Act - Search with pagination (take only 1 result)
-    const cursorTool = withCursorPagination({ ...GetItemMemberSearchTool, pageSize: 1 });
-    const result = await cursorTool.handler(
-      { query: "itemsearch" },
+    const result = await GetItemMemberSearchTool.handler(
+      { query: "itemsearch" } as any,
       createMockRequestHandlerExtra()
     );
 
     // Assert - Validate response against tool's output schema
-    const data = validateToolResponse(cursorTool, result);
+    const data = validateToolResponse(GetItemMemberSearchTool, result);
     expect(data.items.length).toBeLessThanOrEqual(1);
   });
 });

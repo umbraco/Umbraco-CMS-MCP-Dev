@@ -7,8 +7,6 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
-
 const TEST_GROUP_NAME_1 = "_Test Member Group Root 1";
 const TEST_GROUP_NAME_2 = "_Test Member Group Root 2";
 
@@ -31,14 +29,13 @@ describe("get-member-group-root", () => {
   });
 
   it("should get the root of the member group tree and include created groups", async () => {
-    const cursorTool = withCursorPagination(GetMemberGroupRootTool);
-    const result = await cursorTool.handler(
+    const result = await GetMemberGroupRootTool.handler(
       {},
       createMockRequestHandlerExtra()
     );
 
     // Validate response against tool's output schema
-    const data = validateToolResponse(cursorTool, result);
+    const data = validateToolResponse(GetMemberGroupRootTool, result);
     const names = data.items ? data.items.map((item: any) => item.name) : [];
     expect(names).toEqual(expect.arrayContaining([TEST_GROUP_NAME_1, TEST_GROUP_NAME_2]));
   });

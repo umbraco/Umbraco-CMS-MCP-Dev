@@ -27,7 +27,7 @@ describe("find-data-type", () => {
       .create();
 
     // Act - Use the tool to find by name
-    const params: GetFilterDataTypeParams = { name: TEST_DATATYPE_NAME, take: 100 };
+    const params: GetFilterDataTypeParams = { name: TEST_DATATYPE_NAME};
     const result = await FindDataTypeTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert - Verify the data type was found
@@ -42,7 +42,7 @@ describe("find-data-type", () => {
 
   it("should return no results for a non-existent name", async () => {
     // Act - Search for non-existent data type
-    const params: GetFilterDataTypeParams = { name: "nonexistentdatatype_" + Date.now(), take: 100 };
+    const params: GetFilterDataTypeParams = { name: "nonexistentdatatype_" + Date.now()};
     const result = await FindDataTypeTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert - Verify no results

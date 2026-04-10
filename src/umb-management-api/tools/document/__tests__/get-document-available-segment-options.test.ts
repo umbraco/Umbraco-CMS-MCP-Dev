@@ -30,8 +30,6 @@ describe("get-document-available-segment-options", () => {
     const result = await GetDocumentAvailableSegmentOptionsTool.handler(
       {
         id: builder.getId(),
-        skip: 0,
-        take: 100,
       },
       createMockRequestHandlerExtra()
     );
@@ -46,8 +44,6 @@ describe("get-document-available-segment-options", () => {
     const result = await GetDocumentAvailableSegmentOptionsTool.handler(
       {
         id: BLANK_UUID,
-        skip: 0,
-        take: 100,
       },
       createMockRequestHandlerExtra()
     );
