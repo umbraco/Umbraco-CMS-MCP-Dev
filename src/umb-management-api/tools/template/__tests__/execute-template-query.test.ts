@@ -14,10 +14,9 @@ describe("execute-template-query", () => {
       documentTypeAlias: undefined,
       filters: undefined,
       sort: undefined,
-      take: 10
     };
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
+    const result = await ExecuteTemplateQueryTool.handler(queryBody as any, createMockRequestHandlerExtra());
 
     const data = validateToolResponse(ExecuteTemplateQueryTool, result);
     expect(data).toBeDefined();
@@ -31,10 +30,9 @@ describe("execute-template-query", () => {
       documentTypeAlias: "contentPage",
       filters: undefined,
       sort: undefined,
-      take: 5
     };
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
+    const result = await ExecuteTemplateQueryTool.handler(queryBody as any, createMockRequestHandlerExtra());
 
     const data = validateToolResponse(ExecuteTemplateQueryTool, result);
     expect(data).toBeDefined();
@@ -57,10 +55,9 @@ describe("execute-template-query", () => {
         propertyAlias: "createDate",
         direction: "Descending" as const
       },
-      take: 10
     };
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
+    const result = await ExecuteTemplateQueryTool.handler(queryBody as any, createMockRequestHandlerExtra());
 
     const data = validateToolResponse(ExecuteTemplateQueryTool, result);
     expect(data).toBeDefined();
@@ -74,10 +71,9 @@ describe("execute-template-query", () => {
       documentTypeAlias: "nonExistentType",
       filters: undefined,
       sort: undefined,
-      take: 10
     };
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
+    const result = await ExecuteTemplateQueryTool.handler(queryBody as any, createMockRequestHandlerExtra());
 
     const data = validateToolResponse(ExecuteTemplateQueryTool, result);
     expect(data).toBeDefined();

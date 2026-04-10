@@ -43,8 +43,6 @@ describe("GetFilterUserGroupTool", () => {
 
   it("should filter user groups by name", async () => {
     const result = await GetFilterUserGroupTool.handler({
-      skip: 0,
-      take: 100,
       filter: "Filter"
     }, createMockRequestHandlerExtra());
 
@@ -56,8 +54,6 @@ describe("GetFilterUserGroupTool", () => {
 
   it("should handle empty filter", async () => {
     const result = await GetFilterUserGroupTool.handler({
-      skip: 0,
-      take: 100,
       filter: undefined
     }, createMockRequestHandlerExtra());
 
@@ -68,8 +64,6 @@ describe("GetFilterUserGroupTool", () => {
 
   it("should handle pagination", async () => {
     const result = await GetFilterUserGroupTool.handler({
-      skip: 2,
-      take: 2,
       filter: undefined
     }, createMockRequestHandlerExtra());
 

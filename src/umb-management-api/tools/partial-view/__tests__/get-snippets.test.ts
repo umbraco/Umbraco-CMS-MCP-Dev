@@ -35,8 +35,6 @@ describe("get-snippets", () => {
     it("should get partial view snippets with custom pagination", async () => {
       // Arrange
       const params = {
-        skip: 0,
-        take: 5
       };
 
       // Act
@@ -56,8 +54,6 @@ describe("get-snippets", () => {
     it("should get partial view snippets with skip parameter", async () => {
       // Arrange
       const params = {
-        skip: 5,
-        take: 10
       };
 
       // Act
@@ -76,8 +72,6 @@ describe("get-snippets", () => {
     it("should handle edge case with very high skip value", async () => {
       // Arrange
       const params = {
-        skip: 1000,
-        take: 10
       };
 
       // Act

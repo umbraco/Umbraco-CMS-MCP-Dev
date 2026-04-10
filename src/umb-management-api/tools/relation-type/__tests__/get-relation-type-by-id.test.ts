@@ -13,8 +13,6 @@ describe("get-relation-type-by-id", () => {
   it("should get relation type by ID", async () => {
     // First get available relation types to get a valid ID
     const listResult = await GetRelationTypeTool.handler({
-      skip: 0,
-      take: 1
     }, createMockRequestHandlerExtra());
 
     const listResponse = validateToolResponse(GetRelationTypeTool, listResult);

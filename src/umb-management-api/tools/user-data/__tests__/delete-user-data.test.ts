@@ -4,7 +4,6 @@ import GetUserDataTool from "../get/get-user-data.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import {
   BLANK_UUID,
-  withCursorPagination,
 } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
@@ -22,13 +21,12 @@ describe("delete-user-data", () => {
   afterEach(async () => {
     // Clean up any remaining test user data
     try {
-      const cursorTool = withCursorPagination(GetUserDataTool);
-      const result = await cursorTool.handler(
-        { groups: [TEST_USER_DATA_GROUP] },
+      const result = await GetUserDataTool.handler(
+        { groups: [TEST_USER_DATA_GROUP] } as any,
         createMockRequestHandlerExtra()
       );
 
-      const content = validateToolResponse(cursorTool, result);
+      const content = validateToolResponse(GetUserDataTool, result);
       if (content.items && content.items.length > 0) {
         const client = UmbracoManagementClient.getClient();
         for (const item of content.items) {
@@ -57,13 +55,12 @@ describe("delete-user-data", () => {
     );
 
     // Get the created user data to obtain its ID
-    const cursorTool = withCursorPagination(GetUserDataTool);
-    const getUserDataResult = await cursorTool.handler(
-      { groups: [TEST_USER_DATA_GROUP] },
+    const getUserDataResult = await GetUserDataTool.handler(
+      { groups: [TEST_USER_DATA_GROUP] } as any,
       createMockRequestHandlerExtra()
     );
 
-    const getUserDataContent = validateToolResponse(cursorTool, getUserDataResult);
+    const getUserDataContent = validateToolResponse(GetUserDataTool, getUserDataResult);
     expect(getUserDataContent.items).toBeDefined();
     expect(getUserDataContent.items!.length).toBeGreaterThan(0);
 
@@ -82,13 +79,12 @@ describe("delete-user-data", () => {
     expect(result).toMatchSnapshot();
 
     // Verify the user data no longer exists
-    const cursorTool2 = withCursorPagination(GetUserDataTool);
-    const findResult = await cursorTool2.handler(
-      { groups: [TEST_USER_DATA_GROUP] },
+    const findResult = await GetUserDataTool.handler(
+      { groups: [TEST_USER_DATA_GROUP] } as any,
       createMockRequestHandlerExtra()
     );
 
-    const findContent = validateToolResponse(cursorTool2, findResult);
+    const findContent = validateToolResponse(GetUserDataTool, findResult);
     const found = findContent.items?.find((item) => item.key === createdData.key);
     expect(found).toBeUndefined();
   });

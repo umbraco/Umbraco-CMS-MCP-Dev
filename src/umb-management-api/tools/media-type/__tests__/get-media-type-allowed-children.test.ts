@@ -46,8 +46,6 @@ describe("get-media-type-allowed-children", () => {
     const result = await GetMediaTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
-        skip: 0,
-        take: 100,
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -74,8 +72,6 @@ describe("get-media-type-allowed-children", () => {
     const result = await GetMediaTypeAllowedChildrenTool.handler(
       {
         id: BLANK_UUID,
-        skip: 0,
-        take: 100,
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -92,8 +88,6 @@ describe("get-media-type-allowed-children", () => {
     const result = await GetMediaTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
-        skip: 0,
-        take: 100,
       } as any,
       createMockRequestHandlerExtra()
     );

@@ -6,8 +6,6 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
-
 const TEST_GROUP_NAME = "Test User Group GetAll";
 
 describe("GetUserGroupsTool", () => {
@@ -29,9 +27,8 @@ describe("GetUserGroupsTool", () => {
     await builder.withName(TEST_GROUP_NAME).create();
 
     // Get all user groups
-    const cursorTool = withCursorPagination(GetUserGroupsTool);
-    const result = await cursorTool.handler({}, createMockRequestHandlerExtra());
-    const data = validateToolResponse(cursorTool, result);
+    const result = await GetUserGroupsTool.handler({}, createMockRequestHandlerExtra());
+    const data = validateToolResponse(GetUserGroupsTool, result);
 
     // Verify response structure
     expect(data).toHaveProperty("items");
@@ -40,9 +37,8 @@ describe("GetUserGroupsTool", () => {
 
   it("should handle empty result", async () => {
     // Get all user groups with no groups created
-    const cursorTool = withCursorPagination(GetUserGroupsTool);
-    const result = await cursorTool.handler({}, createMockRequestHandlerExtra());
-    const data = validateToolResponse(cursorTool, result);
+    const result = await GetUserGroupsTool.handler({}, createMockRequestHandlerExtra());
+    const data = validateToolResponse(GetUserGroupsTool, result);
 
     // Verify the response structure - don't assert exact total as other tests may leave groups
     expect(data).toHaveProperty("items");

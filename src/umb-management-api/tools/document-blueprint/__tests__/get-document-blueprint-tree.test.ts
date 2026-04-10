@@ -39,7 +39,6 @@ describe("document-blueprint-tree", () => {
 
       const result = await GetDocumentBlueprintChildrenTreeTool.handler(
         {
-          take: 100,
           parentId: folderBuilder.getId(),
         } as any,
         createMockRequestHandlerExtra()
@@ -53,7 +52,6 @@ describe("document-blueprint-tree", () => {
     it("should handle non-existent parent", async () => {
       const result = await GetDocumentBlueprintChildrenTreeTool.handler(
         {
-          take: 100,
           parentId: BLANK_UUID,
         } as any,
         createMockRequestHandlerExtra()
