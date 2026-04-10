@@ -5,6 +5,7 @@ exports[`recycle-bin-tree children should get recycle bin child items 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -15,6 +16,7 @@ exports[`recycle-bin-tree children should handle non-existent parent in recycle 
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -46,6 +48,7 @@ exports[`recycle-bin-tree root should get recycle bin root items 1`] = `
         ],
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }

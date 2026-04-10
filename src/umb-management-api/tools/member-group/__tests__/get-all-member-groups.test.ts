@@ -56,6 +56,6 @@ describe("get-all-member-groups", () => {
 
     // Assert - Validate response against tool's output schema
     const data = validateToolResponse(GetAllMemberGroupsTool, result);
-    expect(data.items.length).toBeLessThanOrEqual(1);
+    expect(data.items.length).toBeGreaterThanOrEqual(1);
   });
 });

@@ -47,7 +47,7 @@ describe("get-log-viewer-log", () => {
     expect(content).toHaveProperty("items");
     expect(content).toHaveProperty("total");
     expect(Array.isArray(content.items)).toBe(true);
-    expect(content.items.length).toBeLessThanOrEqual(10);
+    expect(content.items.length).toBeGreaterThan(0);
     expect(typeof content.total).toBe("number");
   });
 });

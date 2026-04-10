@@ -12,6 +12,7 @@ exports[`get-tag should retrieve tags successfully 1`] = `
         "text": "test-tag",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -22,6 +23,7 @@ exports[`get-tag should return empty result when no tags match query 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -39,6 +41,7 @@ exports[`get-tag should return tags that match query  1`] = `
         "text": "test-tag",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
