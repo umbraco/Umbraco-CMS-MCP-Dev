@@ -1,6 +1,6 @@
 import GetStaticFileChildrenTool from "../items/get/get-children.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
-import { withCursorPagination, encodeCursor } from "@umbraco-cms/mcp-server-sdk";
+import { encodeCursor } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
   createSnapshotResult,
@@ -15,8 +15,6 @@ const INVALID_PARENT_PATH = "/nonexistent/invalid/path";
 describe("get-static-file-children", () => {
   setupTestEnvironment();
 
-  const cursorTool = withCursorPagination(GetStaticFileChildrenTool);
-
   it.skip("should get children of a valid folder with default pagination", async () => {
     // Arrange - find a folder that exists in the root
     const rootItems = await StaticFileHelper.getRootItems();
@@ -29,7 +27,7 @@ describe("get-static-file-children", () => {
     }
 
     // Act
-    const result = await cursorTool.handler(
+    const result = await GetStaticFileChildrenTool.handler(
       { parentPath: testFolder.path },
       createMockRequestHandlerExtra()
     );
@@ -39,7 +37,7 @@ describe("get-static-file-children", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const data = validateToolResponse(cursorTool, result);
+    const data = validateToolResponse(GetStaticFileChildrenTool, result);
     expect(data).toHaveProperty('items');
     expect(Array.isArray(data.items)).toBe(true);
 
@@ -69,8 +67,7 @@ describe("get-static-file-children", () => {
     if (!testFolder) {
       console.log("No folders found, creating test with root path instead");
       // Use a known root path if no folders found
-      const smallPageTool = withCursorPagination({ ...GetStaticFileChildrenTool, pageSize: 5 });
-      const result = await smallPageTool.handler(
+      const result = await GetStaticFileChildrenTool.handler(
         { parentPath: "/" },
         createMockRequestHandlerExtra()
       );
@@ -79,10 +76,8 @@ describe("get-static-file-children", () => {
       return;
     }
 
-    const smallPageTool = withCursorPagination({ ...GetStaticFileChildrenTool, pageSize: 5 });
-
     // Act
-    const result = await smallPageTool.handler(
+    const result = await GetStaticFileChildrenTool.handler(
       { parentPath: testFolder.path },
       createMockRequestHandlerExtra()
     );
@@ -92,7 +87,7 @@ describe("get-static-file-children", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const data = validateToolResponse(smallPageTool, result);
+    const data = validateToolResponse(GetStaticFileChildrenTool, result);
     expect(data).toHaveProperty('items');
     expect(Array.isArray(data.items)).toBe(true);
 
@@ -117,19 +112,19 @@ describe("get-static-file-children", () => {
     }
 
     // Get initial result to determine total items
-    const initialResult = await cursorTool.handler(
+    const initialResult = await GetStaticFileChildrenTool.handler(
       { parentPath: testFolder.path },
       createMockRequestHandlerExtra()
     );
 
-    const initialData = validateToolResponse(cursorTool, initialResult) as CursorPaginatedResult;
+    const initialData = validateToolResponse(GetStaticFileChildrenTool, initialResult);
     const totalItems = initialData.total || 0;
 
     // Only test cursor if there are items and a next page
-    if (totalItems > 1 && initialData.nextCursor) {
+    if (totalItems > 1 && (initialData as any).nextCursor) {
       // Act
-      const result = await cursorTool.handler(
-        { parentPath: testFolder.path, cursor: initialData.nextCursor },
+      const result = await GetStaticFileChildrenTool.handler(
+        { parentPath: testFolder.path, cursor: (initialData as any).nextCursor },
         createMockRequestHandlerExtra()
       );
 
@@ -137,13 +132,13 @@ describe("get-static-file-children", () => {
       const normalizedResult = createSnapshotResult(result);
       expect(normalizedResult).toMatchSnapshot();
 
-      const data = validateToolResponse(cursorTool, result);
+      const data = validateToolResponse(GetStaticFileChildrenTool, result);
       expect(data).toHaveProperty('items');
       expect(Array.isArray(data.items)).toBe(true);
       expect(data.total).toBe(totalItems); // Total should remain same
     } else {
       // Test cursor behavior when no children or only one child
-      const result = await cursorTool.handler(
+      const result = await GetStaticFileChildrenTool.handler(
         { parentPath: testFolder.path, cursor: encodeCursor({ s: 1, t: 50 }) },
         createMockRequestHandlerExtra()
       );
@@ -154,7 +149,7 @@ describe("get-static-file-children", () => {
 
   it("should handle invalid parent path gracefully", async () => {
     // Act
-    const result = await cursorTool.handler(
+    const result = await GetStaticFileChildrenTool.handler(
       { parentPath: INVALID_PARENT_PATH },
       createMockRequestHandlerExtra()
     );
@@ -162,7 +157,7 @@ describe("get-static-file-children", () => {
     // Assert - should not fail, may return empty results or error gracefully
     expect(result).toMatchSnapshot();
 
-    const data = validateToolResponse(cursorTool, result);
+    const data = validateToolResponse(GetStaticFileChildrenTool, result);
 
     // Should still have the expected structure even if empty
     if (data.items !== undefined) {
@@ -177,7 +172,7 @@ describe("get-static-file-children", () => {
     const parentPath = testFolder ? testFolder.path : "/App_Plugins"; // Use a common folder or fallback
 
     // Act
-    const result = await cursorTool.handler(
+    const result = await GetStaticFileChildrenTool.handler(
       { parentPath, cursor: encodeCursor({ s: LARGE_SKIP, t: 50 }) },
       createMockRequestHandlerExtra()
     );
@@ -185,7 +180,7 @@ describe("get-static-file-children", () => {
     // Assert - should not fail, should return empty items array
     expect(result).toMatchSnapshot();
 
-    const response = validateToolResponse(cursorTool, result);
+    const response = validateToolResponse(GetStaticFileChildrenTool, result);
 
     if (response.items !== undefined) {
       expect(Array.isArray(response.items)).toBe(true);
@@ -205,13 +200,13 @@ describe("get-static-file-children", () => {
     }
 
     // Act
-    const result = await cursorTool.handler(
+    const result = await GetStaticFileChildrenTool.handler(
       { parentPath: testFolder.path },
       createMockRequestHandlerExtra()
     );
 
     // Assert
-    const response = validateToolResponse(cursorTool, result);
+    const response = validateToolResponse(GetStaticFileChildrenTool, result);
 
     if (response.items && response.items.length > 0) {
       // Check first item has expected structure
@@ -248,7 +243,7 @@ describe("get-static-file-children", () => {
     const take = 100;
 
     // Act - get results from both tool and helper
-    const toolResult = await cursorTool.handler(
+    const toolResult = await GetStaticFileChildrenTool.handler(
       { parentPath: testFolder.path },
       createMockRequestHandlerExtra()
     );
@@ -256,7 +251,7 @@ describe("get-static-file-children", () => {
     const helperResult = await StaticFileHelper.getChildren(testFolder.path, skip, take);
 
     // Assert - both should return the same items
-    const toolResponse = validateToolResponse(cursorTool, toolResult);
+    const toolResponse = validateToolResponse(GetStaticFileChildrenTool, toolResult);
 
     expect(toolResponse.items.length).toBe(helperResult.length);
 

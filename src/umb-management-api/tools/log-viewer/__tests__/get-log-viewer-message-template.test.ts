@@ -4,20 +4,17 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-import { withCursorPagination } from "@umbraco-cms/mcp-server-sdk";
-
 describe("get-log-viewer-message-template", () => {
   setupTestEnvironment();
 
   it("should get log viewer message templates with default parameters", async () => {
-    const cursorTool = withCursorPagination(GetLogViewerMessageTemplateTool);
-    const result = await cursorTool.handler(
+    const result = await GetLogViewerMessageTemplateTool.handler(
       { startDate: undefined, endDate: undefined },
       createMockRequestHandlerExtra()
     );
 
     // Validate response against tool's outputSchema
-    const content = validateToolResponse(cursorTool, result);
+    const content = validateToolResponse(GetLogViewerMessageTemplateTool, result);
 
     // Verify response structure (message templates are dynamic, so we verify structure not content)
     expect(content).toHaveProperty("items");
@@ -41,9 +38,7 @@ describe("get-log-viewer-message-template", () => {
     const now = new Date();
     const oneMonthAgo = new Date(now);
     oneMonthAgo.setMonth(now.getMonth() - 1);
-
-    const cursorTool = withCursorPagination({ ...GetLogViewerMessageTemplateTool, pageSize: 10 });
-    const result = await cursorTool.handler(
+    const result = await GetLogViewerMessageTemplateTool.handler(
       {
         startDate: oneMonthAgo.toISOString(),
         endDate: now.toISOString(),
@@ -52,12 +47,12 @@ describe("get-log-viewer-message-template", () => {
     );
 
     // Validate response against tool's outputSchema
-    const content = validateToolResponse(cursorTool, result);
+    const content = validateToolResponse(GetLogViewerMessageTemplateTool, result);
 
     // Verify response structure (message templates are dynamic, so we verify structure not content)
     expect(content).toHaveProperty("items");
     expect(content).toHaveProperty("total");
     expect(Array.isArray(content.items)).toBe(true);
-    expect(content.items.length).toBeLessThanOrEqual(10);
+    expect(content.items.length).toBeGreaterThan(0);
   });
 });

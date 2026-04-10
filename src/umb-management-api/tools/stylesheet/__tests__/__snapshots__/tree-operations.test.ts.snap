@@ -53,6 +53,7 @@ exports[`stylesheet-tree-operations get-children should get child items of a fol
         "path": "/_Test Folder/_TestTreeStylesheet.css",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -78,6 +79,7 @@ exports[`stylesheet-tree-operations get-root should get root level stylesheets 1
         "path": "/index.css",
       },
     ],
+    "nextCursor": undefined,
     "total": 2,
   },
 }

@@ -32,8 +32,6 @@ describe("get-document-type-allowed-at-root", () => {
     // Get document types allowed at root
     const result = await GetDocumentTypeAllowedAtRootTool.handler(
       {
-        skip: 0,
-        take: 10,
       } as any, createMockRequestHandlerExtra()
     );
 

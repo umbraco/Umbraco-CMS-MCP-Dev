@@ -32,7 +32,6 @@ describe("find-dictionary-item", () => {
     const result = await FindDictionaryItemTool.handler(
       {
         filter: TEST_DICTIONARY_NAME,
-        take: 100,
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -44,7 +43,6 @@ describe("find-dictionary-item", () => {
     const result = await FindDictionaryItemTool.handler(
       {
         filter: "Non Existent Dictionary",
-        take: 100,
       } as any,
       createMockRequestHandlerExtra()
     );

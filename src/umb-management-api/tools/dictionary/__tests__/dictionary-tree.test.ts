@@ -60,7 +60,6 @@ describe("dictionary-tree", () => {
     it("should get root level dictionary items", async () => {
       const result = await GetDictionaryRootTool.handler(
         {
-          take: 100,
         } as any,
         createMockRequestHandlerExtra()
       );
@@ -73,7 +72,6 @@ describe("dictionary-tree", () => {
       const result = await GetDictionaryChildrenTool.handler(
         {
           parentId: rootHelper.getId(),
-          take: 100,
         } as any,
         createMockRequestHandlerExtra()
       );
@@ -84,7 +82,6 @@ describe("dictionary-tree", () => {
       const result = await GetDictionaryChildrenTool.handler(
         {
           parentId: childHelper.getId(),
-          take: 100,
         } as any,
         createMockRequestHandlerExtra()
       );
@@ -95,7 +92,6 @@ describe("dictionary-tree", () => {
       const result = await GetDictionaryChildrenTool.handler(
         {
           parentId: grandchildHelper.getId(),
-          take: 100,
         } as any,
         createMockRequestHandlerExtra()
       );

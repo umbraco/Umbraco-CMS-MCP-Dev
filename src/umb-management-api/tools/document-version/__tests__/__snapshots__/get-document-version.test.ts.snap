@@ -33,6 +33,22 @@ exports[`get-document-version should handle pagination with skip and take 1`] = 
           "id": "00000000-0000-0000-0000-000000000000",
         },
         "id": "00000000-0000-0000-0000-000000000000",
+        "isCurrentDraftVersion": true,
+        "isCurrentPublishedVersion": false,
+        "preventCleanup": false,
+        "user": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "versionDate": "NORMALIZED_DATE",
+      },
+      {
+        "document": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "documentType": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
         "isCurrentDraftVersion": false,
         "isCurrentPublishedVersion": true,
         "preventCleanup": false,
@@ -42,6 +58,7 @@ exports[`get-document-version should handle pagination with skip and take 1`] = 
         "versionDate": "NORMALIZED_DATE",
       },
     ],
+    "nextCursor": undefined,
     "total": 2,
   },
 }
@@ -85,6 +102,7 @@ exports[`get-document-version should list document versions with pagination 1`] 
         "versionDate": "NORMALIZED_DATE",
       },
     ],
+    "nextCursor": undefined,
     "total": 2,
   },
 }

@@ -1,6 +1,6 @@
 import GetStaticFileRootTool from "../items/get/get-root.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
-import { withCursorPagination, encodeCursor } from "@umbraco-cms/mcp-server-sdk";
+import { encodeCursor } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
   createSnapshotResult,
@@ -14,11 +14,9 @@ const LARGE_SKIP = 1000;
 describe("get-static-file-root", () => {
   setupTestEnvironment();
 
-  const cursorTool = withCursorPagination(GetStaticFileRootTool);
-
   it.skip("should get root-level static files and folders with default pagination", async () => {
     // Act
-    const result = await cursorTool.handler(
+    const result = await GetStaticFileRootTool.handler(
       {},
       createMockRequestHandlerExtra()
     );
@@ -28,7 +26,7 @@ describe("get-static-file-root", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const response = validateToolResponse(cursorTool, result);
+    const response = validateToolResponse(GetStaticFileRootTool, result);
     expect(response).toHaveProperty('items');
     expect(Array.isArray(response.items)).toBe(true);
 
@@ -52,8 +50,7 @@ describe("get-static-file-root", () => {
 
   it.skip("should handle pagination with small page size", async () => {
     // Act
-    const smallPageTool = withCursorPagination({ ...GetStaticFileRootTool, pageSize: 5 });
-    const result = await smallPageTool.handler(
+    const result = await GetStaticFileRootTool.handler(
       {},
       createMockRequestHandlerExtra()
     );
@@ -63,7 +60,7 @@ describe("get-static-file-root", () => {
     expect(normalizedResult).toMatchSnapshot();
 
     // Verify response structure
-    const response = validateToolResponse(smallPageTool, result);
+    const response = validateToolResponse(GetStaticFileRootTool, result);
     expect(response).toHaveProperty('items');
     expect(Array.isArray(response.items)).toBe(true);
 
@@ -78,19 +75,19 @@ describe("get-static-file-root", () => {
 
   it.skip("should handle pagination with cursor for second page", async () => {
     // Arrange - first get initial page
-    const initialResult = await cursorTool.handler(
+    const initialResult = await GetStaticFileRootTool.handler(
       {},
       createMockRequestHandlerExtra()
     );
 
-    const initialResponse = validateToolResponse(cursorTool, initialResult) as CursorPaginatedResult;
+    const initialResponse = validateToolResponse(GetStaticFileRootTool, initialResult);
     const totalItems = initialResponse.total || 0;
 
     // Only test cursor if there are items and a next page
-    if (totalItems > 1 && initialResponse.nextCursor) {
+    if (totalItems > 1 && (initialResponse as any).nextCursor) {
       // Act
-      const result = await cursorTool.handler(
-        { cursor: initialResponse.nextCursor },
+      const result = await GetStaticFileRootTool.handler(
+        { cursor: (initialResponse as any).nextCursor },
         createMockRequestHandlerExtra()
       );
 
@@ -99,7 +96,7 @@ describe("get-static-file-root", () => {
       expect(normalizedResult).toMatchSnapshot();
 
       // Verify response structure
-      const response = validateToolResponse(cursorTool, result);
+      const response = validateToolResponse(GetStaticFileRootTool, result);
       expect(response).toHaveProperty('items');
       expect(Array.isArray(response.items)).toBe(true);
       expect(response.total).toBe(totalItems); // Total should remain same
@@ -111,7 +108,7 @@ describe("get-static-file-root", () => {
       }
     } else {
       // If no items or only one item, just test the cursor behavior doesn't break
-      const result = await cursorTool.handler(
+      const result = await GetStaticFileRootTool.handler(
         { cursor: encodeCursor({ s: 1, t: 50 }) },
         createMockRequestHandlerExtra()
       );
@@ -122,7 +119,7 @@ describe("get-static-file-root", () => {
 
   it.skip("should handle large skip value gracefully", async () => {
     // Act - skip beyond available items via cursor
-    const result = await cursorTool.handler(
+    const result = await GetStaticFileRootTool.handler(
       { cursor: encodeCursor({ s: LARGE_SKIP, t: 50 }) },
       createMockRequestHandlerExtra()
     );
@@ -130,7 +127,7 @@ describe("get-static-file-root", () => {
     // Assert - should not fail, should return empty items array
     expect(result).toMatchSnapshot();
 
-    const response = validateToolResponse(cursorTool, result);
+    const response = validateToolResponse(GetStaticFileRootTool, result);
     expect(response).toHaveProperty('items');
     expect(Array.isArray(response.items)).toBe(true);
     expect(response.items.length).toBe(0); // Should be empty due to large skip
@@ -140,13 +137,13 @@ describe("get-static-file-root", () => {
 
   it("should return items with proper file system properties for root items", async () => {
     // Act
-    const result = await cursorTool.handler(
+    const result = await GetStaticFileRootTool.handler(
       {},
       createMockRequestHandlerExtra()
     );
 
     // Assert
-    const response = validateToolResponse(cursorTool, result);
+    const response = validateToolResponse(GetStaticFileRootTool, result);
 
     if (response.items && response.items.length > 0) {
       // Check first item has expected structure
@@ -174,7 +171,7 @@ describe("get-static-file-root", () => {
     const take = 100;
 
     // Act - get results from both tool and helper
-    const toolResult = await cursorTool.handler(
+    const toolResult = await GetStaticFileRootTool.handler(
       {},
       createMockRequestHandlerExtra()
     );
@@ -182,7 +179,7 @@ describe("get-static-file-root", () => {
     const helperResult = await StaticFileHelper.getRootItems(skip, take);
 
     // Assert - both should return the same items
-    const toolResponse = validateToolResponse(cursorTool, toolResult);
+    const toolResponse = validateToolResponse(GetStaticFileRootTool, toolResult);
 
     expect(toolResponse.items.length).toBe(helperResult.length);
 

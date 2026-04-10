@@ -70,8 +70,6 @@ describe("get-media-by-id-referenced-by", () => {
     const result = await GetMediaByIdReferencedByTool.handler(
       {
         id: referencedMedia.getId(),
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -89,8 +87,6 @@ describe("get-media-by-id-referenced-by", () => {
     const result = await GetMediaByIdReferencedByTool.handler(
       {
         id: BLANK_UUID,
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -109,8 +105,6 @@ describe("get-media-by-id-referenced-by", () => {
     const result = await GetMediaByIdReferencedByTool.handler(
       {
         id: unreferencedMedia.getId(),
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );

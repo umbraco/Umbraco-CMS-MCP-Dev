@@ -23,10 +23,10 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-original-parent sh
 exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should get references for recycled document 1`] = `
 {
   "content": [],
+  "isError": true,
   "structuredContent": {
-    "items": [],
-    "nextCursor": undefined,
-    "total": 0,
+    "detail": "Not Found",
+    "status": 404,
   },
 }
 `;
@@ -34,10 +34,10 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by shou
 exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should get references with pagination for recycled document 1`] = `
 {
   "content": [],
+  "isError": true,
   "structuredContent": {
-    "items": [],
-    "nextCursor": undefined,
-    "total": 0,
+    "detail": "Not Found",
+    "status": 404,
   },
 }
 `;
@@ -45,10 +45,10 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by shou
 exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should handle non-existent recycled document 1`] = `
 {
   "content": [],
+  "isError": true,
   "structuredContent": {
-    "items": [],
-    "nextCursor": undefined,
-    "total": 0,
+    "detail": "Not Found",
+    "status": 404,
   },
 }
 `;

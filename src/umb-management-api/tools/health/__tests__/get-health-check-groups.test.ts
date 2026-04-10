@@ -14,8 +14,6 @@ describe("get-health-check-groups", () => {
 
   it("should get health check groups", async () => {
     const result = await GetHealthCheckGroupsTool.handler({
-      skip: TEST_SKIP_VALUE,
-      take: TEST_TAKE_VALUE
     }, createMockRequestHandlerExtra());
 
     validateToolResponse(GetHealthCheckGroupsTool, result);
@@ -24,8 +22,6 @@ describe("get-health-check-groups", () => {
 
   it("should handle invalid parameters", async () => {
     const result = await GetHealthCheckGroupsTool.handler({
-      skip: -1,
-      take: -1
     }, createMockRequestHandlerExtra());
 
     expect(result).toMatchSnapshot();

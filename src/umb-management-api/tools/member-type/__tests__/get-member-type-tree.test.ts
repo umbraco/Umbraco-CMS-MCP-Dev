@@ -26,7 +26,6 @@ describe("member-type-tree", () => {
 
       const result = await GetMemberTypeRootTool.handler(
         {
-          take: 100,
         } as any,
         createMockRequestHandlerExtra()
       );

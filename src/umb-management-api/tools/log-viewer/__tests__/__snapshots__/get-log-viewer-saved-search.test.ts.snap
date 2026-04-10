@@ -45,8 +45,16 @@ exports[`get-log-viewer-saved-search should get saved searches with custom param
         "name": "Find all logs that the message that starts with 'end' in it with SQL like",
         "query": "@Message like 'end%'",
       },
+      {
+        "name": "_Test Saved Search",
+        "query": "level:Error",
+      },
+      {
+        "name": "_Test Saved Search 2",
+        "query": "level:Warning",
+      },
     ],
-    "nextCursor": "eyJzIjoxMCwidCI6MTB9",
+    "nextCursor": undefined,
     "total": 12,
   },
 }

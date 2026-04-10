@@ -42,8 +42,6 @@ describe("get-media-audit-log", () => {
         id: mediaId,
         orderDirection: "Ascending",
         sinceDate: new Date().toISOString(),
-        skip: 0,
-        take: 100,
       },
       createMockRequestHandlerExtra()
     );
@@ -59,8 +57,6 @@ describe("get-media-audit-log", () => {
         id: BLANK_UUID,
         orderDirection: "Ascending",
         sinceDate: new Date().toISOString(),
-        skip: 0,
-        take: 100,
       },
       createMockRequestHandlerExtra()
     );

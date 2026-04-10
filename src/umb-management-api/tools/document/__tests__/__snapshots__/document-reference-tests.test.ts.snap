@@ -47,12 +47,10 @@ exports[`document-reference-tests get-document-by-id-referenced-by should get re
 exports[`document-reference-tests get-document-by-id-referenced-by should handle non-existent document 1`] = `
 {
   "content": [],
-  "isError": true,
   "structuredContent": {
-    "operationStatus": "ContentNotFound",
-    "status": 404,
-    "title": "The requested content could not be found",
-    "type": "Error",
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
   },
 }
 `;

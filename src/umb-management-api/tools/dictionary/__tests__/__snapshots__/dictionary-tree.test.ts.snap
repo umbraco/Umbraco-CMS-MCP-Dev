@@ -93,6 +93,7 @@ exports[`dictionary-tree get-children should get children of child dictionary 1`
         },
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -113,6 +114,7 @@ exports[`dictionary-tree get-children should get children of root dictionary 1`]
         },
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -123,6 +125,7 @@ exports[`dictionary-tree get-children should get empty children for leaf diction
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -281,6 +284,7 @@ exports[`dictionary-tree get-root should get root level dictionary items 1`] = `
         "parent": null,
       },
     ],
+    "nextCursor": undefined,
     "total": 21,
   },
 }

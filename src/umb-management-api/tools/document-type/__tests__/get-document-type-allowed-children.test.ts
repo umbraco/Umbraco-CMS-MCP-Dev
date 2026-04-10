@@ -43,8 +43,6 @@ describe("get-document-type-allowed-children", () => {
     const result = await GetDocumentTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
-        skip: 0,
-        take: 100,
       } as any, createMockRequestHandlerExtra()
     );
 
@@ -70,8 +68,6 @@ describe("get-document-type-allowed-children", () => {
     const result = await GetDocumentTypeAllowedChildrenTool.handler(
       {
         id: BLANK_UUID,
-        skip: 0,
-        take: 100,
       } as any, createMockRequestHandlerExtra()
     );
 
@@ -88,8 +84,6 @@ describe("get-document-type-allowed-children", () => {
     const result = await GetDocumentTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
-        skip: 0,
-        take: 100,
       } as any, createMockRequestHandlerExtra()
     );
 
