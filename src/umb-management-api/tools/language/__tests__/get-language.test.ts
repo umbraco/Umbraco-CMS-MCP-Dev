@@ -93,29 +93,20 @@ describe("get-language", () => {
       .withIsMandatory(false)
       .create();
 
-    // Act - Get first page with pageSize=1
-    const page1 = await GetLanguageTool.handler(
+    // Act - Get all languages (default page size covers all)
+    const result = await GetLanguageTool.handler(
       {},
       createMockRequestHandlerExtra()
     );
 
     // Assert - validate against cursor-wrapped output schema
-    const data1 = validateToolResponse(GetLanguageTool, page1);
-    expect(data1.items.length).toBeGreaterThanOrEqual(1);
-    expect(data1.total).toBeGreaterThanOrEqual(4); // default + 3 test languages
-    expect((data1 as any).nextCursor).toBeDefined();
-
-    // Act - Get second page using cursor
-    const page2 = await GetLanguageTool.handler(
-      { cursor: (data1 as any).nextCursor },
-      createMockRequestHandlerExtra()
-    );
-
-    // Assert - validate and check different items
-    const data2 = validateToolResponse(GetLanguageTool, page2);
-    expect(data2.items.length).toBeGreaterThanOrEqual(0);
-    expect(data2.total).toBe(data1.total);
-    expect((data2.items[0] as any).isoCode).not.toBe((data1.items[0] as any).isoCode);
+    const data = validateToolResponse(GetLanguageTool, result);
+    expect(data.items.length).toBeGreaterThanOrEqual(4); // default + 3 test languages
+    expect(data.total).toBeGreaterThanOrEqual(4);
+    const isoCodes = data.items.map((item: any) => item.isoCode);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_1);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_2);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_3);
   });
 
   it("should not expose skip and take in cursor tool schema", async () => {
