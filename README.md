@@ -60,7 +60,7 @@ npx rulesync generate --claudecode
 # Generate only for Cursor
 npx rulesync generate --cursor
 
-# Generate only for Vs Code Copilot
+# Generate only for VS Code Copilot
 npx rulesync generate --copilot
 ```
 
