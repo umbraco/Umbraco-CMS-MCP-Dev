@@ -5,10 +5,10 @@ dist
 test-failures.log
 .claude/worktrees/
 
-# demo-site/ is a dev-convenience Umbraco instance — regenerate via
-# 'npx @umbraco-cms/create-umbraco-mcp-server init' and overlay the
-# files from /umbraco/ on top. demo-site-template/ is the tracked
-# minimal CI harness that tests and CI actually run against.
+# demo-site/ is the actual working Umbraco instance. Generate it by
+# copying demo-site-template/ via 'npm run umbraco:bootstrap' (or
+# umbraco:start which bootstraps then runs). demo-site-template/ is
+# the tracked source of truth.
 demo-site/
 
 
