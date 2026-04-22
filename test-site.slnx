@@ -1,4 +1,3 @@
 <Solution>
-  <Project Path="demo-site/demo-site.csproj" />
   <Project Path="test-site/test-site.csproj" />
 </Solution>
