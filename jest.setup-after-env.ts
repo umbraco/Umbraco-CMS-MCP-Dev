@@ -10,7 +10,7 @@ expect.addSnapshotSerializer({
     /\/(Users|home)\//.test(val) ||
     /\/(users|home)\//.test(val) ||
     /NIOFSDirectory|MMapDirectory/i.test(val) ||
-    /\/demo-site\//i.test(val)
+    /\/demo-site(-template)?\//i.test(val)
   ),
   serialize: (val: string, config, indentation, depth, refs, printer) => {
     let normalized = val
@@ -18,7 +18,7 @@ expect.addSnapshotSerializer({
       .replace(/\/(Users|users)\/[^\s"',)]+/g, '<NORMALIZED_PATH>')
       .replace(/\/home\/[^\s"',)]+/g, '<NORMALIZED_PATH>')
       .replace(/NIOFSDirectory|MMapDirectory/gi, 'NORMALIZED_FS_DIR')
-      .replace(/\/demo-site\//gi, '/<PROJECT>/');
+      .replace(/\/demo-site(-template)?\//gi, '/<PROJECT>/');
     return printer(normalized, config, indentation, depth, refs);
   },
 });

@@ -65,7 +65,7 @@ jobs:
 
       - name: Configure Umbraco for CI
         run: |
-          cat > demo-site/appsettings.Local.json << 'EOF'
+          cat > demo-site-template/appsettings.Local.json << 'EOF'
           {
             "ConnectionStrings": {
               "umbracoDbDSN": "Server=localhost,1433;Database=umbraco-mcp-ci;User Id=sa;password=Moloko99;TrustServerCertificate=True",
@@ -76,7 +76,7 @@ jobs:
 
       - name: Start Umbraco
         run: |
-          cd demo-site
+          cd demo-site-template
           ASPNETCORE_ENVIRONMENT=Development \
           ASPNETCORE_URLS="http://localhost:56472;https://localhost:44391" \
           dotnet run --no-launch-profile > /tmp/umbraco.log 2>&1 &
@@ -187,7 +187,7 @@ jobs:
   #
   #     - name: Configure Umbraco for CI
   #       run: |
-  #         cat > demo-site/appsettings.Local.json << 'EOF'
+  #         cat > demo-site-template/appsettings.Local.json << 'EOF'
   #         {
   #           "ConnectionStrings": {
   #             "umbracoDbDSN": "Server=localhost,1433;Database=umbraco-mcp-ci-evals;User Id=sa;password=Moloko99;TrustServerCertificate=True",
@@ -198,7 +198,7 @@ jobs:
   #
   #     - name: Start Umbraco
   #       run: |
-  #         cd demo-site
+  #         cd demo-site-template
   #         ASPNETCORE_ENVIRONMENT=Development \
   #         ASPNETCORE_URLS="http://localhost:56472;https://localhost:44391" \
   #         dotnet run --no-launch-profile > /tmp/umbraco.log 2>&1 &
