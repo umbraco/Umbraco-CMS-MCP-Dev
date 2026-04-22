@@ -65,7 +65,7 @@ jobs:
 
       - name: Configure Umbraco for CI
         run: |
-          cat > infrastructure/test-umbraco/MCPTestSite/appsettings.Local.json << 'EOF'
+          cat > demo-site/appsettings.Local.json << 'EOF'
           {
             "ConnectionStrings": {
               "umbracoDbDSN": "Server=localhost,1433;Database=umbraco-mcp-ci;User Id=sa;password=Moloko99;TrustServerCertificate=True",
@@ -76,7 +76,7 @@ jobs:
 
       - name: Start Umbraco
         run: |
-          cd infrastructure/test-umbraco/MCPTestSite
+          cd demo-site
           ASPNETCORE_ENVIRONMENT=Development \
           ASPNETCORE_URLS="http://localhost:56472;https://localhost:44391" \
           dotnet run --no-launch-profile > /tmp/umbraco.log 2>&1 &
@@ -105,7 +105,7 @@ jobs:
         timeout-minutes: 6
 
       - name: Create API user
-        run: node infrastructure/ci/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
+        run: node scripts/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
 
       - name: Run tests
         id: unit-integration
@@ -187,7 +187,7 @@ jobs:
   #
   #     - name: Configure Umbraco for CI
   #       run: |
-  #         cat > infrastructure/test-umbraco/MCPTestSite/appsettings.Local.json << 'EOF'
+  #         cat > demo-site/appsettings.Local.json << 'EOF'
   #         {
   #           "ConnectionStrings": {
   #             "umbracoDbDSN": "Server=localhost,1433;Database=umbraco-mcp-ci-evals;User Id=sa;password=Moloko99;TrustServerCertificate=True",
@@ -198,7 +198,7 @@ jobs:
   #
   #     - name: Start Umbraco
   #       run: |
-  #         cd infrastructure/test-umbraco/MCPTestSite
+  #         cd demo-site
   #         ASPNETCORE_ENVIRONMENT=Development \
   #         ASPNETCORE_URLS="http://localhost:56472;https://localhost:44391" \
   #         dotnet run --no-launch-profile > /tmp/umbraco.log 2>&1 &
@@ -227,7 +227,7 @@ jobs:
   #       timeout-minutes: 6
   #
   #     - name: Create API user
-  #       run: node infrastructure/ci/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
+  #       run: node scripts/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
   #
   #     - name: Run eval tests
   #       run: npm run test:evals

@@ -12,7 +12,7 @@
  * Based on check-api-user.ts from @umbraco-cms/mcp-server-sdk.
  *
  * Usage:
- *   node infrastructure/ci/create-api-user.mjs [baseUrl] [adminEmail] [adminPassword]
+ *   node scripts/create-api-user.mjs [baseUrl] [adminEmail] [adminPassword]
  *
  * Defaults:
  *   baseUrl:       http://localhost:56472
