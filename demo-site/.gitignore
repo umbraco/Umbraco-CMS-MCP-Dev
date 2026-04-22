@@ -488,8 +488,8 @@ umbraco-package-schema.json
 #CLean assets folder
 wwwroot/clean-assets/
 
-# test-site is a minimal CI harness — Umbraco generates wwwroot/ and
-# runtime data under umbraco/ on boot, neither belongs in git.
+# Umbraco generates wwwroot/ (static assets) and runtime data under
+# umbraco/ on boot — neither belongs in git.
 # Views/ IS tracked because partial-view tests depend on fixture files.
 /umbraco/
 /wwwroot/
