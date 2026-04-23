@@ -63,6 +63,9 @@ jobs:
       - name: Setup .NET dev certs
         run: dotnet dev-certs https
 
+      - name: Bootstrap demo-site from template
+        run: bash scripts/bootstrap-demo-site.sh
+
       - name: Configure Umbraco for CI
         run: |
           cat > demo-site/appsettings.Local.json << 'EOF'

@@ -113,13 +113,6 @@ exports[`partial-view-tree-operations get-root should get root level partial vie
       {
         "hasChildren": true,
         "isFolder": true,
-        "name": "blockgrid",
-        "parent": null,
-        "path": "/blockgrid",
-      },
-      {
-        "hasChildren": true,
-        "isFolder": true,
         "name": "blocklist",
         "parent": null,
         "path": "/blocklist",
@@ -168,7 +161,7 @@ exports[`partial-view-tree-operations get-root should get root level partial vie
       },
     ],
     "nextCursor": undefined,
-    "total": 8,
+    "total": 7,
   },
 }
 `;
