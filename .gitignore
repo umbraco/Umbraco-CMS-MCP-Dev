@@ -4,6 +4,7 @@ coverage
 dist
 test-failures.log
 .claude/worktrees/
+.worktrees/
 
 # demo-site/ is the actual working Umbraco instance. Generate it by
 # copying demo-site-template/ via 'npm run umbraco:bootstrap' (or
