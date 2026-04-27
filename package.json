@@ -1,6 +1,6 @@
 {
   "name": "@umbraco-cms/mcp-dev",
-  "version": "17.3.1",
+  "version": "17.3.2",
   "type": "module",
   "description": "A model context protocol (MCP) server for Umbraco CMS",
   "main": "dist/index.js",
@@ -9,6 +9,9 @@
     "./collections": {
       "types": "./collections.d.ts",
       "import": "./dist/collections.js"
+    },
+    "./tool-types": {
+      "types": "./dist/tool-types.d.ts"
     }
   },
   "mcpName": "io.github.umbraco/Umbraco-CMS-MCP-Dev",
@@ -18,6 +21,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsup --config tsup.config.ts",
+    "postbuild": "umbraco-mcp-generate-types --collections ./dist/collections.js --out ./dist/tool-types.d.ts --registry-name CmsTools",
     "compile": "tsc --noEmit",
     "watch": "tsup --config tsup.config.ts --watch",
     "generate": "orval --config orval.config.ts",
@@ -30,7 +34,8 @@
     "test:e2e-sdk:verbose": "E2E_VERBOSITY=verbose node --experimental-vm-modules node_modules/jest/bin/jest.js tests/e2e-sdk --runInBand --testTimeout=120000 --forceExit",
     "test:e2e-sdk:debug": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/e2e-sdk/jest.config.ts --runInBand --detectOpenHandles",
     "test:e2e": "npx playwright test --config tests/cms-hosted-e2e/playwright.config.ts",
-    "umbraco:start": "dotnet run --project infrastructure/test-umbraco/MCPTestSite",
+    "umbraco:bootstrap": "bash scripts/bootstrap-demo-site.sh",
+    "umbraco:start": "bash scripts/bootstrap-demo-site.sh && dotnet run --project demo-site",
     "umbraco:stop": "lsof -ti :44391 | xargs kill 2>/dev/null; lsof -ti :56472 | xargs kill 2>/dev/null",
     "dev:hosted": "wrangler dev"
   },
@@ -63,8 +68,8 @@
     "@modelcontextprotocol/sdk": "^1.28.0",
     "@types/uuid": "^10.0.0",
     "@types/yargs": "^17.0.33",
-    "@umbraco-cms/mcp-hosted": "^17.0.0-beta.8",
-    "@umbraco-cms/mcp-server-sdk": "^17.0.0-beta.12",
+    "@umbraco-cms/mcp-hosted": "^17.0.0-beta.16",
+    "@umbraco-cms/mcp-server-sdk": "^17.0.0-beta.16",
     "axios": "^1.8.4",
     "dotenv": "^16.5.0",
     "form-data": "^4.0.4",

@@ -63,9 +63,12 @@ jobs:
       - name: Setup .NET dev certs
         run: dotnet dev-certs https
 
+      - name: Bootstrap demo-site from template
+        run: bash scripts/bootstrap-demo-site.sh
+
       - name: Configure Umbraco for CI
         run: |
-          cat > infrastructure/test-umbraco/MCPTestSite/appsettings.Local.json << 'EOF'
+          cat > demo-site/appsettings.Local.json << 'EOF'
           {
             "ConnectionStrings": {
               "umbracoDbDSN": "Server=localhost,1433;Database=umbraco-mcp-ci;User Id=sa;password=Moloko99;TrustServerCertificate=True",
@@ -76,7 +79,7 @@ jobs:
 
       - name: Start Umbraco
         run: |
-          cd infrastructure/test-umbraco/MCPTestSite
+          cd demo-site
           ASPNETCORE_ENVIRONMENT=Development \
           ASPNETCORE_URLS="http://localhost:56472;https://localhost:44391" \
           dotnet run --no-launch-profile > /tmp/umbraco.log 2>&1 &
@@ -105,7 +108,7 @@ jobs:
         timeout-minutes: 6
 
       - name: Create API user
-        run: node infrastructure/ci/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
+        run: node scripts/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
 
       - name: Run tests
         id: unit-integration
@@ -125,108 +128,109 @@ jobs:
       - name: Run Playwright E2E tests
         run: npm run test:e2e
 
-  evals:
-    name: LLM Eval Tests
-    if: >-
-      github.event.pull_request.base.ref == 'main' &&
-      startsWith(github.event.pull_request.head.ref, 'release/')
-    runs-on: ubuntu-latest
-
-    services:
-      sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        env:
-          ACCEPT_EULA: Y
-          MSSQL_SA_PASSWORD: Moloko99
-        ports:
-          - 1433:1433
-        options: >-
-          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P Moloko99 -C -Q 'SELECT 1' || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-
-    env:
-      UMBRACO_CLIENT_ID: umbraco-back-office-mcp
-      UMBRACO_CLIENT_SECRET: '1234567890'
-      UMBRACO_BASE_URL: https://localhost:44391
-      NODE_TLS_REJECT_UNAUTHORIZED: '0'
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: nuget-
-
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Setup .NET dev certs
-        run: dotnet dev-certs https
-
-      - name: Configure Umbraco for CI
-        run: |
-          cat > infrastructure/test-umbraco/MCPTestSite/appsettings.Local.json << 'EOF'
-          {
-            "ConnectionStrings": {
-              "umbracoDbDSN": "Server=localhost,1433;Database=umbraco-mcp-ci-evals;User Id=sa;password=Moloko99;TrustServerCertificate=True",
-              "umbracoDbDSN_ProviderName": "Microsoft.Data.SqlClient"
-            }
-          }
-          EOF
-
-      - name: Start Umbraco
-        run: |
-          cd infrastructure/test-umbraco/MCPTestSite
-          ASPNETCORE_ENVIRONMENT=Development \
-          ASPNETCORE_URLS="http://localhost:56472;https://localhost:44391" \
-          dotnet run --no-launch-profile > /tmp/umbraco.log 2>&1 &
-          echo $! > /tmp/umbraco.pid
-
-      - name: Wait for Umbraco
-        run: |
-          echo "Waiting for Umbraco to be ready..."
-          for i in $(seq 1 60); do
-            if curl -sf http://localhost:56472/umbraco/management/api/v1/server/status > /dev/null 2>&1; then
-              echo "Umbraco is ready!"
-              exit 0
-            fi
-            # Check if process died
-            if ! kill -0 $(cat /tmp/umbraco.pid) 2>/dev/null; then
-              echo "Umbraco process died! Last 50 lines of log:"
-              tail -50 /tmp/umbraco.log
-              exit 1
-            fi
-            echo "Attempt $i/60 - waiting 5s..."
-            sleep 5
-          done
-          echo "Umbraco failed to start within 5 minutes. Last 50 lines of log:"
-          tail -50 /tmp/umbraco.log
-          exit 1
-        timeout-minutes: 6
-
-      - name: Create API user
-        run: node infrastructure/ci/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
-
-      - name: Run eval tests
-        run: npm run test:evals
+  # TODO: Re-enable when Anthropic API key budget is topped up. Run locally for now.
+  # evals:
+  #   name: LLM Eval Tests
+  #   if: >-
+  #     github.event.pull_request.base.ref == 'main' &&
+  #     startsWith(github.event.pull_request.head.ref, 'release/')
+  #   runs-on: ubuntu-latest
+  #
+  #   services:
+  #     sqlserver:
+  #       image: mcr.microsoft.com/mssql/server:2022-latest
+  #       env:
+  #         ACCEPT_EULA: Y
+  #         MSSQL_SA_PASSWORD: Moloko99
+  #       ports:
+  #         - 1433:1433
+  #       options: >-
+  #         --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P Moloko99 -C -Q 'SELECT 1' || exit 1"
+  #         --health-interval 10s
+  #         --health-timeout 5s
+  #         --health-retries 10
+  #
+  #   env:
+  #     UMBRACO_CLIENT_ID: umbraco-back-office-mcp
+  #     UMBRACO_CLIENT_SECRET: '1234567890'
+  #     UMBRACO_BASE_URL: https://localhost:44391
+  #     NODE_TLS_REJECT_UNAUTHORIZED: '0'
+  #     ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  #
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '22'
+  #         cache: 'npm'
+  #
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: '10.0.x'
+  #
+  #     - name: Cache NuGet packages
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: ~/.nuget/packages
+  #         key: nuget-${{ hashFiles('**/*.csproj') }}
+  #         restore-keys: nuget-
+  #
+  #     - name: Install npm dependencies
+  #       run: npm ci
+  #
+  #     - name: Build
+  #       run: npm run build
+  #
+  #     - name: Setup .NET dev certs
+  #       run: dotnet dev-certs https
+  #
+  #     - name: Configure Umbraco for CI
+  #       run: |
+  #         cat > demo-site/appsettings.Local.json << 'EOF'
+  #         {
+  #           "ConnectionStrings": {
+  #             "umbracoDbDSN": "Server=localhost,1433;Database=umbraco-mcp-ci-evals;User Id=sa;password=Moloko99;TrustServerCertificate=True",
+  #             "umbracoDbDSN_ProviderName": "Microsoft.Data.SqlClient"
+  #           }
+  #         }
+  #         EOF
+  #
+  #     - name: Start Umbraco
+  #       run: |
+  #         cd demo-site
+  #         ASPNETCORE_ENVIRONMENT=Development \
+  #         ASPNETCORE_URLS="http://localhost:56472;https://localhost:44391" \
+  #         dotnet run --no-launch-profile > /tmp/umbraco.log 2>&1 &
+  #         echo $! > /tmp/umbraco.pid
+  #
+  #     - name: Wait for Umbraco
+  #       run: |
+  #         echo "Waiting for Umbraco to be ready..."
+  #         for i in $(seq 1 60); do
+  #           if curl -sf http://localhost:56472/umbraco/management/api/v1/server/status > /dev/null 2>&1; then
+  #             echo "Umbraco is ready!"
+  #             exit 0
+  #           fi
+  #           # Check if process died
+  #           if ! kill -0 $(cat /tmp/umbraco.pid) 2>/dev/null; then
+  #             echo "Umbraco process died! Last 50 lines of log:"
+  #             tail -50 /tmp/umbraco.log
+  #             exit 1
+  #           fi
+  #           echo "Attempt $i/60 - waiting 5s..."
+  #           sleep 5
+  #         done
+  #         echo "Umbraco failed to start within 5 minutes. Last 50 lines of log:"
+  #         tail -50 /tmp/umbraco.log
+  #         exit 1
+  #       timeout-minutes: 6
+  #
+  #     - name: Create API user
+  #       run: node scripts/create-api-user.mjs http://localhost:56472 admin@admin.com 1234567890
+  #
+  #     - name: Run eval tests
+  #       run: npm run test:evals
