@@ -45,12 +45,13 @@ describe("MediaTypeBuilder", () => {
   });
 
   it("should create a media type with all properties", async () => {
+    // Umbraco rejects `isElement: true` + `variesBySegment: true` (InvalidSegmentVariationForElementType).
     await builder
       .withName(TEST_MEDIA_TYPE_NAME_FULL)
       .withDescription("A test media type with all properties")
       .withAllowedAsRoot(true)
       .withVariesByCulture(true)
-      .withVariesBySegment(true)
+      .withVariesBySegment(false)
       .withIsElement(true)
       .create();
 

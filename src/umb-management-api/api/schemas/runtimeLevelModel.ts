@@ -15,6 +15,7 @@ export const RuntimeLevelModel = {
   Boot: 'Boot',
   Install: 'Install',
   Upgrade: 'Upgrade',
+  Upgrading: 'Upgrading',
   Run: 'Run',
   BootFailed: 'BootFailed',
 } as const;

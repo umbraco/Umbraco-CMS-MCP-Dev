@@ -9,6 +9,10 @@ import type {
   AvailableDocumentTypeCompositionResponseModel,
   AvailableMediaTypeCompositionResponseModel,
   AvailableMemberTypeCompositionResponseModel,
+  BatchResponseModelDataTypeResponseModel,
+  BatchResponseModelDocumentTypeResponseModel,
+  BatchResponseModelMediaTypeResponseModel,
+  BatchResponseModelMemberTypeResponseModel,
   CalculatedUserStartNodesResponseModel,
   ChangePasswordCurrentUserRequestModel,
   ChangePasswordUserRequestModel,
@@ -66,6 +70,7 @@ import type {
   DocumentNotificationResponseModel,
   DocumentResponseModel,
   DocumentTreeItemResponseModel,
+  DocumentTypeAllowedParentsResponseModel,
   DocumentTypeCompositionRequestModel,
   DocumentTypeCompositionResponseModel,
   DocumentTypeConfigurationResponseModel,
@@ -86,6 +91,7 @@ import type {
   GetCollectionDocumentByIdParams,
   GetCollectionMediaParams,
   GetCultureParams,
+  GetDataTypeBatchParams,
   GetDataTypeByIdReferencedByParams,
   GetDictionaryByIdExportParams,
   GetDictionaryParams,
@@ -93,9 +99,11 @@ import type {
   GetDocumentByIdAuditLogParams,
   GetDocumentByIdAvailableSegmentOptionsParams,
   GetDocumentByIdPreviewUrlParams,
+  GetDocumentByIdPublicAccessParams,
   GetDocumentByIdReferencedByParams,
   GetDocumentByIdReferencedDescendantsParams,
   GetDocumentTypeAllowedAtRootParams,
+  GetDocumentTypeBatchParams,
   GetDocumentTypeByIdAllowedChildrenParams,
   GetDocumentTypeByIdBlueprintParams,
   GetDocumentUrlsParams,
@@ -109,24 +117,31 @@ import type {
   GetImagingResizeUrlsParams,
   GetImportAnalyzeParams,
   GetIndexerParams,
+  GetItemDataTypeAncestorsParams,
   GetItemDataTypeParams,
   GetItemDataTypeSearchParams,
   GetItemDictionaryParams,
+  GetItemDocumentAncestorsParams,
   GetItemDocumentBlueprintParams,
   GetItemDocumentParams,
   GetItemDocumentSearchParams,
+  GetItemDocumentTypeAncestorsParams,
   GetItemDocumentTypeParams,
   GetItemDocumentTypeSearchParams,
   GetItemLanguageParams,
+  GetItemMediaAncestorsParams,
   GetItemMediaParams,
   GetItemMediaSearchParams,
   GetItemMediaTypeAllowedParams,
+  GetItemMediaTypeAncestorsParams,
   GetItemMediaTypeFoldersParams,
   GetItemMediaTypeParams,
   GetItemMediaTypeSearchParams,
+  GetItemMemberAncestorsParams,
   GetItemMemberGroupParams,
   GetItemMemberParams,
   GetItemMemberSearchParams,
+  GetItemMemberTypeAncestorsParams,
   GetItemMemberTypeParams,
   GetItemMemberTypeSearchParams,
   GetItemPartialViewParams,
@@ -134,6 +149,7 @@ import type {
   GetItemScriptParams,
   GetItemStaticFileParams,
   GetItemStylesheetParams,
+  GetItemTemplateAncestorsParams,
   GetItemTemplateParams,
   GetItemTemplateSearchParams,
   GetItemUserGroupParams,
@@ -151,12 +167,14 @@ import type {
   GetMediaByIdReferencedByParams,
   GetMediaByIdReferencedDescendantsParams,
   GetMediaTypeAllowedAtRootParams,
+  GetMediaTypeBatchParams,
   GetMediaTypeByIdAllowedChildrenParams,
   GetMediaUrlsParams,
   GetMemberAreReferencedParams,
   GetMemberByIdReferencedByParams,
   GetMemberByIdReferencedDescendantsParams,
   GetMemberGroupParams,
+  GetMemberTypeBatchParams,
   GetObjectTypesParams,
   GetOembedQueryParams,
   GetPackageCreatedParams,
@@ -183,6 +201,7 @@ import type {
   GetTreeDataTypeAncestorsParams,
   GetTreeDataTypeChildrenParams,
   GetTreeDataTypeRootParams,
+  GetTreeDataTypeSearchParams,
   GetTreeDataTypeSiblingsParams,
   GetTreeDictionaryAncestorsParams,
   GetTreeDictionaryChildrenParams,
@@ -198,6 +217,7 @@ import type {
   GetTreeDocumentTypeAncestorsParams,
   GetTreeDocumentTypeChildrenParams,
   GetTreeDocumentTypeRootParams,
+  GetTreeDocumentTypeSearchParams,
   GetTreeDocumentTypeSiblingsParams,
   GetTreeMediaAncestorsParams,
   GetTreeMediaChildrenParams,
@@ -253,6 +273,11 @@ import type {
   InstallRequestModel,
   InstallSettingsResponseModel,
   InviteUserRequestModel,
+  ItemAncestorsResponseModelDocumentItemResponseModel,
+  ItemAncestorsResponseModelMediaItemResponseModel,
+  ItemAncestorsResponseModelMemberItemResponseModel,
+  ItemAncestorsResponseModelNamedItemResponseModel,
+  ItemAncestorsResponseModelTemplateItemResponseModel,
   LanguageItemResponseModel,
   LanguageResponseModel,
   LogLevelCountsReponseModel,
@@ -261,6 +286,7 @@ import type {
   MediaItemResponseModel,
   MediaResponseModel,
   MediaTreeItemResponseModel,
+  MediaTypeAllowedParentsResponseModel,
   MediaTypeCompositionRequestModel,
   MediaTypeCompositionResponseModel,
   MediaTypeConfigurationResponseModel,
@@ -325,6 +351,7 @@ import type {
   PagedMemberGroupResponseModel,
   PagedMemberResponseModel,
   PagedMemberTypeTreeItemResponseModel,
+  PagedModelAllowedMediaTypeItemResponseModel,
   PagedModelDataTypeItemResponseModel,
   PagedModelDocumentItemResponseModel,
   PagedModelDocumentTypeItemResponseModel,
@@ -496,6 +523,10 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
   export const getUmbracoManagementAPI = () => {
+/**
+ * Gets a paginated collection containing the English and localized names of all available cultures.
+ * @summary Gets a paginated collection of cultures available for creating languages.
+ */
 const getCulture = (
     params?: GetCultureParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedCultureReponseModel>>,) => {
@@ -506,6 +537,10 @@ const getCulture = (
       options);
     }
   
+/**
+ * Creates a new data type with the configuration specified in the request model.
+ * @summary Creates a new data type.
+ */
 const postDataType = (
     createDataTypeRequestModel: CreateDataTypeRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -517,6 +552,10 @@ const postDataType = (
       options);
     }
   
+/**
+ * Gets a data type identified by the provided Id.
+ * @summary Gets a data type.
+ */
 const getDataTypeById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DataTypeResponseModel>>,) => {
@@ -526,6 +565,10 @@ const getDataTypeById = (
       options);
     }
   
+/**
+ * Deletes a data type identified by the provided Id.
+ * @summary Deletes a data type.
+ */
 const deleteDataTypeById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -535,6 +578,10 @@ const deleteDataTypeById = (
       options);
     }
   
+/**
+ * Updates a data type identified by the provided Id with the details from the request model.
+ * @summary Updates a data type.
+ */
 const putDataTypeById = (
     id: string,
     updateDataTypeRequestModel: UpdateDataTypeRequestModel,
@@ -547,6 +594,10 @@ const putDataTypeById = (
       options);
     }
   
+/**
+ * Creates a duplicate of an existing data type identified by the provided unique Id. The copied data type will be given a new Id and have ' (copy)' appended to its name. Optionally, the copy can be placed in a specific container by providing a target container Id.
+ * @summary Copies a data type.
+ */
 const postDataTypeByIdCopy = (
     id: string,
     copyDataTypeRequestModel: CopyDataTypeRequestModel,
@@ -559,6 +610,10 @@ const postDataTypeByIdCopy = (
       options);
     }
   
+/**
+ * Checks if the data type identified by the provided Id is used in any content, media, or member types.
+ * @summary Checks if a data type is used.
+ */
 const getDataTypeByIdIsUsed = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<boolean>>,) => {
@@ -568,6 +623,10 @@ const getDataTypeByIdIsUsed = (
       options);
     }
   
+/**
+ * Moves an existing data type identified by Id to a different container. The target container Id must be provided in the request model.
+ * @summary Moves a data type.
+ */
 const putDataTypeByIdMove = (
     id: string,
     moveDataTypeRequestModel: MoveDataTypeRequestModel,
@@ -580,6 +639,10 @@ const putDataTypeByIdMove = (
       options);
     }
   
+/**
+ * Gets a paged collection of entities that are referenced by the data type with the provided Id, so you can see where it is being used.
+ * @summary Gets a paged collection of entities that are referenced by a data type.
+ */
 const getDataTypeByIdReferencedBy = (
     id: string,
     params?: GetDataTypeByIdReferencedByParams,
@@ -591,6 +654,24 @@ const getDataTypeByIdReferencedBy = (
       options);
     }
   
+/**
+ * Gets multiple data types identified by the provided Ids.
+ * @summary Gets multiple data types.
+ */
+const getDataTypeBatch = (
+    params?: GetDataTypeBatchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<BatchResponseModelDataTypeResponseModel>>,) => {
+      return UmbracoManagementClient<BatchResponseModelDataTypeResponseModel>(
+      {url: `/umbraco/management/api/v1/data-type/batch`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the configuration settings for data types.
+ * @summary Gets the data type configuration.
+ */
 const getDataTypeConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<DatatypeConfigurationResponseModel>>,) => {
@@ -600,6 +681,10 @@ const getDataTypeConfiguration = (
       options);
     }
   
+/**
+ * Creates a new data type folder with the provided name and parent location.
+ * @summary Creates a data type folder.
+ */
 const postDataTypeFolder = (
     createFolderRequestModel: CreateFolderRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -611,6 +696,10 @@ const postDataTypeFolder = (
       options);
     }
   
+/**
+ * Gets a data type folder identified by the provided Id.
+ * @summary Gets a data type folder.
+ */
 const getDataTypeFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<FolderResponseModel>>,) => {
@@ -620,6 +709,10 @@ const getDataTypeFolderById = (
       options);
     }
   
+/**
+ * Deletes a data type folder identified by the provided Id.
+ * @summary Deletes a data type folder.
+ */
 const deleteDataTypeFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -629,6 +722,10 @@ const deleteDataTypeFolderById = (
       options);
     }
   
+/**
+ * Updates a data type folder identified by the provided Id with the details provided in the request model.
+ * @summary Updates a data type folder.
+ */
 const putDataTypeFolderById = (
     id: string,
     updateFolderResponseModel: UpdateFolderResponseModel,
@@ -641,6 +738,10 @@ const putDataTypeFolderById = (
       options);
     }
   
+/**
+ * Filters data types based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of data types.
+ */
 const getFilterDataType = (
     params?: GetFilterDataTypeParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDataTypeItemResponseModel>>,) => {
@@ -651,6 +752,10 @@ const getFilterDataType = (
       options);
     }
   
+/**
+ * Gets a collection of data type items identified by the provided Ids.
+ * @summary Gets a collection of data type items.
+ */
 const getItemDataType = (
     params?: GetItemDataTypeParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DataTypeItemResponseModel[]>>,) => {
@@ -661,6 +766,24 @@ const getItemDataType = (
       options);
     }
   
+/**
+ * Gets the ancestor chains for data type items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of data type items.
+ */
+const getItemDataTypeAncestors = (
+    params?: GetItemDataTypeAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/data-type/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches data type items by the provided query with pagination support.
+ * @summary Searches data type items.
+ */
 const getItemDataTypeSearch = (
     params?: GetItemDataTypeSearchParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedModelDataTypeItemResponseModel>>,) => {
@@ -671,6 +794,10 @@ const getItemDataTypeSearch = (
       options);
     }
   
+/**
+ * Gets a collection of data type folders that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor data type folders.
+ */
 const getTreeDataTypeAncestors = (
     params?: GetTreeDataTypeAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DataTypeTreeItemResponseModel[]>>,) => {
@@ -681,6 +808,10 @@ const getTreeDataTypeAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of data type tree items that are children of the provided parent Id.
+ * @summary Gets a collection of data type tree child items.
+ */
 const getTreeDataTypeChildren = (
     params?: GetTreeDataTypeChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDataTypeTreeItemResponseModel>>,) => {
@@ -691,6 +822,10 @@ const getTreeDataTypeChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of data type items from the root of the tree with optional filtering.
+ * @summary Gets a collection of data type items from the root of the tree.
+ */
 const getTreeDataTypeRoot = (
     params?: GetTreeDataTypeRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDataTypeTreeItemResponseModel>>,) => {
@@ -701,6 +836,20 @@ const getTreeDataTypeRoot = (
       options);
     }
   
+const getTreeDataTypeSearch = (
+    params?: GetTreeDataTypeSearchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedDataTypeTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedDataTypeTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/data-type/search`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paged collection of data type tree items that are siblings of the provided Id. The collection can be optionally filtered to return only folder, or folders and data types.
+ * @summary Gets a collection of data type tree sibling items.
+ */
 const getTreeDataTypeSiblings = (
     params?: GetTreeDataTypeSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetDataTypeTreeItemResponseModel>>,) => {
@@ -711,6 +860,10 @@ const getTreeDataTypeSiblings = (
       options);
     }
   
+/**
+ * Gets a paginated collection of dictionary items with optional filtering by name.
+ * @summary Gets a paginated collection of dictionary items.
+ */
 const getDictionary = (
     params?: GetDictionaryParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDictionaryOverviewResponseModel>>,) => {
@@ -721,6 +874,10 @@ const getDictionary = (
       options);
     }
   
+/**
+ * Creates a new dictionary with the configuration specified in the request model.
+ * @summary Creates a new dictionary.
+ */
 const postDictionary = (
     createDictionaryItemRequestModel: CreateDictionaryItemRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -732,6 +889,10 @@ const postDictionary = (
       options);
     }
   
+/**
+ * Gets a dictionary identified by the provided Id.
+ * @summary Gets a dictionary.
+ */
 const getDictionaryById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DictionaryItemResponseModel>>,) => {
@@ -741,6 +902,10 @@ const getDictionaryById = (
       options);
     }
   
+/**
+ * Deletes a dictionary identified by the provided Id.
+ * @summary Deletes a dictionary.
+ */
 const deleteDictionaryById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -750,6 +915,10 @@ const deleteDictionaryById = (
       options);
     }
   
+/**
+ * Updates a dictionary identified by the provided Id with the details from the request model.
+ * @summary Updates a dictionary.
+ */
 const putDictionaryById = (
     id: string,
     updateDictionaryItemRequestModel: UpdateDictionaryItemRequestModel,
@@ -762,6 +931,10 @@ const putDictionaryById = (
       options);
     }
   
+/**
+ * Exports the dictionary identified by the provided Id to a downloadable format.
+ * @summary Exports a dictionary.
+ */
 const getDictionaryByIdExport = (
     id: string,
     params?: GetDictionaryByIdExportParams,
@@ -774,6 +947,10 @@ const getDictionaryByIdExport = (
       options);
     }
   
+/**
+ * Moves a dictionary identified by the provided Id to a different location.
+ * @summary Moves a dictionary.
+ */
 const putDictionaryByIdMove = (
     id: string,
     moveDictionaryRequestModel: MoveDictionaryRequestModel,
@@ -786,6 +963,10 @@ const putDictionaryByIdMove = (
       options);
     }
   
+/**
+ * Imports a dictionary from the provided file upload.
+ * @summary Imports a dictionary.
+ */
 const postDictionaryImport = (
     importDictionaryRequestModel: ImportDictionaryRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -797,6 +978,10 @@ const postDictionaryImport = (
       options);
     }
   
+/**
+ * Gets a collection of dictionary items identified by the provided Ids.
+ * @summary Gets a collection of dictionary items.
+ */
 const getItemDictionary = (
     params?: GetItemDictionaryParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DictionaryItemItemResponseModel[]>>,) => {
@@ -807,6 +992,10 @@ const getItemDictionary = (
       options);
     }
   
+/**
+ * Gets a collection of dictionary items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor dictionary items.
+ */
 const getTreeDictionaryAncestors = (
     params?: GetTreeDictionaryAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<NamedEntityTreeItemResponseModel[]>>,) => {
@@ -817,6 +1006,10 @@ const getTreeDictionaryAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of dictionary tree items that are children of the provided parent Id.
+ * @summary Gets a collection of dictionary tree child items.
+ */
 const getTreeDictionaryChildren = (
     params?: GetTreeDictionaryChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedNamedEntityTreeItemResponseModel>>,) => {
@@ -827,6 +1020,10 @@ const getTreeDictionaryChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of dictionary items from the root of the tree with optional filtering.
+ * @summary Gets a collection of dictionary items from the root of the tree.
+ */
 const getTreeDictionaryRoot = (
     params?: GetTreeDictionaryRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedNamedEntityTreeItemResponseModel>>,) => {
@@ -837,6 +1034,10 @@ const getTreeDictionaryRoot = (
       options);
     }
   
+/**
+ * Creates a new document blueprint with the configuration specified in the request model.
+ * @summary Creates a new document blueprint.
+ */
 const postDocumentBlueprint = (
     createDocumentBlueprintRequestModel: CreateDocumentBlueprintRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -848,6 +1049,10 @@ const postDocumentBlueprint = (
       options);
     }
   
+/**
+ * Gets a document blueprint identified by the provided Id.
+ * @summary Gets a document blueprint.
+ */
 const getDocumentBlueprintById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentBlueprintResponseModel>>,) => {
@@ -857,6 +1062,10 @@ const getDocumentBlueprintById = (
       options);
     }
   
+/**
+ * Deletes a document blueprint identified by the provided Id.
+ * @summary Deletes a document blueprint.
+ */
 const deleteDocumentBlueprintById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -866,6 +1075,10 @@ const deleteDocumentBlueprintById = (
       options);
     }
   
+/**
+ * Updates a document blueprint identified by the provided Id with the details from the request model.
+ * @summary Updates a document blueprint.
+ */
 const putDocumentBlueprintById = (
     id: string,
     updateDocumentBlueprintRequestModel: UpdateDocumentBlueprintRequestModel,
@@ -878,6 +1091,10 @@ const putDocumentBlueprintById = (
       options);
     }
   
+/**
+ * Moves a document blueprint identified by the provided Id to a different location.
+ * @summary Moves a document blueprint.
+ */
 const putDocumentBlueprintByIdMove = (
     id: string,
     moveDocumentBlueprintRequestModel: MoveDocumentBlueprintRequestModel,
@@ -890,6 +1107,10 @@ const putDocumentBlueprintByIdMove = (
       options);
     }
   
+/**
+ * Creates a scaffold for a new document blueprint with default values.
+ * @summary Scaffolds a document blueprint.
+ */
 const getDocumentBlueprintByIdScaffold = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentBlueprintResponseModel>>,) => {
@@ -899,6 +1120,10 @@ const getDocumentBlueprintByIdScaffold = (
       options);
     }
   
+/**
+ * Creates a new document blueprint folder with the provided name and parent location.
+ * @summary Creates a document blueprint folder.
+ */
 const postDocumentBlueprintFolder = (
     createFolderRequestModel: CreateFolderRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -910,6 +1135,10 @@ const postDocumentBlueprintFolder = (
       options);
     }
   
+/**
+ * Gets a document blueprint folder identified by the provided Id.
+ * @summary Gets a document blueprint folder.
+ */
 const getDocumentBlueprintFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<FolderResponseModel>>,) => {
@@ -919,6 +1148,10 @@ const getDocumentBlueprintFolderById = (
       options);
     }
   
+/**
+ * Deletes a document blueprint folder identified by the provided Id.
+ * @summary Deletes a document blueprint folder.
+ */
 const deleteDocumentBlueprintFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -928,6 +1161,10 @@ const deleteDocumentBlueprintFolderById = (
       options);
     }
   
+/**
+ * Updates a document blueprint folder identified by the provided Id with the details from the request model.
+ * @summary Updates a document blueprint folder.
+ */
 const putDocumentBlueprintFolderById = (
     id: string,
     updateFolderResponseModel: UpdateFolderResponseModel,
@@ -940,6 +1177,10 @@ const putDocumentBlueprintFolderById = (
       options);
     }
   
+/**
+ * Creates a new document blueprint based on an existing document identified by the provided Id.
+ * @summary Creates a document blueprint from an existing document.
+ */
 const postDocumentBlueprintFromDocument = (
     createDocumentBlueprintFromDocumentRequestModel: CreateDocumentBlueprintFromDocumentRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -951,6 +1192,10 @@ const postDocumentBlueprintFromDocument = (
       options);
     }
   
+/**
+ * Gets a collection of document blueprint items identified by the provided Ids.
+ * @summary Gets a collection of document blueprint items.
+ */
 const getItemDocumentBlueprint = (
     params?: GetItemDocumentBlueprintParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentBlueprintItemResponseModel[]>>,) => {
@@ -961,6 +1206,10 @@ const getItemDocumentBlueprint = (
       options);
     }
   
+/**
+ * Gets a collection of document blueprint items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor document blueprint items.
+ */
 const getTreeDocumentBlueprintAncestors = (
     params?: GetTreeDocumentBlueprintAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentBlueprintTreeItemResponseModel[]>>,) => {
@@ -971,6 +1220,10 @@ const getTreeDocumentBlueprintAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of document blueprint tree items that are children of the provided parent Id.
+ * @summary Gets a collection of document blueprint tree child items.
+ */
 const getTreeDocumentBlueprintChildren = (
     params?: GetTreeDocumentBlueprintChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentBlueprintTreeItemResponseModel>>,) => {
@@ -981,6 +1234,10 @@ const getTreeDocumentBlueprintChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of document blueprint items from the root of the tree with optional filtering.
+ * @summary Gets a collection of document blueprint items from the root of the tree.
+ */
 const getTreeDocumentBlueprintRoot = (
     params?: GetTreeDocumentBlueprintRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentBlueprintTreeItemResponseModel>>,) => {
@@ -991,6 +1248,10 @@ const getTreeDocumentBlueprintRoot = (
       options);
     }
   
+/**
+ * Gets a collection of document blueprint tree items that are siblings of the provided Id.
+ * @summary Gets a collection of document blueprint tree sibling items.
+ */
 const getTreeDocumentBlueprintSiblings = (
     params?: GetTreeDocumentBlueprintSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetDocumentBlueprintTreeItemResponseModel>>,) => {
@@ -1001,6 +1262,10 @@ const getTreeDocumentBlueprintSiblings = (
       options);
     }
   
+/**
+ * Creates a new document type with the configuration specified in the request model.
+ * @summary Creates a new document type.
+ */
 const postDocumentType = (
     createDocumentTypeRequestModel: CreateDocumentTypeRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1012,6 +1277,10 @@ const postDocumentType = (
       options);
     }
   
+/**
+ * Gets a document type identified by the provided Id.
+ * @summary Gets a document type.
+ */
 const getDocumentTypeById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentTypeResponseModel>>,) => {
@@ -1021,6 +1290,10 @@ const getDocumentTypeById = (
       options);
     }
   
+/**
+ * Deletes a document type identified by the provided Id.
+ * @summary Deletes a document type.
+ */
 const deleteDocumentTypeById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1030,6 +1303,10 @@ const deleteDocumentTypeById = (
       options);
     }
   
+/**
+ * Updates a document type identified by the provided Id with the details from the request model.
+ * @summary Updates a document type.
+ */
 const putDocumentTypeById = (
     id: string,
     updateDocumentTypeRequestModel: UpdateDocumentTypeRequestModel,
@@ -1042,6 +1319,10 @@ const putDocumentTypeById = (
       options);
     }
   
+/**
+ * Gets a collection of document types that are allowed as children of the specified parent document type.
+ * @summary Gets allowed child document types.
+ */
 const getDocumentTypeByIdAllowedChildren = (
     id: string,
     params?: GetDocumentTypeByIdAllowedChildrenParams,
@@ -1053,6 +1334,23 @@ const getDocumentTypeByIdAllowedChildren = (
       options);
     }
   
+/**
+ * Gets a collection of document types that are allowed as parents of the specified document type.
+ * @summary Gets allowed parent document types.
+ */
+const getDocumentTypeByIdAllowedParents = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<DocumentTypeAllowedParentsResponseModel>>,) => {
+      return UmbracoManagementClient<DocumentTypeAllowedParentsResponseModel>(
+      {url: `/umbraco/management/api/v1/document-type/${id}/allowed-parents`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of document blueprints available for the specified document type.
+ * @summary Gets document blueprints for a document type.
+ */
 const getDocumentTypeByIdBlueprint = (
     id: string,
     params?: GetDocumentTypeByIdBlueprintParams,
@@ -1064,6 +1362,10 @@ const getDocumentTypeByIdBlueprint = (
       options);
     }
   
+/**
+ * Gets a collection of document types that reference the specified document type as a composition.
+ * @summary Gets composition references.
+ */
 const getDocumentTypeByIdCompositionReferences = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentTypeCompositionResponseModel[]>>,) => {
@@ -1073,6 +1375,10 @@ const getDocumentTypeByIdCompositionReferences = (
       options);
     }
   
+/**
+ * Creates a duplicate of an existing document type identified by the provided Id.
+ * @summary Copies a document type.
+ */
 const postDocumentTypeByIdCopy = (
     id: string,
     copyDocumentTypeRequestModel: CopyDocumentTypeRequestModel,
@@ -1085,6 +1391,10 @@ const postDocumentTypeByIdCopy = (
       options);
     }
   
+/**
+ * Exports the document type identified by the provided Id to a downloadable format.
+ * @summary Exports a document type.
+ */
 const getDocumentTypeByIdExport = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<Blob>>,) => {
@@ -1095,6 +1405,10 @@ const getDocumentTypeByIdExport = (
       options);
     }
   
+/**
+ * Imports a document type from the provided file upload.
+ * @summary Imports a document type.
+ */
 const putDocumentTypeByIdImport = (
     id: string,
     importDocumentTypeRequestModel: ImportDocumentTypeRequestModel,
@@ -1107,6 +1421,10 @@ const putDocumentTypeByIdImport = (
       options);
     }
   
+/**
+ * Moves a document type identified by the provided Id to a different location.
+ * @summary Moves a document type.
+ */
 const putDocumentTypeByIdMove = (
     id: string,
     moveDocumentTypeRequestModel: MoveDocumentTypeRequestModel,
@@ -1119,6 +1437,10 @@ const putDocumentTypeByIdMove = (
       options);
     }
   
+/**
+ * Creates a new template associated with the document type identified by the provided Id.
+ * @summary Creates a template for a document type.
+ */
 const postDocumentTypeByIdTemplate = (
     id: string,
     createDocumentTypeTemplateRequestModel: CreateDocumentTypeTemplateRequestModel,
@@ -1131,6 +1453,10 @@ const postDocumentTypeByIdTemplate = (
       options);
     }
   
+/**
+ * Gets a collection of document types that are allowed to be created at the root level.
+ * @summary Gets document types allowed at root.
+ */
 const getDocumentTypeAllowedAtRoot = (
     params?: GetDocumentTypeAllowedAtRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedAllowedDocumentTypeModel>>,) => {
@@ -1141,6 +1467,10 @@ const getDocumentTypeAllowedAtRoot = (
       options);
     }
   
+/**
+ * Gets a collection of document types that are available to use as compositions for the specified document type.
+ * @summary Gets available compositions.
+ */
 const postDocumentTypeAvailableCompositions = (
     documentTypeCompositionRequestModel: DocumentTypeCompositionRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<AvailableDocumentTypeCompositionResponseModel[]>>,) => {
@@ -1152,6 +1482,24 @@ const postDocumentTypeAvailableCompositions = (
       options);
     }
   
+/**
+ * Gets multiple document types identified by the provided Ids.
+ * @summary Gets multiple document types.
+ */
+const getDocumentTypeBatch = (
+    params?: GetDocumentTypeBatchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<BatchResponseModelDocumentTypeResponseModel>>,) => {
+      return UmbracoManagementClient<BatchResponseModelDocumentTypeResponseModel>(
+      {url: `/umbraco/management/api/v1/document-type/batch`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the configuration settings for document types.
+ * @summary Gets the document type configuration.
+ */
 const getDocumentTypeConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentTypeConfigurationResponseModel>>,) => {
@@ -1161,6 +1509,10 @@ const getDocumentTypeConfiguration = (
       options);
     }
   
+/**
+ * Creates a new document type folder with the provided name and parent location.
+ * @summary Creates a document type folder.
+ */
 const postDocumentTypeFolder = (
     createFolderRequestModel: CreateFolderRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1172,6 +1524,10 @@ const postDocumentTypeFolder = (
       options);
     }
   
+/**
+ * Gets a document type folder identified by the provided Id.
+ * @summary Gets a document type folder.
+ */
 const getDocumentTypeFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<FolderResponseModel>>,) => {
@@ -1181,6 +1537,10 @@ const getDocumentTypeFolderById = (
       options);
     }
   
+/**
+ * Deletes a document type folder identified by the provided Id.
+ * @summary Deletes a document type folder.
+ */
 const deleteDocumentTypeFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1190,6 +1550,10 @@ const deleteDocumentTypeFolderById = (
       options);
     }
   
+/**
+ * Updates a document type folder identified by the provided Id with the details from the request model.
+ * @summary Updates a document type folder.
+ */
 const putDocumentTypeFolderById = (
     id: string,
     updateFolderResponseModel: UpdateFolderResponseModel,
@@ -1202,6 +1566,10 @@ const putDocumentTypeFolderById = (
       options);
     }
   
+/**
+ * Imports a document type from the provided file upload.
+ * @summary Imports a document type.
+ */
 const postDocumentTypeImport = (
     importDocumentTypeRequestModel: ImportDocumentTypeRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1213,6 +1581,10 @@ const postDocumentTypeImport = (
       options);
     }
   
+/**
+ * Gets a collection of document type items identified by the provided Ids.
+ * @summary Gets a collection of document type items.
+ */
 const getItemDocumentType = (
     params?: GetItemDocumentTypeParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentTypeItemResponseModel[]>>,) => {
@@ -1223,6 +1595,24 @@ const getItemDocumentType = (
       options);
     }
   
+/**
+ * Gets the ancestor chains for document type items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of document type items.
+ */
+const getItemDocumentTypeAncestors = (
+    params?: GetItemDocumentTypeAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/document-type/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches document type items by the provided query with pagination support.
+ * @summary Searches document type items.
+ */
 const getItemDocumentTypeSearch = (
     params?: GetItemDocumentTypeSearchParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedModelDocumentTypeItemResponseModel>>,) => {
@@ -1233,6 +1623,10 @@ const getItemDocumentTypeSearch = (
       options);
     }
   
+/**
+ * Gets a collection of document type items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor document type items.
+ */
 const getTreeDocumentTypeAncestors = (
     params?: GetTreeDocumentTypeAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentTypeTreeItemResponseModel[]>>,) => {
@@ -1243,6 +1637,10 @@ const getTreeDocumentTypeAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of document type tree items that are children of the provided parent Id.
+ * @summary Gets a collection of document type tree child items.
+ */
 const getTreeDocumentTypeChildren = (
     params?: GetTreeDocumentTypeChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentTypeTreeItemResponseModel>>,) => {
@@ -1253,6 +1651,10 @@ const getTreeDocumentTypeChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of document type items from the root of the tree with optional filtering.
+ * @summary Gets a collection of document type items from the root of the tree.
+ */
 const getTreeDocumentTypeRoot = (
     params?: GetTreeDocumentTypeRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentTypeTreeItemResponseModel>>,) => {
@@ -1263,6 +1665,20 @@ const getTreeDocumentTypeRoot = (
       options);
     }
   
+const getTreeDocumentTypeSearch = (
+    params?: GetTreeDocumentTypeSearchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentTypeTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedDocumentTypeTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/document-type/search`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of document type tree items that are siblings of the provided Id.
+ * @summary Gets a collection of document type tree sibling items.
+ */
 const getTreeDocumentTypeSiblings = (
     params?: GetTreeDocumentTypeSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetDocumentTypeTreeItemResponseModel>>,) => {
@@ -1273,6 +1689,10 @@ const getTreeDocumentTypeSiblings = (
       options);
     }
   
+/**
+ * Gets a paginated collection of versions for a specific document and optional culture. Each result describes the version and includes details of the document type, editor, version date, and published status.
+ * @summary Gets a paginated collection of versions for a specific document.
+ */
 const getDocumentVersion = (
     params: GetDocumentVersionParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentVersionItemResponseModel>>,) => {
@@ -1283,6 +1703,10 @@ const getDocumentVersion = (
       options);
     }
   
+/**
+ * Gets a specific document version by its Id. If found, the result describes the version and includes details of the document type, editor, version date, and published status.
+ * @summary Gets a specific document version.
+ */
 const getDocumentVersionById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentVersionResponseModel>>,) => {
@@ -1292,6 +1716,10 @@ const getDocumentVersionById = (
       options);
     }
   
+/**
+ * Sets the prevent clean up boolean status for a document version to the provided value. This controls whether the version will be a candidate for removal in content history clean up.
+ * @summary Sets the prevent clean up status for a document version.
+ */
 const putDocumentVersionByIdPreventCleanup = (
     id: string,
     params?: PutDocumentVersionByIdPreventCleanupParams,
@@ -1303,6 +1731,10 @@ const putDocumentVersionByIdPreventCleanup = (
       options);
     }
   
+/**
+ * Rolls back a document to the version indicated by the provided Id. This will archive the current version of the document and publish the provided one.
+ * @summary Rolls back a document to a specific version.
+ */
 const postDocumentVersionByIdRollback = (
     id: string,
     params?: PostDocumentVersionByIdRollbackParams,
@@ -1314,6 +1746,10 @@ const postDocumentVersionByIdRollback = (
       options);
     }
   
+/**
+ * Gets a document collection identified by the provided Id.
+ * @summary Gets a document collection.
+ */
 const getCollectionDocumentById = (
     id: string,
     params?: GetCollectionDocumentByIdParams,
@@ -1325,6 +1761,10 @@ const getCollectionDocumentById = (
       options);
     }
   
+/**
+ * Creates a new document with the configuration specified in the request model.
+ * @summary Creates a new document.
+ */
 const postDocument = (
     createDocumentRequestModel: CreateDocumentRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1336,6 +1776,10 @@ const postDocument = (
       options);
     }
   
+/**
+ * Gets a document identified by the provided Id.
+ * @summary Gets a document.
+ */
 const getDocumentById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentResponseModel>>,) => {
@@ -1345,6 +1789,10 @@ const getDocumentById = (
       options);
     }
   
+/**
+ * Deletes a document identified by the provided Id.
+ * @summary Deletes a document.
+ */
 const deleteDocumentById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1354,6 +1802,10 @@ const deleteDocumentById = (
       options);
     }
   
+/**
+ * Updates a document identified by the provided Id with the details from the request model.
+ * @summary Updates a document.
+ */
 const putDocumentById = (
     id: string,
     updateDocumentRequestModel: UpdateDocumentRequestModel,
@@ -1366,6 +1818,10 @@ const putDocumentById = (
       options);
     }
   
+/**
+ * Gets a paginated collection of audit log entries for the document identified by the provided Id.
+ * @summary Gets the audit log for a document.
+ */
 const getDocumentByIdAuditLog = (
     id: string,
     params?: GetDocumentByIdAuditLogParams,
@@ -1378,7 +1834,9 @@ const getDocumentByIdAuditLog = (
     }
   
 /**
+ * Gets a collection of available content segments for the system.
  * @deprecated
+ * @summary Gets available segments.
  */
 const getDocumentByIdAvailableSegmentOptions = (
     id: string,
@@ -1391,6 +1849,10 @@ const getDocumentByIdAvailableSegmentOptions = (
       options);
     }
   
+/**
+ * Creates a duplicate of an existing document identified by the provided Id.
+ * @summary Copies a document.
+ */
 const postDocumentByIdCopy = (
     id: string,
     copyDocumentRequestModel: CopyDocumentRequestModel,
@@ -1403,6 +1865,10 @@ const postDocumentByIdCopy = (
       options);
     }
   
+/**
+ * Gets the domains and culture settings assigned to the document identified by the provided Id.
+ * @summary Gets domains for a document.
+ */
 const getDocumentByIdDomains = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DomainsResponseModel>>,) => {
@@ -1412,6 +1878,10 @@ const getDocumentByIdDomains = (
       options);
     }
   
+/**
+ * Updates the domains for the document identified by the provided Id with the details from the request model.
+ * @summary Updates the domains for a document.
+ */
 const putDocumentByIdDomains = (
     id: string,
     updateDomainsRequestModel: UpdateDomainsRequestModel,
@@ -1424,6 +1894,10 @@ const putDocumentByIdDomains = (
       options);
     }
   
+/**
+ * Moves a document identified by the provided Id to a different location.
+ * @summary Moves a document.
+ */
 const putDocumentByIdMove = (
     id: string,
     moveDocumentRequestModel: MoveDocumentRequestModel,
@@ -1436,6 +1910,10 @@ const putDocumentByIdMove = (
       options);
     }
   
+/**
+ * Moves a document identified by the provided Id to the recycle bin.
+ * @summary Moves a document to the recycle bin.
+ */
 const putDocumentByIdMoveToRecycleBin = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1445,6 +1923,10 @@ const putDocumentByIdMoveToRecycleBin = (
       options);
     }
   
+/**
+ * Gets the notifications for the document identified by the provided Id.
+ * @summary Gets notifications for a document.
+ */
 const getDocumentByIdNotifications = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentNotificationResponseModel[]>>,) => {
@@ -1454,6 +1936,10 @@ const getDocumentByIdNotifications = (
       options);
     }
   
+/**
+ * Updates which actions the current user is subscribed to receive notifications for on the specified document.
+ * @summary Updates notification subscriptions for a document.
+ */
 const putDocumentByIdNotifications = (
     id: string,
     updateDocumentNotificationsRequestModel: UpdateDocumentNotificationsRequestModel,
@@ -1466,6 +1952,10 @@ const putDocumentByIdNotifications = (
       options);
     }
   
+/**
+ * Gets the preview URL for the document identified by the provided Id.
+ * @summary Gets the preview URL for a document.
+ */
 const getDocumentByIdPreviewUrl = (
     id: string,
     params?: GetDocumentByIdPreviewUrlParams,
@@ -1477,6 +1967,10 @@ const getDocumentByIdPreviewUrl = (
       options);
     }
   
+/**
+ * Creates public access protection for the document identified by the provided Id.
+ * @summary Creates public access rules for a document.
+ */
 const postDocumentByIdPublicAccess = (
     id: string,
     publicAccessRequestModel: PublicAccessRequestModel,
@@ -1489,6 +1983,10 @@ const postDocumentByIdPublicAccess = (
       options);
     }
   
+/**
+ * Removes public access protection/rules for the document identified by the provided Id.
+ * @summary Removes public access settings for a document.
+ */
 const deleteDocumentByIdPublicAccess = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1498,15 +1996,25 @@ const deleteDocumentByIdPublicAccess = (
       options);
     }
   
+/**
+ * Gets the public access protection settings for the document identified by the provided Id.
+ * @summary Gets public access rules for a document.
+ */
 const getDocumentByIdPublicAccess = (
     id: string,
+    params?: GetDocumentByIdPublicAccessParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PublicAccessResponseModel>>,) => {
       return UmbracoManagementClient<PublicAccessResponseModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'GET'
+      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'GET',
+        params
     },
       options);
     }
   
+/**
+ * Updates the member protection settings for a document, controlling which members or member groups can access it.
+ * @summary Updates public access protection for a document.
+ */
 const putDocumentByIdPublicAccess = (
     id: string,
     publicAccessRequestModel: PublicAccessRequestModel,
@@ -1519,6 +2027,10 @@ const putDocumentByIdPublicAccess = (
       options);
     }
   
+/**
+ * Publishes a document identified by the provided Id.
+ * @summary Publishes a document.
+ */
 const putDocumentByIdPublish = (
     id: string,
     publishDocumentRequestModel: PublishDocumentRequestModel,
@@ -1531,6 +2043,10 @@ const putDocumentByIdPublish = (
       options);
     }
   
+/**
+ * Publishes a document and its descendants identified by the provided Id.
+ * @summary Publishes a document with its descendants.
+ */
 const putDocumentByIdPublishWithDescendants = (
     id: string,
     publishDocumentWithDescendantsRequestModel: PublishDocumentWithDescendantsRequestModel,
@@ -1543,6 +2059,10 @@ const putDocumentByIdPublishWithDescendants = (
       options);
     }
   
+/**
+ * Gets the status and result of a publish with descendants operation.
+ * @summary Gets the result of publishing a document with descendants.
+ */
 const getDocumentByIdPublishWithDescendantsResultByTaskId = (
     id: string,
     taskId: string,
@@ -1553,6 +2073,10 @@ const getDocumentByIdPublishWithDescendantsResultByTaskId = (
       options);
     }
   
+/**
+ * Gets a document identified by the provided Id.
+ * @summary Gets a document.
+ */
 const getDocumentByIdPublished = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<PublishedDocumentResponseModel>>,) => {
@@ -1562,6 +2086,10 @@ const getDocumentByIdPublished = (
       options);
     }
   
+/**
+ * Gets a paginated collection of items that reference the documents identified by the provided Ids.
+ * @summary Gets a collection of items that reference documents.
+ */
 const getDocumentByIdReferencedBy = (
     id: string,
     params?: GetDocumentByIdReferencedByParams,
@@ -1573,6 +2101,10 @@ const getDocumentByIdReferencedBy = (
       options);
     }
   
+/**
+ * Gets a paginated collection of descendant documents that are referenced by other content.
+ * @summary Gets document descendants that are referenced.
+ */
 const getDocumentByIdReferencedDescendants = (
     id: string,
     params?: GetDocumentByIdReferencedDescendantsParams,
@@ -1584,6 +2116,10 @@ const getDocumentByIdReferencedDescendants = (
       options);
     }
   
+/**
+ * Unpublishes a document identified by the provided Id.
+ * @summary Unpublishes a document.
+ */
 const putDocumentByIdUnpublish = (
     id: string,
     unpublishDocumentRequestModel: UnpublishDocumentRequestModel,
@@ -1596,6 +2132,10 @@ const putDocumentByIdUnpublish = (
       options);
     }
   
+/**
+ * Validates the request model for updating a document without actually updating it.
+ * @summary Validates updating a document.
+ */
 const putUmbracoManagementApiV11DocumentByIdValidate11 = (
     id: string,
     validateUpdateDocumentRequestModel: ValidateUpdateDocumentRequestModel,
@@ -1608,6 +2148,10 @@ const putUmbracoManagementApiV11DocumentByIdValidate11 = (
       options);
     }
   
+/**
+ * Gets a paginated collection of items that reference the documents identified by the provided Ids.
+ * @summary Gets a collection of items that reference documents.
+ */
 const getDocumentAreReferenced = (
     params?: GetDocumentAreReferencedParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
@@ -1618,6 +2162,10 @@ const getDocumentAreReferenced = (
       options);
     }
   
+/**
+ * Gets the configuration settings for documents.
+ * @summary Gets the document configuration.
+ */
 const getDocumentConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentConfigurationResponseModel>>,) => {
@@ -1627,6 +2175,10 @@ const getDocumentConfiguration = (
       options);
     }
   
+/**
+ * Sorts documents in the specified parent container according to the provided sort order.
+ * @summary Sorts documents.
+ */
 const putDocumentSort = (
     sortingRequestModel: SortingRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1638,6 +2190,10 @@ const putDocumentSort = (
       options);
     }
   
+/**
+ * Gets the URLs for the document identified by the provided Id.
+ * @summary Gets URLs for a document.
+ */
 const getDocumentUrls = (
     params?: GetDocumentUrlsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentUrlInfoResponseModel[]>>,) => {
@@ -1648,6 +2204,10 @@ const getDocumentUrls = (
       options);
     }
   
+/**
+ * Validates the request model for creating a new document without actually creating it.
+ * @summary Validates creating a document.
+ */
 const postDocumentValidate = (
     createDocumentRequestModel: CreateDocumentRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1659,6 +2219,10 @@ const postDocumentValidate = (
       options);
     }
   
+/**
+ * Gets a collection of document items identified by the provided Ids.
+ * @summary Gets a collection of document items.
+ */
 const getItemDocument = (
     params?: GetItemDocumentParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentItemResponseModel[]>>,) => {
@@ -1669,6 +2233,24 @@ const getItemDocument = (
       options);
     }
   
+/**
+ * Gets the ancestor chains for document items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of document items.
+ */
+const getItemDocumentAncestors = (
+    params?: GetItemDocumentAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelDocumentItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelDocumentItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/document/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches document items by the provided query with pagination support.
+ * @summary Searches document items.
+ */
 const getItemDocumentSearch = (
     params?: GetItemDocumentSearchParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedModelDocumentItemResponseModel>>,) => {
@@ -1679,6 +2261,10 @@ const getItemDocumentSearch = (
       options);
     }
   
+/**
+ * Permanently deletes all documents in the recycle bin. This operation cannot be undone.
+ * @summary Empties the document recycle bin.
+ */
 const deleteRecycleBinDocument = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1688,6 +2274,10 @@ const deleteRecycleBinDocument = (
       options);
     }
   
+/**
+ * Deletes a document identified by the provided Id.
+ * @summary Deletes a document.
+ */
 const deleteRecycleBinDocumentById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1697,6 +2287,10 @@ const deleteRecycleBinDocumentById = (
       options);
     }
   
+/**
+ * Gets the original parent location of a document before it was moved to the recycle bin.
+ * @summary Gets the original parent of a document in the recycle bin.
+ */
 const getRecycleBinDocumentByIdOriginalParent = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<ReferenceByIdModel>>,) => {
@@ -1706,6 +2300,10 @@ const getRecycleBinDocumentByIdOriginalParent = (
       options);
     }
   
+/**
+ * Restores a document from the recycle bin to its original location or a specified parent.
+ * @summary Restores a document from the recycle bin.
+ */
 const putRecycleBinDocumentByIdRestore = (
     id: string,
     moveMediaRequestModel: MoveMediaRequestModel,
@@ -1718,6 +2316,10 @@ const putRecycleBinDocumentByIdRestore = (
       options);
     }
   
+/**
+ * Gets a paginated collection of documents that are children of the provided parent in the recycle bin.
+ * @summary Gets a collection of documents in the recycle bin.
+ */
 const getRecycleBinDocumentChildren = (
     params?: GetRecycleBinDocumentChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>>,) => {
@@ -1728,6 +2330,10 @@ const getRecycleBinDocumentChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of items that reference the document in the recycle bin.
+ * @summary Gets items referencing a document in the recycle bin.
+ */
 const getRecycleBinDocumentReferencedBy = (
     params?: GetRecycleBinDocumentReferencedByParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
@@ -1738,6 +2344,10 @@ const getRecycleBinDocumentReferencedBy = (
       options);
     }
   
+/**
+ * Gets a paginated collection of documents at the root level of the recycle bin.
+ * @summary Gets documents at the root of the recycle bin.
+ */
 const getRecycleBinDocumentRoot = (
     params?: GetRecycleBinDocumentRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>>,) => {
@@ -1748,6 +2358,10 @@ const getRecycleBinDocumentRoot = (
       options);
     }
   
+/**
+ * Gets a collection of sibling documents in the recycle bin at the same level as the provided Id.
+ * @summary Gets sibling documents in the recycle bin.
+ */
 const getRecycleBinDocumentSiblings = (
     params?: GetRecycleBinDocumentSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetDocumentRecycleBinItemResponseModel>>,) => {
@@ -1758,6 +2372,10 @@ const getRecycleBinDocumentSiblings = (
       options);
     }
   
+/**
+ * Gets a collection of document items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor document items.
+ */
 const getTreeDocumentAncestors = (
     params?: GetTreeDocumentAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<DocumentTreeItemResponseModel[]>>,) => {
@@ -1768,6 +2386,10 @@ const getTreeDocumentAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of document tree items that are children of the provided parent Id.
+ * @summary Gets a collection of document tree child items.
+ */
 const getTreeDocumentChildren = (
     params?: GetTreeDocumentChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentTreeItemResponseModel>>,) => {
@@ -1778,6 +2400,10 @@ const getTreeDocumentChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of document items from the root of the tree with optional filtering.
+ * @summary Gets a collection of document items from the root of the tree.
+ */
 const getTreeDocumentRoot = (
     params?: GetTreeDocumentRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentTreeItemResponseModel>>,) => {
@@ -1788,6 +2414,10 @@ const getTreeDocumentRoot = (
       options);
     }
   
+/**
+ * Gets a collection of document tree items that are siblings of the provided Id.
+ * @summary Gets a collection of document tree sibling items.
+ */
 const getTreeDocumentSiblings = (
     params?: GetTreeDocumentSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetDocumentTreeItemResponseModel>>,) => {
@@ -1798,6 +2428,10 @@ const getTreeDocumentSiblings = (
       options);
     }
   
+/**
+ * Gets a collection of dynamic root items based on the provided query configuration.
+ * @summary Gets dynamic roots.
+ */
 const postDynamicRootQuery = (
     dynamicRootRequestModel: DynamicRootRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<DynamicRootResponseModel>>,) => {
@@ -1809,6 +2443,10 @@ const postDynamicRootQuery = (
       options);
     }
   
+/**
+ * Gets a collection of available query steps for configuring dynamic root queries.
+ * @summary Gets dynamic root query steps.
+ */
 const getDynamicRootSteps = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<string[]>>,) => {
@@ -1818,6 +2456,10 @@ const getDynamicRootSteps = (
       options);
     }
   
+/**
+ * Gets a collection of health check groups with their associated health checks.
+ * @summary Gets a collection of health check groups.
+ */
 const getHealthCheckGroup = (
     params?: GetHealthCheckGroupParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedHealthCheckGroupResponseModel>>,) => {
@@ -1828,6 +2470,10 @@ const getHealthCheckGroup = (
       options);
     }
   
+/**
+ * Gets a health check group and all its associated health checks identified by the provided group name.
+ * @summary Gets a health check group by name.
+ */
 const getHealthCheckGroupByName = (
     name: string,
  options?: SecondParameter<typeof UmbracoManagementClient<HealthCheckGroupPresentationModel>>,) => {
@@ -1837,6 +2483,10 @@ const getHealthCheckGroupByName = (
       options);
     }
   
+/**
+ * Runs all health checks in the group identified by the provided name and returns the results.
+ * @summary Executes all health checks in a group.
+ */
 const postHealthCheckGroupByNameCheck = (
     name: string,
  options?: SecondParameter<typeof UmbracoManagementClient<HealthCheckGroupWithResultResponseModel>>,) => {
@@ -1846,6 +2496,10 @@ const postHealthCheckGroupByNameCheck = (
       options);
     }
   
+/**
+ * Executes a specific action to fix or address a health check issue.
+ * @summary Executes a health check action.
+ */
 const postHealthCheckExecuteAction = (
     healthCheckActionRequestModel: HealthCheckActionRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<HealthCheckResultResponseModel>>,) => {
@@ -1858,7 +2512,9 @@ const postHealthCheckExecuteAction = (
     }
   
 /**
+ * Gets help information and documentation resources for the Umbraco back office.
  * @deprecated
+ * @summary Gets help information.
  */
 const getHelp = (
     params?: GetHelpParams,
@@ -1870,6 +2526,10 @@ const getHelp = (
       options);
     }
   
+/**
+ * Gets a collection of URLs for resizing images with the provided dimensions and options.
+ * @summary Gets URLs for image resizing.
+ */
 const getImagingResizeUrls = (
     params?: GetImagingResizeUrlsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MediaUrlInfoResponseModel[]>>,) => {
@@ -1880,6 +2540,10 @@ const getImagingResizeUrls = (
       options);
     }
   
+/**
+ * Analyzes the uploaded import file and returns an analysis of the imported entities.
+ * @summary Analyzes an import file.
+ */
 const getImportAnalyze = (
     params?: GetImportAnalyzeParams,
  options?: SecondParameter<typeof UmbracoManagementClient<EntityImportAnalysisResponseModel>>,) => {
@@ -1890,6 +2554,10 @@ const getImportAnalyze = (
       options);
     }
   
+/**
+ * Gets a collection of configured search indexers in the Umbraco installation.
+ * @summary Gets a collection of indexers.
+ */
 const getIndexer = (
     params?: GetIndexerParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedIndexResponseModel>>,) => {
@@ -1900,6 +2568,10 @@ const getIndexer = (
       options);
     }
   
+/**
+ * Gets detailed information about the indexer identified by the provided name.
+ * @summary Gets indexer details.
+ */
 const getIndexerByIndexName = (
     indexName: string,
  options?: SecondParameter<typeof UmbracoManagementClient<IndexResponseModel>>,) => {
@@ -1909,6 +2581,10 @@ const getIndexerByIndexName = (
       options);
     }
   
+/**
+ * Rebuilds the search index for the indexer identified by the provided name.
+ * @summary Rebuilds an indexer.
+ */
 const postIndexerByIndexNameRebuild = (
     indexName: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1918,6 +2594,10 @@ const postIndexerByIndexNameRebuild = (
       options);
     }
   
+/**
+ * Gets the current installation settings and status.
+ * @summary Gets install settings.
+ */
 const getInstallSettings = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<InstallSettingsResponseModel>>,) => {
@@ -1927,6 +2607,10 @@ const getInstallSettings = (
       options);
     }
   
+/**
+ * Performs the initial setup and installation of Umbraco.
+ * @summary Performs installation setup.
+ */
 const postInstallSetup = (
     installRequestModel: InstallRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1938,6 +2622,10 @@ const postInstallSetup = (
       options);
     }
   
+/**
+ * Validates the database connection settings provided during installation.
+ * @summary Validates database connection.
+ */
 const postInstallValidateDatabase = (
     databaseInstallRequestModel: DatabaseInstallRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1949,6 +2637,10 @@ const postInstallValidateDatabase = (
       options);
     }
   
+/**
+ * Gets a collection of language items identified by the provided Ids.
+ * @summary Gets a collection of language items.
+ */
 const getItemLanguage = (
     params?: GetItemLanguageParams,
  options?: SecondParameter<typeof UmbracoManagementClient<LanguageItemResponseModel[]>>,) => {
@@ -1959,6 +2651,10 @@ const getItemLanguage = (
       options);
     }
   
+/**
+ * Gets the default language configured for the Umbraco installation.
+ * @summary Gets the default language.
+ */
 const getItemLanguageDefault = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<LanguageItemResponseModel>>,) => {
@@ -1968,6 +2664,10 @@ const getItemLanguageDefault = (
       options);
     }
   
+/**
+ * Gets a paginated collection of all configured languages.
+ * @summary Gets a paginated collection of languages.
+ */
 const getLanguage = (
     params?: GetLanguageParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedLanguageResponseModel>>,) => {
@@ -1978,6 +2678,10 @@ const getLanguage = (
       options);
     }
   
+/**
+ * Creates a new language with the configuration specified in the request model.
+ * @summary Creates a new language.
+ */
 const postLanguage = (
     createLanguageRequestModel: CreateLanguageRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -1989,6 +2693,10 @@ const postLanguage = (
       options);
     }
   
+/**
+ * Gets a language identified by the provided ISO code.
+ * @summary Gets a language by ISO code.
+ */
 const getLanguageByIsoCode = (
     isoCode: string,
  options?: SecondParameter<typeof UmbracoManagementClient<LanguageResponseModel>>,) => {
@@ -1998,6 +2706,10 @@ const getLanguageByIsoCode = (
       options);
     }
   
+/**
+ * Deletes a language identified by the provided Id.
+ * @summary Deletes a language.
+ */
 const deleteLanguageByIsoCode = (
     isoCode: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2007,6 +2719,10 @@ const deleteLanguageByIsoCode = (
       options);
     }
   
+/**
+ * Updates a language identified by the provided Id with the details from the request model.
+ * @summary Updates a language.
+ */
 const putLanguageByIsoCode = (
     isoCode: string,
     updateLanguageRequestModel: UpdateLanguageRequestModel,
@@ -2019,6 +2735,10 @@ const putLanguageByIsoCode = (
       options);
     }
   
+/**
+ * Gets a collection of configured log sinks with their minimum log levels.
+ * @summary Gets a collection of log sink levels.
+ */
 const getLogViewerLevel = (
     params?: GetLogViewerLevelParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedLoggerResponseModel>>,) => {
@@ -2029,6 +2749,10 @@ const getLogViewerLevel = (
       options);
     }
   
+/**
+ * Gets the count of log entries for each log level within the specified date range.
+ * @summary Gets log level counts.
+ */
 const getLogViewerLevelCount = (
     params?: GetLogViewerLevelCountParams,
  options?: SecondParameter<typeof UmbracoManagementClient<LogLevelCountsReponseModel>>,) => {
@@ -2039,6 +2763,10 @@ const getLogViewerLevelCount = (
       options);
     }
   
+/**
+ * Gets a paginated collection of log entries with optional filtering and date range.
+ * @summary Gets a paginated collection of log entries.
+ */
 const getLogViewerLog = (
     params?: GetLogViewerLogParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedLogMessageResponseModel>>,) => {
@@ -2049,6 +2777,10 @@ const getLogViewerLog = (
       options);
     }
   
+/**
+ * Gets a paginated collection of unique message templates found in the logs.
+ * @summary Gets a collection of log message templates.
+ */
 const getLogViewerMessageTemplate = (
     params?: GetLogViewerMessageTemplateParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedLogTemplateResponseModel>>,) => {
@@ -2059,6 +2791,10 @@ const getLogViewerMessageTemplate = (
       options);
     }
   
+/**
+ * Gets a collection of saved log searches defined in the Umbraco installation.
+ * @summary Gets a collection of saved log searches.
+ */
 const getLogViewerSavedSearch = (
     params?: GetLogViewerSavedSearchParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedSavedLogSearchResponseModel>>,) => {
@@ -2069,6 +2805,10 @@ const getLogViewerSavedSearch = (
       options);
     }
   
+/**
+ * Creates a new saved log search with the provided name and query configuration.
+ * @summary Creates a saved log search.
+ */
 const postLogViewerSavedSearch = (
     savedLogSearchRequestModel: SavedLogSearchRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2080,6 +2820,10 @@ const postLogViewerSavedSearch = (
       options);
     }
   
+/**
+ * Gets a saved log search identified by the provided name.
+ * @summary Gets a saved log search by name.
+ */
 const getLogViewerSavedSearchByName = (
     name: string,
  options?: SecondParameter<typeof UmbracoManagementClient<SavedLogSearchResponseModel>>,) => {
@@ -2089,6 +2833,10 @@ const getLogViewerSavedSearchByName = (
       options);
     }
   
+/**
+ * Deletes a saved log search identified by the provided name.
+ * @summary Deletes a saved log search.
+ */
 const deleteLogViewerSavedSearchByName = (
     name: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2098,6 +2846,10 @@ const deleteLogViewerSavedSearchByName = (
       options);
     }
   
+/**
+ * Checks if the log files are within the size limit and can be viewed.
+ * @summary Validates if logs can be viewed.
+ */
 const getLogViewerValidateLogsSize = (
     params?: GetLogViewerValidateLogsSizeParams,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2108,6 +2860,10 @@ const getLogViewerValidateLogsSize = (
       options);
     }
   
+/**
+ * Gets a collection of all package manifests including both public and private manifests.
+ * @summary Gets all manifests.
+ */
 const getManifestManifest = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<ManifestResponseModel[]>>,) => {
@@ -2117,6 +2873,10 @@ const getManifestManifest = (
       options);
     }
   
+/**
+ * Gets a collection of private package manifests specific to the current user.
+ * @summary Gets private manifests.
+ */
 const getManifestManifestPrivate = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<ManifestResponseModel[]>>,) => {
@@ -2126,6 +2886,10 @@ const getManifestManifestPrivate = (
       options);
     }
   
+/**
+ * Gets a collection of public package manifests available to all users.
+ * @summary Gets public manifests.
+ */
 const getManifestManifestPublic = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<ManifestResponseModel[]>>,) => {
@@ -2135,6 +2899,10 @@ const getManifestManifestPublic = (
       options);
     }
   
+/**
+ * Gets a collection of media type items identified by the provided Ids.
+ * @summary Gets a collection of media type items.
+ */
 const getItemMediaType = (
     params?: GetItemMediaTypeParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeItemResponseModel[]>>,) => {
@@ -2145,16 +2913,38 @@ const getItemMediaType = (
       options);
     }
   
+/**
+ * Gets a collection of allowed media type items for the specified file extension.
+ * @summary Gets a collection of media type items.
+ */
 const getItemMediaTypeAllowed = (
     params?: GetItemMediaTypeAllowedParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>(
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedModelAllowedMediaTypeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedModelAllowedMediaTypeItemResponseModel>(
       {url: `/umbraco/management/api/v1/item/media-type/allowed`, method: 'GET',
         params
     },
       options);
     }
   
+/**
+ * Gets the ancestor chains for media type items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of media type items.
+ */
+const getItemMediaTypeAncestors = (
+    params?: GetItemMediaTypeAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/media-type/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of media type folder items.
+ * @summary Gets a collection of media type folder items.
+ */
 const getItemMediaTypeFolders = (
     params?: GetItemMediaTypeFoldersParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>>,) => {
@@ -2165,6 +2955,10 @@ const getItemMediaTypeFolders = (
       options);
     }
   
+/**
+ * Searches media type items by the provided query with pagination support.
+ * @summary Searches media type items.
+ */
 const getItemMediaTypeSearch = (
     params?: GetItemMediaTypeSearchParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>>,) => {
@@ -2175,6 +2969,10 @@ const getItemMediaTypeSearch = (
       options);
     }
   
+/**
+ * Creates a new media type with the configuration specified in the request model.
+ * @summary Creates a new media type.
+ */
 const postMediaType = (
     createMediaTypeRequestModel: CreateMediaTypeRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2186,6 +2984,10 @@ const postMediaType = (
       options);
     }
   
+/**
+ * Gets a media type identified by the provided Id.
+ * @summary Gets a media type.
+ */
 const getMediaTypeById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeResponseModel>>,) => {
@@ -2195,6 +2997,10 @@ const getMediaTypeById = (
       options);
     }
   
+/**
+ * Deletes a media type identified by the provided Id.
+ * @summary Deletes a media type.
+ */
 const deleteMediaTypeById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2204,6 +3010,10 @@ const deleteMediaTypeById = (
       options);
     }
   
+/**
+ * Updates a media type identified by the provided Id with the details from the request model.
+ * @summary Updates a media type.
+ */
 const putMediaTypeById = (
     id: string,
     updateMediaTypeRequestModel: UpdateMediaTypeRequestModel,
@@ -2216,6 +3026,10 @@ const putMediaTypeById = (
       options);
     }
   
+/**
+ * Gets a collection of media types that are allowed as children of the specified parent media type.
+ * @summary Gets allowed child media types.
+ */
 const getMediaTypeByIdAllowedChildren = (
     id: string,
     params?: GetMediaTypeByIdAllowedChildrenParams,
@@ -2227,6 +3041,23 @@ const getMediaTypeByIdAllowedChildren = (
       options);
     }
   
+/**
+ * Gets a collection of media types that are allowed as parents of the specified media type.
+ * @summary Gets allowed parent media types.
+ */
+const getMediaTypeByIdAllowedParents = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeAllowedParentsResponseModel>>,) => {
+      return UmbracoManagementClient<MediaTypeAllowedParentsResponseModel>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/allowed-parents`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of media types that reference the specified media type as a composition.
+ * @summary Gets composition references.
+ */
 const getMediaTypeByIdCompositionReferences = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeCompositionResponseModel[]>>,) => {
@@ -2236,6 +3067,10 @@ const getMediaTypeByIdCompositionReferences = (
       options);
     }
   
+/**
+ * Creates a duplicate of an existing media type identified by the provided Id.
+ * @summary Copies a media type.
+ */
 const postMediaTypeByIdCopy = (
     id: string,
     copyMediaTypeRequestModel: CopyMediaTypeRequestModel,
@@ -2248,6 +3083,10 @@ const postMediaTypeByIdCopy = (
       options);
     }
   
+/**
+ * Exports the media type identified by the provided Id to a downloadable format.
+ * @summary Exports a media type.
+ */
 const getMediaTypeByIdExport = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<Blob>>,) => {
@@ -2258,6 +3097,10 @@ const getMediaTypeByIdExport = (
       options);
     }
   
+/**
+ * Imports a media type from the provided file upload.
+ * @summary Imports a media type.
+ */
 const putMediaTypeByIdImport = (
     id: string,
     importMediaTypeRequestModel: ImportMediaTypeRequestModel,
@@ -2270,6 +3113,10 @@ const putMediaTypeByIdImport = (
       options);
     }
   
+/**
+ * Moves a media type identified by the provided Id to a different location.
+ * @summary Moves a media type.
+ */
 const putMediaTypeByIdMove = (
     id: string,
     moveMediaTypeRequestModel: MoveMediaTypeRequestModel,
@@ -2282,6 +3129,10 @@ const putMediaTypeByIdMove = (
       options);
     }
   
+/**
+ * Gets a collection of media types that are allowed to be created at the root level.
+ * @summary Gets media types allowed at root.
+ */
 const getMediaTypeAllowedAtRoot = (
     params?: GetMediaTypeAllowedAtRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedAllowedMediaTypeModel>>,) => {
@@ -2292,6 +3143,10 @@ const getMediaTypeAllowedAtRoot = (
       options);
     }
   
+/**
+ * Gets a collection of media types that are available to use as compositions for the specified media type.
+ * @summary Gets available compositions.
+ */
 const postMediaTypeAvailableCompositions = (
     mediaTypeCompositionRequestModel: MediaTypeCompositionRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<AvailableMediaTypeCompositionResponseModel[]>>,) => {
@@ -2303,6 +3158,24 @@ const postMediaTypeAvailableCompositions = (
       options);
     }
   
+/**
+ * Gets multiple media types identified by the provided Ids.
+ * @summary Gets multiple media types.
+ */
+const getMediaTypeBatch = (
+    params?: GetMediaTypeBatchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<BatchResponseModelMediaTypeResponseModel>>,) => {
+      return UmbracoManagementClient<BatchResponseModelMediaTypeResponseModel>(
+      {url: `/umbraco/management/api/v1/media-type/batch`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the configuration settings for media types.
+ * @summary Gets the media type configuration.
+ */
 const getMediaTypeConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeConfigurationResponseModel>>,) => {
@@ -2312,6 +3185,10 @@ const getMediaTypeConfiguration = (
       options);
     }
   
+/**
+ * Creates a new media type folder with the provided name and parent location.
+ * @summary Creates a media type folder.
+ */
 const postMediaTypeFolder = (
     createFolderRequestModel: CreateFolderRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2323,6 +3200,10 @@ const postMediaTypeFolder = (
       options);
     }
   
+/**
+ * Gets a media type folder identified by the provided Id.
+ * @summary Gets a media type folder.
+ */
 const getMediaTypeFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<FolderResponseModel>>,) => {
@@ -2332,6 +3213,10 @@ const getMediaTypeFolderById = (
       options);
     }
   
+/**
+ * Deletes a media type folder identified by the provided Id.
+ * @summary Deletes a media type folder.
+ */
 const deleteMediaTypeFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2341,6 +3226,10 @@ const deleteMediaTypeFolderById = (
       options);
     }
   
+/**
+ * Updates a media type folder identified by the provided Id with the details from the request model.
+ * @summary Updates a media type folder.
+ */
 const putMediaTypeFolderById = (
     id: string,
     updateFolderResponseModel: UpdateFolderResponseModel,
@@ -2353,6 +3242,10 @@ const putMediaTypeFolderById = (
       options);
     }
   
+/**
+ * Imports a media type from the provided file upload.
+ * @summary Imports a media type.
+ */
 const postMediaTypeImport = (
     importMediaTypeRequestModel: ImportMediaTypeRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2364,6 +3257,10 @@ const postMediaTypeImport = (
       options);
     }
   
+/**
+ * Gets a collection of media type items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor media type items.
+ */
 const getTreeMediaTypeAncestors = (
     params?: GetTreeMediaTypeAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeTreeItemResponseModel[]>>,) => {
@@ -2374,6 +3271,10 @@ const getTreeMediaTypeAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of media type tree items that are children of the provided parent Id.
+ * @summary Gets a collection of media type tree child items.
+ */
 const getTreeMediaTypeChildren = (
     params?: GetTreeMediaTypeChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>>,) => {
@@ -2384,6 +3285,10 @@ const getTreeMediaTypeChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of media type items from the root of the tree with optional filtering.
+ * @summary Gets a collection of media type items from the root of the tree.
+ */
 const getTreeMediaTypeRoot = (
     params?: GetTreeMediaTypeRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>>,) => {
@@ -2394,6 +3299,10 @@ const getTreeMediaTypeRoot = (
       options);
     }
   
+/**
+ * Gets a collection of media type tree items that are siblings of the provided Id.
+ * @summary Gets a collection of media type tree sibling items.
+ */
 const getTreeMediaTypeSiblings = (
     params?: GetTreeMediaTypeSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetMediaTypeTreeItemResponseModel>>,) => {
@@ -2404,6 +3313,10 @@ const getTreeMediaTypeSiblings = (
       options);
     }
   
+/**
+ * Gets a paginated collection of media items, optionally filtered and sorted.
+ * @summary Gets a collection of media items.
+ */
 const getCollectionMedia = (
     params?: GetCollectionMediaParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaCollectionResponseModel>>,) => {
@@ -2414,6 +3327,10 @@ const getCollectionMedia = (
       options);
     }
   
+/**
+ * Gets a collection of media items identified by the provided Ids.
+ * @summary Gets a collection of media items.
+ */
 const getItemMedia = (
     params?: GetItemMediaParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MediaItemResponseModel[]>>,) => {
@@ -2424,6 +3341,24 @@ const getItemMedia = (
       options);
     }
   
+/**
+ * Gets the ancestor chains for media items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of media items.
+ */
+const getItemMediaAncestors = (
+    params?: GetItemMediaAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelMediaItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelMediaItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/media/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches media items by the provided query with pagination support.
+ * @summary Searches media items.
+ */
 const getItemMediaSearch = (
     params?: GetItemMediaSearchParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMediaItemResponseModel>>,) => {
@@ -2434,6 +3369,10 @@ const getItemMediaSearch = (
       options);
     }
   
+/**
+ * Creates a new media with the configuration specified in the request model.
+ * @summary Creates a new media.
+ */
 const postMedia = (
     createMediaRequestModel: CreateMediaRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2445,6 +3384,10 @@ const postMedia = (
       options);
     }
   
+/**
+ * Gets a media item identified by the provided Id.
+ * @summary Gets a media item.
+ */
 const getMediaById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<MediaResponseModel>>,) => {
@@ -2454,6 +3397,10 @@ const getMediaById = (
       options);
     }
   
+/**
+ * Deletes a media item identified by the provided Id.
+ * @summary Deletes a media item.
+ */
 const deleteMediaById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2463,6 +3410,10 @@ const deleteMediaById = (
       options);
     }
   
+/**
+ * Updates a media item identified by the provided Id with the details from the request model.
+ * @summary Updates a media item.
+ */
 const putMediaById = (
     id: string,
     updateMediaRequestModel: UpdateMediaRequestModel,
@@ -2475,6 +3426,10 @@ const putMediaById = (
       options);
     }
   
+/**
+ * Gets a paginated collection of audit log entries for the media identified by the provided Id.
+ * @summary Gets the audit log for a media item.
+ */
 const getMediaByIdAuditLog = (
     id: string,
     params?: GetMediaByIdAuditLogParams,
@@ -2486,6 +3441,10 @@ const getMediaByIdAuditLog = (
       options);
     }
   
+/**
+ * Moves a media item identified by the provided Id to a different location.
+ * @summary Moves a media item.
+ */
 const putMediaByIdMove = (
     id: string,
     moveMediaRequestModel: MoveMediaRequestModel,
@@ -2498,6 +3457,10 @@ const putMediaByIdMove = (
       options);
     }
   
+/**
+ * Moves a media item identified by the provided Id to the recycle bin.
+ * @summary Moves a media item to the recycle bin.
+ */
 const putMediaByIdMoveToRecycleBin = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2507,6 +3470,10 @@ const putMediaByIdMoveToRecycleBin = (
       options);
     }
   
+/**
+ * Gets a paginated collection of items that reference the media item identified by the provided Id.
+ * @summary Gets a collection of items that reference a media item.
+ */
 const getMediaByIdReferencedBy = (
     id: string,
     params?: GetMediaByIdReferencedByParams,
@@ -2518,6 +3485,10 @@ const getMediaByIdReferencedBy = (
       options);
     }
   
+/**
+ * Gets a paginated collection of descendant media items that are referenced by other content.
+ * @summary Gets media descendants that are referenced.
+ */
 const getMediaByIdReferencedDescendants = (
     id: string,
     params?: GetMediaByIdReferencedDescendantsParams,
@@ -2529,6 +3500,10 @@ const getMediaByIdReferencedDescendants = (
       options);
     }
   
+/**
+ * Validates the request model for updating a media item without actually updating it.
+ * @summary Validates updating a media item.
+ */
 const putMediaByIdValidate = (
     id: string,
     updateMediaRequestModel: UpdateMediaRequestModel,
@@ -2541,6 +3516,10 @@ const putMediaByIdValidate = (
       options);
     }
   
+/**
+ * Gets a paginated collection of media items that are referenced, identified by the provided Ids.
+ * @summary Gets a collection of referenced media items.
+ */
 const getMediaAreReferenced = (
     params?: GetMediaAreReferencedParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
@@ -2552,7 +3531,8 @@ const getMediaAreReferenced = (
     }
   
 /**
- * @deprecated
+ * Gets the configuration settings for media.
+ * @summary Gets the media configuration.
  */
 const getMediaConfiguration = (
     
@@ -2563,6 +3543,10 @@ const getMediaConfiguration = (
       options);
     }
   
+/**
+ * Sorts media items in the specified parent container according to the provided sort order.
+ * @summary Sorts media items.
+ */
 const putMediaSort = (
     sortingRequestModel: SortingRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2574,6 +3558,10 @@ const putMediaSort = (
       options);
     }
   
+/**
+ * Gets the URLs for the media items identified by the provided Ids.
+ * @summary Gets URLs for media items.
+ */
 const getMediaUrls = (
     params?: GetMediaUrlsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MediaUrlInfoResponseModel[]>>,) => {
@@ -2584,6 +3572,10 @@ const getMediaUrls = (
       options);
     }
   
+/**
+ * Validates the request model for creating a new media item without actually creating it.
+ * @summary Validates creating a media item.
+ */
 const postMediaValidate = (
     createMediaRequestModel: CreateMediaRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2595,6 +3587,10 @@ const postMediaValidate = (
       options);
     }
   
+/**
+ * Permanently deletes all media items in the recycle bin. This operation cannot be undone.
+ * @summary Empties the media recycle bin.
+ */
 const deleteRecycleBinMedia = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2604,6 +3600,10 @@ const deleteRecycleBinMedia = (
       options);
     }
   
+/**
+ * Permanently deletes a media item from the recycle bin identified by the provided Id.
+ * @summary Deletes a media item from the recycle bin.
+ */
 const deleteRecycleBinMediaById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2613,6 +3613,10 @@ const deleteRecycleBinMediaById = (
       options);
     }
   
+/**
+ * Gets the original parent location of a media item before it was moved to the recycle bin.
+ * @summary Gets the original parent of a media item in the recycle bin.
+ */
 const getRecycleBinMediaByIdOriginalParent = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<ReferenceByIdModel>>,) => {
@@ -2622,6 +3626,10 @@ const getRecycleBinMediaByIdOriginalParent = (
       options);
     }
   
+/**
+ * Restores a media item from the recycle bin to its original location or a specified parent.
+ * @summary Restores a media item from the recycle bin.
+ */
 const putRecycleBinMediaByIdRestore = (
     id: string,
     moveMediaRequestModel: MoveMediaRequestModel,
@@ -2634,6 +3642,10 @@ const putRecycleBinMediaByIdRestore = (
       options);
     }
   
+/**
+ * Gets a paginated collection of media items that are children of the provided parent in the recycle bin.
+ * @summary Gets a collection of media items in the recycle bin.
+ */
 const getRecycleBinMediaChildren = (
     params?: GetRecycleBinMediaChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaRecycleBinItemResponseModel>>,) => {
@@ -2644,6 +3656,10 @@ const getRecycleBinMediaChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of items that reference the media in the recycle bin.
+ * @summary Gets items referencing media in the recycle bin.
+ */
 const getRecycleBinMediaReferencedBy = (
     params?: GetRecycleBinMediaReferencedByParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
@@ -2654,6 +3670,10 @@ const getRecycleBinMediaReferencedBy = (
       options);
     }
   
+/**
+ * Gets a paginated collection of media items at the root level of the recycle bin.
+ * @summary Gets media at the root of the recycle bin.
+ */
 const getRecycleBinMediaRoot = (
     params?: GetRecycleBinMediaRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaRecycleBinItemResponseModel>>,) => {
@@ -2664,6 +3684,10 @@ const getRecycleBinMediaRoot = (
       options);
     }
   
+/**
+ * Gets a collection of sibling media items in the recycle bin at the same level as the provided Id.
+ * @summary Gets sibling media in the recycle bin.
+ */
 const getRecycleBinMediaSiblings = (
     params?: GetRecycleBinMediaSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetMediaRecycleBinItemResponseModel>>,) => {
@@ -2674,6 +3698,10 @@ const getRecycleBinMediaSiblings = (
       options);
     }
   
+/**
+ * Gets a collection of media items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor media items.
+ */
 const getTreeMediaAncestors = (
     params?: GetTreeMediaAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MediaTreeItemResponseModel[]>>,) => {
@@ -2684,6 +3712,10 @@ const getTreeMediaAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of media tree items that are children of the provided parent Id.
+ * @summary Gets a collection of media tree child items.
+ */
 const getTreeMediaChildren = (
     params?: GetTreeMediaChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaTreeItemResponseModel>>,) => {
@@ -2694,6 +3726,10 @@ const getTreeMediaChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of media items from the root of the tree with optional filtering.
+ * @summary Gets a collection of media items from the root of the tree.
+ */
 const getTreeMediaRoot = (
     params?: GetTreeMediaRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaTreeItemResponseModel>>,) => {
@@ -2704,6 +3740,10 @@ const getTreeMediaRoot = (
       options);
     }
   
+/**
+ * Gets a collection of media tree items that are siblings of the provided Id.
+ * @summary Gets a collection of media tree sibling items.
+ */
 const getTreeMediaSiblings = (
     params?: GetTreeMediaSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetMediaTreeItemResponseModel>>,) => {
@@ -2714,6 +3754,10 @@ const getTreeMediaSiblings = (
       options);
     }
   
+/**
+ * Gets a collection of member group items identified by the provided Ids.
+ * @summary Gets a collection of member group items.
+ */
 const getItemMemberGroup = (
     params?: GetItemMemberGroupParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MemberGroupItemResponseModel[]>>,) => {
@@ -2724,6 +3768,10 @@ const getItemMemberGroup = (
       options);
     }
   
+/**
+ * Gets a paginated collection of all member groups.
+ * @summary Gets a paginated collection of member groups.
+ */
 const getMemberGroup = (
     params?: GetMemberGroupParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMemberGroupResponseModel>>,) => {
@@ -2734,6 +3782,10 @@ const getMemberGroup = (
       options);
     }
   
+/**
+ * Creates a new member group with the configuration specified in the request model.
+ * @summary Creates a new member group.
+ */
 const postMemberGroup = (
     createMemberGroupRequestModel: CreateMemberGroupRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2745,6 +3797,10 @@ const postMemberGroup = (
       options);
     }
   
+/**
+ * Gets a member group identified by the provided Id.
+ * @summary Gets a member group.
+ */
 const getMemberGroupById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<MemberGroupResponseModel>>,) => {
@@ -2754,6 +3810,10 @@ const getMemberGroupById = (
       options);
     }
   
+/**
+ * Deletes a member group identified by the provided Id.
+ * @summary Deletes a member group.
+ */
 const deleteMemberGroupById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2763,6 +3823,10 @@ const deleteMemberGroupById = (
       options);
     }
   
+/**
+ * Updates a member group identified by the provided Id with the details from the request model.
+ * @summary Updates a member group.
+ */
 const putMemberGroupById = (
     id: string,
     updateMemberGroupRequestModel: UpdateMemberGroupRequestModel,
@@ -2775,6 +3839,10 @@ const putMemberGroupById = (
       options);
     }
   
+/**
+ * Gets a paginated collection of member group items from the root of the tree with optional filtering.
+ * @summary Gets a collection of member group items from the root of the tree.
+ */
 const getTreeMemberGroupRoot = (
     params?: GetTreeMemberGroupRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedNamedEntityTreeItemResponseModel>>,) => {
@@ -2785,6 +3853,10 @@ const getTreeMemberGroupRoot = (
       options);
     }
   
+/**
+ * Gets a collection of member type items identified by the provided Ids.
+ * @summary Gets a collection of member type items.
+ */
 const getItemMemberType = (
     params?: GetItemMemberTypeParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MemberTypeItemResponseModel[]>>,) => {
@@ -2795,6 +3867,24 @@ const getItemMemberType = (
       options);
     }
   
+/**
+ * Gets the ancestor chains for member type items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of member type items.
+ */
+const getItemMemberTypeAncestors = (
+    params?: GetItemMemberTypeAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/member-type/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches member type items by the provided query with pagination support.
+ * @summary Searches member type items.
+ */
 const getItemMemberTypeSearch = (
     params?: GetItemMemberTypeSearchParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMemberTypeItemResponseModel>>,) => {
@@ -2805,6 +3895,10 @@ const getItemMemberTypeSearch = (
       options);
     }
   
+/**
+ * Creates a new member type with the configuration specified in the request model.
+ * @summary Creates a new member type.
+ */
 const postMemberType = (
     createMemberTypeRequestModel: CreateMemberTypeRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2816,6 +3910,10 @@ const postMemberType = (
       options);
     }
   
+/**
+ * Gets a member type identified by the provided Id.
+ * @summary Gets a member type.
+ */
 const getMemberTypeById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<MemberTypeResponseModel>>,) => {
@@ -2825,6 +3923,10 @@ const getMemberTypeById = (
       options);
     }
   
+/**
+ * Deletes a member type identified by the provided Id.
+ * @summary Deletes a member type.
+ */
 const deleteMemberTypeById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2834,6 +3936,10 @@ const deleteMemberTypeById = (
       options);
     }
   
+/**
+ * Updates a member type identified by the provided Id with the details from the request model.
+ * @summary Updates a member type.
+ */
 const putMemberTypeById = (
     id: string,
     updateMemberTypeRequestModel: UpdateMemberTypeRequestModel,
@@ -2846,6 +3952,10 @@ const putMemberTypeById = (
       options);
     }
   
+/**
+ * Gets a collection of member types that reference the specified member type as a composition.
+ * @summary Gets composition references.
+ */
 const getMemberTypeByIdCompositionReferences = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<MemberTypeCompositionResponseModel[]>>,) => {
@@ -2855,6 +3965,10 @@ const getMemberTypeByIdCompositionReferences = (
       options);
     }
   
+/**
+ * Creates a duplicate of an existing member type identified by the provided Id.
+ * @summary Copies a member type.
+ */
 const postMemberTypeByIdCopy = (
     id: string,
     copyMemberTypeRequestModel: CopyMemberTypeRequestModel,
@@ -2867,6 +3981,10 @@ const postMemberTypeByIdCopy = (
       options);
     }
   
+/**
+ * Exports the member type identified by the provided Id to a downloadable format.
+ * @summary Exports a member type.
+ */
 const getMemberTypeByIdExport = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<Blob>>,) => {
@@ -2877,6 +3995,10 @@ const getMemberTypeByIdExport = (
       options);
     }
   
+/**
+ * Imports a member type from the provided file upload.
+ * @summary Imports a member type.
+ */
 const putMemberTypeByIdImport = (
     id: string,
     importMemberTypeRequestModel: ImportMemberTypeRequestModel,
@@ -2889,6 +4011,10 @@ const putMemberTypeByIdImport = (
       options);
     }
   
+/**
+ * Moves a member type identified by the provided Id to a different location.
+ * @summary Moves a member type.
+ */
 const putMemberTypeByIdMove = (
     id: string,
     moveMemberTypeRequestModel: MoveMemberTypeRequestModel,
@@ -2901,6 +4027,10 @@ const putMemberTypeByIdMove = (
       options);
     }
   
+/**
+ * Gets a collection of member types that are available to use as compositions for the specified member type.
+ * @summary Gets available compositions.
+ */
 const postMemberTypeAvailableCompositions = (
     memberTypeCompositionRequestModel: MemberTypeCompositionRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<AvailableMemberTypeCompositionResponseModel[]>>,) => {
@@ -2912,6 +4042,24 @@ const postMemberTypeAvailableCompositions = (
       options);
     }
   
+/**
+ * Gets multiple member types identified by the provided Ids.
+ * @summary Gets multiple member types.
+ */
+const getMemberTypeBatch = (
+    params?: GetMemberTypeBatchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<BatchResponseModelMemberTypeResponseModel>>,) => {
+      return UmbracoManagementClient<BatchResponseModelMemberTypeResponseModel>(
+      {url: `/umbraco/management/api/v1/member-type/batch`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the configuration settings for member types.
+ * @summary Gets the member type configuration.
+ */
 const getMemberTypeConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<MemberTypeConfigurationResponseModel>>,) => {
@@ -2921,6 +4069,10 @@ const getMemberTypeConfiguration = (
       options);
     }
   
+/**
+ * Creates a new member type folder with the provided name and parent location.
+ * @summary Creates a member type folder.
+ */
 const postMemberTypeFolder = (
     createFolderRequestModel: CreateFolderRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2932,6 +4084,10 @@ const postMemberTypeFolder = (
       options);
     }
   
+/**
+ * Gets a member type folder identified by the provided Id.
+ * @summary Gets a member type folder.
+ */
 const getMemberTypeFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<FolderResponseModel>>,) => {
@@ -2941,6 +4097,10 @@ const getMemberTypeFolderById = (
       options);
     }
   
+/**
+ * Deletes a member type folder identified by the provided Id.
+ * @summary Deletes a member type folder.
+ */
 const deleteMemberTypeFolderById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2950,6 +4110,10 @@ const deleteMemberTypeFolderById = (
       options);
     }
   
+/**
+ * Updates a member type folder identified by the provided Id with the details from the request model.
+ * @summary Updates a member type folder.
+ */
 const putMemberTypeFolderById = (
     id: string,
     updateFolderResponseModel: UpdateFolderResponseModel,
@@ -2962,6 +4126,10 @@ const putMemberTypeFolderById = (
       options);
     }
   
+/**
+ * Imports a member type from the provided file upload.
+ * @summary Imports a member type.
+ */
 const postMemberTypeImport = (
     importMemberTypeRequestModel: ImportMemberTypeRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -2973,6 +4141,10 @@ const postMemberTypeImport = (
       options);
     }
   
+/**
+ * Gets a collection of member type items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor member type items.
+ */
 const getTreeMemberTypeAncestors = (
     params?: GetTreeMemberTypeAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MemberTypeTreeItemResponseModel[]>>,) => {
@@ -2983,6 +4155,10 @@ const getTreeMemberTypeAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of member type tree items that are children of the provided parent Id.
+ * @summary Gets a collection of member type tree child items.
+ */
 const getTreeMemberTypeChildren = (
     params?: GetTreeMemberTypeChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMemberTypeTreeItemResponseModel>>,) => {
@@ -2993,6 +4169,10 @@ const getTreeMemberTypeChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of member type items from the root of the tree with optional filtering.
+ * @summary Gets a collection of member type items from the root of the tree.
+ */
 const getTreeMemberTypeRoot = (
     params?: GetTreeMemberTypeRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMemberTypeTreeItemResponseModel>>,) => {
@@ -3003,6 +4183,10 @@ const getTreeMemberTypeRoot = (
       options);
     }
   
+/**
+ * Gets a collection of member type tree items that are siblings of the provided Id.
+ * @summary Gets sibling member types in the tree.
+ */
 const getTreeMemberTypeSiblings = (
     params?: GetTreeMemberTypeSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetMemberTypeTreeItemResponseModel>>,) => {
@@ -3013,6 +4197,10 @@ const getTreeMemberTypeSiblings = (
       options);
     }
   
+/**
+ * Filters members based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of members.
+ */
 const getFilterMember = (
     params?: GetFilterMemberParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedMemberResponseModel>>,) => {
@@ -3023,6 +4211,10 @@ const getFilterMember = (
       options);
     }
   
+/**
+ * Gets a collection of member items identified by the provided Ids.
+ * @summary Gets a collection of member items.
+ */
 const getItemMember = (
     params?: GetItemMemberParams,
  options?: SecondParameter<typeof UmbracoManagementClient<MemberItemResponseModel[]>>,) => {
@@ -3033,6 +4225,24 @@ const getItemMember = (
       options);
     }
   
+/**
+ * Gets the ancestor chains for member items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of member items.
+ */
+const getItemMemberAncestors = (
+    params?: GetItemMemberAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelMemberItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelMemberItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/member/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches member items by the provided query with pagination support.
+ * @summary Searches member items.
+ */
 const getItemMemberSearch = (
     params?: GetItemMemberSearchParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMemberItemResponseModel>>,) => {
@@ -3043,6 +4253,10 @@ const getItemMemberSearch = (
       options);
     }
   
+/**
+ * Creates a new member with the configuration specified in the request model.
+ * @summary Creates a new member.
+ */
 const postMember = (
     createMemberRequestModel: CreateMemberRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3054,6 +4268,10 @@ const postMember = (
       options);
     }
   
+/**
+ * Gets a member identified by the provided Id.
+ * @summary Gets a member.
+ */
 const getMemberById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<MemberResponseModel>>,) => {
@@ -3063,6 +4281,10 @@ const getMemberById = (
       options);
     }
   
+/**
+ * Deletes a member identified by the provided Id.
+ * @summary Deletes a member.
+ */
 const deleteMemberById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3072,6 +4294,10 @@ const deleteMemberById = (
       options);
     }
   
+/**
+ * Updates a member identified by the provided Id with the details from the request model.
+ * @summary Updates a member.
+ */
 const putMemberById = (
     id: string,
     updateMemberRequestModel: UpdateMemberRequestModel,
@@ -3084,6 +4310,10 @@ const putMemberById = (
       options);
     }
   
+/**
+ * Gets a paginated collection of items that reference the members identified by the provided Ids.
+ * @summary Gets a collection of items that reference members.
+ */
 const getMemberByIdReferencedBy = (
     id: string,
     params?: GetMemberByIdReferencedByParams,
@@ -3095,6 +4325,10 @@ const getMemberByIdReferencedBy = (
       options);
     }
   
+/**
+ * Gets a paginated collection of descendant members that are referenced in relations for the member identified by the provided Id.
+ * @summary Gets a paginated collection of referenced descendant members.
+ */
 const getMemberByIdReferencedDescendants = (
     id: string,
     params?: GetMemberByIdReferencedDescendantsParams,
@@ -3106,6 +4340,10 @@ const getMemberByIdReferencedDescendants = (
       options);
     }
   
+/**
+ * Validates the request model for updating a member without actually updating it.
+ * @summary Validates updating a member.
+ */
 const putMemberByIdValidate = (
     id: string,
     updateMemberRequestModel: UpdateMemberRequestModel,
@@ -3118,6 +4356,10 @@ const putMemberByIdValidate = (
       options);
     }
   
+/**
+ * Gets a paginated collection of items that reference the members identified by the provided Ids.
+ * @summary Gets a collection of items that reference members.
+ */
 const getMemberAreReferenced = (
     params?: GetMemberAreReferencedParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
@@ -3128,6 +4370,10 @@ const getMemberAreReferenced = (
       options);
     }
   
+/**
+ * Gets the configuration settings for members.
+ * @summary Gets the member configuration.
+ */
 const getMemberConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<MemberConfigurationResponseModel>>,) => {
@@ -3137,6 +4383,10 @@ const getMemberConfiguration = (
       options);
     }
   
+/**
+ * Validates the request model for creating a new member without actually creating it.
+ * @summary Validates creating a member.
+ */
 const postMemberValidate = (
     createMemberRequestModel: CreateMemberRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3148,6 +4398,10 @@ const postMemberValidate = (
       options);
     }
   
+/**
+ * Triggers the models builder to generate strongly-typed models for content types.
+ * @summary Builds models.
+ */
 const postModelsBuilderBuild = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3157,6 +4411,10 @@ const postModelsBuilderBuild = (
       options);
     }
   
+/**
+ * Gets the dashboard data and current state of the models builder.
+ * @summary Gets models builder dashboard data.
+ */
 const getModelsBuilderDashboard = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<ModelsBuilderResponseModel>>,) => {
@@ -3166,6 +4424,10 @@ const getModelsBuilderDashboard = (
       options);
     }
   
+/**
+ * Gets the current status and configuration of the models builder.
+ * @summary Gets models builder status.
+ */
 const getModelsBuilderStatus = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<OutOfDateStatusResponseModel>>,) => {
@@ -3175,6 +4437,10 @@ const getModelsBuilderStatus = (
       options);
     }
   
+/**
+ * Gets the news dashboard content including recent news items and updates for the Umbraco back office.
+ * @summary Gets news dashboard content.
+ */
 const getNewsDashboard = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<NewsDashboardResponseModel>>,) => {
@@ -3184,6 +4450,10 @@ const getNewsDashboard = (
       options);
     }
   
+/**
+ * Gets a paginated collection of object types that are allowed as relation type targets.
+ * @summary Gets a paginated collection of allowed object types.
+ */
 const getObjectTypes = (
     params?: GetObjectTypesParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedObjectTypeResponseModel>>,) => {
@@ -3194,6 +4464,10 @@ const getObjectTypes = (
       options);
     }
   
+/**
+ * Queries OEmbed information for the specified URL.
+ * @summary Queries OEmbed information.
+ */
 const getOembedQuery = (
     params?: GetOembedQueryParams,
  options?: SecondParameter<typeof UmbracoManagementClient<OEmbedResponseModel>>,) => {
@@ -3204,6 +4478,10 @@ const getOembedQuery = (
       options);
     }
   
+/**
+ * Executes all pending package migrations to update the database schema.
+ * @summary Runs pending package migrations.
+ */
 const postPackageByNameRunMigration = (
     name: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3213,6 +4491,10 @@ const postPackageByNameRunMigration = (
       options);
     }
   
+/**
+ * Gets the configuration settings for packages.
+ * @summary Gets the package configuration.
+ */
 const getPackageConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<PackageConfigurationResponseModel>>,) => {
@@ -3222,6 +4504,10 @@ const getPackageConfiguration = (
       options);
     }
   
+/**
+ * Gets a paginated collection of all created packages.
+ * @summary Gets a paginated collection of created packages.
+ */
 const getPackageCreated = (
     params?: GetPackageCreatedParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedPackageDefinitionResponseModel>>,) => {
@@ -3232,6 +4518,10 @@ const getPackageCreated = (
       options);
     }
   
+/**
+ * Creates a new package with the configuration specified in the request model.
+ * @summary Creates a new package.
+ */
 const postPackageCreated = (
     createPackageRequestModel: CreatePackageRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3243,6 +4533,10 @@ const postPackageCreated = (
       options);
     }
   
+/**
+ * Gets a package identified by the provided Id.
+ * @summary Gets a package.
+ */
 const getPackageCreatedById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<PackageDefinitionResponseModel>>,) => {
@@ -3252,6 +4546,10 @@ const getPackageCreatedById = (
       options);
     }
   
+/**
+ * Deletes a package identified by the provided Id.
+ * @summary Deletes a package.
+ */
 const deletePackageCreatedById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3261,6 +4559,10 @@ const deletePackageCreatedById = (
       options);
     }
   
+/**
+ * Updates a package identified by the provided Id with the details from the request model.
+ * @summary Updates a package.
+ */
 const putPackageCreatedById = (
     id: string,
     updatePackageRequestModel: NonReadonly<UpdatePackageRequestModel>,
@@ -3273,6 +4575,10 @@ const putPackageCreatedById = (
       options);
     }
   
+/**
+ * Downloads the package file for the created package identified by the provided Id.
+ * @summary Downloads a created package.
+ */
 const getPackageCreatedByIdDownload = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<Blob>>,) => {
@@ -3283,6 +4589,10 @@ const getPackageCreatedByIdDownload = (
       options);
     }
   
+/**
+ * Gets a paginated collection of migration status for all installed packages.
+ * @summary Gets all package migration statuses.
+ */
 const getPackageMigrationStatus = (
     params?: GetPackageMigrationStatusParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedPackageMigrationStatusResponseModel>>,) => {
@@ -3293,6 +4603,10 @@ const getPackageMigrationStatus = (
       options);
     }
   
+/**
+ * Gets a collection of partial view items identified by the provided Ids.
+ * @summary Gets a collection of partial view items.
+ */
 const getItemPartialView = (
     params?: GetItemPartialViewParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PartialViewItemResponseModel[]>>,) => {
@@ -3303,6 +4617,10 @@ const getItemPartialView = (
       options);
     }
   
+/**
+ * Creates a new partial view with the configuration specified in the request model.
+ * @summary Creates a new partial view.
+ */
 const postPartialView = (
     createPartialViewRequestModel: CreatePartialViewRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3314,6 +4632,10 @@ const postPartialView = (
       options);
     }
   
+/**
+ * Gets a partial view identified by the provided file path.
+ * @summary Gets a partial view by path.
+ */
 const getPartialViewByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<PartialViewResponseModel>>,) => {
@@ -3323,6 +4645,10 @@ const getPartialViewByPath = (
       options);
     }
   
+/**
+ * Deletes a partial view identified by the provided Id.
+ * @summary Deletes a partial view.
+ */
 const deletePartialViewByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3332,6 +4658,10 @@ const deletePartialViewByPath = (
       options);
     }
   
+/**
+ * Updates a partial view identified by the provided Id with the details from the request model.
+ * @summary Updates a partial view.
+ */
 const putPartialViewByPath = (
     path: string,
     updatePartialViewRequestModel: UpdatePartialViewRequestModel,
@@ -3344,6 +4674,10 @@ const putPartialViewByPath = (
       options);
     }
   
+/**
+ * Renames a partial view file to the specified new name.
+ * @summary Renames a partial view.
+ */
 const putPartialViewByPathRename = (
     path: string,
     renamePartialViewRequestModel: RenamePartialViewRequestModel,
@@ -3356,6 +4690,10 @@ const putPartialViewByPathRename = (
       options);
     }
   
+/**
+ * Creates a new partial view folder with the provided name and parent location.
+ * @summary Creates a partial view folder.
+ */
 const postPartialViewFolder = (
     createPartialViewFolderRequestModel: CreatePartialViewFolderRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3367,6 +4705,10 @@ const postPartialViewFolder = (
       options);
     }
   
+/**
+ * Gets a partial view folder identified by the provided file path.
+ * @summary Gets a partial view folder by path.
+ */
 const getPartialViewFolderByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<PartialViewFolderResponseModel>>,) => {
@@ -3376,6 +4718,10 @@ const getPartialViewFolderByPath = (
       options);
     }
   
+/**
+ * Deletes a partial view folder identified by the provided Id.
+ * @summary Deletes a partial view folder.
+ */
 const deletePartialViewFolderByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3385,6 +4731,10 @@ const deletePartialViewFolderByPath = (
       options);
     }
   
+/**
+ * Gets a paginated collection of available partial view code snippets that can be used when creating new partial views.
+ * @summary Gets a paginated collection of partial view snippets.
+ */
 const getPartialViewSnippet = (
     params?: GetPartialViewSnippetParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedPartialViewSnippetItemResponseModel>>,) => {
@@ -3395,6 +4745,10 @@ const getPartialViewSnippet = (
       options);
     }
   
+/**
+ * Gets a partial view snippet identified by the provided Id.
+ * @summary Gets a partial view snippet.
+ */
 const getPartialViewSnippetById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<PartialViewSnippetResponseModel>>,) => {
@@ -3404,6 +4758,10 @@ const getPartialViewSnippetById = (
       options);
     }
   
+/**
+ * Gets a collection of partial view items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor partial view items.
+ */
 const getTreePartialViewAncestors = (
     params?: GetTreePartialViewAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<FileSystemTreeItemPresentationModel[]>>,) => {
@@ -3414,6 +4772,10 @@ const getTreePartialViewAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of partial view tree items that are children of the provided parent Id.
+ * @summary Gets a collection of partial view tree child items.
+ */
 const getTreePartialViewChildren = (
     params?: GetTreePartialViewChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedFileSystemTreeItemPresentationModel>>,) => {
@@ -3424,6 +4786,10 @@ const getTreePartialViewChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of partial view items from the root of the tree with optional filtering.
+ * @summary Gets a collection of partial view items from the root of the tree.
+ */
 const getTreePartialViewRoot = (
     params?: GetTreePartialViewRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedFileSystemTreeItemPresentationModel>>,) => {
@@ -3434,6 +4800,10 @@ const getTreePartialViewRoot = (
       options);
     }
   
+/**
+ * Gets a collection of partial view tree items that are siblings of the provided Id.
+ * @summary Gets a collection of partial view tree sibling items.
+ */
 const getTreePartialViewSiblings = (
     params?: GetTreePartialViewSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetFileSystemTreeItemPresentationModel>>,) => {
@@ -3444,6 +4814,10 @@ const getTreePartialViewSiblings = (
       options);
     }
   
+/**
+ * Exits preview mode and returns to the normal back office viewing experience.
+ * @summary Exits preview mode.
+ */
 const deletePreview = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3454,7 +4828,9 @@ const deletePreview = (
     }
   
 /**
+ * Enters preview mode for the current user session, allowing viewing of unpublished content.
  * @deprecated
+ * @summary Enters preview mode.
  */
 const postPreview = (
     
@@ -3465,6 +4841,10 @@ const postPreview = (
       options);
     }
   
+/**
+ * Gets the current status of the MiniProfiler profiling tool.
+ * @summary Gets profiling status.
+ */
 const getProfilingStatus = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<ProfilingStatusResponseModel>>,) => {
@@ -3474,6 +4854,10 @@ const getProfilingStatus = (
       options);
     }
   
+/**
+ * Enables or disables web profiling according to the values provided in the request model.
+ * @summary Updates the web profiling status.
+ */
 const putProfilingStatus = (
     profilingStatusRequestModel: ProfilingStatusRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3485,6 +4869,10 @@ const putProfilingStatus = (
       options);
     }
   
+/**
+ * Checks if the property type identified by the provided content type id and property alias is used in any content, media, or members.
+ * @summary Checks if a property type is used.
+ */
 const getPropertyTypeIsUsed = (
     params?: GetPropertyTypeIsUsedParams,
  options?: SecondParameter<typeof UmbracoManagementClient<boolean>>,) => {
@@ -3495,6 +4883,10 @@ const getPropertyTypeIsUsed = (
       options);
     }
   
+/**
+ * Rebuilds the entire published content cache from scratch.
+ * @summary Rebuilds the published content cache.
+ */
 const postPublishedCacheRebuild = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3504,6 +4896,10 @@ const postPublishedCacheRebuild = (
       options);
     }
   
+/**
+ * Gets the current status of the published content cache rebuild operation.
+ * @summary Gets the rebuild cache status.
+ */
 const getPublishedCacheRebuildStatus = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<RebuildStatusModel>>,) => {
@@ -3513,6 +4909,10 @@ const getPublishedCacheRebuildStatus = (
       options);
     }
   
+/**
+ * Reloads the published content cache from the database.
+ * @summary Reloads the published content cache.
+ */
 const postPublishedCacheReload = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3522,6 +4922,10 @@ const postPublishedCacheReload = (
       options);
     }
   
+/**
+ * Gets a paginated collection of redirect URLs with support for filtering and sorting.
+ * @summary Gets a paginated collection of redirect URLs.
+ */
 const getRedirectManagement = (
     params?: GetRedirectManagementParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedRedirectUrlResponseModel>>,) => {
@@ -3532,6 +4936,10 @@ const getRedirectManagement = (
       options);
     }
   
+/**
+ * Gets a redirect URL identified by the provided Id.
+ * @summary Gets a redirect URL.
+ */
 const getRedirectManagementById = (
     id: string,
     params?: GetRedirectManagementByIdParams,
@@ -3543,6 +4951,10 @@ const getRedirectManagementById = (
       options);
     }
   
+/**
+ * Deletes a redirect URL identified by the provided Id.
+ * @summary Deletes a redirect URL.
+ */
 const deleteRedirectManagementById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3552,6 +4964,10 @@ const deleteRedirectManagementById = (
       options);
     }
   
+/**
+ * Retrieves the current status and configuration for redirect URL management.
+ * @summary Gets the current redirect URL management status.
+ */
 const getRedirectManagementStatus = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<RedirectUrlStatusResponseModel>>,) => {
@@ -3561,6 +4977,10 @@ const getRedirectManagementStatus = (
       options);
     }
   
+/**
+ * Updates the redirect URL tracking configuration according to the provided status.
+ * @summary Sets the redirect URL tracking status.
+ */
 const postRedirectManagementStatus = (
     params?: PostRedirectManagementStatusParams,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3571,6 +4991,10 @@ const postRedirectManagementStatus = (
       options);
     }
   
+/**
+ * Gets a collection of relation type items identified by the provided Ids.
+ * @summary Gets a collection of relation type items.
+ */
 const getItemRelationType = (
     params?: GetItemRelationTypeParams,
  options?: SecondParameter<typeof UmbracoManagementClient<RelationTypeItemResponseModel[]>>,) => {
@@ -3581,6 +5005,10 @@ const getItemRelationType = (
       options);
     }
   
+/**
+ * Gets a paginated collection of all relation types configured in the system.
+ * @summary Gets a paginated collection of relation types.
+ */
 const getRelationType = (
     params?: GetRelationTypeParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedRelationTypeResponseModel>>,) => {
@@ -3591,6 +5019,10 @@ const getRelationType = (
       options);
     }
   
+/**
+ * Gets a relation type identified by the provided Id.
+ * @summary Gets a relation type.
+ */
 const getRelationTypeById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<RelationTypeResponseModel>>,) => {
@@ -3600,6 +5032,10 @@ const getRelationTypeById = (
       options);
     }
   
+/**
+ * Gets a collection of relations filtered by the specified relation type key.
+ * @summary Gets relations by relation type.
+ */
 const getRelationByRelationTypeId = (
     id: string,
     params?: GetRelationByRelationTypeIdParams,
@@ -3611,6 +5047,10 @@ const getRelationByRelationTypeId = (
       options);
     }
   
+/**
+ * Gets a collection of script items identified by the provided Ids.
+ * @summary Gets a collection of script items.
+ */
 const getItemScript = (
     params?: GetItemScriptParams,
  options?: SecondParameter<typeof UmbracoManagementClient<ScriptItemResponseModel[]>>,) => {
@@ -3621,6 +5061,10 @@ const getItemScript = (
       options);
     }
   
+/**
+ * Creates a new script with the configuration specified in the request model.
+ * @summary Creates a new script.
+ */
 const postScript = (
     createScriptRequestModel: CreateScriptRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3632,6 +5076,10 @@ const postScript = (
       options);
     }
   
+/**
+ * Gets a script identified by the provided file path.
+ * @summary Gets a script by path.
+ */
 const getScriptByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<ScriptResponseModel>>,) => {
@@ -3641,6 +5089,10 @@ const getScriptByPath = (
       options);
     }
   
+/**
+ * Deletes a script identified by the provided file path.
+ * @summary Deletes a script.
+ */
 const deleteScriptByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3650,6 +5102,10 @@ const deleteScriptByPath = (
       options);
     }
   
+/**
+ * Updates a script identified by the provided Id with the details from the request model.
+ * @summary Updates a script.
+ */
 const putScriptByPath = (
     path: string,
     updateScriptRequestModel: UpdateScriptRequestModel,
@@ -3662,6 +5118,10 @@ const putScriptByPath = (
       options);
     }
   
+/**
+ * Renames a script file to the specified new name.
+ * @summary Renames a script.
+ */
 const putScriptByPathRename = (
     path: string,
     renameScriptRequestModel: RenameScriptRequestModel,
@@ -3674,6 +5134,10 @@ const putScriptByPathRename = (
       options);
     }
   
+/**
+ * Creates a new script folder with the provided name and parent location.
+ * @summary Creates a script folder.
+ */
 const postScriptFolder = (
     createScriptFolderRequestModel: CreateScriptFolderRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3685,6 +5149,10 @@ const postScriptFolder = (
       options);
     }
   
+/**
+ * Gets a script folder identified by the provided file path.
+ * @summary Gets a script folder by path.
+ */
 const getScriptFolderByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<ScriptFolderResponseModel>>,) => {
@@ -3694,6 +5162,10 @@ const getScriptFolderByPath = (
       options);
     }
   
+/**
+ * Deletes a script folder identified by the provided Id.
+ * @summary Deletes a script folder.
+ */
 const deleteScriptFolderByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3703,6 +5175,10 @@ const deleteScriptFolderByPath = (
       options);
     }
   
+/**
+ * Gets a collection of script items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor script items.
+ */
 const getTreeScriptAncestors = (
     params?: GetTreeScriptAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<FileSystemTreeItemPresentationModel[]>>,) => {
@@ -3713,6 +5189,10 @@ const getTreeScriptAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of script tree items that are children of the provided parent Id.
+ * @summary Gets a collection of script tree child items.
+ */
 const getTreeScriptChildren = (
     params?: GetTreeScriptChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedFileSystemTreeItemPresentationModel>>,) => {
@@ -3723,6 +5203,10 @@ const getTreeScriptChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of script items from the root of the tree with optional filtering.
+ * @summary Gets a collection of script items from the root of the tree.
+ */
 const getTreeScriptRoot = (
     params?: GetTreeScriptRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedFileSystemTreeItemPresentationModel>>,) => {
@@ -3733,6 +5217,10 @@ const getTreeScriptRoot = (
       options);
     }
   
+/**
+ * Gets a collection of script tree items that are siblings of the provided Id.
+ * @summary Gets a collection of script tree sibling items.
+ */
 const getTreeScriptSiblings = (
     params?: GetTreeScriptSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetFileSystemTreeItemPresentationModel>>,) => {
@@ -3743,6 +5231,10 @@ const getTreeScriptSiblings = (
       options);
     }
   
+/**
+ * Gets a collection of configured searchers in the Umbraco installation.
+ * @summary Gets a collection of searchers.
+ */
 const getSearcher = (
     params?: GetSearcherParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedSearcherResponseModel>>,) => {
@@ -3764,6 +5256,10 @@ const getSearcherBySearcherNameQuery = (
       options);
     }
   
+/**
+ * Gets the configuration settings for security.
+ * @summary Gets the security configuration.
+ */
 const getSecurityConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<SecurityConfigurationResponseModel>>,) => {
@@ -3773,6 +5269,10 @@ const getSecurityConfiguration = (
       options);
     }
   
+/**
+ * Initiates a password reset process by sending a reset link to the specified email address.
+ * @summary Requests a password reset.
+ */
 const postSecurityForgotPassword = (
     resetPasswordRequestModel: ResetPasswordRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3784,6 +5284,10 @@ const postSecurityForgotPassword = (
       options);
     }
   
+/**
+ * Initiates a password reset process for the user with the provided email.
+ * @summary Initiates password reset.
+ */
 const postSecurityForgotPasswordReset = (
     resetPasswordTokenRequestModel: ResetPasswordTokenRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3795,6 +5299,10 @@ const postSecurityForgotPasswordReset = (
       options);
     }
   
+/**
+ * Verifies the provided password reset token for the specified user.
+ * @summary Verifies a password reset token.
+ */
 const postSecurityForgotPasswordVerify = (
     verifyResetPasswordTokenRequestModel: VerifyResetPasswordTokenRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<VerifyResetPasswordResponseModel>>,) => {
@@ -3806,6 +5314,10 @@ const postSecurityForgotPasswordVerify = (
       options);
     }
   
+/**
+ * Gets a paginated collection of segments with support for filtering and pagination.
+ * @summary Gets a paginated collection of segments.
+ */
 const getSegment = (
     params?: GetSegmentParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedSegmentResponseModel>>,) => {
@@ -3816,6 +5328,10 @@ const getSegment = (
       options);
     }
   
+/**
+ * Gets the configuration settings for servers.
+ * @summary Gets the server configuration.
+ */
 const getServerConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<ServerConfigurationResponseModel>>,) => {
@@ -3825,6 +5341,10 @@ const getServerConfiguration = (
       options);
     }
   
+/**
+ * Gets detailed information about the server environment and configuration.
+ * @summary Gets server information.
+ */
 const getServerInformation = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<ServerInformationResponseModel>>,) => {
@@ -3834,6 +5354,10 @@ const getServerInformation = (
       options);
     }
   
+/**
+ * Gets the current operational status of the Umbraco server.
+ * @summary Gets server status.
+ */
 const getServerStatus = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<ServerStatusResponseModel>>,) => {
@@ -3843,6 +5367,10 @@ const getServerStatus = (
       options);
     }
   
+/**
+ * Gets troubleshooting information and diagnostics for the server.
+ * @summary Gets server troubleshooting information.
+ */
 const getServerTroubleshooting = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<ServerTroubleshootingResponseModel>>,) => {
@@ -3853,7 +5381,9 @@ const getServerTroubleshooting = (
     }
   
 /**
+ * Checks if there are any available upgrades for the Umbraco installation.
  * @deprecated
+ * @summary Checks for available upgrades.
  */
 const getServerUpgradeCheck = (
     
@@ -3864,6 +5394,10 @@ const getServerUpgradeCheck = (
       options);
     }
   
+/**
+ * Gets a collection of static file items identified by the provided Ids.
+ * @summary Gets a collection of static file items.
+ */
 const getItemStaticFile = (
     params?: GetItemStaticFileParams,
  options?: SecondParameter<typeof UmbracoManagementClient<StaticFileItemResponseModel[]>>,) => {
@@ -3874,6 +5408,10 @@ const getItemStaticFile = (
       options);
     }
   
+/**
+ * Gets a collection of static file items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor static file items.
+ */
 const getTreeStaticFileAncestors = (
     params?: GetTreeStaticFileAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<FileSystemTreeItemPresentationModel[]>>,) => {
@@ -3884,6 +5422,10 @@ const getTreeStaticFileAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of static file tree items that are children of the provided parent Id.
+ * @summary Gets a collection of static file tree child items.
+ */
 const getTreeStaticFileChildren = (
     params?: GetTreeStaticFileChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedFileSystemTreeItemPresentationModel>>,) => {
@@ -3894,6 +5436,10 @@ const getTreeStaticFileChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of static file items from the root of the tree with optional filtering.
+ * @summary Gets a collection of static file items from the root of the tree.
+ */
 const getTreeStaticFileRoot = (
     params?: GetTreeStaticFileRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedFileSystemTreeItemPresentationModel>>,) => {
@@ -3904,6 +5450,10 @@ const getTreeStaticFileRoot = (
       options);
     }
   
+/**
+ * Gets a collection of stylesheet items identified by the provided Ids.
+ * @summary Gets a collection of stylesheet items.
+ */
 const getItemStylesheet = (
     params?: GetItemStylesheetParams,
  options?: SecondParameter<typeof UmbracoManagementClient<StylesheetItemResponseModel[]>>,) => {
@@ -3914,6 +5464,10 @@ const getItemStylesheet = (
       options);
     }
   
+/**
+ * Creates a new stylesheet with the configuration specified in the request model.
+ * @summary Creates a new stylesheet.
+ */
 const postStylesheet = (
     createStylesheetRequestModel: CreateStylesheetRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3925,6 +5479,10 @@ const postStylesheet = (
       options);
     }
   
+/**
+ * Gets a stylesheet identified by the provided file path.
+ * @summary Gets a stylesheet by path.
+ */
 const getStylesheetByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<StylesheetResponseModel>>,) => {
@@ -3934,6 +5492,10 @@ const getStylesheetByPath = (
       options);
     }
   
+/**
+ * Deletes a stylesheet identified by the provided Id.
+ * @summary Deletes a stylesheet.
+ */
 const deleteStylesheetByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3943,6 +5505,10 @@ const deleteStylesheetByPath = (
       options);
     }
   
+/**
+ * Updates a stylesheet identified by the provided Id with the details from the request model.
+ * @summary Updates a stylesheet.
+ */
 const putStylesheetByPath = (
     path: string,
     updateStylesheetRequestModel: UpdateStylesheetRequestModel,
@@ -3955,6 +5521,10 @@ const putStylesheetByPath = (
       options);
     }
   
+/**
+ * Renames a stylesheet file to the specified new name.
+ * @summary Renames a stylesheet.
+ */
 const putStylesheetByPathRename = (
     path: string,
     renameStylesheetRequestModel: RenameStylesheetRequestModel,
@@ -3967,6 +5537,10 @@ const putStylesheetByPathRename = (
       options);
     }
   
+/**
+ * Creates a new stylesheet folder with the provided name and parent location.
+ * @summary Creates a stylesheet folder.
+ */
 const postStylesheetFolder = (
     createStylesheetFolderRequestModel: CreateStylesheetFolderRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3978,6 +5552,10 @@ const postStylesheetFolder = (
       options);
     }
   
+/**
+ * Gets a stylesheet folder identified by the provided file path.
+ * @summary Gets a stylesheet folder by path.
+ */
 const getStylesheetFolderByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<StylesheetFolderResponseModel>>,) => {
@@ -3987,6 +5565,10 @@ const getStylesheetFolderByPath = (
       options);
     }
   
+/**
+ * Deletes a stylesheet folder identified by the provided Id.
+ * @summary Deletes a stylesheet folder.
+ */
 const deleteStylesheetFolderByPath = (
     path: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -3996,6 +5578,10 @@ const deleteStylesheetFolderByPath = (
       options);
     }
   
+/**
+ * Gets a collection of stylesheet items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor stylesheet items.
+ */
 const getTreeStylesheetAncestors = (
     params?: GetTreeStylesheetAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<FileSystemTreeItemPresentationModel[]>>,) => {
@@ -4006,6 +5592,10 @@ const getTreeStylesheetAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of stylesheet tree items that are children of the provided parent Id.
+ * @summary Gets a collection of stylesheet tree child items.
+ */
 const getTreeStylesheetChildren = (
     params?: GetTreeStylesheetChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedFileSystemTreeItemPresentationModel>>,) => {
@@ -4016,6 +5606,10 @@ const getTreeStylesheetChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of stylesheet items from the root of the tree with optional filtering.
+ * @summary Gets a collection of stylesheet items from the root of the tree.
+ */
 const getTreeStylesheetRoot = (
     params?: GetTreeStylesheetRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedFileSystemTreeItemPresentationModel>>,) => {
@@ -4026,6 +5620,10 @@ const getTreeStylesheetRoot = (
       options);
     }
   
+/**
+ * Gets a collection of stylesheet tree items that are siblings of the provided Id.
+ * @summary Gets a collection of stylesheet tree sibling items.
+ */
 const getTreeStylesheetSiblings = (
     params?: GetTreeStylesheetSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetFileSystemTreeItemPresentationModel>>,) => {
@@ -4036,6 +5634,10 @@ const getTreeStylesheetSiblings = (
       options);
     }
   
+/**
+ * Gets a collection of tags filtered by the provided query string.
+ * @summary Gets a collection of tags.
+ */
 const getTag = (
     params?: GetTagParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedTagResponseModel>>,) => {
@@ -4046,6 +5648,10 @@ const getTag = (
       options);
     }
   
+/**
+ * Gets telemetry data and statistics for the Umbraco installation.
+ * @summary Gets telemetry data.
+ */
 const getTelemetry = (
     params?: GetTelemetryParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedTelemetryResponseModel>>,) => {
@@ -4056,6 +5662,10 @@ const getTelemetry = (
       options);
     }
   
+/**
+ * Gets the current telemetry configuration and consent level.
+ * @summary Gets telemetry information.
+ */
 const getTelemetryLevel = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<TelemetryResponseModel>>,) => {
@@ -4065,6 +5675,10 @@ const getTelemetryLevel = (
       options);
     }
   
+/**
+ * Sets the telemetry consent level for anonymous usage data collection.
+ * @summary Sets telemetry consent level.
+ */
 const postTelemetryLevel = (
     telemetryRequestModel: TelemetryRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4076,6 +5690,10 @@ const postTelemetryLevel = (
       options);
     }
   
+/**
+ * Gets a collection of template items identified by the provided Ids.
+ * @summary Gets a collection of template items.
+ */
 const getItemTemplate = (
     params?: GetItemTemplateParams,
  options?: SecondParameter<typeof UmbracoManagementClient<TemplateItemResponseModel[]>>,) => {
@@ -4086,6 +5704,24 @@ const getItemTemplate = (
       options);
     }
   
+/**
+ * Gets the ancestor chains for template items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of template items.
+ */
+const getItemTemplateAncestors = (
+    params?: GetItemTemplateAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelTemplateItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelTemplateItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/template/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches template items by the provided query with pagination support.
+ * @summary Searches template items.
+ */
 const getItemTemplateSearch = (
     params?: GetItemTemplateSearchParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedModelTemplateItemResponseModel>>,) => {
@@ -4096,6 +5732,10 @@ const getItemTemplateSearch = (
       options);
     }
   
+/**
+ * Creates a new template with the configuration specified in the request model.
+ * @summary Creates a new template.
+ */
 const postTemplate = (
     createTemplateRequestModel: CreateTemplateRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4107,6 +5747,10 @@ const postTemplate = (
       options);
     }
   
+/**
+ * Gets a template identified by the provided Id.
+ * @summary Gets a template.
+ */
 const getTemplateById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<TemplateResponseModel>>,) => {
@@ -4116,6 +5760,10 @@ const getTemplateById = (
       options);
     }
   
+/**
+ * Deletes a template identified by the provided Id.
+ * @summary Deletes a template.
+ */
 const deleteTemplateById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4125,6 +5773,10 @@ const deleteTemplateById = (
       options);
     }
   
+/**
+ * Updates a template identified by the provided Id with the details from the request model.
+ * @summary Updates a template.
+ */
 const putTemplateById = (
     id: string,
     updateTemplateRequestModel: UpdateTemplateRequestModel,
@@ -4137,6 +5789,10 @@ const putTemplateById = (
       options);
     }
   
+/**
+ * Gets the configuration settings for templates.
+ * @summary Gets the template configuration.
+ */
 const getTemplateConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<TemplateConfigurationResponseModel>>,) => {
@@ -4146,6 +5802,10 @@ const getTemplateConfiguration = (
       options);
     }
   
+/**
+ * Executes a template query with the provided parameters and returns the matching content results with execution metrics.
+ * @summary Executes a template query.
+ */
 const postTemplateQueryExecute = (
     templateQueryExecuteModel: TemplateQueryExecuteModel,
  options?: SecondParameter<typeof UmbracoManagementClient<TemplateQueryResultResponseModel>>,) => {
@@ -4157,6 +5817,10 @@ const postTemplateQueryExecute = (
       options);
     }
   
+/**
+ * Gets the available configuration settings for template queries including document type aliases, properties, and operators.
+ * @summary Gets template query settings.
+ */
 const getTemplateQuerySettings = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<TemplateQuerySettingsResponseModel>>,) => {
@@ -4166,6 +5830,10 @@ const getTemplateQuerySettings = (
       options);
     }
   
+/**
+ * Gets a collection of template items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor template items.
+ */
 const getTreeTemplateAncestors = (
     params?: GetTreeTemplateAncestorsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<NamedEntityTreeItemResponseModel[]>>,) => {
@@ -4176,6 +5844,10 @@ const getTreeTemplateAncestors = (
       options);
     }
   
+/**
+ * Gets a paginated collection of template tree items that are children of the provided parent Id.
+ * @summary Gets a collection of template tree child items.
+ */
 const getTreeTemplateChildren = (
     params?: GetTreeTemplateChildrenParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedNamedEntityTreeItemResponseModel>>,) => {
@@ -4186,6 +5858,10 @@ const getTreeTemplateChildren = (
       options);
     }
   
+/**
+ * Gets a paginated collection of template items from the root of the tree with optional filtering.
+ * @summary Gets a collection of template items from the root of the tree.
+ */
 const getTreeTemplateRoot = (
     params?: GetTreeTemplateRootParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedNamedEntityTreeItemResponseModel>>,) => {
@@ -4196,6 +5872,10 @@ const getTreeTemplateRoot = (
       options);
     }
   
+/**
+ * Gets a collection of template tree items that are siblings of the provided Id.
+ * @summary Gets a collection of template tree sibling items.
+ */
 const getTreeTemplateSiblings = (
     params?: GetTreeTemplateSiblingsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<SubsetNamedEntityTreeItemResponseModel>>,) => {
@@ -4206,6 +5886,10 @@ const getTreeTemplateSiblings = (
       options);
     }
   
+/**
+ * Authorizes the currently authenticated user to perform the upgrade.
+ * @summary Authorizes the upgrade.
+ */
 const postUpgradeAuthorize = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4215,6 +5899,10 @@ const postUpgradeAuthorize = (
       options);
     }
   
+/**
+ * Gets the current upgrade settings and status for the Umbraco installation.
+ * @summary Gets upgrade settings.
+ */
 const getUpgradeSettings = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<UpgradeSettingsResponseModel>>,) => {
@@ -4224,6 +5912,10 @@ const getUpgradeSettings = (
       options);
     }
   
+/**
+ * Creates user-specific data for the current authenticated user with the provided key and value.
+ * @summary Creates user data.
+ */
 const postUserData = (
     createUserDataRequestModel: CreateUserDataRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4235,6 +5927,10 @@ const postUserData = (
       options);
     }
   
+/**
+ * Gets user-specific data stored for the current authenticated user.
+ * @summary Gets user data.
+ */
 const getUserData = (
     params?: GetUserDataParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedUserDataResponseModel>>,) => {
@@ -4245,6 +5941,10 @@ const getUserData = (
       options);
     }
   
+/**
+ * Updates user-specific data for the current authenticated user.
+ * @summary Updates user data.
+ */
 const putUserData = (
     updateUserDataRequestModel: UpdateUserDataRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4256,6 +5956,10 @@ const putUserData = (
       options);
     }
   
+/**
+ * Gets user data identified by the provided Id.
+ * @summary Gets user data.
+ */
 const getUserDataById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<UserDataModel>>,) => {
@@ -4265,6 +5969,10 @@ const getUserDataById = (
       options);
     }
   
+/**
+ * Deletes user data identified by the provided Id.
+ * @summary Deletes user data.
+ */
 const deleteUserDataById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4274,6 +5982,10 @@ const deleteUserDataById = (
       options);
     }
   
+/**
+ * Filters user groups based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of user groups.
+ */
 const getFilterUserGroup = (
     params?: GetFilterUserGroupParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedUserGroupResponseModel>>,) => {
@@ -4284,6 +5996,10 @@ const getFilterUserGroup = (
       options);
     }
   
+/**
+ * Gets a collection of user group items identified by the provided Ids.
+ * @summary Gets a collection of user group items.
+ */
 const getItemUserGroup = (
     params?: GetItemUserGroupParams,
  options?: SecondParameter<typeof UmbracoManagementClient<UserGroupItemResponseModel[]>>,) => {
@@ -4294,6 +6010,10 @@ const getItemUserGroup = (
       options);
     }
   
+/**
+ * Deletes multiple user groups identified by the provided Ids. This operation cannot be undone.
+ * @summary Deletes multiple user groups.
+ */
 const deleteUserGroup = (
     deleteUserGroupsRequestModel: DeleteUserGroupsRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4305,6 +6025,10 @@ const deleteUserGroup = (
       options);
     }
   
+/**
+ * Creates a new user group with the configuration specified in the request model.
+ * @summary Creates a new user group.
+ */
 const postUserGroup = (
     createUserGroupRequestModel: CreateUserGroupRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4316,6 +6040,10 @@ const postUserGroup = (
       options);
     }
   
+/**
+ * Gets a paginated collection of all user groups.
+ * @summary Gets a paginated collection of user groups.
+ */
 const getUserGroup = (
     params?: GetUserGroupParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedUserGroupResponseModel>>,) => {
@@ -4326,6 +6054,10 @@ const getUserGroup = (
       options);
     }
   
+/**
+ * Gets a user group identified by the provided Id.
+ * @summary Gets a user group.
+ */
 const getUserGroupById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<UserGroupResponseModel>>,) => {
@@ -4335,6 +6067,10 @@ const getUserGroupById = (
       options);
     }
   
+/**
+ * Deletes a user group identified by the provided Id.
+ * @summary Deletes a user group.
+ */
 const deleteUserGroupById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4344,6 +6080,10 @@ const deleteUserGroupById = (
       options);
     }
   
+/**
+ * Updates a user group identified by the provided Id with the details from the request model.
+ * @summary Updates a user group.
+ */
 const putUserGroupById = (
     id: string,
     updateUserGroupRequestModel: UpdateUserGroupRequestModel,
@@ -4356,6 +6096,10 @@ const putUserGroupById = (
       options);
     }
   
+/**
+ * Removes the specified users from the user group identified by the provided Id.
+ * @summary Removes users from a user group.
+ */
 const deleteUserGroupByIdUsers = (
     id: string,
     referenceByIdModel: ReferenceByIdModel[],
@@ -4368,6 +6112,10 @@ const deleteUserGroupByIdUsers = (
       options);
     }
   
+/**
+ * Adds the specified users to the user group identified by the provided Id.
+ * @summary Adds users to a user group.
+ */
 const postUserGroupByIdUsers = (
     id: string,
     referenceByIdModel: ReferenceByIdModel[],
@@ -4380,6 +6128,10 @@ const postUserGroupByIdUsers = (
       options);
     }
   
+/**
+ * Filters users based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of users.
+ */
 const getFilterUser = (
     params?: GetFilterUserParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedUserResponseModel>>,) => {
@@ -4390,6 +6142,10 @@ const getFilterUser = (
       options);
     }
   
+/**
+ * Gets a collection of user items identified by the provided Ids.
+ * @summary Gets a collection of user items.
+ */
 const getItemUser = (
     params?: GetItemUserParams,
  options?: SecondParameter<typeof UmbracoManagementClient<UserItemResponseModel[]>>,) => {
@@ -4400,6 +6156,10 @@ const getItemUser = (
       options);
     }
   
+/**
+ * Creates a new user with the configuration specified in the request model.
+ * @summary Creates a new user.
+ */
 const postUser = (
     createUserRequestModel: CreateUserRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4411,6 +6171,10 @@ const postUser = (
       options);
     }
   
+/**
+ * Deletes multiple users identified by the provided Ids. This operation cannot be undone.
+ * @summary Deletes multiple users.
+ */
 const deleteUser = (
     deleteUsersRequestModel: DeleteUsersRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4422,6 +6186,10 @@ const deleteUser = (
       options);
     }
   
+/**
+ * Gets a paginated collection of all users.
+ * @summary Gets a paginated collection of users.
+ */
 const getUser = (
     params?: GetUserParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedUserResponseModel>>,) => {
@@ -4432,6 +6200,10 @@ const getUser = (
       options);
     }
   
+/**
+ * Gets a user identified by the provided Id.
+ * @summary Gets a user.
+ */
 const getUserById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<UserResponseModel>>,) => {
@@ -4441,6 +6213,10 @@ const getUserById = (
       options);
     }
   
+/**
+ * Deletes a user identified by the provided Id.
+ * @summary Deletes a user.
+ */
 const deleteUserById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4450,6 +6226,10 @@ const deleteUserById = (
       options);
     }
   
+/**
+ * Updates a user identified by the provided Id with the details from the request model.
+ * @summary Updates a user.
+ */
 const putUserById = (
     id: string,
     updateUserRequestModel: UpdateUserRequestModel,
@@ -4462,6 +6242,10 @@ const putUserById = (
       options);
     }
   
+/**
+ * Gets a list of available two-factor authentication providers for the specified user.
+ * @summary Lists two-factor providers for a user.
+ */
 const getUserById2fa = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<UserTwoFactorProviderModel[]>>,) => {
@@ -4471,6 +6255,10 @@ const getUserById2fa = (
       options);
     }
   
+/**
+ * Disables the specified two-factor authentication provider for a user.
+ * @summary Disables two-factor authentication for a user.
+ */
 const deleteUserById2faByProviderName = (
     id: string,
     providerName: string,
@@ -4481,6 +6269,10 @@ const deleteUserById2faByProviderName = (
       options);
     }
   
+/**
+ * Calculates the start nodes for the users identified by the provided Ids based on their permissions.
+ * @summary Calculates start nodes for users.
+ */
 const getUserByIdCalculateStartNodes = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<CalculatedUserStartNodesResponseModel>>,) => {
@@ -4490,6 +6282,10 @@ const getUserByIdCalculateStartNodes = (
       options);
     }
   
+/**
+ * Changes the password for the user identified by the provided Id.
+ * @summary Changes a user's password.
+ */
 const postUserByIdChangePassword = (
     id: string,
     changePasswordUserRequestModel: ChangePasswordUserRequestModel,
@@ -4502,6 +6298,10 @@ const postUserByIdChangePassword = (
       options);
     }
   
+/**
+ * Creates OAuth client credentials for the user identified by the provided Id.
+ * @summary Creates client credentials for a user.
+ */
 const postUserByIdClientCredentials = (
     id: string,
     createUserClientCredentialsRequestModel: CreateUserClientCredentialsRequestModel,
@@ -4514,6 +6314,10 @@ const postUserByIdClientCredentials = (
       options);
     }
   
+/**
+ * Gets a collection of OAuth client credentials for the user identified by the provided Id.
+ * @summary Gets all client credentials for a user.
+ */
 const getUserByIdClientCredentials = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<string[]>>,) => {
@@ -4523,6 +6327,10 @@ const getUserByIdClientCredentials = (
       options);
     }
   
+/**
+ * Deletes client credentials identified by the provided client Id for a user.
+ * @summary Deletes client credentials for a user.
+ */
 const deleteUserByIdClientCredentialsByClientId = (
     id: string,
     clientId: string,
@@ -4533,6 +6341,10 @@ const deleteUserByIdClientCredentialsByClientId = (
       options);
     }
   
+/**
+ * Resets the password for the user using the provided reset token.
+ * @summary Resets a user's password.
+ */
 const postUserByIdResetPassword = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<ResetPasswordUserResponseModel>>,) => {
@@ -4542,6 +6354,10 @@ const postUserByIdResetPassword = (
       options);
     }
   
+/**
+ * Removes the avatar image for the user identified by the provided Id.
+ * @summary Clears a user's avatar.
+ */
 const deleteUserAvatarById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4551,6 +6367,10 @@ const deleteUserAvatarById = (
       options);
     }
   
+/**
+ * Sets or updates the avatar image for the user identified by the provided Id.
+ * @summary Sets a user's avatar.
+ */
 const postUserAvatarById = (
     id: string,
     setAvatarRequestModel: SetAvatarRequestModel,
@@ -4563,6 +6383,10 @@ const postUserAvatarById = (
       options);
     }
   
+/**
+ * Gets the configuration settings for users.
+ * @summary Gets the user configuration.
+ */
 const getUserConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<UserConfigurationResponseModel>>,) => {
@@ -4572,6 +6396,10 @@ const getUserConfiguration = (
       options);
     }
   
+/**
+ * Gets the currently authenticated back office user's information and permissions.
+ * @summary Gets the current user.
+ */
 const getUserCurrent = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<CurrentUserResponseModel>>,) => {
@@ -4581,6 +6409,10 @@ const getUserCurrent = (
       options);
     }
   
+/**
+ * Gets a list of available two-factor authentication providers for the current user.
+ * @summary Lists two-factor providers for the current user.
+ */
 const getUserCurrent2fa = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<UserTwoFactorProviderModel[]>>,) => {
@@ -4590,6 +6422,10 @@ const getUserCurrent2fa = (
       options);
     }
   
+/**
+ * Disables the specified two-factor authentication provider for the currently authenticated user.
+ * @summary Disables two-factor authentication for the current user.
+ */
 const deleteUserCurrent2faByProviderName = (
     providerName: string,
     params?: DeleteUserCurrent2faByProviderNameParams,
@@ -4601,6 +6437,10 @@ const deleteUserCurrent2faByProviderName = (
       options);
     }
   
+/**
+ * Enables the specified two-factor authentication provider for the currently authenticated user.
+ * @summary Enables two-factor authentication for the current user.
+ */
 const postUserCurrent2faByProviderName = (
     providerName: string,
     enableTwoFactorRequestModel: EnableTwoFactorRequestModel,
@@ -4613,6 +6453,10 @@ const postUserCurrent2faByProviderName = (
       options);
     }
   
+/**
+ * Gets the setup information for configuring a two-factor authentication provider.
+ * @summary Gets two-factor setup information.
+ */
 const getUserCurrent2faByProviderName = (
     providerName: string,
  options?: SecondParameter<typeof UmbracoManagementClient<NoopSetupTwoFactorModel>>,) => {
@@ -4622,6 +6466,10 @@ const getUserCurrent2faByProviderName = (
       options);
     }
   
+/**
+ * Sets or updates the avatar image for the currently authenticated user.
+ * @summary Sets the current user's avatar.
+ */
 const postUserCurrentAvatar = (
     setAvatarRequestModel: SetAvatarRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4633,6 +6481,10 @@ const postUserCurrentAvatar = (
       options);
     }
   
+/**
+ * Changes the password for the currently authenticated user.
+ * @summary Changes the current user's password.
+ */
 const postUserCurrentChangePassword = (
     changePasswordCurrentUserRequestModel: ChangePasswordCurrentUserRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4644,6 +6496,10 @@ const postUserCurrentChangePassword = (
       options);
     }
   
+/**
+ * Gets the configuration settings for the current user.
+ * @summary Gets the current user's configuration.
+ */
 const getUserCurrentConfiguration = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<CurrentUserConfigurationResponseModel>>,) => {
@@ -4653,6 +6509,10 @@ const getUserCurrentConfiguration = (
       options);
     }
   
+/**
+ * Gets a list of configured external login providers for authentication.
+ * @summary Lists external login providers.
+ */
 const getUserCurrentLoginProviders = (
     
  options?: SecondParameter<typeof UmbracoManagementClient<UserExternalLoginProviderModel[]>>,) => {
@@ -4662,6 +6522,10 @@ const getUserCurrentLoginProviders = (
       options);
     }
   
+/**
+ * Gets the permissions for the currently authenticated user.
+ * @summary Gets permissions for the current user.
+ */
 const getUserCurrentPermissions = (
     params?: GetUserCurrentPermissionsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<UserPermissionsResponseModel>>,) => {
@@ -4672,6 +6536,10 @@ const getUserCurrentPermissions = (
       options);
     }
   
+/**
+ * Gets the document permissions for the currently authenticated user.
+ * @summary Gets document permissions for the current user.
+ */
 const getUserCurrentPermissionsDocument = (
     params?: GetUserCurrentPermissionsDocumentParams,
  options?: SecondParameter<typeof UmbracoManagementClient<UserPermissionsResponseModel[]>>,) => {
@@ -4682,6 +6550,10 @@ const getUserCurrentPermissionsDocument = (
       options);
     }
   
+/**
+ * Gets the media permissions for the currently authenticated user.
+ * @summary Gets media permissions for the current user.
+ */
 const getUserCurrentPermissionsMedia = (
     params?: GetUserCurrentPermissionsMediaParams,
  options?: SecondParameter<typeof UmbracoManagementClient<UserPermissionsResponseModel>>,) => {
@@ -4692,6 +6564,10 @@ const getUserCurrentPermissionsMedia = (
       options);
     }
   
+/**
+ * Disables the user accounts identified by the provided Ids.
+ * @summary Disables users.
+ */
 const postUserDisable = (
     disableUserRequestModel: DisableUserRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4703,6 +6579,10 @@ const postUserDisable = (
       options);
     }
   
+/**
+ * Enables the user accounts identified by the provided Ids.
+ * @summary Enables users.
+ */
 const postUserEnable = (
     enableUserRequestModel: EnableUserRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4714,6 +6594,10 @@ const postUserEnable = (
       options);
     }
   
+/**
+ * Sends invitation emails to create new user accounts with the specified details.
+ * @summary Invites new users.
+ */
 const postUserInvite = (
     inviteUserRequestModel: InviteUserRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4725,6 +6609,10 @@ const postUserInvite = (
       options);
     }
   
+/**
+ * Creates an initial password for a newly invited user using the provided token.
+ * @summary Creates an initial password for a user.
+ */
 const postUserInviteCreatePassword = (
     createInitialPasswordUserRequestModel: CreateInitialPasswordUserRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4736,6 +6624,10 @@ const postUserInviteCreatePassword = (
       options);
     }
   
+/**
+ * Resends the invitation email for the users identified by the provided Ids.
+ * @summary Resends a user invitation.
+ */
 const postUserInviteResend = (
     resendInviteUserRequestModel: ResendInviteUserRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4747,6 +6639,10 @@ const postUserInviteResend = (
       options);
     }
   
+/**
+ * Verifies that the invitation token is valid for creating a new user account.
+ * @summary Verifies a user invitation.
+ */
 const postUserInviteVerify = (
     verifyInviteUserRequestModel: VerifyInviteUserRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<VerifyInviteUserResponseModel>>,) => {
@@ -4758,6 +6654,10 @@ const postUserInviteVerify = (
       options);
     }
   
+/**
+ * Updates the user group assignments for the specified users.
+ * @summary Updates user group assignments.
+ */
 const postUserSetUserGroups = (
     updateUserGroupsOnUserRequestModel: UpdateUserGroupsOnUserRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4769,6 +6669,10 @@ const postUserSetUserGroups = (
       options);
     }
   
+/**
+ * Unlocks the user accounts identified by the provided Ids.
+ * @summary Unlocks users.
+ */
 const postUserUnlock = (
     unlockUsersRequestModel: UnlockUsersRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4780,6 +6684,10 @@ const postUserUnlock = (
       options);
     }
   
+/**
+ * Gets a collection of webhook items identified by the provided Ids.
+ * @summary Gets a collection of webhook items.
+ */
 const getItemWebhook = (
     params?: GetItemWebhookParams,
  options?: SecondParameter<typeof UmbracoManagementClient<WebhookItemResponseModel[]>>,) => {
@@ -4790,6 +6698,10 @@ const getItemWebhook = (
       options);
     }
   
+/**
+ * Gets a paginated collection of all webhooks.
+ * @summary Gets a paginated collection of webhooks.
+ */
 const getWebhook = (
     params?: GetWebhookParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedWebhookResponseModel>>,) => {
@@ -4800,6 +6712,10 @@ const getWebhook = (
       options);
     }
   
+/**
+ * Creates a new webhook with the configuration specified in the request model.
+ * @summary Creates a new webhook.
+ */
 const postWebhook = (
     createWebhookRequestModel: CreateWebhookRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4811,6 +6727,10 @@ const postWebhook = (
       options);
     }
   
+/**
+ * Gets a webhook identified by the provided Id.
+ * @summary Gets a webhook.
+ */
 const getWebhookById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<WebhookResponseModel>>,) => {
@@ -4820,6 +6740,10 @@ const getWebhookById = (
       options);
     }
   
+/**
+ * Deletes a webhook identified by the provided Id.
+ * @summary Deletes a webhook.
+ */
 const deleteWebhookById = (
     id: string,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
@@ -4829,6 +6753,10 @@ const deleteWebhookById = (
       options);
     }
   
+/**
+ * Updates a webhook identified by the provided Id with the details from the request model.
+ * @summary Updates a webhook.
+ */
 const putWebhookById = (
     id: string,
     updateWebhookRequestModel: UpdateWebhookRequestModel,
@@ -4841,6 +6769,10 @@ const putWebhookById = (
       options);
     }
   
+/**
+ * Gets a paginated collection of webhook logs for the webhook identified by the provided Id.
+ * @summary Gets a paginated collection of webhook logs for a specific webhook.
+ */
 const getWebhookByIdLogs = (
     id: string,
     params?: GetWebhookByIdLogsParams,
@@ -4852,6 +6784,10 @@ const getWebhookByIdLogs = (
       options);
     }
   
+/**
+ * Gets a paginated collection of available webhook events that can be subscribed to.
+ * @summary Gets a paginated collection of webhook events.
+ */
 const getWebhookEvents = (
     params?: GetWebhookEventsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedWebhookEventModel>>,) => {
@@ -4862,6 +6798,10 @@ const getWebhookEvents = (
       options);
     }
   
+/**
+ * Gets a paginated collection of webhook logs for all webhooks.
+ * @summary Gets a paginated collection of webhook logs.
+ */
 const getWebhookLogs = (
     params?: GetWebhookLogsParams,
  options?: SecondParameter<typeof UmbracoManagementClient<PagedWebhookLogResponseModel>>,) => {
@@ -4872,7 +6812,7 @@ const getWebhookLogs = (
       options);
     }
   
-return {getCulture,postDataType,getDataTypeById,deleteDataTypeById,putDataTypeById,postDataTypeByIdCopy,getDataTypeByIdIsUsed,putDataTypeByIdMove,getDataTypeByIdReferencedBy,getDataTypeConfiguration,postDataTypeFolder,getDataTypeFolderById,deleteDataTypeFolderById,putDataTypeFolderById,getFilterDataType,getItemDataType,getItemDataTypeSearch,getTreeDataTypeAncestors,getTreeDataTypeChildren,getTreeDataTypeRoot,getTreeDataTypeSiblings,getDictionary,postDictionary,getDictionaryById,deleteDictionaryById,putDictionaryById,getDictionaryByIdExport,putDictionaryByIdMove,postDictionaryImport,getItemDictionary,getTreeDictionaryAncestors,getTreeDictionaryChildren,getTreeDictionaryRoot,postDocumentBlueprint,getDocumentBlueprintById,deleteDocumentBlueprintById,putDocumentBlueprintById,putDocumentBlueprintByIdMove,getDocumentBlueprintByIdScaffold,postDocumentBlueprintFolder,getDocumentBlueprintFolderById,deleteDocumentBlueprintFolderById,putDocumentBlueprintFolderById,postDocumentBlueprintFromDocument,getItemDocumentBlueprint,getTreeDocumentBlueprintAncestors,getTreeDocumentBlueprintChildren,getTreeDocumentBlueprintRoot,getTreeDocumentBlueprintSiblings,postDocumentType,getDocumentTypeById,deleteDocumentTypeById,putDocumentTypeById,getDocumentTypeByIdAllowedChildren,getDocumentTypeByIdBlueprint,getDocumentTypeByIdCompositionReferences,postDocumentTypeByIdCopy,getDocumentTypeByIdExport,putDocumentTypeByIdImport,putDocumentTypeByIdMove,postDocumentTypeByIdTemplate,getDocumentTypeAllowedAtRoot,postDocumentTypeAvailableCompositions,getDocumentTypeConfiguration,postDocumentTypeFolder,getDocumentTypeFolderById,deleteDocumentTypeFolderById,putDocumentTypeFolderById,postDocumentTypeImport,getItemDocumentType,getItemDocumentTypeSearch,getTreeDocumentTypeAncestors,getTreeDocumentTypeChildren,getTreeDocumentTypeRoot,getTreeDocumentTypeSiblings,getDocumentVersion,getDocumentVersionById,putDocumentVersionByIdPreventCleanup,postDocumentVersionByIdRollback,getCollectionDocumentById,postDocument,getDocumentById,deleteDocumentById,putDocumentById,getDocumentByIdAuditLog,getDocumentByIdAvailableSegmentOptions,postDocumentByIdCopy,getDocumentByIdDomains,putDocumentByIdDomains,putDocumentByIdMove,putDocumentByIdMoveToRecycleBin,getDocumentByIdNotifications,putDocumentByIdNotifications,getDocumentByIdPreviewUrl,postDocumentByIdPublicAccess,deleteDocumentByIdPublicAccess,getDocumentByIdPublicAccess,putDocumentByIdPublicAccess,putDocumentByIdPublish,putDocumentByIdPublishWithDescendants,getDocumentByIdPublishWithDescendantsResultByTaskId,getDocumentByIdPublished,getDocumentByIdReferencedBy,getDocumentByIdReferencedDescendants,putDocumentByIdUnpublish,putUmbracoManagementApiV11DocumentByIdValidate11,getDocumentAreReferenced,getDocumentConfiguration,putDocumentSort,getDocumentUrls,postDocumentValidate,getItemDocument,getItemDocumentSearch,deleteRecycleBinDocument,deleteRecycleBinDocumentById,getRecycleBinDocumentByIdOriginalParent,putRecycleBinDocumentByIdRestore,getRecycleBinDocumentChildren,getRecycleBinDocumentReferencedBy,getRecycleBinDocumentRoot,getRecycleBinDocumentSiblings,getTreeDocumentAncestors,getTreeDocumentChildren,getTreeDocumentRoot,getTreeDocumentSiblings,postDynamicRootQuery,getDynamicRootSteps,getHealthCheckGroup,getHealthCheckGroupByName,postHealthCheckGroupByNameCheck,postHealthCheckExecuteAction,getHelp,getImagingResizeUrls,getImportAnalyze,getIndexer,getIndexerByIndexName,postIndexerByIndexNameRebuild,getInstallSettings,postInstallSetup,postInstallValidateDatabase,getItemLanguage,getItemLanguageDefault,getLanguage,postLanguage,getLanguageByIsoCode,deleteLanguageByIsoCode,putLanguageByIsoCode,getLogViewerLevel,getLogViewerLevelCount,getLogViewerLog,getLogViewerMessageTemplate,getLogViewerSavedSearch,postLogViewerSavedSearch,getLogViewerSavedSearchByName,deleteLogViewerSavedSearchByName,getLogViewerValidateLogsSize,getManifestManifest,getManifestManifestPrivate,getManifestManifestPublic,getItemMediaType,getItemMediaTypeAllowed,getItemMediaTypeFolders,getItemMediaTypeSearch,postMediaType,getMediaTypeById,deleteMediaTypeById,putMediaTypeById,getMediaTypeByIdAllowedChildren,getMediaTypeByIdCompositionReferences,postMediaTypeByIdCopy,getMediaTypeByIdExport,putMediaTypeByIdImport,putMediaTypeByIdMove,getMediaTypeAllowedAtRoot,postMediaTypeAvailableCompositions,getMediaTypeConfiguration,postMediaTypeFolder,getMediaTypeFolderById,deleteMediaTypeFolderById,putMediaTypeFolderById,postMediaTypeImport,getTreeMediaTypeAncestors,getTreeMediaTypeChildren,getTreeMediaTypeRoot,getTreeMediaTypeSiblings,getCollectionMedia,getItemMedia,getItemMediaSearch,postMedia,getMediaById,deleteMediaById,putMediaById,getMediaByIdAuditLog,putMediaByIdMove,putMediaByIdMoveToRecycleBin,getMediaByIdReferencedBy,getMediaByIdReferencedDescendants,putMediaByIdValidate,getMediaAreReferenced,getMediaConfiguration,putMediaSort,getMediaUrls,postMediaValidate,deleteRecycleBinMedia,deleteRecycleBinMediaById,getRecycleBinMediaByIdOriginalParent,putRecycleBinMediaByIdRestore,getRecycleBinMediaChildren,getRecycleBinMediaReferencedBy,getRecycleBinMediaRoot,getRecycleBinMediaSiblings,getTreeMediaAncestors,getTreeMediaChildren,getTreeMediaRoot,getTreeMediaSiblings,getItemMemberGroup,getMemberGroup,postMemberGroup,getMemberGroupById,deleteMemberGroupById,putMemberGroupById,getTreeMemberGroupRoot,getItemMemberType,getItemMemberTypeSearch,postMemberType,getMemberTypeById,deleteMemberTypeById,putMemberTypeById,getMemberTypeByIdCompositionReferences,postMemberTypeByIdCopy,getMemberTypeByIdExport,putMemberTypeByIdImport,putMemberTypeByIdMove,postMemberTypeAvailableCompositions,getMemberTypeConfiguration,postMemberTypeFolder,getMemberTypeFolderById,deleteMemberTypeFolderById,putMemberTypeFolderById,postMemberTypeImport,getTreeMemberTypeAncestors,getTreeMemberTypeChildren,getTreeMemberTypeRoot,getTreeMemberTypeSiblings,getFilterMember,getItemMember,getItemMemberSearch,postMember,getMemberById,deleteMemberById,putMemberById,getMemberByIdReferencedBy,getMemberByIdReferencedDescendants,putMemberByIdValidate,getMemberAreReferenced,getMemberConfiguration,postMemberValidate,postModelsBuilderBuild,getModelsBuilderDashboard,getModelsBuilderStatus,getNewsDashboard,getObjectTypes,getOembedQuery,postPackageByNameRunMigration,getPackageConfiguration,getPackageCreated,postPackageCreated,getPackageCreatedById,deletePackageCreatedById,putPackageCreatedById,getPackageCreatedByIdDownload,getPackageMigrationStatus,getItemPartialView,postPartialView,getPartialViewByPath,deletePartialViewByPath,putPartialViewByPath,putPartialViewByPathRename,postPartialViewFolder,getPartialViewFolderByPath,deletePartialViewFolderByPath,getPartialViewSnippet,getPartialViewSnippetById,getTreePartialViewAncestors,getTreePartialViewChildren,getTreePartialViewRoot,getTreePartialViewSiblings,deletePreview,postPreview,getProfilingStatus,putProfilingStatus,getPropertyTypeIsUsed,postPublishedCacheRebuild,getPublishedCacheRebuildStatus,postPublishedCacheReload,getRedirectManagement,getRedirectManagementById,deleteRedirectManagementById,getRedirectManagementStatus,postRedirectManagementStatus,getItemRelationType,getRelationType,getRelationTypeById,getRelationByRelationTypeId,getItemScript,postScript,getScriptByPath,deleteScriptByPath,putScriptByPath,putScriptByPathRename,postScriptFolder,getScriptFolderByPath,deleteScriptFolderByPath,getTreeScriptAncestors,getTreeScriptChildren,getTreeScriptRoot,getTreeScriptSiblings,getSearcher,getSearcherBySearcherNameQuery,getSecurityConfiguration,postSecurityForgotPassword,postSecurityForgotPasswordReset,postSecurityForgotPasswordVerify,getSegment,getServerConfiguration,getServerInformation,getServerStatus,getServerTroubleshooting,getServerUpgradeCheck,getItemStaticFile,getTreeStaticFileAncestors,getTreeStaticFileChildren,getTreeStaticFileRoot,getItemStylesheet,postStylesheet,getStylesheetByPath,deleteStylesheetByPath,putStylesheetByPath,putStylesheetByPathRename,postStylesheetFolder,getStylesheetFolderByPath,deleteStylesheetFolderByPath,getTreeStylesheetAncestors,getTreeStylesheetChildren,getTreeStylesheetRoot,getTreeStylesheetSiblings,getTag,getTelemetry,getTelemetryLevel,postTelemetryLevel,getItemTemplate,getItemTemplateSearch,postTemplate,getTemplateById,deleteTemplateById,putTemplateById,getTemplateConfiguration,postTemplateQueryExecute,getTemplateQuerySettings,getTreeTemplateAncestors,getTreeTemplateChildren,getTreeTemplateRoot,getTreeTemplateSiblings,postUpgradeAuthorize,getUpgradeSettings,postUserData,getUserData,putUserData,getUserDataById,deleteUserDataById,getFilterUserGroup,getItemUserGroup,deleteUserGroup,postUserGroup,getUserGroup,getUserGroupById,deleteUserGroupById,putUserGroupById,deleteUserGroupByIdUsers,postUserGroupByIdUsers,getFilterUser,getItemUser,postUser,deleteUser,getUser,getUserById,deleteUserById,putUserById,getUserById2fa,deleteUserById2faByProviderName,getUserByIdCalculateStartNodes,postUserByIdChangePassword,postUserByIdClientCredentials,getUserByIdClientCredentials,deleteUserByIdClientCredentialsByClientId,postUserByIdResetPassword,deleteUserAvatarById,postUserAvatarById,getUserConfiguration,getUserCurrent,getUserCurrent2fa,deleteUserCurrent2faByProviderName,postUserCurrent2faByProviderName,getUserCurrent2faByProviderName,postUserCurrentAvatar,postUserCurrentChangePassword,getUserCurrentConfiguration,getUserCurrentLoginProviders,getUserCurrentPermissions,getUserCurrentPermissionsDocument,getUserCurrentPermissionsMedia,postUserDisable,postUserEnable,postUserInvite,postUserInviteCreatePassword,postUserInviteResend,postUserInviteVerify,postUserSetUserGroups,postUserUnlock,getItemWebhook,getWebhook,postWebhook,getWebhookById,deleteWebhookById,putWebhookById,getWebhookByIdLogs,getWebhookEvents,getWebhookLogs}};
+return {getCulture,postDataType,getDataTypeById,deleteDataTypeById,putDataTypeById,postDataTypeByIdCopy,getDataTypeByIdIsUsed,putDataTypeByIdMove,getDataTypeByIdReferencedBy,getDataTypeBatch,getDataTypeConfiguration,postDataTypeFolder,getDataTypeFolderById,deleteDataTypeFolderById,putDataTypeFolderById,getFilterDataType,getItemDataType,getItemDataTypeAncestors,getItemDataTypeSearch,getTreeDataTypeAncestors,getTreeDataTypeChildren,getTreeDataTypeRoot,getTreeDataTypeSearch,getTreeDataTypeSiblings,getDictionary,postDictionary,getDictionaryById,deleteDictionaryById,putDictionaryById,getDictionaryByIdExport,putDictionaryByIdMove,postDictionaryImport,getItemDictionary,getTreeDictionaryAncestors,getTreeDictionaryChildren,getTreeDictionaryRoot,postDocumentBlueprint,getDocumentBlueprintById,deleteDocumentBlueprintById,putDocumentBlueprintById,putDocumentBlueprintByIdMove,getDocumentBlueprintByIdScaffold,postDocumentBlueprintFolder,getDocumentBlueprintFolderById,deleteDocumentBlueprintFolderById,putDocumentBlueprintFolderById,postDocumentBlueprintFromDocument,getItemDocumentBlueprint,getTreeDocumentBlueprintAncestors,getTreeDocumentBlueprintChildren,getTreeDocumentBlueprintRoot,getTreeDocumentBlueprintSiblings,postDocumentType,getDocumentTypeById,deleteDocumentTypeById,putDocumentTypeById,getDocumentTypeByIdAllowedChildren,getDocumentTypeByIdAllowedParents,getDocumentTypeByIdBlueprint,getDocumentTypeByIdCompositionReferences,postDocumentTypeByIdCopy,getDocumentTypeByIdExport,putDocumentTypeByIdImport,putDocumentTypeByIdMove,postDocumentTypeByIdTemplate,getDocumentTypeAllowedAtRoot,postDocumentTypeAvailableCompositions,getDocumentTypeBatch,getDocumentTypeConfiguration,postDocumentTypeFolder,getDocumentTypeFolderById,deleteDocumentTypeFolderById,putDocumentTypeFolderById,postDocumentTypeImport,getItemDocumentType,getItemDocumentTypeAncestors,getItemDocumentTypeSearch,getTreeDocumentTypeAncestors,getTreeDocumentTypeChildren,getTreeDocumentTypeRoot,getTreeDocumentTypeSearch,getTreeDocumentTypeSiblings,getDocumentVersion,getDocumentVersionById,putDocumentVersionByIdPreventCleanup,postDocumentVersionByIdRollback,getCollectionDocumentById,postDocument,getDocumentById,deleteDocumentById,putDocumentById,getDocumentByIdAuditLog,getDocumentByIdAvailableSegmentOptions,postDocumentByIdCopy,getDocumentByIdDomains,putDocumentByIdDomains,putDocumentByIdMove,putDocumentByIdMoveToRecycleBin,getDocumentByIdNotifications,putDocumentByIdNotifications,getDocumentByIdPreviewUrl,postDocumentByIdPublicAccess,deleteDocumentByIdPublicAccess,getDocumentByIdPublicAccess,putDocumentByIdPublicAccess,putDocumentByIdPublish,putDocumentByIdPublishWithDescendants,getDocumentByIdPublishWithDescendantsResultByTaskId,getDocumentByIdPublished,getDocumentByIdReferencedBy,getDocumentByIdReferencedDescendants,putDocumentByIdUnpublish,putUmbracoManagementApiV11DocumentByIdValidate11,getDocumentAreReferenced,getDocumentConfiguration,putDocumentSort,getDocumentUrls,postDocumentValidate,getItemDocument,getItemDocumentAncestors,getItemDocumentSearch,deleteRecycleBinDocument,deleteRecycleBinDocumentById,getRecycleBinDocumentByIdOriginalParent,putRecycleBinDocumentByIdRestore,getRecycleBinDocumentChildren,getRecycleBinDocumentReferencedBy,getRecycleBinDocumentRoot,getRecycleBinDocumentSiblings,getTreeDocumentAncestors,getTreeDocumentChildren,getTreeDocumentRoot,getTreeDocumentSiblings,postDynamicRootQuery,getDynamicRootSteps,getHealthCheckGroup,getHealthCheckGroupByName,postHealthCheckGroupByNameCheck,postHealthCheckExecuteAction,getHelp,getImagingResizeUrls,getImportAnalyze,getIndexer,getIndexerByIndexName,postIndexerByIndexNameRebuild,getInstallSettings,postInstallSetup,postInstallValidateDatabase,getItemLanguage,getItemLanguageDefault,getLanguage,postLanguage,getLanguageByIsoCode,deleteLanguageByIsoCode,putLanguageByIsoCode,getLogViewerLevel,getLogViewerLevelCount,getLogViewerLog,getLogViewerMessageTemplate,getLogViewerSavedSearch,postLogViewerSavedSearch,getLogViewerSavedSearchByName,deleteLogViewerSavedSearchByName,getLogViewerValidateLogsSize,getManifestManifest,getManifestManifestPrivate,getManifestManifestPublic,getItemMediaType,getItemMediaTypeAllowed,getItemMediaTypeAncestors,getItemMediaTypeFolders,getItemMediaTypeSearch,postMediaType,getMediaTypeById,deleteMediaTypeById,putMediaTypeById,getMediaTypeByIdAllowedChildren,getMediaTypeByIdAllowedParents,getMediaTypeByIdCompositionReferences,postMediaTypeByIdCopy,getMediaTypeByIdExport,putMediaTypeByIdImport,putMediaTypeByIdMove,getMediaTypeAllowedAtRoot,postMediaTypeAvailableCompositions,getMediaTypeBatch,getMediaTypeConfiguration,postMediaTypeFolder,getMediaTypeFolderById,deleteMediaTypeFolderById,putMediaTypeFolderById,postMediaTypeImport,getTreeMediaTypeAncestors,getTreeMediaTypeChildren,getTreeMediaTypeRoot,getTreeMediaTypeSiblings,getCollectionMedia,getItemMedia,getItemMediaAncestors,getItemMediaSearch,postMedia,getMediaById,deleteMediaById,putMediaById,getMediaByIdAuditLog,putMediaByIdMove,putMediaByIdMoveToRecycleBin,getMediaByIdReferencedBy,getMediaByIdReferencedDescendants,putMediaByIdValidate,getMediaAreReferenced,getMediaConfiguration,putMediaSort,getMediaUrls,postMediaValidate,deleteRecycleBinMedia,deleteRecycleBinMediaById,getRecycleBinMediaByIdOriginalParent,putRecycleBinMediaByIdRestore,getRecycleBinMediaChildren,getRecycleBinMediaReferencedBy,getRecycleBinMediaRoot,getRecycleBinMediaSiblings,getTreeMediaAncestors,getTreeMediaChildren,getTreeMediaRoot,getTreeMediaSiblings,getItemMemberGroup,getMemberGroup,postMemberGroup,getMemberGroupById,deleteMemberGroupById,putMemberGroupById,getTreeMemberGroupRoot,getItemMemberType,getItemMemberTypeAncestors,getItemMemberTypeSearch,postMemberType,getMemberTypeById,deleteMemberTypeById,putMemberTypeById,getMemberTypeByIdCompositionReferences,postMemberTypeByIdCopy,getMemberTypeByIdExport,putMemberTypeByIdImport,putMemberTypeByIdMove,postMemberTypeAvailableCompositions,getMemberTypeBatch,getMemberTypeConfiguration,postMemberTypeFolder,getMemberTypeFolderById,deleteMemberTypeFolderById,putMemberTypeFolderById,postMemberTypeImport,getTreeMemberTypeAncestors,getTreeMemberTypeChildren,getTreeMemberTypeRoot,getTreeMemberTypeSiblings,getFilterMember,getItemMember,getItemMemberAncestors,getItemMemberSearch,postMember,getMemberById,deleteMemberById,putMemberById,getMemberByIdReferencedBy,getMemberByIdReferencedDescendants,putMemberByIdValidate,getMemberAreReferenced,getMemberConfiguration,postMemberValidate,postModelsBuilderBuild,getModelsBuilderDashboard,getModelsBuilderStatus,getNewsDashboard,getObjectTypes,getOembedQuery,postPackageByNameRunMigration,getPackageConfiguration,getPackageCreated,postPackageCreated,getPackageCreatedById,deletePackageCreatedById,putPackageCreatedById,getPackageCreatedByIdDownload,getPackageMigrationStatus,getItemPartialView,postPartialView,getPartialViewByPath,deletePartialViewByPath,putPartialViewByPath,putPartialViewByPathRename,postPartialViewFolder,getPartialViewFolderByPath,deletePartialViewFolderByPath,getPartialViewSnippet,getPartialViewSnippetById,getTreePartialViewAncestors,getTreePartialViewChildren,getTreePartialViewRoot,getTreePartialViewSiblings,deletePreview,postPreview,getProfilingStatus,putProfilingStatus,getPropertyTypeIsUsed,postPublishedCacheRebuild,getPublishedCacheRebuildStatus,postPublishedCacheReload,getRedirectManagement,getRedirectManagementById,deleteRedirectManagementById,getRedirectManagementStatus,postRedirectManagementStatus,getItemRelationType,getRelationType,getRelationTypeById,getRelationByRelationTypeId,getItemScript,postScript,getScriptByPath,deleteScriptByPath,putScriptByPath,putScriptByPathRename,postScriptFolder,getScriptFolderByPath,deleteScriptFolderByPath,getTreeScriptAncestors,getTreeScriptChildren,getTreeScriptRoot,getTreeScriptSiblings,getSearcher,getSearcherBySearcherNameQuery,getSecurityConfiguration,postSecurityForgotPassword,postSecurityForgotPasswordReset,postSecurityForgotPasswordVerify,getSegment,getServerConfiguration,getServerInformation,getServerStatus,getServerTroubleshooting,getServerUpgradeCheck,getItemStaticFile,getTreeStaticFileAncestors,getTreeStaticFileChildren,getTreeStaticFileRoot,getItemStylesheet,postStylesheet,getStylesheetByPath,deleteStylesheetByPath,putStylesheetByPath,putStylesheetByPathRename,postStylesheetFolder,getStylesheetFolderByPath,deleteStylesheetFolderByPath,getTreeStylesheetAncestors,getTreeStylesheetChildren,getTreeStylesheetRoot,getTreeStylesheetSiblings,getTag,getTelemetry,getTelemetryLevel,postTelemetryLevel,getItemTemplate,getItemTemplateAncestors,getItemTemplateSearch,postTemplate,getTemplateById,deleteTemplateById,putTemplateById,getTemplateConfiguration,postTemplateQueryExecute,getTemplateQuerySettings,getTreeTemplateAncestors,getTreeTemplateChildren,getTreeTemplateRoot,getTreeTemplateSiblings,postUpgradeAuthorize,getUpgradeSettings,postUserData,getUserData,putUserData,getUserDataById,deleteUserDataById,getFilterUserGroup,getItemUserGroup,deleteUserGroup,postUserGroup,getUserGroup,getUserGroupById,deleteUserGroupById,putUserGroupById,deleteUserGroupByIdUsers,postUserGroupByIdUsers,getFilterUser,getItemUser,postUser,deleteUser,getUser,getUserById,deleteUserById,putUserById,getUserById2fa,deleteUserById2faByProviderName,getUserByIdCalculateStartNodes,postUserByIdChangePassword,postUserByIdClientCredentials,getUserByIdClientCredentials,deleteUserByIdClientCredentialsByClientId,postUserByIdResetPassword,deleteUserAvatarById,postUserAvatarById,getUserConfiguration,getUserCurrent,getUserCurrent2fa,deleteUserCurrent2faByProviderName,postUserCurrent2faByProviderName,getUserCurrent2faByProviderName,postUserCurrentAvatar,postUserCurrentChangePassword,getUserCurrentConfiguration,getUserCurrentLoginProviders,getUserCurrentPermissions,getUserCurrentPermissionsDocument,getUserCurrentPermissionsMedia,postUserDisable,postUserEnable,postUserInvite,postUserInviteCreatePassword,postUserInviteResend,postUserInviteVerify,postUserSetUserGroups,postUserUnlock,getItemWebhook,getWebhook,postWebhook,getWebhookById,deleteWebhookById,putWebhookById,getWebhookByIdLogs,getWebhookEvents,getWebhookLogs}};
 export type GetCultureResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getCulture']>>>
 export type PostDataTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDataType']>>>
 export type GetDataTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeById']>>>
@@ -4882,6 +6822,7 @@ export type PostDataTypeByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnTy
 export type GetDataTypeByIdIsUsedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeByIdIsUsed']>>>
 export type PutDataTypeByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDataTypeByIdMove']>>>
 export type GetDataTypeByIdReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeByIdReferencedBy']>>>
+export type GetDataTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeBatch']>>>
 export type GetDataTypeConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeConfiguration']>>>
 export type PostDataTypeFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDataTypeFolder']>>>
 export type GetDataTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeFolderById']>>>
@@ -4889,10 +6830,12 @@ export type DeleteDataTypeFolderByIdResult = NonNullable<Awaited<ReturnType<Retu
 export type PutDataTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDataTypeFolderById']>>>
 export type GetFilterDataTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getFilterDataType']>>>
 export type GetItemDataTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDataType']>>>
+export type GetItemDataTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDataTypeAncestors']>>>
 export type GetItemDataTypeSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDataTypeSearch']>>>
 export type GetTreeDataTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDataTypeAncestors']>>>
 export type GetTreeDataTypeChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDataTypeChildren']>>>
 export type GetTreeDataTypeRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDataTypeRoot']>>>
+export type GetTreeDataTypeSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDataTypeSearch']>>>
 export type GetTreeDataTypeSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDataTypeSiblings']>>>
 export type GetDictionaryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDictionary']>>>
 export type PostDictionaryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDictionary']>>>
@@ -4927,6 +6870,7 @@ export type GetDocumentTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnTyp
 export type DeleteDocumentTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteDocumentTypeById']>>>
 export type PutDocumentTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentTypeById']>>>
 export type GetDocumentTypeByIdAllowedChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeByIdAllowedChildren']>>>
+export type GetDocumentTypeByIdAllowedParentsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeByIdAllowedParents']>>>
 export type GetDocumentTypeByIdBlueprintResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeByIdBlueprint']>>>
 export type GetDocumentTypeByIdCompositionReferencesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeByIdCompositionReferences']>>>
 export type PostDocumentTypeByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentTypeByIdCopy']>>>
@@ -4936,6 +6880,7 @@ export type PutDocumentTypeByIdMoveResult = NonNullable<Awaited<ReturnType<Retur
 export type PostDocumentTypeByIdTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentTypeByIdTemplate']>>>
 export type GetDocumentTypeAllowedAtRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeAllowedAtRoot']>>>
 export type PostDocumentTypeAvailableCompositionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentTypeAvailableCompositions']>>>
+export type GetDocumentTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeBatch']>>>
 export type GetDocumentTypeConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeConfiguration']>>>
 export type PostDocumentTypeFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentTypeFolder']>>>
 export type GetDocumentTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeFolderById']>>>
@@ -4943,10 +6888,12 @@ export type DeleteDocumentTypeFolderByIdResult = NonNullable<Awaited<ReturnType<
 export type PutDocumentTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentTypeFolderById']>>>
 export type PostDocumentTypeImportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentTypeImport']>>>
 export type GetItemDocumentTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocumentType']>>>
+export type GetItemDocumentTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocumentTypeAncestors']>>>
 export type GetItemDocumentTypeSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocumentTypeSearch']>>>
 export type GetTreeDocumentTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentTypeAncestors']>>>
 export type GetTreeDocumentTypeChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentTypeChildren']>>>
 export type GetTreeDocumentTypeRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentTypeRoot']>>>
+export type GetTreeDocumentTypeSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentTypeSearch']>>>
 export type GetTreeDocumentTypeSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentTypeSiblings']>>>
 export type GetDocumentVersionResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentVersion']>>>
 export type GetDocumentVersionByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentVersionById']>>>
@@ -4985,6 +6932,7 @@ export type PutDocumentSortResult = NonNullable<Awaited<ReturnType<ReturnType<ty
 export type GetDocumentUrlsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentUrls']>>>
 export type PostDocumentValidateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentValidate']>>>
 export type GetItemDocumentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocument']>>>
+export type GetItemDocumentAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocumentAncestors']>>>
 export type GetItemDocumentSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocumentSearch']>>>
 export type DeleteRecycleBinDocumentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRecycleBinDocument']>>>
 export type DeleteRecycleBinDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRecycleBinDocumentById']>>>
@@ -5034,6 +6982,7 @@ export type GetManifestManifestPrivateResult = NonNullable<Awaited<ReturnType<Re
 export type GetManifestManifestPublicResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getManifestManifestPublic']>>>
 export type GetItemMediaTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaType']>>>
 export type GetItemMediaTypeAllowedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeAllowed']>>>
+export type GetItemMediaTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeAncestors']>>>
 export type GetItemMediaTypeFoldersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeFolders']>>>
 export type GetItemMediaTypeSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeSearch']>>>
 export type PostMediaTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaType']>>>
@@ -5041,6 +6990,7 @@ export type GetMediaTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<t
 export type DeleteMediaTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteMediaTypeById']>>>
 export type PutMediaTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeById']>>>
 export type GetMediaTypeByIdAllowedChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdAllowedChildren']>>>
+export type GetMediaTypeByIdAllowedParentsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdAllowedParents']>>>
 export type GetMediaTypeByIdCompositionReferencesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdCompositionReferences']>>>
 export type PostMediaTypeByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeByIdCopy']>>>
 export type GetMediaTypeByIdExportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdExport']>>>
@@ -5048,6 +6998,7 @@ export type PutMediaTypeByIdImportResult = NonNullable<Awaited<ReturnType<Return
 export type PutMediaTypeByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeByIdMove']>>>
 export type GetMediaTypeAllowedAtRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeAllowedAtRoot']>>>
 export type PostMediaTypeAvailableCompositionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeAvailableCompositions']>>>
+export type GetMediaTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeBatch']>>>
 export type GetMediaTypeConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeConfiguration']>>>
 export type PostMediaTypeFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeFolder']>>>
 export type GetMediaTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeFolderById']>>>
@@ -5060,6 +7011,7 @@ export type GetTreeMediaTypeRootResult = NonNullable<Awaited<ReturnType<ReturnTy
 export type GetTreeMediaTypeSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaTypeSiblings']>>>
 export type GetCollectionMediaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getCollectionMedia']>>>
 export type GetItemMediaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMedia']>>>
+export type GetItemMediaAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaAncestors']>>>
 export type GetItemMediaSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaSearch']>>>
 export type PostMediaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMedia']>>>
 export type GetMediaByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaById']>>>
@@ -5096,6 +7048,7 @@ export type DeleteMemberGroupByIdResult = NonNullable<Awaited<ReturnType<ReturnT
 export type PutMemberGroupByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMemberGroupById']>>>
 export type GetTreeMemberGroupRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMemberGroupRoot']>>>
 export type GetItemMemberTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberType']>>>
+export type GetItemMemberTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberTypeAncestors']>>>
 export type GetItemMemberTypeSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberTypeSearch']>>>
 export type PostMemberTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMemberType']>>>
 export type GetMemberTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberTypeById']>>>
@@ -5107,6 +7060,7 @@ export type GetMemberTypeByIdExportResult = NonNullable<Awaited<ReturnType<Retur
 export type PutMemberTypeByIdImportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMemberTypeByIdImport']>>>
 export type PutMemberTypeByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMemberTypeByIdMove']>>>
 export type PostMemberTypeAvailableCompositionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMemberTypeAvailableCompositions']>>>
+export type GetMemberTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberTypeBatch']>>>
 export type GetMemberTypeConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberTypeConfiguration']>>>
 export type PostMemberTypeFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMemberTypeFolder']>>>
 export type GetMemberTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberTypeFolderById']>>>
@@ -5119,6 +7073,7 @@ export type GetTreeMemberTypeRootResult = NonNullable<Awaited<ReturnType<ReturnT
 export type GetTreeMemberTypeSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMemberTypeSiblings']>>>
 export type GetFilterMemberResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getFilterMember']>>>
 export type GetItemMemberResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMember']>>>
+export type GetItemMemberAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberAncestors']>>>
 export type GetItemMemberSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberSearch']>>>
 export type PostMemberResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMember']>>>
 export type GetMemberByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberById']>>>
@@ -5224,6 +7179,7 @@ export type GetTelemetryResult = NonNullable<Awaited<ReturnType<ReturnType<typeo
 export type GetTelemetryLevelResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTelemetryLevel']>>>
 export type PostTelemetryLevelResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postTelemetryLevel']>>>
 export type GetItemTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemTemplate']>>>
+export type GetItemTemplateAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemTemplateAncestors']>>>
 export type GetItemTemplateSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemTemplateSearch']>>>
 export type PostTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postTemplate']>>>
 export type GetTemplateByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTemplateById']>>>

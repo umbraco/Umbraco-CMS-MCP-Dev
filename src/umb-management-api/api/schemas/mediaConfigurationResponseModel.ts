@@ -8,5 +8,6 @@
 
 export interface MediaConfigurationResponseModel {
   disableDeleteWhenReferenced: boolean;
+  /** @deprecated */
   disableUnpublishWhenReferenced: boolean;
 }

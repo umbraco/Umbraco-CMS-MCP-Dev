@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-type-allowed-parents should return an allowedParentIds array for a document type 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "allowedParentIds": [],
+  },
+}
+`;

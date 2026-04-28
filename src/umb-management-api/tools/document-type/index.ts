@@ -7,6 +7,9 @@ import MoveDocumentTypeTool from "./put/move-document-type.js";
 import GetDocumentTypeRootTool from "./items/get/get-root.js";
 import GetDocumentTypeChildrenTool from "./items/get/get-children.js";
 import GetDocumentTypeAncestorsTool from "./items/get/get-ancestors.js";
+import GetDocumentTypeAncestorsBatchTool from "./items/get/get-ancestors-batch.js";
+import GetDocumentTypeTreeSearchTool from "./items/get/get-tree-search.js";
+import GetDocumentTypeAllowedParentsTool from "./get/get-document-type-allowed-parents.js";
 import GetDocumentTypeSiblingsTool from "./items/get/get-siblings.js";
 import CreateDocumentTypeFolderTool from "./folders/post/create-folder.js";
 import DeleteDocumentTypeFolderTool from "./folders/delete/delete-folder.js";
@@ -18,6 +21,7 @@ import GetDocumentTypeAvailableCompositionsTool from "./post/get-document-type-a
 import GetDocumentTypeAllowedChildrenTool from "./get/get-document-type-allowed-children.js";
 import GetDocumentTypeConfigurationTool from "./get/get-document-type-configuration.js";
 import GetDocumentTypesByIdArrayTool from "./get/get-document-type-by-id-array.js";
+import GetDocumentTypeBatchTool from "./get/get-document-type-batch.js";
 import GetIconsTool from "./templates/get-icons.js";
 import CreateElementTypeTool from "./post/create-element-type.js";
 import GetAllDocumentTypesTool from "./items/get/get-all.js";
@@ -44,6 +48,7 @@ export const DocumentTypeCollection: ToolCollectionExport = {
       tools.push(GetDocumentTypeConfigurationTool);
       tools.push(GetDocumentTypeBlueprintTool);
       tools.push(GetDocumentTypesByIdArrayTool);
+      tools.push(GetDocumentTypeBatchTool);
     }
 
     if (AuthorizationPolicies.TreeAccessDocumentTypes(user)) {
@@ -66,6 +71,9 @@ export const DocumentTypeCollection: ToolCollectionExport = {
 
       tools.push(GetDocumentTypeRootTool);
       tools.push(GetDocumentTypeAncestorsTool);
+      tools.push(GetDocumentTypeAncestorsBatchTool);
+      tools.push(GetDocumentTypeTreeSearchTool);
+      tools.push(GetDocumentTypeAllowedParentsTool);
       tools.push(GetDocumentTypeChildrenTool);
       tools.push(GetDocumentTypeSiblingsTool);
     }

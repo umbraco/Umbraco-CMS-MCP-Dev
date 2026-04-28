@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-data-type-batch should get a single data type with full configuration values 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "canIgnoreStartNodes": true,
+        "editorAlias": "Umbraco.TextBox",
+        "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "name": "_Test Batch DataType",
+        "values": [],
+      },
+    ],
+    "total": 1,
+  },
+}
+`;
+
+exports[`get-data-type-batch should get multiple data types in a single request 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "canIgnoreStartNodes": true,
+        "editorAlias": "Umbraco.TextBox",
+        "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "name": "_Test Batch DataType",
+        "values": [],
+      },
+      {
+        "canIgnoreStartNodes": true,
+        "editorAlias": "Umbraco.TextBox",
+        "editorUiAlias": "Umb.PropertyEditorUi.TextBox",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "name": "_Test Batch DataType2",
+        "values": [],
+      },
+    ],
+    "total": 2,
+  },
+}
+`;

@@ -11,6 +11,7 @@ import GetTemplateQuerySettingsTool from "./get/get-template-query-settings.js";
 
 // Tree operations
 import GetTemplateAncestorsTool from "./items/get/get-ancestors.js";
+import GetTemplateAncestorsBatchTool from "./items/get/get-ancestors-batch.js";
 import GetTemplateChildrenTool from "./items/get/get-children.js";
 import GetTemplateRootTool from "./items/get/get-root.js";
 import GetTemplateSearchTool from "./items/get/get-search.js";
@@ -47,6 +48,7 @@ export const TemplateCollection: ToolCollectionExport = {
 
       // Tree operations
       tools.push(GetTemplateAncestorsTool);
+      tools.push(GetTemplateAncestorsBatchTool);
       tools.push(GetTemplateChildrenTool);
       tools.push(GetTemplateRootTool);
       tools.push(GetTemplateSearchTool);

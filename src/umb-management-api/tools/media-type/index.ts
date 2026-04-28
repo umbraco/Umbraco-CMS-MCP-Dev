@@ -1,15 +1,18 @@
 import GetMediaTypeConfigurationTool from "./get/get-media-type-configuration.js";
 import GetMediaTypeByIdTool from "./get/get-media-type-by-id.js";
 import GetMediaTypeByIdsTool from "./get/get-media-type-by-ids.js";
+import GetMediaTypeBatchTool from "./get/get-media-type-batch.js";
 import GetItemMediaTypeTool from "./get/get-item-media-type.js";
 import GetAllowedMediaTypeTool from "./get/get-allowed.js";
 import GetMediaTypeAllowedAtRootTool from "./get/get-media-type-allowed-at-root.js";
 import GetMediaTypeAllowedChildrenTool from "./get/get-media-type-allowed-children.js";
+import GetMediaTypeAllowedParentsTool from "./get/get-media-type-allowed-parents.js";
 import GetMediaTypeCompositionReferencesTool from "./get/get-media-type-composition-references.js";
 import GetMediaTypeRootTool from "./items/get/get-root.js";
 import GetMediaTypeChildrenTool from "./items/get/get-children.js";
 import GetMediaTypeSiblingsTool from "./items/get/get-siblings.js";
 import GetMediaTypeAncestorsTool from "./items/get/get-ancestors.js";
+import GetMediaTypeAncestorsBatchTool from "./items/get/get-ancestors-batch.js";
 import GetMediaTypeFoldersTool from "./items/get/get-media-type-folders.js";
 import GetMediaTypeFolderTool from "./folders/get/get-folder.js";
 import CreateMediaTypeFolderTool from "./folders/post/create-folder.js";
@@ -55,17 +58,20 @@ export const MediaTypeCollection: ToolCollectionExport = {
       tools.push(GetMediaTypeChildrenTool);
       tools.push(GetMediaTypeSiblingsTool);
       tools.push(GetMediaTypeAncestorsTool);
+      tools.push(GetMediaTypeAncestorsBatchTool);
       tools.push(GetMediaTypeFoldersTool);
     }
 
     if (AuthorizationPolicies.TreeAccessMediaOrMediaTypes(user)) {
       tools.push(GetMediaTypeByIdTool);
       tools.push(GetMediaTypeByIdsTool);
+      tools.push(GetMediaTypeBatchTool);
       tools.push(GetItemMediaTypeTool);
       tools.push(GetMediaTypeConfigurationTool);
       tools.push(GetAllowedMediaTypeTool);
       tools.push(GetMediaTypeAllowedAtRootTool);
       tools.push(GetMediaTypeAllowedChildrenTool);
+      tools.push(GetMediaTypeAllowedParentsTool);
       tools.push(GetMediaTypeCompositionReferencesTool);
     }
 
