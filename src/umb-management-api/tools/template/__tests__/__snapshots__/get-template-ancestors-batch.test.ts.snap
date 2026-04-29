@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-template-ancestors-batch should return an ancestor entry per requested Id 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "ancestors": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+    ],
+  },
+}
+`;

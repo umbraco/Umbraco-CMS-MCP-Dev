@@ -12,4 +12,5 @@ id?: string[];
 height?: number;
 width?: number;
 mode?: ImageCropModeModel;
+format?: string;
 };

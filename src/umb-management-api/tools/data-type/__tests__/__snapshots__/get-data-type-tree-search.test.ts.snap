@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-data-type-tree-search should find a created data type by name in tree-node shape 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "editorUiAlias": null,
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": false,
+        "isFolder": false,
+        "name": "_Test TreeSearch DataType",
+        "parent": null,
+      },
+    ],
+    "nextCursor": undefined,
+    "total": 1,
+  },
+}
+`;

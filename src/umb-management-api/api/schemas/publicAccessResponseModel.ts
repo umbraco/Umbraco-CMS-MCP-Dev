@@ -14,4 +14,5 @@ export interface PublicAccessResponseModel {
   errorDocument: ReferenceByIdModel;
   members: MemberItemResponseModel[];
   groups: MemberGroupItemResponseModel[];
+  isProtectedByAncestor: boolean;
 }

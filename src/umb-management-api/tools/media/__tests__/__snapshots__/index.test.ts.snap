@@ -4,6 +4,7 @@ exports[`media-tool-index should have all tools when user has all required acces
 [
   "get-media-by-id",
   "get-media-ancestors",
+  "get-media-ancestors-batch",
   "get-media-children",
   "get-media-siblings",
   "get-media-root",
@@ -47,6 +48,7 @@ exports[`media-tool-index should have management tools when user has media secti
 [
   "get-media-by-id",
   "get-media-ancestors",
+  "get-media-ancestors-batch",
   "get-media-children",
   "get-media-siblings",
   "get-media-root",
@@ -84,6 +86,7 @@ exports[`media-tool-index should have tree tools when user has media tree access
 [
   "get-media-by-id",
   "get-media-ancestors",
+  "get-media-ancestors-batch",
   "get-media-children",
   "get-media-siblings",
   "get-media-root",

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-media-type-allowed-parents should return an allowedParentIds array for a media type 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "allowedParentIds": [],
+  },
+}
+`;

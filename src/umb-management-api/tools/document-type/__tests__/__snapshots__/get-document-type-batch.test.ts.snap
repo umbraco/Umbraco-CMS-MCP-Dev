@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-type-batch should get a single document type with full configuration 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "testbatchdocumenttype",
+        "allowedAsRoot": false,
+        "allowedDocumentTypes": [],
+        "allowedTemplates": [],
+        "cleanup": {
+          "keepAllVersionsNewerThanDays": null,
+          "keepLatestVersionPerDayForDays": null,
+          "preventCleanup": false,
+        },
+        "collection": null,
+        "compositions": [],
+        "containers": [],
+        "defaultTemplate": null,
+        "description": null,
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "name": "_Test Batch DocumentType",
+        "properties": [],
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+    ],
+    "total": 1,
+  },
+}
+`;
+
+exports[`get-document-type-batch should get multiple document types in a single request 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "testbatchdocumenttype",
+        "allowedAsRoot": false,
+        "allowedDocumentTypes": [],
+        "allowedTemplates": [],
+        "cleanup": {
+          "keepAllVersionsNewerThanDays": null,
+          "keepLatestVersionPerDayForDays": null,
+          "preventCleanup": false,
+        },
+        "collection": null,
+        "compositions": [],
+        "containers": [],
+        "defaultTemplate": null,
+        "description": null,
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "name": "_Test Batch DocumentType",
+        "properties": [],
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "testbatchdocumenttype2",
+        "allowedAsRoot": false,
+        "allowedDocumentTypes": [],
+        "allowedTemplates": [],
+        "cleanup": {
+          "keepAllVersionsNewerThanDays": null,
+          "keepLatestVersionPerDayForDays": null,
+          "preventCleanup": false,
+        },
+        "collection": null,
+        "compositions": [],
+        "containers": [],
+        "defaultTemplate": null,
+        "description": null,
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "name": "_Test Batch DocumentType2",
+        "properties": [],
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+    ],
+    "total": 2,
+  },
+}
+`;
