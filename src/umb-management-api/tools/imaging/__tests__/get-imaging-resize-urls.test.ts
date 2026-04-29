@@ -21,9 +21,14 @@ describe("get-imaging-resize-urls", () => {
       },
       createMockRequestHandlerExtra()
     );
-    // Verify the handler response using snapshot
+    // Verify the handler response using snapshot.
+    // The hmac= query param is signed with a server-specific secret so it
+    // differs between machines (local vs CI) — normalize before snapshot.
     validateToolResponse(GetImagingResizeUrlsTool, result);
-    expect(result).toMatchSnapshot();
+    const normalized = JSON.parse(
+      JSON.stringify(result).replace(/hmac=[a-f0-9]+/g, "hmac=NORMALIZED")
+    );
+    expect(normalized).toMatchSnapshot();
   });
 
 });
