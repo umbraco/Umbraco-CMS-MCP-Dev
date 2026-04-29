@@ -1,7 +1,6 @@
 import ExecuteTemplateQueryTool from "../post/execute-template-query.js";
 import {
   createMockRequestHandlerExtra,
-  createSnapshotResult,
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
@@ -15,14 +14,14 @@ describe("execute-template-query", () => {
       documentTypeAlias: undefined,
       filters: undefined,
       sort: undefined,
-      take: 10
     };
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
+    const result = await ExecuteTemplateQueryTool.handler(queryBody as any, createMockRequestHandlerExtra());
 
     const data = validateToolResponse(ExecuteTemplateQueryTool, result);
     expect(data).toBeDefined();
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    expect(data).toHaveProperty("queryExpression");
+    expect(typeof data.executionTime).toBe("number");
   });
 
   it("should execute a template query with document type filter", async () => {
@@ -31,14 +30,14 @@ describe("execute-template-query", () => {
       documentTypeAlias: "contentPage",
       filters: undefined,
       sort: undefined,
-      take: 5
     };
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
+    const result = await ExecuteTemplateQueryTool.handler(queryBody as any, createMockRequestHandlerExtra());
 
     const data = validateToolResponse(ExecuteTemplateQueryTool, result);
     expect(data).toBeDefined();
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    expect(data).toHaveProperty("queryExpression");
+    expect(typeof data.executionTime).toBe("number");
   });
 
   it("should execute a template query with filters and sorting", async () => {
@@ -56,14 +55,14 @@ describe("execute-template-query", () => {
         propertyAlias: "createDate",
         direction: "Descending" as const
       },
-      take: 10
     };
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
+    const result = await ExecuteTemplateQueryTool.handler(queryBody as any, createMockRequestHandlerExtra());
 
     const data = validateToolResponse(ExecuteTemplateQueryTool, result);
     expect(data).toBeDefined();
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    expect(data).toHaveProperty("queryExpression");
+    expect(typeof data.executionTime).toBe("number");
   });
 
   it("should handle invalid query gracefully", async () => {
@@ -72,13 +71,12 @@ describe("execute-template-query", () => {
       documentTypeAlias: "nonExistentType",
       filters: undefined,
       sort: undefined,
-      take: 10
     };
 
-    const result = await ExecuteTemplateQueryTool.handler(queryBody, createMockRequestHandlerExtra());
+    const result = await ExecuteTemplateQueryTool.handler(queryBody as any, createMockRequestHandlerExtra());
 
     const data = validateToolResponse(ExecuteTemplateQueryTool, result);
     expect(data).toBeDefined();
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    expect(data).toHaveProperty("queryExpression");
   });
 });

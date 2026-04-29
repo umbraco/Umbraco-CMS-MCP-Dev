@@ -9,6 +9,7 @@ exports[`get-media-by-id-referenced-descendants should get references to descend
         "id": "00000000-0000-0000-0000-000000000000",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -19,19 +20,9 @@ exports[`get-media-by-id-referenced-descendants should handle media with no desc
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
-}
-`;
-
-exports[`get-media-by-id-referenced-descendants should handle non-existent media ID 1`] = `
-{
-  "content": [
-    {
-      "text": "{"total":0,"items":[]}",
-      "type": "text",
-    },
-  ],
 }
 `;
 
@@ -40,6 +31,7 @@ exports[`get-media-by-id-referenced-descendants should return empty when media f
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

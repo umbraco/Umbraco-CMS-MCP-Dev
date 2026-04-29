@@ -24,6 +24,7 @@ exports[`member-type-tree root should get root items 1`] = `
         "parent": null,
       },
     ],
+    "nextCursor": undefined,
     "total": 2,
   },
 }

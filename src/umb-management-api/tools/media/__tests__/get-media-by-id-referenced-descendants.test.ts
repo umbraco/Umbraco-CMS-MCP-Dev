@@ -77,8 +77,6 @@ describe("get-media-by-id-referenced-descendants", () => {
     const result = await GetMediaByIdReferencedDescendantsTool.handler(
       {
         id: parentFolder.getId(),
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -96,8 +94,6 @@ describe("get-media-by-id-referenced-descendants", () => {
     const result = await GetMediaByIdReferencedDescendantsTool.handler(
       {
         id: BLANK_UUID,
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -123,8 +119,6 @@ describe("get-media-by-id-referenced-descendants", () => {
     const result = await GetMediaByIdReferencedDescendantsTool.handler(
       {
         id: parentFolder.getId(),
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -149,8 +143,6 @@ describe("get-media-by-id-referenced-descendants", () => {
     const result = await GetMediaByIdReferencedDescendantsTool.handler(
       {
         id: singleMedia.getId(),
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );

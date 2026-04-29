@@ -6,6 +6,7 @@ import { resolve } from 'path';
 // Load environment variables from .env
 dotenv.config({ path: '.env' });
 
+
 // Set allowed media paths for tests (allow project root for test files)
 if (!process.env.UMBRACO_ALLOWED_MEDIA_PATHS) {
   process.env.UMBRACO_ALLOWED_MEDIA_PATHS = resolve(process.cwd());

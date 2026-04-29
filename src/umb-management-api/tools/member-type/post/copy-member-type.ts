@@ -15,7 +15,7 @@ const inputSchema = z.object({
 
 export const copyMemberTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CopyMemberTypeTool = {

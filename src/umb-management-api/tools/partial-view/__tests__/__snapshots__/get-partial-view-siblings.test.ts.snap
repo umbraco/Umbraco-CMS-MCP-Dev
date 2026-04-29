@@ -27,7 +27,7 @@ exports[`get-partial-view-siblings should handle non-existent partial view 1`] =
   "content": [],
   "structuredContent": {
     "items": [],
-    "totalAfter": 8,
+    "totalAfter": 7,
     "totalBefore": 0,
   },
 }

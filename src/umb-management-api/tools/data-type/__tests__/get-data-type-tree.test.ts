@@ -43,7 +43,7 @@ describe("data-type-tree", () => {
 
       // Act - Get children of folder
       const result = await GetDataTypeChildrenTool.handler(
-        { take: 100, parentId: folderBuilder.getId() } as any,
+        { parentId: folderBuilder.getId() } as any,
         createMockRequestHandlerExtra()
       );
 
@@ -55,7 +55,7 @@ describe("data-type-tree", () => {
     it("should handle non-existent parent", async () => {
       // Act - Try to get children of non-existent parent
       const result = await GetDataTypeChildrenTool.handler(
-        { take: 100, parentId: BLANK_UUID } as any,
+        { parentId: BLANK_UUID } as any,
         createMockRequestHandlerExtra()
       );
 

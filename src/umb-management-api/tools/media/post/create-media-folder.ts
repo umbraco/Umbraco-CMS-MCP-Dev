@@ -20,7 +20,7 @@ type CreateMediaFolderParams = z.infer<typeof createMediaFolderSchema>;
 export const createMediaFolderOutputSchema = z.object({
   message: z.string(),
   name: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateMediaFolderTool = {

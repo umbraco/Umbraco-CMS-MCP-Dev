@@ -19,7 +19,7 @@ const copyDocumentTypeSchema = {
 };
 
 export const copyDocumentTypeOutputSchema = z.object({
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CopyDocumentTypeTool = {

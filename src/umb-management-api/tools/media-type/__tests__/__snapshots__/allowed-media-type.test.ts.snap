@@ -12,6 +12,7 @@ exports[`allowed-media-type get allowed should filter by file extension 1`] = `
         "name": "Image",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }

@@ -59,6 +59,7 @@ exports[`media-type-tree children should get child items 1`] = `
         },
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -69,6 +70,7 @@ exports[`media-type-tree children should handle non-existent parent 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

@@ -5,6 +5,7 @@ exports[`get-document-available-segment-options should get available segment opt
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -15,6 +16,7 @@ exports[`get-document-available-segment-options should handle non-existent docum
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

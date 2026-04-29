@@ -46,8 +46,6 @@ describe("template-tree", () => {
 
       const result = await GetTemplateChildrenTool.handler(
         {
-          skip: undefined,
-          take: 100,
           parentId: parentBuilder.getId(),
         },
         createMockRequestHandlerExtra()
@@ -63,8 +61,6 @@ describe("template-tree", () => {
     it("should handle non-existent parent", async () => {
       const result = await GetTemplateChildrenTool.handler(
         {
-          skip: undefined,
-          take: 100,
           parentId: BLANK_UUID,
         },
         createMockRequestHandlerExtra()
@@ -128,8 +124,6 @@ describe("template-tree", () => {
     it("should get root level templates", async () => {
       const result = await GetTemplateRootTool.handler(
         {
-          skip: 0,
-          take: 100
         },
         createMockRequestHandlerExtra()
       );
@@ -151,8 +145,6 @@ describe("template-tree", () => {
       const result = await GetTemplateSearchTool.handler(
         {
           query: TEST_ROOT_NAME,
-          skip: 0,
-          take: 100,
         },
         createMockRequestHandlerExtra()
       );

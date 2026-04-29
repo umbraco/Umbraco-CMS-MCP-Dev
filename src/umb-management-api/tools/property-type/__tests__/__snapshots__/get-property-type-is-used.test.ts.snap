@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`get-property-type-is-used should check if a property type is used with both parameters 1`] = `
-{
-  "content": [
-    {
-      "text": "true",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`get-property-type-is-used should handle empty parameters 1`] = `
 {
   "content": [],

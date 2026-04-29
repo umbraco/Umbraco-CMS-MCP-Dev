@@ -48,7 +48,6 @@ describe("media-tree", () => {
 
       const result = await GetMediaChildrenTool.handler(
         {
-          take: 100,
           parentId: parentBuilder.getId(),
         } as any,
         createMockRequestHandlerExtra()
@@ -61,7 +60,6 @@ describe("media-tree", () => {
     it("should handle non-existent parent", async () => {
       const result = await GetMediaChildrenTool.handler(
         {
-          take: 100,
           parentId: BLANK_UUID,
         } as any,
         createMockRequestHandlerExtra()

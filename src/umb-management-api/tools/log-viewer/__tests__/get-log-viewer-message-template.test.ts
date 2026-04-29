@@ -4,13 +4,12 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-
 describe("get-log-viewer-message-template", () => {
   setupTestEnvironment();
 
   it("should get log viewer message templates with default parameters", async () => {
     const result = await GetLogViewerMessageTemplateTool.handler(
-      { skip: undefined, take: 100, startDate: undefined, endDate: undefined },
+      { startDate: undefined, endDate: undefined },
       createMockRequestHandlerExtra()
     );
 
@@ -39,11 +38,8 @@ describe("get-log-viewer-message-template", () => {
     const now = new Date();
     const oneMonthAgo = new Date(now);
     oneMonthAgo.setMonth(now.getMonth() - 1);
-
     const result = await GetLogViewerMessageTemplateTool.handler(
       {
-        skip: 0,
-        take: 10,
         startDate: oneMonthAgo.toISOString(),
         endDate: now.toISOString(),
       },
@@ -57,6 +53,6 @@ describe("get-log-viewer-message-template", () => {
     expect(content).toHaveProperty("items");
     expect(content).toHaveProperty("total");
     expect(Array.isArray(content.items)).toBe(true);
-    expect(content.items.length).toBeLessThanOrEqual(10);
+    expect(content.items.length).toBeGreaterThan(0);
   });
 });

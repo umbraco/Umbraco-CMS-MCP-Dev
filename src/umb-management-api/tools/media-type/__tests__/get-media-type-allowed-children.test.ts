@@ -17,8 +17,13 @@ describe("get-media-type-allowed-children", () => {
   const TEST_PARENT_NAME = "_Test Parent MediaType";
   const TEST_CHILD_NAME = "_Test Child MediaType";
 
+  beforeEach(async () => {
+    // Clean up any leftover media types from previous runs
+    await MediaTypeTestHelper.cleanup(TEST_PARENT_NAME);
+    await MediaTypeTestHelper.cleanup(TEST_CHILD_NAME);
+  });
+
   afterEach(async () => {
-    // Clean up any test media types
     await MediaTypeTestHelper.cleanup(TEST_PARENT_NAME);
     await MediaTypeTestHelper.cleanup(TEST_CHILD_NAME);
   });
@@ -41,8 +46,6 @@ describe("get-media-type-allowed-children", () => {
     const result = await GetMediaTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
-        skip: 0,
-        take: 100,
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -69,8 +72,6 @@ describe("get-media-type-allowed-children", () => {
     const result = await GetMediaTypeAllowedChildrenTool.handler(
       {
         id: BLANK_UUID,
-        skip: 0,
-        take: 100,
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -87,8 +88,6 @@ describe("get-media-type-allowed-children", () => {
     const result = await GetMediaTypeAllowedChildrenTool.handler(
       {
         id: parentBuilder.getId(),
-        skip: 0,
-        take: 100,
       } as any,
       createMockRequestHandlerExtra()
     );

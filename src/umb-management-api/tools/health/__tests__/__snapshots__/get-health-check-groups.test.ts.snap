@@ -24,6 +24,7 @@ exports[`get-health-check-groups should get health check groups 1`] = `
         "name": "Services",
       },
     ],
+    "nextCursor": undefined,
     "total": 6,
   },
 }
@@ -33,7 +34,27 @@ exports[`get-health-check-groups should handle invalid parameters 1`] = `
 {
   "content": [],
   "structuredContent": {
-    "items": [],
+    "items": [
+      {
+        "name": "Configuration",
+      },
+      {
+        "name": "Data Integrity",
+      },
+      {
+        "name": "Live Environment",
+      },
+      {
+        "name": "Permissions",
+      },
+      {
+        "name": "Security",
+      },
+      {
+        "name": "Services",
+      },
+    ],
+    "nextCursor": undefined,
     "total": 6,
   },
 }

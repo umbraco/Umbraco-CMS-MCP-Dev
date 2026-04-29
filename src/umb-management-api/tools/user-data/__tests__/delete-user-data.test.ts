@@ -22,7 +22,7 @@ describe("delete-user-data", () => {
     // Clean up any remaining test user data
     try {
       const result = await GetUserDataTool.handler(
-        { groups: [TEST_USER_DATA_GROUP], identifiers: undefined, skip: undefined, take: 100 },
+        { groups: [TEST_USER_DATA_GROUP] } as any,
         createMockRequestHandlerExtra()
       );
 
@@ -56,7 +56,7 @@ describe("delete-user-data", () => {
 
     // Get the created user data to obtain its ID
     const getUserDataResult = await GetUserDataTool.handler(
-      { groups: [TEST_USER_DATA_GROUP], identifiers: undefined, skip: undefined, take: 100 },
+      { groups: [TEST_USER_DATA_GROUP] } as any,
       createMockRequestHandlerExtra()
     );
 
@@ -80,7 +80,7 @@ describe("delete-user-data", () => {
 
     // Verify the user data no longer exists
     const findResult = await GetUserDataTool.handler(
-      { groups: [TEST_USER_DATA_GROUP], identifiers: undefined, skip: undefined, take: 100 },
+      { groups: [TEST_USER_DATA_GROUP] } as any,
       createMockRequestHandlerExtra()
     );
 

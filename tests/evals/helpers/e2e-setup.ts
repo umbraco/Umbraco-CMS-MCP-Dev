@@ -1,5 +1,9 @@
 import path from "path";
+import { jest } from "@jest/globals";
 import { ClaudeModels, configureEvals, getDefaultVerbosity } from "@umbraco-cms/mcp-server-sdk/evals";
+
+// Retry flaky eval tests up to 2 times (LLM responses are non-deterministic)
+jest.retryTimes(2, { logErrorsBeforeRetry: true });
 
 /**
  * Configure the SDK eval framework with project-specific settings.

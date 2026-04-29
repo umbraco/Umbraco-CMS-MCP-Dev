@@ -4,7 +4,6 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-
 const TEST_SEARCHER_NAME = "ExternalIndex";
 
 describe("get-searcher-by-searcher-name-query", () => {
@@ -12,7 +11,7 @@ describe("get-searcher-by-searcher-name-query", () => {
 
   it("should get searcher query results by searcher name", async () => {
     const result = await GetSearcherBySearcherNameQueryTool.handler(
-      { searcherName: TEST_SEARCHER_NAME, term: undefined, skip: undefined, take: 100 },
+      { searcherName: TEST_SEARCHER_NAME, term: undefined },
       createMockRequestHandlerExtra()
     );
     // Validate response against tool's outputSchema

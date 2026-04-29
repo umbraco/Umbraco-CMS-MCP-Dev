@@ -58,9 +58,8 @@ describe("get-member-are-referenced", () => {
       .withDocumentType(docTypeBuilder.getId())
       .withValue("memberPicker", memberBuilder.getId())
       .create();
-
     const result = await GetMemberAreReferencedTool.handler(
-      { id: [memberBuilder.getId()], skip: 0, take: 10 },
+      { id: [memberBuilder.getId()] },
       createMockRequestHandlerExtra()
     );
 
@@ -92,9 +91,8 @@ describe("get-member-are-referenced", () => {
       .withPassword("test123@Longer")
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
-
     const result = await GetMemberAreReferencedTool.handler(
-      { id: [builder1.getId(), builder2.getId()], skip: 0, take: 10 },
+      { id: [builder1.getId(), builder2.getId()] },
       createMockRequestHandlerExtra()
     );
 

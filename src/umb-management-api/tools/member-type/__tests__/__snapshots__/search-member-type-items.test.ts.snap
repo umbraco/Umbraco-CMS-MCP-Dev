@@ -12,6 +12,7 @@ exports[`search-member-type-items should search for member type items 1`] = `
         "name": "_Test Item MemberType Search",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }

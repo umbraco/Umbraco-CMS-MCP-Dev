@@ -1,6 +1,7 @@
 import { getLanguageByIsoCodeParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import GetLanguageByIsoCodeTool from "../get/get-language-by-iso-code.js";
 import { LanguageBuilder } from "./helpers/language-builder.js";
+import { LanguageTestHelper } from "./helpers/language-helper.js";
 import {
   createMockRequestHandlerExtra,
   createSnapshotResult,
@@ -9,19 +10,21 @@ import {
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_LANGUAGE_NAME = "_Test Language";
-const TEST_LANGUAGE_ISO = "en-Gb";
+const TEST_LANGUAGE_ISO = "en-ZW";
 
 describe("get-language-by-iso-code", () => {
   setupTestEnvironment();
 
   let builder: LanguageBuilder;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
     builder = new LanguageBuilder();
   });
 
   afterEach(async () => {
     await builder.cleanup();
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
   });
 
   it("should get a language by isoCode", async () => {

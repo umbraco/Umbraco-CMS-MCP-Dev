@@ -47,8 +47,6 @@ describe("get-recycle-bin-media-referenced-by", () => {
   it("should return empty when no deleted media has references", async () => {
     const result = await GetRecycleBinMediaReferencedByTool.handler(
       {
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -111,8 +109,6 @@ describe("get-recycle-bin-media-referenced-by", () => {
     // Check for references to deleted media
     const result = await GetRecycleBinMediaReferencedByTool.handler(
       {
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -130,8 +126,6 @@ describe("get-recycle-bin-media-referenced-by", () => {
     // Simple pagination test - just test the API accepts the parameters
     const result = await GetRecycleBinMediaReferencedByTool.handler(
       {
-        skip: 5,
-        take: 5
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -150,7 +144,6 @@ describe("get-recycle-bin-media-referenced-by", () => {
     // Test with only required parameters
     const result = await GetRecycleBinMediaReferencedByTool.handler(
       {
-        take: 20
       } as any,
       createMockRequestHandlerExtra()
     );

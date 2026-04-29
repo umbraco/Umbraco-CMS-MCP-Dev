@@ -34,6 +34,6 @@ describe("create-document-with-template eval tests", () => {
       successPattern: "document creation with template workflow has completed successfully",
       options: { maxTurns: 20 }
     }),
-    180000
+    300000
   );
 });

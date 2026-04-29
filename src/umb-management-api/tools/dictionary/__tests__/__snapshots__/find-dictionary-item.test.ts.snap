@@ -14,6 +14,7 @@ exports[`find-dictionary-item should find a dictionary item by name 1`] = `
         ],
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -24,6 +25,7 @@ exports[`find-dictionary-item should handle non-existent dictionary item 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

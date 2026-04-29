@@ -36,6 +36,6 @@ describe("create-document-copy eval tests", () => {
       successPattern: "blog post workflow has completed successfully",
       options: { maxTurns: 20 }
     }),
-    180000
+    300000
   );
 });

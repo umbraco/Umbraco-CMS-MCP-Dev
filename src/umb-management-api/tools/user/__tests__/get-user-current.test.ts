@@ -13,13 +13,16 @@ describe("get-user-current", () => {
     // Act
     const result = await GetUserCurrentTool.handler({}, createMockRequestHandlerExtra());
 
-    // Extract user ID for proper normalization
+    // Extract user data for validation
     const parsed = validateToolResponse(GetUserCurrentTool, result);
-    const userId = parsed.id;
 
-    // Assert
-    const normalizedResult = createSnapshotResult(result, userId);
-    expect(normalizedResult).toMatchSnapshot();
+    // Assert structure (not user-specific values, which differ between environments)
+    expect(parsed).toBeDefined();
+    expect(parsed.id).toBeDefined();
+    expect(parsed.email).toBeDefined();
+    expect(parsed.name).toBeDefined();
+    expect(parsed.isAdmin).toBe(true);
+    expect(parsed.languageIsoCode).toBe("en-US");
   });
 
   it("should return consistent user information on multiple calls", async () => {

@@ -5,6 +5,7 @@ exports[`get-all-webhook-logs should get logs for all webhooks 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -15,6 +16,7 @@ exports[`get-all-webhook-logs should handle pagination parameters 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

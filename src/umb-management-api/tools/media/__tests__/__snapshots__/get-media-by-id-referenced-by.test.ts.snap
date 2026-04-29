@@ -27,6 +27,7 @@ exports[`get-media-by-id-referenced-by should get documents that reference a spe
         ],
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -50,6 +51,7 @@ exports[`get-media-by-id-referenced-by should return empty result when media has
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

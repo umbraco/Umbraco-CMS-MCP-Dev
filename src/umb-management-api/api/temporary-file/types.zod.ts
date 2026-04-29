@@ -11,7 +11,7 @@ export const getTemporaryFileByIdParams = zod.object({
 });
 
 export const getTemporaryFileByIdResponse = zod.object({
-  id: zod.string().uuid(),
+  id: zod.string().guid(),
   availableUntil: zod.string().datetime({ local: true }).nullish(),
   fileName: zod.string().min(1),
 });

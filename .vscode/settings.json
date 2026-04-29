@@ -1,0 +1,12 @@
+{
+  "jest.virtualFolders": [
+    {
+      "name": "integration",
+      "jestCommandLine": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    },
+    {
+      "name": "evals",
+      "jestCommandLine": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config tests/evals/jest.config.ts"
+    }
+  ]
+}

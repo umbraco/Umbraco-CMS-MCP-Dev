@@ -1,15 +1,27 @@
 import { UserBuilder } from "./user-builder.js";
+import { UserTestHelper } from "./user-test-helper.js";
 import { jest } from "@jest/globals";
+
+const TEST_EMAIL = "testuser@example.com";
+const TEST_GROUP_EMAIL = "testgroupuser@example.com";
+const TEST_API_EMAIL = "apiuser@example.com";
 
 describe("UserBuilder", () => {
   let helper: UserBuilder;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    // Clean up any leftover users from previous runs
+    await UserTestHelper.cleanup(TEST_EMAIL);
+    await UserTestHelper.cleanup(TEST_GROUP_EMAIL);
+    await UserTestHelper.cleanup(TEST_API_EMAIL);
     helper = new UserBuilder();
   });
 
   afterEach(async () => {
     await helper.cleanup();
+    await UserTestHelper.cleanup(TEST_EMAIL);
+    await UserTestHelper.cleanup(TEST_GROUP_EMAIL);
+    await UserTestHelper.cleanup(TEST_API_EMAIL);
   });
 
   it("should create a user with name, username and email", async () => {

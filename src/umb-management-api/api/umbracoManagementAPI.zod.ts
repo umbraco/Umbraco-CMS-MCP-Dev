@@ -40,15 +40,15 @@ export const postDataTypeBody = zod.object({
   "alias": zod.string(),
   "value": zod.unknown().nullish()
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDataTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -63,19 +63,19 @@ export const getDataTypeByIdResponse = zod.object({
   "alias": zod.string(),
   "value": zod.unknown().nullish()
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "isDeletable": zod.boolean(),
   "canIgnoreStartNodes": zod.boolean()
 })
 
 
 export const deleteDataTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putDataTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -94,36 +94,36 @@ export const putDataTypeByIdBody = zod.object({
 
 
 export const postDataTypeByIdCopyParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postDataTypeByIdCopyBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDataTypeByIdIsUsedParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDataTypeByIdIsUsedResponse = zod.boolean()
 
 
 export const putDataTypeByIdMoveParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDataTypeByIdMoveBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDataTypeByIdReferencedByParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDataTypeByIdReferencedByQuerySkipDefault = 0;export const getDataTypeByIdReferencedByQueryTakeDefault = 20;
@@ -137,17 +137,17 @@ export const getDataTypeByIdReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DefaultReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish()
 }),zod.object({
   "$type": zod.enum(['DocumentReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "published": zod.boolean().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -155,7 +155,7 @@ export const getDataTypeByIdReferencedByResponse = zod.object({
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -163,53 +163,53 @@ export const getDataTypeByIdReferencedByResponse = zod.object({
 }))
 }),zod.object({
   "$type": zod.enum(['DocumentTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -220,8 +220,8 @@ export const getDataTypeByIdReferencedByResponse = zod.object({
 
 export const getDataTypeConfigurationResponse = zod.object({
   "canBeChanged": zod.enum(['True', 'False', 'FalseWithHelpText']),
-  "documentListViewId": zod.uuid(),
-  "mediaListViewId": zod.uuid()
+  "documentListViewId": zod.guid(),
+  "mediaListViewId": zod.guid()
 })
 
 
@@ -230,15 +230,15 @@ export const getDataTypeConfigurationResponse = zod.object({
 
 export const postDataTypeFolderBody = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDataTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -246,17 +246,17 @@ export const getDataTypeFolderByIdParams = zod.object({
 
 export const getDataTypeFolderByIdResponse = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const deleteDataTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putDataTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -280,7 +280,7 @@ export const getFilterDataTypeQueryParams = zod.object({
 export const getFilterDataTypeResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -293,11 +293,11 @@ export const getFilterDataTypeResponse = zod.object({
 
 
 export const getItemDataTypeQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemDataTypeResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -319,7 +319,7 @@ export const getItemDataTypeSearchQueryParams = zod.object({
 
 export const getItemDataTypeSearchResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -333,14 +333,14 @@ export const getItemDataTypeSearchResponse = zod.object({
 
 
 export const getTreeDataTypeAncestorsQueryParams = zod.object({
-  "descendantId": zod.uuid().optional()
+  "descendantId": zod.guid().optional()
 })
 
 export const getTreeDataTypeAncestorsResponseItem = zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -356,7 +356,7 @@ export const getTreeDataTypeAncestorsResponse = zod.array(getTreeDataTypeAncesto
 export const getTreeDataTypeChildrenQuerySkipDefault = 0;export const getTreeDataTypeChildrenQueryTakeDefault = 100;export const getTreeDataTypeChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeDataTypeChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeDataTypeChildrenQueryTakeDefault),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -366,9 +366,9 @@ export const getTreeDataTypeChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -393,9 +393,9 @@ export const getTreeDataTypeRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -411,7 +411,7 @@ export const getTreeDataTypeRootResponse = zod.object({
 export const getTreeDataTypeSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeDataTypeSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional(),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -422,9 +422,9 @@ export const getTreeDataTypeSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -449,9 +449,9 @@ export const getDictionaryResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "name": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "translatedIsoCodes": zod.array(zod.string())
 }))
@@ -468,15 +468,15 @@ export const postDictionaryBody = zod.object({
   "isoCode": zod.string().min(1),
   "translation": zod.string()
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDictionaryByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -489,17 +489,17 @@ export const getDictionaryByIdResponse = zod.object({
   "isoCode": zod.string().min(1),
   "translation": zod.string()
 })),
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const deleteDictionaryByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putDictionaryByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -516,7 +516,7 @@ export const putDictionaryByIdBody = zod.object({
 
 
 export const getDictionaryByIdExportParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDictionaryByIdExportQueryIncludeChildrenDefault = false;
@@ -529,32 +529,32 @@ export const getDictionaryByIdExportResponse = zod.instanceof(File)
 
 
 export const putDictionaryByIdMoveParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDictionaryByIdMoveBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const postDictionaryImportBody = zod.object({
   "temporaryFile": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getItemDictionaryQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemDictionaryResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -564,14 +564,14 @@ export const getItemDictionaryResponse = zod.array(getItemDictionaryResponseItem
 
 
 export const getTreeDictionaryAncestorsQueryParams = zod.object({
-  "descendantId": zod.uuid().optional()
+  "descendantId": zod.guid().optional()
 })
 
 export const getTreeDictionaryAncestorsResponseItem = zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -584,7 +584,7 @@ export const getTreeDictionaryAncestorsResponse = zod.array(getTreeDictionaryAnc
 export const getTreeDictionaryChildrenQuerySkipDefault = 0;export const getTreeDictionaryChildrenQueryTakeDefault = 100;
 
 export const getTreeDictionaryChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeDictionaryChildrenQueryTakeDefault)
 })
@@ -593,9 +593,9 @@ export const getTreeDictionaryChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -616,9 +616,9 @@ export const getTreeDictionaryRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -644,18 +644,18 @@ export const postDocumentBlueprintBody = zod.object({
   "segment": zod.string().nullish(),
   "name": zod.string().min(1)
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
 
 export const getDocumentBlueprintByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -681,32 +681,32 @@ export const getDocumentBlueprintByIdResponse = zod.object({
   "publishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledPublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledUnpublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 }))
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 })
 
 
 export const deleteDocumentBlueprintByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putDocumentBlueprintByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -729,18 +729,18 @@ export const putDocumentBlueprintByIdBody = zod.object({
 
 
 export const putDocumentBlueprintByIdMoveParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentBlueprintByIdMoveBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDocumentBlueprintByIdScaffoldParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -766,20 +766,20 @@ export const getDocumentBlueprintByIdScaffoldResponse = zod.object({
   "publishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledPublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledUnpublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 }))
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 })
@@ -790,15 +790,15 @@ export const getDocumentBlueprintByIdScaffoldResponse = zod.object({
 
 export const postDocumentBlueprintFolderBody = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDocumentBlueprintFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -806,17 +806,17 @@ export const getDocumentBlueprintFolderByIdParams = zod.object({
 
 export const getDocumentBlueprintFolderByIdResponse = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const deleteDocumentBlueprintFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putDocumentBlueprintFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -829,31 +829,31 @@ export const putDocumentBlueprintFolderByIdBody = zod.object({
 
 export const postDocumentBlueprintFromDocumentBody = zod.object({
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "name": zod.string(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getItemDocumentBlueprintQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemDocumentBlueprintResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "name": zod.string(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 })
@@ -861,14 +861,14 @@ export const getItemDocumentBlueprintResponse = zod.array(getItemDocumentBluepri
 
 
 export const getTreeDocumentBlueprintAncestorsQueryParams = zod.object({
-  "descendantId": zod.uuid().optional()
+  "descendantId": zod.guid().optional()
 })
 
 export const getTreeDocumentBlueprintAncestorsResponseItem = zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -876,10 +876,10 @@ export const getTreeDocumentBlueprintAncestorsResponseItem = zod.object({
   "name": zod.string(),
   "isFolder": zod.boolean(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }).nullish()
 })
@@ -889,7 +889,7 @@ export const getTreeDocumentBlueprintAncestorsResponse = zod.array(getTreeDocume
 export const getTreeDocumentBlueprintChildrenQuerySkipDefault = 0;export const getTreeDocumentBlueprintChildrenQueryTakeDefault = 100;export const getTreeDocumentBlueprintChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentBlueprintChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeDocumentBlueprintChildrenQueryTakeDefault),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -899,9 +899,9 @@ export const getTreeDocumentBlueprintChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -909,10 +909,10 @@ export const getTreeDocumentBlueprintChildrenResponse = zod.object({
   "name": zod.string(),
   "isFolder": zod.boolean(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }).nullish()
 }))
@@ -931,9 +931,9 @@ export const getTreeDocumentBlueprintRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -941,10 +941,10 @@ export const getTreeDocumentBlueprintRootResponse = zod.object({
   "name": zod.string(),
   "isFolder": zod.boolean(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }).nullish()
 }))
@@ -954,7 +954,7 @@ export const getTreeDocumentBlueprintRootResponse = zod.object({
 export const getTreeDocumentBlueprintSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentBlueprintSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional(),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -965,9 +965,9 @@ export const getTreeDocumentBlueprintSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -975,10 +975,10 @@ export const getTreeDocumentBlueprintSiblingsResponse = zod.object({
   "name": zod.string(),
   "isFolder": zod.boolean(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }).nullish()
 }))
@@ -1002,20 +1002,20 @@ export const postDocumentTypeBody = zod.object({
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isElement": zod.boolean(),
   "properties": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "container": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sortOrder": zod.number(),
   "alias": zod.string().min(1),
   "name": zod.string().min(1),
   "description": zod.string().nullish(),
   "dataType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
@@ -1030,23 +1030,23 @@ export const postDocumentTypeBody = zod.object({
 })
 })),
   "containers": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "name": zod.string().nullish(),
   "type": zod.string().min(1),
   "sortOrder": zod.number()
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "allowedTemplates": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "defaultTemplate": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "cleanup": zod.object({
   "preventCleanup": zod.boolean(),
@@ -1055,13 +1055,13 @@ export const postDocumentTypeBody = zod.object({
 }),
   "allowedDocumentTypes": zod.array(zod.object({
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "sortOrder": zod.number()
 })),
   "compositions": zod.array(zod.object({
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "compositionType": zod.enum(['Composition', 'Inheritance'])
 }))
@@ -1069,7 +1069,7 @@ export const postDocumentTypeBody = zod.object({
 
 
 export const getDocumentTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -1089,20 +1089,20 @@ export const getDocumentTypeByIdResponse = zod.object({
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isElement": zod.boolean(),
   "properties": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "container": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sortOrder": zod.number(),
   "alias": zod.string().min(1),
   "name": zod.string().min(1),
   "description": zod.string().nullish(),
   "dataType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
@@ -1117,20 +1117,20 @@ export const getDocumentTypeByIdResponse = zod.object({
 })
 })),
   "containers": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "name": zod.string().nullish(),
   "type": zod.string().min(1),
   "sortOrder": zod.number()
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "allowedTemplates": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "defaultTemplate": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "cleanup": zod.object({
   "preventCleanup": zod.boolean(),
@@ -1139,13 +1139,13 @@ export const getDocumentTypeByIdResponse = zod.object({
 }),
   "allowedDocumentTypes": zod.array(zod.object({
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "sortOrder": zod.number()
 })),
   "compositions": zod.array(zod.object({
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "compositionType": zod.enum(['Composition', 'Inheritance'])
 }))
@@ -1153,12 +1153,12 @@ export const getDocumentTypeByIdResponse = zod.object({
 
 
 export const deleteDocumentTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putDocumentTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -1178,20 +1178,20 @@ export const putDocumentTypeByIdBody = zod.object({
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isElement": zod.boolean(),
   "properties": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "container": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sortOrder": zod.number(),
   "alias": zod.string().min(1),
   "name": zod.string().min(1),
   "description": zod.string().nullish(),
   "dataType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
@@ -1206,19 +1206,19 @@ export const putDocumentTypeByIdBody = zod.object({
 })
 })),
   "containers": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "name": zod.string().nullish(),
   "type": zod.string().min(1),
   "sortOrder": zod.number()
 })),
   "allowedTemplates": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "defaultTemplate": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "cleanup": zod.object({
   "preventCleanup": zod.boolean(),
@@ -1227,13 +1227,13 @@ export const putDocumentTypeByIdBody = zod.object({
 }),
   "allowedDocumentTypes": zod.array(zod.object({
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "sortOrder": zod.number()
 })),
   "compositions": zod.array(zod.object({
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "compositionType": zod.enum(['Composition', 'Inheritance'])
 }))
@@ -1241,13 +1241,13 @@ export const putDocumentTypeByIdBody = zod.object({
 
 
 export const getDocumentTypeByIdAllowedChildrenParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentTypeByIdAllowedChildrenQuerySkipDefault = 0;export const getDocumentTypeByIdAllowedChildrenQueryTakeDefault = 100;
 
 export const getDocumentTypeByIdAllowedChildrenQueryParams = zod.object({
-  "parentContentKey": zod.uuid().optional(),
+  "parentContentKey": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getDocumentTypeByIdAllowedChildrenQueryTakeDefault)
 })
@@ -1255,7 +1255,7 @@ export const getDocumentTypeByIdAllowedChildrenQueryParams = zod.object({
 export const getDocumentTypeByIdAllowedChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "description": zod.string().nullish(),
   "icon": zod.string().nullish()
@@ -1264,7 +1264,7 @@ export const getDocumentTypeByIdAllowedChildrenResponse = zod.object({
 
 
 export const getDocumentTypeByIdBlueprintParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentTypeByIdBlueprintQuerySkipDefault = 0;export const getDocumentTypeByIdBlueprintQueryTakeDefault = 100;
@@ -1277,7 +1277,7 @@ export const getDocumentTypeByIdBlueprintQueryParams = zod.object({
 export const getDocumentTypeByIdBlueprintResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -1287,11 +1287,11 @@ export const getDocumentTypeByIdBlueprintResponse = zod.object({
 
 
 export const getDocumentTypeByIdCompositionReferencesParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentTypeByIdCompositionReferencesResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "icon": zod.string()
 })
@@ -1299,47 +1299,47 @@ export const getDocumentTypeByIdCompositionReferencesResponse = zod.array(getDoc
 
 
 export const postDocumentTypeByIdCopyParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postDocumentTypeByIdCopyBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDocumentTypeByIdExportParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentTypeByIdExportResponse = zod.instanceof(File)
 
 
 export const putDocumentTypeByIdImportParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentTypeByIdImportBody = zod.object({
   "file": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
 
 export const putDocumentTypeByIdMoveParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentTypeByIdMoveBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const postDocumentTypeByIdTemplateParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -1363,7 +1363,7 @@ export const getDocumentTypeAllowedAtRootQueryParams = zod.object({
 export const getDocumentTypeAllowedAtRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "description": zod.string().nullish(),
   "icon": zod.string().nullish()
@@ -1372,14 +1372,14 @@ export const getDocumentTypeAllowedAtRootResponse = zod.object({
 
 
 export const postDocumentTypeAvailableCompositionsBody = zod.object({
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "currentPropertyAliases": zod.array(zod.string()),
-  "currentCompositeIds": zod.array(zod.uuid()),
+  "currentCompositeIds": zod.array(zod.guid()),
   "isElement": zod.boolean()
 })
 
 export const postDocumentTypeAvailableCompositionsResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "icon": zod.string(),
   "folderPath": zod.array(zod.string()),
@@ -1401,15 +1401,15 @@ export const getDocumentTypeConfigurationResponse = zod.object({
 
 export const postDocumentTypeFolderBody = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDocumentTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -1417,17 +1417,17 @@ export const getDocumentTypeFolderByIdParams = zod.object({
 
 export const getDocumentTypeFolderByIdResponse = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const deleteDocumentTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putDocumentTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -1440,17 +1440,17 @@ export const putDocumentTypeFolderByIdBody = zod.object({
 
 export const postDocumentTypeImportBody = zod.object({
   "file": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
 
 export const getItemDocumentTypeQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemDocumentTypeResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -1473,7 +1473,7 @@ export const getItemDocumentTypeSearchQueryParams = zod.object({
 
 export const getItemDocumentTypeSearchResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -1487,14 +1487,14 @@ export const getItemDocumentTypeSearchResponse = zod.object({
 
 
 export const getTreeDocumentTypeAncestorsQueryParams = zod.object({
-  "descendantId": zod.uuid().optional()
+  "descendantId": zod.guid().optional()
 })
 
 export const getTreeDocumentTypeAncestorsResponseItem = zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -1510,7 +1510,7 @@ export const getTreeDocumentTypeAncestorsResponse = zod.array(getTreeDocumentTyp
 export const getTreeDocumentTypeChildrenQuerySkipDefault = 0;export const getTreeDocumentTypeChildrenQueryTakeDefault = 100;export const getTreeDocumentTypeChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentTypeChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeDocumentTypeChildrenQueryTakeDefault),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -1520,9 +1520,9 @@ export const getTreeDocumentTypeChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -1547,9 +1547,9 @@ export const getTreeDocumentTypeRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -1565,7 +1565,7 @@ export const getTreeDocumentTypeRootResponse = zod.object({
 export const getTreeDocumentTypeSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentTypeSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional(),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -1576,9 +1576,9 @@ export const getTreeDocumentTypeSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -1594,7 +1594,7 @@ export const getTreeDocumentTypeSiblingsResponse = zod.object({
 export const getDocumentVersionQuerySkipDefault = 0;export const getDocumentVersionQueryTakeDefault = 100;
 
 export const getDocumentVersionQueryParams = zod.object({
-  "documentId": zod.uuid(),
+  "documentId": zod.guid(),
   "culture": zod.string().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getDocumentVersionQueryTakeDefault)
@@ -1603,15 +1603,15 @@ export const getDocumentVersionQueryParams = zod.object({
 export const getDocumentVersionResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "user": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "versionDate": zod.iso.datetime({"local":true,"offset":true}),
   "isCurrentPublishedVersion": zod.boolean(),
@@ -1622,7 +1622,7 @@ export const getDocumentVersionResponse = zod.object({
 
 
 export const getDocumentVersionByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -1648,30 +1648,30 @@ export const getDocumentVersionByIdResponse = zod.object({
   "publishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledPublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledUnpublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 }))
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const putDocumentVersionByIdPreventCleanupParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentVersionByIdPreventCleanupQueryParams = zod.object({
@@ -1680,7 +1680,7 @@ export const putDocumentVersionByIdPreventCleanupQueryParams = zod.object({
 
 
 export const postDocumentVersionByIdRollbackParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postDocumentVersionByIdRollbackQueryParams = zod.object({
@@ -1689,13 +1689,13 @@ export const postDocumentVersionByIdRollbackQueryParams = zod.object({
 
 
 export const getCollectionDocumentByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getCollectionDocumentByIdQueryOrderByDefault = "updateDate";export const getCollectionDocumentByIdQuerySkipDefault = 0;export const getCollectionDocumentByIdQueryTakeDefault = 100;
 
 export const getCollectionDocumentByIdQueryParams = zod.object({
-  "dataTypeId": zod.uuid().optional(),
+  "dataTypeId": zod.guid().optional(),
   "orderBy": zod.string().default(getCollectionDocumentByIdQueryOrderByDefault),
   "orderCulture": zod.string().optional(),
   "orderDirection": zod.enum(['Ascending', 'Descending']).optional(),
@@ -1729,29 +1729,29 @@ export const getCollectionDocumentByIdResponse = zod.object({
   "publishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledPublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledUnpublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 }))
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "creator": zod.string().nullish(),
   "sortOrder": zod.number(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "alias": zod.string(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "isTrashed": zod.boolean(),
   "isProtected": zod.boolean(),
   "ancestors": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "updater": zod.string().nullish()
 }))
@@ -1774,21 +1774,21 @@ export const postDocumentBody = zod.object({
   "segment": zod.string().nullish(),
   "name": zod.string().min(1)
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "template": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullable()
 })
 
 
 export const getDocumentByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -1814,36 +1814,36 @@ export const getDocumentByIdResponse = zod.object({
   "publishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledPublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledUnpublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 }))
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "template": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isTrashed": zod.boolean()
 })
 
 
 export const deleteDocumentByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putDocumentByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -1863,13 +1863,13 @@ export const putDocumentByIdBody = zod.object({
   "name": zod.string().min(1)
 })),
   "template": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getDocumentByIdAuditLogParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentByIdAuditLogQuerySkipDefault = 0;export const getDocumentByIdAuditLogQueryTakeDefault = 100;
@@ -1885,7 +1885,7 @@ export const getDocumentByIdAuditLogResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "user": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "timestamp": zod.iso.datetime({"local":true,"offset":true}),
   "logType": zod.enum(['New', 'Save', 'SaveVariant', 'Open', 'Delete', 'Publish', 'PublishVariant', 'SendToPublish', 'SendToPublishVariant', 'Unpublish', 'UnpublishVariant', 'Move', 'Copy', 'AssignDomain', 'PublicAccess', 'Sort', 'Notify', 'System', 'RollBack', 'PackagerInstall', 'PackagerUninstall', 'Custom', 'ContentVersionPreventCleanup', 'ContentVersionEnableCleanup']),
@@ -1899,7 +1899,7 @@ export const getDocumentByIdAuditLogResponse = zod.object({
  * @deprecated
  */
 export const getDocumentByIdAvailableSegmentOptionsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentByIdAvailableSegmentOptionsQuerySkipDefault = 0;export const getDocumentByIdAvailableSegmentOptionsQueryTakeDefault = 100;
@@ -1920,12 +1920,12 @@ export const getDocumentByIdAvailableSegmentOptionsResponse = zod.object({
 
 
 export const postDocumentByIdCopyParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postDocumentByIdCopyBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "relateToOriginal": zod.boolean(),
   "includeDescendants": zod.boolean()
@@ -1933,7 +1933,7 @@ export const postDocumentByIdCopyBody = zod.object({
 
 
 export const getDocumentByIdDomainsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentByIdDomainsResponse = zod.object({
@@ -1946,7 +1946,7 @@ export const getDocumentByIdDomainsResponse = zod.object({
 
 
 export const putDocumentByIdDomainsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentByIdDomainsBody = zod.object({
@@ -1959,23 +1959,23 @@ export const putDocumentByIdDomainsBody = zod.object({
 
 
 export const putDocumentByIdMoveParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentByIdMoveBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const putDocumentByIdMoveToRecycleBinParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const getDocumentByIdNotificationsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentByIdNotificationsResponseItem = zod.object({
@@ -1987,7 +1987,7 @@ export const getDocumentByIdNotificationsResponse = zod.array(getDocumentByIdNot
 
 
 export const putDocumentByIdNotificationsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentByIdNotificationsBody = zod.object({
@@ -1996,7 +1996,7 @@ export const putDocumentByIdNotificationsBody = zod.object({
 
 
 export const getDocumentByIdPreviewUrlParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentByIdPreviewUrlQueryParams = zod.object({
@@ -2014,15 +2014,15 @@ export const getDocumentByIdPreviewUrlResponse = zod.object({
 
 
 export const postDocumentByIdPublicAccessParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postDocumentByIdPublicAccessBody = zod.object({
   "loginDocument": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "errorDocument": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "memberUserNames": zod.array(zod.string()),
   "memberGroupNames": zod.array(zod.string())
@@ -2030,31 +2030,31 @@ export const postDocumentByIdPublicAccessBody = zod.object({
 
 
 export const deleteDocumentByIdPublicAccessParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const getDocumentByIdPublicAccessParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentByIdPublicAccessResponse = zod.object({
   "loginDocument": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "errorDocument": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "members": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -2064,7 +2064,7 @@ export const getDocumentByIdPublicAccessResponse = zod.object({
   "kind": zod.enum(['Default', 'Api'])
 })),
   "groups": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2074,15 +2074,15 @@ export const getDocumentByIdPublicAccessResponse = zod.object({
 
 
 export const putDocumentByIdPublicAccessParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentByIdPublicAccessBody = zod.object({
   "loginDocument": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "errorDocument": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "memberUserNames": zod.array(zod.string()),
   "memberGroupNames": zod.array(zod.string())
@@ -2090,7 +2090,7 @@ export const putDocumentByIdPublicAccessBody = zod.object({
 
 
 export const putDocumentByIdPublishParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentByIdPublishBody = zod.object({
@@ -2105,7 +2105,7 @@ export const putDocumentByIdPublishBody = zod.object({
 
 
 export const putDocumentByIdPublishWithDescendantsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentByIdPublishWithDescendantsBody = zod.object({
@@ -2114,24 +2114,24 @@ export const putDocumentByIdPublishWithDescendantsBody = zod.object({
 })
 
 export const putDocumentByIdPublishWithDescendantsResponse = zod.object({
-  "taskId": zod.uuid(),
+  "taskId": zod.guid(),
   "isComplete": zod.boolean()
 })
 
 
 export const getDocumentByIdPublishWithDescendantsResultByTaskIdParams = zod.object({
-  "id": zod.uuid(),
-  "taskId": zod.uuid()
+  "id": zod.guid(),
+  "taskId": zod.guid()
 })
 
 export const getDocumentByIdPublishWithDescendantsResultByTaskIdResponse = zod.object({
-  "taskId": zod.uuid(),
+  "taskId": zod.guid(),
   "isComplete": zod.boolean()
 })
 
 
 export const getDocumentByIdPublishedParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -2157,31 +2157,31 @@ export const getDocumentByIdPublishedResponse = zod.object({
   "publishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledPublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "scheduledUnpublishDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 }))
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "template": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isTrashed": zod.boolean()
 })
 
 
 export const getDocumentByIdReferencedByParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentByIdReferencedByQuerySkipDefault = 0;export const getDocumentByIdReferencedByQueryTakeDefault = 20;
@@ -2195,17 +2195,17 @@ export const getDocumentByIdReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DefaultReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish()
 }),zod.object({
   "$type": zod.enum(['DocumentReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "published": zod.boolean().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -2213,7 +2213,7 @@ export const getDocumentByIdReferencedByResponse = zod.object({
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2221,53 +2221,53 @@ export const getDocumentByIdReferencedByResponse = zod.object({
 }))
 }),zod.object({
   "$type": zod.enum(['DocumentTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -2277,7 +2277,7 @@ export const getDocumentByIdReferencedByResponse = zod.object({
 
 
 export const getDocumentByIdReferencedDescendantsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getDocumentByIdReferencedDescendantsQuerySkipDefault = 0;export const getDocumentByIdReferencedDescendantsQueryTakeDefault = 20;
@@ -2290,13 +2290,13 @@ export const getDocumentByIdReferencedDescendantsQueryParams = zod.object({
 export const getDocumentByIdReferencedDescendantsResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
 
 export const putDocumentByIdUnpublishParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putDocumentByIdUnpublishBody = zod.object({
@@ -2305,7 +2305,7 @@ export const putDocumentByIdUnpublishBody = zod.object({
 
 
 export const putUmbracoManagementApiV11DocumentByIdValidate11Params = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -2325,7 +2325,7 @@ export const putUmbracoManagementApiV11DocumentByIdValidate11Body = zod.object({
   "name": zod.string().min(1)
 })),
   "template": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "cultures": zod.array(zod.string()).nullish()
 })
@@ -2334,7 +2334,7 @@ export const putUmbracoManagementApiV11DocumentByIdValidate11Body = zod.object({
 export const getDocumentAreReferencedQuerySkipDefault = 0;export const getDocumentAreReferencedQueryTakeDefault = 20;
 
 export const getDocumentAreReferencedQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional(),
+  "id": zod.array(zod.guid()).optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getDocumentAreReferencedQueryTakeDefault)
 })
@@ -2342,7 +2342,7 @@ export const getDocumentAreReferencedQueryParams = zod.object({
 export const getDocumentAreReferencedResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
@@ -2357,21 +2357,21 @@ export const getDocumentConfigurationResponse = zod.object({
 
 export const putDocumentSortBody = zod.object({
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sorting": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "sortOrder": zod.number()
 }))
 })
 
 
 export const getDocumentUrlsQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getDocumentUrlsResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "urlInfos": zod.array(zod.object({
   "culture": zod.string().nullable(),
   "url": zod.string().nullable(),
@@ -2398,45 +2398,45 @@ export const postDocumentValidateBody = zod.object({
   "segment": zod.string().nullish(),
   "name": zod.string().min(1)
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "template": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullable()
 })
 
 
 export const getItemDocumentQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemDocumentResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "isTrashed": zod.boolean(),
   "isProtected": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "hasChildren": zod.boolean(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2454,34 +2454,34 @@ export const getItemDocumentSearchQueryParams = zod.object({
   "culture": zod.string().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getItemDocumentSearchQueryTakeDefault),
-  "parentId": zod.uuid().optional(),
-  "allowedDocumentTypes": zod.array(zod.uuid()).optional(),
-  "dataTypeId": zod.uuid().optional()
+  "parentId": zod.guid().optional(),
+  "allowedDocumentTypes": zod.array(zod.guid()).optional(),
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getItemDocumentSearchResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "isTrashed": zod.boolean(),
   "isProtected": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "hasChildren": zod.boolean(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2493,26 +2493,26 @@ export const getItemDocumentSearchResponse = zod.object({
 
 
 export const deleteRecycleBinDocumentByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const getRecycleBinDocumentByIdOriginalParentParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getRecycleBinDocumentByIdOriginalParentResponse = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putRecycleBinDocumentByIdRestoreParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putRecycleBinDocumentByIdRestoreBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
@@ -2520,7 +2520,7 @@ export const putRecycleBinDocumentByIdRestoreBody = zod.object({
 export const getRecycleBinDocumentChildrenQuerySkipDefault = 0;export const getRecycleBinDocumentChildrenQueryTakeDefault = 100;
 
 export const getRecycleBinDocumentChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getRecycleBinDocumentChildrenQueryTakeDefault)
 })
@@ -2528,23 +2528,23 @@ export const getRecycleBinDocumentChildrenQueryParams = zod.object({
 export const getRecycleBinDocumentChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2565,17 +2565,17 @@ export const getRecycleBinDocumentReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DefaultReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish()
 }),zod.object({
   "$type": zod.enum(['DocumentReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "published": zod.boolean().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -2583,7 +2583,7 @@ export const getRecycleBinDocumentReferencedByResponse = zod.object({
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2591,53 +2591,53 @@ export const getRecycleBinDocumentReferencedByResponse = zod.object({
 }))
 }),zod.object({
   "$type": zod.enum(['DocumentTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -2656,23 +2656,23 @@ export const getRecycleBinDocumentRootQueryParams = zod.object({
 export const getRecycleBinDocumentRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2683,33 +2683,33 @@ export const getRecycleBinDocumentRootResponse = zod.object({
 
 
 export const getRecycleBinDocumentSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional(),
-  "dataTypeId": zod.uuid().optional()
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getRecycleBinDocumentSiblingsResponse = zod.object({
   "totalBefore": zod.number(),
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2720,14 +2720,14 @@ export const getRecycleBinDocumentSiblingsResponse = zod.object({
 
 
 export const getTreeDocumentAncestorsQueryParams = zod.object({
-  "descendantId": zod.uuid().optional()
+  "descendantId": zod.guid().optional()
 })
 
 export const getTreeDocumentAncestorsResponseItem = zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -2737,19 +2737,19 @@ export const getTreeDocumentAncestorsResponseItem = zod.object({
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "isProtected": zod.boolean(),
   "ancestors": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2762,19 +2762,19 @@ export const getTreeDocumentAncestorsResponse = zod.array(getTreeDocumentAncesto
 export const getTreeDocumentChildrenQuerySkipDefault = 0;export const getTreeDocumentChildrenQueryTakeDefault = 100;
 
 export const getTreeDocumentChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeDocumentChildrenQueryTakeDefault),
-  "dataTypeId": zod.uuid().optional()
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getTreeDocumentChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -2784,19 +2784,19 @@ export const getTreeDocumentChildrenResponse = zod.object({
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "isProtected": zod.boolean(),
   "ancestors": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2811,16 +2811,16 @@ export const getTreeDocumentRootQuerySkipDefault = 0;export const getTreeDocumen
 export const getTreeDocumentRootQueryParams = zod.object({
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeDocumentRootQueryTakeDefault),
-  "dataTypeId": zod.uuid().optional()
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getTreeDocumentRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -2830,19 +2830,19 @@ export const getTreeDocumentRootResponse = zod.object({
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "isProtected": zod.boolean(),
   "ancestors": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2853,10 +2853,10 @@ export const getTreeDocumentRootResponse = zod.object({
 
 
 export const getTreeDocumentSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional(),
-  "dataTypeId": zod.uuid().optional()
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getTreeDocumentSiblingsResponse = zod.object({
@@ -2864,9 +2864,9 @@ export const getTreeDocumentSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -2876,19 +2876,19 @@ export const getTreeDocumentSiblingsResponse = zod.object({
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "isProtected": zod.boolean(),
   "ancestors": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -2900,9 +2900,9 @@ export const getTreeDocumentSiblingsResponse = zod.object({
 
 export const postDynamicRootQueryBody = zod.object({
   "context": zod.object({
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish()
@@ -2910,17 +2910,17 @@ export const postDynamicRootQueryBody = zod.object({
   "query": zod.object({
   "origin": zod.object({
   "alias": zod.string(),
-  "id": zod.uuid().nullish()
+  "id": zod.guid().nullish()
 }),
   "steps": zod.array(zod.object({
   "alias": zod.string(),
-  "documentTypeIds": zod.array(zod.uuid())
+  "documentTypeIds": zod.array(zod.guid())
 }))
 })
 })
 
 export const postDynamicRootQueryResponse = zod.object({
-  "roots": zod.array(zod.uuid())
+  "roots": zod.array(zod.guid())
 })
 
 
@@ -2950,7 +2950,7 @@ export const getHealthCheckGroupByNameParams = zod.object({
 export const getHealthCheckGroupByNameResponse = zod.object({
   "name": zod.string(),
   "checks": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "description": zod.string().nullish()
 }))
@@ -2963,13 +2963,13 @@ export const postHealthCheckGroupByNameCheckParams = zod.object({
 
 export const postHealthCheckGroupByNameCheckResponse = zod.object({
   "checks": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "results": zod.array(zod.object({
   "message": zod.string(),
   "resultType": zod.enum(['Success', 'Warning', 'Error', 'Info']),
   "actions": zod.array(zod.object({
   "healthCheck": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish(),
@@ -2988,7 +2988,7 @@ export const postHealthCheckGroupByNameCheckResponse = zod.object({
 
 export const postHealthCheckExecuteActionBody = zod.object({
   "healthCheck": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish(),
@@ -3005,7 +3005,7 @@ export const postHealthCheckExecuteActionResponse = zod.object({
   "resultType": zod.enum(['Success', 'Warning', 'Error', 'Info']),
   "actions": zod.array(zod.object({
   "healthCheck": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish(),
@@ -3047,14 +3047,14 @@ export const getHelpResponse = zod.object({
 export const getImagingResizeUrlsQueryHeightDefault = 200;export const getImagingResizeUrlsQueryWidthDefault = 200;
 
 export const getImagingResizeUrlsQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional(),
+  "id": zod.array(zod.guid()).optional(),
   "height": zod.coerce.number().default(getImagingResizeUrlsQueryHeightDefault),
   "width": zod.coerce.number().default(getImagingResizeUrlsQueryWidthDefault),
   "mode": zod.enum(['Crop', 'Max', 'Stretch', 'Pad', 'BoxPad', 'Min']).optional()
 })
 
 export const getImagingResizeUrlsResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "urlInfos": zod.array(zod.object({
   "culture": zod.string().nullable(),
   "url": zod.string().nullable()
@@ -3064,13 +3064,13 @@ export const getImagingResizeUrlsResponse = zod.array(getImagingResizeUrlsRespon
 
 
 export const getImportAnalyzeQueryParams = zod.object({
-  "temporaryFileId": zod.uuid().optional()
+  "temporaryFileId": zod.guid().optional()
 })
 
 export const getImportAnalyzeResponse = zod.object({
   "entityType": zod.string(),
   "alias": zod.string().nullish(),
-  "key": zod.uuid().nullish()
+  "key": zod.guid().nullish()
 })
 
 
@@ -3144,7 +3144,7 @@ export const getInstallSettingsResponse = zod.object({
 }))
 }),
   "databases": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "sortOrder": zod.number(),
   "displayName": zod.string().min(1),
   "defaultDatabaseName": zod.string().min(1),
@@ -3176,7 +3176,7 @@ export const postInstallSetupBody = zod.object({
   "subscribeToNewsletter": zod.boolean()
 }),
   "database": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "providerName": zod.string().min(1),
   "server": zod.string().nullish(),
   "name": zod.string().nullish(),
@@ -3194,7 +3194,7 @@ export const postInstallSetupBody = zod.object({
 
 
 export const postInstallValidateDatabaseBody = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "providerName": zod.string().min(1),
   "server": zod.string().nullish(),
   "name": zod.string().nullish(),
@@ -3460,11 +3460,11 @@ export const getManifestManifestPublicResponse = zod.array(getManifestManifestPu
 
 
 export const getItemMediaTypeQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemMediaTypeResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -3484,7 +3484,7 @@ export const getItemMediaTypeAllowedQueryParams = zod.object({
 
 export const getItemMediaTypeAllowedResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -3504,7 +3504,7 @@ export const getItemMediaTypeFoldersQueryParams = zod.object({
 
 export const getItemMediaTypeFoldersResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -3525,7 +3525,7 @@ export const getItemMediaTypeSearchQueryParams = zod.object({
 
 export const getItemMediaTypeSearchResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -3554,16 +3554,16 @@ export const postMediaTypeBody = zod.object({
   "variesBySegment": zod.boolean(),
   "isElement": zod.boolean(),
   "properties": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "container": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sortOrder": zod.number(),
   "alias": zod.string().min(1),
   "name": zod.string().min(1),
   "description": zod.string().nullish(),
   "dataType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
@@ -3578,38 +3578,38 @@ export const postMediaTypeBody = zod.object({
 })
 })),
   "containers": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "name": zod.string().nullish(),
   "type": zod.string().min(1),
   "sortOrder": zod.number()
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "allowedMediaTypes": zod.array(zod.object({
   "mediaType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "sortOrder": zod.number()
 })),
   "compositions": zod.array(zod.object({
   "mediaType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "compositionType": zod.enum(['Composition', 'Inheritance'])
 })),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getMediaTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -3629,20 +3629,20 @@ export const getMediaTypeByIdResponse = zod.object({
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isElement": zod.boolean(),
   "properties": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "container": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sortOrder": zod.number(),
   "alias": zod.string().min(1),
   "name": zod.string().min(1),
   "description": zod.string().nullish(),
   "dataType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
@@ -3657,24 +3657,24 @@ export const getMediaTypeByIdResponse = zod.object({
 })
 })),
   "containers": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "name": zod.string().nullish(),
   "type": zod.string().min(1),
   "sortOrder": zod.number()
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "allowedMediaTypes": zod.array(zod.object({
   "mediaType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "sortOrder": zod.number()
 })),
   "compositions": zod.array(zod.object({
   "mediaType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "compositionType": zod.enum(['Composition', 'Inheritance'])
 })),
@@ -3684,12 +3684,12 @@ export const getMediaTypeByIdResponse = zod.object({
 
 
 export const deleteMediaTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putMediaTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -3709,20 +3709,20 @@ export const putMediaTypeByIdBody = zod.object({
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isElement": zod.boolean(),
   "properties": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "container": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sortOrder": zod.number(),
   "alias": zod.string().min(1),
   "name": zod.string().min(1),
   "description": zod.string().nullish(),
   "dataType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
@@ -3737,9 +3737,9 @@ export const putMediaTypeByIdBody = zod.object({
 })
 })),
   "containers": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "name": zod.string().nullish(),
   "type": zod.string().min(1),
@@ -3747,13 +3747,13 @@ export const putMediaTypeByIdBody = zod.object({
 })),
   "allowedMediaTypes": zod.array(zod.object({
   "mediaType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "sortOrder": zod.number()
 })),
   "compositions": zod.array(zod.object({
   "mediaType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "compositionType": zod.enum(['Composition', 'Inheritance'])
 }))
@@ -3761,13 +3761,13 @@ export const putMediaTypeByIdBody = zod.object({
 
 
 export const getMediaTypeByIdAllowedChildrenParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMediaTypeByIdAllowedChildrenQuerySkipDefault = 0;export const getMediaTypeByIdAllowedChildrenQueryTakeDefault = 100;
 
 export const getMediaTypeByIdAllowedChildrenQueryParams = zod.object({
-  "parentContentKey": zod.uuid().optional(),
+  "parentContentKey": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getMediaTypeByIdAllowedChildrenQueryTakeDefault)
 })
@@ -3775,7 +3775,7 @@ export const getMediaTypeByIdAllowedChildrenQueryParams = zod.object({
 export const getMediaTypeByIdAllowedChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "description": zod.string().nullish(),
   "icon": zod.string().nullish()
@@ -3784,11 +3784,11 @@ export const getMediaTypeByIdAllowedChildrenResponse = zod.object({
 
 
 export const getMediaTypeByIdCompositionReferencesParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMediaTypeByIdCompositionReferencesResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "icon": zod.string()
 })
@@ -3796,41 +3796,41 @@ export const getMediaTypeByIdCompositionReferencesResponse = zod.array(getMediaT
 
 
 export const postMediaTypeByIdCopyParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postMediaTypeByIdCopyBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getMediaTypeByIdExportParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMediaTypeByIdExportResponse = zod.instanceof(File)
 
 
 export const putMediaTypeByIdImportParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putMediaTypeByIdImportBody = zod.object({
   "file": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
 
 export const putMediaTypeByIdMoveParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putMediaTypeByIdMoveBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
@@ -3845,7 +3845,7 @@ export const getMediaTypeAllowedAtRootQueryParams = zod.object({
 export const getMediaTypeAllowedAtRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "description": zod.string().nullish(),
   "icon": zod.string().nullish()
@@ -3854,13 +3854,13 @@ export const getMediaTypeAllowedAtRootResponse = zod.object({
 
 
 export const postMediaTypeAvailableCompositionsBody = zod.object({
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "currentPropertyAliases": zod.array(zod.string()),
-  "currentCompositeIds": zod.array(zod.uuid())
+  "currentCompositeIds": zod.array(zod.guid())
 })
 
 export const postMediaTypeAvailableCompositionsResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "icon": zod.string(),
   "folderPath": zod.array(zod.string()),
@@ -3879,15 +3879,15 @@ export const getMediaTypeConfigurationResponse = zod.object({
 
 export const postMediaTypeFolderBody = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getMediaTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -3895,17 +3895,17 @@ export const getMediaTypeFolderByIdParams = zod.object({
 
 export const getMediaTypeFolderByIdResponse = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const deleteMediaTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putMediaTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -3918,20 +3918,20 @@ export const putMediaTypeFolderByIdBody = zod.object({
 
 export const postMediaTypeImportBody = zod.object({
   "file": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
 
 export const getTreeMediaTypeAncestorsQueryParams = zod.object({
-  "descendantId": zod.uuid().optional()
+  "descendantId": zod.guid().optional()
 })
 
 export const getTreeMediaTypeAncestorsResponseItem = zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -3947,7 +3947,7 @@ export const getTreeMediaTypeAncestorsResponse = zod.array(getTreeMediaTypeAnces
 export const getTreeMediaTypeChildrenQuerySkipDefault = 0;export const getTreeMediaTypeChildrenQueryTakeDefault = 100;export const getTreeMediaTypeChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeMediaTypeChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeMediaTypeChildrenQueryTakeDefault),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -3957,9 +3957,9 @@ export const getTreeMediaTypeChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -3984,9 +3984,9 @@ export const getTreeMediaTypeRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -4002,7 +4002,7 @@ export const getTreeMediaTypeRootResponse = zod.object({
 export const getTreeMediaTypeSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeMediaTypeSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional(),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -4013,9 +4013,9 @@ export const getTreeMediaTypeSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -4031,8 +4031,8 @@ export const getTreeMediaTypeSiblingsResponse = zod.object({
 export const getCollectionMediaQueryOrderByDefault = "updateDate";export const getCollectionMediaQuerySkipDefault = 0;export const getCollectionMediaQueryTakeDefault = 100;
 
 export const getCollectionMediaQueryParams = zod.object({
-  "id": zod.uuid().optional(),
-  "dataTypeId": zod.uuid().optional(),
+  "id": zod.guid().optional(),
+  "dataTypeId": zod.guid().optional(),
   "orderBy": zod.string().default(getCollectionMediaQueryOrderByDefault),
   "orderDirection": zod.enum(['Ascending', 'Descending']).optional(),
   "filter": zod.string().optional(),
@@ -4062,18 +4062,18 @@ export const getCollectionMediaResponse = zod.object({
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "updateDate": zod.iso.datetime({"local":true,"offset":true})
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "creator": zod.string().nullish(),
   "sortOrder": zod.number(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "alias": zod.string(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 }))
@@ -4081,24 +4081,24 @@ export const getCollectionMediaResponse = zod.object({
 
 
 export const getItemMediaQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemMediaResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "isTrashed": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "hasChildren": zod.boolean(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -4117,27 +4117,27 @@ export const getItemMediaSearchQueryParams = zod.object({
   "culture": zod.string().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getItemMediaSearchQueryTakeDefault),
-  "parentId": zod.uuid().optional(),
-  "allowedMediaTypes": zod.array(zod.uuid()).optional(),
-  "dataTypeId": zod.uuid().optional()
+  "parentId": zod.guid().optional(),
+  "allowedMediaTypes": zod.array(zod.guid()).optional(),
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getItemMediaSearchResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "isTrashed": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "hasChildren": zod.boolean(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -4165,18 +4165,18 @@ export const postMediaBody = zod.object({
   "segment": zod.string().nullish(),
   "name": zod.string().min(1)
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
 
 export const getMediaByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -4199,28 +4199,28 @@ export const getMediaByIdResponse = zod.object({
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "updateDate": zod.iso.datetime({"local":true,"offset":true})
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "isTrashed": zod.boolean(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 })
 
 
 export const deleteMediaByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putMediaByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -4243,7 +4243,7 @@ export const putMediaByIdBody = zod.object({
 
 
 export const getMediaByIdAuditLogParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMediaByIdAuditLogQuerySkipDefault = 0;export const getMediaByIdAuditLogQueryTakeDefault = 100;
@@ -4259,7 +4259,7 @@ export const getMediaByIdAuditLogResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "user": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "timestamp": zod.iso.datetime({"local":true,"offset":true}),
   "logType": zod.enum(['New', 'Save', 'SaveVariant', 'Open', 'Delete', 'Publish', 'PublishVariant', 'SendToPublish', 'SendToPublishVariant', 'Unpublish', 'UnpublishVariant', 'Move', 'Copy', 'AssignDomain', 'PublicAccess', 'Sort', 'Notify', 'System', 'RollBack', 'PackagerInstall', 'PackagerUninstall', 'Custom', 'ContentVersionPreventCleanup', 'ContentVersionEnableCleanup']),
@@ -4270,23 +4270,23 @@ export const getMediaByIdAuditLogResponse = zod.object({
 
 
 export const putMediaByIdMoveParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putMediaByIdMoveBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const putMediaByIdMoveToRecycleBinParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const getMediaByIdReferencedByParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMediaByIdReferencedByQuerySkipDefault = 0;export const getMediaByIdReferencedByQueryTakeDefault = 20;
@@ -4300,17 +4300,17 @@ export const getMediaByIdReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DefaultReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish()
 }),zod.object({
   "$type": zod.enum(['DocumentReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "published": zod.boolean().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -4318,7 +4318,7 @@ export const getMediaByIdReferencedByResponse = zod.object({
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -4326,53 +4326,53 @@ export const getMediaByIdReferencedByResponse = zod.object({
 }))
 }),zod.object({
   "$type": zod.enum(['DocumentTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -4382,7 +4382,7 @@ export const getMediaByIdReferencedByResponse = zod.object({
 
 
 export const getMediaByIdReferencedDescendantsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMediaByIdReferencedDescendantsQuerySkipDefault = 0;export const getMediaByIdReferencedDescendantsQueryTakeDefault = 20;
@@ -4395,13 +4395,13 @@ export const getMediaByIdReferencedDescendantsQueryParams = zod.object({
 export const getMediaByIdReferencedDescendantsResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
 
 export const putMediaByIdValidateParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -4426,7 +4426,7 @@ export const putMediaByIdValidateBody = zod.object({
 export const getMediaAreReferencedQuerySkipDefault = 0;export const getMediaAreReferencedQueryTakeDefault = 20;
 
 export const getMediaAreReferencedQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional(),
+  "id": zod.array(zod.guid()).optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getMediaAreReferencedQueryTakeDefault)
 })
@@ -4434,7 +4434,7 @@ export const getMediaAreReferencedQueryParams = zod.object({
 export const getMediaAreReferencedResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
@@ -4450,21 +4450,21 @@ export const getMediaConfigurationResponse = zod.object({
 
 export const putMediaSortBody = zod.object({
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sorting": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "sortOrder": zod.number()
 }))
 })
 
 
 export const getMediaUrlsQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getMediaUrlsResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "urlInfos": zod.array(zod.object({
   "culture": zod.string().nullable(),
   "url": zod.string().nullable()
@@ -4489,37 +4489,37 @@ export const postMediaValidateBody = zod.object({
   "segment": zod.string().nullish(),
   "name": zod.string().min(1)
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
 
 export const deleteRecycleBinMediaByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const getRecycleBinMediaByIdOriginalParentParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getRecycleBinMediaByIdOriginalParentResponse = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putRecycleBinMediaByIdRestoreParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putRecycleBinMediaByIdRestoreBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
@@ -4527,7 +4527,7 @@ export const putRecycleBinMediaByIdRestoreBody = zod.object({
 export const getRecycleBinMediaChildrenQuerySkipDefault = 0;export const getRecycleBinMediaChildrenQueryTakeDefault = 100;
 
 export const getRecycleBinMediaChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getRecycleBinMediaChildrenQueryTakeDefault)
 })
@@ -4535,17 +4535,17 @@ export const getRecycleBinMediaChildrenQueryParams = zod.object({
 export const getRecycleBinMediaChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -4567,17 +4567,17 @@ export const getRecycleBinMediaReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DefaultReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish()
 }),zod.object({
   "$type": zod.enum(['DocumentReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "published": zod.boolean().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -4585,7 +4585,7 @@ export const getRecycleBinMediaReferencedByResponse = zod.object({
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -4593,53 +4593,53 @@ export const getRecycleBinMediaReferencedByResponse = zod.object({
 }))
 }),zod.object({
   "$type": zod.enum(['DocumentTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -4658,17 +4658,17 @@ export const getRecycleBinMediaRootQueryParams = zod.object({
 export const getRecycleBinMediaRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -4680,27 +4680,27 @@ export const getRecycleBinMediaRootResponse = zod.object({
 
 
 export const getRecycleBinMediaSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional(),
-  "dataTypeId": zod.uuid().optional()
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getRecycleBinMediaSiblingsResponse = zod.object({
   "totalBefore": zod.number(),
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "hasChildren": zod.boolean(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -4712,14 +4712,14 @@ export const getRecycleBinMediaSiblingsResponse = zod.object({
 
 
 export const getTreeMediaAncestorsQueryParams = zod.object({
-  "descendantId": zod.uuid().optional()
+  "descendantId": zod.guid().optional()
 })
 
 export const getTreeMediaAncestorsResponseItem = zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -4728,10 +4728,10 @@ export const getTreeMediaAncestorsResponseItem = zod.object({
   "isTrashed": zod.boolean(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -4745,19 +4745,19 @@ export const getTreeMediaAncestorsResponse = zod.array(getTreeMediaAncestorsResp
 export const getTreeMediaChildrenQuerySkipDefault = 0;export const getTreeMediaChildrenQueryTakeDefault = 100;
 
 export const getTreeMediaChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeMediaChildrenQueryTakeDefault),
-  "dataTypeId": zod.uuid().optional()
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getTreeMediaChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -4766,10 +4766,10 @@ export const getTreeMediaChildrenResponse = zod.object({
   "isTrashed": zod.boolean(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -4785,16 +4785,16 @@ export const getTreeMediaRootQuerySkipDefault = 0;export const getTreeMediaRootQ
 export const getTreeMediaRootQueryParams = zod.object({
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeMediaRootQueryTakeDefault),
-  "dataTypeId": zod.uuid().optional()
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getTreeMediaRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -4803,10 +4803,10 @@ export const getTreeMediaRootResponse = zod.object({
   "isTrashed": zod.boolean(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -4818,10 +4818,10 @@ export const getTreeMediaRootResponse = zod.object({
 
 
 export const getTreeMediaSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional(),
-  "dataTypeId": zod.uuid().optional()
+  "dataTypeId": zod.guid().optional()
 })
 
 export const getTreeMediaSiblingsResponse = zod.object({
@@ -4829,9 +4829,9 @@ export const getTreeMediaSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -4840,10 +4840,10 @@ export const getTreeMediaSiblingsResponse = zod.object({
   "isTrashed": zod.boolean(),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -4855,11 +4855,11 @@ export const getTreeMediaSiblingsResponse = zod.object({
 
 
 export const getItemMemberGroupQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemMemberGroupResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -4879,34 +4879,34 @@ export const getMemberGroupResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "name": zod.string(),
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
 
 export const postMemberGroupBody = zod.object({
   "name": zod.string(),
-  "id": zod.uuid().nullish()
+  "id": zod.guid().nullish()
 })
 
 
 export const getMemberGroupByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMemberGroupByIdResponse = zod.object({
   "name": zod.string(),
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const deleteMemberGroupByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putMemberGroupByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putMemberGroupByIdBody = zod.object({
@@ -4925,9 +4925,9 @@ export const getTreeMemberGroupRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -4938,11 +4938,11 @@ export const getTreeMemberGroupRootResponse = zod.object({
 
 
 export const getItemMemberTypeQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemMemberTypeResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -4962,7 +4962,7 @@ export const getItemMemberTypeSearchQueryParams = zod.object({
 
 export const getItemMemberTypeSearchResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -4990,20 +4990,20 @@ export const postMemberTypeBody = zod.object({
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isElement": zod.boolean(),
   "properties": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "container": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sortOrder": zod.number(),
   "alias": zod.string().min(1),
   "name": zod.string().min(1),
   "description": zod.string().nullish(),
   "dataType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
@@ -5023,21 +5023,21 @@ export const postMemberTypeBody = zod.object({
 })
 })),
   "containers": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "name": zod.string().nullish(),
   "type": zod.string().min(1),
   "sortOrder": zod.number()
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "compositions": zod.array(zod.object({
   "memberType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "compositionType": zod.enum(['Composition', 'Inheritance'])
 }))
@@ -5045,7 +5045,7 @@ export const postMemberTypeBody = zod.object({
 
 
 export const getMemberTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -5065,20 +5065,20 @@ export const getMemberTypeByIdResponse = zod.object({
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isElement": zod.boolean(),
   "properties": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "container": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sortOrder": zod.number(),
   "alias": zod.string().min(1),
   "name": zod.string().min(1),
   "description": zod.string().nullish(),
   "dataType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
@@ -5098,18 +5098,18 @@ export const getMemberTypeByIdResponse = zod.object({
 })
 })),
   "containers": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "name": zod.string().nullish(),
   "type": zod.string().min(1),
   "sortOrder": zod.number()
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "compositions": zod.array(zod.object({
   "memberType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "compositionType": zod.enum(['Composition', 'Inheritance'])
 }))
@@ -5117,12 +5117,12 @@ export const getMemberTypeByIdResponse = zod.object({
 
 
 export const deleteMemberTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putMemberTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -5142,20 +5142,20 @@ export const putMemberTypeByIdBody = zod.object({
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "isElement": zod.boolean(),
   "properties": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "container": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "sortOrder": zod.number(),
   "alias": zod.string().min(1),
   "name": zod.string().min(1),
   "description": zod.string().nullish(),
   "dataType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "variesByCulture": zod.boolean(),
   "variesBySegment": zod.boolean(),
@@ -5175,9 +5175,9 @@ export const putMemberTypeByIdBody = zod.object({
 })
 })),
   "containers": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "name": zod.string().nullish(),
   "type": zod.string().min(1),
@@ -5185,7 +5185,7 @@ export const putMemberTypeByIdBody = zod.object({
 })),
   "compositions": zod.array(zod.object({
   "memberType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "compositionType": zod.enum(['Composition', 'Inheritance'])
 }))
@@ -5193,11 +5193,11 @@ export const putMemberTypeByIdBody = zod.object({
 
 
 export const getMemberTypeByIdCompositionReferencesParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMemberTypeByIdCompositionReferencesResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "icon": zod.string()
 })
@@ -5205,53 +5205,53 @@ export const getMemberTypeByIdCompositionReferencesResponse = zod.array(getMembe
 
 
 export const postMemberTypeByIdCopyParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postMemberTypeByIdCopyBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getMemberTypeByIdExportParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMemberTypeByIdExportResponse = zod.instanceof(File)
 
 
 export const putMemberTypeByIdImportParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putMemberTypeByIdImportBody = zod.object({
   "file": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
 
 export const putMemberTypeByIdMoveParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putMemberTypeByIdMoveBody = zod.object({
   "target": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const postMemberTypeAvailableCompositionsBody = zod.object({
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "currentPropertyAliases": zod.array(zod.string()),
-  "currentCompositeIds": zod.array(zod.uuid())
+  "currentCompositeIds": zod.array(zod.guid())
 })
 
 export const postMemberTypeAvailableCompositionsResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string(),
   "icon": zod.string(),
   "folderPath": zod.array(zod.string()),
@@ -5270,15 +5270,15 @@ export const getMemberTypeConfigurationResponse = zod.object({
 
 export const postMemberTypeFolderBody = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getMemberTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -5286,17 +5286,17 @@ export const getMemberTypeFolderByIdParams = zod.object({
 
 export const getMemberTypeFolderByIdResponse = zod.object({
   "name": zod.string().min(1),
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const deleteMemberTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putMemberTypeFolderByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -5309,20 +5309,20 @@ export const putMemberTypeFolderByIdBody = zod.object({
 
 export const postMemberTypeImportBody = zod.object({
   "file": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
 
 export const getTreeMemberTypeAncestorsQueryParams = zod.object({
-  "descendantId": zod.uuid().optional()
+  "descendantId": zod.guid().optional()
 })
 
 export const getTreeMemberTypeAncestorsResponseItem = zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -5337,7 +5337,7 @@ export const getTreeMemberTypeAncestorsResponse = zod.array(getTreeMemberTypeAnc
 export const getTreeMemberTypeChildrenQuerySkipDefault = 0;export const getTreeMemberTypeChildrenQueryTakeDefault = 100;export const getTreeMemberTypeChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeMemberTypeChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeMemberTypeChildrenQueryTakeDefault),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -5347,9 +5347,9 @@ export const getTreeMemberTypeChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -5373,9 +5373,9 @@ export const getTreeMemberTypeRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -5390,7 +5390,7 @@ export const getTreeMemberTypeRootResponse = zod.object({
 export const getTreeMemberTypeSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeMemberTypeSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional(),
   "foldersOnly": zod.coerce.boolean().optional()
@@ -5401,9 +5401,9 @@ export const getTreeMemberTypeSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -5418,7 +5418,7 @@ export const getTreeMemberTypeSiblingsResponse = zod.object({
 export const getFilterMemberQueryOrderByDefault = "username";export const getFilterMemberQuerySkipDefault = 0;export const getFilterMemberQueryTakeDefault = 100;
 
 export const getFilterMemberQueryParams = zod.object({
-  "memberTypeId": zod.uuid().optional(),
+  "memberTypeId": zod.guid().optional(),
   "memberGroupName": zod.string().optional(),
   "isApproved": zod.coerce.boolean().optional(),
   "isLockedOut": zod.coerce.boolean().optional(),
@@ -5451,17 +5451,17 @@ export const getFilterMemberResponse = zod.object({
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "updateDate": zod.iso.datetime({"local":true,"offset":true})
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "email": zod.string(),
   "username": zod.string(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "isApproved": zod.boolean(),
@@ -5471,26 +5471,26 @@ export const getFilterMemberResponse = zod.object({
   "lastLoginDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "lastLockoutDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "lastPasswordChangeDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
-  "groups": zod.array(zod.uuid()),
+  "groups": zod.array(zod.guid()),
   "kind": zod.enum(['Default', 'Api'])
 }))
 })
 
 
 export const getItemMemberQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemMemberResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -5508,20 +5508,20 @@ export const getItemMemberSearchQueryParams = zod.object({
   "query": zod.string().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getItemMemberSearchQueryTakeDefault),
-  "allowedMemberTypes": zod.array(zod.uuid()).optional()
+  "allowedMemberTypes": zod.array(zod.guid()).optional()
 })
 
 export const getItemMemberSearchResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "variants": zod.array(zod.object({
@@ -5550,20 +5550,20 @@ export const postMemberBody = zod.object({
   "segment": zod.string().nullish(),
   "name": zod.string().min(1)
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "email": zod.string(),
   "username": zod.string(),
   "password": zod.string(),
   "memberType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
-  "groups": zod.array(zod.uuid()).nullish(),
+  "groups": zod.array(zod.guid()).nullish(),
   "isApproved": zod.boolean()
 })
 
 
 export const getMemberByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -5586,17 +5586,17 @@ export const getMemberByIdResponse = zod.object({
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
   "updateDate": zod.iso.datetime({"local":true,"offset":true})
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
   "email": zod.string(),
   "username": zod.string(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string(),
   "collection": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }),
   "isApproved": zod.boolean(),
@@ -5606,18 +5606,18 @@ export const getMemberByIdResponse = zod.object({
   "lastLoginDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "lastLockoutDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "lastPasswordChangeDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
-  "groups": zod.array(zod.uuid()),
+  "groups": zod.array(zod.guid()),
   "kind": zod.enum(['Default', 'Api'])
 })
 
 
 export const deleteMemberByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putMemberByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -5640,7 +5640,7 @@ export const putMemberByIdBody = zod.object({
   "username": zod.string(),
   "oldPassword": zod.string().nullish(),
   "newPassword": zod.string().nullish(),
-  "groups": zod.array(zod.uuid()).nullish(),
+  "groups": zod.array(zod.guid()).nullish(),
   "isApproved": zod.boolean(),
   "isLockedOut": zod.boolean(),
   "isTwoFactorEnabled": zod.boolean()
@@ -5648,7 +5648,7 @@ export const putMemberByIdBody = zod.object({
 
 
 export const getMemberByIdReferencedByParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMemberByIdReferencedByQuerySkipDefault = 0;export const getMemberByIdReferencedByQueryTakeDefault = 20;
@@ -5662,17 +5662,17 @@ export const getMemberByIdReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DefaultReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish()
 }),zod.object({
   "$type": zod.enum(['DocumentReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "published": zod.boolean().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -5680,7 +5680,7 @@ export const getMemberByIdReferencedByResponse = zod.object({
   "variants": zod.array(zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -5688,53 +5688,53 @@ export const getMemberByIdReferencedByResponse = zod.object({
 }))
 }),zod.object({
   "$type": zod.enum(['DocumentTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "documentType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MediaTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "mediaType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
 })
 }),zod.object({
   "$type": zod.enum(['MemberTypePropertyTypeReferenceResponseModel']),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "memberType": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "icon": zod.string().nullish(),
   "alias": zod.string().nullish(),
   "name": zod.string().nullish()
@@ -5744,7 +5744,7 @@ export const getMemberByIdReferencedByResponse = zod.object({
 
 
 export const getMemberByIdReferencedDescendantsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getMemberByIdReferencedDescendantsQuerySkipDefault = 0;export const getMemberByIdReferencedDescendantsQueryTakeDefault = 20;
@@ -5757,13 +5757,13 @@ export const getMemberByIdReferencedDescendantsQueryParams = zod.object({
 export const getMemberByIdReferencedDescendantsResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
 
 export const putMemberByIdValidateParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -5786,7 +5786,7 @@ export const putMemberByIdValidateBody = zod.object({
   "username": zod.string(),
   "oldPassword": zod.string().nullish(),
   "newPassword": zod.string().nullish(),
-  "groups": zod.array(zod.uuid()).nullish(),
+  "groups": zod.array(zod.guid()).nullish(),
   "isApproved": zod.boolean(),
   "isLockedOut": zod.boolean(),
   "isTwoFactorEnabled": zod.boolean()
@@ -5796,7 +5796,7 @@ export const putMemberByIdValidateBody = zod.object({
 export const getMemberAreReferencedQuerySkipDefault = 0;export const getMemberAreReferencedQueryTakeDefault = 20;
 
 export const getMemberAreReferencedQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional(),
+  "id": zod.array(zod.guid()).optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getMemberAreReferencedQueryTakeDefault)
 })
@@ -5804,7 +5804,7 @@ export const getMemberAreReferencedQueryParams = zod.object({
 export const getMemberAreReferencedResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
@@ -5830,14 +5830,14 @@ export const postMemberValidateBody = zod.object({
   "segment": zod.string().nullish(),
   "name": zod.string().min(1)
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "email": zod.string(),
   "username": zod.string(),
   "password": zod.string(),
   "memberType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
-  "groups": zod.array(zod.uuid()).nullish(),
+  "groups": zod.array(zod.guid()).nullish(),
   "isApproved": zod.boolean()
 })
 
@@ -5882,7 +5882,7 @@ export const getObjectTypesResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "name": zod.string().nullish(),
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
@@ -5921,7 +5921,7 @@ export const getPackageCreatedResponse = zod.object({
   "name": zod.string(),
   "contentNodeId": zod.string().nullish(),
   "contentLoadChildNodes": zod.boolean(),
-  "mediaIds": zod.array(zod.uuid()),
+  "mediaIds": zod.array(zod.guid()),
   "mediaLoadChildNodes": zod.boolean(),
   "documentTypes": zod.array(zod.string()),
   "mediaTypes": zod.array(zod.string()),
@@ -5932,7 +5932,7 @@ export const getPackageCreatedResponse = zod.object({
   "scripts": zod.array(zod.string()),
   "languages": zod.array(zod.string()),
   "dictionaryItems": zod.array(zod.string()),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "packagePath": zod.string()
 }))
 })
@@ -5942,7 +5942,7 @@ export const postPackageCreatedBody = zod.object({
   "name": zod.string(),
   "contentNodeId": zod.string().nullish(),
   "contentLoadChildNodes": zod.boolean(),
-  "mediaIds": zod.array(zod.uuid()),
+  "mediaIds": zod.array(zod.guid()),
   "mediaLoadChildNodes": zod.boolean(),
   "documentTypes": zod.array(zod.string()),
   "mediaTypes": zod.array(zod.string()),
@@ -5953,19 +5953,19 @@ export const postPackageCreatedBody = zod.object({
   "scripts": zod.array(zod.string()),
   "languages": zod.array(zod.string()),
   "dictionaryItems": zod.array(zod.string()),
-  "id": zod.uuid().nullish()
+  "id": zod.guid().nullish()
 })
 
 
 export const getPackageCreatedByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getPackageCreatedByIdResponse = zod.object({
   "name": zod.string(),
   "contentNodeId": zod.string().nullish(),
   "contentLoadChildNodes": zod.boolean(),
-  "mediaIds": zod.array(zod.uuid()),
+  "mediaIds": zod.array(zod.guid()),
   "mediaLoadChildNodes": zod.boolean(),
   "documentTypes": zod.array(zod.string()),
   "mediaTypes": zod.array(zod.string()),
@@ -5976,25 +5976,25 @@ export const getPackageCreatedByIdResponse = zod.object({
   "scripts": zod.array(zod.string()),
   "languages": zod.array(zod.string()),
   "dictionaryItems": zod.array(zod.string()),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "packagePath": zod.string()
 })
 
 
 export const deletePackageCreatedByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putPackageCreatedByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putPackageCreatedByIdBody = zod.object({
   "name": zod.string(),
   "contentNodeId": zod.string().nullish(),
   "contentLoadChildNodes": zod.boolean(),
-  "mediaIds": zod.array(zod.uuid()),
+  "mediaIds": zod.array(zod.guid()),
   "mediaLoadChildNodes": zod.boolean(),
   "documentTypes": zod.array(zod.string()),
   "mediaTypes": zod.array(zod.string()),
@@ -6010,7 +6010,7 @@ export const putPackageCreatedByIdBody = zod.object({
 
 
 export const getPackageCreatedByIdDownloadParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getPackageCreatedByIdDownloadResponse = zod.instanceof(File)
@@ -6237,7 +6237,7 @@ export const putProfilingStatusBody = zod.object({
 
 
 export const getPropertyTypeIsUsedQueryParams = zod.object({
-  "contentTypeId": zod.uuid().optional(),
+  "contentTypeId": zod.guid().optional(),
   "propertyAlias": zod.string().optional()
 })
 
@@ -6260,12 +6260,12 @@ export const getRedirectManagementQueryParams = zod.object({
 export const getRedirectManagementResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "originalUrl": zod.string(),
   "destinationUrl": zod.string(),
   "created": zod.iso.datetime({"local":true,"offset":true}),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "culture": zod.string().nullish()
 }))
@@ -6273,7 +6273,7 @@ export const getRedirectManagementResponse = zod.object({
 
 
 export const getRedirectManagementByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getRedirectManagementByIdQuerySkipDefault = 0;export const getRedirectManagementByIdQueryTakeDefault = 100;
@@ -6286,12 +6286,12 @@ export const getRedirectManagementByIdQueryParams = zod.object({
 export const getRedirectManagementByIdResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "originalUrl": zod.string(),
   "destinationUrl": zod.string(),
   "created": zod.iso.datetime({"local":true,"offset":true}),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "culture": zod.string().nullish()
 }))
@@ -6299,7 +6299,7 @@ export const getRedirectManagementByIdResponse = zod.object({
 
 
 export const deleteRedirectManagementByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -6315,11 +6315,11 @@ export const postRedirectManagementStatusQueryParams = zod.object({
 
 
 export const getItemRelationTypeQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemRelationTypeResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -6345,22 +6345,22 @@ export const getRelationTypeResponse = zod.object({
   "name": zod.string().min(1),
   "isBidirectional": zod.boolean(),
   "isDependency": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "alias": zod.string().nullish(),
   "parentObject": zod.object({
   "name": zod.string().nullish(),
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "childObject": zod.object({
   "name": zod.string().nullish(),
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 }))
 })
 
 
 export const getRelationTypeByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -6370,21 +6370,21 @@ export const getRelationTypeByIdResponse = zod.object({
   "name": zod.string().min(1),
   "isBidirectional": zod.boolean(),
   "isDependency": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "alias": zod.string().nullish(),
   "parentObject": zod.object({
   "name": zod.string().nullish(),
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "childObject": zod.object({
   "name": zod.string().nullish(),
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const getRelationByRelationTypeIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getRelationByRelationTypeIdQuerySkipDefault = 0;export const getRelationByRelationTypeIdQueryTakeDefault = 100;
@@ -6397,16 +6397,16 @@ export const getRelationByRelationTypeIdQueryParams = zod.object({
 export const getRelationByRelationTypeIdResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "relationType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "parent": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish()
 }),
   "child": zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "name": zod.string().nullish()
 }),
   "createDate": zod.iso.datetime({"local":true,"offset":true}),
@@ -6653,7 +6653,7 @@ export const postSecurityForgotPasswordBody = zod.object({
 
 export const postSecurityForgotPasswordResetBody = zod.object({
   "user": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "resetCode": zod.string(),
   "password": zod.string().min(1)
@@ -6662,7 +6662,7 @@ export const postSecurityForgotPasswordResetBody = zod.object({
 
 export const postSecurityForgotPasswordVerifyBody = zod.object({
   "user": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "resetCode": zod.string()
 })
@@ -6988,7 +6988,7 @@ export const getTagQueryParams = zod.object({
 export const getTagResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "text": zod.string().nullish(),
   "group": zod.string().nullish(),
   "nodeCount": zod.number()
@@ -7022,11 +7022,11 @@ export const postTelemetryLevelBody = zod.object({
 
 
 export const getItemTemplateQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemTemplateResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -7046,7 +7046,7 @@ export const getItemTemplateSearchQueryParams = zod.object({
 
 export const getItemTemplateSearchResponse = zod.object({
   "items": zod.array(zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -7065,12 +7065,12 @@ export const postTemplateBody = zod.object({
   "name": zod.string().min(1),
   "alias": zod.string().min(1),
   "content": zod.string().nullish(),
-  "id": zod.uuid().nullish()
+  "id": zod.guid().nullish()
 })
 
 
 export const getTemplateByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -7081,20 +7081,20 @@ export const getTemplateByIdResponse = zod.object({
   "name": zod.string().min(1),
   "alias": zod.string().min(1),
   "content": zod.string().nullish(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "masterTemplate": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish()
 })
 
 
 export const deleteTemplateByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putTemplateByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -7119,7 +7119,7 @@ export const getTemplateConfigurationResponse = zod.object({
 
 export const postTemplateQueryExecuteBody = zod.object({
   "rootDocument": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentTypeAlias": zod.string().nullish(),
   "filters": zod.array(zod.object({
@@ -7159,14 +7159,14 @@ export const getTemplateQuerySettingsResponse = zod.object({
 
 
 export const getTreeTemplateAncestorsQueryParams = zod.object({
-  "descendantId": zod.uuid().optional()
+  "descendantId": zod.guid().optional()
 })
 
 export const getTreeTemplateAncestorsResponseItem = zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -7179,7 +7179,7 @@ export const getTreeTemplateAncestorsResponse = zod.array(getTreeTemplateAncesto
 export const getTreeTemplateChildrenQuerySkipDefault = 0;export const getTreeTemplateChildrenQueryTakeDefault = 100;
 
 export const getTreeTemplateChildrenQueryParams = zod.object({
-  "parentId": zod.uuid().optional(),
+  "parentId": zod.guid().optional(),
   "skip": zod.coerce.number().optional(),
   "take": zod.coerce.number().default(getTreeTemplateChildrenQueryTakeDefault)
 })
@@ -7188,9 +7188,9 @@ export const getTreeTemplateChildrenResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -7211,9 +7211,9 @@ export const getTreeTemplateRootResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -7224,7 +7224,7 @@ export const getTreeTemplateRootResponse = zod.object({
 
 
 export const getTreeTemplateSiblingsQueryParams = zod.object({
-  "target": zod.uuid().optional(),
+  "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
   "after": zod.coerce.number().optional()
 })
@@ -7234,9 +7234,9 @@ export const getTreeTemplateSiblingsResponse = zod.object({
   "totalAfter": zod.number(),
   "items": zod.array(zod.object({
   "hasChildren": zod.boolean(),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "parent": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
@@ -7265,7 +7265,7 @@ export const postUserDataBody = zod.object({
   "group": zod.string(),
   "identifier": zod.string(),
   "value": zod.string(),
-  "key": zod.uuid().nullish()
+  "key": zod.guid().nullish()
 })
 
 
@@ -7284,7 +7284,7 @@ export const getUserDataResponse = zod.object({
   "group": zod.string(),
   "identifier": zod.string(),
   "value": zod.string(),
-  "key": zod.uuid()
+  "key": zod.guid()
 }))
 })
 
@@ -7293,12 +7293,12 @@ export const putUserDataBody = zod.object({
   "group": zod.string(),
   "identifier": zod.string(),
   "value": zod.string(),
-  "key": zod.uuid()
+  "key": zod.guid()
 })
 
 
 export const getUserDataByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getUserDataByIdResponse = zod.object({
@@ -7309,7 +7309,7 @@ export const getUserDataByIdResponse = zod.object({
 
 
 export const deleteUserDataByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -7332,27 +7332,27 @@ export const getFilterUserGroupResponse = zod.object({
   "languages": zod.array(zod.string()),
   "hasAccessToAllLanguages": zod.boolean(),
   "documentStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentRootAccess": zod.boolean(),
   "mediaStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaRootAccess": zod.boolean(),
   "fallbackPermissions": zod.array(zod.string()),
   "permissions": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DocumentPermissionPresentationModel']),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
   "$type": zod.enum(['DocumentPropertyValuePermissionPresentationModel']),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "propertyType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
@@ -7360,7 +7360,7 @@ export const getFilterUserGroupResponse = zod.object({
   "verbs": zod.array(zod.string()),
   "context": zod.string()
 })])),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "isDeletable": zod.boolean(),
   "aliasCanBeChanged": zod.boolean()
 }))
@@ -7368,11 +7368,11 @@ export const getFilterUserGroupResponse = zod.object({
 
 
 export const getItemUserGroupQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemUserGroupResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -7385,7 +7385,7 @@ export const getItemUserGroupResponse = zod.array(getItemUserGroupResponseItem)
 
 export const deleteUserGroupBody = zod.object({
   "userGroupIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
@@ -7399,27 +7399,27 @@ export const postUserGroupBody = zod.object({
   "languages": zod.array(zod.string()),
   "hasAccessToAllLanguages": zod.boolean(),
   "documentStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentRootAccess": zod.boolean(),
   "mediaStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaRootAccess": zod.boolean(),
   "fallbackPermissions": zod.array(zod.string()),
   "permissions": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DocumentPermissionPresentationModel']),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
   "$type": zod.enum(['DocumentPropertyValuePermissionPresentationModel']),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "propertyType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
@@ -7427,7 +7427,7 @@ export const postUserGroupBody = zod.object({
   "verbs": zod.array(zod.string()),
   "context": zod.string()
 })])),
-  "id": zod.uuid().nullish()
+  "id": zod.guid().nullish()
 })
 
 
@@ -7449,27 +7449,27 @@ export const getUserGroupResponse = zod.object({
   "languages": zod.array(zod.string()),
   "hasAccessToAllLanguages": zod.boolean(),
   "documentStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentRootAccess": zod.boolean(),
   "mediaStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaRootAccess": zod.boolean(),
   "fallbackPermissions": zod.array(zod.string()),
   "permissions": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DocumentPermissionPresentationModel']),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
   "$type": zod.enum(['DocumentPropertyValuePermissionPresentationModel']),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "propertyType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
@@ -7477,7 +7477,7 @@ export const getUserGroupResponse = zod.object({
   "verbs": zod.array(zod.string()),
   "context": zod.string()
 })])),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "isDeletable": zod.boolean(),
   "aliasCanBeChanged": zod.boolean()
 }))
@@ -7485,7 +7485,7 @@ export const getUserGroupResponse = zod.object({
 
 
 export const getUserGroupByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getUserGroupByIdResponse = zod.object({
@@ -7497,27 +7497,27 @@ export const getUserGroupByIdResponse = zod.object({
   "languages": zod.array(zod.string()),
   "hasAccessToAllLanguages": zod.boolean(),
   "documentStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentRootAccess": zod.boolean(),
   "mediaStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaRootAccess": zod.boolean(),
   "fallbackPermissions": zod.array(zod.string()),
   "permissions": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DocumentPermissionPresentationModel']),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
   "$type": zod.enum(['DocumentPropertyValuePermissionPresentationModel']),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "propertyType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
@@ -7525,19 +7525,19 @@ export const getUserGroupByIdResponse = zod.object({
   "verbs": zod.array(zod.string()),
   "context": zod.string()
 })])),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "isDeletable": zod.boolean(),
   "aliasCanBeChanged": zod.boolean()
 })
 
 
 export const deleteUserGroupByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putUserGroupByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putUserGroupByIdBody = zod.object({
@@ -7549,27 +7549,27 @@ export const putUserGroupByIdBody = zod.object({
   "languages": zod.array(zod.string()),
   "hasAccessToAllLanguages": zod.boolean(),
   "documentStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "documentRootAccess": zod.boolean(),
   "mediaStartNode": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }).nullish(),
   "mediaRootAccess": zod.boolean(),
   "fallbackPermissions": zod.array(zod.string()),
   "permissions": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DocumentPermissionPresentationModel']),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
   "$type": zod.enum(['DocumentPropertyValuePermissionPresentationModel']),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "propertyType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
@@ -7581,21 +7581,21 @@ export const putUserGroupByIdBody = zod.object({
 
 
 export const deleteUserGroupByIdUsersParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const deleteUserGroupByIdUsersBodyItem = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 export const deleteUserGroupByIdUsersBody = zod.array(deleteUserGroupByIdUsersBodyItem)
 
 
 export const postUserGroupByIdUsersParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postUserGroupByIdUsersBodyItem = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 export const postUserGroupByIdUsersBody = zod.array(postUserGroupByIdUsersBodyItem)
 
@@ -7607,7 +7607,7 @@ export const getFilterUserQueryParams = zod.object({
   "take": zod.coerce.number().default(getFilterUserQueryTakeDefault),
   "orderBy": zod.enum(['UserName', 'Language', 'Name', 'Email', 'Id', 'CreateDate', 'UpdateDate', 'IsApproved', 'IsLockedOut', 'LastLoginDate']).optional(),
   "orderDirection": zod.enum(['Ascending', 'Descending']).optional(),
-  "userGroupIds": zod.array(zod.uuid()).optional(),
+  "userGroupIds": zod.array(zod.guid()).optional(),
   "userStates": zod.array(zod.enum(['Active', 'Disabled', 'LockedOut', 'Invited', 'Inactive', 'All'])).optional(),
   "filter": zod.string().optional()
 })
@@ -7619,16 +7619,16 @@ export const getFilterUserResponse = zod.object({
   "userName": zod.string(),
   "name": zod.string(),
   "userGroupIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "languageIsoCode": zod.string().nullish(),
   "documentStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasDocumentRootAccess": zod.boolean(),
   "mediaStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasMediaRootAccess": zod.boolean(),
   "avatarUrls": zod.array(zod.string()),
@@ -7646,11 +7646,11 @@ export const getFilterUserResponse = zod.object({
 
 
 export const getItemUserQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemUserResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -7666,16 +7666,16 @@ export const postUserBody = zod.object({
   "userName": zod.string(),
   "name": zod.string(),
   "userGroupIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "kind": zod.enum(['Default', 'Api'])
 })
 
 
 export const deleteUserBody = zod.object({
   "userIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
@@ -7694,16 +7694,16 @@ export const getUserResponse = zod.object({
   "userName": zod.string(),
   "name": zod.string(),
   "userGroupIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "languageIsoCode": zod.string().nullish(),
   "documentStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasDocumentRootAccess": zod.boolean(),
   "mediaStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasMediaRootAccess": zod.boolean(),
   "avatarUrls": zod.array(zod.string()),
@@ -7721,7 +7721,7 @@ export const getUserResponse = zod.object({
 
 
 export const getUserByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getUserByIdResponse = zod.object({
@@ -7729,16 +7729,16 @@ export const getUserByIdResponse = zod.object({
   "userName": zod.string(),
   "name": zod.string(),
   "userGroupIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "languageIsoCode": zod.string().nullish(),
   "documentStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasDocumentRootAccess": zod.boolean(),
   "mediaStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasMediaRootAccess": zod.boolean(),
   "avatarUrls": zod.array(zod.string()),
@@ -7755,12 +7755,12 @@ export const getUserByIdResponse = zod.object({
 
 
 export const deleteUserByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putUserByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const putUserByIdBody = zod.object({
@@ -7768,22 +7768,22 @@ export const putUserByIdBody = zod.object({
   "userName": zod.string(),
   "name": zod.string(),
   "userGroupIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "languageIsoCode": zod.string(),
   "documentStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasDocumentRootAccess": zod.boolean(),
   "mediaStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasMediaRootAccess": zod.boolean()
 })
 
 
 export const getUserById2faParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getUserById2faResponseItem = zod.object({
@@ -7794,30 +7794,30 @@ export const getUserById2faResponse = zod.array(getUserById2faResponseItem)
 
 
 export const deleteUserById2faByProviderNameParams = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "providerName": zod.string()
 })
 
 
 export const getUserByIdCalculateStartNodesParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getUserByIdCalculateStartNodesResponse = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "documentStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasDocumentRootAccess": zod.boolean(),
   "mediaStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasMediaRootAccess": zod.boolean()
 })
 
 
 export const postUserByIdChangePasswordParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postUserByIdChangePasswordBody = zod.object({
@@ -7826,7 +7826,7 @@ export const postUserByIdChangePasswordBody = zod.object({
 
 
 export const postUserByIdClientCredentialsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postUserByIdClientCredentialsBody = zod.object({
@@ -7836,7 +7836,7 @@ export const postUserByIdClientCredentialsBody = zod.object({
 
 
 export const getUserByIdClientCredentialsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getUserByIdClientCredentialsResponseItem = zod.string()
@@ -7844,13 +7844,13 @@ export const getUserByIdClientCredentialsResponse = zod.array(getUserByIdClientC
 
 
 export const deleteUserByIdClientCredentialsByClientIdParams = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "clientId": zod.string()
 })
 
 
 export const postUserByIdResetPasswordParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postUserByIdResetPasswordResponse = zod.object({
@@ -7859,17 +7859,17 @@ export const postUserByIdResetPasswordResponse = zod.object({
 
 
 export const deleteUserAvatarByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const postUserAvatarByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const postUserAvatarByIdBody = zod.object({
   "file": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
@@ -7894,16 +7894,16 @@ export const getUserCurrentResponse = zod.object({
   "userName": zod.string(),
   "name": zod.string(),
   "userGroupIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "languageIsoCode": zod.string().nullable(),
   "documentStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasDocumentRootAccess": zod.boolean(),
   "mediaStartNodeIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "hasMediaRootAccess": zod.boolean(),
   "avatarUrls": zod.array(zod.string()),
@@ -7914,16 +7914,16 @@ export const getUserCurrentResponse = zod.object({
   "permissions": zod.array(zod.union([zod.object({
   "$type": zod.enum(['DocumentPermissionPresentationModel']),
   "document": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
   "$type": zod.enum(['DocumentPropertyValuePermissionPresentationModel']),
   "documentType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "propertyType": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "verbs": zod.array(zod.string())
 }),zod.object({
@@ -7977,7 +7977,7 @@ export const getUserCurrent2faByProviderNameResponse = zod.object({
 
 export const postUserCurrentAvatarBody = zod.object({
   "file": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 })
 
@@ -8012,24 +8012,24 @@ export const getUserCurrentLoginProvidersResponse = zod.array(getUserCurrentLogi
 
 
 export const getUserCurrentPermissionsQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getUserCurrentPermissionsResponse = zod.object({
   "permissions": zod.array(zod.object({
-  "nodeKey": zod.uuid(),
+  "nodeKey": zod.guid(),
   "permissions": zod.array(zod.string())
 }))
 })
 
 
 export const getUserCurrentPermissionsDocumentQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getUserCurrentPermissionsDocumentResponseItem = zod.object({
   "permissions": zod.array(zod.object({
-  "nodeKey": zod.uuid(),
+  "nodeKey": zod.guid(),
   "permissions": zod.array(zod.string())
 }))
 })
@@ -8037,12 +8037,12 @@ export const getUserCurrentPermissionsDocumentResponse = zod.array(getUserCurren
 
 
 export const getUserCurrentPermissionsMediaQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getUserCurrentPermissionsMediaResponse = zod.object({
   "permissions": zod.array(zod.object({
-  "nodeKey": zod.uuid(),
+  "nodeKey": zod.guid(),
   "permissions": zod.array(zod.string())
 }))
 })
@@ -8050,14 +8050,14 @@ export const getUserCurrentPermissionsMediaResponse = zod.object({
 
 export const postUserDisableBody = zod.object({
   "userIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
 
 export const postUserEnableBody = zod.object({
   "userIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
@@ -8067,9 +8067,9 @@ export const postUserInviteBody = zod.object({
   "userName": zod.string(),
   "name": zod.string(),
   "userGroupIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "message": zod.string().nullish()
 })
 
@@ -8079,7 +8079,7 @@ export const postUserInviteBody = zod.object({
 
 export const postUserInviteCreatePasswordBody = zod.object({
   "user": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "token": zod.string().min(1),
   "password": zod.string()
@@ -8088,7 +8088,7 @@ export const postUserInviteCreatePasswordBody = zod.object({
 
 export const postUserInviteResendBody = zod.object({
   "user": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "message": zod.string().nullish()
 })
@@ -8099,7 +8099,7 @@ export const postUserInviteResendBody = zod.object({
 
 export const postUserInviteVerifyBody = zod.object({
   "user": zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }),
   "token": zod.string().min(1)
 })
@@ -8117,27 +8117,27 @@ export const postUserInviteVerifyResponse = zod.object({
 
 export const postUserSetUserGroupsBody = zod.object({
   "userIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })),
   "userGroupIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
 
 export const postUserUnlockBody = zod.object({
   "userIds": zod.array(zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 }))
 })
 
 
 export const getItemWebhookQueryParams = zod.object({
-  "id": zod.array(zod.uuid()).optional()
+  "id": zod.array(zod.guid()).optional()
 })
 
 export const getItemWebhookResponseItem = zod.object({
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "flags": zod.array(zod.object({
   "alias": zod.string()
 })),
@@ -8167,9 +8167,9 @@ export const getWebhookResponse = zod.object({
   "name": zod.string().nullish(),
   "description": zod.string().nullish(),
   "url": zod.string().min(1),
-  "contentTypeKeys": zod.array(zod.uuid()),
+  "contentTypeKeys": zod.array(zod.guid()),
   "headers": zod.record(zod.string(), zod.string()),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "events": zod.array(zod.object({
   "eventName": zod.string(),
   "eventType": zod.string(),
@@ -8187,15 +8187,15 @@ export const postWebhookBody = zod.object({
   "name": zod.string().nullish(),
   "description": zod.string().nullish(),
   "url": zod.string().min(1),
-  "contentTypeKeys": zod.array(zod.uuid()),
+  "contentTypeKeys": zod.array(zod.guid()),
   "headers": zod.record(zod.string(), zod.string()),
-  "id": zod.uuid().nullish(),
+  "id": zod.guid().nullish(),
   "events": zod.array(zod.string())
 })
 
 
 export const getWebhookByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -8206,9 +8206,9 @@ export const getWebhookByIdResponse = zod.object({
   "name": zod.string().nullish(),
   "description": zod.string().nullish(),
   "url": zod.string().min(1),
-  "contentTypeKeys": zod.array(zod.uuid()),
+  "contentTypeKeys": zod.array(zod.guid()),
   "headers": zod.record(zod.string(), zod.string()),
-  "id": zod.uuid(),
+  "id": zod.guid(),
   "events": zod.array(zod.object({
   "eventName": zod.string(),
   "eventType": zod.string(),
@@ -8218,12 +8218,12 @@ export const getWebhookByIdResponse = zod.object({
 
 
 export const deleteWebhookByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
 export const putWebhookByIdParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 
@@ -8234,14 +8234,14 @@ export const putWebhookByIdBody = zod.object({
   "name": zod.string().nullish(),
   "description": zod.string().nullish(),
   "url": zod.string().min(1),
-  "contentTypeKeys": zod.array(zod.uuid()),
+  "contentTypeKeys": zod.array(zod.guid()),
   "headers": zod.record(zod.string(), zod.string()),
   "events": zod.array(zod.string())
 })
 
 
 export const getWebhookByIdLogsParams = zod.object({
-  "id": zod.uuid()
+  "id": zod.guid()
 })
 
 export const getWebhookByIdLogsQuerySkipDefault = 0;export const getWebhookByIdLogsQueryTakeDefault = 100;
@@ -8254,8 +8254,8 @@ export const getWebhookByIdLogsQueryParams = zod.object({
 export const getWebhookByIdLogsResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "key": zod.uuid(),
-  "webhookKey": zod.uuid(),
+  "key": zod.guid(),
+  "webhookKey": zod.guid(),
   "statusCode": zod.string(),
   "isSuccessStatusCode": zod.boolean(),
   "date": zod.iso.datetime({"local":true,"offset":true}),
@@ -8298,8 +8298,8 @@ export const getWebhookLogsQueryParams = zod.object({
 export const getWebhookLogsResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.object({
-  "key": zod.uuid(),
-  "webhookKey": zod.uuid(),
+  "key": zod.guid(),
+  "webhookKey": zod.guid(),
   "statusCode": zod.string(),
   "isSuccessStatusCode": zod.boolean(),
   "date": zod.iso.datetime({"local":true,"offset":true}),

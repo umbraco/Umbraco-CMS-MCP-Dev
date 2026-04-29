@@ -19,8 +19,14 @@ describe("get-member-by-id-referenced-descendants", () => {
   // The API exists for completeness and potential future use cases with custom member hierarchies
   setupTestEnvironment();
 
+  beforeEach(async () => {
+    await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
+    await MemberTestHelper.cleanup("nodesc_" + TEST_MEMBER_EMAIL);
+  });
+
   afterEach(async () => {
     await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
+    await MemberTestHelper.cleanup("nodesc_" + TEST_MEMBER_EMAIL);
   });
 
   it("should get descendant references for a member", async () => {
@@ -34,9 +40,8 @@ describe("get-member-by-id-referenced-descendants", () => {
       .create();
 
     const id = builder.getId();
-
     const result = await GetMemberByIdReferencedDescendantsTool.handler(
-      { id, skip: 0, take: 10 },
+      { id },
       createMockRequestHandlerExtra()
     );
 
@@ -60,9 +65,8 @@ describe("get-member-by-id-referenced-descendants", () => {
       .withPassword("test123@Longer")
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
-
     const result = await GetMemberByIdReferencedDescendantsTool.handler(
-      { id: builder.getId(), skip: 0, take: 10 },
+      { id: builder.getId() },
       createMockRequestHandlerExtra()
     );
 

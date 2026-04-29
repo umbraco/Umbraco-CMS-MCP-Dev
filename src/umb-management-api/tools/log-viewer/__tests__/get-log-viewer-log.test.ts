@@ -4,13 +4,12 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-
 describe("get-log-viewer-log", () => {
   setupTestEnvironment();
 
   it("should get log viewer logs with default parameters", async () => {
     const result = await GetLogViewerLogTool.handler(
-      { skip: undefined, take: 100, orderDirection: undefined, filterExpression: undefined, logLevel: undefined, startDate: undefined, endDate: undefined },
+      { orderDirection: undefined, filterExpression: undefined, logLevel: undefined, startDate: undefined, endDate: undefined },
       createMockRequestHandlerExtra()
     );
 
@@ -30,11 +29,8 @@ describe("get-log-viewer-log", () => {
     const now = new Date();
     const oneMonthAgo = new Date(now);
     oneMonthAgo.setMonth(now.getMonth() - 1);
-
     const result = await GetLogViewerLogTool.handler(
       {
-        skip: 0,
-        take: 10,
         orderDirection: "Descending",
         filterExpression: "",
         logLevel: ["Error", "Warning", "Information"],
@@ -51,7 +47,7 @@ describe("get-log-viewer-log", () => {
     expect(content).toHaveProperty("items");
     expect(content).toHaveProperty("total");
     expect(Array.isArray(content.items)).toBe(true);
-    expect(content.items.length).toBeLessThanOrEqual(10);
+    expect(content.items.length).toBeGreaterThan(0);
     expect(typeof content.total).toBe("number");
   });
 });
