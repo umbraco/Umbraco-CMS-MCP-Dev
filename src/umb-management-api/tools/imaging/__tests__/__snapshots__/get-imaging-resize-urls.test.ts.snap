@@ -10,7 +10,7 @@ exports[`get-imaging-resize-urls should generate resize URLs for specific media 
         "urlInfos": [
           {
             "culture": null,
-            "url": "https://localhost:44391/media/0ofdvcwj/chairs-lamps.jpg?width=200&height=200",
+            "url": "https://localhost:44391/media/0ofdvcwj/chairs-lamps.jpg?width=200&height=200&hmac=cc3b9ce082b85008b9b1c0ad93acee9579fb55f93db5c11f1e691b1188faa5a4",
           },
         ],
       },

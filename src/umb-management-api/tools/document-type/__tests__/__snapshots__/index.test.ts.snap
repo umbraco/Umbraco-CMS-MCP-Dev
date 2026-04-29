@@ -6,6 +6,7 @@ exports[`document-type-tool-index should have all management tools when user has
   "get-document-type-configuration",
   "get-document-type-blueprint",
   "get-document-types-by-id-array",
+  "get-document-type-batch",
   "get-document-type-available-compositions",
   "get-document-type-composition-references",
   "update-document-type",
@@ -23,6 +24,9 @@ exports[`document-type-tool-index should have all management tools when user has
   "update-document-type-folder",
   "get-document-type-root",
   "get-document-type-ancestors",
+  "get-document-type-ancestors-batch",
+  "get-document-type-tree-search",
+  "get-document-type-allowed-parents",
   "get-document-type-children",
   "get-document-type-siblings",
 ]
@@ -34,6 +38,7 @@ exports[`document-type-tool-index should have all tools when user has all requir
   "get-document-type-configuration",
   "get-document-type-blueprint",
   "get-document-types-by-id-array",
+  "get-document-type-batch",
   "get-document-type-available-compositions",
   "get-document-type-composition-references",
   "update-document-type",
@@ -51,6 +56,9 @@ exports[`document-type-tool-index should have all tools when user has all requir
   "update-document-type-folder",
   "get-document-type-root",
   "get-document-type-ancestors",
+  "get-document-type-ancestors-batch",
+  "get-document-type-tree-search",
+  "get-document-type-allowed-parents",
   "get-document-type-children",
   "get-document-type-siblings",
 ]
@@ -68,5 +76,6 @@ exports[`document-type-tool-index should have configuration tools when user has 
   "get-document-type-configuration",
   "get-document-type-blueprint",
   "get-document-types-by-id-array",
+  "get-document-type-batch",
 ]
 `;
