@@ -56,7 +56,7 @@ describe("delete-document-public-access", () => {
 
     // GET to verify
     const getResult = await GetDocumentPublicAccessTool.handler(
-      { id: docId },
+      { id: docId, includeAncestors: undefined },
       createMockRequestHandlerExtra()
     );
     expect(getResult).toMatchSnapshot();

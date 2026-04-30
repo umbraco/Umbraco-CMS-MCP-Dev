@@ -13,6 +13,7 @@ exports[`member-tool-index should have all tools when user has members section a
   "get-member-by-id-referenced-descendants",
   "find-member",
   "get-item-member-search",
+  "get-member-ancestors-batch",
 ]
 `;
 
@@ -20,5 +21,6 @@ exports[`member-tool-index should only have find member tool when user meets no 
 [
   "find-member",
   "get-item-member-search",
+  "get-member-ancestors-batch",
 ]
 `;

@@ -12,6 +12,7 @@ exports[`get-document-public-access should get public access for a valid documen
       "name": "_Test PublicAccess MemberGroup",
     },
   ],
+  "isProtectedByAncestor": false,
   "loginDocument": {
     "id": "00000000-0000-0000-0000-000000000000",
   },

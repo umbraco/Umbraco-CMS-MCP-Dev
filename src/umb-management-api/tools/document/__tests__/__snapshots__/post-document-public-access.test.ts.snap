@@ -23,6 +23,7 @@ exports[`post-document-public-access should add public access for a valid docume
       "name": "_Test PostPublicAccess MemberGroup",
     },
   ],
+  "isProtectedByAncestor": false,
   "loginDocument": {
     "id": "00000000-0000-0000-0000-000000000000",
   },

@@ -16,14 +16,17 @@ exports[`media-type-tool-index should have all tools when user has all required 
   "get-media-type-children",
   "get-media-type-siblings",
   "get-media-type-ancestors",
+  "get-media-type-ancestors-batch",
   "get-media-type-folders",
   "get-media-type-by-id",
   "get-media-type-by-ids",
+  "get-media-type-batch",
   "get-item-media-type",
   "get-media-type-configuration",
   "get-allowed-media-type",
   "get-media-type-allowed-at-root",
   "get-media-type-allowed-children",
+  "get-media-type-allowed-parents",
   "get-media-type-composition-references",
 ]
 `;
@@ -44,14 +47,17 @@ exports[`media-type-tool-index should have management tools when user has media 
   "get-media-type-children",
   "get-media-type-siblings",
   "get-media-type-ancestors",
+  "get-media-type-ancestors-batch",
   "get-media-type-folders",
   "get-media-type-by-id",
   "get-media-type-by-ids",
+  "get-media-type-batch",
   "get-item-media-type",
   "get-media-type-configuration",
   "get-allowed-media-type",
   "get-media-type-allowed-at-root",
   "get-media-type-allowed-children",
+  "get-media-type-allowed-parents",
   "get-media-type-composition-references",
 ]
 `;
@@ -62,11 +68,13 @@ exports[`media-type-tool-index should have query tools when user has media or me
 [
   "get-media-type-by-id",
   "get-media-type-by-ids",
+  "get-media-type-batch",
   "get-item-media-type",
   "get-media-type-configuration",
   "get-allowed-media-type",
   "get-media-type-allowed-at-root",
   "get-media-type-allowed-children",
+  "get-media-type-allowed-parents",
   "get-media-type-composition-references",
 ]
 `;

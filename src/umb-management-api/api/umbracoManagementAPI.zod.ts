@@ -8,6 +8,10 @@
 import * as zod from 'zod';
 
 
+/**
+ * Gets a paginated collection containing the English and localized names of all available cultures.
+ * @summary Gets a paginated collection of cultures available for creating languages.
+ */
 export const getCultureQuerySkipDefault = 0;export const getCultureQueryTakeDefault = 100;
 
 export const getCultureQueryParams = zod.object({
@@ -28,6 +32,10 @@ export const getCultureResponse = zod.object({
 })
 
 
+/**
+ * Creates a new data type with the configuration specified in the request model.
+ * @summary Creates a new data type.
+ */
 
 
 
@@ -47,6 +55,10 @@ export const postDataTypeBody = zod.object({
 })
 
 
+/**
+ * Gets a data type identified by the provided Id.
+ * @summary Gets a data type.
+ */
 export const getDataTypeByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -69,11 +81,19 @@ export const getDataTypeByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a data type identified by the provided Id.
+ * @summary Deletes a data type.
+ */
 export const deleteDataTypeByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a data type identified by the provided Id with the details from the request model.
+ * @summary Updates a data type.
+ */
 export const putDataTypeByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -93,6 +113,10 @@ export const putDataTypeByIdBody = zod.object({
 })
 
 
+/**
+ * Creates a duplicate of an existing data type identified by the provided unique Id. The copied data type will be given a new Id and have ' (copy)' appended to its name. Optionally, the copy can be placed in a specific container by providing a target container Id.
+ * @summary Copies a data type.
+ */
 export const postDataTypeByIdCopyParams = zod.object({
   "id": zod.guid()
 })
@@ -104,6 +128,10 @@ export const postDataTypeByIdCopyBody = zod.object({
 })
 
 
+/**
+ * Checks if the data type identified by the provided Id is used in any content, media, or member types.
+ * @summary Checks if a data type is used.
+ */
 export const getDataTypeByIdIsUsedParams = zod.object({
   "id": zod.guid()
 })
@@ -111,6 +139,10 @@ export const getDataTypeByIdIsUsedParams = zod.object({
 export const getDataTypeByIdIsUsedResponse = zod.boolean()
 
 
+/**
+ * Moves an existing data type identified by Id to a different container. The target container Id must be provided in the request model.
+ * @summary Moves a data type.
+ */
 export const putDataTypeByIdMoveParams = zod.object({
   "id": zod.guid()
 })
@@ -122,6 +154,10 @@ export const putDataTypeByIdMoveBody = zod.object({
 })
 
 
+/**
+ * Gets a paged collection of entities that are referenced by the data type with the provided Id, so you can see where it is being used.
+ * @summary Gets a paged collection of entities that are referenced by a data type.
+ */
 export const getDataTypeByIdReferencedByParams = zod.object({
   "id": zod.guid()
 })
@@ -218,6 +254,39 @@ export const getDataTypeByIdReferencedByResponse = zod.object({
 })
 
 
+/**
+ * Gets multiple data types identified by the provided Ids.
+ * @summary Gets multiple data types.
+ */
+export const getDataTypeBatchQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+
+
+
+
+export const getDataTypeBatchResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "name": zod.string().min(1),
+  "editorAlias": zod.string().min(1),
+  "editorUiAlias": zod.string(),
+  "values": zod.array(zod.object({
+  "alias": zod.string(),
+  "value": zod.unknown().nullish()
+})),
+  "id": zod.guid(),
+  "isDeletable": zod.boolean(),
+  "canIgnoreStartNodes": zod.boolean()
+}))
+})
+
+
+/**
+ * Gets the configuration settings for data types.
+ * @summary Gets the data type configuration.
+ */
 export const getDataTypeConfigurationResponse = zod.object({
   "canBeChanged": zod.enum(['True', 'False', 'FalseWithHelpText']),
   "documentListViewId": zod.guid(),
@@ -225,6 +294,10 @@ export const getDataTypeConfigurationResponse = zod.object({
 })
 
 
+/**
+ * Creates a new data type folder with the provided name and parent location.
+ * @summary Creates a data type folder.
+ */
 
 
 
@@ -237,6 +310,10 @@ export const postDataTypeFolderBody = zod.object({
 })
 
 
+/**
+ * Gets a data type folder identified by the provided Id.
+ * @summary Gets a data type folder.
+ */
 export const getDataTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -250,11 +327,19 @@ export const getDataTypeFolderByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a data type folder identified by the provided Id.
+ * @summary Deletes a data type folder.
+ */
 export const deleteDataTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a data type folder identified by the provided Id with the details provided in the request model.
+ * @summary Updates a data type folder.
+ */
 export const putDataTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -267,6 +352,10 @@ export const putDataTypeFolderByIdBody = zod.object({
 })
 
 
+/**
+ * Filters data types based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of data types.
+ */
 export const getFilterDataTypeQuerySkipDefault = 0;export const getFilterDataTypeQueryTakeDefault = 100;export const getFilterDataTypeQueryNameDefault = "";
 
 export const getFilterDataTypeQueryParams = zod.object({
@@ -292,6 +381,10 @@ export const getFilterDataTypeResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of data type items identified by the provided Ids.
+ * @summary Gets a collection of data type items.
+ */
 export const getItemDataTypeQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -309,6 +402,31 @@ export const getItemDataTypeResponseItem = zod.object({
 export const getItemDataTypeResponse = zod.array(getItemDataTypeResponseItem)
 
 
+/**
+ * Gets the ancestor chains for data type items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of data type items.
+ */
+export const getItemDataTypeAncestorsQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getItemDataTypeAncestorsResponseItem = zod.object({
+  "id": zod.guid(),
+  "ancestors": zod.array(zod.object({
+  "id": zod.guid(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "name": zod.string()
+}))
+})
+export const getItemDataTypeAncestorsResponse = zod.array(getItemDataTypeAncestorsResponseItem)
+
+
+/**
+ * Searches data type items by the provided query with pagination support.
+ * @summary Searches data type items.
+ */
 export const getItemDataTypeSearchQuerySkipDefault = 0;export const getItemDataTypeSearchQueryTakeDefault = 100;
 
 export const getItemDataTypeSearchQueryParams = zod.object({
@@ -332,6 +450,10 @@ export const getItemDataTypeSearchResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of data type folders that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor data type folders.
+ */
 export const getTreeDataTypeAncestorsQueryParams = zod.object({
   "descendantId": zod.guid().optional()
 })
@@ -353,6 +475,10 @@ export const getTreeDataTypeAncestorsResponseItem = zod.object({
 export const getTreeDataTypeAncestorsResponse = zod.array(getTreeDataTypeAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of data type tree items that are children of the provided parent Id.
+ * @summary Gets a collection of data type tree child items.
+ */
 export const getTreeDataTypeChildrenQuerySkipDefault = 0;export const getTreeDataTypeChildrenQueryTakeDefault = 100;export const getTreeDataTypeChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeDataTypeChildrenQueryParams = zod.object({
@@ -381,6 +507,10 @@ export const getTreeDataTypeChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of data type items from the root of the tree with optional filtering.
+ * @summary Gets a collection of data type items from the root of the tree.
+ */
 export const getTreeDataTypeRootQuerySkipDefault = 0;export const getTreeDataTypeRootQueryTakeDefault = 100;export const getTreeDataTypeRootQueryFoldersOnlyDefault = false;
 
 export const getTreeDataTypeRootQueryParams = zod.object({
@@ -408,6 +538,38 @@ export const getTreeDataTypeRootResponse = zod.object({
 })
 
 
+export const getTreeDataTypeSearchQuerySkipDefault = 0;export const getTreeDataTypeSearchQueryTakeDefault = 100;
+
+export const getTreeDataTypeSearchQueryParams = zod.object({
+  "query": zod.string().optional(),
+  "skip": zod.coerce.number().optional(),
+  "take": zod.coerce.number().default(getTreeDataTypeSearchQueryTakeDefault),
+  "itemKind": zod.enum(['Item', 'Folder', 'All']).optional()
+})
+
+export const getTreeDataTypeSearchResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "hasChildren": zod.boolean(),
+  "id": zod.guid(),
+  "parent": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "name": zod.string(),
+  "isFolder": zod.boolean(),
+  "editorUiAlias": zod.string().nullish(),
+  "isDeletable": zod.boolean()
+}))
+})
+
+
+/**
+ * Gets a paged collection of data type tree items that are siblings of the provided Id. The collection can be optionally filtered to return only folder, or folders and data types.
+ * @summary Gets a collection of data type tree sibling items.
+ */
 export const getTreeDataTypeSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeDataTypeSiblingsQueryParams = zod.object({
@@ -437,6 +599,10 @@ export const getTreeDataTypeSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of dictionary items with optional filtering by name.
+ * @summary Gets a paginated collection of dictionary items.
+ */
 export const getDictionaryQuerySkipDefault = 0;export const getDictionaryQueryTakeDefault = 100;
 
 export const getDictionaryQueryParams = zod.object({
@@ -458,6 +624,10 @@ export const getDictionaryResponse = zod.object({
 })
 
 
+/**
+ * Creates a new dictionary with the configuration specified in the request model.
+ * @summary Creates a new dictionary.
+ */
 
 
 
@@ -475,6 +645,10 @@ export const postDictionaryBody = zod.object({
 })
 
 
+/**
+ * Gets a dictionary identified by the provided Id.
+ * @summary Gets a dictionary.
+ */
 export const getDictionaryByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -493,11 +667,19 @@ export const getDictionaryByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a dictionary identified by the provided Id.
+ * @summary Deletes a dictionary.
+ */
 export const deleteDictionaryByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a dictionary identified by the provided Id with the details from the request model.
+ * @summary Updates a dictionary.
+ */
 export const putDictionaryByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -515,6 +697,10 @@ export const putDictionaryByIdBody = zod.object({
 })
 
 
+/**
+ * Exports the dictionary identified by the provided Id to a downloadable format.
+ * @summary Exports a dictionary.
+ */
 export const getDictionaryByIdExportParams = zod.object({
   "id": zod.guid()
 })
@@ -528,6 +714,10 @@ export const getDictionaryByIdExportQueryParams = zod.object({
 export const getDictionaryByIdExportResponse = zod.instanceof(File)
 
 
+/**
+ * Moves a dictionary identified by the provided Id to a different location.
+ * @summary Moves a dictionary.
+ */
 export const putDictionaryByIdMoveParams = zod.object({
   "id": zod.guid()
 })
@@ -539,6 +729,10 @@ export const putDictionaryByIdMoveBody = zod.object({
 })
 
 
+/**
+ * Imports a dictionary from the provided file upload.
+ * @summary Imports a dictionary.
+ */
 export const postDictionaryImportBody = zod.object({
   "temporaryFile": zod.object({
   "id": zod.guid()
@@ -549,6 +743,10 @@ export const postDictionaryImportBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of dictionary items identified by the provided Ids.
+ * @summary Gets a collection of dictionary items.
+ */
 export const getItemDictionaryQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -563,6 +761,10 @@ export const getItemDictionaryResponseItem = zod.object({
 export const getItemDictionaryResponse = zod.array(getItemDictionaryResponseItem)
 
 
+/**
+ * Gets a collection of dictionary items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor dictionary items.
+ */
 export const getTreeDictionaryAncestorsQueryParams = zod.object({
   "descendantId": zod.guid().optional()
 })
@@ -581,6 +783,10 @@ export const getTreeDictionaryAncestorsResponseItem = zod.object({
 export const getTreeDictionaryAncestorsResponse = zod.array(getTreeDictionaryAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of dictionary tree items that are children of the provided parent Id.
+ * @summary Gets a collection of dictionary tree child items.
+ */
 export const getTreeDictionaryChildrenQuerySkipDefault = 0;export const getTreeDictionaryChildrenQueryTakeDefault = 100;
 
 export const getTreeDictionaryChildrenQueryParams = zod.object({
@@ -605,6 +811,10 @@ export const getTreeDictionaryChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of dictionary items from the root of the tree with optional filtering.
+ * @summary Gets a collection of dictionary items from the root of the tree.
+ */
 export const getTreeDictionaryRootQuerySkipDefault = 0;export const getTreeDictionaryRootQueryTakeDefault = 100;
 
 export const getTreeDictionaryRootQueryParams = zod.object({
@@ -628,6 +838,10 @@ export const getTreeDictionaryRootResponse = zod.object({
 })
 
 
+/**
+ * Creates a new document blueprint with the configuration specified in the request model.
+ * @summary Creates a new document blueprint.
+ */
 
 
 
@@ -654,6 +868,10 @@ export const postDocumentBlueprintBody = zod.object({
 })
 
 
+/**
+ * Gets a document blueprint identified by the provided Id.
+ * @summary Gets a document blueprint.
+ */
 export const getDocumentBlueprintByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -700,11 +918,19 @@ export const getDocumentBlueprintByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a document blueprint identified by the provided Id.
+ * @summary Deletes a document blueprint.
+ */
 export const deleteDocumentBlueprintByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a document blueprint identified by the provided Id with the details from the request model.
+ * @summary Updates a document blueprint.
+ */
 export const putDocumentBlueprintByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -728,6 +954,10 @@ export const putDocumentBlueprintByIdBody = zod.object({
 })
 
 
+/**
+ * Moves a document blueprint identified by the provided Id to a different location.
+ * @summary Moves a document blueprint.
+ */
 export const putDocumentBlueprintByIdMoveParams = zod.object({
   "id": zod.guid()
 })
@@ -739,6 +969,10 @@ export const putDocumentBlueprintByIdMoveBody = zod.object({
 })
 
 
+/**
+ * Creates a scaffold for a new document blueprint with default values.
+ * @summary Scaffolds a document blueprint.
+ */
 export const getDocumentBlueprintByIdScaffoldParams = zod.object({
   "id": zod.guid()
 })
@@ -785,6 +1019,10 @@ export const getDocumentBlueprintByIdScaffoldResponse = zod.object({
 })
 
 
+/**
+ * Creates a new document blueprint folder with the provided name and parent location.
+ * @summary Creates a document blueprint folder.
+ */
 
 
 
@@ -797,6 +1035,10 @@ export const postDocumentBlueprintFolderBody = zod.object({
 })
 
 
+/**
+ * Gets a document blueprint folder identified by the provided Id.
+ * @summary Gets a document blueprint folder.
+ */
 export const getDocumentBlueprintFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -810,11 +1052,19 @@ export const getDocumentBlueprintFolderByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a document blueprint folder identified by the provided Id.
+ * @summary Deletes a document blueprint folder.
+ */
 export const deleteDocumentBlueprintFolderByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a document blueprint folder identified by the provided Id with the details from the request model.
+ * @summary Updates a document blueprint folder.
+ */
 export const putDocumentBlueprintFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -827,6 +1077,10 @@ export const putDocumentBlueprintFolderByIdBody = zod.object({
 })
 
 
+/**
+ * Creates a new document blueprint based on an existing document identified by the provided Id.
+ * @summary Creates a document blueprint from an existing document.
+ */
 export const postDocumentBlueprintFromDocumentBody = zod.object({
   "document": zod.object({
   "id": zod.guid()
@@ -839,6 +1093,10 @@ export const postDocumentBlueprintFromDocumentBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of document blueprint items identified by the provided Ids.
+ * @summary Gets a collection of document blueprint items.
+ */
 export const getItemDocumentBlueprintQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -860,6 +1118,10 @@ export const getItemDocumentBlueprintResponseItem = zod.object({
 export const getItemDocumentBlueprintResponse = zod.array(getItemDocumentBlueprintResponseItem)
 
 
+/**
+ * Gets a collection of document blueprint items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor document blueprint items.
+ */
 export const getTreeDocumentBlueprintAncestorsQueryParams = zod.object({
   "descendantId": zod.guid().optional()
 })
@@ -886,6 +1148,10 @@ export const getTreeDocumentBlueprintAncestorsResponseItem = zod.object({
 export const getTreeDocumentBlueprintAncestorsResponse = zod.array(getTreeDocumentBlueprintAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of document blueprint tree items that are children of the provided parent Id.
+ * @summary Gets a collection of document blueprint tree child items.
+ */
 export const getTreeDocumentBlueprintChildrenQuerySkipDefault = 0;export const getTreeDocumentBlueprintChildrenQueryTakeDefault = 100;export const getTreeDocumentBlueprintChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentBlueprintChildrenQueryParams = zod.object({
@@ -919,6 +1185,10 @@ export const getTreeDocumentBlueprintChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of document blueprint items from the root of the tree with optional filtering.
+ * @summary Gets a collection of document blueprint items from the root of the tree.
+ */
 export const getTreeDocumentBlueprintRootQuerySkipDefault = 0;export const getTreeDocumentBlueprintRootQueryTakeDefault = 100;export const getTreeDocumentBlueprintRootQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentBlueprintRootQueryParams = zod.object({
@@ -951,6 +1221,10 @@ export const getTreeDocumentBlueprintRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of document blueprint tree items that are siblings of the provided Id.
+ * @summary Gets a collection of document blueprint tree sibling items.
+ */
 export const getTreeDocumentBlueprintSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentBlueprintSiblingsQueryParams = zod.object({
@@ -985,6 +1259,10 @@ export const getTreeDocumentBlueprintSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Creates a new document type with the configuration specified in the request model.
+ * @summary Creates a new document type.
+ */
 
 
 
@@ -1068,6 +1346,10 @@ export const postDocumentTypeBody = zod.object({
 })
 
 
+/**
+ * Gets a document type identified by the provided Id.
+ * @summary Gets a document type.
+ */
 export const getDocumentTypeByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -1152,11 +1434,19 @@ export const getDocumentTypeByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a document type identified by the provided Id.
+ * @summary Deletes a document type.
+ */
 export const deleteDocumentTypeByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a document type identified by the provided Id with the details from the request model.
+ * @summary Updates a document type.
+ */
 export const putDocumentTypeByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -1240,6 +1530,10 @@ export const putDocumentTypeByIdBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of document types that are allowed as children of the specified parent document type.
+ * @summary Gets allowed child document types.
+ */
 export const getDocumentTypeByIdAllowedChildrenParams = zod.object({
   "id": zod.guid()
 })
@@ -1263,6 +1557,25 @@ export const getDocumentTypeByIdAllowedChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of document types that are allowed as parents of the specified document type.
+ * @summary Gets allowed parent document types.
+ */
+export const getDocumentTypeByIdAllowedParentsParams = zod.object({
+  "id": zod.guid()
+})
+
+export const getDocumentTypeByIdAllowedParentsResponse = zod.object({
+  "allowedParentIds": zod.array(zod.object({
+  "id": zod.guid()
+}))
+})
+
+
+/**
+ * Gets a collection of document blueprints available for the specified document type.
+ * @summary Gets document blueprints for a document type.
+ */
 export const getDocumentTypeByIdBlueprintParams = zod.object({
   "id": zod.guid()
 })
@@ -1286,6 +1599,10 @@ export const getDocumentTypeByIdBlueprintResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of document types that reference the specified document type as a composition.
+ * @summary Gets composition references.
+ */
 export const getDocumentTypeByIdCompositionReferencesParams = zod.object({
   "id": zod.guid()
 })
@@ -1298,6 +1615,10 @@ export const getDocumentTypeByIdCompositionReferencesResponseItem = zod.object({
 export const getDocumentTypeByIdCompositionReferencesResponse = zod.array(getDocumentTypeByIdCompositionReferencesResponseItem)
 
 
+/**
+ * Creates a duplicate of an existing document type identified by the provided Id.
+ * @summary Copies a document type.
+ */
 export const postDocumentTypeByIdCopyParams = zod.object({
   "id": zod.guid()
 })
@@ -1309,6 +1630,10 @@ export const postDocumentTypeByIdCopyBody = zod.object({
 })
 
 
+/**
+ * Exports the document type identified by the provided Id to a downloadable format.
+ * @summary Exports a document type.
+ */
 export const getDocumentTypeByIdExportParams = zod.object({
   "id": zod.guid()
 })
@@ -1316,6 +1641,10 @@ export const getDocumentTypeByIdExportParams = zod.object({
 export const getDocumentTypeByIdExportResponse = zod.instanceof(File)
 
 
+/**
+ * Imports a document type from the provided file upload.
+ * @summary Imports a document type.
+ */
 export const putDocumentTypeByIdImportParams = zod.object({
   "id": zod.guid()
 })
@@ -1327,6 +1656,10 @@ export const putDocumentTypeByIdImportBody = zod.object({
 })
 
 
+/**
+ * Moves a document type identified by the provided Id to a different location.
+ * @summary Moves a document type.
+ */
 export const putDocumentTypeByIdMoveParams = zod.object({
   "id": zod.guid()
 })
@@ -1338,6 +1671,10 @@ export const putDocumentTypeByIdMoveBody = zod.object({
 })
 
 
+/**
+ * Creates a new template associated with the document type identified by the provided Id.
+ * @summary Creates a template for a document type.
+ */
 export const postDocumentTypeByIdTemplateParams = zod.object({
   "id": zod.guid()
 })
@@ -1353,6 +1690,10 @@ export const postDocumentTypeByIdTemplateBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of document types that are allowed to be created at the root level.
+ * @summary Gets document types allowed at root.
+ */
 export const getDocumentTypeAllowedAtRootQuerySkipDefault = 0;export const getDocumentTypeAllowedAtRootQueryTakeDefault = 100;
 
 export const getDocumentTypeAllowedAtRootQueryParams = zod.object({
@@ -1371,6 +1712,10 @@ export const getDocumentTypeAllowedAtRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of document types that are available to use as compositions for the specified document type.
+ * @summary Gets available compositions.
+ */
 export const postDocumentTypeAvailableCompositionsBody = zod.object({
   "id": zod.guid().nullish(),
   "currentPropertyAliases": zod.array(zod.string()),
@@ -1388,6 +1733,101 @@ export const postDocumentTypeAvailableCompositionsResponseItem = zod.object({
 export const postDocumentTypeAvailableCompositionsResponse = zod.array(postDocumentTypeAvailableCompositionsResponseItem)
 
 
+/**
+ * Gets multiple document types identified by the provided Ids.
+ * @summary Gets multiple document types.
+ */
+export const getDocumentTypeBatchQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+
+
+
+
+
+
+
+
+export const getDocumentTypeBatchResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "alias": zod.string().min(1),
+  "name": zod.string().min(1),
+  "description": zod.string().nullish(),
+  "icon": zod.string().min(1),
+  "allowedAsRoot": zod.boolean(),
+  "variesByCulture": zod.boolean(),
+  "variesBySegment": zod.boolean(),
+  "collection": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "isElement": zod.boolean(),
+  "properties": zod.array(zod.object({
+  "id": zod.guid(),
+  "container": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "sortOrder": zod.number(),
+  "alias": zod.string().min(1),
+  "name": zod.string().min(1),
+  "description": zod.string().nullish(),
+  "dataType": zod.object({
+  "id": zod.guid()
+}),
+  "variesByCulture": zod.boolean(),
+  "variesBySegment": zod.boolean(),
+  "validation": zod.object({
+  "mandatory": zod.boolean(),
+  "mandatoryMessage": zod.string().nullish(),
+  "regEx": zod.string().nullish(),
+  "regExMessage": zod.string().nullish()
+}),
+  "appearance": zod.object({
+  "labelOnTop": zod.boolean()
+})
+})),
+  "containers": zod.array(zod.object({
+  "id": zod.guid(),
+  "parent": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "name": zod.string().nullish(),
+  "type": zod.string().min(1),
+  "sortOrder": zod.number()
+})),
+  "id": zod.guid(),
+  "allowedTemplates": zod.array(zod.object({
+  "id": zod.guid()
+})),
+  "defaultTemplate": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "cleanup": zod.object({
+  "preventCleanup": zod.boolean(),
+  "keepAllVersionsNewerThanDays": zod.number().nullish(),
+  "keepLatestVersionPerDayForDays": zod.number().nullish()
+}),
+  "allowedDocumentTypes": zod.array(zod.object({
+  "documentType": zod.object({
+  "id": zod.guid()
+}),
+  "sortOrder": zod.number()
+})),
+  "compositions": zod.array(zod.object({
+  "documentType": zod.object({
+  "id": zod.guid()
+}),
+  "compositionType": zod.enum(['Composition', 'Inheritance'])
+}))
+}))
+})
+
+
+/**
+ * Gets the configuration settings for document types.
+ * @summary Gets the document type configuration.
+ */
 export const getDocumentTypeConfigurationResponse = zod.object({
   "dataTypesCanBeChanged": zod.enum(['True', 'False', 'FalseWithHelpText']),
   "disableTemplates": zod.boolean(),
@@ -1396,6 +1836,10 @@ export const getDocumentTypeConfigurationResponse = zod.object({
 })
 
 
+/**
+ * Creates a new document type folder with the provided name and parent location.
+ * @summary Creates a document type folder.
+ */
 
 
 
@@ -1408,6 +1852,10 @@ export const postDocumentTypeFolderBody = zod.object({
 })
 
 
+/**
+ * Gets a document type folder identified by the provided Id.
+ * @summary Gets a document type folder.
+ */
 export const getDocumentTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -1421,11 +1869,19 @@ export const getDocumentTypeFolderByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a document type folder identified by the provided Id.
+ * @summary Deletes a document type folder.
+ */
 export const deleteDocumentTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a document type folder identified by the provided Id with the details from the request model.
+ * @summary Updates a document type folder.
+ */
 export const putDocumentTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -1438,6 +1894,10 @@ export const putDocumentTypeFolderByIdBody = zod.object({
 })
 
 
+/**
+ * Imports a document type from the provided file upload.
+ * @summary Imports a document type.
+ */
 export const postDocumentTypeImportBody = zod.object({
   "file": zod.object({
   "id": zod.guid()
@@ -1445,6 +1905,10 @@ export const postDocumentTypeImportBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of document type items identified by the provided Ids.
+ * @summary Gets a collection of document type items.
+ */
 export const getItemDocumentTypeQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -1462,6 +1926,31 @@ export const getItemDocumentTypeResponseItem = zod.object({
 export const getItemDocumentTypeResponse = zod.array(getItemDocumentTypeResponseItem)
 
 
+/**
+ * Gets the ancestor chains for document type items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of document type items.
+ */
+export const getItemDocumentTypeAncestorsQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getItemDocumentTypeAncestorsResponseItem = zod.object({
+  "id": zod.guid(),
+  "ancestors": zod.array(zod.object({
+  "id": zod.guid(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "name": zod.string()
+}))
+})
+export const getItemDocumentTypeAncestorsResponse = zod.array(getItemDocumentTypeAncestorsResponseItem)
+
+
+/**
+ * Searches document type items by the provided query with pagination support.
+ * @summary Searches document type items.
+ */
 export const getItemDocumentTypeSearchQuerySkipDefault = 0;export const getItemDocumentTypeSearchQueryTakeDefault = 100;
 
 export const getItemDocumentTypeSearchQueryParams = zod.object({
@@ -1486,6 +1975,10 @@ export const getItemDocumentTypeSearchResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of document type items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor document type items.
+ */
 export const getTreeDocumentTypeAncestorsQueryParams = zod.object({
   "descendantId": zod.guid().optional()
 })
@@ -1507,6 +2000,10 @@ export const getTreeDocumentTypeAncestorsResponseItem = zod.object({
 export const getTreeDocumentTypeAncestorsResponse = zod.array(getTreeDocumentTypeAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of document type tree items that are children of the provided parent Id.
+ * @summary Gets a collection of document type tree child items.
+ */
 export const getTreeDocumentTypeChildrenQuerySkipDefault = 0;export const getTreeDocumentTypeChildrenQueryTakeDefault = 100;export const getTreeDocumentTypeChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentTypeChildrenQueryParams = zod.object({
@@ -1535,6 +2032,10 @@ export const getTreeDocumentTypeChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of document type items from the root of the tree with optional filtering.
+ * @summary Gets a collection of document type items from the root of the tree.
+ */
 export const getTreeDocumentTypeRootQuerySkipDefault = 0;export const getTreeDocumentTypeRootQueryTakeDefault = 100;export const getTreeDocumentTypeRootQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentTypeRootQueryParams = zod.object({
@@ -1562,6 +2063,38 @@ export const getTreeDocumentTypeRootResponse = zod.object({
 })
 
 
+export const getTreeDocumentTypeSearchQuerySkipDefault = 0;export const getTreeDocumentTypeSearchQueryTakeDefault = 100;
+
+export const getTreeDocumentTypeSearchQueryParams = zod.object({
+  "query": zod.string().optional(),
+  "skip": zod.coerce.number().optional(),
+  "take": zod.coerce.number().default(getTreeDocumentTypeSearchQueryTakeDefault),
+  "itemKind": zod.enum(['Item', 'Folder', 'All']).optional()
+})
+
+export const getTreeDocumentTypeSearchResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "hasChildren": zod.boolean(),
+  "id": zod.guid(),
+  "parent": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "name": zod.string(),
+  "isFolder": zod.boolean(),
+  "isElement": zod.boolean(),
+  "icon": zod.string()
+}))
+})
+
+
+/**
+ * Gets a collection of document type tree items that are siblings of the provided Id.
+ * @summary Gets a collection of document type tree sibling items.
+ */
 export const getTreeDocumentTypeSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeDocumentTypeSiblingsQueryParams = zod.object({
@@ -1591,6 +2124,10 @@ export const getTreeDocumentTypeSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of versions for a specific document and optional culture. Each result describes the version and includes details of the document type, editor, version date, and published status.
+ * @summary Gets a paginated collection of versions for a specific document.
+ */
 export const getDocumentVersionQuerySkipDefault = 0;export const getDocumentVersionQueryTakeDefault = 100;
 
 export const getDocumentVersionQueryParams = zod.object({
@@ -1621,6 +2158,10 @@ export const getDocumentVersionResponse = zod.object({
 })
 
 
+/**
+ * Gets a specific document version by its Id. If found, the result describes the version and includes details of the document type, editor, version date, and published status.
+ * @summary Gets a specific document version.
+ */
 export const getDocumentVersionByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -1670,6 +2211,10 @@ export const getDocumentVersionByIdResponse = zod.object({
 })
 
 
+/**
+ * Sets the prevent clean up boolean status for a document version to the provided value. This controls whether the version will be a candidate for removal in content history clean up.
+ * @summary Sets the prevent clean up status for a document version.
+ */
 export const putDocumentVersionByIdPreventCleanupParams = zod.object({
   "id": zod.guid()
 })
@@ -1679,6 +2224,10 @@ export const putDocumentVersionByIdPreventCleanupQueryParams = zod.object({
 })
 
 
+/**
+ * Rolls back a document to the version indicated by the provided Id. This will archive the current version of the document and publish the provided one.
+ * @summary Rolls back a document to a specific version.
+ */
 export const postDocumentVersionByIdRollbackParams = zod.object({
   "id": zod.guid()
 })
@@ -1688,6 +2237,10 @@ export const postDocumentVersionByIdRollbackQueryParams = zod.object({
 })
 
 
+/**
+ * Gets a document collection identified by the provided Id.
+ * @summary Gets a document collection.
+ */
 export const getCollectionDocumentByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -1758,6 +2311,10 @@ export const getCollectionDocumentByIdResponse = zod.object({
 })
 
 
+/**
+ * Creates a new document with the configuration specified in the request model.
+ * @summary Creates a new document.
+ */
 
 
 
@@ -1787,6 +2344,10 @@ export const postDocumentBody = zod.object({
 })
 
 
+/**
+ * Gets a document identified by the provided Id.
+ * @summary Gets a document.
+ */
 export const getDocumentByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -1837,11 +2398,19 @@ export const getDocumentByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a document identified by the provided Id.
+ * @summary Deletes a document.
+ */
 export const deleteDocumentByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a document identified by the provided Id with the details from the request model.
+ * @summary Updates a document.
+ */
 export const putDocumentByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -1868,6 +2437,10 @@ export const putDocumentByIdBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of audit log entries for the document identified by the provided Id.
+ * @summary Gets the audit log for a document.
+ */
 export const getDocumentByIdAuditLogParams = zod.object({
   "id": zod.guid()
 })
@@ -1896,7 +2469,9 @@ export const getDocumentByIdAuditLogResponse = zod.object({
 
 
 /**
+ * Gets a collection of available content segments for the system.
  * @deprecated
+ * @summary Gets available segments.
  */
 export const getDocumentByIdAvailableSegmentOptionsParams = zod.object({
   "id": zod.guid()
@@ -1919,6 +2494,10 @@ export const getDocumentByIdAvailableSegmentOptionsResponse = zod.object({
 })
 
 
+/**
+ * Creates a duplicate of an existing document identified by the provided Id.
+ * @summary Copies a document.
+ */
 export const postDocumentByIdCopyParams = zod.object({
   "id": zod.guid()
 })
@@ -1932,6 +2511,10 @@ export const postDocumentByIdCopyBody = zod.object({
 })
 
 
+/**
+ * Gets the domains and culture settings assigned to the document identified by the provided Id.
+ * @summary Gets domains for a document.
+ */
 export const getDocumentByIdDomainsParams = zod.object({
   "id": zod.guid()
 })
@@ -1945,6 +2528,10 @@ export const getDocumentByIdDomainsResponse = zod.object({
 })
 
 
+/**
+ * Updates the domains for the document identified by the provided Id with the details from the request model.
+ * @summary Updates the domains for a document.
+ */
 export const putDocumentByIdDomainsParams = zod.object({
   "id": zod.guid()
 })
@@ -1958,6 +2545,10 @@ export const putDocumentByIdDomainsBody = zod.object({
 })
 
 
+/**
+ * Moves a document identified by the provided Id to a different location.
+ * @summary Moves a document.
+ */
 export const putDocumentByIdMoveParams = zod.object({
   "id": zod.guid()
 })
@@ -1969,11 +2560,19 @@ export const putDocumentByIdMoveBody = zod.object({
 })
 
 
+/**
+ * Moves a document identified by the provided Id to the recycle bin.
+ * @summary Moves a document to the recycle bin.
+ */
 export const putDocumentByIdMoveToRecycleBinParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Gets the notifications for the document identified by the provided Id.
+ * @summary Gets notifications for a document.
+ */
 export const getDocumentByIdNotificationsParams = zod.object({
   "id": zod.guid()
 })
@@ -1986,6 +2585,10 @@ export const getDocumentByIdNotificationsResponseItem = zod.object({
 export const getDocumentByIdNotificationsResponse = zod.array(getDocumentByIdNotificationsResponseItem)
 
 
+/**
+ * Updates which actions the current user is subscribed to receive notifications for on the specified document.
+ * @summary Updates notification subscriptions for a document.
+ */
 export const putDocumentByIdNotificationsParams = zod.object({
   "id": zod.guid()
 })
@@ -1995,6 +2598,10 @@ export const putDocumentByIdNotificationsBody = zod.object({
 })
 
 
+/**
+ * Gets the preview URL for the document identified by the provided Id.
+ * @summary Gets the preview URL for a document.
+ */
 export const getDocumentByIdPreviewUrlParams = zod.object({
   "id": zod.guid()
 })
@@ -2013,6 +2620,10 @@ export const getDocumentByIdPreviewUrlResponse = zod.object({
 })
 
 
+/**
+ * Creates public access protection for the document identified by the provided Id.
+ * @summary Creates public access rules for a document.
+ */
 export const postDocumentByIdPublicAccessParams = zod.object({
   "id": zod.guid()
 })
@@ -2029,13 +2640,27 @@ export const postDocumentByIdPublicAccessBody = zod.object({
 })
 
 
+/**
+ * Removes public access protection/rules for the document identified by the provided Id.
+ * @summary Removes public access settings for a document.
+ */
 export const deleteDocumentByIdPublicAccessParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Gets the public access protection settings for the document identified by the provided Id.
+ * @summary Gets public access rules for a document.
+ */
 export const getDocumentByIdPublicAccessParams = zod.object({
   "id": zod.guid()
+})
+
+export const getDocumentByIdPublicAccessQueryIncludeAncestorsDefault = false;
+
+export const getDocumentByIdPublicAccessQueryParams = zod.object({
+  "includeAncestors": zod.coerce.boolean().optional()
 })
 
 export const getDocumentByIdPublicAccessResponse = zod.object({
@@ -2069,10 +2694,15 @@ export const getDocumentByIdPublicAccessResponse = zod.object({
   "alias": zod.string()
 })),
   "name": zod.string()
-}))
+})),
+  "isProtectedByAncestor": zod.boolean()
 })
 
 
+/**
+ * Updates the member protection settings for a document, controlling which members or member groups can access it.
+ * @summary Updates public access protection for a document.
+ */
 export const putDocumentByIdPublicAccessParams = zod.object({
   "id": zod.guid()
 })
@@ -2089,6 +2719,10 @@ export const putDocumentByIdPublicAccessBody = zod.object({
 })
 
 
+/**
+ * Publishes a document identified by the provided Id.
+ * @summary Publishes a document.
+ */
 export const putDocumentByIdPublishParams = zod.object({
   "id": zod.guid()
 })
@@ -2104,6 +2738,10 @@ export const putDocumentByIdPublishBody = zod.object({
 })
 
 
+/**
+ * Publishes a document and its descendants identified by the provided Id.
+ * @summary Publishes a document with its descendants.
+ */
 export const putDocumentByIdPublishWithDescendantsParams = zod.object({
   "id": zod.guid()
 })
@@ -2119,6 +2757,10 @@ export const putDocumentByIdPublishWithDescendantsResponse = zod.object({
 })
 
 
+/**
+ * Gets the status and result of a publish with descendants operation.
+ * @summary Gets the result of publishing a document with descendants.
+ */
 export const getDocumentByIdPublishWithDescendantsResultByTaskIdParams = zod.object({
   "id": zod.guid(),
   "taskId": zod.guid()
@@ -2130,6 +2772,10 @@ export const getDocumentByIdPublishWithDescendantsResultByTaskIdResponse = zod.o
 })
 
 
+/**
+ * Gets a document identified by the provided Id.
+ * @summary Gets a document.
+ */
 export const getDocumentByIdPublishedParams = zod.object({
   "id": zod.guid()
 })
@@ -2180,6 +2826,10 @@ export const getDocumentByIdPublishedResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of items that reference the documents identified by the provided Ids.
+ * @summary Gets a collection of items that reference documents.
+ */
 export const getDocumentByIdReferencedByParams = zod.object({
   "id": zod.guid()
 })
@@ -2276,6 +2926,10 @@ export const getDocumentByIdReferencedByResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of descendant documents that are referenced by other content.
+ * @summary Gets document descendants that are referenced.
+ */
 export const getDocumentByIdReferencedDescendantsParams = zod.object({
   "id": zod.guid()
 })
@@ -2295,6 +2949,10 @@ export const getDocumentByIdReferencedDescendantsResponse = zod.object({
 })
 
 
+/**
+ * Unpublishes a document identified by the provided Id.
+ * @summary Unpublishes a document.
+ */
 export const putDocumentByIdUnpublishParams = zod.object({
   "id": zod.guid()
 })
@@ -2304,6 +2962,10 @@ export const putDocumentByIdUnpublishBody = zod.object({
 })
 
 
+/**
+ * Validates the request model for updating a document without actually updating it.
+ * @summary Validates updating a document.
+ */
 export const putUmbracoManagementApiV11DocumentByIdValidate11Params = zod.object({
   "id": zod.guid()
 })
@@ -2331,6 +2993,10 @@ export const putUmbracoManagementApiV11DocumentByIdValidate11Body = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of items that reference the documents identified by the provided Ids.
+ * @summary Gets a collection of items that reference documents.
+ */
 export const getDocumentAreReferencedQuerySkipDefault = 0;export const getDocumentAreReferencedQueryTakeDefault = 20;
 
 export const getDocumentAreReferencedQueryParams = zod.object({
@@ -2347,6 +3013,10 @@ export const getDocumentAreReferencedResponse = zod.object({
 })
 
 
+/**
+ * Gets the configuration settings for documents.
+ * @summary Gets the document configuration.
+ */
 export const getDocumentConfigurationResponse = zod.object({
   "disableDeleteWhenReferenced": zod.boolean(),
   "disableUnpublishWhenReferenced": zod.boolean(),
@@ -2355,6 +3025,10 @@ export const getDocumentConfigurationResponse = zod.object({
 })
 
 
+/**
+ * Sorts documents in the specified parent container according to the provided sort order.
+ * @summary Sorts documents.
+ */
 export const putDocumentSortBody = zod.object({
   "parent": zod.object({
   "id": zod.guid()
@@ -2366,6 +3040,10 @@ export const putDocumentSortBody = zod.object({
 })
 
 
+/**
+ * Gets the URLs for the document identified by the provided Id.
+ * @summary Gets URLs for a document.
+ */
 export const getDocumentUrlsQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -2382,6 +3060,10 @@ export const getDocumentUrlsResponseItem = zod.object({
 export const getDocumentUrlsResponse = zod.array(getDocumentUrlsResponseItem)
 
 
+/**
+ * Validates the request model for creating a new document without actually creating it.
+ * @summary Validates creating a document.
+ */
 
 
 
@@ -2411,6 +3093,10 @@ export const postDocumentValidateBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of document items identified by the provided Ids.
+ * @summary Gets a collection of document items.
+ */
 export const getItemDocumentQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -2446,6 +3132,52 @@ export const getItemDocumentResponseItem = zod.object({
 export const getItemDocumentResponse = zod.array(getItemDocumentResponseItem)
 
 
+/**
+ * Gets the ancestor chains for document items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of document items.
+ */
+export const getItemDocumentAncestorsQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getItemDocumentAncestorsResponseItem = zod.object({
+  "id": zod.guid(),
+  "ancestors": zod.array(zod.object({
+  "id": zod.guid(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "isTrashed": zod.boolean(),
+  "isProtected": zod.boolean(),
+  "parent": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "hasChildren": zod.boolean(),
+  "documentType": zod.object({
+  "id": zod.guid(),
+  "icon": zod.string(),
+  "collection": zod.object({
+  "id": zod.guid()
+}).nullish()
+}),
+  "variants": zod.array(zod.object({
+  "name": zod.string(),
+  "culture": zod.string().nullish(),
+  "id": zod.guid(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "state": zod.enum(['NotCreated', 'Draft', 'Published', 'PublishedPendingChanges', 'Trashed'])
+}))
+}))
+})
+export const getItemDocumentAncestorsResponse = zod.array(getItemDocumentAncestorsResponseItem)
+
+
+/**
+ * Searches document items by the provided query with pagination support.
+ * @summary Searches document items.
+ */
 export const getItemDocumentSearchQuerySkipDefault = 0;export const getItemDocumentSearchQueryTakeDefault = 100;
 
 export const getItemDocumentSearchQueryParams = zod.object({
@@ -2492,11 +3224,19 @@ export const getItemDocumentSearchResponse = zod.object({
 })
 
 
+/**
+ * Deletes a document identified by the provided Id.
+ * @summary Deletes a document.
+ */
 export const deleteRecycleBinDocumentByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Gets the original parent location of a document before it was moved to the recycle bin.
+ * @summary Gets the original parent of a document in the recycle bin.
+ */
 export const getRecycleBinDocumentByIdOriginalParentParams = zod.object({
   "id": zod.guid()
 })
@@ -2506,6 +3246,10 @@ export const getRecycleBinDocumentByIdOriginalParentResponse = zod.object({
 })
 
 
+/**
+ * Restores a document from the recycle bin to its original location or a specified parent.
+ * @summary Restores a document from the recycle bin.
+ */
 export const putRecycleBinDocumentByIdRestoreParams = zod.object({
   "id": zod.guid()
 })
@@ -2517,6 +3261,10 @@ export const putRecycleBinDocumentByIdRestoreBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of documents that are children of the provided parent in the recycle bin.
+ * @summary Gets a collection of documents in the recycle bin.
+ */
 export const getRecycleBinDocumentChildrenQuerySkipDefault = 0;export const getRecycleBinDocumentChildrenQueryTakeDefault = 100;
 
 export const getRecycleBinDocumentChildrenQueryParams = zod.object({
@@ -2554,6 +3302,10 @@ export const getRecycleBinDocumentChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of items that reference the document in the recycle bin.
+ * @summary Gets items referencing a document in the recycle bin.
+ */
 export const getRecycleBinDocumentReferencedByQuerySkipDefault = 0;export const getRecycleBinDocumentReferencedByQueryTakeDefault = 20;
 
 export const getRecycleBinDocumentReferencedByQueryParams = zod.object({
@@ -2646,6 +3398,10 @@ export const getRecycleBinDocumentReferencedByResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of documents at the root level of the recycle bin.
+ * @summary Gets documents at the root of the recycle bin.
+ */
 export const getRecycleBinDocumentRootQuerySkipDefault = 0;export const getRecycleBinDocumentRootQueryTakeDefault = 100;
 
 export const getRecycleBinDocumentRootQueryParams = zod.object({
@@ -2682,6 +3438,10 @@ export const getRecycleBinDocumentRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of sibling documents in the recycle bin at the same level as the provided Id.
+ * @summary Gets sibling documents in the recycle bin.
+ */
 export const getRecycleBinDocumentSiblingsQueryParams = zod.object({
   "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
@@ -2719,6 +3479,10 @@ export const getRecycleBinDocumentSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of document items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor document items.
+ */
 export const getTreeDocumentAncestorsQueryParams = zod.object({
   "descendantId": zod.guid().optional()
 })
@@ -2759,6 +3523,10 @@ export const getTreeDocumentAncestorsResponseItem = zod.object({
 export const getTreeDocumentAncestorsResponse = zod.array(getTreeDocumentAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of document tree items that are children of the provided parent Id.
+ * @summary Gets a collection of document tree child items.
+ */
 export const getTreeDocumentChildrenQuerySkipDefault = 0;export const getTreeDocumentChildrenQueryTakeDefault = 100;
 
 export const getTreeDocumentChildrenQueryParams = zod.object({
@@ -2806,6 +3574,10 @@ export const getTreeDocumentChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of document items from the root of the tree with optional filtering.
+ * @summary Gets a collection of document items from the root of the tree.
+ */
 export const getTreeDocumentRootQuerySkipDefault = 0;export const getTreeDocumentRootQueryTakeDefault = 100;
 
 export const getTreeDocumentRootQueryParams = zod.object({
@@ -2852,6 +3624,10 @@ export const getTreeDocumentRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of document tree items that are siblings of the provided Id.
+ * @summary Gets a collection of document tree sibling items.
+ */
 export const getTreeDocumentSiblingsQueryParams = zod.object({
   "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
@@ -2898,6 +3674,10 @@ export const getTreeDocumentSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of dynamic root items based on the provided query configuration.
+ * @summary Gets dynamic roots.
+ */
 export const postDynamicRootQueryBody = zod.object({
   "context": zod.object({
   "id": zod.guid().nullish(),
@@ -2924,10 +3704,18 @@ export const postDynamicRootQueryResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of available query steps for configuring dynamic root queries.
+ * @summary Gets dynamic root query steps.
+ */
 export const getDynamicRootStepsResponseItem = zod.string()
 export const getDynamicRootStepsResponse = zod.array(getDynamicRootStepsResponseItem)
 
 
+/**
+ * Gets a collection of health check groups with their associated health checks.
+ * @summary Gets a collection of health check groups.
+ */
 export const getHealthCheckGroupQuerySkipDefault = 0;export const getHealthCheckGroupQueryTakeDefault = 100;
 
 export const getHealthCheckGroupQueryParams = zod.object({
@@ -2943,6 +3731,10 @@ export const getHealthCheckGroupResponse = zod.object({
 })
 
 
+/**
+ * Gets a health check group and all its associated health checks identified by the provided group name.
+ * @summary Gets a health check group by name.
+ */
 export const getHealthCheckGroupByNameParams = zod.object({
   "name": zod.string()
 })
@@ -2957,6 +3749,10 @@ export const getHealthCheckGroupByNameResponse = zod.object({
 })
 
 
+/**
+ * Runs all health checks in the group identified by the provided name and returns the results.
+ * @summary Executes all health checks in a group.
+ */
 export const postHealthCheckGroupByNameCheckParams = zod.object({
   "name": zod.string()
 })
@@ -2986,6 +3782,10 @@ export const postHealthCheckGroupByNameCheckResponse = zod.object({
 })
 
 
+/**
+ * Executes a specific action to fix or address a health check issue.
+ * @summary Executes a health check action.
+ */
 export const postHealthCheckExecuteActionBody = zod.object({
   "healthCheck": zod.object({
   "id": zod.guid()
@@ -3021,7 +3821,9 @@ export const postHealthCheckExecuteActionResponse = zod.object({
 
 
 /**
+ * Gets help information and documentation resources for the Umbraco back office.
  * @deprecated
+ * @summary Gets help information.
  */
 export const getHelpQuerySkipDefault = 0;export const getHelpQueryTakeDefault = 100;export const getHelpQueryBaseUrlDefault = "https://our.umbraco.com";
 
@@ -3044,13 +3846,18 @@ export const getHelpResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of URLs for resizing images with the provided dimensions and options.
+ * @summary Gets URLs for image resizing.
+ */
 export const getImagingResizeUrlsQueryHeightDefault = 200;export const getImagingResizeUrlsQueryWidthDefault = 200;
 
 export const getImagingResizeUrlsQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional(),
   "height": zod.coerce.number().default(getImagingResizeUrlsQueryHeightDefault),
   "width": zod.coerce.number().default(getImagingResizeUrlsQueryWidthDefault),
-  "mode": zod.enum(['Crop', 'Max', 'Stretch', 'Pad', 'BoxPad', 'Min']).optional()
+  "mode": zod.enum(['Crop', 'Max', 'Stretch', 'Pad', 'BoxPad', 'Min']).optional(),
+  "format": zod.string().optional()
 })
 
 export const getImagingResizeUrlsResponseItem = zod.object({
@@ -3063,6 +3870,10 @@ export const getImagingResizeUrlsResponseItem = zod.object({
 export const getImagingResizeUrlsResponse = zod.array(getImagingResizeUrlsResponseItem)
 
 
+/**
+ * Analyzes the uploaded import file and returns an analysis of the imported entities.
+ * @summary Analyzes an import file.
+ */
 export const getImportAnalyzeQueryParams = zod.object({
   "temporaryFileId": zod.guid().optional()
 })
@@ -3074,6 +3885,10 @@ export const getImportAnalyzeResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of configured search indexers in the Umbraco installation.
+ * @summary Gets a collection of indexers.
+ */
 export const getIndexerQuerySkipDefault = 0;export const getIndexerQueryTakeDefault = 100;
 
 export const getIndexerQueryParams = zod.object({
@@ -3101,6 +3916,10 @@ export const getIndexerResponse = zod.object({
 })
 
 
+/**
+ * Gets detailed information about the indexer identified by the provided name.
+ * @summary Gets indexer details.
+ */
 export const getIndexerByIndexNameParams = zod.object({
   "indexName": zod.string()
 })
@@ -3122,11 +3941,19 @@ export const getIndexerByIndexNameResponse = zod.object({
 })
 
 
+/**
+ * Rebuilds the search index for the indexer identified by the provided name.
+ * @summary Rebuilds an indexer.
+ */
 export const postIndexerByIndexNameRebuildParams = zod.object({
   "indexName": zod.string()
 })
 
 
+/**
+ * Gets the current installation settings and status.
+ * @summary Gets install settings.
+ */
 
 
 
@@ -3160,6 +3987,10 @@ export const getInstallSettingsResponse = zod.object({
 })
 
 
+/**
+ * Performs the initial setup and installation of Umbraco.
+ * @summary Performs installation setup.
+ */
 export const postInstallSetupBodyUserNameMin = 0;
 export const postInstallSetupBodyUserNameMax = 255;
 
@@ -3190,6 +4021,10 @@ export const postInstallSetupBody = zod.object({
 })
 
 
+/**
+ * Validates the database connection settings provided during installation.
+ * @summary Validates database connection.
+ */
 
 
 
@@ -3206,6 +4041,10 @@ export const postInstallValidateDatabaseBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of language items identified by the provided Ids.
+ * @summary Gets a collection of language items.
+ */
 export const getItemLanguageQueryParams = zod.object({
   "isoCode": zod.array(zod.string()).optional()
 })
@@ -3221,6 +4060,10 @@ export const getItemLanguageResponseItem = zod.object({
 export const getItemLanguageResponse = zod.array(getItemLanguageResponseItem)
 
 
+/**
+ * Gets the default language configured for the Umbraco installation.
+ * @summary Gets the default language.
+ */
 
 
 
@@ -3231,6 +4074,10 @@ export const getItemLanguageDefaultResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of all configured languages.
+ * @summary Gets a paginated collection of languages.
+ */
 export const getLanguageQuerySkipDefault = 0;export const getLanguageQueryTakeDefault = 100;
 
 export const getLanguageQueryParams = zod.object({
@@ -3254,6 +4101,10 @@ export const getLanguageResponse = zod.object({
 })
 
 
+/**
+ * Creates a new language with the configuration specified in the request model.
+ * @summary Creates a new language.
+ */
 
 
 
@@ -3267,6 +4118,10 @@ export const postLanguageBody = zod.object({
 })
 
 
+/**
+ * Gets a language identified by the provided ISO code.
+ * @summary Gets a language by ISO code.
+ */
 export const getLanguageByIsoCodeParams = zod.object({
   "isoCode": zod.string()
 })
@@ -3284,11 +4139,19 @@ export const getLanguageByIsoCodeResponse = zod.object({
 })
 
 
+/**
+ * Deletes a language identified by the provided Id.
+ * @summary Deletes a language.
+ */
 export const deleteLanguageByIsoCodeParams = zod.object({
   "isoCode": zod.string()
 })
 
 
+/**
+ * Updates a language identified by the provided Id with the details from the request model.
+ * @summary Updates a language.
+ */
 export const putLanguageByIsoCodeParams = zod.object({
   "isoCode": zod.string()
 })
@@ -3304,6 +4167,10 @@ export const putLanguageByIsoCodeBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of configured log sinks with their minimum log levels.
+ * @summary Gets a collection of log sink levels.
+ */
 export const getLogViewerLevelQuerySkipDefault = 0;export const getLogViewerLevelQueryTakeDefault = 100;
 
 export const getLogViewerLevelQueryParams = zod.object({
@@ -3320,6 +4187,10 @@ export const getLogViewerLevelResponse = zod.object({
 })
 
 
+/**
+ * Gets the count of log entries for each log level within the specified date range.
+ * @summary Gets log level counts.
+ */
 export const getLogViewerLevelCountQueryParams = zod.object({
   "startDate": zod.iso.datetime({"local":true,"offset":true}).optional(),
   "endDate": zod.iso.datetime({"local":true,"offset":true}).optional()
@@ -3334,6 +4205,10 @@ export const getLogViewerLevelCountResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of log entries with optional filtering and date range.
+ * @summary Gets a paginated collection of log entries.
+ */
 export const getLogViewerLogQuerySkipDefault = 0;export const getLogViewerLogQueryTakeDefault = 100;
 
 export const getLogViewerLogQueryParams = zod.object({
@@ -3362,6 +4237,10 @@ export const getLogViewerLogResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of unique message templates found in the logs.
+ * @summary Gets a collection of log message templates.
+ */
 export const getLogViewerMessageTemplateQuerySkipDefault = 0;export const getLogViewerMessageTemplateQueryTakeDefault = 100;
 
 export const getLogViewerMessageTemplateQueryParams = zod.object({
@@ -3380,6 +4259,10 @@ export const getLogViewerMessageTemplateResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of saved log searches defined in the Umbraco installation.
+ * @summary Gets a collection of saved log searches.
+ */
 export const getLogViewerSavedSearchQuerySkipDefault = 0;export const getLogViewerSavedSearchQueryTakeDefault = 100;
 
 export const getLogViewerSavedSearchQueryParams = zod.object({
@@ -3396,12 +4279,20 @@ export const getLogViewerSavedSearchResponse = zod.object({
 })
 
 
+/**
+ * Creates a new saved log search with the provided name and query configuration.
+ * @summary Creates a saved log search.
+ */
 export const postLogViewerSavedSearchBody = zod.object({
   "name": zod.string(),
   "query": zod.string()
 })
 
 
+/**
+ * Gets a saved log search identified by the provided name.
+ * @summary Gets a saved log search by name.
+ */
 export const getLogViewerSavedSearchByNameParams = zod.object({
   "name": zod.string()
 })
@@ -3412,17 +4303,29 @@ export const getLogViewerSavedSearchByNameResponse = zod.object({
 })
 
 
+/**
+ * Deletes a saved log search identified by the provided name.
+ * @summary Deletes a saved log search.
+ */
 export const deleteLogViewerSavedSearchByNameParams = zod.object({
   "name": zod.string()
 })
 
 
+/**
+ * Checks if the log files are within the size limit and can be viewed.
+ * @summary Validates if logs can be viewed.
+ */
 export const getLogViewerValidateLogsSizeQueryParams = zod.object({
   "startDate": zod.iso.datetime({"local":true,"offset":true}).optional(),
   "endDate": zod.iso.datetime({"local":true,"offset":true}).optional()
 })
 
 
+/**
+ * Gets a collection of all package manifests including both public and private manifests.
+ * @summary Gets all manifests.
+ */
 
 
 
@@ -3435,6 +4338,10 @@ export const getManifestManifestResponseItem = zod.object({
 export const getManifestManifestResponse = zod.array(getManifestManifestResponseItem)
 
 
+/**
+ * Gets a collection of private package manifests specific to the current user.
+ * @summary Gets private manifests.
+ */
 
 
 
@@ -3447,6 +4354,10 @@ export const getManifestManifestPrivateResponseItem = zod.object({
 export const getManifestManifestPrivateResponse = zod.array(getManifestManifestPrivateResponseItem)
 
 
+/**
+ * Gets a collection of public package manifests available to all users.
+ * @summary Gets public manifests.
+ */
 
 
 
@@ -3459,6 +4370,10 @@ export const getManifestManifestPublicResponseItem = zod.object({
 export const getManifestManifestPublicResponse = zod.array(getManifestManifestPublicResponseItem)
 
 
+/**
+ * Gets a collection of media type items identified by the provided Ids.
+ * @summary Gets a collection of media type items.
+ */
 export const getItemMediaTypeQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -3474,6 +4389,10 @@ export const getItemMediaTypeResponseItem = zod.object({
 export const getItemMediaTypeResponse = zod.array(getItemMediaTypeResponseItem)
 
 
+/**
+ * Gets a collection of allowed media type items for the specified file extension.
+ * @summary Gets a collection of media type items.
+ */
 export const getItemMediaTypeAllowedQuerySkipDefault = 0;export const getItemMediaTypeAllowedQueryTakeDefault = 100;
 
 export const getItemMediaTypeAllowedQueryParams = zod.object({
@@ -3489,12 +4408,38 @@ export const getItemMediaTypeAllowedResponse = zod.object({
   "alias": zod.string()
 })),
   "name": zod.string(),
-  "icon": zod.string().nullish()
+  "icon": zod.string().nullish(),
+  "matchedFileExtension": zod.boolean()
 })),
   "total": zod.number()
 })
 
 
+/**
+ * Gets the ancestor chains for media type items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of media type items.
+ */
+export const getItemMediaTypeAncestorsQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getItemMediaTypeAncestorsResponseItem = zod.object({
+  "id": zod.guid(),
+  "ancestors": zod.array(zod.object({
+  "id": zod.guid(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "name": zod.string()
+}))
+})
+export const getItemMediaTypeAncestorsResponse = zod.array(getItemMediaTypeAncestorsResponseItem)
+
+
+/**
+ * Gets a paginated collection of media type folder items.
+ * @summary Gets a collection of media type folder items.
+ */
 export const getItemMediaTypeFoldersQuerySkipDefault = 0;export const getItemMediaTypeFoldersQueryTakeDefault = 100;
 
 export const getItemMediaTypeFoldersQueryParams = zod.object({
@@ -3515,6 +4460,10 @@ export const getItemMediaTypeFoldersResponse = zod.object({
 })
 
 
+/**
+ * Searches media type items by the provided query with pagination support.
+ * @summary Searches media type items.
+ */
 export const getItemMediaTypeSearchQuerySkipDefault = 0;export const getItemMediaTypeSearchQueryTakeDefault = 100;
 
 export const getItemMediaTypeSearchQueryParams = zod.object({
@@ -3536,6 +4485,10 @@ export const getItemMediaTypeSearchResponse = zod.object({
 })
 
 
+/**
+ * Creates a new media type with the configuration specified in the request model.
+ * @summary Creates a new media type.
+ */
 
 
 
@@ -3608,6 +4561,10 @@ export const postMediaTypeBody = zod.object({
 })
 
 
+/**
+ * Gets a media type identified by the provided Id.
+ * @summary Gets a media type.
+ */
 export const getMediaTypeByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -3683,11 +4640,19 @@ export const getMediaTypeByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a media type identified by the provided Id.
+ * @summary Deletes a media type.
+ */
 export const deleteMediaTypeByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a media type identified by the provided Id with the details from the request model.
+ * @summary Updates a media type.
+ */
 export const putMediaTypeByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -3760,6 +4725,10 @@ export const putMediaTypeByIdBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of media types that are allowed as children of the specified parent media type.
+ * @summary Gets allowed child media types.
+ */
 export const getMediaTypeByIdAllowedChildrenParams = zod.object({
   "id": zod.guid()
 })
@@ -3783,6 +4752,25 @@ export const getMediaTypeByIdAllowedChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of media types that are allowed as parents of the specified media type.
+ * @summary Gets allowed parent media types.
+ */
+export const getMediaTypeByIdAllowedParentsParams = zod.object({
+  "id": zod.guid()
+})
+
+export const getMediaTypeByIdAllowedParentsResponse = zod.object({
+  "allowedParentIds": zod.array(zod.object({
+  "id": zod.guid()
+}))
+})
+
+
+/**
+ * Gets a collection of media types that reference the specified media type as a composition.
+ * @summary Gets composition references.
+ */
 export const getMediaTypeByIdCompositionReferencesParams = zod.object({
   "id": zod.guid()
 })
@@ -3795,6 +4783,10 @@ export const getMediaTypeByIdCompositionReferencesResponseItem = zod.object({
 export const getMediaTypeByIdCompositionReferencesResponse = zod.array(getMediaTypeByIdCompositionReferencesResponseItem)
 
 
+/**
+ * Creates a duplicate of an existing media type identified by the provided Id.
+ * @summary Copies a media type.
+ */
 export const postMediaTypeByIdCopyParams = zod.object({
   "id": zod.guid()
 })
@@ -3806,6 +4798,10 @@ export const postMediaTypeByIdCopyBody = zod.object({
 })
 
 
+/**
+ * Exports the media type identified by the provided Id to a downloadable format.
+ * @summary Exports a media type.
+ */
 export const getMediaTypeByIdExportParams = zod.object({
   "id": zod.guid()
 })
@@ -3813,6 +4809,10 @@ export const getMediaTypeByIdExportParams = zod.object({
 export const getMediaTypeByIdExportResponse = zod.instanceof(File)
 
 
+/**
+ * Imports a media type from the provided file upload.
+ * @summary Imports a media type.
+ */
 export const putMediaTypeByIdImportParams = zod.object({
   "id": zod.guid()
 })
@@ -3824,6 +4824,10 @@ export const putMediaTypeByIdImportBody = zod.object({
 })
 
 
+/**
+ * Moves a media type identified by the provided Id to a different location.
+ * @summary Moves a media type.
+ */
 export const putMediaTypeByIdMoveParams = zod.object({
   "id": zod.guid()
 })
@@ -3835,6 +4839,10 @@ export const putMediaTypeByIdMoveBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of media types that are allowed to be created at the root level.
+ * @summary Gets media types allowed at root.
+ */
 export const getMediaTypeAllowedAtRootQuerySkipDefault = 0;export const getMediaTypeAllowedAtRootQueryTakeDefault = 100;
 
 export const getMediaTypeAllowedAtRootQueryParams = zod.object({
@@ -3853,6 +4861,10 @@ export const getMediaTypeAllowedAtRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of media types that are available to use as compositions for the specified media type.
+ * @summary Gets available compositions.
+ */
 export const postMediaTypeAvailableCompositionsBody = zod.object({
   "id": zod.guid().nullish(),
   "currentPropertyAliases": zod.array(zod.string()),
@@ -3869,11 +4881,101 @@ export const postMediaTypeAvailableCompositionsResponseItem = zod.object({
 export const postMediaTypeAvailableCompositionsResponse = zod.array(postMediaTypeAvailableCompositionsResponseItem)
 
 
+/**
+ * Gets multiple media types identified by the provided Ids.
+ * @summary Gets multiple media types.
+ */
+export const getMediaTypeBatchQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+
+
+
+
+
+
+
+
+export const getMediaTypeBatchResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "alias": zod.string().min(1),
+  "name": zod.string().min(1),
+  "description": zod.string().nullish(),
+  "icon": zod.string().min(1),
+  "allowedAsRoot": zod.boolean(),
+  "variesByCulture": zod.boolean(),
+  "variesBySegment": zod.boolean(),
+  "collection": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "isElement": zod.boolean(),
+  "properties": zod.array(zod.object({
+  "id": zod.guid(),
+  "container": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "sortOrder": zod.number(),
+  "alias": zod.string().min(1),
+  "name": zod.string().min(1),
+  "description": zod.string().nullish(),
+  "dataType": zod.object({
+  "id": zod.guid()
+}),
+  "variesByCulture": zod.boolean(),
+  "variesBySegment": zod.boolean(),
+  "validation": zod.object({
+  "mandatory": zod.boolean(),
+  "mandatoryMessage": zod.string().nullish(),
+  "regEx": zod.string().nullish(),
+  "regExMessage": zod.string().nullish()
+}),
+  "appearance": zod.object({
+  "labelOnTop": zod.boolean()
+})
+})),
+  "containers": zod.array(zod.object({
+  "id": zod.guid(),
+  "parent": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "name": zod.string().nullish(),
+  "type": zod.string().min(1),
+  "sortOrder": zod.number()
+})),
+  "id": zod.guid(),
+  "allowedMediaTypes": zod.array(zod.object({
+  "mediaType": zod.object({
+  "id": zod.guid()
+}),
+  "sortOrder": zod.number()
+})),
+  "compositions": zod.array(zod.object({
+  "mediaType": zod.object({
+  "id": zod.guid()
+}),
+  "compositionType": zod.enum(['Composition', 'Inheritance'])
+})),
+  "isDeletable": zod.boolean(),
+  "aliasCanBeChanged": zod.boolean()
+}))
+})
+
+
+/**
+ * Gets the configuration settings for media types.
+ * @summary Gets the media type configuration.
+ */
 export const getMediaTypeConfigurationResponse = zod.object({
   "reservedFieldNames": zod.array(zod.string())
 })
 
 
+/**
+ * Creates a new media type folder with the provided name and parent location.
+ * @summary Creates a media type folder.
+ */
 
 
 
@@ -3886,6 +4988,10 @@ export const postMediaTypeFolderBody = zod.object({
 })
 
 
+/**
+ * Gets a media type folder identified by the provided Id.
+ * @summary Gets a media type folder.
+ */
 export const getMediaTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -3899,11 +5005,19 @@ export const getMediaTypeFolderByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a media type folder identified by the provided Id.
+ * @summary Deletes a media type folder.
+ */
 export const deleteMediaTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a media type folder identified by the provided Id with the details from the request model.
+ * @summary Updates a media type folder.
+ */
 export const putMediaTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -3916,6 +5030,10 @@ export const putMediaTypeFolderByIdBody = zod.object({
 })
 
 
+/**
+ * Imports a media type from the provided file upload.
+ * @summary Imports a media type.
+ */
 export const postMediaTypeImportBody = zod.object({
   "file": zod.object({
   "id": zod.guid()
@@ -3923,6 +5041,10 @@ export const postMediaTypeImportBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of media type items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor media type items.
+ */
 export const getTreeMediaTypeAncestorsQueryParams = zod.object({
   "descendantId": zod.guid().optional()
 })
@@ -3944,6 +5066,10 @@ export const getTreeMediaTypeAncestorsResponseItem = zod.object({
 export const getTreeMediaTypeAncestorsResponse = zod.array(getTreeMediaTypeAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of media type tree items that are children of the provided parent Id.
+ * @summary Gets a collection of media type tree child items.
+ */
 export const getTreeMediaTypeChildrenQuerySkipDefault = 0;export const getTreeMediaTypeChildrenQueryTakeDefault = 100;export const getTreeMediaTypeChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeMediaTypeChildrenQueryParams = zod.object({
@@ -3972,6 +5098,10 @@ export const getTreeMediaTypeChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of media type items from the root of the tree with optional filtering.
+ * @summary Gets a collection of media type items from the root of the tree.
+ */
 export const getTreeMediaTypeRootQuerySkipDefault = 0;export const getTreeMediaTypeRootQueryTakeDefault = 100;export const getTreeMediaTypeRootQueryFoldersOnlyDefault = false;
 
 export const getTreeMediaTypeRootQueryParams = zod.object({
@@ -3999,6 +5129,10 @@ export const getTreeMediaTypeRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of media type tree items that are siblings of the provided Id.
+ * @summary Gets a collection of media type tree sibling items.
+ */
 export const getTreeMediaTypeSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeMediaTypeSiblingsQueryParams = zod.object({
@@ -4028,6 +5162,10 @@ export const getTreeMediaTypeSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of media items, optionally filtered and sorted.
+ * @summary Gets a collection of media items.
+ */
 export const getCollectionMediaQueryOrderByDefault = "updateDate";export const getCollectionMediaQuerySkipDefault = 0;export const getCollectionMediaQueryTakeDefault = 100;
 
 export const getCollectionMediaQueryParams = zod.object({
@@ -4080,6 +5218,10 @@ export const getCollectionMediaResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of media items identified by the provided Ids.
+ * @summary Gets a collection of media items.
+ */
 export const getItemMediaQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -4109,6 +5251,46 @@ export const getItemMediaResponseItem = zod.object({
 export const getItemMediaResponse = zod.array(getItemMediaResponseItem)
 
 
+/**
+ * Gets the ancestor chains for media items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of media items.
+ */
+export const getItemMediaAncestorsQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getItemMediaAncestorsResponseItem = zod.object({
+  "id": zod.guid(),
+  "ancestors": zod.array(zod.object({
+  "id": zod.guid(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "isTrashed": zod.boolean(),
+  "parent": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "hasChildren": zod.boolean(),
+  "mediaType": zod.object({
+  "id": zod.guid(),
+  "icon": zod.string(),
+  "collection": zod.object({
+  "id": zod.guid()
+}).nullish()
+}),
+  "variants": zod.array(zod.object({
+  "name": zod.string(),
+  "culture": zod.string().nullish()
+}))
+}))
+})
+export const getItemMediaAncestorsResponse = zod.array(getItemMediaAncestorsResponseItem)
+
+
+/**
+ * Searches media items by the provided query with pagination support.
+ * @summary Searches media items.
+ */
 export const getItemMediaSearchQuerySkipDefault = 0;export const getItemMediaSearchQueryTakeDefault = 100;
 
 export const getItemMediaSearchQueryParams = zod.object({
@@ -4149,6 +5331,10 @@ export const getItemMediaSearchResponse = zod.object({
 })
 
 
+/**
+ * Creates a new media with the configuration specified in the request model.
+ * @summary Creates a new media.
+ */
 
 
 
@@ -4175,6 +5361,10 @@ export const postMediaBody = zod.object({
 })
 
 
+/**
+ * Gets a media item identified by the provided Id.
+ * @summary Gets a media item.
+ */
 export const getMediaByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -4214,11 +5404,19 @@ export const getMediaByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a media item identified by the provided Id.
+ * @summary Deletes a media item.
+ */
 export const deleteMediaByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a media item identified by the provided Id with the details from the request model.
+ * @summary Updates a media item.
+ */
 export const putMediaByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -4242,6 +5440,10 @@ export const putMediaByIdBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of audit log entries for the media identified by the provided Id.
+ * @summary Gets the audit log for a media item.
+ */
 export const getMediaByIdAuditLogParams = zod.object({
   "id": zod.guid()
 })
@@ -4269,6 +5471,10 @@ export const getMediaByIdAuditLogResponse = zod.object({
 })
 
 
+/**
+ * Moves a media item identified by the provided Id to a different location.
+ * @summary Moves a media item.
+ */
 export const putMediaByIdMoveParams = zod.object({
   "id": zod.guid()
 })
@@ -4280,11 +5486,19 @@ export const putMediaByIdMoveBody = zod.object({
 })
 
 
+/**
+ * Moves a media item identified by the provided Id to the recycle bin.
+ * @summary Moves a media item to the recycle bin.
+ */
 export const putMediaByIdMoveToRecycleBinParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Gets a paginated collection of items that reference the media item identified by the provided Id.
+ * @summary Gets a collection of items that reference a media item.
+ */
 export const getMediaByIdReferencedByParams = zod.object({
   "id": zod.guid()
 })
@@ -4381,6 +5595,10 @@ export const getMediaByIdReferencedByResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of descendant media items that are referenced by other content.
+ * @summary Gets media descendants that are referenced.
+ */
 export const getMediaByIdReferencedDescendantsParams = zod.object({
   "id": zod.guid()
 })
@@ -4400,6 +5618,10 @@ export const getMediaByIdReferencedDescendantsResponse = zod.object({
 })
 
 
+/**
+ * Validates the request model for updating a media item without actually updating it.
+ * @summary Validates updating a media item.
+ */
 export const putMediaByIdValidateParams = zod.object({
   "id": zod.guid()
 })
@@ -4423,6 +5645,10 @@ export const putMediaByIdValidateBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of media items that are referenced, identified by the provided Ids.
+ * @summary Gets a collection of referenced media items.
+ */
 export const getMediaAreReferencedQuerySkipDefault = 0;export const getMediaAreReferencedQueryTakeDefault = 20;
 
 export const getMediaAreReferencedQueryParams = zod.object({
@@ -4440,7 +5666,8 @@ export const getMediaAreReferencedResponse = zod.object({
 
 
 /**
- * @deprecated
+ * Gets the configuration settings for media.
+ * @summary Gets the media configuration.
  */
 export const getMediaConfigurationResponse = zod.object({
   "disableDeleteWhenReferenced": zod.boolean(),
@@ -4448,6 +5675,10 @@ export const getMediaConfigurationResponse = zod.object({
 })
 
 
+/**
+ * Sorts media items in the specified parent container according to the provided sort order.
+ * @summary Sorts media items.
+ */
 export const putMediaSortBody = zod.object({
   "parent": zod.object({
   "id": zod.guid()
@@ -4459,6 +5690,10 @@ export const putMediaSortBody = zod.object({
 })
 
 
+/**
+ * Gets the URLs for the media items identified by the provided Ids.
+ * @summary Gets URLs for media items.
+ */
 export const getMediaUrlsQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -4473,6 +5708,10 @@ export const getMediaUrlsResponseItem = zod.object({
 export const getMediaUrlsResponse = zod.array(getMediaUrlsResponseItem)
 
 
+/**
+ * Validates the request model for creating a new media item without actually creating it.
+ * @summary Validates creating a media item.
+ */
 
 
 
@@ -4499,11 +5738,19 @@ export const postMediaValidateBody = zod.object({
 })
 
 
+/**
+ * Permanently deletes a media item from the recycle bin identified by the provided Id.
+ * @summary Deletes a media item from the recycle bin.
+ */
 export const deleteRecycleBinMediaByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Gets the original parent location of a media item before it was moved to the recycle bin.
+ * @summary Gets the original parent of a media item in the recycle bin.
+ */
 export const getRecycleBinMediaByIdOriginalParentParams = zod.object({
   "id": zod.guid()
 })
@@ -4513,6 +5760,10 @@ export const getRecycleBinMediaByIdOriginalParentResponse = zod.object({
 })
 
 
+/**
+ * Restores a media item from the recycle bin to its original location or a specified parent.
+ * @summary Restores a media item from the recycle bin.
+ */
 export const putRecycleBinMediaByIdRestoreParams = zod.object({
   "id": zod.guid()
 })
@@ -4524,6 +5775,10 @@ export const putRecycleBinMediaByIdRestoreBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of media items that are children of the provided parent in the recycle bin.
+ * @summary Gets a collection of media items in the recycle bin.
+ */
 export const getRecycleBinMediaChildrenQuerySkipDefault = 0;export const getRecycleBinMediaChildrenQueryTakeDefault = 100;
 
 export const getRecycleBinMediaChildrenQueryParams = zod.object({
@@ -4556,6 +5811,10 @@ export const getRecycleBinMediaChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of items that reference the media in the recycle bin.
+ * @summary Gets items referencing media in the recycle bin.
+ */
 export const getRecycleBinMediaReferencedByQuerySkipDefault = 0;export const getRecycleBinMediaReferencedByQueryTakeDefault = 20;
 
 export const getRecycleBinMediaReferencedByQueryParams = zod.object({
@@ -4648,6 +5907,10 @@ export const getRecycleBinMediaReferencedByResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of media items at the root level of the recycle bin.
+ * @summary Gets media at the root of the recycle bin.
+ */
 export const getRecycleBinMediaRootQuerySkipDefault = 0;export const getRecycleBinMediaRootQueryTakeDefault = 100;
 
 export const getRecycleBinMediaRootQueryParams = zod.object({
@@ -4679,6 +5942,10 @@ export const getRecycleBinMediaRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of sibling media items in the recycle bin at the same level as the provided Id.
+ * @summary Gets sibling media in the recycle bin.
+ */
 export const getRecycleBinMediaSiblingsQueryParams = zod.object({
   "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
@@ -4711,6 +5978,10 @@ export const getRecycleBinMediaSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of media items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor media items.
+ */
 export const getTreeMediaAncestorsQueryParams = zod.object({
   "descendantId": zod.guid().optional()
 })
@@ -4742,6 +6013,10 @@ export const getTreeMediaAncestorsResponseItem = zod.object({
 export const getTreeMediaAncestorsResponse = zod.array(getTreeMediaAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of media tree items that are children of the provided parent Id.
+ * @summary Gets a collection of media tree child items.
+ */
 export const getTreeMediaChildrenQuerySkipDefault = 0;export const getTreeMediaChildrenQueryTakeDefault = 100;
 
 export const getTreeMediaChildrenQueryParams = zod.object({
@@ -4780,6 +6055,10 @@ export const getTreeMediaChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of media items from the root of the tree with optional filtering.
+ * @summary Gets a collection of media items from the root of the tree.
+ */
 export const getTreeMediaRootQuerySkipDefault = 0;export const getTreeMediaRootQueryTakeDefault = 100;
 
 export const getTreeMediaRootQueryParams = zod.object({
@@ -4817,6 +6096,10 @@ export const getTreeMediaRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of media tree items that are siblings of the provided Id.
+ * @summary Gets a collection of media tree sibling items.
+ */
 export const getTreeMediaSiblingsQueryParams = zod.object({
   "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
@@ -4854,6 +6137,10 @@ export const getTreeMediaSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of member group items identified by the provided Ids.
+ * @summary Gets a collection of member group items.
+ */
 export const getItemMemberGroupQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -4868,6 +6155,10 @@ export const getItemMemberGroupResponseItem = zod.object({
 export const getItemMemberGroupResponse = zod.array(getItemMemberGroupResponseItem)
 
 
+/**
+ * Gets a paginated collection of all member groups.
+ * @summary Gets a paginated collection of member groups.
+ */
 export const getMemberGroupQuerySkipDefault = 0;export const getMemberGroupQueryTakeDefault = 100;
 
 export const getMemberGroupQueryParams = zod.object({
@@ -4884,12 +6175,20 @@ export const getMemberGroupResponse = zod.object({
 })
 
 
+/**
+ * Creates a new member group with the configuration specified in the request model.
+ * @summary Creates a new member group.
+ */
 export const postMemberGroupBody = zod.object({
   "name": zod.string(),
   "id": zod.guid().nullish()
 })
 
 
+/**
+ * Gets a member group identified by the provided Id.
+ * @summary Gets a member group.
+ */
 export const getMemberGroupByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -4900,11 +6199,19 @@ export const getMemberGroupByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a member group identified by the provided Id.
+ * @summary Deletes a member group.
+ */
 export const deleteMemberGroupByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a member group identified by the provided Id with the details from the request model.
+ * @summary Updates a member group.
+ */
 export const putMemberGroupByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -4914,6 +6221,10 @@ export const putMemberGroupByIdBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of member group items from the root of the tree with optional filtering.
+ * @summary Gets a collection of member group items from the root of the tree.
+ */
 export const getTreeMemberGroupRootQuerySkipDefault = 0;export const getTreeMemberGroupRootQueryTakeDefault = 100;
 
 export const getTreeMemberGroupRootQueryParams = zod.object({
@@ -4937,6 +6248,10 @@ export const getTreeMemberGroupRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of member type items identified by the provided Ids.
+ * @summary Gets a collection of member type items.
+ */
 export const getItemMemberTypeQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -4952,6 +6267,31 @@ export const getItemMemberTypeResponseItem = zod.object({
 export const getItemMemberTypeResponse = zod.array(getItemMemberTypeResponseItem)
 
 
+/**
+ * Gets the ancestor chains for member type items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of member type items.
+ */
+export const getItemMemberTypeAncestorsQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getItemMemberTypeAncestorsResponseItem = zod.object({
+  "id": zod.guid(),
+  "ancestors": zod.array(zod.object({
+  "id": zod.guid(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "name": zod.string()
+}))
+})
+export const getItemMemberTypeAncestorsResponse = zod.array(getItemMemberTypeAncestorsResponseItem)
+
+
+/**
+ * Searches member type items by the provided query with pagination support.
+ * @summary Searches member type items.
+ */
 export const getItemMemberTypeSearchQuerySkipDefault = 0;export const getItemMemberTypeSearchQueryTakeDefault = 100;
 
 export const getItemMemberTypeSearchQueryParams = zod.object({
@@ -4973,6 +6313,10 @@ export const getItemMemberTypeSearchResponse = zod.object({
 })
 
 
+/**
+ * Creates a new member type with the configuration specified in the request model.
+ * @summary Creates a new member type.
+ */
 
 
 
@@ -5044,6 +6388,10 @@ export const postMemberTypeBody = zod.object({
 })
 
 
+/**
+ * Gets a member type identified by the provided Id.
+ * @summary Gets a member type.
+ */
 export const getMemberTypeByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -5116,11 +6464,19 @@ export const getMemberTypeByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a member type identified by the provided Id.
+ * @summary Deletes a member type.
+ */
 export const deleteMemberTypeByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a member type identified by the provided Id with the details from the request model.
+ * @summary Updates a member type.
+ */
 export const putMemberTypeByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -5192,6 +6548,10 @@ export const putMemberTypeByIdBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of member types that reference the specified member type as a composition.
+ * @summary Gets composition references.
+ */
 export const getMemberTypeByIdCompositionReferencesParams = zod.object({
   "id": zod.guid()
 })
@@ -5204,6 +6564,10 @@ export const getMemberTypeByIdCompositionReferencesResponseItem = zod.object({
 export const getMemberTypeByIdCompositionReferencesResponse = zod.array(getMemberTypeByIdCompositionReferencesResponseItem)
 
 
+/**
+ * Creates a duplicate of an existing member type identified by the provided Id.
+ * @summary Copies a member type.
+ */
 export const postMemberTypeByIdCopyParams = zod.object({
   "id": zod.guid()
 })
@@ -5215,6 +6579,10 @@ export const postMemberTypeByIdCopyBody = zod.object({
 })
 
 
+/**
+ * Exports the member type identified by the provided Id to a downloadable format.
+ * @summary Exports a member type.
+ */
 export const getMemberTypeByIdExportParams = zod.object({
   "id": zod.guid()
 })
@@ -5222,6 +6590,10 @@ export const getMemberTypeByIdExportParams = zod.object({
 export const getMemberTypeByIdExportResponse = zod.instanceof(File)
 
 
+/**
+ * Imports a member type from the provided file upload.
+ * @summary Imports a member type.
+ */
 export const putMemberTypeByIdImportParams = zod.object({
   "id": zod.guid()
 })
@@ -5233,6 +6605,10 @@ export const putMemberTypeByIdImportBody = zod.object({
 })
 
 
+/**
+ * Moves a member type identified by the provided Id to a different location.
+ * @summary Moves a member type.
+ */
 export const putMemberTypeByIdMoveParams = zod.object({
   "id": zod.guid()
 })
@@ -5244,6 +6620,10 @@ export const putMemberTypeByIdMoveBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of member types that are available to use as compositions for the specified member type.
+ * @summary Gets available compositions.
+ */
 export const postMemberTypeAvailableCompositionsBody = zod.object({
   "id": zod.guid().nullish(),
   "currentPropertyAliases": zod.array(zod.string()),
@@ -5260,11 +6640,98 @@ export const postMemberTypeAvailableCompositionsResponseItem = zod.object({
 export const postMemberTypeAvailableCompositionsResponse = zod.array(postMemberTypeAvailableCompositionsResponseItem)
 
 
+/**
+ * Gets multiple member types identified by the provided Ids.
+ * @summary Gets multiple member types.
+ */
+export const getMemberTypeBatchQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+
+
+
+
+
+
+
+
+export const getMemberTypeBatchResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "alias": zod.string().min(1),
+  "name": zod.string().min(1),
+  "description": zod.string().nullish(),
+  "icon": zod.string().min(1),
+  "allowedAsRoot": zod.boolean(),
+  "variesByCulture": zod.boolean(),
+  "variesBySegment": zod.boolean(),
+  "collection": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "isElement": zod.boolean(),
+  "properties": zod.array(zod.object({
+  "id": zod.guid(),
+  "container": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "sortOrder": zod.number(),
+  "alias": zod.string().min(1),
+  "name": zod.string().min(1),
+  "description": zod.string().nullish(),
+  "dataType": zod.object({
+  "id": zod.guid()
+}),
+  "variesByCulture": zod.boolean(),
+  "variesBySegment": zod.boolean(),
+  "validation": zod.object({
+  "mandatory": zod.boolean(),
+  "mandatoryMessage": zod.string().nullish(),
+  "regEx": zod.string().nullish(),
+  "regExMessage": zod.string().nullish()
+}),
+  "appearance": zod.object({
+  "labelOnTop": zod.boolean()
+}),
+  "isSensitive": zod.boolean(),
+  "visibility": zod.object({
+  "memberCanView": zod.boolean(),
+  "memberCanEdit": zod.boolean()
+})
+})),
+  "containers": zod.array(zod.object({
+  "id": zod.guid(),
+  "parent": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "name": zod.string().nullish(),
+  "type": zod.string().min(1),
+  "sortOrder": zod.number()
+})),
+  "id": zod.guid(),
+  "compositions": zod.array(zod.object({
+  "memberType": zod.object({
+  "id": zod.guid()
+}),
+  "compositionType": zod.enum(['Composition', 'Inheritance'])
+}))
+}))
+})
+
+
+/**
+ * Gets the configuration settings for member types.
+ * @summary Gets the member type configuration.
+ */
 export const getMemberTypeConfigurationResponse = zod.object({
   "reservedFieldNames": zod.array(zod.string())
 })
 
 
+/**
+ * Creates a new member type folder with the provided name and parent location.
+ * @summary Creates a member type folder.
+ */
 
 
 
@@ -5277,6 +6744,10 @@ export const postMemberTypeFolderBody = zod.object({
 })
 
 
+/**
+ * Gets a member type folder identified by the provided Id.
+ * @summary Gets a member type folder.
+ */
 export const getMemberTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -5290,11 +6761,19 @@ export const getMemberTypeFolderByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a member type folder identified by the provided Id.
+ * @summary Deletes a member type folder.
+ */
 export const deleteMemberTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a member type folder identified by the provided Id with the details from the request model.
+ * @summary Updates a member type folder.
+ */
 export const putMemberTypeFolderByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -5307,6 +6786,10 @@ export const putMemberTypeFolderByIdBody = zod.object({
 })
 
 
+/**
+ * Imports a member type from the provided file upload.
+ * @summary Imports a member type.
+ */
 export const postMemberTypeImportBody = zod.object({
   "file": zod.object({
   "id": zod.guid()
@@ -5314,6 +6797,10 @@ export const postMemberTypeImportBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of member type items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor member type items.
+ */
 export const getTreeMemberTypeAncestorsQueryParams = zod.object({
   "descendantId": zod.guid().optional()
 })
@@ -5334,6 +6821,10 @@ export const getTreeMemberTypeAncestorsResponseItem = zod.object({
 export const getTreeMemberTypeAncestorsResponse = zod.array(getTreeMemberTypeAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of member type tree items that are children of the provided parent Id.
+ * @summary Gets a collection of member type tree child items.
+ */
 export const getTreeMemberTypeChildrenQuerySkipDefault = 0;export const getTreeMemberTypeChildrenQueryTakeDefault = 100;export const getTreeMemberTypeChildrenQueryFoldersOnlyDefault = false;
 
 export const getTreeMemberTypeChildrenQueryParams = zod.object({
@@ -5361,6 +6852,10 @@ export const getTreeMemberTypeChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of member type items from the root of the tree with optional filtering.
+ * @summary Gets a collection of member type items from the root of the tree.
+ */
 export const getTreeMemberTypeRootQuerySkipDefault = 0;export const getTreeMemberTypeRootQueryTakeDefault = 100;export const getTreeMemberTypeRootQueryFoldersOnlyDefault = false;
 
 export const getTreeMemberTypeRootQueryParams = zod.object({
@@ -5387,6 +6882,10 @@ export const getTreeMemberTypeRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of member type tree items that are siblings of the provided Id.
+ * @summary Gets sibling member types in the tree.
+ */
 export const getTreeMemberTypeSiblingsQueryFoldersOnlyDefault = false;
 
 export const getTreeMemberTypeSiblingsQueryParams = zod.object({
@@ -5415,6 +6914,10 @@ export const getTreeMemberTypeSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Filters members based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of members.
+ */
 export const getFilterMemberQueryOrderByDefault = "username";export const getFilterMemberQuerySkipDefault = 0;export const getFilterMemberQueryTakeDefault = 100;
 
 export const getFilterMemberQueryParams = zod.object({
@@ -5477,6 +6980,10 @@ export const getFilterMemberResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of member items identified by the provided Ids.
+ * @summary Gets a collection of member items.
+ */
 export const getItemMemberQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -5502,6 +7009,42 @@ export const getItemMemberResponseItem = zod.object({
 export const getItemMemberResponse = zod.array(getItemMemberResponseItem)
 
 
+/**
+ * Gets the ancestor chains for member items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of member items.
+ */
+export const getItemMemberAncestorsQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getItemMemberAncestorsResponseItem = zod.object({
+  "id": zod.guid(),
+  "ancestors": zod.array(zod.object({
+  "id": zod.guid(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "memberType": zod.object({
+  "id": zod.guid(),
+  "icon": zod.string(),
+  "collection": zod.object({
+  "id": zod.guid()
+}).nullish()
+}),
+  "variants": zod.array(zod.object({
+  "name": zod.string(),
+  "culture": zod.string().nullish()
+})),
+  "kind": zod.enum(['Default', 'Api'])
+}))
+})
+export const getItemMemberAncestorsResponse = zod.array(getItemMemberAncestorsResponseItem)
+
+
+/**
+ * Searches member items by the provided query with pagination support.
+ * @summary Searches member items.
+ */
 export const getItemMemberSearchQuerySkipDefault = 0;export const getItemMemberSearchQueryTakeDefault = 100;
 
 export const getItemMemberSearchQueryParams = zod.object({
@@ -5534,6 +7077,10 @@ export const getItemMemberSearchResponse = zod.object({
 })
 
 
+/**
+ * Creates a new member with the configuration specified in the request model.
+ * @summary Creates a new member.
+ */
 
 
 
@@ -5562,6 +7109,10 @@ export const postMemberBody = zod.object({
 })
 
 
+/**
+ * Gets a member identified by the provided Id.
+ * @summary Gets a member.
+ */
 export const getMemberByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -5611,11 +7162,19 @@ export const getMemberByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a member identified by the provided Id.
+ * @summary Deletes a member.
+ */
 export const deleteMemberByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a member identified by the provided Id with the details from the request model.
+ * @summary Updates a member.
+ */
 export const putMemberByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -5647,6 +7206,10 @@ export const putMemberByIdBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of items that reference the members identified by the provided Ids.
+ * @summary Gets a collection of items that reference members.
+ */
 export const getMemberByIdReferencedByParams = zod.object({
   "id": zod.guid()
 })
@@ -5743,6 +7306,10 @@ export const getMemberByIdReferencedByResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of descendant members that are referenced in relations for the member identified by the provided Id.
+ * @summary Gets a paginated collection of referenced descendant members.
+ */
 export const getMemberByIdReferencedDescendantsParams = zod.object({
   "id": zod.guid()
 })
@@ -5762,6 +7329,10 @@ export const getMemberByIdReferencedDescendantsResponse = zod.object({
 })
 
 
+/**
+ * Validates the request model for updating a member without actually updating it.
+ * @summary Validates updating a member.
+ */
 export const putMemberByIdValidateParams = zod.object({
   "id": zod.guid()
 })
@@ -5793,6 +7364,10 @@ export const putMemberByIdValidateBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of items that reference the members identified by the provided Ids.
+ * @summary Gets a collection of items that reference members.
+ */
 export const getMemberAreReferencedQuerySkipDefault = 0;export const getMemberAreReferencedQueryTakeDefault = 20;
 
 export const getMemberAreReferencedQueryParams = zod.object({
@@ -5809,11 +7384,19 @@ export const getMemberAreReferencedResponse = zod.object({
 })
 
 
+/**
+ * Gets the configuration settings for members.
+ * @summary Gets the member configuration.
+ */
 export const getMemberConfigurationResponse = zod.object({
 
 })
 
 
+/**
+ * Validates the request model for creating a new member without actually creating it.
+ * @summary Validates creating a member.
+ */
 
 
 
@@ -5842,6 +7425,10 @@ export const postMemberValidateBody = zod.object({
 })
 
 
+/**
+ * Gets the dashboard data and current state of the models builder.
+ * @summary Gets models builder dashboard data.
+ */
 export const getModelsBuilderDashboardResponse = zod.object({
   "mode": zod.string(),
   "canGenerate": zod.boolean(),
@@ -5853,11 +7440,19 @@ export const getModelsBuilderDashboardResponse = zod.object({
 })
 
 
+/**
+ * Gets the current status and configuration of the models builder.
+ * @summary Gets models builder status.
+ */
 export const getModelsBuilderStatusResponse = zod.object({
   "status": zod.enum(['OutOfDate', 'Current', 'Unknown'])
 })
 
 
+/**
+ * Gets the news dashboard content including recent news items and updates for the Umbraco back office.
+ * @summary Gets news dashboard content.
+ */
 export const getNewsDashboardResponse = zod.object({
   "items": zod.array(zod.object({
   "priority": zod.string(),
@@ -5871,6 +7466,10 @@ export const getNewsDashboardResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of object types that are allowed as relation type targets.
+ * @summary Gets a paginated collection of allowed object types.
+ */
 export const getObjectTypesQuerySkipDefault = 0;export const getObjectTypesQueryTakeDefault = 100;
 
 export const getObjectTypesQueryParams = zod.object({
@@ -5887,6 +7486,10 @@ export const getObjectTypesResponse = zod.object({
 })
 
 
+/**
+ * Queries OEmbed information for the specified URL.
+ * @summary Queries OEmbed information.
+ */
 export const getOembedQueryQueryParams = zod.object({
   "url": zod.url().optional(),
   "maxWidth": zod.coerce.number().optional(),
@@ -5898,16 +7501,28 @@ export const getOembedQueryResponse = zod.object({
 })
 
 
+/**
+ * Executes all pending package migrations to update the database schema.
+ * @summary Runs pending package migrations.
+ */
 export const postPackageByNameRunMigrationParams = zod.object({
   "name": zod.string()
 })
 
 
+/**
+ * Gets the configuration settings for packages.
+ * @summary Gets the package configuration.
+ */
 export const getPackageConfigurationResponse = zod.object({
   "marketplaceUrl": zod.string()
 })
 
 
+/**
+ * Gets a paginated collection of all created packages.
+ * @summary Gets a paginated collection of created packages.
+ */
 export const getPackageCreatedQuerySkipDefault = 0;export const getPackageCreatedQueryTakeDefault = 100;
 
 export const getPackageCreatedQueryParams = zod.object({
@@ -5938,6 +7553,10 @@ export const getPackageCreatedResponse = zod.object({
 })
 
 
+/**
+ * Creates a new package with the configuration specified in the request model.
+ * @summary Creates a new package.
+ */
 export const postPackageCreatedBody = zod.object({
   "name": zod.string(),
   "contentNodeId": zod.string().nullish(),
@@ -5957,6 +7576,10 @@ export const postPackageCreatedBody = zod.object({
 })
 
 
+/**
+ * Gets a package identified by the provided Id.
+ * @summary Gets a package.
+ */
 export const getPackageCreatedByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -5981,11 +7604,19 @@ export const getPackageCreatedByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a package identified by the provided Id.
+ * @summary Deletes a package.
+ */
 export const deletePackageCreatedByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a package identified by the provided Id with the details from the request model.
+ * @summary Updates a package.
+ */
 export const putPackageCreatedByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -6009,6 +7640,10 @@ export const putPackageCreatedByIdBody = zod.object({
 })
 
 
+/**
+ * Downloads the package file for the created package identified by the provided Id.
+ * @summary Downloads a created package.
+ */
 export const getPackageCreatedByIdDownloadParams = zod.object({
   "id": zod.guid()
 })
@@ -6016,6 +7651,10 @@ export const getPackageCreatedByIdDownloadParams = zod.object({
 export const getPackageCreatedByIdDownloadResponse = zod.instanceof(File)
 
 
+/**
+ * Gets a paginated collection of migration status for all installed packages.
+ * @summary Gets all package migration statuses.
+ */
 export const getPackageMigrationStatusQuerySkipDefault = 0;export const getPackageMigrationStatusQueryTakeDefault = 100;
 
 export const getPackageMigrationStatusQueryParams = zod.object({
@@ -6032,6 +7671,10 @@ export const getPackageMigrationStatusResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of partial view items identified by the provided Ids.
+ * @summary Gets a collection of partial view items.
+ */
 export const getItemPartialViewQueryParams = zod.object({
   "path": zod.array(zod.string()).optional()
 })
@@ -6047,6 +7690,10 @@ export const getItemPartialViewResponseItem = zod.object({
 export const getItemPartialViewResponse = zod.array(getItemPartialViewResponseItem)
 
 
+/**
+ * Creates a new partial view with the configuration specified in the request model.
+ * @summary Creates a new partial view.
+ */
 export const postPartialViewBody = zod.object({
   "name": zod.string(),
   "parent": zod.object({
@@ -6056,6 +7703,10 @@ export const postPartialViewBody = zod.object({
 })
 
 
+/**
+ * Gets a partial view identified by the provided file path.
+ * @summary Gets a partial view by path.
+ */
 export const getPartialViewByPathParams = zod.object({
   "path": zod.string()
 })
@@ -6070,11 +7721,19 @@ export const getPartialViewByPathResponse = zod.object({
 })
 
 
+/**
+ * Deletes a partial view identified by the provided Id.
+ * @summary Deletes a partial view.
+ */
 export const deletePartialViewByPathParams = zod.object({
   "path": zod.string()
 })
 
 
+/**
+ * Updates a partial view identified by the provided Id with the details from the request model.
+ * @summary Updates a partial view.
+ */
 export const putPartialViewByPathParams = zod.object({
   "path": zod.string()
 })
@@ -6084,6 +7743,10 @@ export const putPartialViewByPathBody = zod.object({
 })
 
 
+/**
+ * Renames a partial view file to the specified new name.
+ * @summary Renames a partial view.
+ */
 export const putPartialViewByPathRenameParams = zod.object({
   "path": zod.string()
 })
@@ -6093,6 +7756,10 @@ export const putPartialViewByPathRenameBody = zod.object({
 })
 
 
+/**
+ * Creates a new partial view folder with the provided name and parent location.
+ * @summary Creates a partial view folder.
+ */
 export const postPartialViewFolderBody = zod.object({
   "name": zod.string(),
   "parent": zod.object({
@@ -6101,6 +7768,10 @@ export const postPartialViewFolderBody = zod.object({
 })
 
 
+/**
+ * Gets a partial view folder identified by the provided file path.
+ * @summary Gets a partial view folder by path.
+ */
 export const getPartialViewFolderByPathParams = zod.object({
   "path": zod.string()
 })
@@ -6114,11 +7785,19 @@ export const getPartialViewFolderByPathResponse = zod.object({
 })
 
 
+/**
+ * Deletes a partial view folder identified by the provided Id.
+ * @summary Deletes a partial view folder.
+ */
 export const deletePartialViewFolderByPathParams = zod.object({
   "path": zod.string()
 })
 
 
+/**
+ * Gets a paginated collection of available partial view code snippets that can be used when creating new partial views.
+ * @summary Gets a paginated collection of partial view snippets.
+ */
 export const getPartialViewSnippetQuerySkipDefault = 0;export const getPartialViewSnippetQueryTakeDefault = 100;
 
 export const getPartialViewSnippetQueryParams = zod.object({
@@ -6135,6 +7814,10 @@ export const getPartialViewSnippetResponse = zod.object({
 })
 
 
+/**
+ * Gets a partial view snippet identified by the provided Id.
+ * @summary Gets a partial view snippet.
+ */
 export const getPartialViewSnippetByIdParams = zod.object({
   "id": zod.string()
 })
@@ -6146,6 +7829,10 @@ export const getPartialViewSnippetByIdResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of partial view items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor partial view items.
+ */
 export const getTreePartialViewAncestorsQueryParams = zod.object({
   "descendantPath": zod.string().optional()
 })
@@ -6162,6 +7849,10 @@ export const getTreePartialViewAncestorsResponseItem = zod.object({
 export const getTreePartialViewAncestorsResponse = zod.array(getTreePartialViewAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of partial view tree items that are children of the provided parent Id.
+ * @summary Gets a collection of partial view tree child items.
+ */
 export const getTreePartialViewChildrenQuerySkipDefault = 0;export const getTreePartialViewChildrenQueryTakeDefault = 100;
 
 export const getTreePartialViewChildrenQueryParams = zod.object({
@@ -6184,6 +7875,10 @@ export const getTreePartialViewChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of partial view items from the root of the tree with optional filtering.
+ * @summary Gets a collection of partial view items from the root of the tree.
+ */
 export const getTreePartialViewRootQuerySkipDefault = 0;export const getTreePartialViewRootQueryTakeDefault = 100;
 
 export const getTreePartialViewRootQueryParams = zod.object({
@@ -6205,6 +7900,10 @@ export const getTreePartialViewRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of partial view tree items that are siblings of the provided Id.
+ * @summary Gets a collection of partial view tree sibling items.
+ */
 export const getTreePartialViewSiblingsQueryParams = zod.object({
   "path": zod.string().optional(),
   "before": zod.coerce.number().optional(),
@@ -6226,16 +7925,28 @@ export const getTreePartialViewSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets the current status of the MiniProfiler profiling tool.
+ * @summary Gets profiling status.
+ */
 export const getProfilingStatusResponse = zod.object({
   "enabled": zod.boolean()
 })
 
 
+/**
+ * Enables or disables web profiling according to the values provided in the request model.
+ * @summary Updates the web profiling status.
+ */
 export const putProfilingStatusBody = zod.object({
   "enabled": zod.boolean()
 })
 
 
+/**
+ * Checks if the property type identified by the provided content type id and property alias is used in any content, media, or members.
+ * @summary Checks if a property type is used.
+ */
 export const getPropertyTypeIsUsedQueryParams = zod.object({
   "contentTypeId": zod.guid().optional(),
   "propertyAlias": zod.string().optional()
@@ -6244,11 +7955,19 @@ export const getPropertyTypeIsUsedQueryParams = zod.object({
 export const getPropertyTypeIsUsedResponse = zod.boolean()
 
 
+/**
+ * Gets the current status of the published content cache rebuild operation.
+ * @summary Gets the rebuild cache status.
+ */
 export const getPublishedCacheRebuildStatusResponse = zod.object({
   "isRebuilding": zod.boolean()
 })
 
 
+/**
+ * Gets a paginated collection of redirect URLs with support for filtering and sorting.
+ * @summary Gets a paginated collection of redirect URLs.
+ */
 export const getRedirectManagementQuerySkipDefault = 0;export const getRedirectManagementQueryTakeDefault = 100;
 
 export const getRedirectManagementQueryParams = zod.object({
@@ -6272,6 +7991,10 @@ export const getRedirectManagementResponse = zod.object({
 })
 
 
+/**
+ * Gets a redirect URL identified by the provided Id.
+ * @summary Gets a redirect URL.
+ */
 export const getRedirectManagementByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -6298,22 +8021,38 @@ export const getRedirectManagementByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a redirect URL identified by the provided Id.
+ * @summary Deletes a redirect URL.
+ */
 export const deleteRedirectManagementByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Retrieves the current status and configuration for redirect URL management.
+ * @summary Gets the current redirect URL management status.
+ */
 export const getRedirectManagementStatusResponse = zod.object({
   "status": zod.enum(['Enabled', 'Disabled']),
   "userIsAdmin": zod.boolean()
 })
 
 
+/**
+ * Updates the redirect URL tracking configuration according to the provided status.
+ * @summary Sets the redirect URL tracking status.
+ */
 export const postRedirectManagementStatusQueryParams = zod.object({
   "status": zod.enum(['Enabled', 'Disabled']).optional()
 })
 
 
+/**
+ * Gets a collection of relation type items identified by the provided Ids.
+ * @summary Gets a collection of relation type items.
+ */
 export const getItemRelationTypeQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -6329,6 +8068,10 @@ export const getItemRelationTypeResponseItem = zod.object({
 export const getItemRelationTypeResponse = zod.array(getItemRelationTypeResponseItem)
 
 
+/**
+ * Gets a paginated collection of all relation types configured in the system.
+ * @summary Gets a paginated collection of relation types.
+ */
 export const getRelationTypeQuerySkipDefault = 0;export const getRelationTypeQueryTakeDefault = 100;
 
 export const getRelationTypeQueryParams = zod.object({
@@ -6359,6 +8102,10 @@ export const getRelationTypeResponse = zod.object({
 })
 
 
+/**
+ * Gets a relation type identified by the provided Id.
+ * @summary Gets a relation type.
+ */
 export const getRelationTypeByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -6383,6 +8130,10 @@ export const getRelationTypeByIdResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of relations filtered by the specified relation type key.
+ * @summary Gets relations by relation type.
+ */
 export const getRelationByRelationTypeIdParams = zod.object({
   "id": zod.guid()
 })
@@ -6415,6 +8166,10 @@ export const getRelationByRelationTypeIdResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of script items identified by the provided Ids.
+ * @summary Gets a collection of script items.
+ */
 export const getItemScriptQueryParams = zod.object({
   "path": zod.array(zod.string()).optional()
 })
@@ -6430,6 +8185,10 @@ export const getItemScriptResponseItem = zod.object({
 export const getItemScriptResponse = zod.array(getItemScriptResponseItem)
 
 
+/**
+ * Creates a new script with the configuration specified in the request model.
+ * @summary Creates a new script.
+ */
 export const postScriptBody = zod.object({
   "name": zod.string(),
   "parent": zod.object({
@@ -6439,6 +8198,10 @@ export const postScriptBody = zod.object({
 })
 
 
+/**
+ * Gets a script identified by the provided file path.
+ * @summary Gets a script by path.
+ */
 export const getScriptByPathParams = zod.object({
   "path": zod.string()
 })
@@ -6453,11 +8216,19 @@ export const getScriptByPathResponse = zod.object({
 })
 
 
+/**
+ * Deletes a script identified by the provided file path.
+ * @summary Deletes a script.
+ */
 export const deleteScriptByPathParams = zod.object({
   "path": zod.string()
 })
 
 
+/**
+ * Updates a script identified by the provided Id with the details from the request model.
+ * @summary Updates a script.
+ */
 export const putScriptByPathParams = zod.object({
   "path": zod.string()
 })
@@ -6467,6 +8238,10 @@ export const putScriptByPathBody = zod.object({
 })
 
 
+/**
+ * Renames a script file to the specified new name.
+ * @summary Renames a script.
+ */
 export const putScriptByPathRenameParams = zod.object({
   "path": zod.string()
 })
@@ -6476,6 +8251,10 @@ export const putScriptByPathRenameBody = zod.object({
 })
 
 
+/**
+ * Creates a new script folder with the provided name and parent location.
+ * @summary Creates a script folder.
+ */
 export const postScriptFolderBody = zod.object({
   "name": zod.string(),
   "parent": zod.object({
@@ -6484,6 +8263,10 @@ export const postScriptFolderBody = zod.object({
 })
 
 
+/**
+ * Gets a script folder identified by the provided file path.
+ * @summary Gets a script folder by path.
+ */
 export const getScriptFolderByPathParams = zod.object({
   "path": zod.string()
 })
@@ -6497,11 +8280,19 @@ export const getScriptFolderByPathResponse = zod.object({
 })
 
 
+/**
+ * Deletes a script folder identified by the provided Id.
+ * @summary Deletes a script folder.
+ */
 export const deleteScriptFolderByPathParams = zod.object({
   "path": zod.string()
 })
 
 
+/**
+ * Gets a collection of script items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor script items.
+ */
 export const getTreeScriptAncestorsQueryParams = zod.object({
   "descendantPath": zod.string().optional()
 })
@@ -6518,6 +8309,10 @@ export const getTreeScriptAncestorsResponseItem = zod.object({
 export const getTreeScriptAncestorsResponse = zod.array(getTreeScriptAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of script tree items that are children of the provided parent Id.
+ * @summary Gets a collection of script tree child items.
+ */
 export const getTreeScriptChildrenQuerySkipDefault = 0;export const getTreeScriptChildrenQueryTakeDefault = 100;
 
 export const getTreeScriptChildrenQueryParams = zod.object({
@@ -6540,6 +8335,10 @@ export const getTreeScriptChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of script items from the root of the tree with optional filtering.
+ * @summary Gets a collection of script items from the root of the tree.
+ */
 export const getTreeScriptRootQuerySkipDefault = 0;export const getTreeScriptRootQueryTakeDefault = 100;
 
 export const getTreeScriptRootQueryParams = zod.object({
@@ -6561,6 +8360,10 @@ export const getTreeScriptRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of script tree items that are siblings of the provided Id.
+ * @summary Gets a collection of script tree sibling items.
+ */
 export const getTreeScriptSiblingsQueryParams = zod.object({
   "path": zod.string().optional(),
   "before": zod.coerce.number().optional(),
@@ -6582,6 +8385,10 @@ export const getTreeScriptSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of configured searchers in the Umbraco installation.
+ * @summary Gets a collection of searchers.
+ */
 export const getSearcherQuerySkipDefault = 0;export const getSearcherQueryTakeDefault = 100;
 
 export const getSearcherQueryParams = zod.object({
@@ -6629,6 +8436,10 @@ export const getSearcherBySearcherNameQueryResponse = zod.object({
 })
 
 
+/**
+ * Gets the configuration settings for security.
+ * @summary Gets the security configuration.
+ */
 export const getSecurityConfigurationResponse = zod.object({
   "passwordConfiguration": zod.object({
   "minimumPasswordLength": zod.number(),
@@ -6640,6 +8451,10 @@ export const getSecurityConfigurationResponse = zod.object({
 })
 
 
+/**
+ * Initiates a password reset process by sending a reset link to the specified email address.
+ * @summary Requests a password reset.
+ */
 
 
 
@@ -6648,6 +8463,10 @@ export const postSecurityForgotPasswordBody = zod.object({
 })
 
 
+/**
+ * Initiates a password reset process for the user with the provided email.
+ * @summary Initiates password reset.
+ */
 
 
 
@@ -6660,6 +8479,10 @@ export const postSecurityForgotPasswordResetBody = zod.object({
 })
 
 
+/**
+ * Verifies the provided password reset token for the specified user.
+ * @summary Verifies a password reset token.
+ */
 export const postSecurityForgotPasswordVerifyBody = zod.object({
   "user": zod.object({
   "id": zod.guid()
@@ -6678,6 +8501,10 @@ export const postSecurityForgotPasswordVerifyResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of segments with support for filtering and pagination.
+ * @summary Gets a paginated collection of segments.
+ */
 export const getSegmentQuerySkipDefault = 0;export const getSegmentQueryTakeDefault = 100;
 
 export const getSegmentQueryParams = zod.object({
@@ -6695,6 +8522,10 @@ export const getSegmentResponse = zod.object({
 })
 
 
+/**
+ * Gets the configuration settings for servers.
+ * @summary Gets the server configuration.
+ */
 export const getServerConfigurationResponse = zod.object({
   "allowPasswordReset": zod.boolean(),
   "versionCheckPeriod": zod.number(),
@@ -6703,6 +8534,10 @@ export const getServerConfigurationResponse = zod.object({
 })
 
 
+/**
+ * Gets detailed information about the server environment and configuration.
+ * @summary Gets server information.
+ */
 export const getServerInformationResponse = zod.object({
   "version": zod.string(),
   "assemblyVersion": zod.string(),
@@ -6711,11 +8546,19 @@ export const getServerInformationResponse = zod.object({
 })
 
 
+/**
+ * Gets the current operational status of the Umbraco server.
+ * @summary Gets server status.
+ */
 export const getServerStatusResponse = zod.object({
-  "serverStatus": zod.enum(['Unknown', 'Boot', 'Install', 'Upgrade', 'Run', 'BootFailed'])
+  "serverStatus": zod.enum(['Unknown', 'Boot', 'Install', 'Upgrade', 'Upgrading', 'Run', 'BootFailed'])
 })
 
 
+/**
+ * Gets troubleshooting information and diagnostics for the server.
+ * @summary Gets server troubleshooting information.
+ */
 export const getServerTroubleshootingResponse = zod.object({
   "items": zod.array(zod.object({
   "name": zod.string(),
@@ -6725,7 +8568,9 @@ export const getServerTroubleshootingResponse = zod.object({
 
 
 /**
+ * Checks if there are any available upgrades for the Umbraco installation.
  * @deprecated
+ * @summary Checks for available upgrades.
  */
 export const getServerUpgradeCheckResponse = zod.object({
   "type": zod.string(),
@@ -6734,6 +8579,10 @@ export const getServerUpgradeCheckResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of static file items identified by the provided Ids.
+ * @summary Gets a collection of static file items.
+ */
 export const getItemStaticFileQueryParams = zod.object({
   "path": zod.array(zod.string()).optional()
 })
@@ -6749,6 +8598,10 @@ export const getItemStaticFileResponseItem = zod.object({
 export const getItemStaticFileResponse = zod.array(getItemStaticFileResponseItem)
 
 
+/**
+ * Gets a collection of static file items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor static file items.
+ */
 export const getTreeStaticFileAncestorsQueryParams = zod.object({
   "descendantPath": zod.string().optional()
 })
@@ -6765,6 +8618,10 @@ export const getTreeStaticFileAncestorsResponseItem = zod.object({
 export const getTreeStaticFileAncestorsResponse = zod.array(getTreeStaticFileAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of static file tree items that are children of the provided parent Id.
+ * @summary Gets a collection of static file tree child items.
+ */
 export const getTreeStaticFileChildrenQuerySkipDefault = 0;export const getTreeStaticFileChildrenQueryTakeDefault = 100;
 
 export const getTreeStaticFileChildrenQueryParams = zod.object({
@@ -6787,6 +8644,10 @@ export const getTreeStaticFileChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of static file items from the root of the tree with optional filtering.
+ * @summary Gets a collection of static file items from the root of the tree.
+ */
 export const getTreeStaticFileRootQuerySkipDefault = 0;export const getTreeStaticFileRootQueryTakeDefault = 100;
 
 export const getTreeStaticFileRootQueryParams = zod.object({
@@ -6808,6 +8669,10 @@ export const getTreeStaticFileRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of stylesheet items identified by the provided Ids.
+ * @summary Gets a collection of stylesheet items.
+ */
 export const getItemStylesheetQueryParams = zod.object({
   "path": zod.array(zod.string()).optional()
 })
@@ -6823,6 +8688,10 @@ export const getItemStylesheetResponseItem = zod.object({
 export const getItemStylesheetResponse = zod.array(getItemStylesheetResponseItem)
 
 
+/**
+ * Creates a new stylesheet with the configuration specified in the request model.
+ * @summary Creates a new stylesheet.
+ */
 export const postStylesheetBody = zod.object({
   "name": zod.string(),
   "parent": zod.object({
@@ -6832,6 +8701,10 @@ export const postStylesheetBody = zod.object({
 })
 
 
+/**
+ * Gets a stylesheet identified by the provided file path.
+ * @summary Gets a stylesheet by path.
+ */
 export const getStylesheetByPathParams = zod.object({
   "path": zod.string()
 })
@@ -6846,11 +8719,19 @@ export const getStylesheetByPathResponse = zod.object({
 })
 
 
+/**
+ * Deletes a stylesheet identified by the provided Id.
+ * @summary Deletes a stylesheet.
+ */
 export const deleteStylesheetByPathParams = zod.object({
   "path": zod.string()
 })
 
 
+/**
+ * Updates a stylesheet identified by the provided Id with the details from the request model.
+ * @summary Updates a stylesheet.
+ */
 export const putStylesheetByPathParams = zod.object({
   "path": zod.string()
 })
@@ -6860,6 +8741,10 @@ export const putStylesheetByPathBody = zod.object({
 })
 
 
+/**
+ * Renames a stylesheet file to the specified new name.
+ * @summary Renames a stylesheet.
+ */
 export const putStylesheetByPathRenameParams = zod.object({
   "path": zod.string()
 })
@@ -6869,6 +8754,10 @@ export const putStylesheetByPathRenameBody = zod.object({
 })
 
 
+/**
+ * Creates a new stylesheet folder with the provided name and parent location.
+ * @summary Creates a stylesheet folder.
+ */
 export const postStylesheetFolderBody = zod.object({
   "name": zod.string(),
   "parent": zod.object({
@@ -6877,6 +8766,10 @@ export const postStylesheetFolderBody = zod.object({
 })
 
 
+/**
+ * Gets a stylesheet folder identified by the provided file path.
+ * @summary Gets a stylesheet folder by path.
+ */
 export const getStylesheetFolderByPathParams = zod.object({
   "path": zod.string()
 })
@@ -6890,11 +8783,19 @@ export const getStylesheetFolderByPathResponse = zod.object({
 })
 
 
+/**
+ * Deletes a stylesheet folder identified by the provided Id.
+ * @summary Deletes a stylesheet folder.
+ */
 export const deleteStylesheetFolderByPathParams = zod.object({
   "path": zod.string()
 })
 
 
+/**
+ * Gets a collection of stylesheet items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor stylesheet items.
+ */
 export const getTreeStylesheetAncestorsQueryParams = zod.object({
   "descendantPath": zod.string().optional()
 })
@@ -6911,6 +8812,10 @@ export const getTreeStylesheetAncestorsResponseItem = zod.object({
 export const getTreeStylesheetAncestorsResponse = zod.array(getTreeStylesheetAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of stylesheet tree items that are children of the provided parent Id.
+ * @summary Gets a collection of stylesheet tree child items.
+ */
 export const getTreeStylesheetChildrenQuerySkipDefault = 0;export const getTreeStylesheetChildrenQueryTakeDefault = 100;
 
 export const getTreeStylesheetChildrenQueryParams = zod.object({
@@ -6933,6 +8838,10 @@ export const getTreeStylesheetChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of stylesheet items from the root of the tree with optional filtering.
+ * @summary Gets a collection of stylesheet items from the root of the tree.
+ */
 export const getTreeStylesheetRootQuerySkipDefault = 0;export const getTreeStylesheetRootQueryTakeDefault = 100;
 
 export const getTreeStylesheetRootQueryParams = zod.object({
@@ -6954,6 +8863,10 @@ export const getTreeStylesheetRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of stylesheet tree items that are siblings of the provided Id.
+ * @summary Gets a collection of stylesheet tree sibling items.
+ */
 export const getTreeStylesheetSiblingsQueryParams = zod.object({
   "path": zod.string().optional(),
   "before": zod.coerce.number().optional(),
@@ -6975,6 +8888,10 @@ export const getTreeStylesheetSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of tags filtered by the provided query string.
+ * @summary Gets a collection of tags.
+ */
 export const getTagQuerySkipDefault = 0;export const getTagQueryTakeDefault = 100;
 
 export const getTagQueryParams = zod.object({
@@ -6996,6 +8913,10 @@ export const getTagResponse = zod.object({
 })
 
 
+/**
+ * Gets telemetry data and statistics for the Umbraco installation.
+ * @summary Gets telemetry data.
+ */
 export const getTelemetryQuerySkipDefault = 0;export const getTelemetryQueryTakeDefault = 100;
 
 export const getTelemetryQueryParams = zod.object({
@@ -7011,16 +8932,28 @@ export const getTelemetryResponse = zod.object({
 })
 
 
+/**
+ * Gets the current telemetry configuration and consent level.
+ * @summary Gets telemetry information.
+ */
 export const getTelemetryLevelResponse = zod.object({
   "telemetryLevel": zod.enum(['Minimal', 'Basic', 'Detailed'])
 })
 
 
+/**
+ * Sets the telemetry consent level for anonymous usage data collection.
+ * @summary Sets telemetry consent level.
+ */
 export const postTelemetryLevelBody = zod.object({
   "telemetryLevel": zod.enum(['Minimal', 'Basic', 'Detailed'])
 })
 
 
+/**
+ * Gets a collection of template items identified by the provided Ids.
+ * @summary Gets a collection of template items.
+ */
 export const getItemTemplateQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -7036,6 +8969,32 @@ export const getItemTemplateResponseItem = zod.object({
 export const getItemTemplateResponse = zod.array(getItemTemplateResponseItem)
 
 
+/**
+ * Gets the ancestor chains for template items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of template items.
+ */
+export const getItemTemplateAncestorsQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getItemTemplateAncestorsResponseItem = zod.object({
+  "id": zod.guid(),
+  "ancestors": zod.array(zod.object({
+  "id": zod.guid(),
+  "flags": zod.array(zod.object({
+  "alias": zod.string()
+})),
+  "name": zod.string(),
+  "alias": zod.string()
+}))
+})
+export const getItemTemplateAncestorsResponse = zod.array(getItemTemplateAncestorsResponseItem)
+
+
+/**
+ * Searches template items by the provided query with pagination support.
+ * @summary Searches template items.
+ */
 export const getItemTemplateSearchQuerySkipDefault = 0;export const getItemTemplateSearchQueryTakeDefault = 100;
 
 export const getItemTemplateSearchQueryParams = zod.object({
@@ -7057,6 +9016,10 @@ export const getItemTemplateSearchResponse = zod.object({
 })
 
 
+/**
+ * Creates a new template with the configuration specified in the request model.
+ * @summary Creates a new template.
+ */
 
 
 
@@ -7069,6 +9032,10 @@ export const postTemplateBody = zod.object({
 })
 
 
+/**
+ * Gets a template identified by the provided Id.
+ * @summary Gets a template.
+ */
 export const getTemplateByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -7088,11 +9055,19 @@ export const getTemplateByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a template identified by the provided Id.
+ * @summary Deletes a template.
+ */
 export const deleteTemplateByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a template identified by the provided Id with the details from the request model.
+ * @summary Updates a template.
+ */
 export const putTemplateByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -7108,11 +9083,19 @@ export const putTemplateByIdBody = zod.object({
 })
 
 
+/**
+ * Gets the configuration settings for templates.
+ * @summary Gets the template configuration.
+ */
 export const getTemplateConfigurationResponse = zod.object({
   "disabled": zod.boolean()
 })
 
 
+/**
+ * Executes a template query with the provided parameters and returns the matching content results with execution metrics.
+ * @summary Executes a template query.
+ */
 
 
 
@@ -7145,6 +9128,10 @@ export const postTemplateQueryExecuteResponse = zod.object({
 })
 
 
+/**
+ * Gets the available configuration settings for template queries including document type aliases, properties, and operators.
+ * @summary Gets template query settings.
+ */
 export const getTemplateQuerySettingsResponse = zod.object({
   "documentTypeAliases": zod.array(zod.string()),
   "properties": zod.array(zod.object({
@@ -7158,6 +9145,10 @@ export const getTemplateQuerySettingsResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of template items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor template items.
+ */
 export const getTreeTemplateAncestorsQueryParams = zod.object({
   "descendantId": zod.guid().optional()
 })
@@ -7176,6 +9167,10 @@ export const getTreeTemplateAncestorsResponseItem = zod.object({
 export const getTreeTemplateAncestorsResponse = zod.array(getTreeTemplateAncestorsResponseItem)
 
 
+/**
+ * Gets a paginated collection of template tree items that are children of the provided parent Id.
+ * @summary Gets a collection of template tree child items.
+ */
 export const getTreeTemplateChildrenQuerySkipDefault = 0;export const getTreeTemplateChildrenQueryTakeDefault = 100;
 
 export const getTreeTemplateChildrenQueryParams = zod.object({
@@ -7200,6 +9195,10 @@ export const getTreeTemplateChildrenResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of template items from the root of the tree with optional filtering.
+ * @summary Gets a collection of template items from the root of the tree.
+ */
 export const getTreeTemplateRootQuerySkipDefault = 0;export const getTreeTemplateRootQueryTakeDefault = 100;
 
 export const getTreeTemplateRootQueryParams = zod.object({
@@ -7223,6 +9222,10 @@ export const getTreeTemplateRootResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of template tree items that are siblings of the provided Id.
+ * @summary Gets a collection of template tree sibling items.
+ */
 export const getTreeTemplateSiblingsQueryParams = zod.object({
   "target": zod.guid().optional(),
   "before": zod.coerce.number().optional(),
@@ -7246,6 +9249,10 @@ export const getTreeTemplateSiblingsResponse = zod.object({
 })
 
 
+/**
+ * Gets the current upgrade settings and status for the Umbraco installation.
+ * @summary Gets upgrade settings.
+ */
 
 
 
@@ -7261,6 +9268,10 @@ export const getUpgradeSettingsResponse = zod.object({
 })
 
 
+/**
+ * Creates user-specific data for the current authenticated user with the provided key and value.
+ * @summary Creates user data.
+ */
 export const postUserDataBody = zod.object({
   "group": zod.string(),
   "identifier": zod.string(),
@@ -7269,6 +9280,10 @@ export const postUserDataBody = zod.object({
 })
 
 
+/**
+ * Gets user-specific data stored for the current authenticated user.
+ * @summary Gets user data.
+ */
 export const getUserDataQuerySkipDefault = 0;export const getUserDataQueryTakeDefault = 100;
 
 export const getUserDataQueryParams = zod.object({
@@ -7289,6 +9304,10 @@ export const getUserDataResponse = zod.object({
 })
 
 
+/**
+ * Updates user-specific data for the current authenticated user.
+ * @summary Updates user data.
+ */
 export const putUserDataBody = zod.object({
   "group": zod.string(),
   "identifier": zod.string(),
@@ -7297,6 +9316,10 @@ export const putUserDataBody = zod.object({
 })
 
 
+/**
+ * Gets user data identified by the provided Id.
+ * @summary Gets user data.
+ */
 export const getUserDataByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -7308,11 +9331,19 @@ export const getUserDataByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes user data identified by the provided Id.
+ * @summary Deletes user data.
+ */
 export const deleteUserDataByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Filters user groups based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of user groups.
+ */
 export const getFilterUserGroupQuerySkipDefault = 0;export const getFilterUserGroupQueryTakeDefault = 100;export const getFilterUserGroupQueryFilterDefault = "";
 
 export const getFilterUserGroupQueryParams = zod.object({
@@ -7367,6 +9398,10 @@ export const getFilterUserGroupResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of user group items identified by the provided Ids.
+ * @summary Gets a collection of user group items.
+ */
 export const getItemUserGroupQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -7383,6 +9418,10 @@ export const getItemUserGroupResponseItem = zod.object({
 export const getItemUserGroupResponse = zod.array(getItemUserGroupResponseItem)
 
 
+/**
+ * Deletes multiple user groups identified by the provided Ids. This operation cannot be undone.
+ * @summary Deletes multiple user groups.
+ */
 export const deleteUserGroupBody = zod.object({
   "userGroupIds": zod.array(zod.object({
   "id": zod.guid()
@@ -7390,6 +9429,10 @@ export const deleteUserGroupBody = zod.object({
 })
 
 
+/**
+ * Creates a new user group with the configuration specified in the request model.
+ * @summary Creates a new user group.
+ */
 export const postUserGroupBody = zod.object({
   "name": zod.string(),
   "alias": zod.string(),
@@ -7431,6 +9474,10 @@ export const postUserGroupBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of all user groups.
+ * @summary Gets a paginated collection of user groups.
+ */
 export const getUserGroupQuerySkipDefault = 0;export const getUserGroupQueryTakeDefault = 100;
 
 export const getUserGroupQueryParams = zod.object({
@@ -7484,6 +9531,10 @@ export const getUserGroupResponse = zod.object({
 })
 
 
+/**
+ * Gets a user group identified by the provided Id.
+ * @summary Gets a user group.
+ */
 export const getUserGroupByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -7531,11 +9582,19 @@ export const getUserGroupByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a user group identified by the provided Id.
+ * @summary Deletes a user group.
+ */
 export const deleteUserGroupByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a user group identified by the provided Id with the details from the request model.
+ * @summary Updates a user group.
+ */
 export const putUserGroupByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -7580,6 +9639,10 @@ export const putUserGroupByIdBody = zod.object({
 })
 
 
+/**
+ * Removes the specified users from the user group identified by the provided Id.
+ * @summary Removes users from a user group.
+ */
 export const deleteUserGroupByIdUsersParams = zod.object({
   "id": zod.guid()
 })
@@ -7590,6 +9653,10 @@ export const deleteUserGroupByIdUsersBodyItem = zod.object({
 export const deleteUserGroupByIdUsersBody = zod.array(deleteUserGroupByIdUsersBodyItem)
 
 
+/**
+ * Adds the specified users to the user group identified by the provided Id.
+ * @summary Adds users to a user group.
+ */
 export const postUserGroupByIdUsersParams = zod.object({
   "id": zod.guid()
 })
@@ -7600,6 +9667,10 @@ export const postUserGroupByIdUsersBodyItem = zod.object({
 export const postUserGroupByIdUsersBody = zod.array(postUserGroupByIdUsersBodyItem)
 
 
+/**
+ * Filters users based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of users.
+ */
 export const getFilterUserQuerySkipDefault = 0;export const getFilterUserQueryTakeDefault = 100;export const getFilterUserQueryFilterDefault = "";
 
 export const getFilterUserQueryParams = zod.object({
@@ -7645,6 +9716,10 @@ export const getFilterUserResponse = zod.object({
 })
 
 
+/**
+ * Gets a collection of user items identified by the provided Ids.
+ * @summary Gets a collection of user items.
+ */
 export const getItemUserQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -7661,6 +9736,10 @@ export const getItemUserResponseItem = zod.object({
 export const getItemUserResponse = zod.array(getItemUserResponseItem)
 
 
+/**
+ * Creates a new user with the configuration specified in the request model.
+ * @summary Creates a new user.
+ */
 export const postUserBody = zod.object({
   "email": zod.string(),
   "userName": zod.string(),
@@ -7673,6 +9752,10 @@ export const postUserBody = zod.object({
 })
 
 
+/**
+ * Deletes multiple users identified by the provided Ids. This operation cannot be undone.
+ * @summary Deletes multiple users.
+ */
 export const deleteUserBody = zod.object({
   "userIds": zod.array(zod.object({
   "id": zod.guid()
@@ -7680,6 +9763,10 @@ export const deleteUserBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of all users.
+ * @summary Gets a paginated collection of users.
+ */
 export const getUserQuerySkipDefault = 0;export const getUserQueryTakeDefault = 100;
 
 export const getUserQueryParams = zod.object({
@@ -7720,6 +9807,10 @@ export const getUserResponse = zod.object({
 })
 
 
+/**
+ * Gets a user identified by the provided Id.
+ * @summary Gets a user.
+ */
 export const getUserByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -7754,11 +9845,19 @@ export const getUserByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a user identified by the provided Id.
+ * @summary Deletes a user.
+ */
 export const deleteUserByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a user identified by the provided Id with the details from the request model.
+ * @summary Updates a user.
+ */
 export const putUserByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -7782,6 +9881,10 @@ export const putUserByIdBody = zod.object({
 })
 
 
+/**
+ * Gets a list of available two-factor authentication providers for the specified user.
+ * @summary Lists two-factor providers for a user.
+ */
 export const getUserById2faParams = zod.object({
   "id": zod.guid()
 })
@@ -7793,12 +9896,20 @@ export const getUserById2faResponseItem = zod.object({
 export const getUserById2faResponse = zod.array(getUserById2faResponseItem)
 
 
+/**
+ * Disables the specified two-factor authentication provider for a user.
+ * @summary Disables two-factor authentication for a user.
+ */
 export const deleteUserById2faByProviderNameParams = zod.object({
   "id": zod.guid(),
   "providerName": zod.string()
 })
 
 
+/**
+ * Calculates the start nodes for the users identified by the provided Ids based on their permissions.
+ * @summary Calculates start nodes for users.
+ */
 export const getUserByIdCalculateStartNodesParams = zod.object({
   "id": zod.guid()
 })
@@ -7816,6 +9927,10 @@ export const getUserByIdCalculateStartNodesResponse = zod.object({
 })
 
 
+/**
+ * Changes the password for the user identified by the provided Id.
+ * @summary Changes a user's password.
+ */
 export const postUserByIdChangePasswordParams = zod.object({
   "id": zod.guid()
 })
@@ -7825,6 +9940,10 @@ export const postUserByIdChangePasswordBody = zod.object({
 })
 
 
+/**
+ * Creates OAuth client credentials for the user identified by the provided Id.
+ * @summary Creates client credentials for a user.
+ */
 export const postUserByIdClientCredentialsParams = zod.object({
   "id": zod.guid()
 })
@@ -7835,6 +9954,10 @@ export const postUserByIdClientCredentialsBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of OAuth client credentials for the user identified by the provided Id.
+ * @summary Gets all client credentials for a user.
+ */
 export const getUserByIdClientCredentialsParams = zod.object({
   "id": zod.guid()
 })
@@ -7843,12 +9966,20 @@ export const getUserByIdClientCredentialsResponseItem = zod.string()
 export const getUserByIdClientCredentialsResponse = zod.array(getUserByIdClientCredentialsResponseItem)
 
 
+/**
+ * Deletes client credentials identified by the provided client Id for a user.
+ * @summary Deletes client credentials for a user.
+ */
 export const deleteUserByIdClientCredentialsByClientIdParams = zod.object({
   "id": zod.guid(),
   "clientId": zod.string()
 })
 
 
+/**
+ * Resets the password for the user using the provided reset token.
+ * @summary Resets a user's password.
+ */
 export const postUserByIdResetPasswordParams = zod.object({
   "id": zod.guid()
 })
@@ -7858,11 +9989,19 @@ export const postUserByIdResetPasswordResponse = zod.object({
 })
 
 
+/**
+ * Removes the avatar image for the user identified by the provided Id.
+ * @summary Clears a user's avatar.
+ */
 export const deleteUserAvatarByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Sets or updates the avatar image for the user identified by the provided Id.
+ * @summary Sets a user's avatar.
+ */
 export const postUserAvatarByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -7874,6 +10013,10 @@ export const postUserAvatarByIdBody = zod.object({
 })
 
 
+/**
+ * Gets the configuration settings for users.
+ * @summary Gets the user configuration.
+ */
 export const getUserConfigurationResponse = zod.object({
   "canInviteUsers": zod.boolean(),
   "usernameIsEmail": zod.boolean(),
@@ -7889,6 +10032,10 @@ export const getUserConfigurationResponse = zod.object({
 })
 
 
+/**
+ * Gets the currently authenticated back office user's information and permissions.
+ * @summary Gets the current user.
+ */
 export const getUserCurrentResponse = zod.object({
   "email": zod.string(),
   "userName": zod.string(),
@@ -7936,6 +10083,10 @@ export const getUserCurrentResponse = zod.object({
 })
 
 
+/**
+ * Gets a list of available two-factor authentication providers for the current user.
+ * @summary Lists two-factor providers for the current user.
+ */
 export const getUserCurrent2faResponseItem = zod.object({
   "providerName": zod.string(),
   "isEnabledOnUser": zod.boolean()
@@ -7943,6 +10094,10 @@ export const getUserCurrent2faResponseItem = zod.object({
 export const getUserCurrent2faResponse = zod.array(getUserCurrent2faResponseItem)
 
 
+/**
+ * Disables the specified two-factor authentication provider for the currently authenticated user.
+ * @summary Disables two-factor authentication for the current user.
+ */
 export const deleteUserCurrent2faByProviderNameParams = zod.object({
   "providerName": zod.string()
 })
@@ -7952,6 +10107,10 @@ export const deleteUserCurrent2faByProviderNameQueryParams = zod.object({
 })
 
 
+/**
+ * Enables the specified two-factor authentication provider for the currently authenticated user.
+ * @summary Enables two-factor authentication for the current user.
+ */
 export const postUserCurrent2faByProviderNameParams = zod.object({
   "providerName": zod.string()
 })
@@ -7966,6 +10125,10 @@ export const postUserCurrent2faByProviderNameResponse = zod.object({
 })
 
 
+/**
+ * Gets the setup information for configuring a two-factor authentication provider.
+ * @summary Gets two-factor setup information.
+ */
 export const getUserCurrent2faByProviderNameParams = zod.object({
   "providerName": zod.string()
 })
@@ -7975,6 +10138,10 @@ export const getUserCurrent2faByProviderNameResponse = zod.object({
 })
 
 
+/**
+ * Sets or updates the avatar image for the currently authenticated user.
+ * @summary Sets the current user's avatar.
+ */
 export const postUserCurrentAvatarBody = zod.object({
   "file": zod.object({
   "id": zod.guid()
@@ -7982,12 +10149,20 @@ export const postUserCurrentAvatarBody = zod.object({
 })
 
 
+/**
+ * Changes the password for the currently authenticated user.
+ * @summary Changes the current user's password.
+ */
 export const postUserCurrentChangePasswordBody = zod.object({
   "newPassword": zod.string(),
   "oldPassword": zod.string().nullish()
 })
 
 
+/**
+ * Gets the configuration settings for the current user.
+ * @summary Gets the current user's configuration.
+ */
 export const getUserCurrentConfigurationResponse = zod.object({
   "keepUserLoggedIn": zod.boolean(),
   "passwordConfiguration": zod.object({
@@ -8002,6 +10177,10 @@ export const getUserCurrentConfigurationResponse = zod.object({
 })
 
 
+/**
+ * Gets a list of configured external login providers for authentication.
+ * @summary Lists external login providers.
+ */
 export const getUserCurrentLoginProvidersResponseItem = zod.object({
   "providerSchemeName": zod.string(),
   "providerKey": zod.string().nullish(),
@@ -8011,6 +10190,10 @@ export const getUserCurrentLoginProvidersResponseItem = zod.object({
 export const getUserCurrentLoginProvidersResponse = zod.array(getUserCurrentLoginProvidersResponseItem)
 
 
+/**
+ * Gets the permissions for the currently authenticated user.
+ * @summary Gets permissions for the current user.
+ */
 export const getUserCurrentPermissionsQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -8023,6 +10206,10 @@ export const getUserCurrentPermissionsResponse = zod.object({
 })
 
 
+/**
+ * Gets the document permissions for the currently authenticated user.
+ * @summary Gets document permissions for the current user.
+ */
 export const getUserCurrentPermissionsDocumentQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -8036,6 +10223,10 @@ export const getUserCurrentPermissionsDocumentResponseItem = zod.object({
 export const getUserCurrentPermissionsDocumentResponse = zod.array(getUserCurrentPermissionsDocumentResponseItem)
 
 
+/**
+ * Gets the media permissions for the currently authenticated user.
+ * @summary Gets media permissions for the current user.
+ */
 export const getUserCurrentPermissionsMediaQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -8048,6 +10239,10 @@ export const getUserCurrentPermissionsMediaResponse = zod.object({
 })
 
 
+/**
+ * Disables the user accounts identified by the provided Ids.
+ * @summary Disables users.
+ */
 export const postUserDisableBody = zod.object({
   "userIds": zod.array(zod.object({
   "id": zod.guid()
@@ -8055,6 +10250,10 @@ export const postUserDisableBody = zod.object({
 })
 
 
+/**
+ * Enables the user accounts identified by the provided Ids.
+ * @summary Enables users.
+ */
 export const postUserEnableBody = zod.object({
   "userIds": zod.array(zod.object({
   "id": zod.guid()
@@ -8062,6 +10261,10 @@ export const postUserEnableBody = zod.object({
 })
 
 
+/**
+ * Sends invitation emails to create new user accounts with the specified details.
+ * @summary Invites new users.
+ */
 export const postUserInviteBody = zod.object({
   "email": zod.string(),
   "userName": zod.string(),
@@ -8074,6 +10277,10 @@ export const postUserInviteBody = zod.object({
 })
 
 
+/**
+ * Creates an initial password for a newly invited user using the provided token.
+ * @summary Creates an initial password for a user.
+ */
 
 
 
@@ -8086,6 +10293,10 @@ export const postUserInviteCreatePasswordBody = zod.object({
 })
 
 
+/**
+ * Resends the invitation email for the users identified by the provided Ids.
+ * @summary Resends a user invitation.
+ */
 export const postUserInviteResendBody = zod.object({
   "user": zod.object({
   "id": zod.guid()
@@ -8094,6 +10305,10 @@ export const postUserInviteResendBody = zod.object({
 })
 
 
+/**
+ * Verifies that the invitation token is valid for creating a new user account.
+ * @summary Verifies a user invitation.
+ */
 
 
 
@@ -8115,6 +10330,10 @@ export const postUserInviteVerifyResponse = zod.object({
 })
 
 
+/**
+ * Updates the user group assignments for the specified users.
+ * @summary Updates user group assignments.
+ */
 export const postUserSetUserGroupsBody = zod.object({
   "userIds": zod.array(zod.object({
   "id": zod.guid()
@@ -8125,6 +10344,10 @@ export const postUserSetUserGroupsBody = zod.object({
 })
 
 
+/**
+ * Unlocks the user accounts identified by the provided Ids.
+ * @summary Unlocks users.
+ */
 export const postUserUnlockBody = zod.object({
   "userIds": zod.array(zod.object({
   "id": zod.guid()
@@ -8132,6 +10355,10 @@ export const postUserUnlockBody = zod.object({
 })
 
 
+/**
+ * Gets a collection of webhook items identified by the provided Ids.
+ * @summary Gets a collection of webhook items.
+ */
 export const getItemWebhookQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
@@ -8150,6 +10377,10 @@ export const getItemWebhookResponseItem = zod.object({
 export const getItemWebhookResponse = zod.array(getItemWebhookResponseItem)
 
 
+/**
+ * Gets a paginated collection of all webhooks.
+ * @summary Gets a paginated collection of webhooks.
+ */
 export const getWebhookQuerySkipDefault = 0;export const getWebhookQueryTakeDefault = 100;
 
 export const getWebhookQueryParams = zod.object({
@@ -8179,6 +10410,10 @@ export const getWebhookResponse = zod.object({
 })
 
 
+/**
+ * Creates a new webhook with the configuration specified in the request model.
+ * @summary Creates a new webhook.
+ */
 
 
 
@@ -8194,6 +10429,10 @@ export const postWebhookBody = zod.object({
 })
 
 
+/**
+ * Gets a webhook identified by the provided Id.
+ * @summary Gets a webhook.
+ */
 export const getWebhookByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -8217,11 +10456,19 @@ export const getWebhookByIdResponse = zod.object({
 })
 
 
+/**
+ * Deletes a webhook identified by the provided Id.
+ * @summary Deletes a webhook.
+ */
 export const deleteWebhookByIdParams = zod.object({
   "id": zod.guid()
 })
 
 
+/**
+ * Updates a webhook identified by the provided Id with the details from the request model.
+ * @summary Updates a webhook.
+ */
 export const putWebhookByIdParams = zod.object({
   "id": zod.guid()
 })
@@ -8240,6 +10487,10 @@ export const putWebhookByIdBody = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of webhook logs for the webhook identified by the provided Id.
+ * @summary Gets a paginated collection of webhook logs for a specific webhook.
+ */
 export const getWebhookByIdLogsParams = zod.object({
   "id": zod.guid()
 })
@@ -8271,6 +10522,10 @@ export const getWebhookByIdLogsResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of available webhook events that can be subscribed to.
+ * @summary Gets a paginated collection of webhook events.
+ */
 export const getWebhookEventsQuerySkipDefault = 0;export const getWebhookEventsQueryTakeDefault = 100;
 
 export const getWebhookEventsQueryParams = zod.object({
@@ -8288,6 +10543,10 @@ export const getWebhookEventsResponse = zod.object({
 })
 
 
+/**
+ * Gets a paginated collection of webhook logs for all webhooks.
+ * @summary Gets a paginated collection of webhook logs.
+ */
 export const getWebhookLogsQuerySkipDefault = 0;export const getWebhookLogsQueryTakeDefault = 100;
 
 export const getWebhookLogsQueryParams = zod.object({

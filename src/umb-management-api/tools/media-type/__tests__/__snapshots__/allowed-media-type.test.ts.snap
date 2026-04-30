@@ -9,11 +9,19 @@ exports[`allowed-media-type get allowed should filter by file extension 1`] = `
         "flags": [],
         "icon": "icon-picture",
         "id": "00000000-0000-0000-0000-000000000000",
+        "matchedFileExtension": true,
         "name": "Image",
+      },
+      {
+        "flags": [],
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "matchedFileExtension": false,
+        "name": "File",
       },
     ],
     "nextCursor": undefined,
-    "total": 1,
+    "total": 2,
   },
 }
 `;
