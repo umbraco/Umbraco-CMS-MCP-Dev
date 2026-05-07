@@ -1,10 +1,12 @@
-import { CreateDocumentBlueprintFromDocumentRequestModel, CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { UmbracoManagementClient } from "@umb-management-client";
+import { CreateDocumentBlueprintFromDocumentRequestModel, CurrentUserResponseModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import {
   type ToolDefinition,
-  CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
+  createToolResult,
+  createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 // Note: The Umbraco API schema includes a 'parent' parameter, but testing shows it is not
@@ -18,6 +20,10 @@ const createDocumentBlueprintFromDocumentSchema = z.object({
   name: z.string()
 });
 
+export const createDocumentBlueprintFromDocumentOutputSchema = z.object({
+  id: z.string().guid()
+});
+
 type CreateDocumentBlueprintFromDocumentModel = z.infer<typeof createDocumentBlueprintFromDocumentSchema>;
 
 const CreateDocumentBlueprintFromDocumentTool = {
@@ -27,6 +33,7 @@ const CreateDocumentBlueprintFromDocumentTool = {
 
   Note: Blueprints created from documents are always created at the root level. Use the move-document-blueprint tool to relocate them to folders after creation if needed.`,
   inputSchema: createDocumentBlueprintFromDocumentSchema.shape,
+  outputSchema: createDocumentBlueprintFromDocumentOutputSchema.shape,
   slices: ['create'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes("Umb.Document.CreateBlueprint"),
   handler: (async (model: CreateDocumentBlueprintFromDocumentModel) => {
@@ -37,10 +44,30 @@ const CreateDocumentBlueprintFromDocumentTool = {
       parent: undefined,
     };
 
-    return executeVoidApiCall((client) =>
-      client.postDocumentBlueprintFromDocument(payload, CAPTURE_RAW_HTTP_RESPONSE)
-    );
+    const client = UmbracoManagementClient.getClient();
+    const response = await client.postDocumentBlueprintFromDocument(payload, {
+      returnFullResponse: true,
+      validateStatus: () => true,
+    }) as unknown as HttpResponse<ProblemDetails | void>;
+
+    if (response.status >= 200 && response.status < 300) {
+      const locationHeader = response.headers?.['location'] || response.headers?.['Location'];
+      let createdId = model.id ?? '';
+      if (locationHeader) {
+        const idMatch = locationHeader.match(/document-blueprint\/([a-f0-9-]+)$/i);
+        if (idMatch) {
+          createdId = idMatch[1];
+        }
+      }
+      return createToolResult({ id: createdId });
+    }
+
+    const errorData: ProblemDetails = response.data || {
+      status: response.status,
+      detail: response.statusText,
+    };
+    return createToolResultError(errorData);
   }),
-} satisfies ToolDefinition<typeof createDocumentBlueprintFromDocumentSchema.shape>;
+} satisfies ToolDefinition<typeof createDocumentBlueprintFromDocumentSchema.shape, typeof createDocumentBlueprintFromDocumentOutputSchema.shape>;
 
 export default withStandardDecorators(CreateDocumentBlueprintFromDocumentTool);

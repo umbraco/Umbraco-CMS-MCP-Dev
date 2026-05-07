@@ -5,9 +5,13 @@ import { UmbracoDocumentPermissions } from "../constants.js";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = {
   id: z.string().uuid(),
@@ -21,6 +25,7 @@ const PublishDocumentTool = {
   When the culture is not provided, the default culture is null.
   When the schedule is not provided, the default schedule is null.`,
   inputSchema: inputSchema,
+  outputSchema: emptyOutputShape,
   annotations: {},
   slices: ['publish'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Publish),
@@ -30,10 +35,10 @@ const PublishDocumentTool = {
       model.data.publishSchedules = [{ culture: null }];
     }
 
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putDocumentByIdPublish(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof inputSchema>;
+} satisfies ToolDefinition<typeof inputSchema, EmptyOutputShape>;
 
 export default withStandardDecorators(PublishDocumentTool);

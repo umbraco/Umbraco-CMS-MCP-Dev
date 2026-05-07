@@ -7,6 +7,10 @@ import {
   type ToolDefinition,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = {
   id: z.string().uuid(),
@@ -18,6 +22,7 @@ const PublishDocumentWithDescendantsTool = {
   description: `Publishes a document and its descendants by Id. This is an asynchronous operation that may take time for large document trees.
   The tool will poll for completion and return the final result when finished.`,
   inputSchema: inputSchema,
+  outputSchema: emptyOutputShape,
   annotations: {},
   slices: ['publish'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Publish),
@@ -39,6 +44,7 @@ const PublishDocumentWithDescendantsTool = {
             text: "\"\"",
           },
         ],
+        structuredContent: {},
       };
     }
 
@@ -67,6 +73,7 @@ const PublishDocumentWithDescendantsTool = {
                 text: "\"\"",
               },
             ],
+            structuredContent: {},
           };
         }
       } catch (error) {
@@ -82,6 +89,7 @@ const PublishDocumentWithDescendantsTool = {
               }),
             },
           ],
+          isError: true,
         };
       }
     }
@@ -98,8 +106,9 @@ const PublishDocumentWithDescendantsTool = {
           }),
         },
       ],
+      isError: true,
     };
   }),
-} satisfies ToolDefinition<typeof inputSchema>;
+} satisfies ToolDefinition<typeof inputSchema, EmptyOutputShape>;
 
 export default withStandardDecorators(PublishDocumentWithDescendantsTool);

@@ -3,23 +3,28 @@ import { putMediaSortBody } from "@/umb-management-api/umbracoManagementAPI.zod.
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const SortMediaTool = {
   name: "sort-media",
   description: "Sorts the order of media items under a parent.",
   inputSchema: putMediaSortBody.shape,
+  outputSchema: emptyOutputShape,
   annotations: {
     idempotentHint: true,
   },
   slices: ['sort'],
   handler: (async (model: SortingRequestModel) => {
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putMediaSort(model, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof putMediaSortBody.shape>;
+} satisfies ToolDefinition<typeof putMediaSortBody.shape, EmptyOutputShape>;
 
 export default withStandardDecorators(SortMediaTool);

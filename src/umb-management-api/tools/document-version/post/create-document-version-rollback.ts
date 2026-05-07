@@ -2,9 +2,13 @@ import { postDocumentVersionByIdRollbackParams, postDocumentVersionByIdRollbackQ
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 // Combined schema for both path params and query params
 const createDocumentVersionRollbackSchema = postDocumentVersionByIdRollbackParams.merge(
@@ -15,12 +19,13 @@ const CreateDocumentVersionRollbackTool = {
   name: "create-document-version-rollback",
   description: "Rollback document to a specific version",
   inputSchema: createDocumentVersionRollbackSchema.shape,
+  outputSchema: emptyOutputShape,
   slices: ['create'],
   handler: (async ({ id, culture }: { id: string; culture?: string }) => {
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.postDocumentVersionByIdRollback(id, { culture }, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof createDocumentVersionRollbackSchema.shape>;
+} satisfies ToolDefinition<typeof createDocumentVersionRollbackSchema.shape, EmptyOutputShape>;
 
 export default withStandardDecorators(CreateDocumentVersionRollbackTool);

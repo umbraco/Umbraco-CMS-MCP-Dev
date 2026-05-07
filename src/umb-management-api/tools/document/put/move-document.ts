@@ -5,9 +5,13 @@ import { UmbracoDocumentPermissions } from "../constants.js";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = {
   id: z.string().uuid(),
@@ -18,14 +22,15 @@ const MoveDocumentTool = {
   name: "move-document",
   description: "Move a document to a new location",
   inputSchema: inputSchema,
+  outputSchema: emptyOutputShape,
   annotations: {},
   slices: ['move'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Move),
   handler: (async (model: { id: string; data: any }) => {
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putDocumentByIdMove(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof inputSchema>;
+} satisfies ToolDefinition<typeof inputSchema, EmptyOutputShape>;
 
 export default withStandardDecorators(MoveDocumentTool);
