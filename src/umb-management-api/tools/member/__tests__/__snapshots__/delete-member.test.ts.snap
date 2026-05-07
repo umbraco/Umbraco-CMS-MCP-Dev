@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`delete-member should delete a member by ID 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`delete-member should return error for non-existent ID 1`] = `
 {
   "content": [],

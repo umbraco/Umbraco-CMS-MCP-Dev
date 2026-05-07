@@ -13,13 +13,3 @@ exports[`move-document-to-recycle-bin should handle moving a non-existent docume
 }
 `;
 
-exports[`move-document-to-recycle-bin should move a document to the recycle bin 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;

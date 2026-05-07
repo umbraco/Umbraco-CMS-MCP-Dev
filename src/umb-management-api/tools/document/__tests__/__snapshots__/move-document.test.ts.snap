@@ -26,13 +26,3 @@ exports[`move-document should handle moving to non-existent target 1`] = `
 }
 `;
 
-exports[`move-document should move a document to another root document 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;

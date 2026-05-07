@@ -13,17 +13,6 @@ exports[`update-dictionary-item should handle non-existent dictionary item 1`] =
 }
 `;
 
-exports[`update-dictionary-item should update a dictionary item 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`update-dictionary-item should update a dictionary item 2`] = `
 [
   {

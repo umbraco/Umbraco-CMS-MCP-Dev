@@ -13,13 +13,3 @@ exports[`move-media-to-recycle-bin should handle non-existent media 1`] = `
 }
 `;
 
-exports[`move-media-to-recycle-bin should move a media item to recycle bin 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;

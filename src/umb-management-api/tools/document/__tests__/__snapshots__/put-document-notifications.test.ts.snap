@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`put-document-notifications should add a notification for a valid document 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`put-document-notifications should add a notification for a valid document 2`] = `
 {
   "content": [],

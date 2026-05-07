@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Redirect Management Tools DeleteRedirectTool should delete a redirect 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`Redirect Management Tools DeleteRedirectTool should delete a redirect 2`] = `
 {
   "content": [],

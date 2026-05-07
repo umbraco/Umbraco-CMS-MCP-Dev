@@ -13,13 +13,3 @@ exports[`update-language should handle non-existent language 1`] = `
 }
 `;
 
-exports[`update-language should update an existing language 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;
