@@ -18,7 +18,7 @@ exports[`publish-document-with-descendants should publish a document and its des
 {
   "content": [
     {
-      "text": "",
+      "text": """",
       "type": "text",
     },
   ],
