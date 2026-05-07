@@ -13,6 +13,7 @@ exports[`update-language should handle non-existent language 1`] = `
 }
 `;
 
+
 exports[`update-language should update an existing language 1`] = `
 {
   "content": [
@@ -21,5 +22,6 @@ exports[`update-language should update an existing language 1`] = `
       "type": "text",
     },
   ],
+  "structuredContent": {},
 }
 `;

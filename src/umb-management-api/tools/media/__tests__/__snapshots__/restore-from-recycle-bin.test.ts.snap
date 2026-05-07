@@ -13,6 +13,7 @@ exports[`restore-media-from-recycle-bin should handle non-existent media 1`] = `
 }
 `;
 
+
 exports[`restore-media-from-recycle-bin should restore a media item from recycle bin 1`] = `
 {
   "content": [
@@ -21,5 +22,6 @@ exports[`restore-media-from-recycle-bin should restore a media item from recycle
       "type": "text",
     },
   ],
+  "structuredContent": {},
 }
 `;

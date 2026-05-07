@@ -13,16 +13,6 @@ exports[`move-dictionary-item should handle non-existent dictionary item 1`] = `
 }
 `;
 
-exports[`move-dictionary-item should move a dictionary item from parent back to root 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;
 
 exports[`move-dictionary-item should move a dictionary item to a new parent 1`] = `
 {
@@ -32,5 +22,18 @@ exports[`move-dictionary-item should move a dictionary item to a new parent 1`] 
       "type": "text",
     },
   ],
+  "structuredContent": {},
+}
+`;
+
+exports[`move-dictionary-item should move a dictionary item from parent back to root 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
 }
 `;

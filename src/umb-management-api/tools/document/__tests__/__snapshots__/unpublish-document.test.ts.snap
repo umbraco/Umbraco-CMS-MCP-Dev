@@ -13,6 +13,7 @@ exports[`unpublish-document should handle unpublishing a non-existent document 1
 }
 `;
 
+
 exports[`unpublish-document should unpublish a published document 1`] = `
 {
   "content": [
@@ -21,5 +22,6 @@ exports[`unpublish-document should unpublish a published document 1`] = `
       "type": "text",
     },
   ],
+  "structuredContent": {},
 }
 `;

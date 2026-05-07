@@ -2,23 +2,28 @@ import { deleteMemberGroupByIdParams } from "@/umb-management-api/umbracoManagem
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const DeleteMemberGroupTool = {
   name: "delete-member-group",
   description: "Deletes a member group by Id",
   inputSchema: deleteMemberGroupByIdParams.shape,
+  outputSchema: emptyOutputShape,
   annotations: {
     destructiveHint: true,
   },
   slices: ['delete'],
   handler: (async ({ id }: { id: string }) => {
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.deleteMemberGroupById(id, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof deleteMemberGroupByIdParams.shape>;
+} satisfies ToolDefinition<typeof deleteMemberGroupByIdParams.shape, EmptyOutputShape>;
 
 export default withStandardDecorators(DeleteMemberGroupTool);

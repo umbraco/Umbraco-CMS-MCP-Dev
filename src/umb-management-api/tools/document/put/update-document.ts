@@ -8,9 +8,13 @@ import { UmbracoDocumentPermissions } from "../constants.js";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = {
   id: putDocumentByIdParams.shape.id,
@@ -33,16 +37,17 @@ const UpdateDocumentTool = {
   - Only update the required values
   - Don't miss any properties from the original document`,
   inputSchema: inputSchema,
+  outputSchema: emptyOutputShape,
   annotations: {
     idempotentHint: true,
   },
   slices: ['update'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Update),
   handler: (async (model: { id: string; data: any }) => {
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putDocumentById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof inputSchema>;
+} satisfies ToolDefinition<typeof inputSchema, EmptyOutputShape>;
 
 export default withStandardDecorators(UpdateDocumentTool);

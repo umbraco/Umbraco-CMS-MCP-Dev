@@ -7,9 +7,13 @@ import { z } from "zod";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = z.object({
   id: putMemberByIdParams.shape.id,
@@ -20,13 +24,14 @@ const UpdateMemberTool = {
   name: "update-member",
   description: "Updates a member by Id",
   inputSchema: inputSchema.shape,
+  outputSchema: emptyOutputShape,
   annotations: { idempotentHint: true },
   slices: ['update'],
   handler: (async (model: { id: string; data: UpdateMemberRequestModel }) => {
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putMemberById(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof inputSchema.shape>;
+} satisfies ToolDefinition<typeof inputSchema.shape, EmptyOutputShape>;
 
 export default withStandardDecorators(UpdateMemberTool);

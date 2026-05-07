@@ -85,8 +85,9 @@ describe("outputSchema validation for all tools", () => {
   it.each(toolsWithOutputSchema)(
     "%s: outputSchema values must all be ZodType instances",
     (_name, tool) => {
+      // Empty shapes (z.object({}).shape === {}) are valid — used by void mutation tools
+      // that declare outputSchema solely to surface `output: {}` in the type registry.
       const entries = Object.entries(tool.outputSchema as Record<string, unknown>);
-      expect(entries.length).toBeGreaterThan(0);
 
       for (const [key, value] of entries) {
         if (!(value instanceof z.ZodType)) {

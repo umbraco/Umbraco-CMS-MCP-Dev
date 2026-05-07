@@ -5,9 +5,13 @@ import { UmbracoDocumentPermissions } from "../constants.js";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = {
   id: z.string().uuid(),
@@ -18,6 +22,7 @@ const UnpublishDocumentTool = {
   name: "unpublish-document",
   description: "Unpublishes a document by Id.",
   inputSchema: inputSchema,
+  outputSchema: emptyOutputShape,
   annotations: {},
   slices: ['publish'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Unpublish),
@@ -26,10 +31,10 @@ const UnpublishDocumentTool = {
     data: z.infer<typeof putDocumentByIdUnpublishBody>;
   }) => {
     if (!model.data.cultures) model.data.cultures = null;
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putDocumentByIdUnpublish(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof inputSchema>;
+} satisfies ToolDefinition<typeof inputSchema, EmptyOutputShape>;
 
 export default withStandardDecorators(UnpublishDocumentTool);

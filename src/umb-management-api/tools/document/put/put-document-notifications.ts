@@ -6,9 +6,13 @@ import { z } from "zod";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = {
   id: putDocumentByIdNotificationsParams.shape.id,
@@ -19,15 +23,16 @@ const PutDocumentNotificationsTool = {
   name: "put-document-notifications",
   description: "Updates the notifications for a document by Id.",
   inputSchema: inputSchema,
+  outputSchema: emptyOutputShape,
   annotations: {
     idempotentHint: true,
   },
   slices: ['notifications'],
   handler: (async (model: { id: string; data: any }) => {
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putDocumentByIdNotifications(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof inputSchema>;
+} satisfies ToolDefinition<typeof inputSchema, EmptyOutputShape>;
 
 export default withStandardDecorators(PutDocumentNotificationsTool);

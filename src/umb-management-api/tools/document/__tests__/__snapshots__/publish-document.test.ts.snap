@@ -13,6 +13,7 @@ exports[`publish-document should handle publishing a non-existent document 1`] =
 }
 `;
 
+
 exports[`publish-document should publish a valid document 1`] = `
 {
   "content": [
@@ -21,5 +22,6 @@ exports[`publish-document should publish a valid document 1`] = `
       "type": "text",
     },
   ],
+  "structuredContent": {},
 }
 `;

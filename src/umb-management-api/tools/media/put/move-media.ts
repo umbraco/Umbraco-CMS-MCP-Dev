@@ -4,9 +4,13 @@ import { z } from "zod";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = {
   id: putMediaByIdMoveParams.shape.id,
@@ -17,15 +21,16 @@ const MoveMediaTool = {
   name: "move-media",
   description: "Move a media item to a new location",
   inputSchema,
+  outputSchema: emptyOutputShape,
   annotations: {
     idempotentHint: true,
   },
   slices: ['move'],
   handler: (async (model: { id: string; data: MoveMediaRequestModel }) => {
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putMediaByIdMove(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof inputSchema>;
+} satisfies ToolDefinition<typeof inputSchema, EmptyOutputShape>;
 
 export default withStandardDecorators(MoveMediaTool);

@@ -6,9 +6,13 @@ import { z } from "zod";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = {
   isoCode: putLanguageByIsoCodeParams.shape.isoCode,
@@ -24,6 +28,7 @@ const UpdateLanguageTool = {
   name: "update-language",
   description: "Updates an existing language by ISO code",
   inputSchema: inputSchema,
+  outputSchema: emptyOutputShape,
   annotations: {
     idempotentHint: true,
   },
@@ -32,10 +37,10 @@ const UpdateLanguageTool = {
     const params = putLanguageByIsoCodeParams.parse({ isoCode: model.isoCode });
     const body = putLanguageByIsoCodeBody.parse(model.data);
 
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putLanguageByIsoCode(params.isoCode, body, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof inputSchema>;
+} satisfies ToolDefinition<typeof inputSchema, EmptyOutputShape>;
 
 export default withStandardDecorators(UpdateLanguageTool);

@@ -8,9 +8,13 @@ import { UmbracoDocumentPermissions } from "../constants.js";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
-  executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import {
+  emptyOutputShape,
+  executeVoidApiCallWithEmptyOutput,
+  type EmptyOutputShape,
+} from "../../shared/execute-void-with-empty-output.js";
 
 const inputSchema = {
   id: putDocumentByIdPublicAccessParams.shape.id,
@@ -21,16 +25,17 @@ const PutDocumentPublicAccessTool = {
   name: "put-document-public-access",
   description: "Updates public access settings for a document by Id.",
   inputSchema: inputSchema,
+  outputSchema: emptyOutputShape,
   annotations: {
     idempotentHint: true,
   },
   slices: ['public-access'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.PublicAccess),
   handler: (async (model: { id: string; data: any }) => {
-    return executeVoidApiCall((client) =>
+    return executeVoidApiCallWithEmptyOutput((client) =>
       client.putDocumentByIdPublicAccess(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof inputSchema>;
+} satisfies ToolDefinition<typeof inputSchema, EmptyOutputShape>;
 
 export default withStandardDecorators(PutDocumentPublicAccessTool);

@@ -13,17 +13,6 @@ exports[`put-document-public-access should handle non-existent document 1`] = `
 }
 `;
 
-exports[`put-document-public-access should update public access for a valid document 1`] = `
-{
-  "content": [
-    {
-      "text": "",
-      "type": "text",
-    },
-  ],
-}
-`;
-
 exports[`put-document-public-access should update public access for a valid document 2`] = `
 {
   "errorDocument": {
@@ -41,5 +30,17 @@ exports[`put-document-public-access should update public access for a valid docu
     "id": "00000000-0000-0000-0000-000000000000",
   },
   "members": [],
+}
+`;
+
+exports[`put-document-public-access should update public access for a valid document 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
 }
 `;

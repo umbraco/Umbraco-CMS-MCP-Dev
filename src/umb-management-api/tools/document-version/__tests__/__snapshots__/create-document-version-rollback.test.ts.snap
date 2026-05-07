@@ -11,6 +11,7 @@ exports[`create-document-version-rollback should handle non-existent version ID 
 }
 `;
 
+
 exports[`create-document-version-rollback should rollback document to a specific version 1`] = `
 {
   "content": [
@@ -19,6 +20,7 @@ exports[`create-document-version-rollback should rollback document to a specific
       "type": "text",
     },
   ],
+  "structuredContent": {},
 }
 `;
 
@@ -30,5 +32,6 @@ exports[`create-document-version-rollback should rollback document to a specific
       "type": "text",
     },
   ],
+  "structuredContent": {},
 }
 `;
