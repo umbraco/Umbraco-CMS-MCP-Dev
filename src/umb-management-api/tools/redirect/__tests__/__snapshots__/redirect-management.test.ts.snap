@@ -30,3 +30,15 @@ exports[`Redirect Management Tools GetRedirectByIdTool should get a redirect by 
   },
 }
 `;
+
+exports[`Redirect Management Tools DeleteRedirectTool should delete a redirect 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

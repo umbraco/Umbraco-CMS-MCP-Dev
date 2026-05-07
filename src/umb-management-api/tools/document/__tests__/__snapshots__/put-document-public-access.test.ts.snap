@@ -32,3 +32,15 @@ exports[`put-document-public-access should update public access for a valid docu
   "members": [],
 }
 `;
+
+exports[`put-document-public-access should update public access for a valid document 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

@@ -12,3 +12,15 @@ exports[`delete-member-group should handle non-existent member group 1`] = `
   },
 }
 `;
+
+exports[`delete-member-group should delete a member group 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

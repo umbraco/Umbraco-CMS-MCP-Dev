@@ -13,3 +13,27 @@ exports[`update-media should handle non-existent media 1`] = `
 }
 `;
 
+
+exports[`update-media should update a media item 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;
+
+exports[`update-media should update media with new content 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

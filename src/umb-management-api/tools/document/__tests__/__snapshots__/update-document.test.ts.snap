@@ -13,3 +13,27 @@ exports[`update-document should handle non-existent document 1`] = `
 }
 `;
 
+
+exports[`update-document should update a document 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;
+
+exports[`update-document should update document with properties 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

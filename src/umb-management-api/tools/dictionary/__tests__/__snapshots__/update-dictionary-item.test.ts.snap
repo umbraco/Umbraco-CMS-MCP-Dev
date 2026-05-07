@@ -25,3 +25,15 @@ exports[`update-dictionary-item should update a dictionary item 2`] = `
   },
 ]
 `;
+
+exports[`update-dictionary-item should update a dictionary item 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

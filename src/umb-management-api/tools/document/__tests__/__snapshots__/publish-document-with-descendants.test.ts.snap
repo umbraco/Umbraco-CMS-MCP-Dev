@@ -13,3 +13,15 @@ exports[`publish-document-with-descendants should handle publishing a non-existe
 }
 `;
 
+
+exports[`publish-document-with-descendants should publish a document and its descendants 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

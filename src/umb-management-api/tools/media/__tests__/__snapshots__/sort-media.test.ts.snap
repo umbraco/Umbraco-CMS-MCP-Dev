@@ -13,3 +13,15 @@ exports[`sort-media should handle non-existent parent 1`] = `
 }
 `;
 
+
+exports[`sort-media should sort media items 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

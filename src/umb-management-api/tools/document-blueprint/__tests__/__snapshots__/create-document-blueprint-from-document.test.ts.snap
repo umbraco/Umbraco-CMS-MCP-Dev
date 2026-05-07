@@ -26,3 +26,12 @@ exports[`create-document-blueprint-from-document should handle non-existent sour
   },
 }
 `;
+
+exports[`create-document-blueprint-from-document should create document blueprint from existing document 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+}
+`;

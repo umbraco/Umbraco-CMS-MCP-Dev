@@ -26,3 +26,15 @@ exports[`move-media should handle moving to non-existent target 1`] = `
 }
 `;
 
+
+exports[`move-media should move a media item to another folder 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

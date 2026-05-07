@@ -12,3 +12,15 @@ exports[`delete-language should handle non-existent language 1`] = `
   },
 }
 `;
+
+exports[`delete-language should delete a language 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

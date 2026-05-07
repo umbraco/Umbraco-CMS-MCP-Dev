@@ -77,3 +77,15 @@ exports[`put-document-notifications should handle non-existent document 1`] = `
   },
 }
 `;
+
+exports[`put-document-notifications should add a notification for a valid document 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

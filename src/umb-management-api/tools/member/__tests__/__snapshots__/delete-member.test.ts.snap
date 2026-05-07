@@ -12,3 +12,15 @@ exports[`delete-member should return error for non-existent ID 1`] = `
   },
 }
 `;
+
+exports[`delete-member should delete a member by ID 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;

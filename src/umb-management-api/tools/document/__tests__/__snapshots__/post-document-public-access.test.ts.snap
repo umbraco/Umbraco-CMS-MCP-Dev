@@ -32,3 +32,15 @@ exports[`post-document-public-access should handle non-existent document 1`] = `
   },
 }
 `;
+
+exports[`post-document-public-access should add public access for a valid document using the post tool 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+  "structuredContent": {},
+}
+`;
