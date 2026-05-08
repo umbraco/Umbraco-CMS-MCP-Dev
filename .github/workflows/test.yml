@@ -212,10 +212,11 @@ jobs:
 
       - name: Wait for Umbraco
         run: |
-          echo "Waiting for Umbraco to be ready..."
+          echo "Waiting for Umbraco runtime to reach 'Run'..."
           for i in $(seq 1 60); do
-            if curl -sf http://localhost:56472/umbraco/management/api/v1/server/status > /dev/null 2>&1; then
-              echo "Umbraco is ready!"
+            STATUS=$(curl -sf http://localhost:56472/umbraco/management/api/v1/server/status 2>/dev/null | python3 -c "import json,sys; print(json.load(sys.stdin).get('serverStatus',''))" 2>/dev/null || echo "")
+            if [ "$STATUS" = "Run" ]; then
+              echo "Umbraco is ready (serverStatus=Run)"
               exit 0
             fi
             # Check if process died
@@ -224,10 +225,10 @@ jobs:
               tail -50 /tmp/umbraco.log
               exit 1
             fi
-            echo "Attempt $i/60 - waiting 5s..."
+            echo "Attempt $i/60 - serverStatus='${STATUS:-unreachable}' - waiting 5s..."
             sleep 5
           done
-          echo "Umbraco failed to start within 5 minutes. Last 50 lines of log:"
+          echo "Umbraco failed to reach 'Run' within 5 minutes. Last 50 lines of log:"
           tail -50 /tmp/umbraco.log
           exit 1
         timeout-minutes: 6
