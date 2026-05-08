@@ -15,10 +15,12 @@ import {
   createDefaultHandler,
   createWorkerExport,
   createPerRequestServer,
+  createSiteRoutingApiHandler,
   getServerOptions,
   type HostedMcpEnv,
   type AuthProps,
 } from "@umbraco-cms/mcp-hosted";
+import { umbracoCloudSiteRouting } from "@umbraco-cms/mcp-hosted/cloud";
 
 // CMS collections and registries
 import { collections, allModes, allModeNames, allSliceNames } from "./collections.js";
@@ -38,6 +40,7 @@ const options = {
   enableConsentToolSelection: true,
   authOptions: { showReauthButton: true },
   clientFactory: () => UmbracoManagementClient.getClient(),
+  siteRouting: umbracoCloudSiteRouting({ oauthClientId: "umbraco-mcp-cms-hosted" }),
 };
 
 const serverOptions = getServerOptions(options);
@@ -63,8 +66,10 @@ export class UmbracoMcpAgent extends McpAgent<HostedMcpEnv, unknown, AuthProps> 
 // ============================================================================
 
 const provider = new OAuthProvider({
-  apiRoute: "/mcp",
-  apiHandler: UmbracoMcpAgent.serve("/mcp", { binding: "MCP_AGENT" }),
+  apiRoute: ["/mcp", "/at/"],
+  apiHandler: createSiteRoutingApiHandler(
+    UmbracoMcpAgent.serve("/mcp", { binding: "MCP_AGENT" }),
+  ),
   defaultHandler: createDefaultHandler(options) as any,
   authorizeEndpoint: "/authorize",
   tokenEndpoint: "/token",
