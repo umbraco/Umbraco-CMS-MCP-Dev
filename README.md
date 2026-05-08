@@ -50,7 +50,7 @@ For complete installation instructions, configuration options, tool listings, an
 The Cloudflare Worker entry point (`src/worker.ts`) supports two deployment modes, selected at request time by the `@umbraco-cms/mcp-hosted` library:
 
 - **Single-tenant** (default) — the worker authenticates against the `UMBRACO_BASE_URL` configured in `wrangler.toml`. This is the existing behavior and requires no extra configuration.
-- **Multi-tenant Umbraco Cloud** — set `UMBRACO_CLOUD_ROUTING_ENABLED = "true"` under `[vars]` in `wrangler.toml`. Requests to `/at/{alias}/...` resolve the upstream Umbraco Cloud project for `{alias}` and issue access tokens scoped to that resource per the MCP resource-indicator spec. Each Umbraco Cloud project served by the worker must register an OpenIddict client with id `umbraco-mcp-cms-hosted`.
+- **Multi-tenant Umbraco Cloud** — set `UMBRACO_CLOUD_ROUTING_ENABLED = "true"` under `[vars]` in `wrangler.toml`. Requests to `/at/{alias}/...` resolve the upstream Umbraco Cloud project for `{alias}` and issue access tokens scoped to that resource per the MCP resource-indicator spec. Each Umbraco Cloud project served by the worker must register an OpenIddict client with id `umbraco-cms-dev-mcp-hosted`.
 
 `siteRouting` is wired unconditionally; the per-request toggle is the env var.
 

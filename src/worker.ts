@@ -40,7 +40,7 @@ const options = {
   enableConsentToolSelection: true,
   authOptions: { showReauthButton: true },
   clientFactory: () => UmbracoManagementClient.getClient(),
-  siteRouting: umbracoCloudSiteRouting({ oauthClientId: "umbraco-mcp-cms-hosted" }),
+  siteRouting: umbracoCloudSiteRouting({ oauthClientId: "umbraco-cms-dev-mcp-hosted" }),
 };
 
 const serverOptions = getServerOptions(options);
