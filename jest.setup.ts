@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { initializeUmbracoAxios, configureApiClient } from '@umbraco-cms/mcp-server-sdk';
+import { initializeUmbracoFetch, configureApiClient } from '@umbraco-cms/mcp-server-sdk';
 import { UmbracoManagementClient } from './src/umb-management-api/umbraco-management-client.js';
 import { resolve } from 'path';
 
@@ -12,8 +12,8 @@ if (!process.env.UMBRACO_ALLOWED_MEDIA_PATHS) {
   process.env.UMBRACO_ALLOWED_MEDIA_PATHS = resolve(process.cwd());
 }
 
-// Initialize Umbraco Axios client with environment variables
-initializeUmbracoAxios({
+// Initialize Umbraco fetch client with environment variables
+initializeUmbracoFetch({
   clientId: process.env.UMBRACO_CLIENT_ID || '',
   clientSecret: process.env.UMBRACO_CLIENT_SECRET || '',
   baseUrl: process.env.UMBRACO_BASE_URL || ''
