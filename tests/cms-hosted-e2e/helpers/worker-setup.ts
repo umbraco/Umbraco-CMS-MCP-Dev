@@ -13,7 +13,7 @@ let workerUrl: string | undefined;
 const BASE_VARS = {
   UMBRACO_BASE_URL: "https://localhost:44391",
   UMBRACO_SERVER_URL: "http://localhost:56472",
-  UMBRACO_OAUTH_CLIENT_ID: "umbraco-mcp-cms-hosted",
+  UMBRACO_OAUTH_CLIENT_ID: "umbraco-cms-dev-mcp-hosted",
   COOKIE_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
   ENABLE_INFO_ENDPOINT: "true",
   NODE_TLS_REJECT_UNAUTHORIZED: "0",
