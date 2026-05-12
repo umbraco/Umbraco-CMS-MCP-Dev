@@ -7,7 +7,6 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-
 const TEST_MEMBER_TYPE_NAME = "_Test Item MemberType Search";
 const TEST_MEMBER_TYPE_NAME_2 = "_Test Item MemberType Search 2";
 
@@ -27,7 +26,7 @@ describe("search-member-type-items", () => {
 
     // Act - Search for the member type
     const result = await SearchMemberTypeItemsTool.handler(
-      { query: TEST_MEMBER_TYPE_NAME, skip: undefined, take: 100 },
+      { query: TEST_MEMBER_TYPE_NAME },
       createMockRequestHandlerExtra()
     );
 
@@ -39,7 +38,7 @@ describe("search-member-type-items", () => {
   it("should return empty results for non-existent search query", async () => {
     // Act - Search for a member type that doesn't exist
     const result = await SearchMemberTypeItemsTool.handler(
-      { query: "nonexistent_member_type_" + Date.now(), skip: undefined, take: 100 },
+      { query: "nonexistent_member_type_" + Date.now() },
       createMockRequestHandlerExtra()
     );
 

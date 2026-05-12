@@ -34,7 +34,7 @@ describe("find-member", () => {
 
     // Use the tool to find by username
     const result = await FindMemberTool.handler(
-      { filter: TEST_MEMBER_USERNAME, orderBy: "username", take: 100, memberTypeId: undefined, memberGroupName: undefined, isApproved: undefined, isLockedOut: undefined, orderDirection: undefined, skip: undefined },
+      { filter: TEST_MEMBER_USERNAME, orderBy: "username" } as any,
       createMockRequestHandlerExtra()
     );
 
@@ -53,14 +53,7 @@ describe("find-member", () => {
       {
         filter: "nonexistentuser_" + Date.now(),
         orderBy: "username",
-        take: 100,
-        memberTypeId: undefined,
-        memberGroupName: undefined,
-        isApproved: undefined,
-        isLockedOut: undefined,
-        orderDirection: undefined,
-        skip: undefined,
-      },
+      } as any,
       createMockRequestHandlerExtra()
     );
 
@@ -89,7 +82,7 @@ describe("find-member", () => {
 
     // Use the tool to get only one result
     const result = await FindMemberTool.handler(
-      { filter: "findmember@example.com", orderBy: "username", take: 1, memberTypeId: undefined, memberGroupName: undefined, isApproved: undefined, isLockedOut: undefined, orderDirection: undefined, skip: undefined },
+      { filter: "findmember@example.com", orderBy: "username" } as any,
       createMockRequestHandlerExtra()
     );
 

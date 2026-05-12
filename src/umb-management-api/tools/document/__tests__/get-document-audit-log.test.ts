@@ -34,12 +34,8 @@ describe("get-document-audit-log", () => {
     const result = await GetDocumentAuditLogTool.handler(
       {
         id: docId,
-        data: {
-          orderDirection: "Ascending",
-          sinceDate: new Date().toISOString(),
-          skip: 0,
-          take: 100,
-        },
+        orderDirection: "Ascending",
+        sinceDate: new Date().toISOString(),
       },
       createMockRequestHandlerExtra()
     );
@@ -52,12 +48,8 @@ describe("get-document-audit-log", () => {
     const result = await GetDocumentAuditLogTool.handler(
       {
         id: BLANK_UUID,
-        data: {
-          orderDirection: "Ascending",
-          sinceDate: new Date().toISOString(),
-          skip: 0,
-          take: 100,
-        },
+        orderDirection: "Ascending",
+        sinceDate: new Date().toISOString(),
       },
       createMockRequestHandlerExtra()
     );

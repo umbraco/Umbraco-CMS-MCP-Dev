@@ -3,7 +3,6 @@ import {
   getDocumentByIdAuditLogQueryParams,
   getDocumentByIdAuditLogResponse,
 } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { z } from "zod";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { UmbracoDocumentPermissions } from "../constants.js";
 import {
@@ -15,7 +14,7 @@ import {
 
 const inputSchema = {
   id: getDocumentByIdAuditLogParams.shape.id,
-  data: z.object(getDocumentByIdAuditLogQueryParams.shape),
+  ...getDocumentByIdAuditLogQueryParams.shape,
 };
 
 const GetDocumentAuditLogTool = {
@@ -28,9 +27,10 @@ const GetDocumentAuditLogTool = {
   },
   slices: ['audit'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Read),
-  handler: (async (model: { id: string; data: any }) => {
+  handler: (async (model: { id: string; orderDirection?: string; sinceDate?: string; skip?: number; take?: number }) => {
+    const { id, ...queryParams } = model;
     return executeGetApiCall((client) =>
-      client.getDocumentByIdAuditLog(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+      client.getDocumentByIdAuditLog(id, queryParams, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof inputSchema, typeof getDocumentByIdAuditLogResponse.shape>;

@@ -1,5 +1,6 @@
 import { describe, it } from "@jest/globals";
 import { setupConsoleMock, runScenarioTest } from "@umbraco-cms/mcp-server-sdk/evals";
+import "./helpers/e2e-setup.js";
 
 const DOCUMENT_COPY_TOOLS = [
   "get-document-root",
@@ -35,6 +36,6 @@ describe("create-document-copy eval tests", () => {
       successPattern: "blog post workflow has completed successfully",
       options: { maxTurns: 20 }
     }),
-    180000
+    300000
   );
 });

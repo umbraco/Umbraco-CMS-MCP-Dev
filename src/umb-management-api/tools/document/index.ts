@@ -41,6 +41,7 @@ import UpdateBlockPropertyTool from "./put/update-block-property.js";
 import GetDocumentRootTool from "./items/get/get-root.js";
 import GetDocumentChildrenTool from "./items/get/get-children.js";
 import GetDocumentAncestorsTool from "./items/get/get-ancestors.js";
+import GetDocumentAncestorsBatchTool from "./items/get/get-ancestors-batch.js";
 import GetDocumentSiblingsTool from "./items/get/get-siblings.js";
 import GetRecycleBinRootTool from "./items/get/get-recycle-bin-root.js";
 import GetRecycleBinChildrenTool from "./items/get/get-recycle-bin-children.js";
@@ -111,6 +112,7 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(GetDocumentRootTool);
     tools.push(GetDocumentChildrenTool);
     tools.push(GetDocumentAncestorsTool);
+    tools.push(GetDocumentAncestorsBatchTool);
     tools.push(GetDocumentSiblingsTool);
     tools.push(GetDocumentRecycleBinSiblingsTool);
   }

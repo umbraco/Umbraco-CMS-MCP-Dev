@@ -32,6 +32,7 @@ exports[`find-user should find user by name 1`] = `
         "userName": "test-user-find-NORMALIZED@example.com",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -42,6 +43,7 @@ exports[`find-user should return empty results for non-existent user 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

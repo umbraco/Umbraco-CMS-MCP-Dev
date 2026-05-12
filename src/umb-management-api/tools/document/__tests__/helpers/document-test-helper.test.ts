@@ -127,9 +127,13 @@ describe("DocumentTestHelper", () => {
       await childBuilder.publish();
       childIds.push(childBuilder.getId());
     }
-    // Assert getChildren returns the correct documents in order
-    const fetchedDocs = await DocumentTestHelper.getChildren(rootId, 10);
-    expect(fetchedDocs.map((doc) => doc.id)).toEqual(childIds);
+    // Assert getChildren returns the correct documents (filter to our test children only,
+    // as other parallel tests may create children under the same root)
+    const fetchedDocs = await DocumentTestHelper.getChildren(rootId, 100);
+    const fetchedChildIds = fetchedDocs
+      .filter((doc) => childIds.includes(doc.id))
+      .map((doc) => doc.id);
+    expect(fetchedChildIds).toEqual(childIds);
     // Cleanup
     await DocumentTestHelper.cleanup(rootName);
     for (const name of childNames) {

@@ -6,9 +6,14 @@ import {
 
 describe('LanguageBuilder', () => {
   const TEST_LANGUAGE_NAME = '_Test Builder Language';
-  const TEST_LANGUAGE_ISO = 'en-GB';
+  const TEST_LANGUAGE_ISO = 'en-JM';
   const TEST_FALLBACK_ISO = 'en';
   setupTestEnvironment();
+
+  beforeEach(async () => {
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
+    await LanguageTestHelper.cleanup(TEST_FALLBACK_ISO);
+  });
 
   afterEach(async () => {
     await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);

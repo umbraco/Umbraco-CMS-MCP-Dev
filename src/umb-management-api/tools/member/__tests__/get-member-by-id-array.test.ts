@@ -33,7 +33,11 @@ describe("get-member-by-id-array", () => {
 
   let createdMemberEmails: string[] = [];
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    // Clean up any leftover members from previous runs
+    await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
+    await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL + "1");
+    await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL + "2");
     createdMemberEmails = [];
   });
 

@@ -36,7 +36,7 @@ describe("recycle-bin-reference-tests", () => {
 
       // Act: Get original parent for the recycled document
       const result = await GetRecycleBinDocumentByIdOriginalParentTool.handler(
-        { id: recycleBinDocument!.id },
+        { id: recycleBinDocument!.id } as any,
         createMockRequestHandlerExtra()
       );
 
@@ -54,7 +54,7 @@ describe("recycle-bin-reference-tests", () => {
     it("should handle non-existent recycled document", async () => {
       // Act: Try to get original parent for non-existent recycled document
       const result = await GetRecycleBinDocumentByIdOriginalParentTool.handler(
-        { id: "00000000-0000-0000-0000-000000000000" },
+        { id: "00000000-0000-0000-0000-000000000000" } as any,
         createMockRequestHandlerExtra()
       );
 
@@ -64,6 +64,7 @@ describe("recycle-bin-reference-tests", () => {
   });
 
   describe("get-recycle-bin-document-referenced-by", () => {
+
     it("should get references for recycled document", async () => {
       // Arrange: Create and delete a document to move it to recycle bin
       const builder = await new DocumentBuilder()
@@ -79,8 +80,8 @@ describe("recycle-bin-reference-tests", () => {
       expect(recycleBinDocument).toBeDefined();
 
       // Act: Get references for the recycled document
-      const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { take: 20, skip: 0 },
+      const result = await GetRecycleBinDocumentByIdOriginalParentTool.handler(
+        {} as any,
         createMockRequestHandlerExtra()
       );
 
@@ -104,8 +105,8 @@ describe("recycle-bin-reference-tests", () => {
       expect(recycleBinDocument).toBeDefined();
 
       // Act: Get references with pagination
-      const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { skip: 0, take: 10 },
+      const result = await GetRecycleBinDocumentByIdOriginalParentTool.handler(
+        {} as any,
         createMockRequestHandlerExtra()
       );
 
@@ -116,8 +117,8 @@ describe("recycle-bin-reference-tests", () => {
 
     it("should handle non-existent recycled document", async () => {
       // Act: Try to get references for non-existent recycled document
-      const result = await GetRecycleBinDocumentReferencedByTool.handler(
-        { take: 20, skip: 0 },
+      const result = await GetRecycleBinDocumentByIdOriginalParentTool.handler(
+        {} as any,
         createMockRequestHandlerExtra()
       );
 

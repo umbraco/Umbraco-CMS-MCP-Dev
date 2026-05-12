@@ -3,7 +3,9 @@
 exports[`is-used-data-type should check if a data type is used 1`] = `
 {
   "content": [],
-  "structuredContent": true,
+  "structuredContent": {
+    "isUsed": true,
+  },
 }
 `;
 
@@ -23,13 +25,17 @@ exports[`is-used-data-type should handle non-existent data type 1`] = `
 exports[`is-used-data-type should return false when data type is not used 1`] = `
 {
   "content": [],
-  "structuredContent": false,
+  "structuredContent": {
+    "isUsed": false,
+  },
 }
 `;
 
 exports[`is-used-data-type should return true when data type is used in document type without documents 1`] = `
 {
   "content": [],
-  "structuredContent": false,
+  "structuredContent": {
+    "isUsed": false,
+  },
 }
 `;

@@ -24,13 +24,19 @@ const TEST_DOCUMENT_NAME = "_Test Document With Member Ref";
 describe("get-member-by-id-referenced-by", () => {
   setupTestEnvironment();
 
+  beforeEach(async () => {
+    // Clean up any leftover data from previous runs
+    await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
+    await DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME);
+    await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
+    await MemberTestHelper.cleanup("unreferenced_" + TEST_MEMBER_EMAIL);
+  });
+
   afterEach(async () => {
-    // Clean up in parallel to speed up tests
-    await Promise.all([
-      MemberTestHelper.cleanup(TEST_MEMBER_EMAIL),
-      DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME),
-      DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME)
-    ]);
+    await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
+    await DocumentTypeTestHelper.cleanup(TEST_DOCUMENT_TYPE_NAME);
+    await MemberTestHelper.cleanup(TEST_MEMBER_EMAIL);
+    await MemberTestHelper.cleanup("unreferenced_" + TEST_MEMBER_EMAIL);
   });
 
   it("should get reference data for a specific member", async () => {
@@ -56,9 +62,8 @@ describe("get-member-by-id-referenced-by", () => {
       .withDocumentType(docTypeBuilder.getId())
       .withValue("memberPicker", memberBuilder.getId())
       .create();
-
     const result = await GetMemberByIdReferencedByTool.handler(
-      { id: memberBuilder.getId(), skip: 0, take: 10 },
+      { id: memberBuilder.getId() },
       createMockRequestHandlerExtra()
     );
 
@@ -82,9 +87,8 @@ describe("get-member-by-id-referenced-by", () => {
       .withPassword("test123@Longer")
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
-
     const result = await GetMemberByIdReferencedByTool.handler(
-      { id: memberBuilder.getId(), skip: 0, take: 10 },
+      { id: memberBuilder.getId() },
       createMockRequestHandlerExtra()
     );
 

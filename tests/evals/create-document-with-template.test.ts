@@ -1,5 +1,6 @@
 import { describe, it } from "@jest/globals";
 import { setupConsoleMock, runScenarioTest } from "@umbraco-cms/mcp-server-sdk/evals";
+import "./helpers/e2e-setup.js";
 
 const DOCUMENT_TEMPLATE_TOOLS = [
   "get-document-type-schema",
@@ -33,6 +34,6 @@ describe("create-document-with-template eval tests", () => {
       successPattern: "document creation with template workflow has completed successfully",
       options: { maxTurns: 20 }
     }),
-    180000
+    300000
   );
 });

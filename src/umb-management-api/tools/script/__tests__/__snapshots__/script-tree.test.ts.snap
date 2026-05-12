@@ -127,6 +127,7 @@ exports[`script-tree get-script-tree-children should get children of child folde
         "path": "/_RootFolder_NORMALIZED_TIMESTAMP/_ChildFolder_NORMALIZED_TIMESTAMP/_GrandchildScript_NORMALIZED_TIMESTAMP.js",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -158,6 +159,7 @@ exports[`script-tree get-script-tree-children should get children of root folder
         "path": "/_RootFolder_NORMALIZED_TIMESTAMP/_ChildScript_NORMALIZED_TIMESTAMP.js",
       },
     ],
+    "nextCursor": undefined,
     "total": 2,
   },
 }
@@ -168,6 +170,7 @@ exports[`script-tree get-script-tree-children should get empty children for non-
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -193,6 +196,7 @@ exports[`script-tree get-script-tree-root should get root level script items 1`]
         "path": "/_RootScript_NORMALIZED_TIMESTAMP.js",
       },
     ],
+    "nextCursor": undefined,
     "total": 2,
   },
 }

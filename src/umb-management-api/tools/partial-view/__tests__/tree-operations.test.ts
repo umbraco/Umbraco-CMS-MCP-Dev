@@ -28,8 +28,6 @@ describe("partial-view-tree-operations", () => {
     it("should get root level partial views", async () => {
       const result = await GetPartialViewRootTool.handler(
         {
-          skip: 0,
-          take: 100
         },
         createMockRequestHandlerExtra()
       );
@@ -60,7 +58,6 @@ describe("partial-view-tree-operations", () => {
       const result = await GetPartialViewChildrenTool.handler(
         {
           parentPath: TEST_FOLDER_NAME,
-          take: 100,
         } as any,
         createMockRequestHandlerExtra()
       );
@@ -78,7 +75,6 @@ describe("partial-view-tree-operations", () => {
       const result = await GetPartialViewChildrenTool.handler(
         {
           parentPath: "_NonExistentFolder",
-          take: 100,
         } as any,
         createMockRequestHandlerExtra()
       );

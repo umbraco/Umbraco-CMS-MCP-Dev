@@ -1,7 +1,6 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { postLanguageBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
-import { AxiosResponse } from "axios";
 import { ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import {
   type ToolDefinition,
@@ -9,6 +8,7 @@ import {
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 export const createOutputSchema = z.object({
@@ -28,7 +28,7 @@ const CreateLanguageTool = {
     const client = UmbracoManagementClient.getClient();
     const validated = postLanguageBody.parse(model);
 
-    const response = await client.postLanguage(validated, CAPTURE_RAW_HTTP_RESPONSE) as unknown as AxiosResponse<ProblemDetails | void>;
+    const response = await client.postLanguage(validated, CAPTURE_RAW_HTTP_RESPONSE) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       return createToolResult({

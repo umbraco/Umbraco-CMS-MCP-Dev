@@ -11,6 +11,7 @@ import {
 const updateStylesheetSchema = z.object({
   ...putStylesheetByPathParams.shape,
   ...putStylesheetByPathBody.shape,
+  content: putStylesheetByPathBody.shape.content.describe("[raw]"),
 });
 
 const UpdateStylesheetTool = {

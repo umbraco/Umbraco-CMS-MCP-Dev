@@ -28,7 +28,7 @@ import {
 // Output schema for successful responses
 const blockUpdateResultSchema = z.object({
   success: z.boolean(),
-  contentKey: z.string().uuid(),
+  contentKey: z.string().guid(),
   message: z.string(),
   updatedCount: z.number().optional(),
   addedCount: z.number().optional(),
@@ -104,7 +104,7 @@ const UpdateBlockPropertyTool = {
   - Update with culture: { documentId: "...", propertyAlias: "mainContent", culture: "es-ES", updates: [...] }
   - Batch update multiple blocks: { documentId: "...", propertyAlias: "mainContent", updates: [{ contentKey: "uuid1", ... }, { contentKey: "uuid2", ... }] }`,
   inputSchema: updateBlockPropertySchema,
-  outputSchema: updateBlockPropertyOutputSchema,
+  outputSchema: updateBlockPropertyOutputSchema.shape,
   annotations: {
     idempotentHint: true,
   },
@@ -314,6 +314,6 @@ const UpdateBlockPropertyTool = {
       results
     });
   }),
-} satisfies ToolDefinition<typeof updateBlockPropertySchema, typeof updateBlockPropertyOutputSchema>;
+} satisfies ToolDefinition<typeof updateBlockPropertySchema, typeof updateBlockPropertyOutputSchema.shape>;
 
 export default withStandardDecorators(UpdateBlockPropertyTool);

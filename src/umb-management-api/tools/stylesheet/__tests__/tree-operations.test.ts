@@ -31,8 +31,6 @@ describe("stylesheet-tree-operations", () => {
     it("should get root level stylesheets", async () => {
       const result = await GetStylesheetRootTool.handler(
         {
-          skip: 0,
-          take: 100
         },
         createMockRequestHandlerExtra()
       );
@@ -60,8 +58,6 @@ describe("stylesheet-tree-operations", () => {
       const result = await GetStylesheetChildrenTool.handler(
         {
           parentPath: `/${TEST_FOLDER_NAME}`,
-          skip: 0,
-          take: 100
         },
         createMockRequestHandlerExtra()
       );

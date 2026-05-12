@@ -1,4 +1,5 @@
 import { MediaTypeBuilder } from "./media-type-builder.js";
+import { MediaTypeTestHelper } from "./media-type-helper.js";
 import { jest } from "@jest/globals";
 
 describe("MediaTypeBuilder", () => {
@@ -8,12 +9,22 @@ describe("MediaTypeBuilder", () => {
   const TEST_MEDIA_TYPE_NAME_FULL = "_Test Media Type Full";
   const TEST_CHILD_MEDIA_TYPE_NAME = "_Test Child Media Type";
 
-  beforeEach(() => {
+  beforeEach(async () => {
     builder = new MediaTypeBuilder();
+    // Clean up any leftover media types from previous runs
+    await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME);
+    await MediaTypeTestHelper.cleanup(TEST_MEDIA_TYPE_NAME_FULL);
+    await MediaTypeTestHelper.cleanup(TEST_CHILD_MEDIA_TYPE_NAME);
+    await MediaTypeTestHelper.cleanup(`${TEST_CHILD_MEDIA_TYPE_NAME} 1`);
+    await MediaTypeTestHelper.cleanup(`${TEST_CHILD_MEDIA_TYPE_NAME} 2`);
   });
 
   afterEach(async () => {
     await builder.cleanup();
+    // Also clean up child media types
+    await MediaTypeTestHelper.cleanup(TEST_CHILD_MEDIA_TYPE_NAME);
+    await MediaTypeTestHelper.cleanup(`${TEST_CHILD_MEDIA_TYPE_NAME} 1`);
+    await MediaTypeTestHelper.cleanup(`${TEST_CHILD_MEDIA_TYPE_NAME} 2`);
   });
 
   it("should create a media type with name", async () => {
@@ -34,12 +45,13 @@ describe("MediaTypeBuilder", () => {
   });
 
   it("should create a media type with all properties", async () => {
+    // Umbraco rejects `isElement: true` + `variesBySegment: true` (InvalidSegmentVariationForElementType).
     await builder
       .withName(TEST_MEDIA_TYPE_NAME_FULL)
       .withDescription("A test media type with all properties")
       .withAllowedAsRoot(true)
       .withVariesByCulture(true)
-      .withVariesBySegment(true)
+      .withVariesBySegment(false)
       .withIsElement(true)
       .create();
 

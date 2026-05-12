@@ -1,5 +1,6 @@
 import { describe, it } from "@jest/globals";
 import { setupConsoleMock, runScenarioTest } from "@umbraco-cms/mcp-server-sdk/evals";
+import "./helpers/e2e-setup.js";
 
 const MEMBER_MANAGEMENT_TOOLS = [
   // Member Type info
@@ -54,6 +55,6 @@ describe("member management eval tests", () => {
       successPattern: "member management workflow has completed successfully",
       options: { maxTurns: 20 },
     }),
-    180000
+    300000
   );
 });

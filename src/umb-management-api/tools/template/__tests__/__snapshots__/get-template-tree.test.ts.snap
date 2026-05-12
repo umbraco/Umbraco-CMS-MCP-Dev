@@ -50,6 +50,7 @@ exports[`template-tree children should get child items 1`] = `
         },
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -60,6 +61,7 @@ exports[`template-tree children should handle non-existent parent 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -85,6 +87,7 @@ exports[`template-tree get-root should get root level templates 1`] = `
         "parent": null,
       },
     ],
+    "nextCursor": undefined,
     "total": 2,
   },
 }
@@ -102,6 +105,7 @@ exports[`template-tree get-search should search for templates by name 1`] = `
         "name": "_Test Root Template",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }

@@ -1,6 +1,7 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateUserRequestModel } from "@/umb-management-api/schemas/index.js";
 import { postUserBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { AdminGroupKeyString } from "auth/umbraco-auth-policies.js";
 
 export class UserBuilder {
   private model: Partial<CreateUserRequestModel> = {
@@ -45,20 +46,13 @@ export class UserBuilder {
   async create(): Promise<UserBuilder> {
     const client = UmbracoManagementClient.getClient();
 
-    // Get a default user group to assign to test users if none specified
+    // Assign to admin group by default if none specified
     if (!this.model.userGroupIds || this.model.userGroupIds.length === 0) {
-      try {
-        const userGroups = await client.getUserGroup({ skip: 0, take: 1 });
-        if (userGroups.items && userGroups.items.length > 0) {
-          this.model.userGroupIds = [{ id: userGroups.items[0].id }];
-        }
-      } catch (error) {
-        // If we can't get user groups, use empty array - API will handle validation
-        this.model.userGroupIds = [];
-      }
+      this.model.userGroupIds = [{ id: AdminGroupKeyString.toLowerCase() }];
     }
 
     const validatedModel = postUserBody.parse(this.model);
+
     await client.postUser(validatedModel);
 
     // Find the created user by email since postUser returns location but not user data

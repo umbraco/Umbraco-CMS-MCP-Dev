@@ -78,6 +78,7 @@ exports[`get-relation-type should get relation types with default pagination 1`]
         "parentObject": null,
       },
     ],
+    "nextCursor": undefined,
     "total": 6,
   },
 }

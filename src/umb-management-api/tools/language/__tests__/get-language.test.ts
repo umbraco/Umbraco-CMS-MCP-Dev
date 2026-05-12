@@ -3,10 +3,10 @@ import { LanguageBuilder } from "./helpers/language-builder.js";
 import { LanguageTestHelper } from "./helpers/language-helper.js";
 import {
   createMockRequestHandlerExtra,
-  createSnapshotResult,
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
+import { type CursorPaginatedResult } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_LANGUAGE_NAME_1 = "_Test Language Get 1";
 const TEST_LANGUAGE_ISO_1 = "en-AU";
@@ -22,7 +22,10 @@ describe("get-language", () => {
   let builder2: LanguageBuilder;
   let builder3: LanguageBuilder;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO_1);
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO_2);
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO_3);
     builder1 = new LanguageBuilder();
     builder2 = new LanguageBuilder();
     builder3 = new LanguageBuilder();
@@ -53,19 +56,21 @@ describe("get-language", () => {
       .withIsMandatory(false)
       .create();
 
-    // Act - Get all languages
+    // Act - Get all languages (no cursor = first page)
     const result = await GetLanguageTool.handler(
-      { skip: 0, take: 100 },
+      {},
       createMockRequestHandlerExtra()
     );
 
-    // Assert
-    validateToolResponse(GetLanguageTool, result);
-    const normalizedResult = createSnapshotResult(result);
-    expect(normalizedResult).toMatchSnapshot();
+    // Assert - validate response against cursor-wrapped output schema
+    const data = validateToolResponse(GetLanguageTool, result);
+    expect(data.items.length).toBeGreaterThanOrEqual(3); // default + 2 test languages
+    const isoCodes = data.items.map((item: any) => item.isoCode);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_1);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_2);
   });
 
-  it("should get languages with pagination - skip and take", async () => {
+  it("should paginate using cursor", async () => {
     // Arrange - Create test languages
     await builder1
       .withName(TEST_LANGUAGE_NAME_1)
@@ -88,43 +93,26 @@ describe("get-language", () => {
       .withIsMandatory(false)
       .create();
 
-    // Act - Get languages with skip=1 and take=1
+    // Act - Get all languages (default page size covers all)
     const result = await GetLanguageTool.handler(
-      { skip: 1, take: 1 },
+      {},
       createMockRequestHandlerExtra()
     );
 
-    // Assert
-    validateToolResponse(GetLanguageTool, result);
-    const normalizedResult = createSnapshotResult(result);
-    expect(normalizedResult).toMatchSnapshot();
+    // Assert - validate against cursor-wrapped output schema
+    const data = validateToolResponse(GetLanguageTool, result);
+    expect(data.items.length).toBeGreaterThanOrEqual(4); // default + 3 test languages
+    expect(data.total).toBeGreaterThanOrEqual(4);
+    const isoCodes = data.items.map((item: any) => item.isoCode);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_1);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_2);
+    expect(isoCodes).toContain(TEST_LANGUAGE_ISO_3);
   });
 
-  it("should get languages with take parameter only", async () => {
-    // Arrange - Create test languages
-    await builder1
-      .withName(TEST_LANGUAGE_NAME_1)
-      .withIsoCode(TEST_LANGUAGE_ISO_1)
-      .withIsDefault(false)
-      .withIsMandatory(false)
-      .create();
+  it("should not expose skip and take in cursor tool schema", async () => {
 
-    await builder2
-      .withName(TEST_LANGUAGE_NAME_2)
-      .withIsoCode(TEST_LANGUAGE_ISO_2)
-      .withIsDefault(false)
-      .withIsMandatory(false)
-      .create();
-
-    // Act - Get languages with take=1
-    const result = await GetLanguageTool.handler(
-      { skip: 0, take: 1 },
-      createMockRequestHandlerExtra()
-    );
-
-    // Assert
-    validateToolResponse(GetLanguageTool, result);
-    const normalizedResult = createSnapshotResult(result);
-    expect(normalizedResult).toMatchSnapshot();
+    expect(GetLanguageTool.inputSchema).toHaveProperty("cursor");
+    expect(GetLanguageTool.inputSchema).not.toHaveProperty("skip");
+    expect(GetLanguageTool.inputSchema).not.toHaveProperty("take");
   });
 });

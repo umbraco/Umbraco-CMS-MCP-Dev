@@ -2,7 +2,6 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateDocumentRequestModel, CurrentUserResponseModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
-import { AxiosResponse } from "axios";
 import { UmbracoDocumentPermissions } from "../constants.js";
 import {
   type ToolDefinition,
@@ -10,11 +9,12 @@ import {
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 export const createOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const createDocumentSchema = z.object({
@@ -149,7 +149,7 @@ const CreateDocumentTool = {
     };
 
     // Get full response to check status
-    const response = await client.postDocument(payload, CAPTURE_RAW_HTTP_RESPONSE) as unknown as AxiosResponse<ProblemDetails | void>;
+    const response = await client.postDocument(payload, CAPTURE_RAW_HTTP_RESPONSE) as unknown as HttpResponse<ProblemDetails | void>;
 
     // Check if the document was created successfully (201 Created)
     if (response.status === 201) {

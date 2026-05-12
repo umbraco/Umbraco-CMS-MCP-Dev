@@ -9,6 +9,7 @@ exports[`get-member-are-referenced should check member references using real mem
         "id": "00000000-0000-0000-0000-000000000000",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -19,6 +20,7 @@ exports[`get-member-are-referenced should handle multiple member IDs with no tra
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

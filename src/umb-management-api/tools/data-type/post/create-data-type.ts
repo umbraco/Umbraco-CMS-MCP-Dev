@@ -2,12 +2,12 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateDataTypeRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { AxiosResponse } from "axios";
 import {
   type ToolDefinition,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
@@ -26,7 +26,7 @@ type CreateDataTypeSchema = z.infer<typeof createDataTypeSchema>;
 
 export const createDataTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateDataTypeTool = {
@@ -75,7 +75,7 @@ const CreateDataTypeTool = {
     const response = await client.postDataType(payload, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       const output = {

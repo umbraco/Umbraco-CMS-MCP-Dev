@@ -7,9 +7,9 @@ import { getServerConfig } from "@umbraco-cms/mcp-server-sdk";
  * Prevents path traversal attacks and validates symlink targets.
  * Exported for testing.
  */
-export function validateFilePath(filePath: string, allowedPaths?: string[]): string {
+export async function validateFilePath(filePath: string, allowedPaths?: string[]): Promise<string> {
   // Get configuration (in stdio mode, this won't log) or use provided paths
-  const allowedMediaPaths = allowedPaths ?? getServerConfig(true).config.allowedMediaPaths;
+  const allowedMediaPaths = allowedPaths ?? (await getServerConfig(true)).config.allowedMediaPaths;
 
   // Check if UMBRACO_ALLOWED_MEDIA_PATHS is configured
   if (!allowedMediaPaths || allowedMediaPaths.length === 0) {

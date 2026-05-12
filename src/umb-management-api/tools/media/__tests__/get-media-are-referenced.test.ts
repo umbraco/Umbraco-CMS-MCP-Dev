@@ -59,8 +59,6 @@ describe("get-media-are-referenced", () => {
     const result = await GetMediaAreReferencedTool.handler(
       {
         id: [builder.getId()],
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -111,8 +109,6 @@ describe("get-media-are-referenced", () => {
     const result = await GetMediaAreReferencedTool.handler(
       {
         id: [referencedMedia.getId(), unreferencedMedia.getId()],
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -129,8 +125,6 @@ describe("get-media-are-referenced", () => {
     const result = await GetMediaAreReferencedTool.handler(
       {
         id: [BLANK_UUID],
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );
@@ -169,8 +163,6 @@ describe("get-media-are-referenced", () => {
     const result = await GetMediaAreReferencedTool.handler(
       {
         id: [mediaBuilder.getId()],
-        skip: 0,
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );

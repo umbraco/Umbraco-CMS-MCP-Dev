@@ -6,6 +6,7 @@ exports[`get-user-group should get a user group by id 1`] = `
   "structuredContent": {
     "alias": "testUserGroupGet",
     "aliasCanBeChanged": true,
+    "description": "",
     "documentRootAccess": false,
     "documentStartNode": null,
     "fallbackPermissions": [],

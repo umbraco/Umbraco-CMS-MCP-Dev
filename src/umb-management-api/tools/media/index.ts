@@ -12,6 +12,7 @@ import SortMediaTool from "./put/sort-media.js";
 import GetMediaByIdArrayTool from "./get/get-media-by-id-array.js";
 import MoveMediaTool from "./put/move-media.js";
 import GetMediaAncestorsTool from "./items/get/get-ancestors.js";
+import GetMediaAncestorsBatchTool from "./items/get/get-ancestors-batch.js";
 import GetMediaChildrenTool from "./items/get/get-children.js";
 import GetMediaSiblingsTool from "./items/get/get-siblings.js";
 import GetMediaRootTool from "./items/get/get-root.js";
@@ -52,6 +53,7 @@ export const MediaCollection: ToolCollectionExport = {
 
     if (AuthorizationPolicies.SectionAccessForMediaTree(user)) {
       tools.push(GetMediaAncestorsTool);
+      tools.push(GetMediaAncestorsBatchTool);
       tools.push(GetMediaChildrenTool);
       tools.push(GetMediaSiblingsTool);
       tools.push(GetMediaRootTool);

@@ -31,6 +31,7 @@ exports[`update-user-group should update a user group 2`] = `
       {
         "alias": "updatedUserGroup",
         "aliasCanBeChanged": true,
+        "description": "",
         "documentRootAccess": false,
         "documentStartNode": null,
         "fallbackPermissions": [],

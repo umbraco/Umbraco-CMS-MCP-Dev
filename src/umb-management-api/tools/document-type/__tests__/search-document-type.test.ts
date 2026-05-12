@@ -35,8 +35,6 @@ describe("search-document-type", () => {
     // Search for document types
     const result = await SearchDocumentTypeTool.handler({
       query: TEST_DOCTYPE_NAME,
-      skip: 0,
-      take: 10
     } as any, createMockRequestHandlerExtra());
 
     // Verify structured content is valid
@@ -49,8 +47,6 @@ describe("search-document-type", () => {
   it("should handle empty search results", async () => {
     const result = await SearchDocumentTypeTool.handler({
       query: "NonExistentDocumentType",
-      skip: 0,
-      take: 10
     } as any, createMockRequestHandlerExtra());
 
     // Verify structured content is valid
@@ -75,8 +71,6 @@ describe("search-document-type", () => {
     // Search with pagination
     const result = await SearchDocumentTypeTool.handler({
       query: TEST_DOCTYPE_NAME,
-      skip: 1,
-      take: 1
     } as any, createMockRequestHandlerExtra());
 
     // Verify structured content is valid
