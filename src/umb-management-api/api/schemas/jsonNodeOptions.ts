@@ -6,12 +6,6 @@
  * OpenAPI spec version: Latest
  */
 
-export type MemberKindModel = typeof MemberKindModel[keyof typeof MemberKindModel];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const MemberKindModel = {
-  Default: 'Default',
-  Api: 'Api',
-  ExternalOnly: 'ExternalOnly',
-} as const;
+export interface JsonNodeOptions {
+  propertyNameCaseInsensitive: boolean;
+}

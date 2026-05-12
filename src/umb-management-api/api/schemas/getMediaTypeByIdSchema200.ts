@@ -5,13 +5,6 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { JsonNode } from './jsonNode.js';
 
-export type MemberKindModel = typeof MemberKindModel[keyof typeof MemberKindModel];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const MemberKindModel = {
-  Default: 'Default',
-  Api: 'Api',
-  ExternalOnly: 'ExternalOnly',
-} as const;
+export type GetMediaTypeByIdSchema200 = {[key: string]: JsonNode};

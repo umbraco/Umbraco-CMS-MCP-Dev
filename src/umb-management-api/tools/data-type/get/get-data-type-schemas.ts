@@ -1,5 +1,5 @@
-import { GetDataTypeSchemaParams } from "@/umb-management-api/schemas/index.js";
-import { getDataTypeSchemaQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetDataTypeSchemasBatchParams } from "@/umb-management-api/schemas/index.js";
+import { getDataTypeSchemasBatchQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import {
   type ToolDefinition,
@@ -12,7 +12,7 @@ import {
 const outputSchema = z.object({
   total: z.number(),
   items: z.array(z.object({
-    id: z.string().uuid(),
+    id: z.guid(),
     valueTypeName: z.string().nullish(),
     jsonSchema: z.unknown().nullish(),
     error: z.string().nullish(),
@@ -24,17 +24,17 @@ const GetDataTypeSchemasTool = {
   description: `Gets JSON Schemas for multiple data types in a single batch request.
 
 Returns JSON Schemas describing the value structure for each specified data type. This is more efficient than calling get-data-type-schema multiple times when you need schemas for several data types.`,
-  inputSchema: getDataTypeSchemaQueryParams.shape,
+  inputSchema: getDataTypeSchemasBatchQueryParams.shape,
   outputSchema: outputSchema.shape,
   annotations: {
     readOnlyHint: true,
   },
   slices: ['read'],
-  handler: async (model: GetDataTypeSchemaParams) => {
+  handler: async (model: GetDataTypeSchemasBatchParams) => {
     return executeGetApiCall((client) =>
-      client.getDataTypeSchema(model, CAPTURE_RAW_HTTP_RESPONSE)
+      client.getDataTypeSchemasBatch(model, CAPTURE_RAW_HTTP_RESPONSE)
     );
   },
-} satisfies ToolDefinition<typeof getDataTypeSchemaQueryParams.shape, typeof outputSchema.shape>;
+} satisfies ToolDefinition<typeof getDataTypeSchemasBatchQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetDataTypeSchemasTool);

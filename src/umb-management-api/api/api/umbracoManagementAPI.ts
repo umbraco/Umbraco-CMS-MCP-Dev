@@ -53,6 +53,7 @@ import type {
   CurrentUserResponseModel,
   DataTypeItemResponseModel,
   DataTypeResponseModel,
+  DataTypeSchemaResponseModel,
   DataTypeTreeItemResponseModel,
   DatabaseInstallRequestModel,
   DatatypeConfigurationResponseModel,
@@ -86,6 +87,7 @@ import type {
   EnableTwoFactorRequestModel,
   EnableUserRequestModel,
   EntityImportAnalysisResponseModel,
+  FetchResponseModelDataTypeSchemaItemResponseModel,
   FileSystemTreeItemPresentationModel,
   FolderResponseModel,
   GetCollectionDocumentByIdParams,
@@ -93,10 +95,11 @@ import type {
   GetCultureParams,
   GetDataTypeBatchParams,
   GetDataTypeByIdReferencedByParams,
-  GetDataTypeSchemaParams,
+  GetDataTypeSchemasBatchParams,
   GetDictionaryByIdExportParams,
   GetDictionaryParams,
   GetDocumentAreReferencedParams,
+  GetDocumentBlueprintByIdAuditLogParams,
   GetDocumentByIdAuditLogParams,
   GetDocumentByIdAvailableSegmentOptionsParams,
   GetDocumentByIdPreviewUrlParams,
@@ -107,6 +110,7 @@ import type {
   GetDocumentTypeBatchParams,
   GetDocumentTypeByIdAllowedChildrenParams,
   GetDocumentTypeByIdBlueprintParams,
+  GetDocumentTypeByIdSchema200,
   GetDocumentUrlsParams,
   GetDocumentVersionParams,
   GetFilterDataTypeParams,
@@ -170,12 +174,15 @@ import type {
   GetMediaTypeAllowedAtRootParams,
   GetMediaTypeBatchParams,
   GetMediaTypeByIdAllowedChildrenParams,
+  GetMediaTypeByIdSchema200,
   GetMediaUrlsParams,
   GetMemberAreReferencedParams,
   GetMemberByIdReferencedByParams,
   GetMemberByIdReferencedDescendantsParams,
   GetMemberGroupParams,
+  GetMemberTypeAllowedAtRootParams,
   GetMemberTypeBatchParams,
+  GetMemberTypeByIdSchema200,
   GetObjectTypesParams,
   GetOembedQueryParams,
   GetPackageCreatedParams,
@@ -324,6 +331,7 @@ import type {
   PackageDefinitionResponseModel,
   PagedAllowedDocumentTypeModel,
   PagedAllowedMediaTypeModel,
+  PagedAllowedMemberTypeModel,
   PagedAuditLogResponseModel,
   PagedCultureReponseModel,
   PagedDataTypeItemResponseModel,
@@ -386,6 +394,7 @@ import type {
   PartialViewItemResponseModel,
   PartialViewResponseModel,
   PartialViewSnippetResponseModel,
+  PatchDocumentRequestModel,
   PostDocumentVersionByIdRollbackParams,
   PostRedirectManagementStatusParams,
   ProfilingStatusRequestModel,
@@ -655,6 +664,15 @@ const getDataTypeByIdReferencedBy = (
       options);
     }
   
+const getDataTypeByIdSchema = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<DataTypeSchemaResponseModel>>,) => {
+      return UmbracoManagementClient<DataTypeSchemaResponseModel>(
+      {url: `/umbraco/management/api/v1/data-type/${id}/schema`, method: 'GET'
+    },
+      options);
+    }
+  
 /**
  * Gets multiple data types identified by the provided Ids.
  * @summary Gets multiple data types.
@@ -738,26 +756,17 @@ const putDataTypeFolderById = (
     },
       options);
     }
-
-const getDataTypeByIdSchema = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient>,) => {
-      return UmbracoManagementClient<unknown>(
-      {url: `/umbraco/management/api/v1/data-type/${id}/schema`, method: 'GET'
-    },
-      options);
-    }
-
-const getDataTypeSchema = (
-    params?: GetDataTypeSchemaParams,
- options?: SecondParameter<typeof UmbracoManagementClient>,) => {
-      return UmbracoManagementClient<unknown>(
-      {url: `/umbraco/management/api/v1/data-type/schema`, method: 'GET',
+  
+const getDataTypeSchemasBatch = (
+    params?: GetDataTypeSchemasBatchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<FetchResponseModelDataTypeSchemaItemResponseModel>>,) => {
+      return UmbracoManagementClient<FetchResponseModelDataTypeSchemaItemResponseModel>(
+      {url: `/umbraco/management/api/v1/data-type/schemas/batch`, method: 'GET',
         params
     },
       options);
     }
-
+  
 /**
  * Filters data types based on the provided criteria with support for pagination.
  * @summary Gets a filtered collection of data types.
@@ -1112,6 +1121,21 @@ const putDocumentBlueprintById = (
     }
   
 /**
+ * Gets a paginated collection of audit log entries for the document blueprint identified by the provided Id.
+ * @summary Gets the audit log for a document blueprint.
+ */
+const getDocumentBlueprintByIdAuditLog = (
+    id: string,
+    params?: GetDocumentBlueprintByIdAuditLogParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedAuditLogResponseModel>>,) => {
+      return UmbracoManagementClient<PagedAuditLogResponseModel>(
+      {url: `/umbraco/management/api/v1/document-blueprint/${id}/audit-log`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
  * Moves a document blueprint identified by the provided Id to a different location.
  * @summary Moves a document blueprint.
  */
@@ -1394,16 +1418,7 @@ const getDocumentTypeByIdCompositionReferences = (
     },
       options);
     }
-
-const getDocumentTypeByIdSchema = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient>,) => {
-      return UmbracoManagementClient<unknown>(
-      {url: `/umbraco/management/api/v1/document-type/${id}/schema`, method: 'GET'
-    },
-      options);
-    }
-
+  
 /**
  * Creates a duplicate of an existing document type identified by the provided Id.
  * @summary Copies a document type.
@@ -1462,6 +1477,15 @@ const putDocumentTypeByIdMove = (
       {url: `/umbraco/management/api/v1/document-type/${id}/move`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
       data: moveDocumentTypeRequestModel
+    },
+      options);
+    }
+  
+const getDocumentTypeByIdSchema = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<GetDocumentTypeByIdSchema200>>,) => {
+      return UmbracoManagementClient<GetDocumentTypeByIdSchema200>(
+      {url: `/umbraco/management/api/v1/document-type/${id}/schema`, method: 'GET'
     },
       options);
     }
@@ -1977,6 +2001,21 @@ const putDocumentByIdNotifications = (
       {url: `/umbraco/management/api/v1/document/${id}/notifications`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
       data: updateDocumentNotificationsRequestModel
+    },
+      options);
+    }
+  
+/**
+ * @summary Make partial updates to a document. For more information, see the documentation at https://docs.umbraco.com/umbraco-cms/reference/management-api/patching/document-endpoint-guide or https://docs.umbraco.com/umbraco-cms/reference/management-api/patching/document-endpoint-spec
+ */
+const patchDocumentByIdPatch = (
+    id: string,
+    patchDocumentRequestModel: PatchDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/patch`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json-patch+json', },
+      data: patchDocumentRequestModel
     },
       options);
     }
@@ -3095,16 +3134,7 @@ const getMediaTypeByIdCompositionReferences = (
     },
       options);
     }
-
-const getMediaTypeByIdSchema = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient>,) => {
-      return UmbracoManagementClient<unknown>(
-      {url: `/umbraco/management/api/v1/media-type/${id}/schema`, method: 'GET'
-    },
-      options);
-    }
-
+  
 /**
  * Creates a duplicate of an existing media type identified by the provided Id.
  * @summary Copies a media type.
@@ -3163,6 +3193,15 @@ const putMediaTypeByIdMove = (
       {url: `/umbraco/management/api/v1/media-type/${id}/move`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
       data: moveMediaTypeRequestModel
+    },
+      options);
+    }
+  
+const getMediaTypeByIdSchema = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<GetMediaTypeByIdSchema200>>,) => {
+      return UmbracoManagementClient<GetMediaTypeByIdSchema200>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/schema`, method: 'GET'
     },
       options);
     }
@@ -4002,16 +4041,7 @@ const getMemberTypeByIdCompositionReferences = (
     },
       options);
     }
-
-const getMemberTypeByIdSchema = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient>,) => {
-      return UmbracoManagementClient<unknown>(
-      {url: `/umbraco/management/api/v1/member-type/${id}/schema`, method: 'GET'
-    },
-      options);
-    }
-
+  
 /**
  * Creates a duplicate of an existing member type identified by the provided Id.
  * @summary Copies a member type.
@@ -4070,6 +4100,29 @@ const putMemberTypeByIdMove = (
       {url: `/umbraco/management/api/v1/member-type/${id}/move`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
       data: moveMemberTypeRequestModel
+    },
+      options);
+    }
+  
+const getMemberTypeByIdSchema = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<GetMemberTypeByIdSchema200>>,) => {
+      return UmbracoManagementClient<GetMemberTypeByIdSchema200>(
+      {url: `/umbraco/management/api/v1/member-type/${id}/schema`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of member types that are allowed to be created at the root level.
+ * @summary Gets member types allowed at root.
+ */
+const getMemberTypeAllowedAtRoot = (
+    params?: GetMemberTypeAllowedAtRootParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedAllowedMemberTypeModel>>,) => {
+      return UmbracoManagementClient<PagedAllowedMemberTypeModel>(
+      {url: `/umbraco/management/api/v1/member-type/allowed-at-root`, method: 'GET',
+        params
     },
       options);
     }
@@ -6589,8 +6642,8 @@ const getUserCurrentPermissions = (
  */
 const getUserCurrentPermissionsDocument = (
     params?: GetUserCurrentPermissionsDocumentParams,
- options?: SecondParameter<typeof UmbracoManagementClient<UserPermissionsResponseModel[]>>,) => {
-      return UmbracoManagementClient<UserPermissionsResponseModel[]>(
+ options?: SecondParameter<typeof UmbracoManagementClient<UserPermissionsResponseModel>>,) => {
+      return UmbracoManagementClient<UserPermissionsResponseModel>(
       {url: `/umbraco/management/api/v1/user/current/permissions/document`, method: 'GET',
         params
     },
@@ -6859,7 +6912,7 @@ const getWebhookLogs = (
       options);
     }
   
-return {getCulture,postDataType,getDataTypeById,deleteDataTypeById,putDataTypeById,postDataTypeByIdCopy,getDataTypeByIdIsUsed,putDataTypeByIdMove,getDataTypeByIdReferencedBy,getDataTypeBatch,getDataTypeConfiguration,postDataTypeFolder,getDataTypeFolderById,deleteDataTypeFolderById,putDataTypeFolderById,getDataTypeByIdSchema,getDataTypeSchema,getFilterDataType,getItemDataType,getItemDataTypeAncestors,getItemDataTypeSearch,getTreeDataTypeAncestors,getTreeDataTypeChildren,getTreeDataTypeRoot,getTreeDataTypeSearch,getTreeDataTypeSiblings,getDictionary,postDictionary,getDictionaryById,deleteDictionaryById,putDictionaryById,getDictionaryByIdExport,putDictionaryByIdMove,postDictionaryImport,getItemDictionary,getTreeDictionaryAncestors,getTreeDictionaryChildren,getTreeDictionaryRoot,postDocumentBlueprint,getDocumentBlueprintById,deleteDocumentBlueprintById,putDocumentBlueprintById,putDocumentBlueprintByIdMove,getDocumentBlueprintByIdScaffold,postDocumentBlueprintFolder,getDocumentBlueprintFolderById,deleteDocumentBlueprintFolderById,putDocumentBlueprintFolderById,postDocumentBlueprintFromDocument,getItemDocumentBlueprint,getTreeDocumentBlueprintAncestors,getTreeDocumentBlueprintChildren,getTreeDocumentBlueprintRoot,getTreeDocumentBlueprintSiblings,postDocumentType,getDocumentTypeById,deleteDocumentTypeById,putDocumentTypeById,getDocumentTypeByIdAllowedChildren,getDocumentTypeByIdAllowedParents,getDocumentTypeByIdBlueprint,getDocumentTypeByIdCompositionReferences,getDocumentTypeByIdSchema,postDocumentTypeByIdCopy,getDocumentTypeByIdExport,putDocumentTypeByIdImport,putDocumentTypeByIdMove,postDocumentTypeByIdTemplate,getDocumentTypeAllowedAtRoot,postDocumentTypeAvailableCompositions,getDocumentTypeBatch,getDocumentTypeConfiguration,postDocumentTypeFolder,getDocumentTypeFolderById,deleteDocumentTypeFolderById,putDocumentTypeFolderById,postDocumentTypeImport,getItemDocumentType,getItemDocumentTypeAncestors,getItemDocumentTypeSearch,getTreeDocumentTypeAncestors,getTreeDocumentTypeChildren,getTreeDocumentTypeRoot,getTreeDocumentTypeSearch,getTreeDocumentTypeSiblings,getDocumentVersion,getDocumentVersionById,putDocumentVersionByIdPreventCleanup,postDocumentVersionByIdRollback,getCollectionDocumentById,postDocument,getDocumentById,deleteDocumentById,putDocumentById,getDocumentByIdAuditLog,getDocumentByIdAvailableSegmentOptions,postDocumentByIdCopy,getDocumentByIdDomains,putDocumentByIdDomains,putDocumentByIdMove,putDocumentByIdMoveToRecycleBin,getDocumentByIdNotifications,putDocumentByIdNotifications,getDocumentByIdPreviewUrl,postDocumentByIdPublicAccess,deleteDocumentByIdPublicAccess,getDocumentByIdPublicAccess,putDocumentByIdPublicAccess,putDocumentByIdPublish,putDocumentByIdPublishWithDescendants,getDocumentByIdPublishWithDescendantsResultByTaskId,getDocumentByIdPublished,getDocumentByIdReferencedBy,getDocumentByIdReferencedDescendants,putDocumentByIdUnpublish,putUmbracoManagementApiV11DocumentByIdValidate11,getDocumentAreReferenced,getDocumentConfiguration,putDocumentSort,getDocumentUrls,postDocumentValidate,getItemDocument,getItemDocumentAncestors,getItemDocumentSearch,deleteRecycleBinDocument,deleteRecycleBinDocumentById,getRecycleBinDocumentByIdOriginalParent,putRecycleBinDocumentByIdRestore,getRecycleBinDocumentChildren,getRecycleBinDocumentReferencedBy,getRecycleBinDocumentRoot,getRecycleBinDocumentSiblings,getTreeDocumentAncestors,getTreeDocumentChildren,getTreeDocumentRoot,getTreeDocumentSiblings,postDynamicRootQuery,getDynamicRootSteps,getHealthCheckGroup,getHealthCheckGroupByName,postHealthCheckGroupByNameCheck,postHealthCheckExecuteAction,getHelp,getImagingResizeUrls,getImportAnalyze,getIndexer,getIndexerByIndexName,postIndexerByIndexNameRebuild,getInstallSettings,postInstallSetup,postInstallValidateDatabase,getItemLanguage,getItemLanguageDefault,getLanguage,postLanguage,getLanguageByIsoCode,deleteLanguageByIsoCode,putLanguageByIsoCode,getLogViewerLevel,getLogViewerLevelCount,getLogViewerLog,getLogViewerMessageTemplate,getLogViewerSavedSearch,postLogViewerSavedSearch,getLogViewerSavedSearchByName,deleteLogViewerSavedSearchByName,getLogViewerValidateLogsSize,getManifestManifest,getManifestManifestPrivate,getManifestManifestPublic,getItemMediaType,getItemMediaTypeAllowed,getItemMediaTypeAncestors,getItemMediaTypeFolders,getItemMediaTypeSearch,postMediaType,getMediaTypeById,deleteMediaTypeById,putMediaTypeById,getMediaTypeByIdAllowedChildren,getMediaTypeByIdAllowedParents,getMediaTypeByIdCompositionReferences,getMediaTypeByIdSchema,postMediaTypeByIdCopy,getMediaTypeByIdExport,putMediaTypeByIdImport,putMediaTypeByIdMove,getMediaTypeAllowedAtRoot,postMediaTypeAvailableCompositions,getMediaTypeBatch,getMediaTypeConfiguration,postMediaTypeFolder,getMediaTypeFolderById,deleteMediaTypeFolderById,putMediaTypeFolderById,postMediaTypeImport,getTreeMediaTypeAncestors,getTreeMediaTypeChildren,getTreeMediaTypeRoot,getTreeMediaTypeSiblings,getCollectionMedia,getItemMedia,getItemMediaAncestors,getItemMediaSearch,postMedia,getMediaById,deleteMediaById,putMediaById,getMediaByIdAuditLog,putMediaByIdMove,putMediaByIdMoveToRecycleBin,getMediaByIdReferencedBy,getMediaByIdReferencedDescendants,putMediaByIdValidate,getMediaAreReferenced,getMediaConfiguration,putMediaSort,getMediaUrls,postMediaValidate,deleteRecycleBinMedia,deleteRecycleBinMediaById,getRecycleBinMediaByIdOriginalParent,putRecycleBinMediaByIdRestore,getRecycleBinMediaChildren,getRecycleBinMediaReferencedBy,getRecycleBinMediaRoot,getRecycleBinMediaSiblings,getTreeMediaAncestors,getTreeMediaChildren,getTreeMediaRoot,getTreeMediaSiblings,getItemMemberGroup,getMemberGroup,postMemberGroup,getMemberGroupById,deleteMemberGroupById,putMemberGroupById,getTreeMemberGroupRoot,getItemMemberType,getItemMemberTypeAncestors,getItemMemberTypeSearch,postMemberType,getMemberTypeById,deleteMemberTypeById,putMemberTypeById,getMemberTypeByIdCompositionReferences,getMemberTypeByIdSchema,postMemberTypeByIdCopy,getMemberTypeByIdExport,putMemberTypeByIdImport,putMemberTypeByIdMove,postMemberTypeAvailableCompositions,getMemberTypeBatch,getMemberTypeConfiguration,postMemberTypeFolder,getMemberTypeFolderById,deleteMemberTypeFolderById,putMemberTypeFolderById,postMemberTypeImport,getTreeMemberTypeAncestors,getTreeMemberTypeChildren,getTreeMemberTypeRoot,getTreeMemberTypeSiblings,getFilterMember,getItemMember,getItemMemberAncestors,getItemMemberSearch,postMember,getMemberById,deleteMemberById,putMemberById,getMemberByIdReferencedBy,getMemberByIdReferencedDescendants,putMemberByIdValidate,getMemberAreReferenced,getMemberConfiguration,postMemberValidate,postModelsBuilderBuild,getModelsBuilderDashboard,getModelsBuilderStatus,getNewsDashboard,getObjectTypes,getOembedQuery,postPackageByNameRunMigration,getPackageConfiguration,getPackageCreated,postPackageCreated,getPackageCreatedById,deletePackageCreatedById,putPackageCreatedById,getPackageCreatedByIdDownload,getPackageMigrationStatus,getItemPartialView,postPartialView,getPartialViewByPath,deletePartialViewByPath,putPartialViewByPath,putPartialViewByPathRename,postPartialViewFolder,getPartialViewFolderByPath,deletePartialViewFolderByPath,getPartialViewSnippet,getPartialViewSnippetById,getTreePartialViewAncestors,getTreePartialViewChildren,getTreePartialViewRoot,getTreePartialViewSiblings,deletePreview,postPreview,getProfilingStatus,putProfilingStatus,getPropertyTypeIsUsed,postPublishedCacheRebuild,getPublishedCacheRebuildStatus,postPublishedCacheReload,getRedirectManagement,getRedirectManagementById,deleteRedirectManagementById,getRedirectManagementStatus,postRedirectManagementStatus,getItemRelationType,getRelationType,getRelationTypeById,getRelationByRelationTypeId,getItemScript,postScript,getScriptByPath,deleteScriptByPath,putScriptByPath,putScriptByPathRename,postScriptFolder,getScriptFolderByPath,deleteScriptFolderByPath,getTreeScriptAncestors,getTreeScriptChildren,getTreeScriptRoot,getTreeScriptSiblings,getSearcher,getSearcherBySearcherNameQuery,getSecurityConfiguration,postSecurityForgotPassword,postSecurityForgotPasswordReset,postSecurityForgotPasswordVerify,getSegment,getServerConfiguration,getServerInformation,getServerStatus,getServerTroubleshooting,getServerUpgradeCheck,getItemStaticFile,getTreeStaticFileAncestors,getTreeStaticFileChildren,getTreeStaticFileRoot,getItemStylesheet,postStylesheet,getStylesheetByPath,deleteStylesheetByPath,putStylesheetByPath,putStylesheetByPathRename,postStylesheetFolder,getStylesheetFolderByPath,deleteStylesheetFolderByPath,getTreeStylesheetAncestors,getTreeStylesheetChildren,getTreeStylesheetRoot,getTreeStylesheetSiblings,getTag,getTelemetry,getTelemetryLevel,postTelemetryLevel,getItemTemplate,getItemTemplateAncestors,getItemTemplateSearch,postTemplate,getTemplateById,deleteTemplateById,putTemplateById,getTemplateConfiguration,postTemplateQueryExecute,getTemplateQuerySettings,getTreeTemplateAncestors,getTreeTemplateChildren,getTreeTemplateRoot,getTreeTemplateSiblings,postUpgradeAuthorize,getUpgradeSettings,postUserData,getUserData,putUserData,getUserDataById,deleteUserDataById,getFilterUserGroup,getItemUserGroup,deleteUserGroup,postUserGroup,getUserGroup,getUserGroupById,deleteUserGroupById,putUserGroupById,deleteUserGroupByIdUsers,postUserGroupByIdUsers,getFilterUser,getItemUser,postUser,deleteUser,getUser,getUserById,deleteUserById,putUserById,getUserById2fa,deleteUserById2faByProviderName,getUserByIdCalculateStartNodes,postUserByIdChangePassword,postUserByIdClientCredentials,getUserByIdClientCredentials,deleteUserByIdClientCredentialsByClientId,postUserByIdResetPassword,deleteUserAvatarById,postUserAvatarById,getUserConfiguration,getUserCurrent,getUserCurrent2fa,deleteUserCurrent2faByProviderName,postUserCurrent2faByProviderName,getUserCurrent2faByProviderName,postUserCurrentAvatar,postUserCurrentChangePassword,getUserCurrentConfiguration,getUserCurrentLoginProviders,getUserCurrentPermissions,getUserCurrentPermissionsDocument,getUserCurrentPermissionsMedia,postUserDisable,postUserEnable,postUserInvite,postUserInviteCreatePassword,postUserInviteResend,postUserInviteVerify,postUserSetUserGroups,postUserUnlock,getItemWebhook,getWebhook,postWebhook,getWebhookById,deleteWebhookById,putWebhookById,getWebhookByIdLogs,getWebhookEvents,getWebhookLogs}};
+return {getCulture,postDataType,getDataTypeById,deleteDataTypeById,putDataTypeById,postDataTypeByIdCopy,getDataTypeByIdIsUsed,putDataTypeByIdMove,getDataTypeByIdReferencedBy,getDataTypeByIdSchema,getDataTypeBatch,getDataTypeConfiguration,postDataTypeFolder,getDataTypeFolderById,deleteDataTypeFolderById,putDataTypeFolderById,getDataTypeSchemasBatch,getFilterDataType,getItemDataType,getItemDataTypeAncestors,getItemDataTypeSearch,getTreeDataTypeAncestors,getTreeDataTypeChildren,getTreeDataTypeRoot,getTreeDataTypeSearch,getTreeDataTypeSiblings,getDictionary,postDictionary,getDictionaryById,deleteDictionaryById,putDictionaryById,getDictionaryByIdExport,putDictionaryByIdMove,postDictionaryImport,getItemDictionary,getTreeDictionaryAncestors,getTreeDictionaryChildren,getTreeDictionaryRoot,postDocumentBlueprint,getDocumentBlueprintById,deleteDocumentBlueprintById,putDocumentBlueprintById,getDocumentBlueprintByIdAuditLog,putDocumentBlueprintByIdMove,getDocumentBlueprintByIdScaffold,postDocumentBlueprintFolder,getDocumentBlueprintFolderById,deleteDocumentBlueprintFolderById,putDocumentBlueprintFolderById,postDocumentBlueprintFromDocument,getItemDocumentBlueprint,getTreeDocumentBlueprintAncestors,getTreeDocumentBlueprintChildren,getTreeDocumentBlueprintRoot,getTreeDocumentBlueprintSiblings,postDocumentType,getDocumentTypeById,deleteDocumentTypeById,putDocumentTypeById,getDocumentTypeByIdAllowedChildren,getDocumentTypeByIdAllowedParents,getDocumentTypeByIdBlueprint,getDocumentTypeByIdCompositionReferences,postDocumentTypeByIdCopy,getDocumentTypeByIdExport,putDocumentTypeByIdImport,putDocumentTypeByIdMove,getDocumentTypeByIdSchema,postDocumentTypeByIdTemplate,getDocumentTypeAllowedAtRoot,postDocumentTypeAvailableCompositions,getDocumentTypeBatch,getDocumentTypeConfiguration,postDocumentTypeFolder,getDocumentTypeFolderById,deleteDocumentTypeFolderById,putDocumentTypeFolderById,postDocumentTypeImport,getItemDocumentType,getItemDocumentTypeAncestors,getItemDocumentTypeSearch,getTreeDocumentTypeAncestors,getTreeDocumentTypeChildren,getTreeDocumentTypeRoot,getTreeDocumentTypeSearch,getTreeDocumentTypeSiblings,getDocumentVersion,getDocumentVersionById,putDocumentVersionByIdPreventCleanup,postDocumentVersionByIdRollback,getCollectionDocumentById,postDocument,getDocumentById,deleteDocumentById,putDocumentById,getDocumentByIdAuditLog,getDocumentByIdAvailableSegmentOptions,postDocumentByIdCopy,getDocumentByIdDomains,putDocumentByIdDomains,putDocumentByIdMove,putDocumentByIdMoveToRecycleBin,getDocumentByIdNotifications,putDocumentByIdNotifications,patchDocumentByIdPatch,getDocumentByIdPreviewUrl,postDocumentByIdPublicAccess,deleteDocumentByIdPublicAccess,getDocumentByIdPublicAccess,putDocumentByIdPublicAccess,putDocumentByIdPublish,putDocumentByIdPublishWithDescendants,getDocumentByIdPublishWithDescendantsResultByTaskId,getDocumentByIdPublished,getDocumentByIdReferencedBy,getDocumentByIdReferencedDescendants,putDocumentByIdUnpublish,putUmbracoManagementApiV11DocumentByIdValidate11,getDocumentAreReferenced,getDocumentConfiguration,putDocumentSort,getDocumentUrls,postDocumentValidate,getItemDocument,getItemDocumentAncestors,getItemDocumentSearch,deleteRecycleBinDocument,deleteRecycleBinDocumentById,getRecycleBinDocumentByIdOriginalParent,putRecycleBinDocumentByIdRestore,getRecycleBinDocumentChildren,getRecycleBinDocumentReferencedBy,getRecycleBinDocumentRoot,getRecycleBinDocumentSiblings,getTreeDocumentAncestors,getTreeDocumentChildren,getTreeDocumentRoot,getTreeDocumentSiblings,postDynamicRootQuery,getDynamicRootSteps,getHealthCheckGroup,getHealthCheckGroupByName,postHealthCheckGroupByNameCheck,postHealthCheckExecuteAction,getHelp,getImagingResizeUrls,getImportAnalyze,getIndexer,getIndexerByIndexName,postIndexerByIndexNameRebuild,getInstallSettings,postInstallSetup,postInstallValidateDatabase,getItemLanguage,getItemLanguageDefault,getLanguage,postLanguage,getLanguageByIsoCode,deleteLanguageByIsoCode,putLanguageByIsoCode,getLogViewerLevel,getLogViewerLevelCount,getLogViewerLog,getLogViewerMessageTemplate,getLogViewerSavedSearch,postLogViewerSavedSearch,getLogViewerSavedSearchByName,deleteLogViewerSavedSearchByName,getLogViewerValidateLogsSize,getManifestManifest,getManifestManifestPrivate,getManifestManifestPublic,getItemMediaType,getItemMediaTypeAllowed,getItemMediaTypeAncestors,getItemMediaTypeFolders,getItemMediaTypeSearch,postMediaType,getMediaTypeById,deleteMediaTypeById,putMediaTypeById,getMediaTypeByIdAllowedChildren,getMediaTypeByIdAllowedParents,getMediaTypeByIdCompositionReferences,postMediaTypeByIdCopy,getMediaTypeByIdExport,putMediaTypeByIdImport,putMediaTypeByIdMove,getMediaTypeByIdSchema,getMediaTypeAllowedAtRoot,postMediaTypeAvailableCompositions,getMediaTypeBatch,getMediaTypeConfiguration,postMediaTypeFolder,getMediaTypeFolderById,deleteMediaTypeFolderById,putMediaTypeFolderById,postMediaTypeImport,getTreeMediaTypeAncestors,getTreeMediaTypeChildren,getTreeMediaTypeRoot,getTreeMediaTypeSiblings,getCollectionMedia,getItemMedia,getItemMediaAncestors,getItemMediaSearch,postMedia,getMediaById,deleteMediaById,putMediaById,getMediaByIdAuditLog,putMediaByIdMove,putMediaByIdMoveToRecycleBin,getMediaByIdReferencedBy,getMediaByIdReferencedDescendants,putMediaByIdValidate,getMediaAreReferenced,getMediaConfiguration,putMediaSort,getMediaUrls,postMediaValidate,deleteRecycleBinMedia,deleteRecycleBinMediaById,getRecycleBinMediaByIdOriginalParent,putRecycleBinMediaByIdRestore,getRecycleBinMediaChildren,getRecycleBinMediaReferencedBy,getRecycleBinMediaRoot,getRecycleBinMediaSiblings,getTreeMediaAncestors,getTreeMediaChildren,getTreeMediaRoot,getTreeMediaSiblings,getItemMemberGroup,getMemberGroup,postMemberGroup,getMemberGroupById,deleteMemberGroupById,putMemberGroupById,getTreeMemberGroupRoot,getItemMemberType,getItemMemberTypeAncestors,getItemMemberTypeSearch,postMemberType,getMemberTypeById,deleteMemberTypeById,putMemberTypeById,getMemberTypeByIdCompositionReferences,postMemberTypeByIdCopy,getMemberTypeByIdExport,putMemberTypeByIdImport,putMemberTypeByIdMove,getMemberTypeByIdSchema,getMemberTypeAllowedAtRoot,postMemberTypeAvailableCompositions,getMemberTypeBatch,getMemberTypeConfiguration,postMemberTypeFolder,getMemberTypeFolderById,deleteMemberTypeFolderById,putMemberTypeFolderById,postMemberTypeImport,getTreeMemberTypeAncestors,getTreeMemberTypeChildren,getTreeMemberTypeRoot,getTreeMemberTypeSiblings,getFilterMember,getItemMember,getItemMemberAncestors,getItemMemberSearch,postMember,getMemberById,deleteMemberById,putMemberById,getMemberByIdReferencedBy,getMemberByIdReferencedDescendants,putMemberByIdValidate,getMemberAreReferenced,getMemberConfiguration,postMemberValidate,postModelsBuilderBuild,getModelsBuilderDashboard,getModelsBuilderStatus,getNewsDashboard,getObjectTypes,getOembedQuery,postPackageByNameRunMigration,getPackageConfiguration,getPackageCreated,postPackageCreated,getPackageCreatedById,deletePackageCreatedById,putPackageCreatedById,getPackageCreatedByIdDownload,getPackageMigrationStatus,getItemPartialView,postPartialView,getPartialViewByPath,deletePartialViewByPath,putPartialViewByPath,putPartialViewByPathRename,postPartialViewFolder,getPartialViewFolderByPath,deletePartialViewFolderByPath,getPartialViewSnippet,getPartialViewSnippetById,getTreePartialViewAncestors,getTreePartialViewChildren,getTreePartialViewRoot,getTreePartialViewSiblings,deletePreview,postPreview,getProfilingStatus,putProfilingStatus,getPropertyTypeIsUsed,postPublishedCacheRebuild,getPublishedCacheRebuildStatus,postPublishedCacheReload,getRedirectManagement,getRedirectManagementById,deleteRedirectManagementById,getRedirectManagementStatus,postRedirectManagementStatus,getItemRelationType,getRelationType,getRelationTypeById,getRelationByRelationTypeId,getItemScript,postScript,getScriptByPath,deleteScriptByPath,putScriptByPath,putScriptByPathRename,postScriptFolder,getScriptFolderByPath,deleteScriptFolderByPath,getTreeScriptAncestors,getTreeScriptChildren,getTreeScriptRoot,getTreeScriptSiblings,getSearcher,getSearcherBySearcherNameQuery,getSecurityConfiguration,postSecurityForgotPassword,postSecurityForgotPasswordReset,postSecurityForgotPasswordVerify,getSegment,getServerConfiguration,getServerInformation,getServerStatus,getServerTroubleshooting,getServerUpgradeCheck,getItemStaticFile,getTreeStaticFileAncestors,getTreeStaticFileChildren,getTreeStaticFileRoot,getItemStylesheet,postStylesheet,getStylesheetByPath,deleteStylesheetByPath,putStylesheetByPath,putStylesheetByPathRename,postStylesheetFolder,getStylesheetFolderByPath,deleteStylesheetFolderByPath,getTreeStylesheetAncestors,getTreeStylesheetChildren,getTreeStylesheetRoot,getTreeStylesheetSiblings,getTag,getTelemetry,getTelemetryLevel,postTelemetryLevel,getItemTemplate,getItemTemplateAncestors,getItemTemplateSearch,postTemplate,getTemplateById,deleteTemplateById,putTemplateById,getTemplateConfiguration,postTemplateQueryExecute,getTemplateQuerySettings,getTreeTemplateAncestors,getTreeTemplateChildren,getTreeTemplateRoot,getTreeTemplateSiblings,postUpgradeAuthorize,getUpgradeSettings,postUserData,getUserData,putUserData,getUserDataById,deleteUserDataById,getFilterUserGroup,getItemUserGroup,deleteUserGroup,postUserGroup,getUserGroup,getUserGroupById,deleteUserGroupById,putUserGroupById,deleteUserGroupByIdUsers,postUserGroupByIdUsers,getFilterUser,getItemUser,postUser,deleteUser,getUser,getUserById,deleteUserById,putUserById,getUserById2fa,deleteUserById2faByProviderName,getUserByIdCalculateStartNodes,postUserByIdChangePassword,postUserByIdClientCredentials,getUserByIdClientCredentials,deleteUserByIdClientCredentialsByClientId,postUserByIdResetPassword,deleteUserAvatarById,postUserAvatarById,getUserConfiguration,getUserCurrent,getUserCurrent2fa,deleteUserCurrent2faByProviderName,postUserCurrent2faByProviderName,getUserCurrent2faByProviderName,postUserCurrentAvatar,postUserCurrentChangePassword,getUserCurrentConfiguration,getUserCurrentLoginProviders,getUserCurrentPermissions,getUserCurrentPermissionsDocument,getUserCurrentPermissionsMedia,postUserDisable,postUserEnable,postUserInvite,postUserInviteCreatePassword,postUserInviteResend,postUserInviteVerify,postUserSetUserGroups,postUserUnlock,getItemWebhook,getWebhook,postWebhook,getWebhookById,deleteWebhookById,putWebhookById,getWebhookByIdLogs,getWebhookEvents,getWebhookLogs}};
 export type GetCultureResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getCulture']>>>
 export type PostDataTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDataType']>>>
 export type GetDataTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeById']>>>
@@ -6869,12 +6922,14 @@ export type PostDataTypeByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnTy
 export type GetDataTypeByIdIsUsedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeByIdIsUsed']>>>
 export type PutDataTypeByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDataTypeByIdMove']>>>
 export type GetDataTypeByIdReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeByIdReferencedBy']>>>
+export type GetDataTypeByIdSchemaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeByIdSchema']>>>
 export type GetDataTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeBatch']>>>
 export type GetDataTypeConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeConfiguration']>>>
 export type PostDataTypeFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDataTypeFolder']>>>
 export type GetDataTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeFolderById']>>>
 export type DeleteDataTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteDataTypeFolderById']>>>
 export type PutDataTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDataTypeFolderById']>>>
+export type GetDataTypeSchemasBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeSchemasBatch']>>>
 export type GetFilterDataTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getFilterDataType']>>>
 export type GetItemDataTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDataType']>>>
 export type GetItemDataTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDataTypeAncestors']>>>
@@ -6900,6 +6955,7 @@ export type PostDocumentBlueprintResult = NonNullable<Awaited<ReturnType<ReturnT
 export type GetDocumentBlueprintByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentBlueprintById']>>>
 export type DeleteDocumentBlueprintByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteDocumentBlueprintById']>>>
 export type PutDocumentBlueprintByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentBlueprintById']>>>
+export type GetDocumentBlueprintByIdAuditLogResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentBlueprintByIdAuditLog']>>>
 export type PutDocumentBlueprintByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentBlueprintByIdMove']>>>
 export type GetDocumentBlueprintByIdScaffoldResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentBlueprintByIdScaffold']>>>
 export type PostDocumentBlueprintFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentBlueprintFolder']>>>
@@ -6924,6 +6980,7 @@ export type PostDocumentTypeByIdCopyResult = NonNullable<Awaited<ReturnType<Retu
 export type GetDocumentTypeByIdExportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeByIdExport']>>>
 export type PutDocumentTypeByIdImportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentTypeByIdImport']>>>
 export type PutDocumentTypeByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentTypeByIdMove']>>>
+export type GetDocumentTypeByIdSchemaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeByIdSchema']>>>
 export type PostDocumentTypeByIdTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentTypeByIdTemplate']>>>
 export type GetDocumentTypeAllowedAtRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeAllowedAtRoot']>>>
 export type PostDocumentTypeAvailableCompositionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentTypeAvailableCompositions']>>>
@@ -6960,6 +7017,7 @@ export type PutDocumentByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnTyp
 export type PutDocumentByIdMoveToRecycleBinResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdMoveToRecycleBin']>>>
 export type GetDocumentByIdNotificationsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdNotifications']>>>
 export type PutDocumentByIdNotificationsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdNotifications']>>>
+export type PatchDocumentByIdPatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['patchDocumentByIdPatch']>>>
 export type GetDocumentByIdPreviewUrlResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdPreviewUrl']>>>
 export type PostDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentByIdPublicAccess']>>>
 export type DeleteDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteDocumentByIdPublicAccess']>>>
@@ -7043,6 +7101,7 @@ export type PostMediaTypeByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnT
 export type GetMediaTypeByIdExportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdExport']>>>
 export type PutMediaTypeByIdImportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeByIdImport']>>>
 export type PutMediaTypeByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeByIdMove']>>>
+export type GetMediaTypeByIdSchemaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdSchema']>>>
 export type GetMediaTypeAllowedAtRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeAllowedAtRoot']>>>
 export type PostMediaTypeAvailableCompositionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeAvailableCompositions']>>>
 export type GetMediaTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeBatch']>>>
@@ -7106,6 +7165,8 @@ export type PostMemberTypeByIdCopyResult = NonNullable<Awaited<ReturnType<Return
 export type GetMemberTypeByIdExportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberTypeByIdExport']>>>
 export type PutMemberTypeByIdImportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMemberTypeByIdImport']>>>
 export type PutMemberTypeByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMemberTypeByIdMove']>>>
+export type GetMemberTypeByIdSchemaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberTypeByIdSchema']>>>
+export type GetMemberTypeAllowedAtRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberTypeAllowedAtRoot']>>>
 export type PostMemberTypeAvailableCompositionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMemberTypeAvailableCompositions']>>>
 export type GetMemberTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberTypeBatch']>>>
 export type GetMemberTypeConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberTypeConfiguration']>>>
