@@ -7,6 +7,8 @@ import GetDataTypeBatchTool from "./get/get-data-type-batch.js";
 import GetDataTypeConfigurationTool from "./get/get-data-type-configuration.js";
 import GetDataTypeSchemaTool from "./get/get-data-type-schema.js";
 import GetDataTypeSchemasTool from "./get/get-data-type-schemas.js";
+// Legacy hand-rolled tool, kept for Umbraco < 17.4. Remove when 17.4 is the floor.
+import GetDataTypePropertyEditorTemplateTool from "./get/get-data-type-property-editor-template.js";
 import UpdateDataTypeTool from "./put/update-data-type.js";
 import CopyDataTypeTool from "./post/copy-data-type.js";
 import IsUsedDataTypeTool from "./get/is-used-data-type.js";
@@ -26,6 +28,7 @@ import GetDataTypeTreeSearchTool from "./items/get/get-tree-search.js";
 import GetAllDataTypesTool from "./items/get/get-all.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
+import { isUmbracoAtLeast } from "../../runtime-context.js";
 import {
   type ToolCollectionExport,
   type ToolDefinition,
@@ -48,8 +51,14 @@ export const DataTypeCollection: ToolCollectionExport = {
       tools.push(GetDataTypesByIdArrayTool);
       tools.push(GetDataTypeBatchTool);
       tools.push(GetDataTypeConfigurationTool);
-      tools.push(GetDataTypeSchemaTool);
-      tools.push(GetDataTypeSchemasTool);
+      // The Schema API endpoints landed in Umbraco 17.4. Fall back to the
+      // hand-rolled hardcoded template tool on older versions until the floor moves.
+      if (isUmbracoAtLeast(17, 4)) {
+        tools.push(GetDataTypeSchemaTool);
+        tools.push(GetDataTypeSchemasTool);
+      } else {
+        tools.push(GetDataTypePropertyEditorTemplateTool);
+      }
     }
 
     if (AuthorizationPolicies.TreeAccessDataTypes(user)) {
