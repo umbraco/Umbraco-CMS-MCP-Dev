@@ -8,24 +8,42 @@ jest.unstable_mockModule("../../post/helpers/validate-file-path.js", () => ({
   validateFilePath: jest.fn((filePath: string) => path.resolve(filePath))
 }));
 
+// Cloudflare Workers' unenv polyfill throws if fs.writeFileSync is called.
+// Mirror that behaviour here so the url/base64 paths regress loudly if anyone
+// reintroduces a temp-file write.
+let writeFileSyncCalls = 0;
+const realWriteFileSync = fs.writeFileSync;
+jest.unstable_mockModule("fs", () => {
+  const actual = jest.requireActual("fs") as typeof fs;
+  return {
+    ...actual,
+    writeFileSync: ((...args: Parameters<typeof fs.writeFileSync>) => {
+      writeFileSyncCalls++;
+      return realWriteFileSync.apply(actual, args);
+    }) as typeof fs.writeFileSync,
+    default: actual,
+  };
+});
+
 // Import the functions (after mocking)
-const { createFileStream, fetchMediaTypeId } = await import("../../post/helpers/media-upload-helpers.js");
+const { createFilePayload, fetchMediaTypeId } = await import("../../post/helpers/media-upload-helpers.js");
 
 describe("media-upload-helpers", () => {
-  describe("createFileStream - file path source", () => {
-    it("should create stream from file path", async () => {
-      // Create a temporary test file
+  beforeEach(() => {
+    writeFileSyncCalls = 0;
+  });
+
+  describe("createFilePayload - file path source", () => {
+    it("should create a ReadStream payload from a file path", async () => {
       const testContent = "test content";
       const testFileName = `test-${Date.now()}-${Math.random()}.txt`;
       const testFilePath = path.join(os.tmpdir(), testFileName);
 
       fs.writeFileSync(testFilePath, testContent);
-
-      // Verify file exists before proceeding
       expect(fs.existsSync(testFilePath)).toBe(true);
 
       try {
-        const { readStream, tempFilePath } = await createFileStream(
+        const { data, filename } = await createFilePayload(
           "filePath",
           testFilePath,
           undefined,
@@ -33,17 +51,15 @@ describe("media-upload-helpers", () => {
           testFileName
         );
 
-        // Assert
-        expect(readStream).toBeDefined();
-        expect(tempFilePath).toBeNull(); // filePath source doesn't create temp files
+        expect(data).toBeInstanceOf(fs.ReadStream);
+        expect(filename).toBe(testFileName);
 
-        // Cleanup - properly close stream first
+        // Close the stream we opened
         await new Promise<void>((resolve) => {
-          readStream.on('close', () => resolve());
-          readStream.close();
+          (data as fs.ReadStream).on('close', () => resolve());
+          (data as fs.ReadStream).close();
         });
       } finally {
-        // Cleanup test file
         if (fs.existsSync(testFilePath)) {
           fs.unlinkSync(testFilePath);
         }
@@ -51,40 +67,109 @@ describe("media-upload-helpers", () => {
     });
   });
 
-  describe("createFileStream - base64 source", () => {
-    it("should create stream from base64 data", async () => {
-      // Arrange
+  describe("createFilePayload - base64 source", () => {
+    it("should return a Buffer payload from base64 data without touching the filesystem", async () => {
       const testBase64 = Buffer.from("test content").toString("base64");
       const fileName = "test-base64.txt";
 
-      try {
-        // Act
-        const { readStream, tempFilePath } = await createFileStream(
-          "base64",
-          undefined,
-          undefined,
-          testBase64,
-          fileName
-        );
+      const { data, filename } = await createFilePayload(
+        "base64",
+        undefined,
+        undefined,
+        testBase64,
+        fileName
+      );
 
-        // Assert
-        expect(readStream).toBeDefined();
-        expect(tempFilePath).toBeDefined();
-        expect(tempFilePath).toContain("test-base64.txt");
+      expect(Buffer.isBuffer(data)).toBe(true);
+      expect((data as Buffer).toString()).toBe("test content");
+      expect(filename).toBe("test-base64.txt");
+      // Workers regression guard
+      expect(writeFileSyncCalls).toBe(0);
+    });
 
-        // Cleanup - properly close stream first
-        await new Promise<void>((resolve) => {
-          readStream.on('close', () => resolve());
-          readStream.close();
-        });
+    it("should append an extension detected from magic bytes when missing", async () => {
+      // Minimal PNG signature
+      const png = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+      const testBase64 = png.toString("base64");
 
-        if (tempFilePath && fs.existsSync(tempFilePath)) {
-          fs.unlinkSync(tempFilePath);
-        }
-      } catch (error) {
-        // Ensure cleanup even on error
-        throw error;
-      }
+      const { filename } = await createFilePayload(
+        "base64",
+        undefined,
+        undefined,
+        testBase64,
+        "no-extension"
+      );
+
+      expect(filename).toMatch(/^no-extension\.(png|.+)$/);
+    });
+  });
+
+  describe("createFilePayload - url source", () => {
+    let originalFetch: typeof fetch;
+
+    beforeEach(() => {
+      originalFetch = global.fetch;
+    });
+
+    afterEach(() => {
+      global.fetch = originalFetch;
+    });
+
+    it("should return a Buffer payload from a URL without writing a temp file", async () => {
+      const responseBytes = new TextEncoder().encode("hello world");
+      global.fetch = (async () => new Response(responseBytes, {
+        status: 200,
+        headers: { "content-type": "text/plain" },
+      })) as typeof fetch;
+
+      const { data, filename } = await createFilePayload(
+        "url",
+        undefined,
+        "https://example.com/file.txt",
+        undefined,
+        "downloaded.txt"
+      );
+
+      expect(Buffer.isBuffer(data)).toBe(true);
+      expect((data as Buffer).toString()).toBe("hello world");
+      expect(filename).toBe("downloaded.txt");
+      // Workers regression guard
+      expect(writeFileSyncCalls).toBe(0);
+    });
+
+    it("should infer the extension from the URL when fileName has none", async () => {
+      global.fetch = (async () => new Response(new Uint8Array(), {
+        status: 200,
+        headers: { "content-type": "image/png" },
+      })) as typeof fetch;
+
+      const { filename } = await createFilePayload(
+        "url",
+        undefined,
+        "https://example.com/avatar.png",
+        undefined,
+        "avatar"
+      );
+
+      expect(filename).toBe("avatar.png");
+    });
+
+    it("should fall back to a content-type derived extension", async () => {
+      global.fetch = (async () => new Response(new Uint8Array(), {
+        status: 200,
+        headers: { "content-type": "image/jpeg" },
+      })) as typeof fetch;
+
+      const { filename } = await createFilePayload(
+        "url",
+        undefined,
+        "https://example.com/no-extension",
+        undefined,
+        "photo"
+      );
+
+      // `mime-types` returns the canonical extension, which is `jpg` for image/jpeg.
+      expect(filename).toBe("photo.jpg");
     });
   });
 

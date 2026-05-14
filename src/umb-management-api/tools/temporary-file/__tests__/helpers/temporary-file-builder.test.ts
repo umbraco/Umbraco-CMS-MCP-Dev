@@ -1,6 +1,6 @@
 import { TemporaryFileBuilder } from "./temporary-file-builder.js";
 import { createReadStream } from "fs";
-import { join } from "path";
+import { basename, join } from "path";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 
 describe("TemporaryFileBuilder", () => {
@@ -19,7 +19,7 @@ describe("TemporaryFileBuilder", () => {
       join(process.cwd(), EXAMPLE_IMAGE_PATH)
     );
 
-    await builder.withFile(fileContent).create();
+    await builder.withFile(fileContent, basename(EXAMPLE_IMAGE_PATH)).create();
 
     expect(builder.getId()).toBe(builder.getId());
     expect(await builder.verify()).toBe(true);

@@ -15,7 +15,9 @@ export const getTemporaryFileAPI = () => ({
   ) => {
     const formData = new FormData();
     formData.append("Id", postTemporaryFileBody.Id);
-    formData.append("File", postTemporaryFileBody.File);
+    formData.append("File", postTemporaryFileBody.File, {
+      filename: postTemporaryFileBody.FileName,
+    });
 
     const headers = {
       ...formData.getHeaders(),

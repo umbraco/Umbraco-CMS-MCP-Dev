@@ -4,13 +4,14 @@ import { postTemporaryFileBody } from "@/umb-management-api/temporary-file/types
 import { ReadStream } from "fs";
 import { v4 as uuidv4 } from "uuid";
 import { createReadStream } from "fs";
-import { join } from "path";
+import { basename, join } from "path";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 
 export class TemporaryFileBuilder {
   private model: Partial<PostTemporaryFileBody> = {
     Id: uuidv4(),
     File: undefined,
+    FileName: undefined,
   };
   private id: string | undefined = undefined;
 
@@ -19,13 +20,15 @@ export class TemporaryFileBuilder {
     return this;
   }
 
-  withFile(file: ReadStream): TemporaryFileBuilder {
+  withFile(file: ReadStream | Buffer, fileName: string): TemporaryFileBuilder {
     this.model.File = file;
+    this.model.FileName = fileName;
     return this;
   }
 
   withExampleFile(): TemporaryFileBuilder {
     this.model.File = createReadStream(join(process.cwd(), EXAMPLE_IMAGE_PATH));
+    this.model.FileName = basename(EXAMPLE_IMAGE_PATH);
     return this;
   }
 
