@@ -34,6 +34,9 @@ export class MemberTestHelper {
     const normalized = this.normaliseIds(member);
     normalized.createDate = "<normalized>";
     normalized.updateDate = "<normalized>";
+    if (normalized.lastPasswordChangeDate) {
+      normalized.lastPasswordChangeDate = "<normalized>";
+    }
     normalized.variants?.forEach((variant: any) => {
       variant.createDate = "<normalized>";
       variant.updateDate = "<normalized>";

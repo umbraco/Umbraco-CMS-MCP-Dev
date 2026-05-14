@@ -31,4 +31,6 @@ export interface MemberResponseModel {
   lastPasswordChangeDate?: string | null;
   groups: string[];
   kind: MemberKindModel;
+  /** @nullable */
+  profileData?: string | null;
 }
