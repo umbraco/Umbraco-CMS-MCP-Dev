@@ -9,8 +9,8 @@ import { UmbracoToolFactory } from "./umb-management-api/tools/tool-factory.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { checkUmbracoVersion, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
-import { setUmbracoVersion } from "./umb-management-api/version/umbraco-version.js";
 import { availableCollections } from "./umb-management-api/tools/collection-registry.js";
+import { setUmbracoVersion } from "./umb-management-api/runtime-context.js";
 
 const main = async () => {
   // Clear config cache to ensure fresh config for each server start
@@ -53,14 +53,14 @@ const main = async () => {
     serverConfig: config,
   });
 
-  // Fetch server info once, share it with the version check and the local flag
+  // Check Umbraco version compatibility (logs result internally) and capture the
+  // version so collection registrations can gate tools whose endpoints were
+  // introduced in newer Umbraco releases.
   const serverInfo = await client.getServerInformation();
   setUmbracoVersion(serverInfo.version);
-
-  // Check Umbraco version compatibility (logs result internally)
   await checkUmbracoVersion({
     mcpVersion: packageJson.version,
-    client: { getServerInformation: async () => serverInfo },
+    client: { getServerInformation: async () => serverInfo }
   });
 
   UmbracoToolFactory(server, user, config);

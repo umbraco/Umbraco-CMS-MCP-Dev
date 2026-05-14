@@ -19,6 +19,7 @@ import {
   findBlockByKey,
   type BlockDataItem
 } from "./helpers/block-discovery.js";
+import { isUmbracoAtLeast } from "../../../runtime-context.js";
 import {
   type ToolDefinition,
   createToolResult,
@@ -201,8 +202,11 @@ const UpdateBlockPropertyTool = {
       // Load Element Type properties for validation
       const elementTypeProperties = await getElementTypeProperties(foundBlock.block.contentTypeKey);
 
-      // Validate property values against Data Type configuration before processing
-      if (elementTypeProperties.length > 0) {
+      // Validate property values against Data Type configuration on pre-17.4
+      // Umbraco. From 17.4+ the get-*-schema tools and Management API perform
+      // equivalent server-side checks. Remove this branch (and the
+      // property-value-validator helper) when the Umbraco floor reaches 18.
+      if (!isUmbracoAtLeast(17, 4) && elementTypeProperties.length > 0) {
         const propsToValidate = update.properties
           .map(p => {
             const def = elementTypeProperties.find(d => d.alias === p.alias);
