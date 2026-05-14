@@ -23,6 +23,7 @@ exports[`get-indexer-by-index-name should get index by name 1`] = `
       "SupportProtectedContent": false,
     },
     "searcherName": "ExternalSearcher",
+    "uniqueKeyFieldName": "__Key",
   },
 }
 `;
