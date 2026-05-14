@@ -9,6 +9,7 @@ import { UmbracoToolFactory } from "./umb-management-api/tools/tool-factory.js";
 import { UmbracoManagementClient } from "@umb-management-client";
 import { checkUmbracoVersion, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
+import { setUmbracoVersion } from "./umb-management-api/version/umbraco-version.js";
 import { availableCollections } from "./umb-management-api/tools/collection-registry.js";
 
 const main = async () => {
@@ -52,10 +53,14 @@ const main = async () => {
     serverConfig: config,
   });
 
+  // Fetch server info once, share it with the version check and the local flag
+  const serverInfo = await client.getServerInformation();
+  setUmbracoVersion(serverInfo.version);
+
   // Check Umbraco version compatibility (logs result internally)
   await checkUmbracoVersion({
     mcpVersion: packageJson.version,
-    client: { getServerInformation: () => client.getServerInformation() }
+    client: { getServerInformation: async () => serverInfo },
   });
 
   UmbracoToolFactory(server, user, config);
