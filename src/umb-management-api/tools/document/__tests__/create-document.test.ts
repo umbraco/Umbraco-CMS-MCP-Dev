@@ -9,14 +9,22 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
+import { TemplateBuilder } from "../../template/__tests__/helpers/template-builder.js";
+import { TemplateTestHelper } from "../../template/__tests__/helpers/template-helper.js";
+import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
+import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
 
 const TEST_DOCUMENT_NAME = "_Test Document Created";
+const TEST_TEMPLATE_NAME = "_Test Default Template";
+const TEST_DOC_TYPE_NAME = "_Test Doc Type With Templates";
 
 describe("create-document", () => {
   setupTestEnvironment();
 
   afterEach(async () => {
     await DocumentTestHelper.cleanup(TEST_DOCUMENT_NAME);
+    await DocumentTypeTestHelper.cleanup(TEST_DOC_TYPE_NAME);
+    await TemplateTestHelper.cleanup(TEST_TEMPLATE_NAME);
   });
 
   it("should create a document", async () => {
@@ -25,6 +33,7 @@ describe("create-document", () => {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
       parentId: undefined,
+      templateId: undefined,
       cultures: undefined,
       values: [],
     };
@@ -55,6 +64,7 @@ describe("create-document", () => {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
       parentId: undefined,
+      templateId: undefined,
       cultures: undefined,
       values: [
         {
@@ -126,6 +136,7 @@ describe("create-document", () => {
         documentTypeId: ROOT_DOCUMENT_TYPE_ID,
         name: TEST_DOCUMENT_NAME,
         parentId: undefined,
+        templateId: undefined,
         cultures: ["en-US", "da-DK"],
         values: [],
       };
@@ -180,6 +191,7 @@ describe("create-document", () => {
       documentTypeId: ROOT_DOCUMENT_TYPE_ID,
       name: TEST_DOCUMENT_NAME,
       parentId: undefined,
+      templateId: undefined,
       cultures: [],
       values: [],
     };
@@ -198,5 +210,112 @@ describe("create-document", () => {
     // Should have single variant with null culture (original behavior)
     expect(item!.variants).toHaveLength(1);
     expect(item!.variants[0].culture).toBeNull();
+  });
+
+  it("should apply an explicit templateId when provided", async () => {
+    // Arrange: create a template and a doc type that allows it (no default).
+    const template = await new TemplateBuilder()
+      .withName(TEST_TEMPLATE_NAME)
+      .create();
+    const templateId = template.getId();
+
+    const docType = await new DocumentTypeBuilder()
+      .withName(TEST_DOC_TYPE_NAME)
+      .allowAsRoot(true)
+      .withAllowedTemplate(templateId)
+      .create();
+    const docTypeId = docType.getId();
+
+    // Act: create a document with an explicit templateId.
+    const result = await CreateDocumentTool.handler(
+      {
+        documentTypeId: docTypeId,
+        name: TEST_DOCUMENT_NAME,
+        parentId: undefined,
+        templateId,
+        cultures: undefined,
+        values: [],
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    // Assert: handler succeeds, document carries the requested template.
+    const responseData = validateToolResponse(CreateDocumentTool, result);
+    expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
+
+    // Verify the created document has the correct template assigned
+    const client = UmbracoManagementClient.getClient();
+    const document = await client.getDocumentById(responseData.id);
+    expect(document).toBeDefined();
+    expect(document.template?.id).toBe(templateId);
+  });
+
+  it("should auto-apply the document type's default template when templateId is omitted", async () => {
+    // Arrange: create a template and a doc type that uses it as default.
+    const template = await new TemplateBuilder()
+      .withName(TEST_TEMPLATE_NAME)
+      .create();
+    const templateId = template.getId();
+
+    const docType = await new DocumentTypeBuilder()
+      .withName(TEST_DOC_TYPE_NAME)
+      .allowAsRoot(true)
+      .withAllowedTemplate(templateId)
+      .withDefaultTemplate(templateId)
+      .create();
+    const docTypeId = docType.getId();
+
+    // Act: create a document WITHOUT specifying templateId.
+    const result = await CreateDocumentTool.handler(
+      {
+        documentTypeId: docTypeId,
+        name: TEST_DOCUMENT_NAME,
+        parentId: undefined,
+        templateId: undefined,
+        cultures: undefined,
+        values: [],
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    // Assert: the default template was attached.
+    const responseData = validateToolResponse(CreateDocumentTool, result);
+    expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
+
+    const client = UmbracoManagementClient.getClient();
+    const document = await client.getDocumentById(responseData.id);
+    expect(document).toBeDefined();
+    expect(document.template?.id).toBe(templateId);
+  });
+
+  it("should create the document with no template when the doc type has no default", async () => {
+    // Arrange: a doc type with no templates configured at all.
+    const docType = await new DocumentTypeBuilder()
+      .withName(TEST_DOC_TYPE_NAME)
+      .allowAsRoot(true)
+      .create();
+    const docTypeId = docType.getId();
+
+    // Act: create the document without specifying a templateId.
+    const result = await CreateDocumentTool.handler(
+      {
+        documentTypeId: docTypeId,
+        name: TEST_DOCUMENT_NAME,
+        parentId: undefined,
+        templateId: undefined,
+        cultures: undefined,
+        values: [],
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    // Assert: creation still succeeds; template is null on the document.
+    const responseData = validateToolResponse(CreateDocumentTool, result);
+    expect(createSnapshotResult(result, responseData.id)).toMatchSnapshot();
+
+    const client = UmbracoManagementClient.getClient();
+    const document = await client.getDocumentById(responseData.id);
+    expect(document).toBeDefined();
+    expect(document.template).toBeNull();
   });
 });

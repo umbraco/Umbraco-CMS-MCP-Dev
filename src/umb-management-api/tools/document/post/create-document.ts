@@ -21,6 +21,13 @@ const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
   parentId: z.string().uuid("Must be a valid document UUID").optional(),
   name: z.string(),
+  templateId: z
+    .string()
+    .uuid("Must be a valid template UUID")
+    .optional()
+    .describe(
+      "Optional template ID to apply to the document. If omitted, the document type's default template is applied automatically. Provide a value only when you need a specific allowed template other than the default."
+    ),
   cultures: z.array(z.string()).optional().describe("Array of culture codes. If not provided or empty array, will create single variant with null culture."),
   values: z
     .array(
@@ -105,6 +112,10 @@ const CreateDocumentTool = {
     "alias": "propertyAlias",          // Property alias from document type
     "value": "your value here"         // Value matching the schema structure
   }
+
+  ## Default Template
+
+  The document type's default template is applied automatically. Pass an explicit \`templateId\` only when you need a specific allowed template other than the default. If the document type has no default template, the document is created without one.
   `,
   inputSchema: createDocumentSchema.shape,
   outputSchema: createOutputSchema.shape,
@@ -133,6 +144,18 @@ const CreateDocumentTool = {
       segment: null,
     }));
 
+    // Resolve the template: explicit override wins; otherwise use the
+    // document type's default template (which may itself be null).
+    let template: { id: string } | null;
+    if (model.templateId) {
+      template = { id: model.templateId };
+    } else {
+      const docType = await client.getDocumentTypeById(model.documentTypeId);
+      template = docType.defaultTemplate?.id
+        ? { id: docType.defaultTemplate.id }
+        : null;
+    }
+
     const payload: CreateDocumentRequestModel = {
       id: documentId,
       documentType: {
@@ -143,7 +166,7 @@ const CreateDocumentTool = {
           id: model.parentId,
         }
         : undefined,
-      template: null,
+      template,
       values: model.values,
       variants,
     };
