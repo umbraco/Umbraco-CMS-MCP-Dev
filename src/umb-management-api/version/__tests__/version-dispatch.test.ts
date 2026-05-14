@@ -1,13 +1,10 @@
 import { describe, it, expect, beforeEach, jest } from "@jest/globals";
 import { withVersionDispatch } from "../version-dispatch.js";
-import {
-  setUmbracoVersion,
-  resetUmbracoVersion,
-} from "../umbraco-version.js";
+import { setUmbracoVersion } from "../../runtime-context.js";
 
 describe("withVersionDispatch", () => {
   beforeEach(() => {
-    resetUmbracoVersion();
+    setUmbracoVersion(null);
   });
 
   it("calls the pre174 handler when version is unknown (forward-default to fixture)", async () => {
