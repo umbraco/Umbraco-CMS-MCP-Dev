@@ -3,36 +3,49 @@ import { getCultureQueryParams } from "@/umb-management-api/umbracoManagementAPI
 import { z } from "zod";
 import {
   type ToolDefinition,
-  CAPTURE_RAW_HTTP_RESPONSE,
-  executeGetApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import { withVersionDispatch } from "../../version/version-dispatch.js";
+import { readFixture } from "../../version/read-fixture.js";
+import { post174 } from "./get-cultures.post174.js";
 
-// WORKAROUND: Umbraco returns some cultures with empty name strings, but the generated
-// schema has .min(1). Override to allow empty strings.
-// Fixed in Umbraco 17.4 — remove this override and revert to getCultureResponse.shape after upgrade.
+// Unified shape — matches what 17.4 returns. Pre-17.4, Umbraco returned some
+// cultures with empty `name` strings; the pre-17.4 fixture below presents the
+// clean shape the chained editor MCP expects, even though the live API on
+// older Umbracos wouldn't produce it. Shape stability > value fidelity.
 const outputSchema = z.object({
   total: z.number(),
-  items: z.array(z.object({
-    name: z.string(),
-    englishName: z.string(),
-  })),
+  items: z.array(
+    z.object({
+      name: z.string(),
+      englishName: z.string(),
+    }),
+  ),
 });
+
+type ToolResult = Awaited<ReturnType<typeof post174>>;
+
+const pre174Fixture = readFixture<ToolResult>(
+  new URL("./get-cultures.pre174.json", import.meta.url),
+);
 
 const GetCulturesTool = {
   name: "get-culture",
-  description: "Retrieves a paginated list of cultures that Umbraco can be configured to use",
+  description:
+    "Retrieves a paginated list of cultures that Umbraco can be configured to use",
   inputSchema: getCultureQueryParams.shape,
   outputSchema: outputSchema.shape,
   annotations: {
     readOnlyHint: true,
   },
-  slices: ['list'],
-  handler: (async (params: GetCultureParams) => {
-    return executeGetApiCall((client) =>
-      client.getCulture(params, CAPTURE_RAW_HTTP_RESPONSE)
-    );
+  slices: ["list"],
+  handler: withVersionDispatch({
+    pre174: (_params: GetCultureParams) => pre174Fixture,
+    post174,
   }),
-} satisfies ToolDefinition<typeof getCultureQueryParams.shape, typeof outputSchema.shape>;
+} satisfies ToolDefinition<
+  typeof getCultureQueryParams.shape,
+  typeof outputSchema.shape
+>;
 
 export default withStandardDecorators(GetCulturesTool);
