@@ -11,7 +11,12 @@ dotenv.config({ path: '.env' });
 // Collection registration unit tests rely on this so they see the new
 // Schema-API tools rather than the legacy hand-rolled fallbacks. Tests that
 // want to exercise the pre-17.4 branch can call setUmbracoVersion(null).
-setUmbracoVersion('17.4.0');
+//
+// To run integration/eval tests against an older live Umbraco, set the
+// MCP_TEST_UMBRACO_VERSION env var (e.g. MCP_TEST_UMBRACO_VERSION=17.3.5)
+// so version-gated wrappers take the legacy path instead of 404-ing on
+// endpoints that don't exist yet.
+setUmbracoVersion(process.env.MCP_TEST_UMBRACO_VERSION ?? '17.4.0');
 
 
 // Set allowed media paths for tests (allow project root for test files)
