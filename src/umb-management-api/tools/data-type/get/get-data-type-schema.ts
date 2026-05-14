@@ -2,16 +2,19 @@ import { getDataTypeByIdSchemaParams } from "@/umb-management-api/umbracoManagem
 import { z } from "zod";
 import {
   type ToolDefinition,
-  CAPTURE_RAW_HTTP_RESPONSE,
-  executeGetApiCall,
+  createToolResult,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+import { isUmbracoAtLeast } from "../../../runtime-context.js";
+import { getDataTypeSchemaFromApi } from "./get-data-type-schema-modern.js";
+import { synthesizeDataTypeSchema } from "./get-data-type-schema-legacy.js";
 
 // Custom output schema - the generated one is too strict for JSON Schema content
-const outputSchema = z.object({
+export const dataTypeSchemaOutputSchema = z.object({
   valueTypeName: z.string().nullish(),
   jsonSchema: z.unknown().nullish(),
 });
+const outputSchema = dataTypeSchemaOutputSchema;
 
 const GetDataTypeSchemaTool = {
   name: "get-data-type-schema",
@@ -27,9 +30,10 @@ IMPORTANT: Use this tool BEFORE creating data types to understand the expected c
   },
   slices: ['read'],
   handler: async ({ id }: { id: string }) => {
-    return executeGetApiCall((client) =>
-      client.getDataTypeByIdSchema(id, CAPTURE_RAW_HTTP_RESPONSE)
-    );
+    const result = isUmbracoAtLeast(17, 4)
+      ? await getDataTypeSchemaFromApi(id)
+      : await synthesizeDataTypeSchema(id);
+    return createToolResult(result);
   },
 } satisfies ToolDefinition<typeof getDataTypeByIdSchemaParams.shape, typeof outputSchema.shape>;
 

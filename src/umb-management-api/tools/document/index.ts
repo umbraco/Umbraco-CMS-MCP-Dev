@@ -11,8 +11,6 @@ import GetDocumentPublishTool from "./get/get-document-publish.js";
 import GetDocumentConfigurationTool from "./get/get-document-configuration.js";
 import GetDocumentUrlsTool from "./get/get-document-urls.js";
 import GetDocumentTypeSchemaTool from "./get/get-document-type-schema.js";
-// Legacy hand-rolled tool, kept for Umbraco < 17.4. Remove when 17.4 is the floor.
-import GetDocumentPropertyValueTemplateTool from "./get/get-document-property-value-template.js";
 import SearchDocumentTool from "./get/search-document.js";
 import GetCollectionDocumentByIdTool from "./get/get-collection-document-by-id.js";
 import GetItemDocumentTool from "./get/get-item-document.js";
@@ -50,7 +48,6 @@ import GetRecycleBinChildrenTool from "./items/get/get-recycle-bin-children.js";
 import GetDocumentRecycleBinSiblingsTool from "./items/get/get-recycle-bin-siblings.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { isUmbracoAtLeast } from "../../runtime-context.js";
 import {
   type ToolCollectionExport,
   type ToolDefinition,
@@ -70,13 +67,7 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(GetDocumentByIdTool);
     tools.push(GetDocumentPublishTool);
     tools.push(GetDocumentConfigurationTool);
-    // Schema API endpoint introduced in Umbraco 17.4; fall back to the hand-rolled
-    // property-value template tool on older versions until the floor moves.
-    if (isUmbracoAtLeast(17, 4)) {
-      tools.push(GetDocumentTypeSchemaTool);
-    } else {
-      tools.push(GetDocumentPropertyValueTemplateTool);
-    }
+    tools.push(GetDocumentTypeSchemaTool);
     tools.push(CopyDocumentTool);
     tools.push(CreateDocumentTool);
     tools.push(PostDocumentPublicAccessTool);

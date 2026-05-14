@@ -47,14 +47,14 @@ describe("document-tool-index — pre-17.4 fallback", () => {
     beforeAll(() => setUmbracoVersion("17.3.0"));
     afterAll(() => setUmbracoVersion("17.4.0"));
 
-    it("registers the legacy property-value-template tool and omits the Schema-API tool", () => {
+    it("still registers get-document-type-schema (backed by the legacy synthesizer)", () => {
         const userMock = {
             allowedSections: [sections.content],
             fallbackPermissions: ["Umb.Document.Delete"]
         } as Partial<CurrentUserResponseModel>;
 
         const names = DocumentTools(userMock as CurrentUserResponseModel).map(t => t.name);
-        expect(names).toContain("get-document-property-value-template");
-        expect(names).not.toContain("get-document-type-schema");
+        expect(names).toContain("get-document-type-schema");
+        expect(names).not.toContain("get-document-property-value-template");
     });
 });
