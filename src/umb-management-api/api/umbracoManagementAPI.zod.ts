@@ -254,6 +254,22 @@ export const getDataTypeByIdReferencedByResponse = zod.object({
 })
 
 
+export const getDataTypeByIdSchemaParams = zod.object({
+  "id": zod.guid()
+})
+
+export const getDataTypeByIdSchemaResponse = zod.object({
+  "valueTypeName": zod.string().nullish(),
+  "jsonSchema": zod.record(zod.string(), zod.object({
+  "options": zod.object({
+  "propertyNameCaseInsensitive": zod.boolean()
+}).nullish(),
+  "parent": zod.unknown().nullish(),
+  "root": zod.unknown()
+})).nullish()
+})
+
+
 /**
  * Gets multiple data types identified by the provided Ids.
  * @summary Gets multiple data types.
@@ -349,6 +365,27 @@ export const putDataTypeFolderByIdParams = zod.object({
 
 export const putDataTypeFolderByIdBody = zod.object({
   "name": zod.string().min(1)
+})
+
+
+export const getDataTypeSchemasBatchQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getDataTypeSchemasBatchResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "id": zod.guid(),
+  "valueTypeName": zod.string().nullish(),
+  "jsonSchema": zod.record(zod.string(), zod.object({
+  "options": zod.object({
+  "propertyNameCaseInsensitive": zod.boolean()
+}).nullish(),
+  "parent": zod.unknown().nullish(),
+  "root": zod.unknown()
+})).nullish(),
+  "error": zod.string().nullish()
+}))
 })
 
 
@@ -950,6 +987,37 @@ export const putDocumentBlueprintByIdBody = zod.object({
   "culture": zod.string().nullish(),
   "segment": zod.string().nullish(),
   "name": zod.string().min(1)
+}))
+})
+
+
+/**
+ * Gets a paginated collection of audit log entries for the document blueprint identified by the provided Id.
+ * @summary Gets the audit log for a document blueprint.
+ */
+export const getDocumentBlueprintByIdAuditLogParams = zod.object({
+  "id": zod.guid()
+})
+
+export const getDocumentBlueprintByIdAuditLogQuerySkipDefault = 0;export const getDocumentBlueprintByIdAuditLogQueryTakeDefault = 100;
+
+export const getDocumentBlueprintByIdAuditLogQueryParams = zod.object({
+  "orderDirection": zod.enum(['Ascending', 'Descending']).optional(),
+  "sinceDate": zod.iso.datetime({"local":true,"offset":true}).optional(),
+  "skip": zod.coerce.number().optional(),
+  "take": zod.coerce.number().default(getDocumentBlueprintByIdAuditLogQueryTakeDefault)
+})
+
+export const getDocumentBlueprintByIdAuditLogResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "user": zod.object({
+  "id": zod.guid()
+}),
+  "timestamp": zod.iso.datetime({"local":true,"offset":true}),
+  "logType": zod.enum(['New', 'Save', 'SaveVariant', 'Open', 'Delete', 'Publish', 'PublishVariant', 'SendToPublish', 'SendToPublishVariant', 'Unpublish', 'UnpublishVariant', 'Move', 'Copy', 'AssignDomain', 'PublicAccess', 'Sort', 'Notify', 'System', 'RollBack', 'PackagerInstall', 'PackagerUninstall', 'Custom', 'ContentVersionPreventCleanup', 'ContentVersionEnableCleanup']),
+  "comment": zod.string().nullish(),
+  "parameters": zod.string().nullish()
 }))
 })
 
@@ -1669,6 +1737,19 @@ export const putDocumentTypeByIdMoveBody = zod.object({
   "id": zod.guid()
 }).nullish()
 })
+
+
+export const getDocumentTypeByIdSchemaParams = zod.object({
+  "id": zod.guid()
+})
+
+export const getDocumentTypeByIdSchemaResponse = zod.record(zod.string(), zod.object({
+  "options": zod.object({
+  "propertyNameCaseInsensitive": zod.boolean()
+}).nullish(),
+  "parent": zod.unknown().nullish(),
+  "root": zod.unknown()
+}))
 
 
 /**
@@ -2599,6 +2680,14 @@ export const putDocumentByIdNotificationsBody = zod.object({
 
 
 /**
+ * @summary Make partial updates to a document. For more information, see the documentation at https://docs.umbraco.com/umbraco-cms/reference/management-api/patching/document-endpoint-guide or https://docs.umbraco.com/umbraco-cms/reference/management-api/patching/document-endpoint-spec
+ */
+export const patchDocumentByIdPatchParams = zod.object({
+  "id": zod.guid()
+})
+
+
+/**
  * Gets the preview URL for the document identified by the provided Id.
  * @summary Gets the preview URL for a document.
  */
@@ -2686,7 +2775,7 @@ export const getDocumentByIdPublicAccessResponse = zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish()
 })),
-  "kind": zod.enum(['Default', 'Api'])
+  "kind": zod.enum(['Default', 'Api', 'ExternalOnly'])
 })),
   "groups": zod.array(zod.object({
   "id": zod.guid(),
@@ -3911,7 +4000,8 @@ export const getIndexerResponse = zod.object({
   "searcherName": zod.string(),
   "documentCount": zod.number(),
   "fieldCount": zod.number(),
-  "providerProperties": zod.record(zod.string(), zod.unknown().nullable()).nullish()
+  "providerProperties": zod.record(zod.string(), zod.unknown().nullable()).nullish(),
+  "uniqueKeyFieldName": zod.string().nullish()
 }))
 })
 
@@ -3937,7 +4027,8 @@ export const getIndexerByIndexNameResponse = zod.object({
   "searcherName": zod.string(),
   "documentCount": zod.number(),
   "fieldCount": zod.number(),
-  "providerProperties": zod.record(zod.string(), zod.unknown().nullable()).nullish()
+  "providerProperties": zod.record(zod.string(), zod.unknown().nullable()).nullish(),
+  "uniqueKeyFieldName": zod.string().nullish()
 })
 
 
@@ -4837,6 +4928,19 @@ export const putMediaTypeByIdMoveBody = zod.object({
   "id": zod.guid()
 }).nullish()
 })
+
+
+export const getMediaTypeByIdSchemaParams = zod.object({
+  "id": zod.guid()
+})
+
+export const getMediaTypeByIdSchemaResponse = zod.record(zod.string(), zod.object({
+  "options": zod.object({
+  "propertyNameCaseInsensitive": zod.boolean()
+}).nullish(),
+  "parent": zod.unknown().nullish(),
+  "root": zod.unknown()
+}))
 
 
 /**
@@ -6620,6 +6724,41 @@ export const putMemberTypeByIdMoveBody = zod.object({
 })
 
 
+export const getMemberTypeByIdSchemaParams = zod.object({
+  "id": zod.guid()
+})
+
+export const getMemberTypeByIdSchemaResponse = zod.record(zod.string(), zod.object({
+  "options": zod.object({
+  "propertyNameCaseInsensitive": zod.boolean()
+}).nullish(),
+  "parent": zod.unknown().nullish(),
+  "root": zod.unknown()
+}))
+
+
+/**
+ * Gets a collection of member types that are allowed to be created at the root level.
+ * @summary Gets member types allowed at root.
+ */
+export const getMemberTypeAllowedAtRootQuerySkipDefault = 0;export const getMemberTypeAllowedAtRootQueryTakeDefault = 100;
+
+export const getMemberTypeAllowedAtRootQueryParams = zod.object({
+  "skip": zod.coerce.number().optional(),
+  "take": zod.coerce.number().default(getMemberTypeAllowedAtRootQueryTakeDefault)
+})
+
+export const getMemberTypeAllowedAtRootResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "id": zod.guid(),
+  "name": zod.string(),
+  "description": zod.string().nullish(),
+  "icon": zod.string().nullish()
+}))
+})
+
+
 /**
  * Gets a collection of member types that are available to use as compositions for the specified member type.
  * @summary Gets available compositions.
@@ -6975,7 +7114,8 @@ export const getFilterMemberResponse = zod.object({
   "lastLockoutDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "lastPasswordChangeDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "groups": zod.array(zod.guid()),
-  "kind": zod.enum(['Default', 'Api'])
+  "kind": zod.enum(['Default', 'Api', 'ExternalOnly']),
+  "profileData": zod.string().nullish()
 }))
 })
 
@@ -7004,7 +7144,7 @@ export const getItemMemberResponseItem = zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish()
 })),
-  "kind": zod.enum(['Default', 'Api'])
+  "kind": zod.enum(['Default', 'Api', 'ExternalOnly'])
 })
 export const getItemMemberResponse = zod.array(getItemMemberResponseItem)
 
@@ -7035,7 +7175,7 @@ export const getItemMemberAncestorsResponseItem = zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish()
 })),
-  "kind": zod.enum(['Default', 'Api'])
+  "kind": zod.enum(['Default', 'Api', 'ExternalOnly'])
 }))
 })
 export const getItemMemberAncestorsResponse = zod.array(getItemMemberAncestorsResponseItem)
@@ -7071,7 +7211,7 @@ export const getItemMemberSearchResponse = zod.object({
   "name": zod.string(),
   "culture": zod.string().nullish()
 })),
-  "kind": zod.enum(['Default', 'Api'])
+  "kind": zod.enum(['Default', 'Api', 'ExternalOnly'])
 })),
   "total": zod.number()
 })
@@ -7158,7 +7298,8 @@ export const getMemberByIdResponse = zod.object({
   "lastLockoutDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "lastPasswordChangeDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
   "groups": zod.array(zod.guid()),
-  "kind": zod.enum(['Default', 'Api'])
+  "kind": zod.enum(['Default', 'Api', 'ExternalOnly']),
+  "profileData": zod.string().nullish()
 })
 
 
@@ -10214,13 +10355,12 @@ export const getUserCurrentPermissionsDocumentQueryParams = zod.object({
   "id": zod.array(zod.guid()).optional()
 })
 
-export const getUserCurrentPermissionsDocumentResponseItem = zod.object({
+export const getUserCurrentPermissionsDocumentResponse = zod.object({
   "permissions": zod.array(zod.object({
   "nodeKey": zod.guid(),
   "permissions": zod.array(zod.string())
 }))
 })
-export const getUserCurrentPermissionsDocumentResponse = zod.array(getUserCurrentPermissionsDocumentResponseItem)
 
 
 /**

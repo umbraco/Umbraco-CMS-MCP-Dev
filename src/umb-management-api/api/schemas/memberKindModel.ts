@@ -13,4 +13,5 @@ export type MemberKindModel = typeof MemberKindModel[keyof typeof MemberKindMode
 export const MemberKindModel = {
   Default: 'Default',
   Api: 'Api',
+  ExternalOnly: 'ExternalOnly',
 } as const;

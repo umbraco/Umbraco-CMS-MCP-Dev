@@ -18,4 +18,6 @@ export interface IndexResponseModel {
   fieldCount: number;
   /** @nullable */
   providerProperties?: IndexResponseModelProviderProperties;
+  /** @nullable */
+  uniqueKeyFieldName?: string | null;
 }
