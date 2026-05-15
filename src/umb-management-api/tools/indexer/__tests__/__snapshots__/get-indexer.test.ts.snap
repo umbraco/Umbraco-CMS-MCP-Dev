@@ -24,6 +24,7 @@ exports[`get-indexer should list all indexes with default parameters 1`] = `
           "PublishedValuesOnly": false,
         },
         "searcherName": "DeliveryApiContentSearcher",
+        "uniqueKeyFieldName": "itemId",
       },
       {
         "canRebuild": true,
@@ -45,6 +46,7 @@ exports[`get-indexer should list all indexes with default parameters 1`] = `
           "SupportProtectedContent": false,
         },
         "searcherName": "ExternalSearcher",
+        "uniqueKeyFieldName": "__Key",
       },
       {
         "canRebuild": true,
@@ -66,6 +68,7 @@ exports[`get-indexer should list all indexes with default parameters 1`] = `
           "SupportProtectedContent": true,
         },
         "searcherName": "InternalSearcher",
+        "uniqueKeyFieldName": "__Key",
       },
       {
         "canRebuild": true,
@@ -81,19 +84,12 @@ exports[`get-indexer should list all indexes with default parameters 1`] = `
           "DefaultAnalyzer": "CultureInvariantWhitespaceAnalyzer",
           "DirectoryFactory": "Umbraco.Cms.Infrastructure.Examine.ConfigurationEnabledDirectoryFactory",
           "EnableDefaultEventHandler": true,
-          "IncludeFields": [
-            "id",
-            "nodeName",
-            "updateDate",
-            "loginName",
-            "email",
-            "__Key",
-          ],
           "LuceneDirectory": "NRTCachingDirectory",
           "LuceneIndexFolder": "/NORMALIZED_FS_DIR@<CWD>/<PROJECT>/umbraco/data/temp/examineindexes/membersindex lockfactory=noprefixsimplefslockfactory@<CWD>/<PROJECT>/umbraco/data/temp/examineindexes/membersindex",
           "PublishedValuesOnly": false,
         },
         "searcherName": "MembersSearcher",
+        "uniqueKeyFieldName": "__Key",
       },
       {
         "canRebuild": true,
@@ -112,6 +108,7 @@ exports[`get-indexer should list all indexes with default parameters 1`] = `
           "LuceneIndexFolder": "/NORMALIZED_FS_DIR@<CWD>/<PROJECT>/umbraco/data/temp/examineindexes/pdfindex lockfactory=noprefixsimplefslockfactory@<CWD>/<PROJECT>/umbraco/data/temp/examineindexes/pdfindex",
         },
         "searcherName": "PDFSearcher",
+        "uniqueKeyFieldName": null,
       },
     ],
     "nextCursor": undefined,
