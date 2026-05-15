@@ -11,6 +11,47 @@ import {
 } from "@umbraco-cms/mcp-server-sdk";
 
 /**
+ * Rewrites cloud-storage share URLs to direct-download URLs so that
+ * fetching them returns the binary instead of an HTML viewer page.
+ *
+ * Currently handles Google Drive share links:
+ *   https://drive.google.com/file/d/<id>/view?usp=sharing
+ *   https://drive.google.com/open?id=<id>
+ *   → https://drive.usercontent.google.com/download?id=<id>&export=download
+ *
+ * Unrecognised URLs are returned unchanged.
+ *
+ * For files > ~25MB Drive returns a virus-scan interstitial that
+ * requires a confirm token; this helper does not try to handle that —
+ * the upload will simply fail with HTML bytes and the caller should
+ * switch to sourceType=base64 for those.
+ */
+export function normalizeFileUrl(rawUrl: string): string {
+  try {
+    const parsed = new URL(rawUrl);
+    if (parsed.hostname === "drive.google.com") {
+      let driveId: string | undefined;
+      const fileMatch = parsed.pathname.match(/^\/file\/d\/([^/]+)/);
+      if (fileMatch) {
+        driveId = fileMatch[1];
+      } else if (parsed.pathname === "/open") {
+        driveId = parsed.searchParams.get("id") ?? undefined;
+      } else if (parsed.pathname === "/uc") {
+        driveId = parsed.searchParams.get("id") ?? undefined;
+      }
+      if (driveId) {
+        const rewritten = `https://drive.usercontent.google.com/download?id=${driveId}&export=download`;
+        console.log("[drive-rewrite]", { from: rawUrl, to: rewritten });
+        return rewritten;
+      }
+    }
+  } catch {
+    // Fall through — return the URL as-is and let fetch surface the error.
+  }
+  return rawUrl;
+}
+
+/**
  * Maps MIME types to file extensions using the mime-types library.
  * Returns undefined if MIME type is unknown.
  */
@@ -170,12 +211,13 @@ export async function createFilePayload(
       if (!fileUrl) {
         throw new Error("fileUrl is required when sourceType is 'url'");
       }
+      const fetchUrl = normalizeFileUrl(fileUrl);
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000);
         let response: Response;
         try {
-          response = await fetch(fileUrl, { signal: controller.signal });
+          response = await fetch(fetchUrl, { signal: controller.signal, redirect: "follow" });
         } finally {
           clearTimeout(timeoutId);
         }
@@ -188,7 +230,7 @@ export async function createFilePayload(
 
         let filename = fileName;
         if (!fileName.includes('.')) {
-          const urlPath = new URL(fileUrl).pathname;
+          const urlPath = new URL(fetchUrl).pathname;
           const urlExtension = path.extname(urlPath);
 
           if (urlExtension) {
@@ -203,9 +245,9 @@ export async function createFilePayload(
         return { data: buffer, filename };
       } catch (error) {
         if ((error as any).name === 'AbortError') {
-          throw new Error(`Request timeout after 30s fetching URL: ${fileUrl}`);
+          throw new Error(`Request timeout after 30s fetching URL: ${fetchUrl}`);
         }
-        throw new Error(`Failed to fetch URL: ${fileUrl} - ${(error as Error).message}`);
+        throw new Error(`Failed to fetch URL: ${fetchUrl} - ${(error as Error).message}`);
       }
     }
 
