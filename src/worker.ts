@@ -59,6 +59,23 @@ export class UmbracoMcpAgent extends McpAgent<HostedMcpEnv, unknown, AuthProps> 
       this.props!,
     );
   }
+
+  // Diagnostic: surface stack traces for the otherwise-opaque
+  // "TypeError: Cannot read properties of undefined (reading 'some')"
+  // appearing in the streamable-http handler. Override the base Agent.onError
+  // so we still re-throw (to preserve framework behavior) but log first.
+  // @ts-ignore — base method exists on the runtime class even though the
+  // narrow McpAgent type declaration in agents-mcp.d.ts doesn't list it.
+  onError(connectionOrError: unknown, error?: unknown): never {
+    const theError = error ?? connectionOrError;
+    const err = theError as { message?: unknown; stack?: unknown; name?: unknown } | null;
+    console.log("[agent-error]", {
+      name: err?.name,
+      message: err?.message,
+      stack: err?.stack,
+    });
+    throw theError as Error;
+  }
 }
 
 // ============================================================================

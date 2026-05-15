@@ -143,6 +143,16 @@ export async function createFilePayload(
       if (!filePath) {
         throw new Error("filePath is required when sourceType is 'filePath'");
       }
+      // filePath is Node-only by definition — it reads from the local
+      // filesystem. On Cloudflare Workers (and any non-Node runtime),
+      // fs.createReadStream isn't implemented; reject up-front with a
+      // clear message rather than crashing somewhere deeper.
+      if (typeof fs.createReadStream !== "function") {
+        throw new Error(
+          "filePath source is not supported in this runtime (no filesystem). " +
+          "Use sourceType 'url' or 'base64' instead."
+        );
+      }
       const validatedPath = await validateFilePath(filePath);
 
       // Umbraco's TemporaryFileService parses the extension from the upload
