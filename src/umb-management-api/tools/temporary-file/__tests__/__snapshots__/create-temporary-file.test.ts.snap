@@ -36,7 +36,7 @@ exports[`create-temporary-file filename extension detection should auto-detect P
     "items": [
       {
         "availableUntil": "NORMALIZED_DATE",
-        "fileName": "umbraco-upload-NORMALIZED-test-no-extension.png",
+        "fileName": "test-no-extension.png",
         "id": "00000000-0000-0000-0000-000000000000",
       },
     ],
@@ -70,7 +70,7 @@ exports[`create-temporary-file should create a temporary file 2`] = `
     "items": [
       {
         "availableUntil": "NORMALIZED_DATE",
-        "fileName": "umbraco-upload-NORMALIZED-example.jpg",
+        "fileName": "example.jpg",
         "id": "00000000-0000-0000-0000-000000000000",
       },
     ],
