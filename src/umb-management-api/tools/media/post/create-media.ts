@@ -2,6 +2,7 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
+import { buildSourceTypeSection } from "./helpers/source-type-helpers.js";
 import {
   type ToolDefinition,
   createToolResult,
@@ -40,17 +41,12 @@ export function createCreateMediaTool(options: { allowFilePath: boolean }) {
     parentId: z.string().uuid().optional().describe("Parent folder ID (defaults to root)"),
   });
 
-  type Params = z.infer<typeof schema> & { sourceType: "filePath" | "url" | "base64" };
+  type Params = z.infer<typeof schema>;
 
-  const filePathSection = options.allowFilePath
-    ? `  1. filePath - Most efficient for local files, works with any size
-     SECURITY: Requires UMBRACO_ALLOWED_MEDIA_PATHS environment variable
-     to be configured with comma-separated allowed directories.
-     Example: UMBRACO_ALLOWED_MEDIA_PATHS="/tmp/uploads,/var/media"
-  2. url - Fetch from web URL
-  3. base64 - Only for small files (<10KB) due to token usage`
-    : `  1. url - Fetch from web URL
-  2. base64 - Only for small files (<10KB) due to token usage`;
+  const filePathSection = buildSourceTypeSection(options.allowFilePath, [
+    'url - Fetch from web URL',
+    'base64 - Only for small files (<10KB) due to token usage',
+  ]);
 
   const tool = {
     name: "create-media",
