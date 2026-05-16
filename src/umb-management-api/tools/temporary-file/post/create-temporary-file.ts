@@ -1,8 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
-import * as fs from "fs";
-import * as os from "os";
-import * as path from "path";
 import {
   type ToolDefinition,
   createToolResult,
@@ -38,10 +35,9 @@ const CreateTemporaryFileTool = {
   outputSchema: createTemporaryFileOutputSchema.shape,
   slices: ['create'],
   handler: (async (model: CreateTemporaryFileParams) => {
-    let tempFilePath: string | null = null;
-
     try {
-      // Convert base64 to Buffer
+      // Decode base64 directly into a Buffer — no temp file, no fs.writeFileSync.
+      // Cloudflare Workers' unenv polyfill doesn't implement fs.writeFileSync.
       const fileContent = Buffer.from(model.fileAsBase64, 'base64');
 
       // Ensure fileName has an extension - add one based on magic bytes if missing
@@ -51,17 +47,11 @@ const CreateTemporaryFileTool = {
         fileName = `${fileName}${extension}`;
       }
 
-      // Write to temp file (required for fs.ReadStream which the API client needs)
-      tempFilePath = path.join(os.tmpdir(), `umbraco-upload-${model.id}-${fileName}`);
-      fs.writeFileSync(tempFilePath, fileContent);
-
-      // Create ReadStream for Umbraco API
-      const readStream = fs.createReadStream(tempFilePath);
-
       const client = UmbracoManagementClient.getClient();
       await client.postTemporaryFile({
         Id: model.id,
-        File: readStream,
+        File: fileContent,
+        FileName: fileName,
       });
 
       return createToolResult({
@@ -72,15 +62,6 @@ const CreateTemporaryFileTool = {
       return createToolResultError({
         detail: `Error creating temporary file: ${(error as Error).message}`,
       });
-    } finally {
-      // Cleanup temp file
-      if (tempFilePath && fs.existsSync(tempFilePath)) {
-        try {
-          fs.unlinkSync(tempFilePath);
-        } catch (e) {
-          console.error('Failed to cleanup temp file:', e);
-        }
-      }
     }
   }),
 } satisfies ToolDefinition<typeof createTemporaryFileSchema.shape, typeof createTemporaryFileOutputSchema.shape>;

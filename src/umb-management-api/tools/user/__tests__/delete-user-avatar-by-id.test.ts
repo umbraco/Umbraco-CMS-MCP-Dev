@@ -4,7 +4,7 @@ import { UserBuilder } from "./helpers/user-builder.js";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 import { TemporaryFileBuilder } from "../../temporary-file/__tests__/helpers/temporary-file-builder.js";
 import { createReadStream } from "fs";
-import { join } from "path";
+import { basename, join } from "path";
 import { v4 as uuidv4 } from "uuid";
 import {
   WRITERS_USER_GROUP_ID,
@@ -53,7 +53,7 @@ describe("delete-user-avatar-by-id", () => {
 
     tempFileBuilder = new TemporaryFileBuilder()
       .withId(uuidv4())
-      .withFile(fileStream);
+      .withFile(fileStream, basename(EXAMPLE_IMAGE_PATH));
 
     await tempFileBuilder.create();
     const temporaryFileId = tempFileBuilder.getId();

@@ -3,7 +3,8 @@ import { z as zod } from "zod";
 
 export const postTemporaryFileBody = zod.object({
   Id: zod.string().uuid(),
-  File: zod.instanceof(ReadStream),
+  File: zod.union([zod.instanceof(Buffer), zod.instanceof(ReadStream)]),
+  FileName: zod.string().min(1),
 });
 
 export const getTemporaryFileByIdParams = zod.object({
@@ -12,7 +13,7 @@ export const getTemporaryFileByIdParams = zod.object({
 
 export const getTemporaryFileByIdResponse = zod.object({
   id: zod.string().guid(),
-  availableUntil: zod.string().datetime({ local: true }).nullish(),
+  availableUntil: zod.string().datetime({ local: true, offset: true }).nullish(),
   fileName: zod.string().min(1),
 });
 
