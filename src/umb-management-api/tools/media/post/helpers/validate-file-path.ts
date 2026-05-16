@@ -1,6 +1,5 @@
 import * as path from "path";
 import * as fs from "fs";
-import { getServerConfig } from "@umbraco-cms/mcp-server-sdk";
 
 /**
  * Validates file path is within allowed directories (UMBRACO_ALLOWED_MEDIA_PATHS).
@@ -8,8 +7,15 @@ import { getServerConfig } from "@umbraco-cms/mcp-server-sdk";
  * Exported for testing.
  */
 export async function validateFilePath(filePath: string, allowedPaths?: string[]): Promise<string> {
-  // Get configuration (in stdio mode, this won't log) or use provided paths
-  const allowedMediaPaths = allowedPaths ?? (await getServerConfig(true)).config.allowedMediaPaths;
+  // Read the env var directly rather than via getServerConfig — that triggers
+  // CLI arg parsing (yargs dynamic import) which fails on Cloudflare Workers.
+  // The filePath source is Node-only by definition (fs.createReadStream below),
+  // but the env-var lookup itself must not crash on Workers.
+  const allowedMediaPaths =
+    allowedPaths ??
+    (process.env.UMBRACO_ALLOWED_MEDIA_PATHS
+      ? process.env.UMBRACO_ALLOWED_MEDIA_PATHS.split(",").map((p) => p.trim()).filter(Boolean)
+      : undefined);
 
   // Check if UMBRACO_ALLOWED_MEDIA_PATHS is configured
   if (!allowedMediaPaths || allowedMediaPaths.length === 0) {
@@ -23,12 +29,18 @@ export async function validateFilePath(filePath: string, allowedPaths?: string[]
   // This prevents path traversal attacks like "../../../etc/passwd"
   const normalizedPath = path.resolve(filePath);
 
-  // Check if the normalized path starts with any of the allowed directories
+  // Check if the normalized path starts with any of the allowed directories.
+  // fs.realpathSync resolves symlinks (e.g. /tmp -> /private/tmp on macOS) but
+  // can throw on Workers (fs not implemented) or when the allowedPath doesn't
+  // exist — fall back to literal string comparison in those cases.
   const isAllowed = allowedMediaPaths.some((allowedPath: string) => {
-    // Ensure we're comparing normalized paths
-    // Use realpath for comparison to handle symlinks in the path itself (e.g., /tmp -> /private/tmp on macOS)
-    const realAllowedPath = fs.realpathSync(allowedPath);
-    return normalizedPath.startsWith(allowedPath) || normalizedPath.startsWith(realAllowedPath);
+    if (normalizedPath.startsWith(allowedPath)) return true;
+    try {
+      const realAllowedPath = fs.realpathSync(allowedPath);
+      return normalizedPath.startsWith(realAllowedPath);
+    } catch {
+      return false;
+    }
   });
 
   if (!isAllowed) {
@@ -46,9 +58,13 @@ export async function validateFilePath(filePath: string, allowedPaths?: string[]
       // Resolve the symlink and verify it's also within allowed paths
       const realPath = fs.realpathSync(normalizedPath);
       const symlinkAllowed = allowedMediaPaths.some((allowedPath: string) => {
-        // Use realpath for comparison to handle symlinks in paths (e.g., /tmp -> /private/tmp on macOS)
-        const realAllowedPath = fs.realpathSync(allowedPath);
-        return realPath.startsWith(allowedPath) || realPath.startsWith(realAllowedPath);
+        if (realPath.startsWith(allowedPath)) return true;
+        try {
+          const realAllowedPath = fs.realpathSync(allowedPath);
+          return realPath.startsWith(realAllowedPath);
+        } catch {
+          return false;
+        }
       });
 
       if (!symlinkAllowed) {

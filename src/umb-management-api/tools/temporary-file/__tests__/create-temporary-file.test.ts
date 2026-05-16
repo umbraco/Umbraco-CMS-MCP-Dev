@@ -40,12 +40,7 @@ describe("create-temporary-file", () => {
     expect(createSnapshotResult(result, testId)).toMatchSnapshot();
 
     const items = await TemporaryFileTestHelper.findTemporaryFiles(testId);
-    // Normalize fileName which contains dynamic UUID (e.g., umbraco-upload-{uuid}-example.jpg)
-    const normalizedItems = items.map((item: { fileName?: string }) => ({
-      ...item,
-      fileName: item.fileName?.replace(/umbraco-upload-[a-f0-9-]+-/, 'umbraco-upload-NORMALIZED-')
-    }));
-    expect(createSnapshotResult({ structuredContent: { items: normalizedItems } })).toMatchSnapshot();
+    expect(createSnapshotResult({ structuredContent: { items } })).toMatchSnapshot();
   });
 
   it("should handle empty base64", async () => {
@@ -81,12 +76,8 @@ describe("create-temporary-file", () => {
 
       // Verify the file was created with .png extension
       const items = await TemporaryFileTestHelper.findTemporaryFiles(testId);
-      const normalizedItems = items.map((item: { fileName?: string }) => ({
-        ...item,
-        fileName: item.fileName?.replace(/umbraco-upload-[a-f0-9-]+-/, 'umbraco-upload-NORMALIZED-')
-      }));
-      expect(normalizedItems[0]?.fileName).toContain('.png');
-      expect(createSnapshotResult({ structuredContent: { items: normalizedItems } })).toMatchSnapshot();
+      expect(items[0]?.fileName).toContain('.png');
+      expect(createSnapshotResult({ structuredContent: { items } })).toMatchSnapshot();
     });
 
     it("should auto-detect JPEG extension when filename has no extension", async () => {
@@ -105,11 +96,7 @@ describe("create-temporary-file", () => {
       expect(createSnapshotResult(result, testId)).toMatchSnapshot();
 
       const items = await TemporaryFileTestHelper.findTemporaryFiles(testId);
-      const normalizedItems = items.map((item: { fileName?: string }) => ({
-        ...item,
-        fileName: item.fileName?.replace(/umbraco-upload-[a-f0-9-]+-/, 'umbraco-upload-NORMALIZED-')
-      }));
-      expect(normalizedItems[0]?.fileName).toContain('.jpg');
+      expect(items[0]?.fileName).toContain('.jpg');
     });
 
     it("should preserve existing extension when provided", async () => {
@@ -127,12 +114,8 @@ describe("create-temporary-file", () => {
       expect(createSnapshotResult(result, testId)).toMatchSnapshot();
 
       const items = await TemporaryFileTestHelper.findTemporaryFiles(testId);
-      const normalizedItems = items.map((item: { fileName?: string }) => ({
-        ...item,
-        fileName: item.fileName?.replace(/umbraco-upload-[a-f0-9-]+-/, 'umbraco-upload-NORMALIZED-')
-      }));
       // Should keep original .png extension, not add another
-      expect(normalizedItems[0]?.fileName).toBe('umbraco-upload-NORMALIZED-test-with-extension.png');
+      expect(items[0]?.fileName).toBe('test-with-extension.png');
     });
 
     it("should auto-detect GIF extension when filename has no extension", async () => {
@@ -151,11 +134,7 @@ describe("create-temporary-file", () => {
       expect(createSnapshotResult(result, testId)).toMatchSnapshot();
 
       const items = await TemporaryFileTestHelper.findTemporaryFiles(testId);
-      const normalizedItems = items.map((item: { fileName?: string }) => ({
-        ...item,
-        fileName: item.fileName?.replace(/umbraco-upload-[a-f0-9-]+-/, 'umbraco-upload-NORMALIZED-')
-      }));
-      expect(normalizedItems[0]?.fileName).toContain('.gif');
+      expect(items[0]?.fileName).toContain('.gif');
     });
   });
 });

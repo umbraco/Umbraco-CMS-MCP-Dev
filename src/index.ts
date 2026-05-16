@@ -10,9 +10,12 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { checkUmbracoVersion, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
 import { availableCollections } from "./umb-management-api/tools/collection-registry.js";
-import { setUmbracoVersion } from "./umb-management-api/runtime-context.js";
+import { setUmbracoVersion, setAllowFilePathUploads } from "./umb-management-api/runtime-context.js";
 
 const main = async () => {
+  // Node/stdio environment supports filesystem access; enable filePath uploads.
+  setAllowFilePathUploads(true);
+
   // Clear config cache to ensure fresh config for each server start
   clearConfigCache();
 

@@ -1,5 +1,5 @@
-import CreateMediaTool from "./post/create-media.js";
-import CreateMediaMultipleTool from "./post/create-media-multiple.js";
+import { createCreateMediaTool } from "./post/create-media.js";
+import { createCreateMediaMultipleTool } from "./post/create-media-multiple.js";
 import CreateMediaFolderTool from "./post/create-media-folder.js";
 import DeleteMediaTool from "./delete/delete-media.js";
 import GetMediaByIdTool from "./get/get-media-by-id.js";
@@ -34,7 +34,7 @@ import GetRecycleBinMediaOriginalParentTool from "./get/get-recycle-bin-media-or
 import GetMediaTypeSchemaTool from "./get/get-media-type-schema.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
-import { isUmbracoAtLeast } from "../../runtime-context.js";
+import { isUmbracoAtLeast, isFilePathUploadAllowed } from "../../runtime-context.js";
 import {
   type ToolCollectionExport,
   type ToolDefinition,
@@ -61,8 +61,9 @@ export const MediaCollection: ToolCollectionExport = {
     }
 
     if (AuthorizationPolicies.SectionAccessMedia(user)) {
-      tools.push(CreateMediaTool);
-      tools.push(CreateMediaMultipleTool);
+      const allowFilePath = isFilePathUploadAllowed();
+      tools.push(createCreateMediaTool({ allowFilePath }));
+      tools.push(createCreateMediaMultipleTool({ allowFilePath }));
       tools.push(CreateMediaFolderTool);
       tools.push(DeleteMediaTool);
       tools.push(UpdateMediaTool);
