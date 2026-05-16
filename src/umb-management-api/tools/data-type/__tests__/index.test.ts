@@ -52,14 +52,14 @@ describe("data-type-tool-index — pre-17.4 fallback", () => {
     beforeAll(() => setUmbracoVersion("17.3.0"));
     afterAll(() => setUmbracoVersion("17.4.0"));
 
-    it("registers the legacy property-editor-template tool and omits the Schema-API tools", () => {
+    it("still registers get-data-type-schema (legacy synthesizer) but omits the batch Schema-API tool", () => {
         const userMock = {
             allowedSections: [sections.content]
         } as Partial<CurrentUserResponseModel>;
 
         const names = DataTypeCollection.tools(userMock as CurrentUserResponseModel).map(t => t.name);
-        expect(names).toContain("get-data-type-property-editor-template");
-        expect(names).not.toContain("get-data-type-schema");
+        expect(names).toContain("get-data-type-schema");
         expect(names).not.toContain("get-data-type-schemas");
+        expect(names).not.toContain("get-data-type-property-editor-template");
     });
 });

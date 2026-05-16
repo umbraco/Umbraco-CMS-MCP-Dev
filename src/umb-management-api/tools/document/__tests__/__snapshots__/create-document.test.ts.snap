@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`create-document should apply an explicit templateId when provided 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document created successfully",
+  },
+}
+`;
+
+exports[`create-document should auto-apply the document type's default template when templateId is omitted 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document created successfully",
+  },
+}
+`;
+
 exports[`create-document should create a document 1`] = `
 {
   "content": [],
@@ -87,6 +107,16 @@ exports[`create-document should create a document with empty cultures array (nul
 `;
 
 exports[`create-document should create a document with specific cultures 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document created successfully",
+  },
+}
+`;
+
+exports[`create-document should create the document with no template when the doc type has no default 1`] = `
 {
   "content": [],
   "structuredContent": {
