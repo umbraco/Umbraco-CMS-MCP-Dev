@@ -23,3 +23,4 @@ export { availableCollections as collections } from "./umb-management-api/tools/
 export { allModes, allModeNames } from "./config/mode-registry.js";
 export { allSliceNames } from "./config/slice-registry.js";
 export { UmbracoManagementClient } from "./umb-management-api/umbraco-management-client.js";
+export { configureApiClient, initializeUmbracoFetch } from "@umbraco-cms/mcp-server-sdk";
