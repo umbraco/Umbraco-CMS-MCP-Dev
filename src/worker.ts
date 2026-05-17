@@ -25,6 +25,7 @@ import { umbracoCloudSiteRouting } from "@umbraco-cms/mcp-hosted/cloud";
 // CMS collections and registries
 import { collections, allModes, allModeNames, allSliceNames } from "./collections.js";
 import { UmbracoManagementClient } from "./umb-management-api/umbraco-management-client.js";
+import { registerCreateMediaFromFileTool } from "./umb-management-api/tools/media/post/create-media-from-file.js";
 
 // ============================================================================
 // Server Configuration
@@ -58,6 +59,7 @@ export class UmbracoMcpAgent extends McpAgent<HostedMcpEnv, unknown, AuthProps> 
       this.env,
       this.props!,
     );
+    registerCreateMediaFromFileTool(this.server);
   }
 
   // Diagnostic: surface stack traces for the otherwise-opaque
