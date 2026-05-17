@@ -26,6 +26,10 @@ import { umbracoCloudSiteRouting } from "@umbraco-cms/mcp-hosted/cloud";
 import { collections, allModes, allModeNames, allSliceNames } from "./collections.js";
 import { UmbracoManagementClient } from "./umb-management-api/umbraco-management-client.js";
 import { registerCreateMediaFromFileTool } from "./umb-management-api/tools/media/post/create-media-from-file.js";
+import {
+  registerCreateMediaFromUrlStreamTool,
+  setStreamingAuthContext,
+} from "./umb-management-api/tools/media/post/create-media-from-url-stream.js";
 
 // ============================================================================
 // Server Configuration
@@ -59,7 +63,14 @@ export class UmbracoMcpAgent extends McpAgent<HostedMcpEnv, unknown, AuthProps> 
       this.env,
       this.props!,
     );
+    // These two tools are registered directly on the McpServer (rather than
+    // through a regular collection) because they need extras the SDK's
+    // collection-registration loop doesn't currently forward — `_meta` for
+    // openai/fileParams in one case, the per-tenant token + base URL for the
+    // streaming POST in the other. See each module's header comment.
     registerCreateMediaFromFileTool(this.server);
+    setStreamingAuthContext({ env: this.env, tokenKey: this.props!.umbracoTokenKey });
+    registerCreateMediaFromUrlStreamTool(this.server);
   }
 
   // Diagnostic: surface stack traces for the otherwise-opaque
