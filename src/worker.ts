@@ -59,11 +59,8 @@ export class UmbracoMcpAgent extends McpAgent<HostedMcpEnv, unknown, AuthProps> 
       this.env,
       this.props!,
     );
-    // create-media's streaming `url`/`file` source types bypass the orval
-    // transport (so they can use `duplex: "half"`). They need direct KV
-    // access for the OAuth token + the resolved per-tenant base URL — the
-    // tool handler doesn't receive env/props, so we stash them here. Safe
-    // because each Durable Object instance processes one request at a time.
+    // Streaming uploads bypass the orval transport for `duplex: "half"`, so
+    // they need direct KV/env access. Tool handlers don't receive either.
     setStreamingAuthContext({ env: this.env, tokenKey: this.props!.umbracoTokenKey });
   }
 

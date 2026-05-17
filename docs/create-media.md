@@ -37,6 +37,18 @@ For files **the host has access to but you don't**, use `create-media-from-file`
 (or in Claude.ai, just attach the file to the chat — Claude has its own
 Google Drive connector).
 
+### Claude.ai + streaming
+
+Once a Claude.ai workspace has this MCP added as a custom connector, the
+streaming path works there too. The gotcha: Claude's Drive connector
+exposes `read_file_content` which returns base64 — if you let Claude take
+that path, it'll cram the whole file through the model context (and hit
+`create-media` `sourceType: "base64"` which has a sensible <10 KB cap).
+Prompt Claude to use the `uc?export=download&id=…` URL directly and call
+`create-media` with `sourceType: "url"` instead — Claude knows the file id
+from a Drive search, so it can construct the URL without ever loading the
+bytes itself.
+
 ## Why streaming?
 
 Pre-streaming, the URL path went: `fetch(url)` → `arrayBuffer` →
