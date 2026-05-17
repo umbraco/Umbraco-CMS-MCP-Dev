@@ -1,98 +1,103 @@
 /**
- * Create-media variant for ChatGPT proxied-file uploads.
+ * `create-media-from-file` — for files the chat host has attached or generated
+ * for us. ChatGPT's connector populates the `file` parameter with a
+ * `{ download_url, file_id, mime_type, file_name }` object thanks to the
+ * `_meta: { "openai/fileParams": ["file"] }` declaration; the handler then
+ * streams from `download_url` through the same path as `create-media`'s url
+ * source type.
  *
- * Declares `openai/fileParams: ["file"]` so ChatGPT's connector will upload
- * the user's sandbox file to its hosted store and pass a
- * `{ download_url, file_id, mime_type, file_name }` object instead of the
- * raw `/mnt/data/...` path (which fails with "File arg rewrite paths are
- * required when proxied mounts are present.").
+ * Why a separate tool from `create-media`? An openai/fileParams-declared
+ * parameter must be required, not optional — when it's optional, the
+ * connector serialises the file_id as a bare string instead of the expected
+ * object. So this tool exists as a sibling: required `file`, no other source
+ * types. Use this when the user attached a file (or ChatGPT generated one in
+ * the same chat); use `create-media` for URLs / base64 / local paths.
  *
- * Registered directly on the McpServer in worker.ts because the SDK's
- * tool-registration loop doesn't currently forward `_meta`.
+ * Now lives in the regular `media` collection — the SDK's
+ * `registerCollectionTools` loop forwards `_meta` to `tools/list` as of
+ * @umbraco-cms/mcp-hosted@17.0.0-beta.26.
  */
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { v4 as uuidv4 } from "uuid";
-import { UmbracoManagementClient } from "../../../umbraco-management-client.js";
-import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
+import { streamingUploadFromUrl } from "./helpers/streaming-upload.js";
 import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
   MEDIA_TYPE_ARTICLE,
   MEDIA_TYPE_AUDIO,
   MEDIA_TYPE_FILE,
   MEDIA_TYPE_IMAGE,
   MEDIA_TYPE_VECTOR_GRAPHICS,
   MEDIA_TYPE_VIDEO,
+  withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
 
-const fileShape = {
-  download_url: z.string().describe("Temporary URL provided by the host to fetch the file bytes"),
+// Shape ChatGPT's connector injects for an `openai/fileParams`-declared field.
+// `download_url` is short-lived (valid for the current tool call only);
+// `file_id` is a persistent handle if the host needs a fresh URL later.
+const fileObjectSchema = z.object({
+  download_url: z.string().describe("Temporary URL the host provides to fetch the file bytes"),
   file_id: z.string().describe("Persistent file identifier from the host"),
-  mime_type: z.string().optional().describe("MIME type of the file, if known"),
-  file_name: z.string().optional().describe("Original file name, if known"),
-};
+  mime_type: z.string().optional().describe("MIME type if the host knows it"),
+  file_name: z.string().optional().describe("Original file name if the host knows it"),
+});
 
-const inputShape = {
-  file: z.object(fileShape).describe("File reference provided by the ChatGPT host (uploaded or generated)"),
+const schema = z.object({
+  // `file` is intentionally required — the openai/fileParams rewrite only
+  // produces the expected object shape when the param is non-optional.
+  file: fileObjectSchema.describe("Host-injected file object. ChatGPT's connector populates this automatically when the user attached a file or you generated one in the same chat."),
   name: z.string().describe("The name of the media item"),
   mediaTypeName: z.string().describe(
     `Media type: '${MEDIA_TYPE_IMAGE}', '${MEDIA_TYPE_ARTICLE}', '${MEDIA_TYPE_AUDIO}', '${MEDIA_TYPE_VIDEO}', '${MEDIA_TYPE_VECTOR_GRAPHICS}', '${MEDIA_TYPE_FILE}', or a custom media type name`
   ),
   parentId: z.string().uuid().optional().describe("Parent folder ID (defaults to root)"),
-};
+});
 
-const outputShape = {
+type Params = z.infer<typeof schema>;
+
+export const createMediaFromFileOutputSchema = z.object({
   message: z.string(),
   name: z.string(),
-  id: z.string().uuid(),
-};
+  id: z.string().guid(),
+});
 
-export function registerCreateMediaFromFileTool(server: McpServer): void {
-  server.registerTool(
-    "create-media-from-file",
-    {
-      description:
-        "Upload a media file to Umbraco using a file reference provided by the ChatGPT host (proxied mount, generated image, or user upload). " +
-        "Prefer this tool over `create-media` whenever the source is a file the user attached or that ChatGPT generated in its sandbox — " +
-        "ChatGPT will host the file and pass a `{ download_url, file_id }` object on the `file` parameter.",
-      inputSchema: inputShape,
-      outputSchema: outputShape,
-      annotations: { title: "Create media from file (ChatGPT-hosted)" },
-      _meta: { "openai/fileParams": ["file"] },
-    },
-    async (model) => {
-      try {
-        const client = UmbracoManagementClient.getClient();
-        const temporaryFileId = uuidv4();
-
-        const { name: actualName, id } = await uploadMediaFile(client, {
-          sourceType: "url",
-          name: model.name,
-          mediaTypeName: model.mediaTypeName,
-          fileUrl: model.file.download_url,
-          parentId: model.parentId,
-          temporaryFileId,
-        });
-
-        const structured = {
-          message: `Media "${actualName}" created successfully`,
-          name: actualName,
-          id,
-        };
-        return {
-          content: [{ type: "text" as const, text: JSON.stringify(structured) }],
-          structuredContent: structured,
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text" as const,
-              text: `Error creating media: ${(error as Error).message}`,
-            },
-          ],
-          isError: true,
-        };
-      }
+const tool = {
+  name: "create-media-from-file",
+  description:
+    "Upload a media file to Umbraco using a file reference provided by the chat host (ChatGPT-generated image, user-attached file, etc.). " +
+    "Prefer this over `create-media` whenever the source is a file already in the conversation — the host will inject a `{ download_url, file_id }` object on the `file` parameter automatically. " +
+    "For public URLs (Drive / Dropbox / Unsplash / etc.), use `create-media` with sourceType=\"url\".",
+  inputSchema: schema.shape,
+  outputSchema: createMediaFromFileOutputSchema.shape,
+  slices: ["create"],
+  // `_meta` is forwarded to `tools/list` by mcp-hosted's
+  // `registerCollectionTools`. ChatGPT's connector reads
+  // `openai/fileParams` and rewrites the named field into the host-injected
+  // file object; other clients ignore it.
+  _meta: { "openai/fileParams": ["file"] },
+  handler: (async (model: Params) => {
+    try {
+      const { name: actualName, id } = await streamingUploadFromUrl({
+        sourceUrl: model.file.download_url,
+        name: model.name,
+        mediaTypeName: model.mediaTypeName,
+        parentId: model.parentId,
+      });
+      return createToolResult({
+        message: `Media "${actualName}" created successfully`,
+        name: actualName,
+        id,
+      });
+    } catch (error) {
+      return createToolResultError({
+        detail: `Error creating media: ${(error as Error).message}`,
+      });
     }
-  );
-}
+  }),
+} satisfies ToolDefinition<typeof schema.shape, typeof createMediaFromFileOutputSchema.shape>;
+
+// Intentionally NOT wrapped in `withStandardDecorators`: the input-sanitisation
+// decorator coerces unknown object shapes in ways that interact badly with
+// ChatGPT's openai/fileParams rewrite. We accept the file object verbatim
+// from the connector and rely on Zod for validation.
+export default tool;

@@ -1,8 +1,23 @@
+/**
+ * `create-media` — upload a media asset to Umbraco from a URL, inline base64,
+ * or (Node stdio only) a local filesystem path.
+ *
+ * For files attached to the chat by the host (ChatGPT-generated images,
+ * user-uploaded files), use `create-media-from-file` instead — that tool
+ * declares `_meta: { "openai/fileParams": ["file"] }` so the connector
+ * injects a proper `{ download_url, file_id, ... }` object on the way through.
+ *
+ * URL uploads stream the source `response.body` straight into Umbraco's
+ * TempFile endpoint via a custom multipart `ReadableStream` with
+ * `duplex: "half"`, so multi-MB files no longer trip the MCP transport's
+ * ~30 s wall-clock that bit the old buffered orval path.
+ */
 import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
 import { buildSourceTypeSection } from "./helpers/source-type-helpers.js";
+import { streamingUploadFromUrl } from "./helpers/streaming-upload.js";
 import {
   type ToolDefinition,
   createToolResult,
@@ -28,15 +43,15 @@ export function createCreateMediaTool(options: { allowFilePath: boolean }) {
     : (["url", "base64"] as const);
 
   const sourceTypeDescription = options.allowFilePath
-    ? "Media source type: 'filePath' for local files (most efficient), 'url' for web files, 'base64' for embedded data (small files only)"
-    : "Media source type: 'url' for web files, 'base64' for embedded data (small files only)";
+    ? "Media source type: 'filePath' for local files (Node stdio only), 'url' for public direct-download URLs (streamed; preferred for anything over ~100 KB), 'base64' for small inline data"
+    : "Media source type: 'url' for public direct-download URLs (streamed; preferred for anything over ~100 KB), 'base64' for small inline data";
 
   const schema = z.object({
     sourceType: z.enum(sourceTypeValues).describe(sourceTypeDescription),
     name: z.string().describe("The name of the media item"),
     mediaTypeName: z.string().describe(`Media type: '${MEDIA_TYPE_IMAGE}', '${MEDIA_TYPE_ARTICLE}', '${MEDIA_TYPE_AUDIO}', '${MEDIA_TYPE_VIDEO}', '${MEDIA_TYPE_VECTOR_GRAPHICS}', '${MEDIA_TYPE_FILE}', or custom media type name`),
     filePath: z.string().optional().describe("Absolute path to the file (required if sourceType is 'filePath')"),
-    fileUrl: z.string().url().optional().describe("[raw] Public, direct-download URL to fetch the file from (required if sourceType is 'url'). Must be reachable without authentication. Share/viewer links (e.g. drive.google.com/file/d/<id>/view, Dropbox ?dl=0, OneDrive view URLs) must be converted to their direct-download equivalent first — Google Drive: drive.google.com/uc?export=download&id=<id>. Check the file's content-length before calling: uploads above ~3 MB currently time out on the hosted Worker (see issue #225)."),
+    fileUrl: z.string().url().optional().describe("[raw] Public, direct-download URL to fetch the file from (required if sourceType is 'url'). Must be reachable without authentication. Share/viewer links (e.g. drive.google.com/file/d/<id>/view, Dropbox ?dl=0, OneDrive view URLs) must be converted to their direct-download equivalent first — Google Drive: drive.google.com/uc?export=download&id=<id>. Uploads are streamed, so multi-MB files round-trip without timing out."),
     fileAsBase64: z.string().optional().describe("Base64 encoded file data (required if sourceType is 'base64')"),
     parentId: z.string().uuid().optional().describe("Parent folder ID (defaults to root)"),
   });
@@ -44,13 +59,17 @@ export function createCreateMediaTool(options: { allowFilePath: boolean }) {
   type Params = z.infer<typeof schema>;
 
   const filePathSection = buildSourceTypeSection(options.allowFilePath, [
-    'url - Fetch from web URL',
+    'url - Stream from any public direct-download URL (Drive / Dropbox / etc.). Preferred for >100 KB.',
     'base64 - Only for small files (<10KB) due to token usage',
   ]);
 
   const tool = {
     name: "create-media",
     description: `Upload any media file to Umbraco (images, documents, audio, video, SVG, or custom types).
+
+  For files attached to the chat by the host (ChatGPT-generated images,
+  user-uploaded files), use the create-media-from-file tool instead — it
+  handles the host's file-injection flow.
 
   Media Types:
   - ${MEDIA_TYPE_IMAGE}: jpg, png, gif, webp, etc. (supports cropping)
@@ -74,24 +93,43 @@ ${filePathSection}
     slices: ['create'],
     handler: (async (model: Params) => {
       try {
+        // URL uploads use the streaming helper — pipes the source body
+        // straight into Umbraco's TempFile endpoint without buffering, so
+        // multi-MB files round-trip inside the MCP transport's wall-clock.
+        if (model.sourceType === "url") {
+          if (!model.fileUrl) {
+            throw new Error("fileUrl is required when sourceType is 'url'");
+          }
+          const { name: actualName, id } = await streamingUploadFromUrl({
+            sourceUrl: model.fileUrl,
+            name: model.name,
+            mediaTypeName: model.mediaTypeName,
+            parentId: model.parentId,
+          });
+          return createToolResult({
+            message: `Media "${actualName}" created successfully`,
+            name: actualName,
+            id,
+          });
+        }
+
+        // filePath / base64 stay on the buffered helper — small payloads,
+        // no streaming benefit.
         const client = UmbracoManagementClient.getClient();
         const temporaryFileId = uuidv4();
-
         const { name: actualName, id } = await uploadMediaFile(client, {
           sourceType: model.sourceType,
           name: model.name,
           mediaTypeName: model.mediaTypeName,
           filePath: model.filePath,
-          fileUrl: model.fileUrl,
           fileAsBase64: model.fileAsBase64,
           parentId: model.parentId,
           temporaryFileId,
         });
-
         return createToolResult({
           message: `Media "${actualName}" created successfully`,
           name: actualName,
-          id: id
+          id,
         });
       } catch (error) {
         return createToolResultError({
