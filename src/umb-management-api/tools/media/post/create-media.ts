@@ -1,23 +1,13 @@
-/**
- * `create-media` — upload a media asset to Umbraco from a URL, inline base64,
- * or (Node stdio only) a local filesystem path.
- *
- * For files attached to the chat by the host (ChatGPT-generated images,
- * user-uploaded files), use `create-media-from-file` instead — that tool
- * declares `_meta: { "openai/fileParams": ["file"] }` so the connector
- * injects a proper `{ download_url, file_id, ... }` object on the way through.
- *
- * URL uploads stream the source `response.body` straight into Umbraco's
- * TempFile endpoint via a custom multipart `ReadableStream` with
- * `duplex: "half"`, so multi-MB files no longer trip the MCP transport's
- * ~30 s wall-clock that bit the old buffered orval path.
- */
+// For host-attached files (ChatGPT-generated images, user uploads), use
+// `create-media-from-file` instead — its `_meta: { "openai/fileParams": ... }`
+// declaration is how ChatGPT's connector knows to inject a file object.
+
 import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
 import { buildSourceTypeSection } from "./helpers/source-type-helpers.js";
-import { streamingUploadFromUrl } from "./helpers/streaming-upload.js";
+import { streamingUploadToToolResult } from "./helpers/streaming-upload.js";
 import {
   type ToolDefinition,
   createToolResult,
@@ -92,29 +82,23 @@ ${filePathSection}
     outputSchema: createMediaOutputSchema.shape,
     slices: ['create'],
     handler: (async (model: Params) => {
-      try {
-        // URL uploads use the streaming helper — pipes the source body
-        // straight into Umbraco's TempFile endpoint without buffering, so
-        // multi-MB files round-trip inside the MCP transport's wall-clock.
-        if (model.sourceType === "url") {
-          if (!model.fileUrl) {
-            throw new Error("fileUrl is required when sourceType is 'url'");
-          }
-          const { name: actualName, id } = await streamingUploadFromUrl({
-            sourceUrl: model.fileUrl,
-            name: model.name,
-            mediaTypeName: model.mediaTypeName,
-            parentId: model.parentId,
-          });
-          return createToolResult({
-            message: `Media "${actualName}" created successfully`,
-            name: actualName,
-            id,
+      // url goes through the streaming helper; filePath/base64 stay on the
+      // buffered orval path (small payloads, no streaming benefit).
+      if (model.sourceType === "url") {
+        if (!model.fileUrl) {
+          return createToolResultError({
+            detail: "Error creating media: fileUrl is required when sourceType is 'url'",
           });
         }
+        return streamingUploadToToolResult({
+          sourceUrl: model.fileUrl,
+          name: model.name,
+          mediaTypeName: model.mediaTypeName,
+          parentId: model.parentId,
+        });
+      }
 
-        // filePath / base64 stay on the buffered helper — small payloads,
-        // no streaming benefit.
+      try {
         const client = UmbracoManagementClient.getClient();
         const temporaryFileId = uuidv4();
         const { name: actualName, id } = await uploadMediaFile(client, {
