@@ -66,3 +66,24 @@ either the URL path or the `Content-Type` header.
   use the `create-media-from-file` flow (`docs/openai-file-params.md`)
   instead, which lets the host (ChatGPT) attach the file via its own
   hosted store.
+
+## Why we can't proxy Drive through `create-media-from-file`
+
+It looks tempting to route the bytes "ChatGPT pulls from Drive → Umbraco
+MCP pushes to Umbraco" so the worker fetches a fast OpenAI-hosted URL
+instead of Drive directly. In practice this doesn't work:
+
+- ChatGPT's code-interpreter sandbox has no DNS for `drive.google.com`
+  (`urlopen error [Errno -3] Temporary failure in name resolution`).
+- The built-in web fetch tool refuses Drive download endpoints too
+  (`Failed to fetch …drive.google.com/uc?export=download&id=…`).
+- ChatGPT's Google Drive connector and a third-party MCP connector
+  (Umbraco MCP) cannot both be active in the same developer-mode chat,
+  so even when both are configured, only one is exposed to the model at
+  a time. There is no bridge step inside ChatGPT that can hand a Drive
+  file off to a separate MCP connector.
+
+So the only path that actually goes "Drive → Umbraco" in one prompt is
+the `create-media` URL fetch above. `create-media-from-file` remains the
+right tool for files the user has **directly attached to the chat** (or
+that ChatGPT generated), but it can't be used to launder a Drive link.
