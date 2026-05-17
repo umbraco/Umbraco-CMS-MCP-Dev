@@ -52,10 +52,11 @@ either the URL path or the `Content-Type` header.
   a `Buffer` and then POSTs them as multipart form-data to Umbraco's
   Temporary File endpoint. Both legs count toward the Cloudflare Worker
   invocation/wall-clock budget, and an MCP client (e.g. ChatGPT) has its
-  own ~30s timeout on the tool response. On `cms-dev-staging`, files
-  around **3 MB+** can hit this ceiling and surface as `TimeoutError:`
-  on the client side even though the URL fetch itself completed. Small
-  files (verified up to ~2 MB end-to-end) round-trip reliably.
+  own ~30s timeout on the tool response. Observed on `cms-dev-staging`:
+  a 188 KB Drive JPEG and a 2.2 MB generated PNG round-tripped cleanly,
+  whereas a 3.57 MB Drive JPEG consistently surfaced as `TimeoutError:`
+  on the client even though the URL fetch itself completed in the worker
+  logs. Tracked in issue #225.
 - **Drive virus-scan interstitial.** Files large enough to skip Google's
   inline scan return an HTML confirmation page instead of bytes on the
   first request. None of the small/medium images this workflow targets
