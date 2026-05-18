@@ -1,5 +1,7 @@
 import CreateMediaMultipleTool from "../post/create-media-multiple.js";
+import CreateMediaTool from "../post/create-media.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
+import { UmbracoManagementClient } from "@umb-management-client";
 import { join } from "path";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 import {
@@ -17,13 +19,39 @@ const TEST_URL_BATCH_IMAGE_1 = "_Test URL Batch Image 1";
 const TEST_URL_BATCH_IMAGE_2 = "_Test URL Batch Image 2";
 const TEST_FILE_BATCH_IMAGE_1 = "_Test File Batch Image 1";
 const TEST_FILE_BATCH_IMAGE_2 = "_Test File Batch Image 2";
+const TEST_SEED_IMAGE_NAME = "_Test Seed Image (URL fixture, multiple)";
 
 const TEST_IMAGE_PATH = join(process.cwd(), EXAMPLE_IMAGE_PATH);
 const TEST_PDF_PATH = join(process.cwd(), "/src/umb-management-api/tools/media/__tests__/test-files/example.pdf");
-const TEST_IMAGE_URL = "http://localhost:56472/media/qbflidnm/phone-pen-binder.jpg";
+
+// See create-media.test.ts for the rationale: seed the URL fixture instead of
+// hardcoding a media path that depends on a specific Umbraco DB state.
+let testImageUrl: string;
 
 describe("create-media-multiple", () => {
   setupTestEnvironment();
+
+  beforeAll(async () => {
+    await MediaTestHelper.cleanup(TEST_SEED_IMAGE_NAME);
+    const result = await CreateMediaTool.handler(
+      { sourceType: "filePath", name: TEST_SEED_IMAGE_NAME, mediaTypeName: "Image", filePath: TEST_IMAGE_PATH } as any,
+      createMockRequestHandlerExtra(),
+    );
+    const seedId = (result.structuredContent as any)?.id;
+    if (!seedId) {
+      throw new Error(`Failed to seed URL fixture: ${JSON.stringify(result.structuredContent)}`);
+    }
+    const urls = await UmbracoManagementClient.getClient().getMediaUrls({ id: [seedId] });
+    const resolved = urls[0]?.urlInfos[0]?.url;
+    if (!resolved) {
+      throw new Error("Seeded media has no URL info — Umbraco didn't publish the file");
+    }
+    testImageUrl = resolved;
+  });
+
+  afterAll(async () => {
+    await MediaTestHelper.cleanup(TEST_SEED_IMAGE_NAME);
+  });
 
   afterEach(async () => {
     await MediaTestHelper.cleanup(TEST_BATCH_IMAGE_1);
@@ -100,8 +128,8 @@ describe("create-media-multiple", () => {
   it("should create multiple media from URLs", async () => {
     const result = await CreateMediaMultipleTool.handler(
       { sourceType: "url", files: [
-        { name: TEST_URL_BATCH_IMAGE_1, fileUrl: TEST_IMAGE_URL, mediaTypeName: "Image" },
-        { name: TEST_URL_BATCH_IMAGE_2, fileUrl: TEST_IMAGE_URL, mediaTypeName: "Image" },
+        { name: TEST_URL_BATCH_IMAGE_1, fileUrl: testImageUrl, mediaTypeName: "Image" },
+        { name: TEST_URL_BATCH_IMAGE_2, fileUrl: testImageUrl, mediaTypeName: "Image" },
       ]} as any,
       createMockRequestHandlerExtra()
     );
@@ -123,12 +151,12 @@ describe("create-media-multiple", () => {
         files: [
           {
             name: TEST_FILE_BATCH_IMAGE_1,
-            file: { download_url: TEST_IMAGE_URL, file_id: "test-1", mime_type: "image/jpeg" },
+            file: { download_url: testImageUrl, file_id: "test-1", mime_type: "image/jpeg" },
             mediaTypeName: "Image",
           },
           {
             name: TEST_FILE_BATCH_IMAGE_2,
-            file: { download_url: TEST_IMAGE_URL, file_id: "test-2", mime_type: "image/jpeg" },
+            file: { download_url: testImageUrl, file_id: "test-2", mime_type: "image/jpeg" },
             mediaTypeName: "Image",
           },
         ],
@@ -151,7 +179,7 @@ describe("create-media-multiple", () => {
         files: [
           {
             name: TEST_FILE_BATCH_IMAGE_1,
-            file: { download_url: TEST_IMAGE_URL, file_id: "test-1", mime_type: "image/jpeg" },
+            file: { download_url: testImageUrl, file_id: "test-1", mime_type: "image/jpeg" },
             mediaTypeName: "Image",
           },
           { name: TEST_FILE_BATCH_IMAGE_2, mediaTypeName: "Image" },

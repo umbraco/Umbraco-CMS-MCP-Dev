@@ -1,5 +1,6 @@
 import CreateMediaTool from "../post/create-media.js";
 import { MediaTestHelper } from "./helpers/media-test-helper.js";
+import { UmbracoManagementClient } from "@umb-management-client";
 import { join } from "path";
 import { EXAMPLE_IMAGE_PATH } from "@/constants/constants.js";
 import {
@@ -14,14 +15,41 @@ const TEST_URL_IMAGE_NAME = "_Test URL Image Upload";
 const TEST_FILE_INJECTED_NAME = "_Test Host File Injected";
 const TEST_BASE64_IMAGE_NAME = "_Test Base64 Image Upload";
 const TEST_BASE64_NO_EXT_NAME = "_Test Base64 No Extension";
+const TEST_SEED_IMAGE_NAME = "_Test Seed Image (URL fixture)";
 
 const TEST_IMAGE_PATH = join(process.cwd(), EXAMPLE_IMAGE_PATH);
 const TEST_PDF_PATH = join(process.cwd(), "/src/umb-management-api/tools/media/__tests__/test-files/example.pdf");
-const TEST_IMAGE_URL = "http://localhost:56472/media/qbflidnm/phone-pen-binder.jpg";
 const TEST_BASE64_IMAGE = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg==";
+
+// Resolved in beforeAll by seeding a media item and reading its URL back via
+// the management API — keeps the URL/file tests self-contained instead of
+// depending on a particular Umbraco demo-site media-folder state.
+let testImageUrl: string;
 
 describe("create-media", () => {
   setupTestEnvironment();
+
+  beforeAll(async () => {
+    await MediaTestHelper.cleanup(TEST_SEED_IMAGE_NAME);
+    const result = await CreateMediaTool.handler(
+      { sourceType: "filePath", name: TEST_SEED_IMAGE_NAME, mediaTypeName: "Image", filePath: TEST_IMAGE_PATH } as any,
+      createMockRequestHandlerExtra(),
+    );
+    const seedId = (result.structuredContent as any)?.id;
+    if (!seedId) {
+      throw new Error(`Failed to seed URL fixture: ${JSON.stringify(result.structuredContent)}`);
+    }
+    const urls = await UmbracoManagementClient.getClient().getMediaUrls({ id: [seedId] });
+    const resolved = urls[0]?.urlInfos[0]?.url;
+    if (!resolved) {
+      throw new Error("Seeded media has no URL info — Umbraco didn't publish the file");
+    }
+    testImageUrl = resolved;
+  });
+
+  afterAll(async () => {
+    await MediaTestHelper.cleanup(TEST_SEED_IMAGE_NAME);
+  });
 
   afterEach(async () => {
     await MediaTestHelper.cleanup(TEST_IMAGE_NAME);
@@ -73,7 +101,7 @@ describe("create-media", () => {
 
   it("should create media from URL", async () => {
     const result = await CreateMediaTool.handler(
-      { sourceType: "url", name: TEST_URL_IMAGE_NAME, mediaTypeName: "Image", fileUrl: TEST_IMAGE_URL } as any,
+      { sourceType: "url", name: TEST_URL_IMAGE_NAME, mediaTypeName: "Image", fileUrl: testImageUrl } as any,
       createMockRequestHandlerExtra()
     );
     expect(createSnapshotResult(result)).toMatchSnapshot();
@@ -95,10 +123,10 @@ describe("create-media", () => {
         name: TEST_FILE_INJECTED_NAME,
         mediaTypeName: "Image",
         file: {
-          download_url: TEST_IMAGE_URL,
+          download_url: testImageUrl,
           file_id: "test-file-id-injected",
           mime_type: "image/jpeg",
-          file_name: "phone-pen-binder.jpg",
+          file_name: "example.jpg",
         },
       } as any,
       createMockRequestHandlerExtra(),
