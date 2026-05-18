@@ -36,8 +36,8 @@ export function createCreateMediaTool(options: { allowFilePath: boolean }) {
     : (["url", "base64"] as const);
 
   const sourceTypeDescription = options.allowFilePath
-    ? "Media source type: 'filePath' for local files (Node stdio only), 'url' for public direct-download URLs (streamed; preferred for anything over ~100 KB), 'base64' for small inline data"
-    : "Media source type: 'url' for public direct-download URLs (streamed; preferred for anything over ~100 KB), 'base64' for small inline data";
+    ? "Media source type: 'filePath' for local files (Node stdio only), 'url' for public direct-download URLs (streamed; preferred for everything not already attached to the chat), 'base64' for TINY inline payloads only — the server rejects base64 above 10 KiB decoded to stop LLM-truncated or thumbnail-preview base64 from persisting as corrupt files"
+    : "Media source type: 'url' for public direct-download URLs (streamed; preferred for everything not already attached to the chat), 'base64' for TINY inline payloads only — the server rejects base64 above 10 KiB decoded to stop LLM-truncated or thumbnail-preview base64 from persisting as corrupt files";
 
   const schema = z.object({
     sourceType: z.enum(sourceTypeValues).describe(sourceTypeDescription),
@@ -45,15 +45,15 @@ export function createCreateMediaTool(options: { allowFilePath: boolean }) {
     mediaTypeName: z.string().describe(`Media type: '${MEDIA_TYPE_IMAGE}', '${MEDIA_TYPE_ARTICLE}', '${MEDIA_TYPE_AUDIO}', '${MEDIA_TYPE_VIDEO}', '${MEDIA_TYPE_VECTOR_GRAPHICS}', '${MEDIA_TYPE_FILE}', or custom media type name`),
     filePath: z.string().optional().describe("Absolute path to the file (required if sourceType is 'filePath')"),
     fileUrl: z.string().url().optional().describe("[raw] Public, direct-download URL to fetch the file from (required if sourceType is 'url'). Must be reachable without authentication. Share/viewer links (e.g. drive.google.com/file/d/<id>/view, Dropbox ?dl=0, OneDrive view URLs) must be converted to their direct-download equivalent first — Google Drive: drive.google.com/uc?export=download&id=<id>. Uploads are streamed, so multi-MB files round-trip without timing out."),
-    fileAsBase64: z.string().optional().describe("Base64 encoded file data (required if sourceType is 'base64')"),
+    fileAsBase64: z.string().optional().describe("Base64-encoded file data (required if sourceType is 'base64'). HARD LIMIT: decoded payload must be ≤10 KiB; the server rejects anything larger because LLMs reliably truncate big base64 strings or substitute thumbnail previews, both producing corrupt files. Use sourceType='url' for everything bigger."),
     parentId: z.string().uuid().optional().describe("Parent folder ID (defaults to root)"),
   });
 
   type Params = z.infer<typeof schema>;
 
   const filePathSection = buildSourceTypeSection(options.allowFilePath, [
-    'url - Stream from any public direct-download URL (Drive / Dropbox / etc.). Preferred for >100 KB.',
-    'base64 - Only for small files (<10KB) due to token usage',
+    'url - Stream from any public direct-download URL (Drive / Dropbox / etc.). Use this for anything above 10 KiB.',
+    'base64 - ONLY for tiny inline payloads; server hard-rejects decoded base64 over 10 KiB to prevent LLM-truncated corrupt files.',
   ]);
 
   const tool = {

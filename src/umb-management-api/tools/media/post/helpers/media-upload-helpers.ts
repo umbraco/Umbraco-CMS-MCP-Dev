@@ -2,6 +2,10 @@ import * as fs from "fs";
 import * as path from "path";
 import mime from "mime-types";
 import { validateFilePath } from "./validate-file-path.js";
+
+/** Hard ceiling on decoded base64 uploads. Larger files must use sourceType
+ *  "url" (streamed) or create-media-from-file. */
+export const BASE64_MAX_BYTES = 10 * 1024;
 import {
   CAPTURE_RAW_HTTP_RESPONSE,
   MEDIA_TYPE_IMAGE,
@@ -214,6 +218,23 @@ export async function createFilePayload(
         throw new Error("fileAsBase64 is required when sourceType is 'base64'");
       }
       const buffer = Buffer.from(fileAsBase64, 'base64');
+
+      // Enforce the contract the tool description has always advertised.
+      // LLMs (Claude/ChatGPT/etc.) routinely ignore the "<10 KB" guidance
+      // and either truncate the base64 string mid-image or send a Drive-
+      // returned thumbnail preview, persisting a corrupt JFIF stub in
+      // Umbraco. Refuse base64 over 10 KiB outright so the LLM is forced
+      // to retry on a streaming path (sourceType=url, or
+      // create-media-from-file when the file came from the chat host).
+      if (buffer.byteLength > BASE64_MAX_BYTES) {
+        throw new Error(
+          `base64 upload rejected: decoded payload is ${buffer.byteLength.toLocaleString()} bytes ` +
+          `(limit is ${BASE64_MAX_BYTES.toLocaleString()} bytes). LLMs frequently truncate large ` +
+          `base64 strings or return image thumbnails instead of full bytes — both produce corrupt ` +
+          `files in Umbraco. Use sourceType="url" with a public direct-download URL for files this ` +
+          `size, or create-media-from-file if the file is attached to the chat.`
+        );
+      }
 
       let filename = fileName;
       if (!fileName.includes('.')) {
