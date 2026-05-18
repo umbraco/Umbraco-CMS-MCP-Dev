@@ -15,6 +15,8 @@ const TEST_MIXED_IMAGE = "_Test Mixed Image";
 const TEST_MIXED_FILE = "_Test Mixed File";
 const TEST_URL_BATCH_IMAGE_1 = "_Test URL Batch Image 1";
 const TEST_URL_BATCH_IMAGE_2 = "_Test URL Batch Image 2";
+const TEST_FILE_BATCH_IMAGE_1 = "_Test File Batch Image 1";
+const TEST_FILE_BATCH_IMAGE_2 = "_Test File Batch Image 2";
 
 const TEST_IMAGE_PATH = join(process.cwd(), EXAMPLE_IMAGE_PATH);
 const TEST_PDF_PATH = join(process.cwd(), "/src/umb-management-api/tools/media/__tests__/test-files/example.pdf");
@@ -31,6 +33,8 @@ describe("create-media-multiple", () => {
     await MediaTestHelper.cleanup(TEST_MIXED_FILE);
     await MediaTestHelper.cleanup(TEST_URL_BATCH_IMAGE_1);
     await MediaTestHelper.cleanup(TEST_URL_BATCH_IMAGE_2);
+    await MediaTestHelper.cleanup(TEST_FILE_BATCH_IMAGE_1);
+    await MediaTestHelper.cleanup(TEST_FILE_BATCH_IMAGE_2);
   });
 
   it("should create multiple images in batch", async () => {
@@ -104,5 +108,56 @@ describe("create-media-multiple", () => {
     expect(createSnapshotResult(result)).toMatchSnapshot();
     expect(await MediaTestHelper.findMedia(TEST_URL_BATCH_IMAGE_1)).toBeDefined();
     expect(await MediaTestHelper.findMedia(TEST_URL_BATCH_IMAGE_2)).toBeDefined();
+  });
+
+  // sourceType="file" is ChatGPT's host-injection path (openai/fileParams).
+  // Each entry carries a `file` object that the connector populates with
+  // { download_url, file_id, ... }. In stdio/Jest the download_url is used
+  // exactly like a public URL — this covers issue umbraco/Umbraco-CMS-MCP-Dev#227.
+  it("should create multiple media from host-injected file objects", async () => {
+    const result = await CreateMediaMultipleTool.handler(
+      {
+        sourceType: "file",
+        files: [
+          {
+            name: TEST_FILE_BATCH_IMAGE_1,
+            file: { download_url: TEST_IMAGE_URL, file_id: "test-1", mime_type: "image/jpeg" },
+            mediaTypeName: "Image",
+          },
+          {
+            name: TEST_FILE_BATCH_IMAGE_2,
+            file: { download_url: TEST_IMAGE_URL, file_id: "test-2", mime_type: "image/jpeg" },
+            mediaTypeName: "Image",
+          },
+        ],
+      } as any,
+      createMockRequestHandlerExtra(),
+    );
+    expect(createSnapshotResult(result)).toMatchSnapshot();
+    expect(await MediaTestHelper.findMedia(TEST_FILE_BATCH_IMAGE_1)).toBeDefined();
+    expect(await MediaTestHelper.findMedia(TEST_FILE_BATCH_IMAGE_2)).toBeDefined();
+  });
+
+  it("should report a clear per-entry error when sourceType=file but file is missing", async () => {
+    const result = await CreateMediaMultipleTool.handler(
+      {
+        sourceType: "file",
+        files: [
+          {
+            name: TEST_FILE_BATCH_IMAGE_1,
+            file: { download_url: TEST_IMAGE_URL, file_id: "test-1", mime_type: "image/jpeg" },
+            mediaTypeName: "Image",
+          },
+          { name: TEST_FILE_BATCH_IMAGE_2, mediaTypeName: "Image" },
+        ],
+      } as any,
+      createMockRequestHandlerExtra(),
+    );
+    const snap = createSnapshotResult(result);
+    expect(snap).toMatchSnapshot();
+    // The good entry should succeed; the missing-file entry should fail
+    // without preventing the batch from completing (continue-on-error).
+    expect(await MediaTestHelper.findMedia(TEST_FILE_BATCH_IMAGE_1)).toBeDefined();
+    expect(await MediaTestHelper.findMedia(TEST_FILE_BATCH_IMAGE_2)).toBeUndefined();
   });
 });
