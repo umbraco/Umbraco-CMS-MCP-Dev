@@ -114,6 +114,8 @@ describe("create-media-multiple", () => {
   // Each entry carries a `file` object that the connector populates with
   // { download_url, file_id, ... }. In stdio/Jest the download_url is used
   // exactly like a public URL — this covers issue umbraco/Umbraco-CMS-MCP-Dev#227.
+  // Direct assertions (not snapshot) because results carry freshly-allocated
+  // media ids that would churn the snapshot every run.
   it("should create multiple media from host-injected file objects", async () => {
     const result = await CreateMediaMultipleTool.handler(
       {
@@ -133,7 +135,11 @@ describe("create-media-multiple", () => {
       } as any,
       createMockRequestHandlerExtra(),
     );
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    const sc = result.structuredContent as any;
+    expect(sc?.summary).toBe("Processed 2 files: 2 succeeded, 0 failed");
+    expect(sc?.results).toHaveLength(2);
+    expect(sc.results[0]).toMatchObject({ success: true, name: TEST_FILE_BATCH_IMAGE_1 });
+    expect(sc.results[1]).toMatchObject({ success: true, name: TEST_FILE_BATCH_IMAGE_2 });
     expect(await MediaTestHelper.findMedia(TEST_FILE_BATCH_IMAGE_1)).toBeDefined();
     expect(await MediaTestHelper.findMedia(TEST_FILE_BATCH_IMAGE_2)).toBeDefined();
   });
@@ -153,10 +159,16 @@ describe("create-media-multiple", () => {
       } as any,
       createMockRequestHandlerExtra(),
     );
-    const snap = createSnapshotResult(result);
-    expect(snap).toMatchSnapshot();
     // The good entry should succeed; the missing-file entry should fail
     // without preventing the batch from completing (continue-on-error).
+    const sc = result.structuredContent as any;
+    expect(sc?.summary).toBe("Processed 2 files: 1 succeeded, 1 failed");
+    expect(sc.results[0]).toMatchObject({ success: true, name: TEST_FILE_BATCH_IMAGE_1 });
+    expect(sc.results[1]).toMatchObject({
+      success: false,
+      name: TEST_FILE_BATCH_IMAGE_2,
+    });
+    expect(sc.results[1].error).toMatch(/sourceType is 'file' but no file object/);
     expect(await MediaTestHelper.findMedia(TEST_FILE_BATCH_IMAGE_1)).toBeDefined();
     expect(await MediaTestHelper.findMedia(TEST_FILE_BATCH_IMAGE_2)).toBeUndefined();
   });

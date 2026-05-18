@@ -86,6 +86,8 @@ describe("create-media", () => {
   // handler must accept that shape and (in stdio/Jest) treat download_url like
   // a public URL. Integration coverage matters because the unified-tool
   // refactor (umbraco/Umbraco-CMS-MCP-Dev#228) relies on this dispatch.
+  // Direct assertions (not snapshot) because the success path produces a
+  // freshly-allocated media id we don't want to bake into a snapshot.
   it("should create media from a host-injected file object", async () => {
     const result = await CreateMediaTool.handler(
       {
@@ -101,7 +103,9 @@ describe("create-media", () => {
       } as any,
       createMockRequestHandlerExtra(),
     );
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    expect(result.isError).toBeFalsy();
+    expect((result.structuredContent as any)?.name).toBe(TEST_FILE_INJECTED_NAME);
+    expect((result.structuredContent as any)?.id).toMatch(/^[a-f0-9-]{36}$/);
     const found = await MediaTestHelper.findMedia(TEST_FILE_INJECTED_NAME);
     expect(found).toBeDefined();
   });
@@ -112,7 +116,7 @@ describe("create-media", () => {
       createMockRequestHandlerExtra(),
     );
     expect(result.isError).toBe(true);
-    expect(createSnapshotResult(result)).toMatchSnapshot();
+    expect((result.structuredContent as any)?.detail).toMatch(/sourceType is 'file' but no file object was provided/);
   });
 
   it("should create media from base64", async () => {
