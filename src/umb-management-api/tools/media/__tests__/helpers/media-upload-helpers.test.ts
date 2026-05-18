@@ -102,6 +102,30 @@ describe("media-upload-helpers", () => {
 
       expect(filename).toMatch(/^no-extension\.(png|.+)$/);
     });
+
+    it("rejects base64 payloads decoded above 10 KiB", async () => {
+      // 11 KiB of bytes — comfortably over the cap. LLMs truncate ~MB
+      // base64 silently; this guard stops that turning into a saved-but-
+      // corrupt file in Umbraco.
+      const tooBig = Buffer.alloc(11 * 1024, 0x41).toString("base64");
+
+      await expect(
+        createFilePayload("base64", undefined, undefined, tooBig, "too-big.bin"),
+      ).rejects.toThrow(/base64 upload rejected.*sourceType="url"/);
+    });
+
+    it("accepts base64 payloads at exactly 10 KiB", async () => {
+      const atLimit = Buffer.alloc(10 * 1024, 0x41).toString("base64");
+
+      const { data } = await createFilePayload(
+        "base64",
+        undefined,
+        undefined,
+        atLimit,
+        "at-limit.bin",
+      );
+      expect((data as Buffer).byteLength).toBe(10 * 1024);
+    });
   });
 
   describe("createFilePayload - url source", () => {
