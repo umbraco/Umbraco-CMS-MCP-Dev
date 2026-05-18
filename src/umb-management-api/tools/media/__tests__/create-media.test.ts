@@ -11,6 +11,7 @@ import {
 const TEST_IMAGE_NAME = "_Test Image Upload";
 const TEST_FILE_NAME = "_Test File Upload";
 const TEST_URL_IMAGE_NAME = "_Test URL Image Upload";
+const TEST_FILE_INJECTED_NAME = "_Test Host File Injected";
 const TEST_BASE64_IMAGE_NAME = "_Test Base64 Image Upload";
 const TEST_BASE64_NO_EXT_NAME = "_Test Base64 No Extension";
 
@@ -26,6 +27,7 @@ describe("create-media", () => {
     await MediaTestHelper.cleanup(TEST_IMAGE_NAME);
     await MediaTestHelper.cleanup(TEST_FILE_NAME);
     await MediaTestHelper.cleanup(TEST_URL_IMAGE_NAME);
+    await MediaTestHelper.cleanup(TEST_FILE_INJECTED_NAME);
     await MediaTestHelper.cleanup(`${TEST_BASE64_IMAGE_NAME}.png`);
     await MediaTestHelper.cleanup(TEST_BASE64_NO_EXT_NAME);
   });
@@ -77,6 +79,40 @@ describe("create-media", () => {
     expect(createSnapshotResult(result)).toMatchSnapshot();
     const found = await MediaTestHelper.findMedia(TEST_URL_IMAGE_NAME);
     expect(found).toBeDefined();
+  });
+
+  // sourceType="file" is the host-injection path (openai/fileParams). The
+  // connector ships a `{ download_url, file_id, ... }` object on `file`; the
+  // handler must accept that shape and (in stdio/Jest) treat download_url like
+  // a public URL. Integration coverage matters because the unified-tool
+  // refactor (umbraco/Umbraco-CMS-MCP-Dev#228) relies on this dispatch.
+  it("should create media from a host-injected file object", async () => {
+    const result = await CreateMediaTool.handler(
+      {
+        sourceType: "file",
+        name: TEST_FILE_INJECTED_NAME,
+        mediaTypeName: "Image",
+        file: {
+          download_url: TEST_IMAGE_URL,
+          file_id: "test-file-id-injected",
+          mime_type: "image/jpeg",
+          file_name: "phone-pen-binder.jpg",
+        },
+      } as any,
+      createMockRequestHandlerExtra(),
+    );
+    expect(createSnapshotResult(result)).toMatchSnapshot();
+    const found = await MediaTestHelper.findMedia(TEST_FILE_INJECTED_NAME);
+    expect(found).toBeDefined();
+  });
+
+  it("should error clearly when sourceType=file but the file object is missing", async () => {
+    const result = await CreateMediaTool.handler(
+      { sourceType: "file", name: "_Test File Missing", mediaTypeName: "Image" } as any,
+      createMockRequestHandlerExtra(),
+    );
+    expect(result.isError).toBe(true);
+    expect(createSnapshotResult(result)).toMatchSnapshot();
   });
 
   it("should create media from base64", async () => {

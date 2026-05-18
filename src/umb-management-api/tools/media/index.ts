@@ -1,5 +1,4 @@
 import { createCreateMediaTool } from "./post/create-media.js";
-import CreateMediaFromFileTool from "./post/create-media-from-file.js";
 import { createCreateMediaMultipleTool } from "./post/create-media-multiple.js";
 import CreateMediaFolderTool from "./post/create-media-folder.js";
 import DeleteMediaTool from "./delete/delete-media.js";
@@ -64,7 +63,6 @@ export const MediaCollection: ToolCollectionExport = {
     if (AuthorizationPolicies.SectionAccessMedia(user)) {
       const allowFilePath = isFilePathUploadAllowed();
       tools.push(createCreateMediaTool({ allowFilePath }));
-      tools.push(CreateMediaFromFileTool);
       tools.push(createCreateMediaMultipleTool({ allowFilePath }));
       tools.push(CreateMediaFolderTool);
       tools.push(DeleteMediaTool);

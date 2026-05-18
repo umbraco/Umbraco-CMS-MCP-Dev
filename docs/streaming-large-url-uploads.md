@@ -1,14 +1,16 @@
-# Streaming URL uploads — `create-media-from-url-stream`
+# Streaming large file uploads
 
-The default `create-media` URL path can't reliably upload files past roughly
-3 MB on the hosted Worker. The fetch from the source URL completes, but the
-worker then buffers the entire payload (multiple times: `Buffer` → `Uint8Array`
-→ `Blob`), and the subsequent POST to Umbraco's TempFile endpoint serialises
+The naïve URL-fetch path can't reliably upload files past roughly 3 MB on the
+hosted Worker. The fetch from the source URL completes, but the worker then
+buffers the entire payload (multiple times: `Buffer` → `Uint8Array` → `Blob`),
+and the subsequent POST to Umbraco's TempFile endpoint serialises
 synchronously. The combined wall-clock blows past the MCP transport's ~30s
 ceiling and the call surfaces as `TimeoutError:` on the client.
 
-`create-media-from-url-stream` exists for that case. Same inputs as the URL
-variant of `create-media` (URL, name, media type, optional parent), but:
+`create-media` (`sourceType: "url"` and `sourceType: "file"`) and
+`create-media-multiple` (same source types per entry) now stream through a
+custom helper (`helpers/streaming-upload.ts`) when running on the hosted
+Worker. The helper:
 
 - Bypasses the orval-generated `postTemporaryFile` client entirely.
 - Pipes the source `response.body` straight into a custom multipart
@@ -17,24 +19,24 @@ variant of `create-media` (URL, name, media type, optional parent), but:
   concurrently; total wall-clock collapses from `download + upload` to
   roughly `max(download, upload)`.
 
-End-to-end on `umbraco-cms-dev-mcp-staging`, the 3.57 MB Drive JPEG that
-consistently timed out via `create-media` round-trips in well under the MCP
-timeout via this tool (`f3873059-ceec-4f43-94ce-630c5b5939d6` for the record).
+End-to-end on `umbraco-cms-dev-mcp-staging`, a 3.57 MB Drive JPEG that
+consistently timed out via the buffered path now round-trips well under the
+MCP timeout (`f3873059-ceec-4f43-94ce-630c5b5939d6` for the record).
 
-## When to use which
+## When to use which `sourceType`
 
-- **`create-media`** — small files (sub-MB), or when you already have base64
-  bytes locally and can pass them inline.
-- **`create-media-from-url-stream`** — files in the few-MB range fetched from
-  a public URL. Same URL constraints (must be a direct-download link with no
-  auth; share/viewer URLs must be transformed first — see
-  `upload-from-google-drive.md`).
-- **`create-media-from-file`** — files the chat host has attached for you
-  (ChatGPT generated images, ChatGPT user-uploaded files, etc.) — see
-  `openai-file-params.md`.
-
-The streaming tool's description nudges the model to prefer it for files over
-~1 MB, so in practice you should rarely need to specify which to use.
+- **`sourceType: "file"`** — host-attached chat files (ChatGPT-attached
+  images, ChatGPT-generated images, Claude.ai chat attachments). The
+  connector populates the `file` object on the call automatically via
+  `openai/fileParams`. Preferred for anything already in the conversation —
+  see `openai-file-params.md`.
+- **`sourceType: "url"`** — public direct-download URLs (Drive / Dropbox /
+  Unsplash / etc.). The URL must be a direct-download link with no auth;
+  share/viewer URLs must be transformed first — see
+  `upload-from-google-drive.md`.
+- **`sourceType: "base64"`** (single-file only) — tiny inline payloads
+  (≤10 KiB decoded). Larger base64 is hard-rejected because LLMs reliably
+  truncate big base64 strings, producing corrupt files.
 
 ## Implementation notes
 

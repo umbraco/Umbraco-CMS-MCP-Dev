@@ -215,8 +215,9 @@ export async function streamingUploadFromUrl(
   }
 }
 
-/** Streaming upload + standard tool-result wrapping. Used by both `create-media`
- *  (sourceType=url) and `create-media-from-file`. */
+/** Streaming upload + standard tool-result wrapping. Used by `create-media` for
+ *  both sourceType="url" (public direct-download URL) and sourceType="file"
+ *  (host-injected download_url via `openai/fileParams`). */
 export async function streamingUploadToToolResult(params: StreamingUploadParams) {
   try {
     const { name, id } = await streamingUploadFromUrl(params);

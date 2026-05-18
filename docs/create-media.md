@@ -33,9 +33,11 @@ Same idea for Dropbox (`?dl=1`) and OneDrive (their public-share endpoints).
 The file must be shared with "Anyone with the link" — files restricted to a
 Google account can't be fetched anonymously.
 
-For files **the host has access to but you don't**, use `create-media-from-file`
-(or in Claude.ai, just attach the file to the chat — Claude has its own
-Google Drive connector).
+For files **the host has access to but you don't** (ChatGPT-generated images,
+user-attached files), use `create-media` with `sourceType: "file"` — the
+connector populates the `file` object via `openai/fileParams` automatically.
+In Claude.ai, just attach the file to the chat — Claude has its own Google
+Drive connector.
 
 ### Claude.ai + streaming
 

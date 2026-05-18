@@ -11,7 +11,7 @@ import {
 } from "@umbraco-cms/mcp-server-sdk";
 
 /** Hard ceiling on decoded base64 uploads. Larger files must use sourceType
- *  "url" (streamed) or create-media-from-file. */
+ *  "url" (public direct-download URL) or "file" (host-attached chat file). */
 export const BASE64_MAX_BYTES = 10 * 1024;
 
 /**
@@ -226,7 +226,7 @@ export async function createFilePayload(
         throw new Error(
           `base64 upload rejected: decoded payload is ~${estimatedBytes.toLocaleString()} bytes ` +
           `(limit is ${BASE64_MAX_BYTES.toLocaleString()} bytes). ` +
-          `Use sourceType="url" with a public direct-download URL, or create-media-from-file if the file is attached to the chat.`
+          `Use sourceType="url" with a public direct-download URL, or sourceType="file" if the file is attached to the chat.`
         );
       }
       const buffer = Buffer.from(fileAsBase64, 'base64');

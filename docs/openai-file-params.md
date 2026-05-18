@@ -33,19 +33,21 @@ duration of the tool call.
 3. In the handler, `fetch(file.download_url)` to get a `Buffer`/`Blob` and
    feed it into whatever upload path you already have.
 
-`create-media-from-file` (`src/umb-management-api/tools/media/post/
-create-media-from-file.ts`) is the reference example. It fetches the bytes
-and reuses the existing `uploadMediaFile` helper via `sourceType: "url"`.
+The reference example is the `sourceType: "file"` branch of `create-media`
+(`src/umb-management-api/tools/media/post/create-media.ts`) and the
+`sourceType: "file"` branch of `create-media-multiple`
+(`src/umb-management-api/tools/media/post/create-media-multiple.ts`). Both
+declare `_meta: { "openai/fileParams": ["file"] }` (or `["files"]` for the
+batch tool) and reuse the streaming `streamingUploadFromUrl` helper via the
+host-provided `download_url`.
 
-## Why it's registered directly on `McpServer`
+## Wire-format protection (nested-object pass-through)
 
-The hosted SDK's collection-registration loop in
-`@umbraco-cms/mcp-hosted` does **not** currently forward `_meta` from
-`ToolDefinition` to `McpServer.registerTool` — so a tool defined the usual
-way through a collection will be exposed without its `openai/fileParams`
-metadata, and the connector will keep refusing sandbox files.
+The connector's `file` object is the host's contract, not ours — the
+`withInputSanitization` decorator in `@umbraco-cms/mcp-server-sdk` must
+not reshape it. We use the `[raw]` marker on the `file` field's
+`.describe()` to opt the whole subtree out of sanitisation. Top-level
+string siblings (e.g. `name`, `mediaTypeName`) are still validated.
 
-The workaround is to register the tool directly on the per-request
-`McpServer` instance in `src/worker.ts`, after `createPerRequestServer`
-returns. Once the SDK is updated to forward `_meta`, this can collapse back
-into the regular media collection.
+See umbraco/Umbraco-MCP-Base#133 for the SDK-level fix that makes
+`withStandardDecorators` safe to wrap on file-injection tools.
