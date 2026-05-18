@@ -26,6 +26,10 @@ export function setStreamingAuthContext(ctx: StreamingAuthContext): void {
   authContext = ctx;
 }
 
+export function isStreamingAuthContextConfigured(): boolean {
+  return authContext !== null;
+}
+
 async function resolveAuth(): Promise<{ accessToken: string; baseUrl: string }> {
   if (!authContext) {
     throw new Error(

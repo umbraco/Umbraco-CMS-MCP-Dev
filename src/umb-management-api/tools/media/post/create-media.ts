@@ -7,7 +7,10 @@ import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
 import { buildSourceTypeSection } from "./helpers/source-type-helpers.js";
-import { streamingUploadToToolResult } from "./helpers/streaming-upload.js";
+import {
+  isStreamingAuthContextConfigured,
+  streamingUploadToToolResult,
+} from "./helpers/streaming-upload.js";
 import {
   type ToolDefinition,
   createToolResult,
@@ -82,9 +85,10 @@ ${filePathSection}
     outputSchema: createMediaOutputSchema.shape,
     slices: ['create'],
     handler: (async (model: Params) => {
-      // url goes through the streaming helper; filePath/base64 stay on the
-      // buffered orval path (small payloads, no streaming benefit).
-      if (model.sourceType === "url") {
+      // url goes through the streaming helper in hosted (Worker) mode where the
+      // auth context is wired up at init; Node stdio + Jest fall through to the
+      // buffered orval path below, which handles url/filePath/base64 uniformly.
+      if (model.sourceType === "url" && isStreamingAuthContextConfigured()) {
         if (!model.fileUrl) {
           return createToolResultError({
             detail: "Error creating media: fileUrl is required when sourceType is 'url'",
@@ -106,6 +110,7 @@ ${filePathSection}
           name: model.name,
           mediaTypeName: model.mediaTypeName,
           filePath: model.filePath,
+          fileUrl: model.fileUrl,
           fileAsBase64: model.fileAsBase64,
           parentId: model.parentId,
           temporaryFileId,
