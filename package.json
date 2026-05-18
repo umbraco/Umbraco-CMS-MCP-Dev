@@ -82,7 +82,7 @@
   "devDependencies": {
     "@anthropic-ai/claude-agent-sdk": "0.2.39",
     "@cloudflare/workers-oauth-provider": "^0.2.3",
-    "@jest/types": "^29.6.3",
+    "@jest/types": "^30.4.1",
     "@playwright/test": "^1.58.2",
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^29.5.14",
