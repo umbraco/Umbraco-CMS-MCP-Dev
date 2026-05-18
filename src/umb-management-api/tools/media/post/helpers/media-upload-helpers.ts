@@ -10,6 +10,10 @@ import {
   detectFileExtensionFromBuffer,
 } from "@umbraco-cms/mcp-server-sdk";
 
+/** Hard ceiling on decoded base64 uploads. Larger files must use sourceType
+ *  "url" (public direct-download URL) or "file" (host-attached chat file). */
+export const BASE64_MAX_BYTES = 10 * 1024;
+
 /**
  * Maps MIME types to file extensions using the mime-types library.
  * Returns undefined if MIME type is unknown.
@@ -212,6 +216,18 @@ export async function createFilePayload(
     case "base64": {
       if (!fileAsBase64) {
         throw new Error("fileAsBase64 is required when sourceType is 'base64'");
+      }
+      // LLMs reliably truncate large base64 strings or substitute thumbnail
+      // previews — both produce corrupt files. Estimate decoded size first so
+      // we reject without materialising the (potentially multi-MB) buffer.
+      const padding = fileAsBase64.endsWith("==") ? 2 : fileAsBase64.endsWith("=") ? 1 : 0;
+      const estimatedBytes = Math.floor((fileAsBase64.length * 3) / 4) - padding;
+      if (estimatedBytes > BASE64_MAX_BYTES) {
+        throw new Error(
+          `base64 upload rejected: decoded payload is ~${estimatedBytes.toLocaleString()} bytes ` +
+          `(limit is ${BASE64_MAX_BYTES.toLocaleString()} bytes). ` +
+          `Use sourceType="url" with a public direct-download URL, or sourceType="file" if the file is attached to the chat.`
+        );
       }
       const buffer = Buffer.from(fileAsBase64, 'base64');
 

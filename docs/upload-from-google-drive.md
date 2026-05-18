@@ -64,11 +64,11 @@ either the URL path or the `Content-Type` header.
   `confirm=` token, the file needs the two-request `&confirm=t` dance
   — outside the scope of `create-media`'s plain URL fetch.
 - **No private Drive auth.** OAuth-restricted files aren't supported —
-  use the `create-media-from-file` flow (`docs/openai-file-params.md`)
-  instead, which lets the host (ChatGPT) attach the file via its own
-  hosted store.
+  use `create-media` with `sourceType: "file"`
+  (`docs/openai-file-params.md`) instead, which lets the host (ChatGPT)
+  attach the file via its own hosted store.
 
-## Why we can't proxy Drive through `create-media-from-file`
+## Why we can't proxy Drive through `sourceType: "file"`
 
 It looks tempting to route the bytes "ChatGPT pulls from Drive → Umbraco
 MCP pushes to Umbraco" so the worker fetches a fast OpenAI-hosted URL
@@ -85,6 +85,6 @@ instead of Drive directly. In practice this doesn't work:
   file off to a separate MCP connector.
 
 So the only path that actually goes "Drive → Umbraco" in one prompt is
-the `create-media` URL fetch above. `create-media-from-file` remains the
-right tool for files the user has **directly attached to the chat** (or
-that ChatGPT generated), but it can't be used to launder a Drive link.
+`sourceType: "url"` above. `sourceType: "file"` remains the right choice
+for files the user has **directly attached to the chat** (or that
+ChatGPT generated), but it can't be used to launder a Drive link.

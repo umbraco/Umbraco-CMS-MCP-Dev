@@ -25,7 +25,7 @@ import { umbracoCloudSiteRouting } from "@umbraco-cms/mcp-hosted/cloud";
 // CMS collections and registries
 import { collections, allModes, allModeNames, allSliceNames } from "./collections.js";
 import { UmbracoManagementClient } from "./umb-management-api/umbraco-management-client.js";
-import { registerCreateMediaFromFileTool } from "./umb-management-api/tools/media/post/create-media-from-file.js";
+import { setStreamingAuthContext } from "./umb-management-api/tools/media/post/helpers/streaming-upload.js";
 
 // ============================================================================
 // Server Configuration
@@ -59,7 +59,9 @@ export class UmbracoMcpAgent extends McpAgent<HostedMcpEnv, unknown, AuthProps> 
       this.env,
       this.props!,
     );
-    registerCreateMediaFromFileTool(this.server);
+    // Streaming uploads bypass the orval transport for `duplex: "half"`, so
+    // they need direct KV/env access. Tool handlers don't receive either.
+    setStreamingAuthContext({ env: this.env, tokenKey: this.props!.umbracoTokenKey });
   }
 
   // Diagnostic: surface stack traces for the otherwise-opaque
