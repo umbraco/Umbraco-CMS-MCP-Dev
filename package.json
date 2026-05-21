@@ -87,7 +87,7 @@
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^29.5.14",
     "@types/mime-types": "^3.0.1",
-    "@types/node": "^22.14.1",
+    "@types/node": "^25.9.1",
     "@types/qs": "^6.9.18",
     "agents": "^0.6.0",
     "copyfiles": "^2.4.1",
