@@ -5,25 +5,24 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { DocumentVariantStateModel } from './documentVariantStateModel.js';
 import type { FlagModel } from './flagModel.js';
+import type { PublishableVariantStateModel } from './publishableVariantStateModel.js';
+import type { DocumentVariantResponseModelPublishDate } from './documentVariantResponseModelPublishDate.js';
+import type { DocumentVariantResponseModelScheduledPublishDate } from './documentVariantResponseModelScheduledPublishDate.js';
+import type { DocumentVariantResponseModelScheduledUnpublishDate } from './documentVariantResponseModelScheduledUnpublishDate.js';
+import type { DocumentVariantResponseModelCulture } from './documentVariantResponseModelCulture.js';
+import type { DocumentVariantResponseModelSegment } from './documentVariantResponseModelSegment.js';
 
 export interface DocumentVariantResponseModel {
-  /** @nullable */
-  culture?: string | null;
-  /** @nullable */
-  segment?: string | null;
-  /** @minLength 1 */
-  name: string;
+  id: string;
+  flags: FlagModel[];
+  state: PublishableVariantStateModel;
+  publishDate?: DocumentVariantResponseModelPublishDate;
+  scheduledPublishDate?: DocumentVariantResponseModelScheduledPublishDate;
+  scheduledUnpublishDate?: DocumentVariantResponseModelScheduledUnpublishDate;
   createDate: string;
   updateDate: string;
-  state: DocumentVariantStateModel;
-  /** @nullable */
-  publishDate?: string | null;
-  /** @nullable */
-  scheduledPublishDate?: string | null;
-  /** @nullable */
-  scheduledUnpublishDate?: string | null;
-  readonly id: string;
-  flags: FlagModel[];
+  culture?: DocumentVariantResponseModelCulture;
+  segment?: DocumentVariantResponseModelSegment;
+  name: string;
 }

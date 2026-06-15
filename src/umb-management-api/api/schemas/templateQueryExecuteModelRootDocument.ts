@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type TemplateQueryExecuteModelRootDocument = ReferenceByIdModel | null;
+export type TemplateQueryExecuteModelRootDocument = null | ReferenceByIdModel;

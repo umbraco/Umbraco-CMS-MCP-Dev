@@ -5,17 +5,16 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { ProblemDetailsType } from './problemDetailsType.js';
+import type { ProblemDetailsTitle } from './problemDetailsTitle.js';
+import type { ProblemDetailsStatus } from './problemDetailsStatus.js';
+import type { ProblemDetailsDetail } from './problemDetailsDetail.js';
+import type { ProblemDetailsInstance } from './problemDetailsInstance.js';
 
 export interface ProblemDetails {
-  /** @nullable */
-  type?: string | null;
-  /** @nullable */
-  title?: string | null;
-  /** @nullable */
-  status?: number | null;
-  /** @nullable */
-  detail?: string | null;
-  /** @nullable */
-  instance?: string | null;
-  [key: string]: unknown;
+  type?: ProblemDetailsType;
+  title?: ProblemDetailsTitle;
+  status?: ProblemDetailsStatus;
+  detail?: ProblemDetailsDetail;
+  instance?: ProblemDetailsInstance;
 }

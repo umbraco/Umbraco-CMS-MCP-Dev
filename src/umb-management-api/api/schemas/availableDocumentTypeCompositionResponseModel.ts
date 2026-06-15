@@ -7,9 +7,9 @@
  */
 
 export interface AvailableDocumentTypeCompositionResponseModel {
+  folderPath: string[];
+  isCompatible: boolean;
   id: string;
   name: string;
   icon: string;
-  folderPath: string[];
-  isCompatible: boolean;
 }

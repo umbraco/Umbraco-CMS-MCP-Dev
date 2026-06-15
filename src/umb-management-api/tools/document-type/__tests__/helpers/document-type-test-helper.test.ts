@@ -23,6 +23,7 @@ describe("DocumentTypeTestHelper", () => {
           isElement: false,
           icon: "icon-test",
           flags: [],
+          noAccess: false,
         },
         {
           name: TEST_DOCTYPE_NAME,
@@ -32,6 +33,7 @@ describe("DocumentTypeTestHelper", () => {
           isElement: false,
           icon: "icon-test",
           flags: [],
+          noAccess: false,
         },
         {
           name: "Test3",
@@ -41,6 +43,7 @@ describe("DocumentTypeTestHelper", () => {
           isElement: false,
           icon: "icon-test",
           flags: [],
+          noAccess: false,
         },
       ];
 
@@ -63,6 +66,7 @@ describe("DocumentTypeTestHelper", () => {
           isElement: false,
           icon: "icon-test",
           flags: [],
+          noAccess: false,
         },
         {
           name: "Test2",
@@ -72,6 +76,7 @@ describe("DocumentTypeTestHelper", () => {
           isElement: false,
           icon: "icon-test",
           flags: [],
+          noAccess: false,
         },
       ];
 

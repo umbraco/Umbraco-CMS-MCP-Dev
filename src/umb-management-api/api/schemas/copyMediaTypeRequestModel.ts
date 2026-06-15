@@ -8,6 +8,5 @@
 import type { CopyMediaTypeRequestModelTarget } from './copyMediaTypeRequestModelTarget.js';
 
 export interface CopyMediaTypeRequestModel {
-  /** @nullable */
   target?: CopyMediaTypeRequestModelTarget;
 }

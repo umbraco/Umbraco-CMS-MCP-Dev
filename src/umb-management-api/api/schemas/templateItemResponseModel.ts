@@ -8,8 +8,8 @@
 import type { FlagModel } from './flagModel.js';
 
 export interface TemplateItemResponseModel {
+  alias: string;
+  name: string;
   id: string;
   flags: FlagModel[];
-  name: string;
-  alias: string;
 }

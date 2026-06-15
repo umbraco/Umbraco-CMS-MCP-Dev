@@ -5,19 +5,16 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { RelationTypeResponseModelAlias } from './relationTypeResponseModelAlias.js';
 import type { RelationTypeResponseModelParentObject } from './relationTypeResponseModelParentObject.js';
 import type { RelationTypeResponseModelChildObject } from './relationTypeResponseModelChildObject.js';
 
 export interface RelationTypeResponseModel {
-  /** @minLength 1 */
+  id: string;
+  alias?: RelationTypeResponseModelAlias;
+  parentObject?: RelationTypeResponseModelParentObject;
+  childObject?: RelationTypeResponseModelChildObject;
   name: string;
   isBidirectional: boolean;
   isDependency: boolean;
-  id: string;
-  /** @nullable */
-  alias?: string | null;
-  /** @nullable */
-  parentObject?: RelationTypeResponseModelParentObject;
-  /** @nullable */
-  childObject?: RelationTypeResponseModelChildObject;
 }

@@ -5,17 +5,16 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { ReferenceByIdModel } from './referenceByIdModel.js';
+import type { CreateMediaRequestModelParent } from './createMediaRequestModelParent.js';
+import type { CreateMediaRequestModelId } from './createMediaRequestModelId.js';
 import type { MediaValueModel } from './mediaValueModel.js';
 import type { MediaVariantRequestModel } from './mediaVariantRequestModel.js';
-import type { CreateMediaRequestModelParent } from './createMediaRequestModelParent.js';
-import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
 export interface CreateMediaRequestModel {
+  mediaType: ReferenceByIdModel;
+  parent?: CreateMediaRequestModelParent;
+  id?: CreateMediaRequestModelId;
   values: MediaValueModel[];
   variants: MediaVariantRequestModel[];
-  /** @nullable */
-  id?: string | null;
-  /** @nullable */
-  parent?: CreateMediaRequestModelParent;
-  mediaType: ReferenceByIdModel;
 }

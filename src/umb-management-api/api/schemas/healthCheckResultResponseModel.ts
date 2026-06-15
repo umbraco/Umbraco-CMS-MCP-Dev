@@ -6,13 +6,12 @@
  * OpenAPI spec version: Latest
  */
 import type { StatusResultTypeModel } from './statusResultTypeModel.js';
-import type { HealthCheckActionRequestModel } from './healthCheckActionRequestModel.js';
+import type { HealthCheckResultResponseModelActions } from './healthCheckResultResponseModelActions.js';
+import type { HealthCheckResultResponseModelReadMoreLink } from './healthCheckResultResponseModelReadMoreLink.js';
 
 export interface HealthCheckResultResponseModel {
   message: string;
   resultType: StatusResultTypeModel;
-  /** @nullable */
-  actions?: HealthCheckActionRequestModel[] | null;
-  /** @nullable */
-  readMoreLink?: string | null;
+  actions?: HealthCheckResultResponseModelActions;
+  readMoreLink?: HealthCheckResultResponseModelReadMoreLink;
 }

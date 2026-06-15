@@ -7,10 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="clean" Version="7.0.1" />
-    <PackageReference Include="Umbraco.Cms" Version="17.4.0" />
-    <PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="17.4.0" />
-    <PackageReference Include="Umbraco.ExaminePDF" Version="17.0.0" />
+    <PackageReference Include="clean" Version="8.0.0-rc1" />
+    <PackageReference Include="Umbraco.Cms" Version="18.0.0-rc2" />
+    <PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="18.0.0-rc2" />
+    <PackageReference Include="Umbraco.ExaminePDF" Version="18.0.0" />
+    <!-- Umbraco 18 narrowed its Swashbuckle dependency to SwaggerUI only, but its
+         management API assemblies still reference Swashbuckle.AspNetCore.SwaggerGen
+         (which also generates the swagger.json that Orval consumes). Pull the full
+         meta-package back in to restore Swagger + SwaggerGen. -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
 
   <ItemGroup>

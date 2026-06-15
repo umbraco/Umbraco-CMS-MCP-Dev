@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type CreateFolderRequestModelParent = ReferenceByIdModel | null;
+export type CreateFolderRequestModelParent = null | ReferenceByIdModel;

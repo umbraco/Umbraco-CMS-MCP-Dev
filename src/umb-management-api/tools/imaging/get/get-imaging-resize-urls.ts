@@ -32,9 +32,12 @@ const GetImagingResizeUrlsTool = {
     readOnlyHint: true,
   },
   slices: ['read'],
-  handler: (async (model: GetImagingResizeUrlsParams) => {
+  handler: (async (model) => {
+    // Umbraco 18's OpenAPI 3.1 spec marks `mode` as nullable, so the inferred
+    // input type widens to include `null`; the client param type does not.
+    // Cast back to the generated params type — a null mode is simply omitted.
     return executeGetItemsApiCall((client) =>
-      client.getImagingResizeUrls(model, CAPTURE_RAW_HTTP_RESPONSE)
+      client.getImagingResizeUrls(model as GetImagingResizeUrlsParams, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getImagingResizeUrlsQueryParams.shape, typeof outputSchema.shape>;

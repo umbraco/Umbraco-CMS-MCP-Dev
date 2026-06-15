@@ -9,13 +9,13 @@ import type { MediaTypeTreeItemResponseModelParent } from './mediaTypeTreeItemRe
 import type { FlagModel } from './flagModel.js';
 
 export interface MediaTypeTreeItemResponseModel {
-  hasChildren: boolean;
-  id: string;
-  /** @nullable */
-  parent?: MediaTypeTreeItemResponseModelParent;
-  flags: FlagModel[];
-  name: string;
-  isFolder: boolean;
   icon: string;
   isDeletable: boolean;
+  isFolder: boolean;
+  noAccess: boolean;
+  name: string;
+  id: string;
+  parent?: MediaTypeTreeItemResponseModelParent;
+  flags: FlagModel[];
+  hasChildren: boolean;
 }

@@ -5,27 +5,29 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { CurrentUserResponseModelLanguageIsoCode } from './currentUserResponseModelLanguageIsoCode.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
-import type { CurrentUserResponseModelPermissionsItem } from './currentUserResponseModelPermissionsItem.js';
+import type { IPermissionPresentationModel } from './iPermissionPresentationModel.js';
 
 export interface CurrentUserResponseModel {
-  email: string;
-  userName: string;
-  name: string;
-  userGroupIds: ReferenceByIdModel[];
   id: string;
-  /** @nullable */
-  languageIsoCode: string | null;
+  languageIsoCode: CurrentUserResponseModelLanguageIsoCode;
   documentStartNodeIds: ReferenceByIdModel[];
   hasDocumentRootAccess: boolean;
   mediaStartNodeIds: ReferenceByIdModel[];
   hasMediaRootAccess: boolean;
+  elementStartNodeIds: ReferenceByIdModel[];
+  hasElementRootAccess: boolean;
   avatarUrls: string[];
   languages: string[];
   hasAccessToAllLanguages: boolean;
   hasAccessToSensitiveData: boolean;
   fallbackPermissions: string[];
-  permissions: CurrentUserResponseModelPermissionsItem[];
+  permissions: IPermissionPresentationModel[];
   allowedSections: string[];
   isAdmin: boolean;
+  email: string;
+  userName: string;
+  name: string;
+  userGroupIds: ReferenceByIdModel[];
 }

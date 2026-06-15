@@ -8,13 +8,11 @@
 import type { DataTypePropertyPresentationModel } from './dataTypePropertyPresentationModel.js';
 
 export interface DataTypeResponseModel {
-  /** @minLength 1 */
-  name: string;
-  /** @minLength 1 */
-  editorAlias: string;
-  editorUiAlias: string;
-  values: DataTypePropertyPresentationModel[];
   id: string;
   isDeletable: boolean;
   canIgnoreStartNodes: boolean;
+  name: string;
+  editorAlias: string;
+  editorUiAlias: string;
+  values: DataTypePropertyPresentationModel[];
 }

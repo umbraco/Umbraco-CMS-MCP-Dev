@@ -9,6 +9,5 @@ import type { CreateScriptFolderRequestModelParent } from './createScriptFolderR
 
 export interface CreateScriptFolderRequestModel {
   name: string;
-  /** @nullable */
   parent?: CreateScriptFolderRequestModelParent;
 }

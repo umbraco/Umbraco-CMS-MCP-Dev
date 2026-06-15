@@ -5,10 +5,10 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MediaTypeCompositionRequestModelId } from './mediaTypeCompositionRequestModelId.js';
 
 export interface MediaTypeCompositionRequestModel {
-  /** @nullable */
-  id?: string | null;
+  id?: MediaTypeCompositionRequestModelId;
   currentPropertyAliases: string[];
   currentCompositeIds: string[];
 }

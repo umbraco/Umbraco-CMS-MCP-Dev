@@ -5,16 +5,15 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { MediaRecycleBinItemResponseModelParent } from './mediaRecycleBinItemResponseModelParent.js';
 import type { MediaTypeReferenceResponseModel } from './mediaTypeReferenceResponseModel.js';
 import type { VariantItemResponseModel } from './variantItemResponseModel.js';
+import type { MediaRecycleBinItemResponseModelParent } from './mediaRecycleBinItemResponseModelParent.js';
 
 export interface MediaRecycleBinItemResponseModel {
+  mediaType: MediaTypeReferenceResponseModel;
+  variants: VariantItemResponseModel[];
   id: string;
   createDate: string;
   hasChildren: boolean;
-  /** @nullable */
   parent?: MediaRecycleBinItemResponseModelParent;
-  mediaType: MediaTypeReferenceResponseModel;
-  variants: VariantItemResponseModel[];
 }

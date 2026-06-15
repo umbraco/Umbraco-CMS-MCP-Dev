@@ -5,29 +5,30 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { UserGroupResponseModelDescription } from './userGroupResponseModelDescription.js';
+import type { UserGroupResponseModelIcon } from './userGroupResponseModelIcon.js';
 import type { UserGroupResponseModelDocumentStartNode } from './userGroupResponseModelDocumentStartNode.js';
 import type { UserGroupResponseModelMediaStartNode } from './userGroupResponseModelMediaStartNode.js';
-import type { UserGroupResponseModelPermissionsItem } from './userGroupResponseModelPermissionsItem.js';
+import type { UserGroupResponseModelElementStartNode } from './userGroupResponseModelElementStartNode.js';
+import type { IPermissionPresentationModel } from './iPermissionPresentationModel.js';
 
 export interface UserGroupResponseModel {
-  name: string;
-  alias: string;
-  /** @nullable */
-  description?: string | null;
-  /** @nullable */
-  icon?: string | null;
-  sections: string[];
-  languages: string[];
-  hasAccessToAllLanguages: boolean;
-  /** @nullable */
-  documentStartNode?: UserGroupResponseModelDocumentStartNode;
-  documentRootAccess: boolean;
-  /** @nullable */
-  mediaStartNode?: UserGroupResponseModelMediaStartNode;
-  mediaRootAccess: boolean;
-  fallbackPermissions: string[];
-  permissions: UserGroupResponseModelPermissionsItem[];
   id: string;
   isDeletable: boolean;
   aliasCanBeChanged: boolean;
+  name: string;
+  alias: string;
+  description?: UserGroupResponseModelDescription;
+  icon?: UserGroupResponseModelIcon;
+  sections: string[];
+  languages: string[];
+  hasAccessToAllLanguages: boolean;
+  documentStartNode?: UserGroupResponseModelDocumentStartNode;
+  documentRootAccess: boolean;
+  mediaStartNode?: UserGroupResponseModelMediaStartNode;
+  mediaRootAccess: boolean;
+  elementStartNode?: UserGroupResponseModelElementStartNode;
+  elementRootAccess: boolean;
+  fallbackPermissions: string[];
+  permissions: IPermissionPresentationModel[];
 }

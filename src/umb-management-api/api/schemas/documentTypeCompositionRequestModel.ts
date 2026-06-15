@@ -5,11 +5,11 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DocumentTypeCompositionRequestModelId } from './documentTypeCompositionRequestModelId.js';
 
 export interface DocumentTypeCompositionRequestModel {
-  /** @nullable */
-  id?: string | null;
+  isElement: boolean;
+  id?: DocumentTypeCompositionRequestModelId;
   currentPropertyAliases: string[];
   currentCompositeIds: string[];
-  isElement: boolean;
 }

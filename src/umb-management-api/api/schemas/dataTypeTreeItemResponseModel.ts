@@ -5,18 +5,18 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DataTypeTreeItemResponseModelEditorUiAlias } from './dataTypeTreeItemResponseModelEditorUiAlias.js';
 import type { DataTypeTreeItemResponseModelParent } from './dataTypeTreeItemResponseModelParent.js';
 import type { FlagModel } from './flagModel.js';
 
 export interface DataTypeTreeItemResponseModel {
-  hasChildren: boolean;
+  editorUiAlias?: DataTypeTreeItemResponseModelEditorUiAlias;
+  isDeletable: boolean;
+  isFolder: boolean;
+  noAccess: boolean;
+  name: string;
   id: string;
-  /** @nullable */
   parent?: DataTypeTreeItemResponseModelParent;
   flags: FlagModel[];
-  name: string;
-  isFolder: boolean;
-  /** @nullable */
-  editorUiAlias?: string | null;
-  isDeletable: boolean;
+  hasChildren: boolean;
 }

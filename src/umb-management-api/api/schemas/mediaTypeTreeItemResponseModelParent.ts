@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type MediaTypeTreeItemResponseModelParent = ReferenceByIdModel | null;
+export type MediaTypeTreeItemResponseModelParent = null | ReferenceByIdModel;

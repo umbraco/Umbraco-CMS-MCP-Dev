@@ -8,9 +8,7 @@
 import type { DataTypePropertyPresentationModel } from './dataTypePropertyPresentationModel.js';
 
 export interface UpdateDataTypeRequestModel {
-  /** @minLength 1 */
   name: string;
-  /** @minLength 1 */
   editorAlias: string;
   editorUiAlias: string;
   values: DataTypePropertyPresentationModel[];

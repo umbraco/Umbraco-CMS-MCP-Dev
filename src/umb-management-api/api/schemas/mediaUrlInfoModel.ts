@@ -5,10 +5,10 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MediaUrlInfoModelCulture } from './mediaUrlInfoModelCulture.js';
+import type { MediaUrlInfoModelUrl } from './mediaUrlInfoModelUrl.js';
 
 export interface MediaUrlInfoModel {
-  /** @nullable */
-  culture: string | null;
-  /** @nullable */
-  url: string | null;
+  culture: MediaUrlInfoModelCulture;
+  url: MediaUrlInfoModelUrl;
 }

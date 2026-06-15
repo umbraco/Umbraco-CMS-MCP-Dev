@@ -9,6 +9,5 @@ import type { TelemetryLevelModel } from './telemetryLevelModel.js';
 
 export interface ConsentLevelPresentationModel {
   level: TelemetryLevelModel;
-  /** @minLength 1 */
   description: string;
 }

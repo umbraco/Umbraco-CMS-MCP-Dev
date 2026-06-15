@@ -5,11 +5,11 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { CreateUserDataRequestModelKey } from './createUserDataRequestModelKey.js';
 
 export interface CreateUserDataRequestModel {
+  key?: CreateUserDataRequestModelKey;
   group: string;
   identifier: string;
   value: string;
-  /** @nullable */
-  key?: string | null;
 }

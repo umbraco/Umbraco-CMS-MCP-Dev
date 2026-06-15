@@ -11,6 +11,5 @@ export interface MediaTypeCollectionReferenceResponseModel {
   id: string;
   alias: string;
   icon: string;
-  /** @nullable */
   collection?: MediaTypeCollectionReferenceResponseModelCollection;
 }

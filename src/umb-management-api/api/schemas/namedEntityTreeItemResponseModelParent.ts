@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type NamedEntityTreeItemResponseModelParent = ReferenceByIdModel | null;
+export type NamedEntityTreeItemResponseModelParent = null | ReferenceByIdModel;

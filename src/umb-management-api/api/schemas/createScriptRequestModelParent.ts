@@ -7,7 +7,4 @@
  */
 import type { FileSystemFolderModel } from './fileSystemFolderModel.js';
 
-/**
- * @nullable
- */
-export type CreateScriptRequestModelParent = FileSystemFolderModel | null;
+export type CreateScriptRequestModelParent = null | FileSystemFolderModel;

@@ -5,41 +5,36 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { CreateDocumentTypeRequestModelCollection } from './createDocumentTypeRequestModelCollection.js';
-import type { CreateDocumentTypePropertyTypeRequestModel } from './createDocumentTypePropertyTypeRequestModel.js';
-import type { CreateDocumentTypePropertyTypeContainerRequestModel } from './createDocumentTypePropertyTypeContainerRequestModel.js';
-import type { CreateDocumentTypeRequestModelParent } from './createDocumentTypeRequestModelParent.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { CreateDocumentTypeRequestModelDefaultTemplate } from './createDocumentTypeRequestModelDefaultTemplate.js';
 import type { DocumentTypeCleanupModel } from './documentTypeCleanupModel.js';
 import type { DocumentTypeSortModel } from './documentTypeSortModel.js';
 import type { DocumentTypeCompositionModel } from './documentTypeCompositionModel.js';
+import type { CreateDocumentTypeRequestModelParent } from './createDocumentTypeRequestModelParent.js';
+import type { CreateDocumentTypeRequestModelId } from './createDocumentTypeRequestModelId.js';
+import type { CreateDocumentTypeRequestModelDescription } from './createDocumentTypeRequestModelDescription.js';
+import type { CreateDocumentTypeRequestModelCollection } from './createDocumentTypeRequestModelCollection.js';
+import type { CreateDocumentTypePropertyTypeRequestModel } from './createDocumentTypePropertyTypeRequestModel.js';
+import type { CreateDocumentTypePropertyTypeContainerRequestModel } from './createDocumentTypePropertyTypeContainerRequestModel.js';
 
 export interface CreateDocumentTypeRequestModel {
-  /** @minLength 1 */
-  alias: string;
-  /** @minLength 1 */
-  name: string;
-  /** @nullable */
-  description?: string | null;
-  /** @minLength 1 */
-  icon: string;
-  allowedAsRoot: boolean;
-  variesByCulture: boolean;
-  variesBySegment: boolean;
-  /** @nullable */
-  collection?: CreateDocumentTypeRequestModelCollection;
-  isElement: boolean;
-  properties: CreateDocumentTypePropertyTypeRequestModel[];
-  containers: CreateDocumentTypePropertyTypeContainerRequestModel[];
-  /** @nullable */
-  id?: string | null;
-  /** @nullable */
-  parent?: CreateDocumentTypeRequestModelParent;
   allowedTemplates: ReferenceByIdModel[];
-  /** @nullable */
   defaultTemplate?: CreateDocumentTypeRequestModelDefaultTemplate;
   cleanup: DocumentTypeCleanupModel;
   allowedDocumentTypes: DocumentTypeSortModel[];
   compositions: DocumentTypeCompositionModel[];
+  parent?: CreateDocumentTypeRequestModelParent;
+  id?: CreateDocumentTypeRequestModelId;
+  alias: string;
+  name: string;
+  description?: CreateDocumentTypeRequestModelDescription;
+  icon: string;
+  allowedAsRoot: boolean;
+  variesByCulture: boolean;
+  variesBySegment: boolean;
+  collection?: CreateDocumentTypeRequestModelCollection;
+  isElement: boolean;
+  allowedInLibrary: boolean;
+  properties: CreateDocumentTypePropertyTypeRequestModel[];
+  containers: CreateDocumentTypePropertyTypeContainerRequestModel[];
 }

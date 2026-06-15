@@ -5,18 +5,15 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { DataTypePropertyPresentationModel } from './dataTypePropertyPresentationModel.js';
+import type { CreateDataTypeRequestModelId } from './createDataTypeRequestModelId.js';
 import type { CreateDataTypeRequestModelParent } from './createDataTypeRequestModelParent.js';
+import type { DataTypePropertyPresentationModel } from './dataTypePropertyPresentationModel.js';
 
 export interface CreateDataTypeRequestModel {
-  /** @minLength 1 */
+  id?: CreateDataTypeRequestModelId;
+  parent?: CreateDataTypeRequestModelParent;
   name: string;
-  /** @minLength 1 */
   editorAlias: string;
   editorUiAlias: string;
   values: DataTypePropertyPresentationModel[];
-  /** @nullable */
-  id?: string | null;
-  /** @nullable */
-  parent?: CreateDataTypeRequestModelParent;
 }

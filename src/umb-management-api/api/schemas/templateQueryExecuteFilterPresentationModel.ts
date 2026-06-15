@@ -8,9 +8,7 @@
 import type { OperatorModel } from './operatorModel.js';
 
 export interface TemplateQueryExecuteFilterPresentationModel {
-  /** @minLength 1 */
   propertyAlias: string;
-  /** @minLength 1 */
   constraintValue: string;
   operator: OperatorModel;
 }

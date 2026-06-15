@@ -7,7 +7,4 @@
  */
 import type { FileSystemFolderModel } from './fileSystemFolderModel.js';
 
-/**
- * @nullable
- */
-export type CreateStylesheetFolderRequestModelParent = FileSystemFolderModel | null;
+export type CreateStylesheetFolderRequestModelParent = null | FileSystemFolderModel;

@@ -9,6 +9,5 @@ import type { CreatePartialViewFolderRequestModelParent } from './createPartialV
 
 export interface CreatePartialViewFolderRequestModel {
   name: string;
-  /** @nullable */
   parent?: CreatePartialViewFolderRequestModelParent;
 }

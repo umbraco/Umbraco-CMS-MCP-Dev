@@ -6,17 +6,14 @@
  * OpenAPI spec version: Latest
  */
 import type { TemplateQueryExecuteModelRootDocument } from './templateQueryExecuteModelRootDocument.js';
-import type { TemplateQueryExecuteFilterPresentationModel } from './templateQueryExecuteFilterPresentationModel.js';
+import type { TemplateQueryExecuteModelDocumentTypeAlias } from './templateQueryExecuteModelDocumentTypeAlias.js';
+import type { TemplateQueryExecuteModelFilters } from './templateQueryExecuteModelFilters.js';
 import type { TemplateQueryExecuteModelSort } from './templateQueryExecuteModelSort.js';
 
 export interface TemplateQueryExecuteModel {
-  /** @nullable */
   rootDocument?: TemplateQueryExecuteModelRootDocument;
-  /** @nullable */
-  documentTypeAlias?: string | null;
-  /** @nullable */
-  filters?: TemplateQueryExecuteFilterPresentationModel[] | null;
-  /** @nullable */
+  documentTypeAlias?: TemplateQueryExecuteModelDocumentTypeAlias;
+  filters?: TemplateQueryExecuteModelFilters;
   sort?: TemplateQueryExecuteModelSort;
   take: number;
 }

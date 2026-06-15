@@ -8,8 +8,7 @@
 import type { CreateStylesheetRequestModelParent } from './createStylesheetRequestModelParent.js';
 
 export interface CreateStylesheetRequestModel {
-  name: string;
-  /** @nullable */
-  parent?: CreateStylesheetRequestModelParent;
   content: string;
+  name: string;
+  parent?: CreateStylesheetRequestModelParent;
 }

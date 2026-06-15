@@ -9,7 +9,6 @@ import type { SortingRequestModelParent } from './sortingRequestModelParent.js';
 import type { ItemSortingRequestModel } from './itemSortingRequestModel.js';
 
 export interface SortingRequestModel {
-  /** @nullable */
   parent?: SortingRequestModelParent;
   sorting: ItemSortingRequestModel[];
 }

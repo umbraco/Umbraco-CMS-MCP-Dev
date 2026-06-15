@@ -9,6 +9,5 @@ import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
 export interface VerifyInviteUserRequestModel {
   user: ReferenceByIdModel;
-  /** @minLength 1 */
   token: string;
 }

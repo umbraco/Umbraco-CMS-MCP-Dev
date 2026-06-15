@@ -6,14 +6,12 @@
  * OpenAPI spec version: Latest
  */
 import type { DocumentTypePropertyTypeContainerResponseModelParent } from './documentTypePropertyTypeContainerResponseModelParent.js';
+import type { DocumentTypePropertyTypeContainerResponseModelName } from './documentTypePropertyTypeContainerResponseModelName.js';
 
 export interface DocumentTypePropertyTypeContainerResponseModel {
   id: string;
-  /** @nullable */
   parent?: DocumentTypePropertyTypeContainerResponseModelParent;
-  /** @nullable */
-  name?: string | null;
-  /** @minLength 1 */
+  name?: DocumentTypePropertyTypeContainerResponseModelName;
   type: string;
   sortOrder: number;
 }

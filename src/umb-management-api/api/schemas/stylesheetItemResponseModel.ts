@@ -8,9 +8,8 @@
 import type { StylesheetItemResponseModelParent } from './stylesheetItemResponseModelParent.js';
 
 export interface StylesheetItemResponseModel {
-  path: string;
-  name: string;
-  /** @nullable */
-  parent?: StylesheetItemResponseModelParent;
   isFolder: boolean;
+  name: string;
+  parent?: StylesheetItemResponseModelParent;
+  path: string;
 }

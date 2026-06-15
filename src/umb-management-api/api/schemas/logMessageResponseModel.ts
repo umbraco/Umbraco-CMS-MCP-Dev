@@ -6,16 +6,16 @@
  * OpenAPI spec version: Latest
  */
 import type { LogLevelModel } from './logLevelModel.js';
+import type { LogMessageResponseModelMessageTemplate } from './logMessageResponseModelMessageTemplate.js';
+import type { LogMessageResponseModelRenderedMessage } from './logMessageResponseModelRenderedMessage.js';
 import type { LogMessagePropertyPresentationModel } from './logMessagePropertyPresentationModel.js';
+import type { LogMessageResponseModelException } from './logMessageResponseModelException.js';
 
 export interface LogMessageResponseModel {
   timestamp: string;
   level: LogLevelModel;
-  /** @nullable */
-  messageTemplate?: string | null;
-  /** @nullable */
-  renderedMessage?: string | null;
+  messageTemplate?: LogMessageResponseModelMessageTemplate;
+  renderedMessage?: LogMessageResponseModelRenderedMessage;
   properties: LogMessagePropertyPresentationModel[];
-  /** @nullable */
-  exception?: string | null;
+  exception?: LogMessageResponseModelException;
 }

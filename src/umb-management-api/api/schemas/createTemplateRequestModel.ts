@@ -5,14 +5,12 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { CreateTemplateRequestModelId } from './createTemplateRequestModelId.js';
+import type { CreateTemplateRequestModelContent } from './createTemplateRequestModelContent.js';
 
 export interface CreateTemplateRequestModel {
-  /** @minLength 1 */
+  id?: CreateTemplateRequestModelId;
   name: string;
-  /** @minLength 1 */
   alias: string;
-  /** @nullable */
-  content?: string | null;
-  /** @nullable */
-  id?: string | null;
+  content?: CreateTemplateRequestModelContent;
 }

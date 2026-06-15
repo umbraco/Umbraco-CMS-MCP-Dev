@@ -19,8 +19,8 @@ import type {
   CopyDataTypeRequestModel,
   CopyDocumentRequestModel,
   CopyDocumentTypeRequestModel,
+  CopyElementRequestModel,
   CopyMediaTypeRequestModel,
-  CopyMemberTypeRequestModel,
   CreateDataTypeRequestModel,
   CreateDictionaryItemRequestModel,
   CreateDocumentBlueprintFromDocumentRequestModel,
@@ -28,6 +28,7 @@ import type {
   CreateDocumentRequestModel,
   CreateDocumentTypeRequestModel,
   CreateDocumentTypeTemplateRequestModel,
+  CreateElementRequestModel,
   CreateFolderRequestModel,
   CreateInitialPasswordUserRequestModel,
   CreateLanguageRequestModel,
@@ -84,11 +85,17 @@ import type {
   DomainsResponseModel,
   DynamicRootRequestModel,
   DynamicRootResponseModel,
+  ElementConfigurationResponseModel,
+  ElementItemResponseModel,
+  ElementResponseModel,
+  ElementTreeItemResponseModel,
+  ElementVersionResponseModel,
   EnableTwoFactorRequestModel,
   EnableUserRequestModel,
   EntityImportAnalysisResponseModel,
   FetchResponseModelDataTypeSchemaItemResponseModel,
   FileSystemTreeItemPresentationModel,
+  FolderItemResponseModel,
   FolderResponseModel,
   GetCollectionDocumentByIdParams,
   GetCollectionMediaParams,
@@ -107,12 +114,17 @@ import type {
   GetDocumentByIdReferencedByParams,
   GetDocumentByIdReferencedDescendantsParams,
   GetDocumentTypeAllowedAtRootParams,
+  GetDocumentTypeAllowedInLibraryParams,
   GetDocumentTypeBatchParams,
   GetDocumentTypeByIdAllowedChildrenParams,
   GetDocumentTypeByIdBlueprintParams,
-  GetDocumentTypeByIdSchema200,
   GetDocumentUrlsParams,
   GetDocumentVersionParams,
+  GetElementAreReferencedParams,
+  GetElementByIdAuditLogParams,
+  GetElementByIdReferencedByParams,
+  GetElementFolderByIdReferencedDescendantsParams,
+  GetElementVersionParams,
   GetFilterDataTypeParams,
   GetFilterMemberParams,
   GetFilterUserGroupParams,
@@ -133,6 +145,10 @@ import type {
   GetItemDocumentTypeAncestorsParams,
   GetItemDocumentTypeParams,
   GetItemDocumentTypeSearchParams,
+  GetItemElementAncestorsParams,
+  GetItemElementFolderParams,
+  GetItemElementParams,
+  GetItemElementSearchParams,
   GetItemLanguageParams,
   GetItemMediaAncestorsParams,
   GetItemMediaParams,
@@ -174,7 +190,6 @@ import type {
   GetMediaTypeAllowedAtRootParams,
   GetMediaTypeBatchParams,
   GetMediaTypeByIdAllowedChildrenParams,
-  GetMediaTypeByIdSchema200,
   GetMediaUrlsParams,
   GetMemberAreReferencedParams,
   GetMemberByIdReferencedByParams,
@@ -182,7 +197,6 @@ import type {
   GetMemberGroupParams,
   GetMemberTypeAllowedAtRootParams,
   GetMemberTypeBatchParams,
-  GetMemberTypeByIdSchema200,
   GetObjectTypesParams,
   GetOembedQueryParams,
   GetPackageCreatedParams,
@@ -193,6 +207,10 @@ import type {
   GetRecycleBinDocumentReferencedByParams,
   GetRecycleBinDocumentRootParams,
   GetRecycleBinDocumentSiblingsParams,
+  GetRecycleBinElementChildrenParams,
+  GetRecycleBinElementReferencedByParams,
+  GetRecycleBinElementRootParams,
+  GetRecycleBinElementSiblingsParams,
   GetRecycleBinMediaChildrenParams,
   GetRecycleBinMediaReferencedByParams,
   GetRecycleBinMediaRootParams,
@@ -227,6 +245,10 @@ import type {
   GetTreeDocumentTypeRootParams,
   GetTreeDocumentTypeSearchParams,
   GetTreeDocumentTypeSiblingsParams,
+  GetTreeElementAncestorsParams,
+  GetTreeElementChildrenParams,
+  GetTreeElementRootParams,
+  GetTreeElementSiblingsParams,
   GetTreeMediaAncestorsParams,
   GetTreeMediaChildrenParams,
   GetTreeMediaRootParams,
@@ -260,6 +282,7 @@ import type {
   GetTreeTemplateRootParams,
   GetTreeTemplateSiblingsParams,
   GetUserCurrentPermissionsDocumentParams,
+  GetUserCurrentPermissionsElementParams,
   GetUserCurrentPermissionsMediaParams,
   GetUserCurrentPermissionsParams,
   GetUserDataParams,
@@ -273,6 +296,7 @@ import type {
   HealthCheckGroupPresentationModel,
   HealthCheckGroupWithResultResponseModel,
   HealthCheckResultResponseModel,
+  ISetupTwoFactorModel,
   ImportDictionaryRequestModel,
   ImportDocumentTypeRequestModel,
   ImportMediaTypeRequestModel,
@@ -286,6 +310,7 @@ import type {
   ItemAncestorsResponseModelMemberItemResponseModel,
   ItemAncestorsResponseModelNamedItemResponseModel,
   ItemAncestorsResponseModelTemplateItemResponseModel,
+  JsonObject,
   LanguageItemResponseModel,
   LanguageResponseModel,
   LogLevelCountsReponseModel,
@@ -302,7 +327,6 @@ import type {
   MediaTypeResponseModel,
   MediaTypeTreeItemResponseModel,
   MediaUrlInfoResponseModel,
-  MemberConfigurationResponseModel,
   MemberGroupItemResponseModel,
   MemberGroupResponseModel,
   MemberItemResponseModel,
@@ -319,12 +343,13 @@ import type {
   MoveDocumentBlueprintRequestModel,
   MoveDocumentRequestModel,
   MoveDocumentTypeRequestModel,
+  MoveElementRequestModel,
+  MoveFolderRequestModel,
   MoveMediaRequestModel,
   MoveMediaTypeRequestModel,
   MoveMemberTypeRequestModel,
   NamedEntityTreeItemResponseModel,
   NewsDashboardResponseModel,
-  NoopSetupTwoFactorModel,
   OEmbedResponseModel,
   OutOfDateStatusResponseModel,
   PackageConfigurationResponseModel,
@@ -344,6 +369,9 @@ import type {
   PagedDocumentTypeBlueprintItemResponseModel,
   PagedDocumentTypeTreeItemResponseModel,
   PagedDocumentVersionItemResponseModel,
+  PagedElementRecycleBinItemResponseModel,
+  PagedElementTreeItemResponseModel,
+  PagedElementVersionItemResponseModel,
   PagedFileSystemTreeItemPresentationModel,
   PagedHealthCheckGroupResponseModel,
   PagedHelpPageResponseModel,
@@ -364,6 +392,7 @@ import type {
   PagedModelDataTypeItemResponseModel,
   PagedModelDocumentItemResponseModel,
   PagedModelDocumentTypeItemResponseModel,
+  PagedModelElementItemResponseModel,
   PagedModelMediaItemResponseModel,
   PagedModelMediaTypeItemResponseModel,
   PagedModelMemberItemResponseModel,
@@ -396,6 +425,8 @@ import type {
   PartialViewSnippetResponseModel,
   PatchDocumentRequestModel,
   PostDocumentVersionByIdRollbackParams,
+  PostElementVersionByIdRollbackParams,
+  PostMemberTypeByIdCopyBody,
   PostRedirectManagementStatusParams,
   ProfilingStatusRequestModel,
   ProfilingStatusResponseModel,
@@ -403,9 +434,11 @@ import type {
   PublicAccessResponseModel,
   PublishDocumentRequestModel,
   PublishDocumentWithDescendantsRequestModel,
+  PublishElementRequestModel,
   PublishWithDescendantsResultModel,
   PublishedDocumentResponseModel,
   PutDocumentVersionByIdPreventCleanupParams,
+  PutElementVersionByIdPreventCleanupParams,
   RebuildStatusModel,
   RedirectUrlStatusResponseModel,
   ReferenceByIdModel,
@@ -439,6 +472,8 @@ import type {
   SubsetDocumentRecycleBinItemResponseModel,
   SubsetDocumentTreeItemResponseModel,
   SubsetDocumentTypeTreeItemResponseModel,
+  SubsetElementRecycleBinItemResponseModel,
+  SubsetElementTreeItemResponseModel,
   SubsetFileSystemTreeItemPresentationModel,
   SubsetMediaRecycleBinItemResponseModel,
   SubsetMediaTreeItemResponseModel,
@@ -455,6 +490,8 @@ import type {
   TemplateResponseModel,
   UnlockUsersRequestModel,
   UnpublishDocumentRequestModel,
+  UnpublishElementRequestModel,
+  UpdateCurrentUserRequestModel,
   UpdateDataTypeRequestModel,
   UpdateDictionaryItemRequestModel,
   UpdateDocumentBlueprintRequestModel,
@@ -462,6 +499,7 @@ import type {
   UpdateDocumentRequestModel,
   UpdateDocumentTypeRequestModel,
   UpdateDomainsRequestModel,
+  UpdateElementRequestModel,
   UpdateFolderResponseModel,
   UpdateLanguageRequestModel,
   UpdateMediaRequestModel,
@@ -491,6 +529,7 @@ import type {
   UserResponseModel,
   UserTwoFactorProviderModel,
   ValidateUpdateDocumentRequestModel,
+  ValidateUpdateElementRequestModel,
   VerifyInviteUserRequestModel,
   VerifyInviteUserResponseModel,
   VerifyResetPasswordResponseModel,
@@ -500,33 +539,6 @@ import type {
 } from '../schemas/index.js';
 
 import { UmbracoManagementClient } from '../client.js';
-
-// https://stackoverflow.com/questions/49579094/typescript-conditional-types-filter-out-readonly-properties-pick-only-requir/49579497#49579497
-type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X ? 1 : 2) extends <
-T,
->() => T extends Y ? 1 : 2
-? A
-: B;
-
-type WritableKeys<T> = {
-[P in keyof T]-?: IfEquals<
-  { [Q in P]: T[P] },
-  { -readonly [Q in P]: T[P] },
-  P
->;
-}[keyof T];
-
-type UnionToIntersection<U> =
-  (U extends any ? (k: U)=>void : never) extends ((k: infer I)=>void) ? I : never;
-type DistributeReadOnlyOverUnions<T> = T extends any ? NonReadonly<T> : never;
-
-type Writable<T> = Pick<T, WritableKeys<T>>;
-type NonReadonly<T> = [T] extends [UnionToIntersection<T>] ? {
-  [P in keyof Writable<T>]: T[P] extends object
-    ? NonReadonly<NonNullable<T[P]>>
-    : T[P];
-} : DistributeReadOnlyOverUnions<T>;
-
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -1064,6 +1076,702 @@ const getTreeDictionaryRoot = (
     }
   
 /**
+ * Validates the request model for updating a document without actually updating it.
+ * @summary Validates updating a document.
+ */
+const putUmbracoManagementApiV11DocumentByIdValidate11 = (
+    id: string,
+    validateUpdateDocumentRequestModel: ValidateUpdateDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1.1/document/${id}/validate`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: validateUpdateDocumentRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a document collection identified by the provided Id.
+ * @summary Gets a document collection.
+ */
+const getCollectionDocumentById = (
+    id: string,
+    params?: GetCollectionDocumentByIdParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentCollectionResponseModel>>,) => {
+      return UmbracoManagementClient<PagedDocumentCollectionResponseModel>(
+      {url: `/umbraco/management/api/v1/collection/document/${id}`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Creates a new document with the configuration specified in the request model.
+ * @summary Creates a new document.
+ */
+const postDocument = (
+    createDocumentRequestModel: CreateDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createDocumentRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a document identified by the provided Id.
+ * @summary Gets a document.
+ */
+const getDocumentById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<DocumentResponseModel>>,) => {
+      return UmbracoManagementClient<DocumentResponseModel>(
+      {url: `/umbraco/management/api/v1/document/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Deletes a document identified by the provided Id.
+ * @summary Deletes a document.
+ */
+const deleteDocumentById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Updates a document identified by the provided Id with the details from the request model.
+ * @summary Updates a document.
+ */
+const putDocumentById = (
+    id: string,
+    updateDocumentRequestModel: UpdateDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateDocumentRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of audit log entries for the document identified by the provided Id.
+ * @summary Gets the audit log for a document.
+ */
+const getDocumentByIdAuditLog = (
+    id: string,
+    params?: GetDocumentByIdAuditLogParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedAuditLogResponseModel>>,) => {
+      return UmbracoManagementClient<PagedAuditLogResponseModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/audit-log`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of available content segments for the system.
+ * @summary Gets available segments.
+ */
+const getDocumentByIdAvailableSegmentOptions = (
+    id: string,
+    params?: GetDocumentByIdAvailableSegmentOptionsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedSegmentResponseModel>>,) => {
+      return UmbracoManagementClient<PagedSegmentResponseModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/available-segment-options`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Creates a duplicate of an existing document identified by the provided Id.
+ * @summary Copies a document.
+ */
+const postDocumentByIdCopy = (
+    id: string,
+    copyDocumentRequestModel: CopyDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/copy`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: copyDocumentRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets the domains and culture settings assigned to the document identified by the provided Id.
+ * @summary Gets domains for a document.
+ */
+const getDocumentByIdDomains = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<DomainsResponseModel>>,) => {
+      return UmbracoManagementClient<DomainsResponseModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/domains`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Updates the domains for the document identified by the provided Id with the details from the request model.
+ * @summary Updates the domains for a document.
+ */
+const putDocumentByIdDomains = (
+    id: string,
+    updateDomainsRequestModel: UpdateDomainsRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/domains`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateDomainsRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Moves a document identified by the provided Id to a different location.
+ * @summary Moves a document.
+ */
+const putDocumentByIdMove = (
+    id: string,
+    moveDocumentRequestModel: MoveDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/move`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: moveDocumentRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Moves a document identified by the provided Id to the recycle bin.
+ * @summary Moves a document to the recycle bin.
+ */
+const putDocumentByIdMoveToRecycleBin = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/move-to-recycle-bin`, method: 'PUT'
+    },
+      options);
+    }
+  
+/**
+ * Gets the notifications for the document identified by the provided Id.
+ * @summary Gets notifications for a document.
+ */
+const getDocumentByIdNotifications = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<DocumentNotificationResponseModel[]>>,) => {
+      return UmbracoManagementClient<DocumentNotificationResponseModel[]>(
+      {url: `/umbraco/management/api/v1/document/${id}/notifications`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Updates which actions the current user is subscribed to receive notifications for on the specified document.
+ * @summary Updates notification subscriptions for a document.
+ */
+const putDocumentByIdNotifications = (
+    id: string,
+    updateDocumentNotificationsRequestModel: UpdateDocumentNotificationsRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/notifications`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateDocumentNotificationsRequestModel
+    },
+      options);
+    }
+  
+/**
+ * @summary Make partial updates to a document. For more information, see the documentation at https://docs.umbraco.com/umbraco-cms/reference/management-api/patching/document-endpoint-guide or https://docs.umbraco.com/umbraco-cms/reference/management-api/patching/document-endpoint-spec
+ */
+const patchDocumentByIdPatch = (
+    id: string,
+    patchDocumentRequestModel: PatchDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/patch`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json-patch+json', },
+      data: patchDocumentRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets the preview URL for the document identified by the provided Id.
+ * @summary Gets the preview URL for a document.
+ */
+const getDocumentByIdPreviewUrl = (
+    id: string,
+    params?: GetDocumentByIdPreviewUrlParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<DocumentUrlInfoModel>>,) => {
+      return UmbracoManagementClient<DocumentUrlInfoModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/preview-url`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Creates public access protection for the document identified by the provided Id.
+ * @summary Creates public access rules for a document.
+ */
+const postDocumentByIdPublicAccess = (
+    id: string,
+    publicAccessRequestModel: PublicAccessRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: publicAccessRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Removes public access protection/rules for the document identified by the provided Id.
+ * @summary Removes public access settings for a document.
+ */
+const deleteDocumentByIdPublicAccess = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Gets the public access protection settings for the document identified by the provided Id.
+ * @summary Gets public access rules for a document.
+ */
+const getDocumentByIdPublicAccess = (
+    id: string,
+    params?: GetDocumentByIdPublicAccessParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PublicAccessResponseModel>>,) => {
+      return UmbracoManagementClient<PublicAccessResponseModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Updates the member protection settings for a document, controlling which members or member groups can access it.
+ * @summary Updates public access protection for a document.
+ */
+const putDocumentByIdPublicAccess = (
+    id: string,
+    publicAccessRequestModel: PublicAccessRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: publicAccessRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Publishes a document identified by the provided Id.
+ * @summary Publishes a document.
+ */
+const putDocumentByIdPublish = (
+    id: string,
+    publishDocumentRequestModel: PublishDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/publish`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: publishDocumentRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Publishes a document and its descendants identified by the provided Id.
+ * @summary Publishes a document with its descendants.
+ */
+const putDocumentByIdPublishWithDescendants = (
+    id: string,
+    publishDocumentWithDescendantsRequestModel: PublishDocumentWithDescendantsRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<PublishWithDescendantsResultModel>>,) => {
+      return UmbracoManagementClient<PublishWithDescendantsResultModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/publish-with-descendants`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: publishDocumentWithDescendantsRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets the status and result of a publish with descendants operation.
+ * @summary Gets the result of publishing a document with descendants.
+ */
+const getDocumentByIdPublishWithDescendantsResultByTaskId = (
+    id: string,
+    taskId: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<PublishWithDescendantsResultModel>>,) => {
+      return UmbracoManagementClient<PublishWithDescendantsResultModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/publish-with-descendants/result/${taskId}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Gets a document identified by the provided Id.
+ * @summary Gets a document.
+ */
+const getDocumentByIdPublished = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<PublishedDocumentResponseModel>>,) => {
+      return UmbracoManagementClient<PublishedDocumentResponseModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/published`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of items that reference the documents identified by the provided Ids.
+ * @summary Gets a collection of items that reference documents.
+ */
+const getDocumentByIdReferencedBy = (
+    id: string,
+    params?: GetDocumentByIdReferencedByParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
+      return UmbracoManagementClient<PagedIReferenceResponseModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/referenced-by`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of descendant documents that are referenced by other content.
+ * @summary Gets document descendants that are referenced.
+ */
+const getDocumentByIdReferencedDescendants = (
+    id: string,
+    params?: GetDocumentByIdReferencedDescendantsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
+      return UmbracoManagementClient<PagedReferenceByIdModel>(
+      {url: `/umbraco/management/api/v1/document/${id}/referenced-descendants`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Unpublishes a document identified by the provided Id.
+ * @summary Unpublishes a document.
+ */
+const putDocumentByIdUnpublish = (
+    id: string,
+    unpublishDocumentRequestModel: UnpublishDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/${id}/unpublish`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: unpublishDocumentRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of items that reference the documents identified by the provided Ids.
+ * @summary Gets a collection of items that reference documents.
+ */
+const getDocumentAreReferenced = (
+    params?: GetDocumentAreReferencedParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
+      return UmbracoManagementClient<PagedReferenceByIdModel>(
+      {url: `/umbraco/management/api/v1/document/are-referenced`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the configuration settings for documents.
+ * @summary Gets the document configuration.
+ */
+const getDocumentConfiguration = (
+    
+ options?: SecondParameter<typeof UmbracoManagementClient<DocumentConfigurationResponseModel>>,) => {
+      return UmbracoManagementClient<DocumentConfigurationResponseModel>(
+      {url: `/umbraco/management/api/v1/document/configuration`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Sorts documents in the specified parent container according to the provided sort order.
+ * @summary Sorts documents.
+ */
+const putDocumentSort = (
+    sortingRequestModel: SortingRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/sort`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: sortingRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets the URLs for the document identified by the provided Id.
+ * @summary Gets URLs for a document.
+ */
+const getDocumentUrls = (
+    params?: GetDocumentUrlsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<DocumentUrlInfoResponseModel[]>>,) => {
+      return UmbracoManagementClient<DocumentUrlInfoResponseModel[]>(
+      {url: `/umbraco/management/api/v1/document/urls`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Validates the request model for creating a new document without actually creating it.
+ * @summary Validates creating a document.
+ */
+const postDocumentValidate = (
+    createDocumentRequestModel: CreateDocumentRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/document/validate`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createDocumentRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of document items identified by the provided Ids.
+ * @summary Gets a collection of document items.
+ */
+const getItemDocument = (
+    params?: GetItemDocumentParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<DocumentItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<DocumentItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/document`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the ancestor chains for document items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of document items.
+ */
+const getItemDocumentAncestors = (
+    params?: GetItemDocumentAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelDocumentItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelDocumentItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/document/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches document items by the provided query with pagination support.
+ * @summary Searches document items.
+ */
+const getItemDocumentSearch = (
+    params?: GetItemDocumentSearchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedModelDocumentItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedModelDocumentItemResponseModel>(
+      {url: `/umbraco/management/api/v1/item/document/search`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Permanently deletes all documents in the recycle bin. This operation cannot be undone.
+ * @summary Empties the document recycle bin.
+ */
+const deleteRecycleBinDocument = (
+    
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/recycle-bin/document`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Deletes a document identified by the provided Id.
+ * @summary Deletes a document.
+ */
+const deleteRecycleBinDocumentById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/recycle-bin/document/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Gets the original parent location of a document before it was moved to the recycle bin.
+ * @summary Gets the original parent of a document in the recycle bin.
+ */
+const getRecycleBinDocumentByIdOriginalParent = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<ReferenceByIdModel>>,) => {
+      return UmbracoManagementClient<ReferenceByIdModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/document/${id}/original-parent`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Restores a document from the recycle bin to its original location or a specified parent.
+ * @summary Restores a document from the recycle bin.
+ */
+const putRecycleBinDocumentByIdRestore = (
+    id: string,
+    moveMediaRequestModel: MoveMediaRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/recycle-bin/document/${id}/restore`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: moveMediaRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of documents that are children of the provided parent in the recycle bin.
+ * @summary Gets a collection of documents in the recycle bin.
+ */
+const getRecycleBinDocumentChildren = (
+    params?: GetRecycleBinDocumentChildrenParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/document/children`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of items that reference the document in the recycle bin.
+ * @summary Gets items referencing a document in the recycle bin.
+ */
+const getRecycleBinDocumentReferencedBy = (
+    params?: GetRecycleBinDocumentReferencedByParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
+      return UmbracoManagementClient<PagedIReferenceResponseModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/document/referenced-by`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of documents at the root level of the recycle bin.
+ * @summary Gets documents at the root of the recycle bin.
+ */
+const getRecycleBinDocumentRoot = (
+    params?: GetRecycleBinDocumentRootParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/document/root`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of sibling documents in the recycle bin at the same level as the provided Id.
+ * @summary Gets sibling documents in the recycle bin.
+ */
+const getRecycleBinDocumentSiblings = (
+    params?: GetRecycleBinDocumentSiblingsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<SubsetDocumentRecycleBinItemResponseModel>>,) => {
+      return UmbracoManagementClient<SubsetDocumentRecycleBinItemResponseModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/document/siblings`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of document items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor document items.
+ */
+const getTreeDocumentAncestors = (
+    params?: GetTreeDocumentAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<DocumentTreeItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<DocumentTreeItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/tree/document/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of document tree items that are children of the provided parent Id.
+ * @summary Gets a collection of document tree child items.
+ */
+const getTreeDocumentChildren = (
+    params?: GetTreeDocumentChildrenParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedDocumentTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/document/children`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of document items from the root of the tree with optional filtering.
+ * @summary Gets a collection of document items from the root of the tree.
+ */
+const getTreeDocumentRoot = (
+    params?: GetTreeDocumentRootParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedDocumentTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/document/root`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of document tree items that are siblings of the provided Id.
+ * @summary Gets a collection of document tree sibling items.
+ */
+const getTreeDocumentSiblings = (
+    params?: GetTreeDocumentSiblingsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<SubsetDocumentTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<SubsetDocumentTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/document/siblings`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
  * Creates a new document blueprint with the configuration specified in the request model.
  * @summary Creates a new document blueprint.
  */
@@ -1483,8 +2191,8 @@ const putDocumentTypeByIdMove = (
   
 const getDocumentTypeByIdSchema = (
     id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<GetDocumentTypeByIdSchema200>>,) => {
-      return UmbracoManagementClient<GetDocumentTypeByIdSchema200>(
+ options?: SecondParameter<typeof UmbracoManagementClient<JsonObject>>,) => {
+      return UmbracoManagementClient<JsonObject>(
       {url: `/umbraco/management/api/v1/document-type/${id}/schema`, method: 'GET'
     },
       options);
@@ -1515,6 +2223,20 @@ const getDocumentTypeAllowedAtRoot = (
  options?: SecondParameter<typeof UmbracoManagementClient<PagedAllowedDocumentTypeModel>>,) => {
       return UmbracoManagementClient<PagedAllowedDocumentTypeModel>(
       {url: `/umbraco/management/api/v1/document-type/allowed-at-root`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of document types that are allowed in the library.
+ * @summary Gets document types allowed in library.
+ */
+const getDocumentTypeAllowedInLibrary = (
+    params?: GetDocumentTypeAllowedInLibraryParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedAllowedDocumentTypeModel>>,) => {
+      return UmbracoManagementClient<PagedAllowedDocumentTypeModel>(
+      {url: `/umbraco/management/api/v1/document-type/allowed-in-library`, method: 'GET',
         params
     },
       options);
@@ -1800,703 +2522,6 @@ const postDocumentVersionByIdRollback = (
     }
   
 /**
- * Gets a document collection identified by the provided Id.
- * @summary Gets a document collection.
- */
-const getCollectionDocumentById = (
-    id: string,
-    params?: GetCollectionDocumentByIdParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentCollectionResponseModel>>,) => {
-      return UmbracoManagementClient<PagedDocumentCollectionResponseModel>(
-      {url: `/umbraco/management/api/v1/collection/document/${id}`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Creates a new document with the configuration specified in the request model.
- * @summary Creates a new document.
- */
-const postDocument = (
-    createDocumentRequestModel: CreateDocumentRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createDocumentRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a document identified by the provided Id.
- * @summary Gets a document.
- */
-const getDocumentById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<DocumentResponseModel>>,) => {
-      return UmbracoManagementClient<DocumentResponseModel>(
-      {url: `/umbraco/management/api/v1/document/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Deletes a document identified by the provided Id.
- * @summary Deletes a document.
- */
-const deleteDocumentById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-/**
- * Updates a document identified by the provided Id with the details from the request model.
- * @summary Updates a document.
- */
-const putDocumentById = (
-    id: string,
-    updateDocumentRequestModel: UpdateDocumentRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDocumentRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of audit log entries for the document identified by the provided Id.
- * @summary Gets the audit log for a document.
- */
-const getDocumentByIdAuditLog = (
-    id: string,
-    params?: GetDocumentByIdAuditLogParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedAuditLogResponseModel>>,) => {
-      return UmbracoManagementClient<PagedAuditLogResponseModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/audit-log`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of available content segments for the system.
- * @deprecated
- * @summary Gets available segments.
- */
-const getDocumentByIdAvailableSegmentOptions = (
-    id: string,
-    params?: GetDocumentByIdAvailableSegmentOptionsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedSegmentResponseModel>>,) => {
-      return UmbracoManagementClient<PagedSegmentResponseModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/available-segment-options`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Creates a duplicate of an existing document identified by the provided Id.
- * @summary Copies a document.
- */
-const postDocumentByIdCopy = (
-    id: string,
-    copyDocumentRequestModel: CopyDocumentRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/copy`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: copyDocumentRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets the domains and culture settings assigned to the document identified by the provided Id.
- * @summary Gets domains for a document.
- */
-const getDocumentByIdDomains = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<DomainsResponseModel>>,) => {
-      return UmbracoManagementClient<DomainsResponseModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/domains`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Updates the domains for the document identified by the provided Id with the details from the request model.
- * @summary Updates the domains for a document.
- */
-const putDocumentByIdDomains = (
-    id: string,
-    updateDomainsRequestModel: UpdateDomainsRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/domains`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDomainsRequestModel
-    },
-      options);
-    }
-  
-/**
- * Moves a document identified by the provided Id to a different location.
- * @summary Moves a document.
- */
-const putDocumentByIdMove = (
-    id: string,
-    moveDocumentRequestModel: MoveDocumentRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/move`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: moveDocumentRequestModel
-    },
-      options);
-    }
-  
-/**
- * Moves a document identified by the provided Id to the recycle bin.
- * @summary Moves a document to the recycle bin.
- */
-const putDocumentByIdMoveToRecycleBin = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/move-to-recycle-bin`, method: 'PUT'
-    },
-      options);
-    }
-  
-/**
- * Gets the notifications for the document identified by the provided Id.
- * @summary Gets notifications for a document.
- */
-const getDocumentByIdNotifications = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<DocumentNotificationResponseModel[]>>,) => {
-      return UmbracoManagementClient<DocumentNotificationResponseModel[]>(
-      {url: `/umbraco/management/api/v1/document/${id}/notifications`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Updates which actions the current user is subscribed to receive notifications for on the specified document.
- * @summary Updates notification subscriptions for a document.
- */
-const putDocumentByIdNotifications = (
-    id: string,
-    updateDocumentNotificationsRequestModel: UpdateDocumentNotificationsRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/notifications`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDocumentNotificationsRequestModel
-    },
-      options);
-    }
-  
-/**
- * @summary Make partial updates to a document. For more information, see the documentation at https://docs.umbraco.com/umbraco-cms/reference/management-api/patching/document-endpoint-guide or https://docs.umbraco.com/umbraco-cms/reference/management-api/patching/document-endpoint-spec
- */
-const patchDocumentByIdPatch = (
-    id: string,
-    patchDocumentRequestModel: PatchDocumentRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/patch`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json-patch+json', },
-      data: patchDocumentRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets the preview URL for the document identified by the provided Id.
- * @summary Gets the preview URL for a document.
- */
-const getDocumentByIdPreviewUrl = (
-    id: string,
-    params?: GetDocumentByIdPreviewUrlParams,
- options?: SecondParameter<typeof UmbracoManagementClient<DocumentUrlInfoModel>>,) => {
-      return UmbracoManagementClient<DocumentUrlInfoModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/preview-url`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Creates public access protection for the document identified by the provided Id.
- * @summary Creates public access rules for a document.
- */
-const postDocumentByIdPublicAccess = (
-    id: string,
-    publicAccessRequestModel: PublicAccessRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: publicAccessRequestModel
-    },
-      options);
-    }
-  
-/**
- * Removes public access protection/rules for the document identified by the provided Id.
- * @summary Removes public access settings for a document.
- */
-const deleteDocumentByIdPublicAccess = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'DELETE'
-    },
-      options);
-    }
-  
-/**
- * Gets the public access protection settings for the document identified by the provided Id.
- * @summary Gets public access rules for a document.
- */
-const getDocumentByIdPublicAccess = (
-    id: string,
-    params?: GetDocumentByIdPublicAccessParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PublicAccessResponseModel>>,) => {
-      return UmbracoManagementClient<PublicAccessResponseModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Updates the member protection settings for a document, controlling which members or member groups can access it.
- * @summary Updates public access protection for a document.
- */
-const putDocumentByIdPublicAccess = (
-    id: string,
-    publicAccessRequestModel: PublicAccessRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/public-access`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: publicAccessRequestModel
-    },
-      options);
-    }
-  
-/**
- * Publishes a document identified by the provided Id.
- * @summary Publishes a document.
- */
-const putDocumentByIdPublish = (
-    id: string,
-    publishDocumentRequestModel: PublishDocumentRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/publish`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: publishDocumentRequestModel
-    },
-      options);
-    }
-  
-/**
- * Publishes a document and its descendants identified by the provided Id.
- * @summary Publishes a document with its descendants.
- */
-const putDocumentByIdPublishWithDescendants = (
-    id: string,
-    publishDocumentWithDescendantsRequestModel: PublishDocumentWithDescendantsRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<PublishWithDescendantsResultModel>>,) => {
-      return UmbracoManagementClient<PublishWithDescendantsResultModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/publish-with-descendants`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: publishDocumentWithDescendantsRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets the status and result of a publish with descendants operation.
- * @summary Gets the result of publishing a document with descendants.
- */
-const getDocumentByIdPublishWithDescendantsResultByTaskId = (
-    id: string,
-    taskId: string,
- options?: SecondParameter<typeof UmbracoManagementClient<PublishWithDescendantsResultModel>>,) => {
-      return UmbracoManagementClient<PublishWithDescendantsResultModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/publish-with-descendants/result/${taskId}`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Gets a document identified by the provided Id.
- * @summary Gets a document.
- */
-const getDocumentByIdPublished = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<PublishedDocumentResponseModel>>,) => {
-      return UmbracoManagementClient<PublishedDocumentResponseModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/published`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of items that reference the documents identified by the provided Ids.
- * @summary Gets a collection of items that reference documents.
- */
-const getDocumentByIdReferencedBy = (
-    id: string,
-    params?: GetDocumentByIdReferencedByParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
-      return UmbracoManagementClient<PagedIReferenceResponseModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/referenced-by`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of descendant documents that are referenced by other content.
- * @summary Gets document descendants that are referenced.
- */
-const getDocumentByIdReferencedDescendants = (
-    id: string,
-    params?: GetDocumentByIdReferencedDescendantsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
-      return UmbracoManagementClient<PagedReferenceByIdModel>(
-      {url: `/umbraco/management/api/v1/document/${id}/referenced-descendants`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Unpublishes a document identified by the provided Id.
- * @summary Unpublishes a document.
- */
-const putDocumentByIdUnpublish = (
-    id: string,
-    unpublishDocumentRequestModel: UnpublishDocumentRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/${id}/unpublish`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: unpublishDocumentRequestModel
-    },
-      options);
-    }
-  
-/**
- * Validates the request model for updating a document without actually updating it.
- * @summary Validates updating a document.
- */
-const putUmbracoManagementApiV11DocumentByIdValidate11 = (
-    id: string,
-    validateUpdateDocumentRequestModel: ValidateUpdateDocumentRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1.1/document/${id}/validate`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: validateUpdateDocumentRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of items that reference the documents identified by the provided Ids.
- * @summary Gets a collection of items that reference documents.
- */
-const getDocumentAreReferenced = (
-    params?: GetDocumentAreReferencedParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
-      return UmbracoManagementClient<PagedReferenceByIdModel>(
-      {url: `/umbraco/management/api/v1/document/are-referenced`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets the configuration settings for documents.
- * @summary Gets the document configuration.
- */
-const getDocumentConfiguration = (
-    
- options?: SecondParameter<typeof UmbracoManagementClient<DocumentConfigurationResponseModel>>,) => {
-      return UmbracoManagementClient<DocumentConfigurationResponseModel>(
-      {url: `/umbraco/management/api/v1/document/configuration`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Sorts documents in the specified parent container according to the provided sort order.
- * @summary Sorts documents.
- */
-const putDocumentSort = (
-    sortingRequestModel: SortingRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/sort`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sortingRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets the URLs for the document identified by the provided Id.
- * @summary Gets URLs for a document.
- */
-const getDocumentUrls = (
-    params?: GetDocumentUrlsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<DocumentUrlInfoResponseModel[]>>,) => {
-      return UmbracoManagementClient<DocumentUrlInfoResponseModel[]>(
-      {url: `/umbraco/management/api/v1/document/urls`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Validates the request model for creating a new document without actually creating it.
- * @summary Validates creating a document.
- */
-const postDocumentValidate = (
-    createDocumentRequestModel: CreateDocumentRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/document/validate`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createDocumentRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of document items identified by the provided Ids.
- * @summary Gets a collection of document items.
- */
-const getItemDocument = (
-    params?: GetItemDocumentParams,
- options?: SecondParameter<typeof UmbracoManagementClient<DocumentItemResponseModel[]>>,) => {
-      return UmbracoManagementClient<DocumentItemResponseModel[]>(
-      {url: `/umbraco/management/api/v1/item/document`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets the ancestor chains for document items identified by the provided Ids.
- * @summary Gets ancestors for a collection of document items.
- */
-const getItemDocumentAncestors = (
-    params?: GetItemDocumentAncestorsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelDocumentItemResponseModel[]>>,) => {
-      return UmbracoManagementClient<ItemAncestorsResponseModelDocumentItemResponseModel[]>(
-      {url: `/umbraco/management/api/v1/item/document/ancestors`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Searches document items by the provided query with pagination support.
- * @summary Searches document items.
- */
-const getItemDocumentSearch = (
-    params?: GetItemDocumentSearchParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedModelDocumentItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedModelDocumentItemResponseModel>(
-      {url: `/umbraco/management/api/v1/item/document/search`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Permanently deletes all documents in the recycle bin. This operation cannot be undone.
- * @summary Empties the document recycle bin.
- */
-const deleteRecycleBinDocument = (
-    
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/recycle-bin/document`, method: 'DELETE'
-    },
-      options);
-    }
-  
-/**
- * Deletes a document identified by the provided Id.
- * @summary Deletes a document.
- */
-const deleteRecycleBinDocumentById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/recycle-bin/document/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-/**
- * Gets the original parent location of a document before it was moved to the recycle bin.
- * @summary Gets the original parent of a document in the recycle bin.
- */
-const getRecycleBinDocumentByIdOriginalParent = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<ReferenceByIdModel>>,) => {
-      return UmbracoManagementClient<ReferenceByIdModel>(
-      {url: `/umbraco/management/api/v1/recycle-bin/document/${id}/original-parent`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Restores a document from the recycle bin to its original location or a specified parent.
- * @summary Restores a document from the recycle bin.
- */
-const putRecycleBinDocumentByIdRestore = (
-    id: string,
-    moveMediaRequestModel: MoveMediaRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/recycle-bin/document/${id}/restore`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: moveMediaRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of documents that are children of the provided parent in the recycle bin.
- * @summary Gets a collection of documents in the recycle bin.
- */
-const getRecycleBinDocumentChildren = (
-    params?: GetRecycleBinDocumentChildrenParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>(
-      {url: `/umbraco/management/api/v1/recycle-bin/document/children`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of items that reference the document in the recycle bin.
- * @summary Gets items referencing a document in the recycle bin.
- */
-const getRecycleBinDocumentReferencedBy = (
-    params?: GetRecycleBinDocumentReferencedByParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
-      return UmbracoManagementClient<PagedIReferenceResponseModel>(
-      {url: `/umbraco/management/api/v1/recycle-bin/document/referenced-by`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of documents at the root level of the recycle bin.
- * @summary Gets documents at the root of the recycle bin.
- */
-const getRecycleBinDocumentRoot = (
-    params?: GetRecycleBinDocumentRootParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedDocumentRecycleBinItemResponseModel>(
-      {url: `/umbraco/management/api/v1/recycle-bin/document/root`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of sibling documents in the recycle bin at the same level as the provided Id.
- * @summary Gets sibling documents in the recycle bin.
- */
-const getRecycleBinDocumentSiblings = (
-    params?: GetRecycleBinDocumentSiblingsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<SubsetDocumentRecycleBinItemResponseModel>>,) => {
-      return UmbracoManagementClient<SubsetDocumentRecycleBinItemResponseModel>(
-      {url: `/umbraco/management/api/v1/recycle-bin/document/siblings`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of document items that are ancestors to the provided Id.
- * @summary Gets a collection of ancestor document items.
- */
-const getTreeDocumentAncestors = (
-    params?: GetTreeDocumentAncestorsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<DocumentTreeItemResponseModel[]>>,) => {
-      return UmbracoManagementClient<DocumentTreeItemResponseModel[]>(
-      {url: `/umbraco/management/api/v1/tree/document/ancestors`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of document tree items that are children of the provided parent Id.
- * @summary Gets a collection of document tree child items.
- */
-const getTreeDocumentChildren = (
-    params?: GetTreeDocumentChildrenParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentTreeItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedDocumentTreeItemResponseModel>(
-      {url: `/umbraco/management/api/v1/tree/document/children`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of document items from the root of the tree with optional filtering.
- * @summary Gets a collection of document items from the root of the tree.
- */
-const getTreeDocumentRoot = (
-    params?: GetTreeDocumentRootParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedDocumentTreeItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedDocumentTreeItemResponseModel>(
-      {url: `/umbraco/management/api/v1/tree/document/root`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of document tree items that are siblings of the provided Id.
- * @summary Gets a collection of document tree sibling items.
- */
-const getTreeDocumentSiblings = (
-    params?: GetTreeDocumentSiblingsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<SubsetDocumentTreeItemResponseModel>>,) => {
-      return UmbracoManagementClient<SubsetDocumentTreeItemResponseModel>(
-      {url: `/umbraco/management/api/v1/tree/document/siblings`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
  * Gets a collection of dynamic root items based on the provided query configuration.
  * @summary Gets dynamic roots.
  */
@@ -2520,6 +2545,651 @@ const getDynamicRootSteps = (
  options?: SecondParameter<typeof UmbracoManagementClient<string[]>>,) => {
       return UmbracoManagementClient<string[]>(
       {url: `/umbraco/management/api/v1/dynamic-root/steps`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Creates a new element with the configuration specified in the request model.
+ * @summary Creates a new element.
+ */
+const postElement = (
+    createElementRequestModel: CreateElementRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createElementRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets an element identified by the provided Id.
+ * @summary Gets an element.
+ */
+const getElementById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<ElementResponseModel>>,) => {
+      return UmbracoManagementClient<ElementResponseModel>(
+      {url: `/umbraco/management/api/v1/element/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Deletes an element identified by the provided Id.
+ * @summary Deletes an element.
+ */
+const deleteElementById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Updates an element identified by the provided Id with the details from the request model.
+ * @summary Updates an element.
+ */
+const putElementById = (
+    id: string,
+    updateElementRequestModel: UpdateElementRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateElementRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of audit log entries for the element identified by the provided Id.
+ * @summary Gets the audit log for an element.
+ */
+const getElementByIdAuditLog = (
+    id: string,
+    params?: GetElementByIdAuditLogParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedAuditLogResponseModel>>,) => {
+      return UmbracoManagementClient<PagedAuditLogResponseModel>(
+      {url: `/umbraco/management/api/v1/element/${id}/audit-log`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Creates a duplicate of an existing element identified by the provided Id.
+ * @summary Copies an element.
+ */
+const postElementByIdCopy = (
+    id: string,
+    copyElementRequestModel: CopyElementRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/${id}/copy`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: copyElementRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Moves an element identified by the provided Id to a different location.
+ * @summary Moves an element.
+ */
+const putElementByIdMove = (
+    id: string,
+    moveElementRequestModel: MoveElementRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/${id}/move`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: moveElementRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Moves an element identified by the provided Id to the recycle bin.
+ * @summary Moves an element to the recycle bin.
+ */
+const putElementByIdMoveToRecycleBin = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/${id}/move-to-recycle-bin`, method: 'PUT'
+    },
+      options);
+    }
+  
+/**
+ * Publishes an element identified by the provided Id.
+ * @summary Publishes an element.
+ */
+const putElementByIdPublish = (
+    id: string,
+    publishElementRequestModel: PublishElementRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/${id}/publish`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: publishElementRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of items that reference the element identified by the provided Id.
+ * @summary Gets items referencing an element.
+ */
+const getElementByIdReferencedBy = (
+    id: string,
+    params?: GetElementByIdReferencedByParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
+      return UmbracoManagementClient<PagedIReferenceResponseModel>(
+      {url: `/umbraco/management/api/v1/element/${id}/referenced-by`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Unpublishes an element identified by the provided Id.
+ * @summary Unpublishes an element.
+ */
+const putElementByIdUnpublish = (
+    id: string,
+    unpublishElementRequestModel: UnpublishElementRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/${id}/unpublish`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: unpublishElementRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Validates the request model for updating an element without actually updating it.
+ * @summary Validates updating an element.
+ */
+const putElementByIdValidate = (
+    id: string,
+    validateUpdateElementRequestModel: ValidateUpdateElementRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/${id}/validate`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: validateUpdateElementRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of items that reference the elements identified by the provided Ids.
+ * @summary Gets a collection of items that reference elements.
+ */
+const getElementAreReferenced = (
+    params?: GetElementAreReferencedParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
+      return UmbracoManagementClient<PagedReferenceByIdModel>(
+      {url: `/umbraco/management/api/v1/element/are-referenced`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the configuration settings for elements.
+ * @summary Gets the element configuration.
+ */
+const getElementConfiguration = (
+    
+ options?: SecondParameter<typeof UmbracoManagementClient<ElementConfigurationResponseModel>>,) => {
+      return UmbracoManagementClient<ElementConfigurationResponseModel>(
+      {url: `/umbraco/management/api/v1/element/configuration`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Creates a new element folder with the provided name and parent location.
+ * @summary Creates an element folder.
+ */
+const postElementFolder = (
+    createFolderRequestModel: CreateFolderRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/folder`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createFolderRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets an element folder identified by the provided Id.
+ * @summary Gets an element folder.
+ */
+const getElementFolderById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<FolderResponseModel>>,) => {
+      return UmbracoManagementClient<FolderResponseModel>(
+      {url: `/umbraco/management/api/v1/element/folder/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Deletes an element folder identified by the provided Id.
+ * @summary Deletes an element folder.
+ */
+const deleteElementFolderById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/folder/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Updates an element folder identified by the provided Id with the details provided in the request model.
+ * @summary Updates an element folder.
+ */
+const putElementFolderById = (
+    id: string,
+    updateFolderResponseModel: UpdateFolderResponseModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/folder/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateFolderResponseModel
+    },
+      options);
+    }
+  
+/**
+ * Moves an element folder identified by the provided Id to a different location.
+ * @summary Moves an element folder.
+ */
+const putElementFolderByIdMove = (
+    id: string,
+    moveFolderRequestModel: MoveFolderRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/folder/${id}/move`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: moveFolderRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Moves an element folder identified by the provided Id to the recycle bin.
+ * @summary Moves an element folder to the recycle bin.
+ */
+const putElementFolderByIdMoveToRecycleBin = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/folder/${id}/move-to-recycle-bin`, method: 'PUT'
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of descendant elements in a folder that are referenced by other content.
+ * @summary Gets element folder descendants that are referenced.
+ */
+const getElementFolderByIdReferencedDescendants = (
+    id: string,
+    params?: GetElementFolderByIdReferencedDescendantsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
+      return UmbracoManagementClient<PagedReferenceByIdModel>(
+      {url: `/umbraco/management/api/v1/element/folder/${id}/referenced-descendants`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Validates the request model for creating a new element without actually creating it.
+ * @summary Validates creating an element.
+ */
+const postElementValidate = (
+    createElementRequestModel: CreateElementRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element/validate`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createElementRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of element items identified by the provided Ids.
+ * @summary Gets a collection of element items.
+ */
+const getItemElement = (
+    params?: GetItemElementParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ElementItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ElementItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/element`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the ancestor chains for element items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of element items.
+ */
+const getItemElementAncestors = (
+    params?: GetItemElementAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/element/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of element folder items identified by the provided Ids.
+ * @summary Gets a collection of element folder items.
+ */
+const getItemElementFolder = (
+    params?: GetItemElementFolderParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<FolderItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<FolderItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/element/folder`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches element items by the provided query with pagination support.
+ * @summary Searches element items.
+ */
+const getItemElementSearch = (
+    params?: GetItemElementSearchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedModelElementItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedModelElementItemResponseModel>(
+      {url: `/umbraco/management/api/v1/item/element/search`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Permanently deletes all elements in the recycle bin. This operation cannot be undone.
+ * @summary Empties the element recycle bin.
+ */
+const deleteRecycleBinElement = (
+    
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Permanently deletes an element identified by the provided Id from the recycle bin.
+ * @summary Deletes an element from the recycle bin.
+ */
+const deleteRecycleBinElementById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Gets the original parent location of an element before it was moved to the recycle bin.
+ * @summary Gets the original parent of an element in the recycle bin.
+ */
+const getRecycleBinElementByIdOriginalParent = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<ReferenceByIdModel>>,) => {
+      return UmbracoManagementClient<ReferenceByIdModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/${id}/original-parent`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Restores an element from the recycle bin to its original location or a specified parent.
+ * @summary Restores an element from the recycle bin.
+ */
+const putRecycleBinElementByIdRestore = (
+    id: string,
+    moveElementRequestModel: MoveElementRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/${id}/restore`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: moveElementRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of elements that are children of the provided parent in the recycle bin.
+ * @summary Gets a collection of elements in the recycle bin.
+ */
+const getRecycleBinElementChildren = (
+    params?: GetRecycleBinElementChildrenParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedElementRecycleBinItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedElementRecycleBinItemResponseModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/children`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Permanently deletes an element folder identified by the provided Id from the recycle bin.
+ * @summary Deletes an element folder from the recycle bin.
+ */
+const deleteRecycleBinElementFolderById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/folder/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Gets the original parent location of an element folder before it was moved to the recycle bin.
+ * @summary Gets the original parent of an element folder in the recycle bin.
+ */
+const getRecycleBinElementFolderByIdOriginalParent = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<ReferenceByIdModel>>,) => {
+      return UmbracoManagementClient<ReferenceByIdModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/folder/${id}/original-parent`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Restores an element folder from the recycle bin to its original location or a specified parent.
+ * @summary Restores an element folder from the recycle bin.
+ */
+const putRecycleBinElementFolderByIdRestore = (
+    id: string,
+    moveFolderRequestModel: MoveFolderRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/folder/${id}/restore`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: moveFolderRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of items that reference the element in the recycle bin.
+ * @summary Gets items referencing an element in the recycle bin.
+ */
+const getRecycleBinElementReferencedBy = (
+    params?: GetRecycleBinElementReferencedByParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
+      return UmbracoManagementClient<PagedIReferenceResponseModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/referenced-by`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of elements at the root level of the recycle bin.
+ * @summary Gets elements at the root of the recycle bin.
+ */
+const getRecycleBinElementRoot = (
+    params?: GetRecycleBinElementRootParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedElementRecycleBinItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedElementRecycleBinItemResponseModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/root`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of sibling elements in the recycle bin at the same level as the provided Id.
+ * @summary Gets sibling elements in the recycle bin.
+ */
+const getRecycleBinElementSiblings = (
+    params?: GetRecycleBinElementSiblingsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<SubsetElementRecycleBinItemResponseModel>>,) => {
+      return UmbracoManagementClient<SubsetElementRecycleBinItemResponseModel>(
+      {url: `/umbraco/management/api/v1/recycle-bin/element/siblings`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of element items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor element items.
+ */
+const getTreeElementAncestors = (
+    params?: GetTreeElementAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ElementTreeItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ElementTreeItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/tree/element/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of element tree items that are children of the provided parent Id.
+ * @summary Gets a collection of element tree child items.
+ */
+const getTreeElementChildren = (
+    params?: GetTreeElementChildrenParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedElementTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedElementTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/element/children`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of element items from the root of the tree with optional filtering.
+ * @summary Gets a collection of element items from the root of the tree.
+ */
+const getTreeElementRoot = (
+    params?: GetTreeElementRootParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedElementTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedElementTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/element/root`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of element tree items that are siblings of the provided Id.
+ * @summary Gets a collection of element tree sibling items.
+ */
+const getTreeElementSiblings = (
+    params?: GetTreeElementSiblingsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<SubsetElementTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<SubsetElementTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/element/siblings`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of versions for a specific element and optional culture. Each result describes the version and includes details of the element type, editor, version date, and published status.
+ * @summary Gets a paginated collection of versions for a specific element.
+ */
+const getElementVersion = (
+    params: GetElementVersionParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedElementVersionItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedElementVersionItemResponseModel>(
+      {url: `/umbraco/management/api/v1/element-version`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a specific element version by its Id. If found, the result describes the version and includes details of the element type, editor, version date, and published status.
+ * @summary Gets a specific element version.
+ */
+const getElementVersionById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<ElementVersionResponseModel>>,) => {
+      return UmbracoManagementClient<ElementVersionResponseModel>(
+      {url: `/umbraco/management/api/v1/element-version/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Sets the prevent clean up boolean status for an element version to the provided value. This controls whether the version will be a candidate for removal in content history clean up.
+ * @summary Sets the prevent clean up status for an element version.
+ */
+const putElementVersionByIdPreventCleanup = (
+    id: string,
+    params?: PutElementVersionByIdPreventCleanupParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element-version/${id}/prevent-cleanup`, method: 'PUT',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Rolls back an element to the version indicated by the provided Id. This will archive the current version of the element and publish the provided one.
+ * @summary Rolls back an element to a specific version.
+ */
+const postElementVersionByIdRollback = (
+    id: string,
+    params?: PostElementVersionByIdRollbackParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/element-version/${id}/rollback`, method: 'POST',
+        params
     },
       options);
     }
@@ -2581,7 +3251,6 @@ const postHealthCheckExecuteAction = (
   
 /**
  * Gets help information and documentation resources for the Umbraco back office.
- * @deprecated
  * @summary Gets help information.
  */
 const getHelp = (
@@ -2963,429 +3632,6 @@ const getManifestManifestPublic = (
  options?: SecondParameter<typeof UmbracoManagementClient<ManifestResponseModel[]>>,) => {
       return UmbracoManagementClient<ManifestResponseModel[]>(
       {url: `/umbraco/management/api/v1/manifest/manifest/public`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of media type items identified by the provided Ids.
- * @summary Gets a collection of media type items.
- */
-const getItemMediaType = (
-    params?: GetItemMediaTypeParams,
- options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeItemResponseModel[]>>,) => {
-      return UmbracoManagementClient<MediaTypeItemResponseModel[]>(
-      {url: `/umbraco/management/api/v1/item/media-type`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of allowed media type items for the specified file extension.
- * @summary Gets a collection of media type items.
- */
-const getItemMediaTypeAllowed = (
-    params?: GetItemMediaTypeAllowedParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedModelAllowedMediaTypeItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedModelAllowedMediaTypeItemResponseModel>(
-      {url: `/umbraco/management/api/v1/item/media-type/allowed`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets the ancestor chains for media type items identified by the provided Ids.
- * @summary Gets ancestors for a collection of media type items.
- */
-const getItemMediaTypeAncestors = (
-    params?: GetItemMediaTypeAncestorsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>>,) => {
-      return UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>(
-      {url: `/umbraco/management/api/v1/item/media-type/ancestors`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of media type folder items.
- * @summary Gets a collection of media type folder items.
- */
-const getItemMediaTypeFolders = (
-    params?: GetItemMediaTypeFoldersParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>(
-      {url: `/umbraco/management/api/v1/item/media-type/folders`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Searches media type items by the provided query with pagination support.
- * @summary Searches media type items.
- */
-const getItemMediaTypeSearch = (
-    params?: GetItemMediaTypeSearchParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>(
-      {url: `/umbraco/management/api/v1/item/media-type/search`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Creates a new media type with the configuration specified in the request model.
- * @summary Creates a new media type.
- */
-const postMediaType = (
-    createMediaTypeRequestModel: CreateMediaTypeRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createMediaTypeRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a media type identified by the provided Id.
- * @summary Gets a media type.
- */
-const getMediaTypeById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeResponseModel>>,) => {
-      return UmbracoManagementClient<MediaTypeResponseModel>(
-      {url: `/umbraco/management/api/v1/media-type/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Deletes a media type identified by the provided Id.
- * @summary Deletes a media type.
- */
-const deleteMediaTypeById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-/**
- * Updates a media type identified by the provided Id with the details from the request model.
- * @summary Updates a media type.
- */
-const putMediaTypeById = (
-    id: string,
-    updateMediaTypeRequestModel: UpdateMediaTypeRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateMediaTypeRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of media types that are allowed as children of the specified parent media type.
- * @summary Gets allowed child media types.
- */
-const getMediaTypeByIdAllowedChildren = (
-    id: string,
-    params?: GetMediaTypeByIdAllowedChildrenParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedAllowedMediaTypeModel>>,) => {
-      return UmbracoManagementClient<PagedAllowedMediaTypeModel>(
-      {url: `/umbraco/management/api/v1/media-type/${id}/allowed-children`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of media types that are allowed as parents of the specified media type.
- * @summary Gets allowed parent media types.
- */
-const getMediaTypeByIdAllowedParents = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeAllowedParentsResponseModel>>,) => {
-      return UmbracoManagementClient<MediaTypeAllowedParentsResponseModel>(
-      {url: `/umbraco/management/api/v1/media-type/${id}/allowed-parents`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of media types that reference the specified media type as a composition.
- * @summary Gets composition references.
- */
-const getMediaTypeByIdCompositionReferences = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeCompositionResponseModel[]>>,) => {
-      return UmbracoManagementClient<MediaTypeCompositionResponseModel[]>(
-      {url: `/umbraco/management/api/v1/media-type/${id}/composition-references`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Creates a duplicate of an existing media type identified by the provided Id.
- * @summary Copies a media type.
- */
-const postMediaTypeByIdCopy = (
-    id: string,
-    copyMediaTypeRequestModel: CopyMediaTypeRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type/${id}/copy`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: copyMediaTypeRequestModel
-    },
-      options);
-    }
-  
-/**
- * Exports the media type identified by the provided Id to a downloadable format.
- * @summary Exports a media type.
- */
-const getMediaTypeByIdExport = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<Blob>>,) => {
-      return UmbracoManagementClient<Blob>(
-      {url: `/umbraco/management/api/v1/media-type/${id}/export`, method: 'GET',
-        responseType: 'blob'
-    },
-      options);
-    }
-  
-/**
- * Imports a media type from the provided file upload.
- * @summary Imports a media type.
- */
-const putMediaTypeByIdImport = (
-    id: string,
-    importMediaTypeRequestModel: ImportMediaTypeRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type/${id}/import`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: importMediaTypeRequestModel
-    },
-      options);
-    }
-  
-/**
- * Moves a media type identified by the provided Id to a different location.
- * @summary Moves a media type.
- */
-const putMediaTypeByIdMove = (
-    id: string,
-    moveMediaTypeRequestModel: MoveMediaTypeRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type/${id}/move`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: moveMediaTypeRequestModel
-    },
-      options);
-    }
-  
-const getMediaTypeByIdSchema = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<GetMediaTypeByIdSchema200>>,) => {
-      return UmbracoManagementClient<GetMediaTypeByIdSchema200>(
-      {url: `/umbraco/management/api/v1/media-type/${id}/schema`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of media types that are allowed to be created at the root level.
- * @summary Gets media types allowed at root.
- */
-const getMediaTypeAllowedAtRoot = (
-    params?: GetMediaTypeAllowedAtRootParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedAllowedMediaTypeModel>>,) => {
-      return UmbracoManagementClient<PagedAllowedMediaTypeModel>(
-      {url: `/umbraco/management/api/v1/media-type/allowed-at-root`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of media types that are available to use as compositions for the specified media type.
- * @summary Gets available compositions.
- */
-const postMediaTypeAvailableCompositions = (
-    mediaTypeCompositionRequestModel: MediaTypeCompositionRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<AvailableMediaTypeCompositionResponseModel[]>>,) => {
-      return UmbracoManagementClient<AvailableMediaTypeCompositionResponseModel[]>(
-      {url: `/umbraco/management/api/v1/media-type/available-compositions`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: mediaTypeCompositionRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets multiple media types identified by the provided Ids.
- * @summary Gets multiple media types.
- */
-const getMediaTypeBatch = (
-    params?: GetMediaTypeBatchParams,
- options?: SecondParameter<typeof UmbracoManagementClient<BatchResponseModelMediaTypeResponseModel>>,) => {
-      return UmbracoManagementClient<BatchResponseModelMediaTypeResponseModel>(
-      {url: `/umbraco/management/api/v1/media-type/batch`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets the configuration settings for media types.
- * @summary Gets the media type configuration.
- */
-const getMediaTypeConfiguration = (
-    
- options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeConfigurationResponseModel>>,) => {
-      return UmbracoManagementClient<MediaTypeConfigurationResponseModel>(
-      {url: `/umbraco/management/api/v1/media-type/configuration`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Creates a new media type folder with the provided name and parent location.
- * @summary Creates a media type folder.
- */
-const postMediaTypeFolder = (
-    createFolderRequestModel: CreateFolderRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type/folder`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createFolderRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a media type folder identified by the provided Id.
- * @summary Gets a media type folder.
- */
-const getMediaTypeFolderById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<FolderResponseModel>>,) => {
-      return UmbracoManagementClient<FolderResponseModel>(
-      {url: `/umbraco/management/api/v1/media-type/folder/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Deletes a media type folder identified by the provided Id.
- * @summary Deletes a media type folder.
- */
-const deleteMediaTypeFolderById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type/folder/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-/**
- * Updates a media type folder identified by the provided Id with the details from the request model.
- * @summary Updates a media type folder.
- */
-const putMediaTypeFolderById = (
-    id: string,
-    updateFolderResponseModel: UpdateFolderResponseModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type/folder/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateFolderResponseModel
-    },
-      options);
-    }
-  
-/**
- * Imports a media type from the provided file upload.
- * @summary Imports a media type.
- */
-const postMediaTypeImport = (
-    importMediaTypeRequestModel: ImportMediaTypeRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/media-type/import`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: importMediaTypeRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of media type items that are ancestors to the provided Id.
- * @summary Gets a collection of ancestor media type items.
- */
-const getTreeMediaTypeAncestors = (
-    params?: GetTreeMediaTypeAncestorsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeTreeItemResponseModel[]>>,) => {
-      return UmbracoManagementClient<MediaTypeTreeItemResponseModel[]>(
-      {url: `/umbraco/management/api/v1/tree/media-type/ancestors`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of media type tree items that are children of the provided parent Id.
- * @summary Gets a collection of media type tree child items.
- */
-const getTreeMediaTypeChildren = (
-    params?: GetTreeMediaTypeChildrenParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>(
-      {url: `/umbraco/management/api/v1/tree/media-type/children`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of media type items from the root of the tree with optional filtering.
- * @summary Gets a collection of media type items from the root of the tree.
- */
-const getTreeMediaTypeRoot = (
-    params?: GetTreeMediaTypeRootParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>(
-      {url: `/umbraco/management/api/v1/tree/media-type/root`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of media type tree items that are siblings of the provided Id.
- * @summary Gets a collection of media type tree sibling items.
- */
-const getTreeMediaTypeSiblings = (
-    params?: GetTreeMediaTypeSiblingsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<SubsetMediaTypeTreeItemResponseModel>>,) => {
-      return UmbracoManagementClient<SubsetMediaTypeTreeItemResponseModel>(
-      {url: `/umbraco/management/api/v1/tree/media-type/siblings`, method: 'GET',
-        params
     },
       options);
     }
@@ -3832,6 +4078,617 @@ const getTreeMediaSiblings = (
     }
   
 /**
+ * Gets a collection of media type items identified by the provided Ids.
+ * @summary Gets a collection of media type items.
+ */
+const getItemMediaType = (
+    params?: GetItemMediaTypeParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<MediaTypeItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/media-type`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of allowed media type items for the specified file extension.
+ * @summary Gets a collection of media type items.
+ */
+const getItemMediaTypeAllowed = (
+    params?: GetItemMediaTypeAllowedParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedModelAllowedMediaTypeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedModelAllowedMediaTypeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/item/media-type/allowed`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the ancestor chains for media type items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of media type items.
+ */
+const getItemMediaTypeAncestors = (
+    params?: GetItemMediaTypeAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelNamedItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/media-type/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of media type folder items.
+ * @summary Gets a collection of media type folder items.
+ */
+const getItemMediaTypeFolders = (
+    params?: GetItemMediaTypeFoldersParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/item/media-type/folders`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches media type items by the provided query with pagination support.
+ * @summary Searches media type items.
+ */
+const getItemMediaTypeSearch = (
+    params?: GetItemMediaTypeSearchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedModelMediaTypeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/item/media-type/search`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Creates a new media type with the configuration specified in the request model.
+ * @summary Creates a new media type.
+ */
+const postMediaType = (
+    createMediaTypeRequestModel: CreateMediaTypeRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createMediaTypeRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a media type identified by the provided Id.
+ * @summary Gets a media type.
+ */
+const getMediaTypeById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeResponseModel>>,) => {
+      return UmbracoManagementClient<MediaTypeResponseModel>(
+      {url: `/umbraco/management/api/v1/media-type/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Deletes a media type identified by the provided Id.
+ * @summary Deletes a media type.
+ */
+const deleteMediaTypeById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Updates a media type identified by the provided Id with the details from the request model.
+ * @summary Updates a media type.
+ */
+const putMediaTypeById = (
+    id: string,
+    updateMediaTypeRequestModel: UpdateMediaTypeRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateMediaTypeRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of media types that are allowed as children of the specified parent media type.
+ * @summary Gets allowed child media types.
+ */
+const getMediaTypeByIdAllowedChildren = (
+    id: string,
+    params?: GetMediaTypeByIdAllowedChildrenParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedAllowedMediaTypeModel>>,) => {
+      return UmbracoManagementClient<PagedAllowedMediaTypeModel>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/allowed-children`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of media types that are allowed as parents of the specified media type.
+ * @summary Gets allowed parent media types.
+ */
+const getMediaTypeByIdAllowedParents = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeAllowedParentsResponseModel>>,) => {
+      return UmbracoManagementClient<MediaTypeAllowedParentsResponseModel>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/allowed-parents`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of media types that reference the specified media type as a composition.
+ * @summary Gets composition references.
+ */
+const getMediaTypeByIdCompositionReferences = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeCompositionResponseModel[]>>,) => {
+      return UmbracoManagementClient<MediaTypeCompositionResponseModel[]>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/composition-references`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Creates a duplicate of an existing media type identified by the provided Id.
+ * @summary Copies a media type.
+ */
+const postMediaTypeByIdCopy = (
+    id: string,
+    copyMediaTypeRequestModel: CopyMediaTypeRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/copy`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: copyMediaTypeRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Exports the media type identified by the provided Id to a downloadable format.
+ * @summary Exports a media type.
+ */
+const getMediaTypeByIdExport = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<Blob>>,) => {
+      return UmbracoManagementClient<Blob>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/export`, method: 'GET',
+        responseType: 'blob'
+    },
+      options);
+    }
+  
+/**
+ * Imports a media type from the provided file upload.
+ * @summary Imports a media type.
+ */
+const putMediaTypeByIdImport = (
+    id: string,
+    importMediaTypeRequestModel: ImportMediaTypeRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/import`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: importMediaTypeRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Moves a media type identified by the provided Id to a different location.
+ * @summary Moves a media type.
+ */
+const putMediaTypeByIdMove = (
+    id: string,
+    moveMediaTypeRequestModel: MoveMediaTypeRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/move`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: moveMediaTypeRequestModel
+    },
+      options);
+    }
+  
+const getMediaTypeByIdSchema = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<JsonObject>>,) => {
+      return UmbracoManagementClient<JsonObject>(
+      {url: `/umbraco/management/api/v1/media-type/${id}/schema`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of media types that are allowed to be created at the root level.
+ * @summary Gets media types allowed at root.
+ */
+const getMediaTypeAllowedAtRoot = (
+    params?: GetMediaTypeAllowedAtRootParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedAllowedMediaTypeModel>>,) => {
+      return UmbracoManagementClient<PagedAllowedMediaTypeModel>(
+      {url: `/umbraco/management/api/v1/media-type/allowed-at-root`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of media types that are available to use as compositions for the specified media type.
+ * @summary Gets available compositions.
+ */
+const postMediaTypeAvailableCompositions = (
+    mediaTypeCompositionRequestModel: MediaTypeCompositionRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<AvailableMediaTypeCompositionResponseModel[]>>,) => {
+      return UmbracoManagementClient<AvailableMediaTypeCompositionResponseModel[]>(
+      {url: `/umbraco/management/api/v1/media-type/available-compositions`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: mediaTypeCompositionRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets multiple media types identified by the provided Ids.
+ * @summary Gets multiple media types.
+ */
+const getMediaTypeBatch = (
+    params?: GetMediaTypeBatchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<BatchResponseModelMediaTypeResponseModel>>,) => {
+      return UmbracoManagementClient<BatchResponseModelMediaTypeResponseModel>(
+      {url: `/umbraco/management/api/v1/media-type/batch`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the configuration settings for media types.
+ * @summary Gets the media type configuration.
+ */
+const getMediaTypeConfiguration = (
+    
+ options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeConfigurationResponseModel>>,) => {
+      return UmbracoManagementClient<MediaTypeConfigurationResponseModel>(
+      {url: `/umbraco/management/api/v1/media-type/configuration`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Creates a new media type folder with the provided name and parent location.
+ * @summary Creates a media type folder.
+ */
+const postMediaTypeFolder = (
+    createFolderRequestModel: CreateFolderRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type/folder`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createFolderRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a media type folder identified by the provided Id.
+ * @summary Gets a media type folder.
+ */
+const getMediaTypeFolderById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<FolderResponseModel>>,) => {
+      return UmbracoManagementClient<FolderResponseModel>(
+      {url: `/umbraco/management/api/v1/media-type/folder/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Deletes a media type folder identified by the provided Id.
+ * @summary Deletes a media type folder.
+ */
+const deleteMediaTypeFolderById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type/folder/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Updates a media type folder identified by the provided Id with the details from the request model.
+ * @summary Updates a media type folder.
+ */
+const putMediaTypeFolderById = (
+    id: string,
+    updateFolderResponseModel: UpdateFolderResponseModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type/folder/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateFolderResponseModel
+    },
+      options);
+    }
+  
+/**
+ * Imports a media type from the provided file upload.
+ * @summary Imports a media type.
+ */
+const postMediaTypeImport = (
+    importMediaTypeRequestModel: ImportMediaTypeRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/media-type/import`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: importMediaTypeRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of media type items that are ancestors to the provided Id.
+ * @summary Gets a collection of ancestor media type items.
+ */
+const getTreeMediaTypeAncestors = (
+    params?: GetTreeMediaTypeAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<MediaTypeTreeItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<MediaTypeTreeItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/tree/media-type/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of media type tree items that are children of the provided parent Id.
+ * @summary Gets a collection of media type tree child items.
+ */
+const getTreeMediaTypeChildren = (
+    params?: GetTreeMediaTypeChildrenParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/media-type/children`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of media type items from the root of the tree with optional filtering.
+ * @summary Gets a collection of media type items from the root of the tree.
+ */
+const getTreeMediaTypeRoot = (
+    params?: GetTreeMediaTypeRootParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedMediaTypeTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/media-type/root`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of media type tree items that are siblings of the provided Id.
+ * @summary Gets a collection of media type tree sibling items.
+ */
+const getTreeMediaTypeSiblings = (
+    params?: GetTreeMediaTypeSiblingsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<SubsetMediaTypeTreeItemResponseModel>>,) => {
+      return UmbracoManagementClient<SubsetMediaTypeTreeItemResponseModel>(
+      {url: `/umbraco/management/api/v1/tree/media-type/siblings`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Filters members based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of members.
+ */
+const getFilterMember = (
+    params?: GetFilterMemberParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedMemberResponseModel>>,) => {
+      return UmbracoManagementClient<PagedMemberResponseModel>(
+      {url: `/umbraco/management/api/v1/filter/member`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of member items identified by the provided Ids.
+ * @summary Gets a collection of member items.
+ */
+const getItemMember = (
+    params?: GetItemMemberParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<MemberItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<MemberItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/member`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets the ancestor chains for member items identified by the provided Ids.
+ * @summary Gets ancestors for a collection of member items.
+ */
+const getItemMemberAncestors = (
+    params?: GetItemMemberAncestorsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelMemberItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<ItemAncestorsResponseModelMemberItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/member/ancestors`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Searches member items by the provided query with pagination support.
+ * @summary Searches member items.
+ */
+const getItemMemberSearch = (
+    params?: GetItemMemberSearchParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMemberItemResponseModel>>,) => {
+      return UmbracoManagementClient<PagedModelMemberItemResponseModel>(
+      {url: `/umbraco/management/api/v1/item/member/search`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Creates a new member with the configuration specified in the request model.
+ * @summary Creates a new member.
+ */
+const postMember = (
+    createMemberRequestModel: CreateMemberRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/member`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createMemberRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a member identified by the provided Id.
+ * @summary Gets a member.
+ */
+const getMemberById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<MemberResponseModel>>,) => {
+      return UmbracoManagementClient<MemberResponseModel>(
+      {url: `/umbraco/management/api/v1/member/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Deletes a member identified by the provided Id.
+ * @summary Deletes a member.
+ */
+const deleteMemberById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/member/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Updates a member identified by the provided Id with the details from the request model.
+ * @summary Updates a member.
+ */
+const putMemberById = (
+    id: string,
+    updateMemberRequestModel: UpdateMemberRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/member/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateMemberRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of items that reference the members identified by the provided Ids.
+ * @summary Gets a collection of items that reference members.
+ */
+const getMemberByIdReferencedBy = (
+    id: string,
+    params?: GetMemberByIdReferencedByParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
+      return UmbracoManagementClient<PagedIReferenceResponseModel>(
+      {url: `/umbraco/management/api/v1/member/${id}/referenced-by`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of descendant members that are referenced in relations for the member identified by the provided Id.
+ * @summary Gets a paginated collection of referenced descendant members.
+ */
+const getMemberByIdReferencedDescendants = (
+    id: string,
+    params?: GetMemberByIdReferencedDescendantsParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
+      return UmbracoManagementClient<PagedReferenceByIdModel>(
+      {url: `/umbraco/management/api/v1/member/${id}/referenced-descendants`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Validates the request model for updating a member without actually updating it.
+ * @summary Validates updating a member.
+ */
+const putMemberByIdValidate = (
+    id: string,
+    updateMemberRequestModel: UpdateMemberRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/member/${id}/validate`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateMemberRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of items that reference the members identified by the provided Ids.
+ * @summary Gets a collection of items that reference members.
+ */
+const getMemberAreReferenced = (
+    params?: GetMemberAreReferencedParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
+      return UmbracoManagementClient<PagedReferenceByIdModel>(
+      {url: `/umbraco/management/api/v1/member/are-referenced`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Validates the request model for creating a new member without actually creating it.
+ * @summary Validates creating a member.
+ */
+const postMemberValidate = (
+    createMemberRequestModel: CreateMemberRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/member/validate`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createMemberRequestModel
+    },
+      options);
+    }
+  
+/**
  * Gets a collection of member group items identified by the provided Ids.
  * @summary Gets a collection of member group items.
  */
@@ -4048,12 +4905,12 @@ const getMemberTypeByIdCompositionReferences = (
  */
 const postMemberTypeByIdCopy = (
     id: string,
-    copyMemberTypeRequestModel: CopyMemberTypeRequestModel,
+    postMemberTypeByIdCopyBody: PostMemberTypeByIdCopyBody,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
       return UmbracoManagementClient<void>(
       {url: `/umbraco/management/api/v1/member-type/${id}/copy`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: copyMemberTypeRequestModel
+      data: postMemberTypeByIdCopyBody
     },
       options);
     }
@@ -4106,8 +4963,8 @@ const putMemberTypeByIdMove = (
   
 const getMemberTypeByIdSchema = (
     id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<GetMemberTypeByIdSchema200>>,) => {
-      return UmbracoManagementClient<GetMemberTypeByIdSchema200>(
+ options?: SecondParameter<typeof UmbracoManagementClient<JsonObject>>,) => {
+      return UmbracoManagementClient<JsonObject>(
       {url: `/umbraco/management/api/v1/member-type/${id}/schema`, method: 'GET'
     },
       options);
@@ -4298,207 +5155,6 @@ const getTreeMemberTypeSiblings = (
     }
   
 /**
- * Filters members based on the provided criteria with support for pagination.
- * @summary Gets a filtered collection of members.
- */
-const getFilterMember = (
-    params?: GetFilterMemberParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedMemberResponseModel>>,) => {
-      return UmbracoManagementClient<PagedMemberResponseModel>(
-      {url: `/umbraco/management/api/v1/filter/member`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of member items identified by the provided Ids.
- * @summary Gets a collection of member items.
- */
-const getItemMember = (
-    params?: GetItemMemberParams,
- options?: SecondParameter<typeof UmbracoManagementClient<MemberItemResponseModel[]>>,) => {
-      return UmbracoManagementClient<MemberItemResponseModel[]>(
-      {url: `/umbraco/management/api/v1/item/member`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets the ancestor chains for member items identified by the provided Ids.
- * @summary Gets ancestors for a collection of member items.
- */
-const getItemMemberAncestors = (
-    params?: GetItemMemberAncestorsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<ItemAncestorsResponseModelMemberItemResponseModel[]>>,) => {
-      return UmbracoManagementClient<ItemAncestorsResponseModelMemberItemResponseModel[]>(
-      {url: `/umbraco/management/api/v1/item/member/ancestors`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Searches member items by the provided query with pagination support.
- * @summary Searches member items.
- */
-const getItemMemberSearch = (
-    params?: GetItemMemberSearchParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedModelMemberItemResponseModel>>,) => {
-      return UmbracoManagementClient<PagedModelMemberItemResponseModel>(
-      {url: `/umbraco/management/api/v1/item/member/search`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Creates a new member with the configuration specified in the request model.
- * @summary Creates a new member.
- */
-const postMember = (
-    createMemberRequestModel: CreateMemberRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/member`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createMemberRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a member identified by the provided Id.
- * @summary Gets a member.
- */
-const getMemberById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<MemberResponseModel>>,) => {
-      return UmbracoManagementClient<MemberResponseModel>(
-      {url: `/umbraco/management/api/v1/member/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Deletes a member identified by the provided Id.
- * @summary Deletes a member.
- */
-const deleteMemberById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/member/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-/**
- * Updates a member identified by the provided Id with the details from the request model.
- * @summary Updates a member.
- */
-const putMemberById = (
-    id: string,
-    updateMemberRequestModel: UpdateMemberRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/member/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateMemberRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of items that reference the members identified by the provided Ids.
- * @summary Gets a collection of items that reference members.
- */
-const getMemberByIdReferencedBy = (
-    id: string,
-    params?: GetMemberByIdReferencedByParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedIReferenceResponseModel>>,) => {
-      return UmbracoManagementClient<PagedIReferenceResponseModel>(
-      {url: `/umbraco/management/api/v1/member/${id}/referenced-by`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of descendant members that are referenced in relations for the member identified by the provided Id.
- * @summary Gets a paginated collection of referenced descendant members.
- */
-const getMemberByIdReferencedDescendants = (
-    id: string,
-    params?: GetMemberByIdReferencedDescendantsParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
-      return UmbracoManagementClient<PagedReferenceByIdModel>(
-      {url: `/umbraco/management/api/v1/member/${id}/referenced-descendants`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Validates the request model for updating a member without actually updating it.
- * @summary Validates updating a member.
- */
-const putMemberByIdValidate = (
-    id: string,
-    updateMemberRequestModel: UpdateMemberRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/member/${id}/validate`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateMemberRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of items that reference the members identified by the provided Ids.
- * @summary Gets a collection of items that reference members.
- */
-const getMemberAreReferenced = (
-    params?: GetMemberAreReferencedParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedReferenceByIdModel>>,) => {
-      return UmbracoManagementClient<PagedReferenceByIdModel>(
-      {url: `/umbraco/management/api/v1/member/are-referenced`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets the configuration settings for members.
- * @summary Gets the member configuration.
- */
-const getMemberConfiguration = (
-    
- options?: SecondParameter<typeof UmbracoManagementClient<MemberConfigurationResponseModel>>,) => {
-      return UmbracoManagementClient<MemberConfigurationResponseModel>(
-      {url: `/umbraco/management/api/v1/member/configuration`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Validates the request model for creating a new member without actually creating it.
- * @summary Validates creating a member.
- */
-const postMemberValidate = (
-    createMemberRequestModel: CreateMemberRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/member/validate`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createMemberRequestModel
-    },
-      options);
-    }
-  
-/**
  * Triggers the models builder to generate strongly-typed models for content types.
  * @summary Builds models.
  */
@@ -4665,7 +5321,7 @@ const deletePackageCreatedById = (
  */
 const putPackageCreatedById = (
     id: string,
-    updatePackageRequestModel: NonReadonly<UpdatePackageRequestModel>,
+    updatePackageRequestModel: UpdatePackageRequestModel,
  options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
       return UmbracoManagementClient<void>(
       {url: `/umbraco/management/api/v1/package/created/${id}`, method: 'PUT',
@@ -4928,20 +5584,6 @@ const deletePreview = (
     }
   
 /**
- * Enters preview mode for the current user session, allowing viewing of unpublished content.
- * @deprecated
- * @summary Enters preview mode.
- */
-const postPreview = (
-    
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/preview`, method: 'POST'
-    },
-      options);
-    }
-  
-/**
  * Gets the current status of the MiniProfiler profiling tool.
  * @summary Gets profiling status.
  */
@@ -5092,6 +5734,21 @@ const postRedirectManagementStatus = (
     }
   
 /**
+ * Gets a collection of relations filtered by the specified relation type key.
+ * @summary Gets relations by relation type.
+ */
+const getRelationByRelationTypeId = (
+    id: string,
+    params?: GetRelationByRelationTypeIdParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedRelationResponseModel>>,) => {
+      return UmbracoManagementClient<PagedRelationResponseModel>(
+      {url: `/umbraco/management/api/v1/relation/type/${id}`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
  * Gets a collection of relation type items identified by the provided Ids.
  * @summary Gets a collection of relation type items.
  */
@@ -5128,21 +5785,6 @@ const getRelationTypeById = (
  options?: SecondParameter<typeof UmbracoManagementClient<RelationTypeResponseModel>>,) => {
       return UmbracoManagementClient<RelationTypeResponseModel>(
       {url: `/umbraco/management/api/v1/relation-type/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of relations filtered by the specified relation type key.
- * @summary Gets relations by relation type.
- */
-const getRelationByRelationTypeId = (
-    id: string,
-    params?: GetRelationByRelationTypeIdParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedRelationResponseModel>>,) => {
-      return UmbracoManagementClient<PagedRelationResponseModel>(
-      {url: `/umbraco/management/api/v1/relation/type/${id}`, method: 'GET',
-        params
     },
       options);
     }
@@ -5345,6 +5987,10 @@ const getSearcher = (
       options);
     }
   
+/**
+ * Queries a named searcher with the provided search term and returns a paginated collection of search results.
+ * @summary Queries a searcher.
+ */
 const getSearcherBySearcherNameQuery = (
     searcherName: string,
     params?: GetSearcherBySearcherNameQueryParams,
@@ -5482,7 +6128,6 @@ const getServerTroubleshooting = (
   
 /**
  * Checks if there are any available upgrades for the Umbraco installation.
- * @deprecated
  * @summary Checks for available upgrades.
  */
 const getServerUpgradeCheck = (
@@ -6013,222 +6658,6 @@ const getUpgradeSettings = (
     }
   
 /**
- * Creates user-specific data for the current authenticated user with the provided key and value.
- * @summary Creates user data.
- */
-const postUserData = (
-    createUserDataRequestModel: CreateUserDataRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user-data`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createUserDataRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets user-specific data stored for the current authenticated user.
- * @summary Gets user data.
- */
-const getUserData = (
-    params?: GetUserDataParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedUserDataResponseModel>>,) => {
-      return UmbracoManagementClient<PagedUserDataResponseModel>(
-      {url: `/umbraco/management/api/v1/user-data`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Updates user-specific data for the current authenticated user.
- * @summary Updates user data.
- */
-const putUserData = (
-    updateUserDataRequestModel: UpdateUserDataRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user-data`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateUserDataRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets user data identified by the provided Id.
- * @summary Gets user data.
- */
-const getUserDataById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<UserDataModel>>,) => {
-      return UmbracoManagementClient<UserDataModel>(
-      {url: `/umbraco/management/api/v1/user-data/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Deletes user data identified by the provided Id.
- * @summary Deletes user data.
- */
-const deleteUserDataById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user-data/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-/**
- * Filters user groups based on the provided criteria with support for pagination.
- * @summary Gets a filtered collection of user groups.
- */
-const getFilterUserGroup = (
-    params?: GetFilterUserGroupParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedUserGroupResponseModel>>,) => {
-      return UmbracoManagementClient<PagedUserGroupResponseModel>(
-      {url: `/umbraco/management/api/v1/filter/user-group`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a collection of user group items identified by the provided Ids.
- * @summary Gets a collection of user group items.
- */
-const getItemUserGroup = (
-    params?: GetItemUserGroupParams,
- options?: SecondParameter<typeof UmbracoManagementClient<UserGroupItemResponseModel[]>>,) => {
-      return UmbracoManagementClient<UserGroupItemResponseModel[]>(
-      {url: `/umbraco/management/api/v1/item/user-group`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Deletes multiple user groups identified by the provided Ids. This operation cannot be undone.
- * @summary Deletes multiple user groups.
- */
-const deleteUserGroup = (
-    deleteUserGroupsRequestModel: DeleteUserGroupsRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user-group`, method: 'DELETE',
-      headers: {'Content-Type': 'application/json', },
-      data: deleteUserGroupsRequestModel
-    },
-      options);
-    }
-  
-/**
- * Creates a new user group with the configuration specified in the request model.
- * @summary Creates a new user group.
- */
-const postUserGroup = (
-    createUserGroupRequestModel: CreateUserGroupRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user-group`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createUserGroupRequestModel
-    },
-      options);
-    }
-  
-/**
- * Gets a paginated collection of all user groups.
- * @summary Gets a paginated collection of user groups.
- */
-const getUserGroup = (
-    params?: GetUserGroupParams,
- options?: SecondParameter<typeof UmbracoManagementClient<PagedUserGroupResponseModel>>,) => {
-      return UmbracoManagementClient<PagedUserGroupResponseModel>(
-      {url: `/umbraco/management/api/v1/user-group`, method: 'GET',
-        params
-    },
-      options);
-    }
-  
-/**
- * Gets a user group identified by the provided Id.
- * @summary Gets a user group.
- */
-const getUserGroupById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<UserGroupResponseModel>>,) => {
-      return UmbracoManagementClient<UserGroupResponseModel>(
-      {url: `/umbraco/management/api/v1/user-group/${id}`, method: 'GET'
-    },
-      options);
-    }
-  
-/**
- * Deletes a user group identified by the provided Id.
- * @summary Deletes a user group.
- */
-const deleteUserGroupById = (
-    id: string,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user-group/${id}`, method: 'DELETE'
-    },
-      options);
-    }
-  
-/**
- * Updates a user group identified by the provided Id with the details from the request model.
- * @summary Updates a user group.
- */
-const putUserGroupById = (
-    id: string,
-    updateUserGroupRequestModel: UpdateUserGroupRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user-group/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateUserGroupRequestModel
-    },
-      options);
-    }
-  
-/**
- * Removes the specified users from the user group identified by the provided Id.
- * @summary Removes users from a user group.
- */
-const deleteUserGroupByIdUsers = (
-    id: string,
-    referenceByIdModel: ReferenceByIdModel[],
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user-group/${id}/users`, method: 'DELETE',
-      headers: {'Content-Type': 'application/json', },
-      data: referenceByIdModel
-    },
-      options);
-    }
-  
-/**
- * Adds the specified users to the user group identified by the provided Id.
- * @summary Adds users to a user group.
- */
-const postUserGroupByIdUsers = (
-    id: string,
-    referenceByIdModel: ReferenceByIdModel[],
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user-group/${id}/users`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: referenceByIdModel
-    },
-      options);
-    }
-  
-/**
  * Filters users based on the provided criteria with support for pagination.
  * @summary Gets a filtered collection of users.
  */
@@ -6257,21 +6686,6 @@ const getItemUser = (
     }
   
 /**
- * Creates a new user with the configuration specified in the request model.
- * @summary Creates a new user.
- */
-const postUser = (
-    createUserRequestModel: CreateUserRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
-      return UmbracoManagementClient<void>(
-      {url: `/umbraco/management/api/v1/user`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createUserRequestModel
-    },
-      options);
-    }
-  
-/**
  * Deletes multiple users identified by the provided Ids. This operation cannot be undone.
  * @summary Deletes multiple users.
  */
@@ -6282,6 +6696,21 @@ const deleteUser = (
       {url: `/umbraco/management/api/v1/user`, method: 'DELETE',
       headers: {'Content-Type': 'application/json', },
       data: deleteUsersRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Creates a new user with the configuration specified in the request model.
+ * @summary Creates a new user.
+ */
+const postUser = (
+    createUserRequestModel: CreateUserRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createUserRequestModel
     },
       options);
     }
@@ -6544,8 +6973,8 @@ const deleteUserCurrent2faByProviderName = (
 const postUserCurrent2faByProviderName = (
     providerName: string,
     enableTwoFactorRequestModel: EnableTwoFactorRequestModel,
- options?: SecondParameter<typeof UmbracoManagementClient<NoopSetupTwoFactorModel>>,) => {
-      return UmbracoManagementClient<NoopSetupTwoFactorModel>(
+ options?: SecondParameter<typeof UmbracoManagementClient<ISetupTwoFactorModel>>,) => {
+      return UmbracoManagementClient<ISetupTwoFactorModel>(
       {url: `/umbraco/management/api/v1/user/current/2fa/${providerName}`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: enableTwoFactorRequestModel
@@ -6559,9 +6988,22 @@ const postUserCurrent2faByProviderName = (
  */
 const getUserCurrent2faByProviderName = (
     providerName: string,
- options?: SecondParameter<typeof UmbracoManagementClient<NoopSetupTwoFactorModel>>,) => {
-      return UmbracoManagementClient<NoopSetupTwoFactorModel>(
+ options?: SecondParameter<typeof UmbracoManagementClient<ISetupTwoFactorModel>>,) => {
+      return UmbracoManagementClient<ISetupTwoFactorModel>(
       {url: `/umbraco/management/api/v1/user/current/2fa/${providerName}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Removes the avatar image for the currently authenticated user.
+ * @summary Clears the current user's avatar.
+ */
+const deleteUserCurrentAvatar = (
+    
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user/current/avatar`, method: 'DELETE'
     },
       options);
     }
@@ -6650,6 +7092,16 @@ const getUserCurrentPermissionsDocument = (
       options);
     }
   
+const getUserCurrentPermissionsElement = (
+    params?: GetUserCurrentPermissionsElementParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<UserPermissionsResponseModel[]>>,) => {
+      return UmbracoManagementClient<UserPermissionsResponseModel[]>(
+      {url: `/umbraco/management/api/v1/user/current/permissions/element`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
 /**
  * Gets the media permissions for the currently authenticated user.
  * @summary Gets media permissions for the current user.
@@ -6660,6 +7112,21 @@ const getUserCurrentPermissionsMedia = (
       return UmbracoManagementClient<UserPermissionsResponseModel>(
       {url: `/umbraco/management/api/v1/user/current/permissions/media`, method: 'GET',
         params
+    },
+      options);
+    }
+  
+/**
+ * Updates current user profile with the details from the request model.
+ * @summary Updates current user profile.
+ */
+const putUserCurrentProfile = (
+    updateCurrentUserRequestModel: UpdateCurrentUserRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user/current/profile`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateCurrentUserRequestModel
     },
       options);
     }
@@ -6780,6 +7247,222 @@ const postUserUnlock = (
       {url: `/umbraco/management/api/v1/user/unlock`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: unlockUsersRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Creates user-specific data for the current authenticated user with the provided key and value.
+ * @summary Creates user data.
+ */
+const postUserData = (
+    createUserDataRequestModel: CreateUserDataRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user-data`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createUserDataRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets user-specific data stored for the current authenticated user.
+ * @summary Gets user data.
+ */
+const getUserData = (
+    params?: GetUserDataParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedUserDataResponseModel>>,) => {
+      return UmbracoManagementClient<PagedUserDataResponseModel>(
+      {url: `/umbraco/management/api/v1/user-data`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Updates user-specific data for the current authenticated user.
+ * @summary Updates user data.
+ */
+const putUserData = (
+    updateUserDataRequestModel: UpdateUserDataRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user-data`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateUserDataRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets user data identified by the provided Id.
+ * @summary Gets user data.
+ */
+const getUserDataById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<UserDataModel>>,) => {
+      return UmbracoManagementClient<UserDataModel>(
+      {url: `/umbraco/management/api/v1/user-data/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Deletes user data identified by the provided Id.
+ * @summary Deletes user data.
+ */
+const deleteUserDataById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user-data/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Filters user groups based on the provided criteria with support for pagination.
+ * @summary Gets a filtered collection of user groups.
+ */
+const getFilterUserGroup = (
+    params?: GetFilterUserGroupParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedUserGroupResponseModel>>,) => {
+      return UmbracoManagementClient<PagedUserGroupResponseModel>(
+      {url: `/umbraco/management/api/v1/filter/user-group`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a collection of user group items identified by the provided Ids.
+ * @summary Gets a collection of user group items.
+ */
+const getItemUserGroup = (
+    params?: GetItemUserGroupParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<UserGroupItemResponseModel[]>>,) => {
+      return UmbracoManagementClient<UserGroupItemResponseModel[]>(
+      {url: `/umbraco/management/api/v1/item/user-group`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Deletes multiple user groups identified by the provided Ids. This operation cannot be undone.
+ * @summary Deletes multiple user groups.
+ */
+const deleteUserGroup = (
+    deleteUserGroupsRequestModel: DeleteUserGroupsRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user-group`, method: 'DELETE',
+      headers: {'Content-Type': 'application/json', },
+      data: deleteUserGroupsRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Creates a new user group with the configuration specified in the request model.
+ * @summary Creates a new user group.
+ */
+const postUserGroup = (
+    createUserGroupRequestModel: CreateUserGroupRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user-group`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createUserGroupRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Gets a paginated collection of all user groups.
+ * @summary Gets a paginated collection of user groups.
+ */
+const getUserGroup = (
+    params?: GetUserGroupParams,
+ options?: SecondParameter<typeof UmbracoManagementClient<PagedUserGroupResponseModel>>,) => {
+      return UmbracoManagementClient<PagedUserGroupResponseModel>(
+      {url: `/umbraco/management/api/v1/user-group`, method: 'GET',
+        params
+    },
+      options);
+    }
+  
+/**
+ * Gets a user group identified by the provided Id.
+ * @summary Gets a user group.
+ */
+const getUserGroupById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<UserGroupResponseModel>>,) => {
+      return UmbracoManagementClient<UserGroupResponseModel>(
+      {url: `/umbraco/management/api/v1/user-group/${id}`, method: 'GET'
+    },
+      options);
+    }
+  
+/**
+ * Deletes a user group identified by the provided Id.
+ * @summary Deletes a user group.
+ */
+const deleteUserGroupById = (
+    id: string,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user-group/${id}`, method: 'DELETE'
+    },
+      options);
+    }
+  
+/**
+ * Updates a user group identified by the provided Id with the details from the request model.
+ * @summary Updates a user group.
+ */
+const putUserGroupById = (
+    id: string,
+    updateUserGroupRequestModel: UpdateUserGroupRequestModel,
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user-group/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateUserGroupRequestModel
+    },
+      options);
+    }
+  
+/**
+ * Adds the specified users to the user group identified by the provided Id.
+ * @summary Adds users to a user group.
+ */
+const postUserGroupByIdUsers = (
+    id: string,
+    referenceByIdModel: ReferenceByIdModel[],
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user-group/${id}/users`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: referenceByIdModel
+    },
+      options);
+    }
+  
+/**
+ * Removes the specified users from the user group identified by the provided Id.
+ * @summary Removes users from a user group.
+ */
+const deleteUserGroupByIdUsers = (
+    id: string,
+    referenceByIdModel: ReferenceByIdModel[],
+ options?: SecondParameter<typeof UmbracoManagementClient<void>>,) => {
+      return UmbracoManagementClient<void>(
+      {url: `/umbraco/management/api/v1/user-group/${id}/users`, method: 'DELETE',
+      headers: {'Content-Type': 'application/json', },
+      data: referenceByIdModel
     },
       options);
     }
@@ -6912,7 +7595,7 @@ const getWebhookLogs = (
       options);
     }
   
-return {getCulture,postDataType,getDataTypeById,deleteDataTypeById,putDataTypeById,postDataTypeByIdCopy,getDataTypeByIdIsUsed,putDataTypeByIdMove,getDataTypeByIdReferencedBy,getDataTypeByIdSchema,getDataTypeBatch,getDataTypeConfiguration,postDataTypeFolder,getDataTypeFolderById,deleteDataTypeFolderById,putDataTypeFolderById,getDataTypeSchemasBatch,getFilterDataType,getItemDataType,getItemDataTypeAncestors,getItemDataTypeSearch,getTreeDataTypeAncestors,getTreeDataTypeChildren,getTreeDataTypeRoot,getTreeDataTypeSearch,getTreeDataTypeSiblings,getDictionary,postDictionary,getDictionaryById,deleteDictionaryById,putDictionaryById,getDictionaryByIdExport,putDictionaryByIdMove,postDictionaryImport,getItemDictionary,getTreeDictionaryAncestors,getTreeDictionaryChildren,getTreeDictionaryRoot,postDocumentBlueprint,getDocumentBlueprintById,deleteDocumentBlueprintById,putDocumentBlueprintById,getDocumentBlueprintByIdAuditLog,putDocumentBlueprintByIdMove,getDocumentBlueprintByIdScaffold,postDocumentBlueprintFolder,getDocumentBlueprintFolderById,deleteDocumentBlueprintFolderById,putDocumentBlueprintFolderById,postDocumentBlueprintFromDocument,getItemDocumentBlueprint,getTreeDocumentBlueprintAncestors,getTreeDocumentBlueprintChildren,getTreeDocumentBlueprintRoot,getTreeDocumentBlueprintSiblings,postDocumentType,getDocumentTypeById,deleteDocumentTypeById,putDocumentTypeById,getDocumentTypeByIdAllowedChildren,getDocumentTypeByIdAllowedParents,getDocumentTypeByIdBlueprint,getDocumentTypeByIdCompositionReferences,postDocumentTypeByIdCopy,getDocumentTypeByIdExport,putDocumentTypeByIdImport,putDocumentTypeByIdMove,getDocumentTypeByIdSchema,postDocumentTypeByIdTemplate,getDocumentTypeAllowedAtRoot,postDocumentTypeAvailableCompositions,getDocumentTypeBatch,getDocumentTypeConfiguration,postDocumentTypeFolder,getDocumentTypeFolderById,deleteDocumentTypeFolderById,putDocumentTypeFolderById,postDocumentTypeImport,getItemDocumentType,getItemDocumentTypeAncestors,getItemDocumentTypeSearch,getTreeDocumentTypeAncestors,getTreeDocumentTypeChildren,getTreeDocumentTypeRoot,getTreeDocumentTypeSearch,getTreeDocumentTypeSiblings,getDocumentVersion,getDocumentVersionById,putDocumentVersionByIdPreventCleanup,postDocumentVersionByIdRollback,getCollectionDocumentById,postDocument,getDocumentById,deleteDocumentById,putDocumentById,getDocumentByIdAuditLog,getDocumentByIdAvailableSegmentOptions,postDocumentByIdCopy,getDocumentByIdDomains,putDocumentByIdDomains,putDocumentByIdMove,putDocumentByIdMoveToRecycleBin,getDocumentByIdNotifications,putDocumentByIdNotifications,patchDocumentByIdPatch,getDocumentByIdPreviewUrl,postDocumentByIdPublicAccess,deleteDocumentByIdPublicAccess,getDocumentByIdPublicAccess,putDocumentByIdPublicAccess,putDocumentByIdPublish,putDocumentByIdPublishWithDescendants,getDocumentByIdPublishWithDescendantsResultByTaskId,getDocumentByIdPublished,getDocumentByIdReferencedBy,getDocumentByIdReferencedDescendants,putDocumentByIdUnpublish,putUmbracoManagementApiV11DocumentByIdValidate11,getDocumentAreReferenced,getDocumentConfiguration,putDocumentSort,getDocumentUrls,postDocumentValidate,getItemDocument,getItemDocumentAncestors,getItemDocumentSearch,deleteRecycleBinDocument,deleteRecycleBinDocumentById,getRecycleBinDocumentByIdOriginalParent,putRecycleBinDocumentByIdRestore,getRecycleBinDocumentChildren,getRecycleBinDocumentReferencedBy,getRecycleBinDocumentRoot,getRecycleBinDocumentSiblings,getTreeDocumentAncestors,getTreeDocumentChildren,getTreeDocumentRoot,getTreeDocumentSiblings,postDynamicRootQuery,getDynamicRootSteps,getHealthCheckGroup,getHealthCheckGroupByName,postHealthCheckGroupByNameCheck,postHealthCheckExecuteAction,getHelp,getImagingResizeUrls,getImportAnalyze,getIndexer,getIndexerByIndexName,postIndexerByIndexNameRebuild,getInstallSettings,postInstallSetup,postInstallValidateDatabase,getItemLanguage,getItemLanguageDefault,getLanguage,postLanguage,getLanguageByIsoCode,deleteLanguageByIsoCode,putLanguageByIsoCode,getLogViewerLevel,getLogViewerLevelCount,getLogViewerLog,getLogViewerMessageTemplate,getLogViewerSavedSearch,postLogViewerSavedSearch,getLogViewerSavedSearchByName,deleteLogViewerSavedSearchByName,getLogViewerValidateLogsSize,getManifestManifest,getManifestManifestPrivate,getManifestManifestPublic,getItemMediaType,getItemMediaTypeAllowed,getItemMediaTypeAncestors,getItemMediaTypeFolders,getItemMediaTypeSearch,postMediaType,getMediaTypeById,deleteMediaTypeById,putMediaTypeById,getMediaTypeByIdAllowedChildren,getMediaTypeByIdAllowedParents,getMediaTypeByIdCompositionReferences,postMediaTypeByIdCopy,getMediaTypeByIdExport,putMediaTypeByIdImport,putMediaTypeByIdMove,getMediaTypeByIdSchema,getMediaTypeAllowedAtRoot,postMediaTypeAvailableCompositions,getMediaTypeBatch,getMediaTypeConfiguration,postMediaTypeFolder,getMediaTypeFolderById,deleteMediaTypeFolderById,putMediaTypeFolderById,postMediaTypeImport,getTreeMediaTypeAncestors,getTreeMediaTypeChildren,getTreeMediaTypeRoot,getTreeMediaTypeSiblings,getCollectionMedia,getItemMedia,getItemMediaAncestors,getItemMediaSearch,postMedia,getMediaById,deleteMediaById,putMediaById,getMediaByIdAuditLog,putMediaByIdMove,putMediaByIdMoveToRecycleBin,getMediaByIdReferencedBy,getMediaByIdReferencedDescendants,putMediaByIdValidate,getMediaAreReferenced,getMediaConfiguration,putMediaSort,getMediaUrls,postMediaValidate,deleteRecycleBinMedia,deleteRecycleBinMediaById,getRecycleBinMediaByIdOriginalParent,putRecycleBinMediaByIdRestore,getRecycleBinMediaChildren,getRecycleBinMediaReferencedBy,getRecycleBinMediaRoot,getRecycleBinMediaSiblings,getTreeMediaAncestors,getTreeMediaChildren,getTreeMediaRoot,getTreeMediaSiblings,getItemMemberGroup,getMemberGroup,postMemberGroup,getMemberGroupById,deleteMemberGroupById,putMemberGroupById,getTreeMemberGroupRoot,getItemMemberType,getItemMemberTypeAncestors,getItemMemberTypeSearch,postMemberType,getMemberTypeById,deleteMemberTypeById,putMemberTypeById,getMemberTypeByIdCompositionReferences,postMemberTypeByIdCopy,getMemberTypeByIdExport,putMemberTypeByIdImport,putMemberTypeByIdMove,getMemberTypeByIdSchema,getMemberTypeAllowedAtRoot,postMemberTypeAvailableCompositions,getMemberTypeBatch,getMemberTypeConfiguration,postMemberTypeFolder,getMemberTypeFolderById,deleteMemberTypeFolderById,putMemberTypeFolderById,postMemberTypeImport,getTreeMemberTypeAncestors,getTreeMemberTypeChildren,getTreeMemberTypeRoot,getTreeMemberTypeSiblings,getFilterMember,getItemMember,getItemMemberAncestors,getItemMemberSearch,postMember,getMemberById,deleteMemberById,putMemberById,getMemberByIdReferencedBy,getMemberByIdReferencedDescendants,putMemberByIdValidate,getMemberAreReferenced,getMemberConfiguration,postMemberValidate,postModelsBuilderBuild,getModelsBuilderDashboard,getModelsBuilderStatus,getNewsDashboard,getObjectTypes,getOembedQuery,postPackageByNameRunMigration,getPackageConfiguration,getPackageCreated,postPackageCreated,getPackageCreatedById,deletePackageCreatedById,putPackageCreatedById,getPackageCreatedByIdDownload,getPackageMigrationStatus,getItemPartialView,postPartialView,getPartialViewByPath,deletePartialViewByPath,putPartialViewByPath,putPartialViewByPathRename,postPartialViewFolder,getPartialViewFolderByPath,deletePartialViewFolderByPath,getPartialViewSnippet,getPartialViewSnippetById,getTreePartialViewAncestors,getTreePartialViewChildren,getTreePartialViewRoot,getTreePartialViewSiblings,deletePreview,postPreview,getProfilingStatus,putProfilingStatus,getPropertyTypeIsUsed,postPublishedCacheRebuild,getPublishedCacheRebuildStatus,postPublishedCacheReload,getRedirectManagement,getRedirectManagementById,deleteRedirectManagementById,getRedirectManagementStatus,postRedirectManagementStatus,getItemRelationType,getRelationType,getRelationTypeById,getRelationByRelationTypeId,getItemScript,postScript,getScriptByPath,deleteScriptByPath,putScriptByPath,putScriptByPathRename,postScriptFolder,getScriptFolderByPath,deleteScriptFolderByPath,getTreeScriptAncestors,getTreeScriptChildren,getTreeScriptRoot,getTreeScriptSiblings,getSearcher,getSearcherBySearcherNameQuery,getSecurityConfiguration,postSecurityForgotPassword,postSecurityForgotPasswordReset,postSecurityForgotPasswordVerify,getSegment,getServerConfiguration,getServerInformation,getServerStatus,getServerTroubleshooting,getServerUpgradeCheck,getItemStaticFile,getTreeStaticFileAncestors,getTreeStaticFileChildren,getTreeStaticFileRoot,getItemStylesheet,postStylesheet,getStylesheetByPath,deleteStylesheetByPath,putStylesheetByPath,putStylesheetByPathRename,postStylesheetFolder,getStylesheetFolderByPath,deleteStylesheetFolderByPath,getTreeStylesheetAncestors,getTreeStylesheetChildren,getTreeStylesheetRoot,getTreeStylesheetSiblings,getTag,getTelemetry,getTelemetryLevel,postTelemetryLevel,getItemTemplate,getItemTemplateAncestors,getItemTemplateSearch,postTemplate,getTemplateById,deleteTemplateById,putTemplateById,getTemplateConfiguration,postTemplateQueryExecute,getTemplateQuerySettings,getTreeTemplateAncestors,getTreeTemplateChildren,getTreeTemplateRoot,getTreeTemplateSiblings,postUpgradeAuthorize,getUpgradeSettings,postUserData,getUserData,putUserData,getUserDataById,deleteUserDataById,getFilterUserGroup,getItemUserGroup,deleteUserGroup,postUserGroup,getUserGroup,getUserGroupById,deleteUserGroupById,putUserGroupById,deleteUserGroupByIdUsers,postUserGroupByIdUsers,getFilterUser,getItemUser,postUser,deleteUser,getUser,getUserById,deleteUserById,putUserById,getUserById2fa,deleteUserById2faByProviderName,getUserByIdCalculateStartNodes,postUserByIdChangePassword,postUserByIdClientCredentials,getUserByIdClientCredentials,deleteUserByIdClientCredentialsByClientId,postUserByIdResetPassword,deleteUserAvatarById,postUserAvatarById,getUserConfiguration,getUserCurrent,getUserCurrent2fa,deleteUserCurrent2faByProviderName,postUserCurrent2faByProviderName,getUserCurrent2faByProviderName,postUserCurrentAvatar,postUserCurrentChangePassword,getUserCurrentConfiguration,getUserCurrentLoginProviders,getUserCurrentPermissions,getUserCurrentPermissionsDocument,getUserCurrentPermissionsMedia,postUserDisable,postUserEnable,postUserInvite,postUserInviteCreatePassword,postUserInviteResend,postUserInviteVerify,postUserSetUserGroups,postUserUnlock,getItemWebhook,getWebhook,postWebhook,getWebhookById,deleteWebhookById,putWebhookById,getWebhookByIdLogs,getWebhookEvents,getWebhookLogs}};
+return {getCulture,postDataType,getDataTypeById,deleteDataTypeById,putDataTypeById,postDataTypeByIdCopy,getDataTypeByIdIsUsed,putDataTypeByIdMove,getDataTypeByIdReferencedBy,getDataTypeByIdSchema,getDataTypeBatch,getDataTypeConfiguration,postDataTypeFolder,getDataTypeFolderById,deleteDataTypeFolderById,putDataTypeFolderById,getDataTypeSchemasBatch,getFilterDataType,getItemDataType,getItemDataTypeAncestors,getItemDataTypeSearch,getTreeDataTypeAncestors,getTreeDataTypeChildren,getTreeDataTypeRoot,getTreeDataTypeSearch,getTreeDataTypeSiblings,getDictionary,postDictionary,getDictionaryById,deleteDictionaryById,putDictionaryById,getDictionaryByIdExport,putDictionaryByIdMove,postDictionaryImport,getItemDictionary,getTreeDictionaryAncestors,getTreeDictionaryChildren,getTreeDictionaryRoot,putUmbracoManagementApiV11DocumentByIdValidate11,getCollectionDocumentById,postDocument,getDocumentById,deleteDocumentById,putDocumentById,getDocumentByIdAuditLog,getDocumentByIdAvailableSegmentOptions,postDocumentByIdCopy,getDocumentByIdDomains,putDocumentByIdDomains,putDocumentByIdMove,putDocumentByIdMoveToRecycleBin,getDocumentByIdNotifications,putDocumentByIdNotifications,patchDocumentByIdPatch,getDocumentByIdPreviewUrl,postDocumentByIdPublicAccess,deleteDocumentByIdPublicAccess,getDocumentByIdPublicAccess,putDocumentByIdPublicAccess,putDocumentByIdPublish,putDocumentByIdPublishWithDescendants,getDocumentByIdPublishWithDescendantsResultByTaskId,getDocumentByIdPublished,getDocumentByIdReferencedBy,getDocumentByIdReferencedDescendants,putDocumentByIdUnpublish,getDocumentAreReferenced,getDocumentConfiguration,putDocumentSort,getDocumentUrls,postDocumentValidate,getItemDocument,getItemDocumentAncestors,getItemDocumentSearch,deleteRecycleBinDocument,deleteRecycleBinDocumentById,getRecycleBinDocumentByIdOriginalParent,putRecycleBinDocumentByIdRestore,getRecycleBinDocumentChildren,getRecycleBinDocumentReferencedBy,getRecycleBinDocumentRoot,getRecycleBinDocumentSiblings,getTreeDocumentAncestors,getTreeDocumentChildren,getTreeDocumentRoot,getTreeDocumentSiblings,postDocumentBlueprint,getDocumentBlueprintById,deleteDocumentBlueprintById,putDocumentBlueprintById,getDocumentBlueprintByIdAuditLog,putDocumentBlueprintByIdMove,getDocumentBlueprintByIdScaffold,postDocumentBlueprintFolder,getDocumentBlueprintFolderById,deleteDocumentBlueprintFolderById,putDocumentBlueprintFolderById,postDocumentBlueprintFromDocument,getItemDocumentBlueprint,getTreeDocumentBlueprintAncestors,getTreeDocumentBlueprintChildren,getTreeDocumentBlueprintRoot,getTreeDocumentBlueprintSiblings,postDocumentType,getDocumentTypeById,deleteDocumentTypeById,putDocumentTypeById,getDocumentTypeByIdAllowedChildren,getDocumentTypeByIdAllowedParents,getDocumentTypeByIdBlueprint,getDocumentTypeByIdCompositionReferences,postDocumentTypeByIdCopy,getDocumentTypeByIdExport,putDocumentTypeByIdImport,putDocumentTypeByIdMove,getDocumentTypeByIdSchema,postDocumentTypeByIdTemplate,getDocumentTypeAllowedAtRoot,getDocumentTypeAllowedInLibrary,postDocumentTypeAvailableCompositions,getDocumentTypeBatch,getDocumentTypeConfiguration,postDocumentTypeFolder,getDocumentTypeFolderById,deleteDocumentTypeFolderById,putDocumentTypeFolderById,postDocumentTypeImport,getItemDocumentType,getItemDocumentTypeAncestors,getItemDocumentTypeSearch,getTreeDocumentTypeAncestors,getTreeDocumentTypeChildren,getTreeDocumentTypeRoot,getTreeDocumentTypeSearch,getTreeDocumentTypeSiblings,getDocumentVersion,getDocumentVersionById,putDocumentVersionByIdPreventCleanup,postDocumentVersionByIdRollback,postDynamicRootQuery,getDynamicRootSteps,postElement,getElementById,deleteElementById,putElementById,getElementByIdAuditLog,postElementByIdCopy,putElementByIdMove,putElementByIdMoveToRecycleBin,putElementByIdPublish,getElementByIdReferencedBy,putElementByIdUnpublish,putElementByIdValidate,getElementAreReferenced,getElementConfiguration,postElementFolder,getElementFolderById,deleteElementFolderById,putElementFolderById,putElementFolderByIdMove,putElementFolderByIdMoveToRecycleBin,getElementFolderByIdReferencedDescendants,postElementValidate,getItemElement,getItemElementAncestors,getItemElementFolder,getItemElementSearch,deleteRecycleBinElement,deleteRecycleBinElementById,getRecycleBinElementByIdOriginalParent,putRecycleBinElementByIdRestore,getRecycleBinElementChildren,deleteRecycleBinElementFolderById,getRecycleBinElementFolderByIdOriginalParent,putRecycleBinElementFolderByIdRestore,getRecycleBinElementReferencedBy,getRecycleBinElementRoot,getRecycleBinElementSiblings,getTreeElementAncestors,getTreeElementChildren,getTreeElementRoot,getTreeElementSiblings,getElementVersion,getElementVersionById,putElementVersionByIdPreventCleanup,postElementVersionByIdRollback,getHealthCheckGroup,getHealthCheckGroupByName,postHealthCheckGroupByNameCheck,postHealthCheckExecuteAction,getHelp,getImagingResizeUrls,getImportAnalyze,getIndexer,getIndexerByIndexName,postIndexerByIndexNameRebuild,getInstallSettings,postInstallSetup,postInstallValidateDatabase,getItemLanguage,getItemLanguageDefault,getLanguage,postLanguage,getLanguageByIsoCode,deleteLanguageByIsoCode,putLanguageByIsoCode,getLogViewerLevel,getLogViewerLevelCount,getLogViewerLog,getLogViewerMessageTemplate,getLogViewerSavedSearch,postLogViewerSavedSearch,getLogViewerSavedSearchByName,deleteLogViewerSavedSearchByName,getLogViewerValidateLogsSize,getManifestManifest,getManifestManifestPrivate,getManifestManifestPublic,getCollectionMedia,getItemMedia,getItemMediaAncestors,getItemMediaSearch,postMedia,getMediaById,deleteMediaById,putMediaById,getMediaByIdAuditLog,putMediaByIdMove,putMediaByIdMoveToRecycleBin,getMediaByIdReferencedBy,getMediaByIdReferencedDescendants,putMediaByIdValidate,getMediaAreReferenced,getMediaConfiguration,putMediaSort,getMediaUrls,postMediaValidate,deleteRecycleBinMedia,deleteRecycleBinMediaById,getRecycleBinMediaByIdOriginalParent,putRecycleBinMediaByIdRestore,getRecycleBinMediaChildren,getRecycleBinMediaReferencedBy,getRecycleBinMediaRoot,getRecycleBinMediaSiblings,getTreeMediaAncestors,getTreeMediaChildren,getTreeMediaRoot,getTreeMediaSiblings,getItemMediaType,getItemMediaTypeAllowed,getItemMediaTypeAncestors,getItemMediaTypeFolders,getItemMediaTypeSearch,postMediaType,getMediaTypeById,deleteMediaTypeById,putMediaTypeById,getMediaTypeByIdAllowedChildren,getMediaTypeByIdAllowedParents,getMediaTypeByIdCompositionReferences,postMediaTypeByIdCopy,getMediaTypeByIdExport,putMediaTypeByIdImport,putMediaTypeByIdMove,getMediaTypeByIdSchema,getMediaTypeAllowedAtRoot,postMediaTypeAvailableCompositions,getMediaTypeBatch,getMediaTypeConfiguration,postMediaTypeFolder,getMediaTypeFolderById,deleteMediaTypeFolderById,putMediaTypeFolderById,postMediaTypeImport,getTreeMediaTypeAncestors,getTreeMediaTypeChildren,getTreeMediaTypeRoot,getTreeMediaTypeSiblings,getFilterMember,getItemMember,getItemMemberAncestors,getItemMemberSearch,postMember,getMemberById,deleteMemberById,putMemberById,getMemberByIdReferencedBy,getMemberByIdReferencedDescendants,putMemberByIdValidate,getMemberAreReferenced,postMemberValidate,getItemMemberGroup,getMemberGroup,postMemberGroup,getMemberGroupById,deleteMemberGroupById,putMemberGroupById,getTreeMemberGroupRoot,getItemMemberType,getItemMemberTypeAncestors,getItemMemberTypeSearch,postMemberType,getMemberTypeById,deleteMemberTypeById,putMemberTypeById,getMemberTypeByIdCompositionReferences,postMemberTypeByIdCopy,getMemberTypeByIdExport,putMemberTypeByIdImport,putMemberTypeByIdMove,getMemberTypeByIdSchema,getMemberTypeAllowedAtRoot,postMemberTypeAvailableCompositions,getMemberTypeBatch,getMemberTypeConfiguration,postMemberTypeFolder,getMemberTypeFolderById,deleteMemberTypeFolderById,putMemberTypeFolderById,postMemberTypeImport,getTreeMemberTypeAncestors,getTreeMemberTypeChildren,getTreeMemberTypeRoot,getTreeMemberTypeSiblings,postModelsBuilderBuild,getModelsBuilderDashboard,getModelsBuilderStatus,getNewsDashboard,getObjectTypes,getOembedQuery,postPackageByNameRunMigration,getPackageConfiguration,getPackageCreated,postPackageCreated,getPackageCreatedById,deletePackageCreatedById,putPackageCreatedById,getPackageCreatedByIdDownload,getPackageMigrationStatus,getItemPartialView,postPartialView,getPartialViewByPath,deletePartialViewByPath,putPartialViewByPath,putPartialViewByPathRename,postPartialViewFolder,getPartialViewFolderByPath,deletePartialViewFolderByPath,getPartialViewSnippet,getPartialViewSnippetById,getTreePartialViewAncestors,getTreePartialViewChildren,getTreePartialViewRoot,getTreePartialViewSiblings,deletePreview,getProfilingStatus,putProfilingStatus,getPropertyTypeIsUsed,postPublishedCacheRebuild,getPublishedCacheRebuildStatus,postPublishedCacheReload,getRedirectManagement,getRedirectManagementById,deleteRedirectManagementById,getRedirectManagementStatus,postRedirectManagementStatus,getRelationByRelationTypeId,getItemRelationType,getRelationType,getRelationTypeById,getItemScript,postScript,getScriptByPath,deleteScriptByPath,putScriptByPath,putScriptByPathRename,postScriptFolder,getScriptFolderByPath,deleteScriptFolderByPath,getTreeScriptAncestors,getTreeScriptChildren,getTreeScriptRoot,getTreeScriptSiblings,getSearcher,getSearcherBySearcherNameQuery,getSecurityConfiguration,postSecurityForgotPassword,postSecurityForgotPasswordReset,postSecurityForgotPasswordVerify,getSegment,getServerConfiguration,getServerInformation,getServerStatus,getServerTroubleshooting,getServerUpgradeCheck,getItemStaticFile,getTreeStaticFileAncestors,getTreeStaticFileChildren,getTreeStaticFileRoot,getItemStylesheet,postStylesheet,getStylesheetByPath,deleteStylesheetByPath,putStylesheetByPath,putStylesheetByPathRename,postStylesheetFolder,getStylesheetFolderByPath,deleteStylesheetFolderByPath,getTreeStylesheetAncestors,getTreeStylesheetChildren,getTreeStylesheetRoot,getTreeStylesheetSiblings,getTag,getTelemetry,getTelemetryLevel,postTelemetryLevel,getItemTemplate,getItemTemplateAncestors,getItemTemplateSearch,postTemplate,getTemplateById,deleteTemplateById,putTemplateById,getTemplateConfiguration,postTemplateQueryExecute,getTemplateQuerySettings,getTreeTemplateAncestors,getTreeTemplateChildren,getTreeTemplateRoot,getTreeTemplateSiblings,postUpgradeAuthorize,getUpgradeSettings,getFilterUser,getItemUser,deleteUser,postUser,getUser,getUserById,deleteUserById,putUserById,getUserById2fa,deleteUserById2faByProviderName,getUserByIdCalculateStartNodes,postUserByIdChangePassword,postUserByIdClientCredentials,getUserByIdClientCredentials,deleteUserByIdClientCredentialsByClientId,postUserByIdResetPassword,deleteUserAvatarById,postUserAvatarById,getUserConfiguration,getUserCurrent,getUserCurrent2fa,deleteUserCurrent2faByProviderName,postUserCurrent2faByProviderName,getUserCurrent2faByProviderName,deleteUserCurrentAvatar,postUserCurrentAvatar,postUserCurrentChangePassword,getUserCurrentConfiguration,getUserCurrentLoginProviders,getUserCurrentPermissions,getUserCurrentPermissionsDocument,getUserCurrentPermissionsElement,getUserCurrentPermissionsMedia,putUserCurrentProfile,postUserDisable,postUserEnable,postUserInvite,postUserInviteCreatePassword,postUserInviteResend,postUserInviteVerify,postUserSetUserGroups,postUserUnlock,postUserData,getUserData,putUserData,getUserDataById,deleteUserDataById,getFilterUserGroup,getItemUserGroup,deleteUserGroup,postUserGroup,getUserGroup,getUserGroupById,deleteUserGroupById,putUserGroupById,postUserGroupByIdUsers,deleteUserGroupByIdUsers,getItemWebhook,getWebhook,postWebhook,getWebhookById,deleteWebhookById,putWebhookById,getWebhookByIdLogs,getWebhookEvents,getWebhookLogs}};
 export type GetCultureResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getCulture']>>>
 export type PostDataTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDataType']>>>
 export type GetDataTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDataTypeById']>>>
@@ -6951,6 +7634,54 @@ export type GetItemDictionaryResult = NonNullable<Awaited<ReturnType<ReturnType<
 export type GetTreeDictionaryAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDictionaryAncestors']>>>
 export type GetTreeDictionaryChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDictionaryChildren']>>>
 export type GetTreeDictionaryRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDictionaryRoot']>>>
+export type PutUmbracoManagementApiV11DocumentByIdValidate11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putUmbracoManagementApiV11DocumentByIdValidate11']>>>
+export type GetCollectionDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getCollectionDocumentById']>>>
+export type PostDocumentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocument']>>>
+export type GetDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentById']>>>
+export type DeleteDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteDocumentById']>>>
+export type PutDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentById']>>>
+export type GetDocumentByIdAuditLogResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdAuditLog']>>>
+export type GetDocumentByIdAvailableSegmentOptionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdAvailableSegmentOptions']>>>
+export type PostDocumentByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentByIdCopy']>>>
+export type GetDocumentByIdDomainsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdDomains']>>>
+export type PutDocumentByIdDomainsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdDomains']>>>
+export type PutDocumentByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdMove']>>>
+export type PutDocumentByIdMoveToRecycleBinResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdMoveToRecycleBin']>>>
+export type GetDocumentByIdNotificationsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdNotifications']>>>
+export type PutDocumentByIdNotificationsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdNotifications']>>>
+export type PatchDocumentByIdPatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['patchDocumentByIdPatch']>>>
+export type GetDocumentByIdPreviewUrlResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdPreviewUrl']>>>
+export type PostDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentByIdPublicAccess']>>>
+export type DeleteDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteDocumentByIdPublicAccess']>>>
+export type GetDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdPublicAccess']>>>
+export type PutDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdPublicAccess']>>>
+export type PutDocumentByIdPublishResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdPublish']>>>
+export type PutDocumentByIdPublishWithDescendantsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdPublishWithDescendants']>>>
+export type GetDocumentByIdPublishWithDescendantsResultByTaskIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdPublishWithDescendantsResultByTaskId']>>>
+export type GetDocumentByIdPublishedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdPublished']>>>
+export type GetDocumentByIdReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdReferencedBy']>>>
+export type GetDocumentByIdReferencedDescendantsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdReferencedDescendants']>>>
+export type PutDocumentByIdUnpublishResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdUnpublish']>>>
+export type GetDocumentAreReferencedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentAreReferenced']>>>
+export type GetDocumentConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentConfiguration']>>>
+export type PutDocumentSortResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentSort']>>>
+export type GetDocumentUrlsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentUrls']>>>
+export type PostDocumentValidateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentValidate']>>>
+export type GetItemDocumentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocument']>>>
+export type GetItemDocumentAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocumentAncestors']>>>
+export type GetItemDocumentSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocumentSearch']>>>
+export type DeleteRecycleBinDocumentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRecycleBinDocument']>>>
+export type DeleteRecycleBinDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRecycleBinDocumentById']>>>
+export type GetRecycleBinDocumentByIdOriginalParentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentByIdOriginalParent']>>>
+export type PutRecycleBinDocumentByIdRestoreResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putRecycleBinDocumentByIdRestore']>>>
+export type GetRecycleBinDocumentChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentChildren']>>>
+export type GetRecycleBinDocumentReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentReferencedBy']>>>
+export type GetRecycleBinDocumentRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentRoot']>>>
+export type GetRecycleBinDocumentSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentSiblings']>>>
+export type GetTreeDocumentAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentAncestors']>>>
+export type GetTreeDocumentChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentChildren']>>>
+export type GetTreeDocumentRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentRoot']>>>
+export type GetTreeDocumentSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentSiblings']>>>
 export type PostDocumentBlueprintResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentBlueprint']>>>
 export type GetDocumentBlueprintByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentBlueprintById']>>>
 export type DeleteDocumentBlueprintByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteDocumentBlueprintById']>>>
@@ -6983,6 +7714,7 @@ export type PutDocumentTypeByIdMoveResult = NonNullable<Awaited<ReturnType<Retur
 export type GetDocumentTypeByIdSchemaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeByIdSchema']>>>
 export type PostDocumentTypeByIdTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentTypeByIdTemplate']>>>
 export type GetDocumentTypeAllowedAtRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeAllowedAtRoot']>>>
+export type GetDocumentTypeAllowedInLibraryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeAllowedInLibrary']>>>
 export type PostDocumentTypeAvailableCompositionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentTypeAvailableCompositions']>>>
 export type GetDocumentTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeBatch']>>>
 export type GetDocumentTypeConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentTypeConfiguration']>>>
@@ -7003,56 +7735,53 @@ export type GetDocumentVersionResult = NonNullable<Awaited<ReturnType<ReturnType
 export type GetDocumentVersionByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentVersionById']>>>
 export type PutDocumentVersionByIdPreventCleanupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentVersionByIdPreventCleanup']>>>
 export type PostDocumentVersionByIdRollbackResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentVersionByIdRollback']>>>
-export type GetCollectionDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getCollectionDocumentById']>>>
-export type PostDocumentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocument']>>>
-export type GetDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentById']>>>
-export type DeleteDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteDocumentById']>>>
-export type PutDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentById']>>>
-export type GetDocumentByIdAuditLogResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdAuditLog']>>>
-export type GetDocumentByIdAvailableSegmentOptionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdAvailableSegmentOptions']>>>
-export type PostDocumentByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentByIdCopy']>>>
-export type GetDocumentByIdDomainsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdDomains']>>>
-export type PutDocumentByIdDomainsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdDomains']>>>
-export type PutDocumentByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdMove']>>>
-export type PutDocumentByIdMoveToRecycleBinResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdMoveToRecycleBin']>>>
-export type GetDocumentByIdNotificationsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdNotifications']>>>
-export type PutDocumentByIdNotificationsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdNotifications']>>>
-export type PatchDocumentByIdPatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['patchDocumentByIdPatch']>>>
-export type GetDocumentByIdPreviewUrlResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdPreviewUrl']>>>
-export type PostDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentByIdPublicAccess']>>>
-export type DeleteDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteDocumentByIdPublicAccess']>>>
-export type GetDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdPublicAccess']>>>
-export type PutDocumentByIdPublicAccessResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdPublicAccess']>>>
-export type PutDocumentByIdPublishResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdPublish']>>>
-export type PutDocumentByIdPublishWithDescendantsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdPublishWithDescendants']>>>
-export type GetDocumentByIdPublishWithDescendantsResultByTaskIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdPublishWithDescendantsResultByTaskId']>>>
-export type GetDocumentByIdPublishedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdPublished']>>>
-export type GetDocumentByIdReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdReferencedBy']>>>
-export type GetDocumentByIdReferencedDescendantsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentByIdReferencedDescendants']>>>
-export type PutDocumentByIdUnpublishResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentByIdUnpublish']>>>
-export type PutUmbracoManagementApiV11DocumentByIdValidate11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putUmbracoManagementApiV11DocumentByIdValidate11']>>>
-export type GetDocumentAreReferencedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentAreReferenced']>>>
-export type GetDocumentConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentConfiguration']>>>
-export type PutDocumentSortResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putDocumentSort']>>>
-export type GetDocumentUrlsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDocumentUrls']>>>
-export type PostDocumentValidateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDocumentValidate']>>>
-export type GetItemDocumentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocument']>>>
-export type GetItemDocumentAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocumentAncestors']>>>
-export type GetItemDocumentSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemDocumentSearch']>>>
-export type DeleteRecycleBinDocumentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRecycleBinDocument']>>>
-export type DeleteRecycleBinDocumentByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRecycleBinDocumentById']>>>
-export type GetRecycleBinDocumentByIdOriginalParentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentByIdOriginalParent']>>>
-export type PutRecycleBinDocumentByIdRestoreResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putRecycleBinDocumentByIdRestore']>>>
-export type GetRecycleBinDocumentChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentChildren']>>>
-export type GetRecycleBinDocumentReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentReferencedBy']>>>
-export type GetRecycleBinDocumentRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentRoot']>>>
-export type GetRecycleBinDocumentSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinDocumentSiblings']>>>
-export type GetTreeDocumentAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentAncestors']>>>
-export type GetTreeDocumentChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentChildren']>>>
-export type GetTreeDocumentRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentRoot']>>>
-export type GetTreeDocumentSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeDocumentSiblings']>>>
 export type PostDynamicRootQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postDynamicRootQuery']>>>
 export type GetDynamicRootStepsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getDynamicRootSteps']>>>
+export type PostElementResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postElement']>>>
+export type GetElementByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getElementById']>>>
+export type DeleteElementByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteElementById']>>>
+export type PutElementByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementById']>>>
+export type GetElementByIdAuditLogResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getElementByIdAuditLog']>>>
+export type PostElementByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postElementByIdCopy']>>>
+export type PutElementByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementByIdMove']>>>
+export type PutElementByIdMoveToRecycleBinResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementByIdMoveToRecycleBin']>>>
+export type PutElementByIdPublishResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementByIdPublish']>>>
+export type GetElementByIdReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getElementByIdReferencedBy']>>>
+export type PutElementByIdUnpublishResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementByIdUnpublish']>>>
+export type PutElementByIdValidateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementByIdValidate']>>>
+export type GetElementAreReferencedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getElementAreReferenced']>>>
+export type GetElementConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getElementConfiguration']>>>
+export type PostElementFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postElementFolder']>>>
+export type GetElementFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getElementFolderById']>>>
+export type DeleteElementFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteElementFolderById']>>>
+export type PutElementFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementFolderById']>>>
+export type PutElementFolderByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementFolderByIdMove']>>>
+export type PutElementFolderByIdMoveToRecycleBinResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementFolderByIdMoveToRecycleBin']>>>
+export type GetElementFolderByIdReferencedDescendantsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getElementFolderByIdReferencedDescendants']>>>
+export type PostElementValidateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postElementValidate']>>>
+export type GetItemElementResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemElement']>>>
+export type GetItemElementAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemElementAncestors']>>>
+export type GetItemElementFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemElementFolder']>>>
+export type GetItemElementSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemElementSearch']>>>
+export type DeleteRecycleBinElementResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRecycleBinElement']>>>
+export type DeleteRecycleBinElementByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRecycleBinElementById']>>>
+export type GetRecycleBinElementByIdOriginalParentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinElementByIdOriginalParent']>>>
+export type PutRecycleBinElementByIdRestoreResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putRecycleBinElementByIdRestore']>>>
+export type GetRecycleBinElementChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinElementChildren']>>>
+export type DeleteRecycleBinElementFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRecycleBinElementFolderById']>>>
+export type GetRecycleBinElementFolderByIdOriginalParentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinElementFolderByIdOriginalParent']>>>
+export type PutRecycleBinElementFolderByIdRestoreResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putRecycleBinElementFolderByIdRestore']>>>
+export type GetRecycleBinElementReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinElementReferencedBy']>>>
+export type GetRecycleBinElementRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinElementRoot']>>>
+export type GetRecycleBinElementSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRecycleBinElementSiblings']>>>
+export type GetTreeElementAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeElementAncestors']>>>
+export type GetTreeElementChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeElementChildren']>>>
+export type GetTreeElementRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeElementRoot']>>>
+export type GetTreeElementSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeElementSiblings']>>>
+export type GetElementVersionResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getElementVersion']>>>
+export type GetElementVersionByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getElementVersionById']>>>
+export type PutElementVersionByIdPreventCleanupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putElementVersionByIdPreventCleanup']>>>
+export type PostElementVersionByIdRollbackResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postElementVersionByIdRollback']>>>
 export type GetHealthCheckGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getHealthCheckGroup']>>>
 export type GetHealthCheckGroupByNameResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getHealthCheckGroupByName']>>>
 export type PostHealthCheckGroupByNameCheckResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postHealthCheckGroupByNameCheck']>>>
@@ -7085,36 +7814,6 @@ export type GetLogViewerValidateLogsSizeResult = NonNullable<Awaited<ReturnType<
 export type GetManifestManifestResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getManifestManifest']>>>
 export type GetManifestManifestPrivateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getManifestManifestPrivate']>>>
 export type GetManifestManifestPublicResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getManifestManifestPublic']>>>
-export type GetItemMediaTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaType']>>>
-export type GetItemMediaTypeAllowedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeAllowed']>>>
-export type GetItemMediaTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeAncestors']>>>
-export type GetItemMediaTypeFoldersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeFolders']>>>
-export type GetItemMediaTypeSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeSearch']>>>
-export type PostMediaTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaType']>>>
-export type GetMediaTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeById']>>>
-export type DeleteMediaTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteMediaTypeById']>>>
-export type PutMediaTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeById']>>>
-export type GetMediaTypeByIdAllowedChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdAllowedChildren']>>>
-export type GetMediaTypeByIdAllowedParentsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdAllowedParents']>>>
-export type GetMediaTypeByIdCompositionReferencesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdCompositionReferences']>>>
-export type PostMediaTypeByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeByIdCopy']>>>
-export type GetMediaTypeByIdExportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdExport']>>>
-export type PutMediaTypeByIdImportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeByIdImport']>>>
-export type PutMediaTypeByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeByIdMove']>>>
-export type GetMediaTypeByIdSchemaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdSchema']>>>
-export type GetMediaTypeAllowedAtRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeAllowedAtRoot']>>>
-export type PostMediaTypeAvailableCompositionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeAvailableCompositions']>>>
-export type GetMediaTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeBatch']>>>
-export type GetMediaTypeConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeConfiguration']>>>
-export type PostMediaTypeFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeFolder']>>>
-export type GetMediaTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeFolderById']>>>
-export type DeleteMediaTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteMediaTypeFolderById']>>>
-export type PutMediaTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeFolderById']>>>
-export type PostMediaTypeImportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeImport']>>>
-export type GetTreeMediaTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaTypeAncestors']>>>
-export type GetTreeMediaTypeChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaTypeChildren']>>>
-export type GetTreeMediaTypeRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaTypeRoot']>>>
-export type GetTreeMediaTypeSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaTypeSiblings']>>>
 export type GetCollectionMediaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getCollectionMedia']>>>
 export type GetItemMediaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMedia']>>>
 export type GetItemMediaAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaAncestors']>>>
@@ -7146,6 +7845,49 @@ export type GetTreeMediaAncestorsResult = NonNullable<Awaited<ReturnType<ReturnT
 export type GetTreeMediaChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaChildren']>>>
 export type GetTreeMediaRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaRoot']>>>
 export type GetTreeMediaSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaSiblings']>>>
+export type GetItemMediaTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaType']>>>
+export type GetItemMediaTypeAllowedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeAllowed']>>>
+export type GetItemMediaTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeAncestors']>>>
+export type GetItemMediaTypeFoldersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeFolders']>>>
+export type GetItemMediaTypeSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMediaTypeSearch']>>>
+export type PostMediaTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaType']>>>
+export type GetMediaTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeById']>>>
+export type DeleteMediaTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteMediaTypeById']>>>
+export type PutMediaTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeById']>>>
+export type GetMediaTypeByIdAllowedChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdAllowedChildren']>>>
+export type GetMediaTypeByIdAllowedParentsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdAllowedParents']>>>
+export type GetMediaTypeByIdCompositionReferencesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdCompositionReferences']>>>
+export type PostMediaTypeByIdCopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeByIdCopy']>>>
+export type GetMediaTypeByIdExportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdExport']>>>
+export type PutMediaTypeByIdImportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeByIdImport']>>>
+export type PutMediaTypeByIdMoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeByIdMove']>>>
+export type GetMediaTypeByIdSchemaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeByIdSchema']>>>
+export type GetMediaTypeAllowedAtRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeAllowedAtRoot']>>>
+export type PostMediaTypeAvailableCompositionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeAvailableCompositions']>>>
+export type GetMediaTypeBatchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeBatch']>>>
+export type GetMediaTypeConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeConfiguration']>>>
+export type PostMediaTypeFolderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeFolder']>>>
+export type GetMediaTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMediaTypeFolderById']>>>
+export type DeleteMediaTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteMediaTypeFolderById']>>>
+export type PutMediaTypeFolderByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMediaTypeFolderById']>>>
+export type PostMediaTypeImportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMediaTypeImport']>>>
+export type GetTreeMediaTypeAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaTypeAncestors']>>>
+export type GetTreeMediaTypeChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaTypeChildren']>>>
+export type GetTreeMediaTypeRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaTypeRoot']>>>
+export type GetTreeMediaTypeSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMediaTypeSiblings']>>>
+export type GetFilterMemberResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getFilterMember']>>>
+export type GetItemMemberResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMember']>>>
+export type GetItemMemberAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberAncestors']>>>
+export type GetItemMemberSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberSearch']>>>
+export type PostMemberResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMember']>>>
+export type GetMemberByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberById']>>>
+export type DeleteMemberByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteMemberById']>>>
+export type PutMemberByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMemberById']>>>
+export type GetMemberByIdReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberByIdReferencedBy']>>>
+export type GetMemberByIdReferencedDescendantsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberByIdReferencedDescendants']>>>
+export type PutMemberByIdValidateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMemberByIdValidate']>>>
+export type GetMemberAreReferencedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberAreReferenced']>>>
+export type PostMemberValidateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMemberValidate']>>>
 export type GetItemMemberGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberGroup']>>>
 export type GetMemberGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberGroup']>>>
 export type PostMemberGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMemberGroup']>>>
@@ -7179,20 +7921,6 @@ export type GetTreeMemberTypeAncestorsResult = NonNullable<Awaited<ReturnType<Re
 export type GetTreeMemberTypeChildrenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMemberTypeChildren']>>>
 export type GetTreeMemberTypeRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMemberTypeRoot']>>>
 export type GetTreeMemberTypeSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeMemberTypeSiblings']>>>
-export type GetFilterMemberResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getFilterMember']>>>
-export type GetItemMemberResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMember']>>>
-export type GetItemMemberAncestorsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberAncestors']>>>
-export type GetItemMemberSearchResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemMemberSearch']>>>
-export type PostMemberResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMember']>>>
-export type GetMemberByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberById']>>>
-export type DeleteMemberByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteMemberById']>>>
-export type PutMemberByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMemberById']>>>
-export type GetMemberByIdReferencedByResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberByIdReferencedBy']>>>
-export type GetMemberByIdReferencedDescendantsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberByIdReferencedDescendants']>>>
-export type PutMemberByIdValidateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putMemberByIdValidate']>>>
-export type GetMemberAreReferencedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberAreReferenced']>>>
-export type GetMemberConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getMemberConfiguration']>>>
-export type PostMemberValidateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postMemberValidate']>>>
 export type PostModelsBuilderBuildResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postModelsBuilderBuild']>>>
 export type GetModelsBuilderDashboardResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getModelsBuilderDashboard']>>>
 export type GetModelsBuilderStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getModelsBuilderStatus']>>>
@@ -7224,7 +7952,6 @@ export type GetTreePartialViewChildrenResult = NonNullable<Awaited<ReturnType<Re
 export type GetTreePartialViewRootResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreePartialViewRoot']>>>
 export type GetTreePartialViewSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreePartialViewSiblings']>>>
 export type DeletePreviewResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deletePreview']>>>
-export type PostPreviewResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postPreview']>>>
 export type GetProfilingStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getProfilingStatus']>>>
 export type PutProfilingStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putProfilingStatus']>>>
 export type GetPropertyTypeIsUsedResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getPropertyTypeIsUsed']>>>
@@ -7236,10 +7963,10 @@ export type GetRedirectManagementByIdResult = NonNullable<Awaited<ReturnType<Ret
 export type DeleteRedirectManagementByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteRedirectManagementById']>>>
 export type GetRedirectManagementStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRedirectManagementStatus']>>>
 export type PostRedirectManagementStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postRedirectManagementStatus']>>>
+export type GetRelationByRelationTypeIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRelationByRelationTypeId']>>>
 export type GetItemRelationTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemRelationType']>>>
 export type GetRelationTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRelationType']>>>
 export type GetRelationTypeByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRelationTypeById']>>>
-export type GetRelationByRelationTypeIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getRelationByRelationTypeId']>>>
 export type GetItemScriptResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemScript']>>>
 export type PostScriptResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postScript']>>>
 export type GetScriptByPathResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getScriptByPath']>>>
@@ -7302,25 +8029,10 @@ export type GetTreeTemplateRootResult = NonNullable<Awaited<ReturnType<ReturnTyp
 export type GetTreeTemplateSiblingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getTreeTemplateSiblings']>>>
 export type PostUpgradeAuthorizeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUpgradeAuthorize']>>>
 export type GetUpgradeSettingsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUpgradeSettings']>>>
-export type PostUserDataResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserData']>>>
-export type GetUserDataResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserData']>>>
-export type PutUserDataResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putUserData']>>>
-export type GetUserDataByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserDataById']>>>
-export type DeleteUserDataByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserDataById']>>>
-export type GetFilterUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getFilterUserGroup']>>>
-export type GetItemUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemUserGroup']>>>
-export type DeleteUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserGroup']>>>
-export type PostUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserGroup']>>>
-export type GetUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserGroup']>>>
-export type GetUserGroupByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserGroupById']>>>
-export type DeleteUserGroupByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserGroupById']>>>
-export type PutUserGroupByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putUserGroupById']>>>
-export type DeleteUserGroupByIdUsersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserGroupByIdUsers']>>>
-export type PostUserGroupByIdUsersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserGroupByIdUsers']>>>
 export type GetFilterUserResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getFilterUser']>>>
 export type GetItemUserResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemUser']>>>
-export type PostUserResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUser']>>>
 export type DeleteUserResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUser']>>>
+export type PostUserResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUser']>>>
 export type GetUserResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUser']>>>
 export type GetUserByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserById']>>>
 export type DeleteUserByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserById']>>>
@@ -7341,13 +8053,16 @@ export type GetUserCurrent2faResult = NonNullable<Awaited<ReturnType<ReturnType<
 export type DeleteUserCurrent2faByProviderNameResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserCurrent2faByProviderName']>>>
 export type PostUserCurrent2faByProviderNameResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserCurrent2faByProviderName']>>>
 export type GetUserCurrent2faByProviderNameResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserCurrent2faByProviderName']>>>
+export type DeleteUserCurrentAvatarResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserCurrentAvatar']>>>
 export type PostUserCurrentAvatarResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserCurrentAvatar']>>>
 export type PostUserCurrentChangePasswordResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserCurrentChangePassword']>>>
 export type GetUserCurrentConfigurationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserCurrentConfiguration']>>>
 export type GetUserCurrentLoginProvidersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserCurrentLoginProviders']>>>
 export type GetUserCurrentPermissionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserCurrentPermissions']>>>
 export type GetUserCurrentPermissionsDocumentResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserCurrentPermissionsDocument']>>>
+export type GetUserCurrentPermissionsElementResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserCurrentPermissionsElement']>>>
 export type GetUserCurrentPermissionsMediaResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserCurrentPermissionsMedia']>>>
+export type PutUserCurrentProfileResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putUserCurrentProfile']>>>
 export type PostUserDisableResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserDisable']>>>
 export type PostUserEnableResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserEnable']>>>
 export type PostUserInviteResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserInvite']>>>
@@ -7356,6 +8071,21 @@ export type PostUserInviteResendResult = NonNullable<Awaited<ReturnType<ReturnTy
 export type PostUserInviteVerifyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserInviteVerify']>>>
 export type PostUserSetUserGroupsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserSetUserGroups']>>>
 export type PostUserUnlockResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserUnlock']>>>
+export type PostUserDataResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserData']>>>
+export type GetUserDataResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserData']>>>
+export type PutUserDataResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putUserData']>>>
+export type GetUserDataByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserDataById']>>>
+export type DeleteUserDataByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserDataById']>>>
+export type GetFilterUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getFilterUserGroup']>>>
+export type GetItemUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemUserGroup']>>>
+export type DeleteUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserGroup']>>>
+export type PostUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserGroup']>>>
+export type GetUserGroupResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserGroup']>>>
+export type GetUserGroupByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getUserGroupById']>>>
+export type DeleteUserGroupByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserGroupById']>>>
+export type PutUserGroupByIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['putUserGroupById']>>>
+export type PostUserGroupByIdUsersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postUserGroupByIdUsers']>>>
+export type DeleteUserGroupByIdUsersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['deleteUserGroupByIdUsers']>>>
 export type GetItemWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getItemWebhook']>>>
 export type GetWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['getWebhook']>>>
 export type PostWebhookResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getUmbracoManagementAPI>['postWebhook']>>>

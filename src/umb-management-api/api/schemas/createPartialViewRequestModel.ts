@@ -8,8 +8,7 @@
 import type { CreatePartialViewRequestModelParent } from './createPartialViewRequestModelParent.js';
 
 export interface CreatePartialViewRequestModel {
-  name: string;
-  /** @nullable */
-  parent?: CreatePartialViewRequestModelParent;
   content: string;
+  name: string;
+  parent?: CreatePartialViewRequestModelParent;
 }

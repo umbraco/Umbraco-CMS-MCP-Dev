@@ -5,10 +5,8 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { DataTypePropertyPresentationModelValue } from './dataTypePropertyPresentationModelValue.js';
 
 export interface DataTypePropertyPresentationModel {
   alias: string;
-  /** @nullable */
-  value?: DataTypePropertyPresentationModelValue;
+  value?: unknown;
 }

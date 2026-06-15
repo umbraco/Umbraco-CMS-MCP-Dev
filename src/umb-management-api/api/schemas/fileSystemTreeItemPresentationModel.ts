@@ -8,10 +8,9 @@
 import type { FileSystemTreeItemPresentationModelParent } from './fileSystemTreeItemPresentationModelParent.js';
 
 export interface FileSystemTreeItemPresentationModel {
-  hasChildren: boolean;
   name: string;
   path: string;
-  /** @nullable */
   parent?: FileSystemTreeItemPresentationModelParent;
   isFolder: boolean;
+  hasChildren: boolean;
 }

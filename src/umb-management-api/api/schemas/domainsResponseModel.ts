@@ -5,10 +5,10 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DomainsResponseModelDefaultIsoCode } from './domainsResponseModelDefaultIsoCode.js';
 import type { DomainPresentationModel } from './domainPresentationModel.js';
 
 export interface DomainsResponseModel {
-  /** @nullable */
-  defaultIsoCode?: string | null;
+  defaultIsoCode?: DomainsResponseModelDefaultIsoCode;
   domains: DomainPresentationModel[];
 }

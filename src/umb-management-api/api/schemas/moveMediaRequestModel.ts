@@ -8,6 +8,5 @@
 import type { MoveMediaRequestModelTarget } from './moveMediaRequestModelTarget.js';
 
 export interface MoveMediaRequestModel {
-  /** @nullable */
   target?: MoveMediaRequestModelTarget;
 }

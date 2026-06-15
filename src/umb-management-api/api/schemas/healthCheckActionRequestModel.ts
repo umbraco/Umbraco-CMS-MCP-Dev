@@ -6,23 +6,22 @@
  * OpenAPI spec version: Latest
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
+import type { HealthCheckActionRequestModelAlias } from './healthCheckActionRequestModelAlias.js';
+import type { HealthCheckActionRequestModelName } from './healthCheckActionRequestModelName.js';
+import type { HealthCheckActionRequestModelDescription } from './healthCheckActionRequestModelDescription.js';
+import type { HealthCheckActionRequestModelProvidedValue } from './healthCheckActionRequestModelProvidedValue.js';
+import type { HealthCheckActionRequestModelProvidedValueValidation } from './healthCheckActionRequestModelProvidedValueValidation.js';
+import type { HealthCheckActionRequestModelProvidedValueValidationRegex } from './healthCheckActionRequestModelProvidedValueValidationRegex.js';
 import type { HealthCheckActionRequestModelActionParameters } from './healthCheckActionRequestModelActionParameters.js';
 
 export interface HealthCheckActionRequestModel {
   healthCheck: ReferenceByIdModel;
-  /** @nullable */
-  alias?: string | null;
-  /** @nullable */
-  name?: string | null;
-  /** @nullable */
-  description?: string | null;
+  alias?: HealthCheckActionRequestModelAlias;
+  name?: HealthCheckActionRequestModelName;
+  description?: HealthCheckActionRequestModelDescription;
   valueRequired: boolean;
-  /** @nullable */
-  providedValue?: string | null;
-  /** @nullable */
-  providedValueValidation?: string | null;
-  /** @nullable */
-  providedValueValidationRegex?: string | null;
-  /** @nullable */
+  providedValue?: HealthCheckActionRequestModelProvidedValue;
+  providedValueValidation?: HealthCheckActionRequestModelProvidedValueValidation;
+  providedValueValidationRegex?: HealthCheckActionRequestModelProvidedValueValidationRegex;
   actionParameters?: HealthCheckActionRequestModelActionParameters;
 }

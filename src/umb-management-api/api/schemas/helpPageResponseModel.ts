@@ -5,14 +5,14 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { HelpPageResponseModelName } from './helpPageResponseModelName.js';
+import type { HelpPageResponseModelDescription } from './helpPageResponseModelDescription.js';
+import type { HelpPageResponseModelUrl } from './helpPageResponseModelUrl.js';
+import type { HelpPageResponseModelType } from './helpPageResponseModelType.js';
 
 export interface HelpPageResponseModel {
-  /** @nullable */
-  name?: string | null;
-  /** @nullable */
-  description?: string | null;
-  /** @nullable */
-  url?: string | null;
-  /** @nullable */
-  type?: string | null;
+  name?: HelpPageResponseModelName;
+  description?: HelpPageResponseModelDescription;
+  url?: HelpPageResponseModelUrl;
+  type?: HelpPageResponseModelType;
 }

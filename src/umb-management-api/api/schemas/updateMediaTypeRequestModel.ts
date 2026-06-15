@@ -5,29 +5,26 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MediaTypeSortModel } from './mediaTypeSortModel.js';
+import type { MediaTypeCompositionModel } from './mediaTypeCompositionModel.js';
+import type { UpdateMediaTypeRequestModelDescription } from './updateMediaTypeRequestModelDescription.js';
 import type { UpdateMediaTypeRequestModelCollection } from './updateMediaTypeRequestModelCollection.js';
 import type { UpdateMediaTypePropertyTypeRequestModel } from './updateMediaTypePropertyTypeRequestModel.js';
 import type { UpdateMediaTypePropertyTypeContainerRequestModel } from './updateMediaTypePropertyTypeContainerRequestModel.js';
-import type { MediaTypeSortModel } from './mediaTypeSortModel.js';
-import type { MediaTypeCompositionModel } from './mediaTypeCompositionModel.js';
 
 export interface UpdateMediaTypeRequestModel {
-  /** @minLength 1 */
+  allowedMediaTypes: MediaTypeSortModel[];
+  compositions: MediaTypeCompositionModel[];
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
-  /** @minLength 1 */
+  description?: UpdateMediaTypeRequestModelDescription;
   icon: string;
   allowedAsRoot: boolean;
   variesByCulture: boolean;
   variesBySegment: boolean;
-  /** @nullable */
   collection?: UpdateMediaTypeRequestModelCollection;
   isElement: boolean;
+  allowedInLibrary: boolean;
   properties: UpdateMediaTypePropertyTypeRequestModel[];
   containers: UpdateMediaTypePropertyTypeContainerRequestModel[];
-  allowedMediaTypes: MediaTypeSortModel[];
-  compositions: MediaTypeCompositionModel[];
 }

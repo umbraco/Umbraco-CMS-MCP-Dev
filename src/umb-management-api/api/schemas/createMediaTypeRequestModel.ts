@@ -5,34 +5,30 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { CreateMediaTypePropertyTypeRequestModel } from './createMediaTypePropertyTypeRequestModel.js';
-import type { CreateMediaTypePropertyTypeContainerRequestModel } from './createMediaTypePropertyTypeContainerRequestModel.js';
-import type { CreateMediaTypeRequestModelParent } from './createMediaTypeRequestModelParent.js';
 import type { MediaTypeSortModel } from './mediaTypeSortModel.js';
 import type { MediaTypeCompositionModel } from './mediaTypeCompositionModel.js';
+import type { CreateMediaTypeRequestModelParent } from './createMediaTypeRequestModelParent.js';
+import type { CreateMediaTypeRequestModelId } from './createMediaTypeRequestModelId.js';
+import type { CreateMediaTypeRequestModelDescription } from './createMediaTypeRequestModelDescription.js';
 import type { CreateMediaTypeRequestModelCollection } from './createMediaTypeRequestModelCollection.js';
+import type { CreateMediaTypePropertyTypeRequestModel } from './createMediaTypePropertyTypeRequestModel.js';
+import type { CreateMediaTypePropertyTypeContainerRequestModel } from './createMediaTypePropertyTypeContainerRequestModel.js';
 
 export interface CreateMediaTypeRequestModel {
-  /** @minLength 1 */
+  allowedMediaTypes: MediaTypeSortModel[];
+  compositions: MediaTypeCompositionModel[];
+  parent?: CreateMediaTypeRequestModelParent;
+  id?: CreateMediaTypeRequestModelId;
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
-  /** @minLength 1 */
+  description?: CreateMediaTypeRequestModelDescription;
   icon: string;
   allowedAsRoot: boolean;
   variesByCulture: boolean;
   variesBySegment: boolean;
+  collection?: CreateMediaTypeRequestModelCollection;
   isElement: boolean;
+  allowedInLibrary: boolean;
   properties: CreateMediaTypePropertyTypeRequestModel[];
   containers: CreateMediaTypePropertyTypeContainerRequestModel[];
-  /** @nullable */
-  id?: string | null;
-  /** @nullable */
-  parent?: CreateMediaTypeRequestModelParent;
-  allowedMediaTypes: MediaTypeSortModel[];
-  compositions: MediaTypeCompositionModel[];
-  /** @nullable */
-  collection?: CreateMediaTypeRequestModelCollection;
 }

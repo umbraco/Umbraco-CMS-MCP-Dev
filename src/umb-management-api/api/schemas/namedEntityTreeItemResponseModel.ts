@@ -9,10 +9,9 @@ import type { NamedEntityTreeItemResponseModelParent } from './namedEntityTreeIt
 import type { FlagModel } from './flagModel.js';
 
 export interface NamedEntityTreeItemResponseModel {
-  hasChildren: boolean;
+  name: string;
   id: string;
-  /** @nullable */
   parent?: NamedEntityTreeItemResponseModelParent;
   flags: FlagModel[];
-  name: string;
+  hasChildren: boolean;
 }

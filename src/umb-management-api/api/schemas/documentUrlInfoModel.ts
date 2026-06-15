@@ -5,13 +5,13 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DocumentUrlInfoModelMessage } from './documentUrlInfoModelMessage.js';
+import type { DocumentUrlInfoModelCulture } from './documentUrlInfoModelCulture.js';
+import type { DocumentUrlInfoModelUrl } from './documentUrlInfoModelUrl.js';
 
 export interface DocumentUrlInfoModel {
-  /** @nullable */
-  culture: string | null;
-  /** @nullable */
-  url: string | null;
-  /** @nullable */
-  message: string | null;
+  message: DocumentUrlInfoModelMessage;
   provider: string;
+  culture: DocumentUrlInfoModelCulture;
+  url: DocumentUrlInfoModelUrl;
 }

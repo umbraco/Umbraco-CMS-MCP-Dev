@@ -6,13 +6,12 @@
  * OpenAPI spec version: Latest
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
+import type { CreateDocumentBlueprintFromDocumentRequestModelId } from './createDocumentBlueprintFromDocumentRequestModelId.js';
 import type { CreateDocumentBlueprintFromDocumentRequestModelParent } from './createDocumentBlueprintFromDocumentRequestModelParent.js';
 
 export interface CreateDocumentBlueprintFromDocumentRequestModel {
   document: ReferenceByIdModel;
-  /** @nullable */
-  id?: string | null;
+  id?: CreateDocumentBlueprintFromDocumentRequestModelId;
   name: string;
-  /** @nullable */
   parent?: CreateDocumentBlueprintFromDocumentRequestModelParent;
 }

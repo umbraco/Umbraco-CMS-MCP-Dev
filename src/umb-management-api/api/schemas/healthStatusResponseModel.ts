@@ -6,9 +6,9 @@
  * OpenAPI spec version: Latest
  */
 import type { HealthStatusModel } from './healthStatusModel.js';
+import type { HealthStatusResponseModelMessage } from './healthStatusResponseModelMessage.js';
 
 export interface HealthStatusResponseModel {
   status: HealthStatusModel;
-  /** @nullable */
-  message?: string | null;
+  message?: HealthStatusResponseModelMessage;
 }

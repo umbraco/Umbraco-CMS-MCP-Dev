@@ -6,21 +6,18 @@
  * OpenAPI spec version: Latest
  */
 import type { MediaTypePropertyTypeResponseModelContainer } from './mediaTypePropertyTypeResponseModelContainer.js';
+import type { MediaTypePropertyTypeResponseModelDescription } from './mediaTypePropertyTypeResponseModelDescription.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { PropertyTypeValidationModel } from './propertyTypeValidationModel.js';
 import type { PropertyTypeAppearanceModel } from './propertyTypeAppearanceModel.js';
 
 export interface MediaTypePropertyTypeResponseModel {
   id: string;
-  /** @nullable */
   container?: MediaTypePropertyTypeResponseModelContainer;
   sortOrder: number;
-  /** @minLength 1 */
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
+  description?: MediaTypePropertyTypeResponseModelDescription;
   dataType: ReferenceByIdModel;
   variesByCulture: boolean;
   variesBySegment: boolean;

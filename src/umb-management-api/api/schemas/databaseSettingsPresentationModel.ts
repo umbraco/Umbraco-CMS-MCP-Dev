@@ -9,15 +9,11 @@
 export interface DatabaseSettingsPresentationModel {
   id: string;
   sortOrder: number;
-  /** @minLength 1 */
   displayName: string;
-  /** @minLength 1 */
   defaultDatabaseName: string;
-  /** @minLength 1 */
   providerName: string;
   isConfigured: boolean;
   requiresServer: boolean;
-  /** @minLength 1 */
   serverPlaceholder: string;
   requiresCredentials: boolean;
   supportsIntegratedAuthentication: boolean;

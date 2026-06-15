@@ -7,8 +7,8 @@
  */
 
 export interface UserDataResponseModel {
+  key: string;
   group: string;
   identifier: string;
   value: string;
-  key: string;
 }

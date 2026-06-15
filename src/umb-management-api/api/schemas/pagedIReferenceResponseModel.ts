@@ -5,9 +5,9 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { PagedIReferenceResponseModelItemsItem } from './pagedIReferenceResponseModelItemsItem.js';
+import type { IReferenceResponseModel } from './iReferenceResponseModel.js';
 
 export interface PagedIReferenceResponseModel {
   total: number;
-  items: PagedIReferenceResponseModelItemsItem[];
+  items: IReferenceResponseModel[];
 }

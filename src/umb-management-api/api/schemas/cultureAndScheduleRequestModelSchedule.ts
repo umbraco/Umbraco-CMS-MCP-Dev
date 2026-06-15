@@ -7,7 +7,4 @@
  */
 import type { ScheduleRequestModel } from './scheduleRequestModel.js';
 
-/**
- * @nullable
- */
-export type CultureAndScheduleRequestModelSchedule = ScheduleRequestModel | null;
+export type CultureAndScheduleRequestModelSchedule = null | ScheduleRequestModel;

@@ -9,6 +9,5 @@ import type { CreateStylesheetFolderRequestModelParent } from './createStyleshee
 
 export interface CreateStylesheetFolderRequestModel {
   name: string;
-  /** @nullable */
   parent?: CreateStylesheetFolderRequestModelParent;
 }

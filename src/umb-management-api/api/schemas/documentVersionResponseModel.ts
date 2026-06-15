@@ -5,18 +5,17 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DocumentVersionResponseModelDocument } from './documentVersionResponseModelDocument.js';
+import type { DocumentTypeReferenceResponseModel } from './documentTypeReferenceResponseModel.js';
+import type { FlagModel } from './flagModel.js';
 import type { DocumentValueResponseModel } from './documentValueResponseModel.js';
 import type { DocumentVariantResponseModel } from './documentVariantResponseModel.js';
-import type { FlagModel } from './flagModel.js';
-import type { DocumentTypeReferenceResponseModel } from './documentTypeReferenceResponseModel.js';
-import type { DocumentVersionResponseModelDocument } from './documentVersionResponseModelDocument.js';
 
 export interface DocumentVersionResponseModel {
-  values: DocumentValueResponseModel[];
-  variants: DocumentVariantResponseModel[];
+  document?: DocumentVersionResponseModelDocument;
+  documentType: DocumentTypeReferenceResponseModel;
   id: string;
   flags: FlagModel[];
-  documentType: DocumentTypeReferenceResponseModel;
-  /** @nullable */
-  document?: DocumentVersionResponseModelDocument;
+  values: DocumentValueResponseModel[];
+  variants: DocumentVariantResponseModel[];
 }

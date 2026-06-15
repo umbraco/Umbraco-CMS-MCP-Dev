@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type UpdateDocumentTypeRequestModelDefaultTemplate = ReferenceByIdModel | null;
+export type UpdateDocumentTypeRequestModelDefaultTemplate = null | ReferenceByIdModel;

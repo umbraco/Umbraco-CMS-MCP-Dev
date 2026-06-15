@@ -8,8 +8,7 @@
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
 export interface CreateInitialPasswordUserRequestModel {
-  user: ReferenceByIdModel;
-  /** @minLength 1 */
-  token: string;
   password: string;
+  user: ReferenceByIdModel;
+  token: string;
 }

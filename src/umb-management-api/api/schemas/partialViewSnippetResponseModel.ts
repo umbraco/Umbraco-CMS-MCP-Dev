@@ -7,7 +7,7 @@
  */
 
 export interface PartialViewSnippetResponseModel {
+  content: string;
   id: string;
   name: string;
-  content: string;
 }

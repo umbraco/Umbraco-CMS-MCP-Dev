@@ -6,14 +6,12 @@
  * OpenAPI spec version: Latest
  */
 import type { UpdateMemberTypePropertyTypeContainerRequestModelParent } from './updateMemberTypePropertyTypeContainerRequestModelParent.js';
+import type { UpdateMemberTypePropertyTypeContainerRequestModelName } from './updateMemberTypePropertyTypeContainerRequestModelName.js';
 
 export interface UpdateMemberTypePropertyTypeContainerRequestModel {
   id: string;
-  /** @nullable */
   parent?: UpdateMemberTypePropertyTypeContainerRequestModelParent;
-  /** @nullable */
-  name?: string | null;
-  /** @minLength 1 */
+  name?: UpdateMemberTypePropertyTypeContainerRequestModelName;
   type: string;
   sortOrder: number;
 }

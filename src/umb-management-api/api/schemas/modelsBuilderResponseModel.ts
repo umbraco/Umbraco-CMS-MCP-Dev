@@ -5,16 +5,16 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { ModelsBuilderResponseModelLastError } from './modelsBuilderResponseModelLastError.js';
+import type { ModelsBuilderResponseModelVersion } from './modelsBuilderResponseModelVersion.js';
+import type { ModelsBuilderResponseModelModelsNamespace } from './modelsBuilderResponseModelModelsNamespace.js';
 
 export interface ModelsBuilderResponseModel {
   mode: string;
   canGenerate: boolean;
   outOfDateModels: boolean;
-  /** @nullable */
-  lastError?: string | null;
-  /** @nullable */
-  version?: string | null;
-  /** @nullable */
-  modelsNamespace?: string | null;
+  lastError?: ModelsBuilderResponseModelLastError;
+  version?: ModelsBuilderResponseModelVersion;
+  modelsNamespace?: ModelsBuilderResponseModelModelsNamespace;
   trackingOutOfDateModels: boolean;
 }

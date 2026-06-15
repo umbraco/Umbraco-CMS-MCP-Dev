@@ -10,6 +10,5 @@ import type { MediaTypeReferenceResponseModelCollection } from './mediaTypeRefer
 export interface MediaTypeReferenceResponseModel {
   id: string;
   icon: string;
-  /** @nullable */
   collection?: MediaTypeReferenceResponseModelCollection;
 }

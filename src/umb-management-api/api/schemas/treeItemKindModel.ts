@@ -6,12 +6,4 @@
  * OpenAPI spec version: Latest
  */
 
-export type TreeItemKindModel = typeof TreeItemKindModel[keyof typeof TreeItemKindModel];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const TreeItemKindModel = {
-  Item: 'Item',
-  Folder: 'Folder',
-  All: 'All',
-} as const;
+export type TreeItemKindModel = string;

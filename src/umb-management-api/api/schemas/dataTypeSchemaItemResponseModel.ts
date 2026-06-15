@@ -5,14 +5,13 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DataTypeSchemaItemResponseModelValueTypeName } from './dataTypeSchemaItemResponseModelValueTypeName.js';
 import type { DataTypeSchemaItemResponseModelJsonSchema } from './dataTypeSchemaItemResponseModelJsonSchema.js';
+import type { DataTypeSchemaItemResponseModelError } from './dataTypeSchemaItemResponseModelError.js';
 
 export interface DataTypeSchemaItemResponseModel {
   id: string;
-  /** @nullable */
-  valueTypeName?: string | null;
-  /** @nullable */
+  valueTypeName?: DataTypeSchemaItemResponseModelValueTypeName;
   jsonSchema?: DataTypeSchemaItemResponseModelJsonSchema;
-  /** @nullable */
-  error?: string | null;
+  error?: DataTypeSchemaItemResponseModelError;
 }

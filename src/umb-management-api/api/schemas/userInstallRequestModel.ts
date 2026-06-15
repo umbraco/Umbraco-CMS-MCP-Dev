@@ -12,9 +12,7 @@ export interface UserInstallRequestModel {
    * @maxLength 255
    */
   name: string;
-  /** @minLength 1 */
   email: string;
-  /** @minLength 1 */
   password: string;
   subscribeToNewsletter: boolean;
 }

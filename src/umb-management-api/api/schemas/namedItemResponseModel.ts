@@ -8,7 +8,7 @@
 import type { FlagModel } from './flagModel.js';
 
 export interface NamedItemResponseModel {
+  name: string;
   id: string;
   flags: FlagModel[];
-  name: string;
 }

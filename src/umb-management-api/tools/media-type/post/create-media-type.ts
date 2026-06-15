@@ -59,6 +59,7 @@ const CreateMediaTypeTool = {
       description: model.description,
       icon: model.icon,
       allowedAsRoot: model.allowedAsRoot,
+      allowedInLibrary: true,
       variesByCulture: model.variesByCulture,
       variesBySegment: model.variesBySegment,
       isElement: model.isElement,

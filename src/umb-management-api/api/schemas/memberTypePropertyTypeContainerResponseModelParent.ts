@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type MemberTypePropertyTypeContainerResponseModelParent = ReferenceByIdModel | null;
+export type MemberTypePropertyTypeContainerResponseModelParent = null | ReferenceByIdModel;

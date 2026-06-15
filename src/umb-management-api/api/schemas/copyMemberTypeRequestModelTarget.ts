@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type CopyMemberTypeRequestModelTarget = ReferenceByIdModel | null;
+export type CopyMemberTypeRequestModelTarget = null | ReferenceByIdModel;

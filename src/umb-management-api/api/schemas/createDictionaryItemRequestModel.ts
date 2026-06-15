@@ -5,15 +5,13 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { DictionaryItemTranslationModel } from './dictionaryItemTranslationModel.js';
+import type { CreateDictionaryItemRequestModelId } from './createDictionaryItemRequestModelId.js';
 import type { CreateDictionaryItemRequestModelParent } from './createDictionaryItemRequestModelParent.js';
+import type { DictionaryItemTranslationModel } from './dictionaryItemTranslationModel.js';
 
 export interface CreateDictionaryItemRequestModel {
-  /** @minLength 1 */
+  id?: CreateDictionaryItemRequestModelId;
+  parent?: CreateDictionaryItemRequestModelParent;
   name: string;
   translations: DictionaryItemTranslationModel[];
-  /** @nullable */
-  id?: string | null;
-  /** @nullable */
-  parent?: CreateDictionaryItemRequestModelParent;
 }

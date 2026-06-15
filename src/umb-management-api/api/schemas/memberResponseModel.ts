@@ -5,17 +5,17 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MemberTypeReferenceResponseModel } from './memberTypeReferenceResponseModel.js';
+import type { MemberResponseModelLastLoginDate } from './memberResponseModelLastLoginDate.js';
+import type { MemberResponseModelLastLockoutDate } from './memberResponseModelLastLockoutDate.js';
+import type { MemberResponseModelLastPasswordChangeDate } from './memberResponseModelLastPasswordChangeDate.js';
+import type { MemberKindModel } from './memberKindModel.js';
+import type { MemberResponseModelProfileData } from './memberResponseModelProfileData.js';
+import type { FlagModel } from './flagModel.js';
 import type { MemberValueResponseModel } from './memberValueResponseModel.js';
 import type { MemberVariantResponseModel } from './memberVariantResponseModel.js';
-import type { FlagModel } from './flagModel.js';
-import type { MemberTypeReferenceResponseModel } from './memberTypeReferenceResponseModel.js';
-import type { MemberKindModel } from './memberKindModel.js';
 
 export interface MemberResponseModel {
-  values: MemberValueResponseModel[];
-  variants: MemberVariantResponseModel[];
-  id: string;
-  flags: FlagModel[];
   email: string;
   username: string;
   memberType: MemberTypeReferenceResponseModel;
@@ -23,14 +23,14 @@ export interface MemberResponseModel {
   isLockedOut: boolean;
   isTwoFactorEnabled: boolean;
   failedPasswordAttempts: number;
-  /** @nullable */
-  lastLoginDate?: string | null;
-  /** @nullable */
-  lastLockoutDate?: string | null;
-  /** @nullable */
-  lastPasswordChangeDate?: string | null;
+  lastLoginDate?: MemberResponseModelLastLoginDate;
+  lastLockoutDate?: MemberResponseModelLastLockoutDate;
+  lastPasswordChangeDate?: MemberResponseModelLastPasswordChangeDate;
   groups: string[];
   kind: MemberKindModel;
-  /** @nullable */
-  profileData?: string | null;
+  profileData?: MemberResponseModelProfileData;
+  id: string;
+  flags: FlagModel[];
+  values: MemberValueResponseModel[];
+  variants: MemberVariantResponseModel[];
 }

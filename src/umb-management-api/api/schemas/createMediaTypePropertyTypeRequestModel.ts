@@ -6,21 +6,18 @@
  * OpenAPI spec version: Latest
  */
 import type { CreateMediaTypePropertyTypeRequestModelContainer } from './createMediaTypePropertyTypeRequestModelContainer.js';
+import type { CreateMediaTypePropertyTypeRequestModelDescription } from './createMediaTypePropertyTypeRequestModelDescription.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { PropertyTypeValidationModel } from './propertyTypeValidationModel.js';
 import type { PropertyTypeAppearanceModel } from './propertyTypeAppearanceModel.js';
 
 export interface CreateMediaTypePropertyTypeRequestModel {
   id: string;
-  /** @nullable */
   container?: CreateMediaTypePropertyTypeRequestModelContainer;
   sortOrder: number;
-  /** @minLength 1 */
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
+  description?: CreateMediaTypePropertyTypeRequestModelDescription;
   dataType: ReferenceByIdModel;
   variesByCulture: boolean;
   variesBySegment: boolean;

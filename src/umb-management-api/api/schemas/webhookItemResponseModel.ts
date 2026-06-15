@@ -8,11 +8,11 @@
 import type { FlagModel } from './flagModel.js';
 
 export interface WebhookItemResponseModel {
-  id: string;
-  flags: FlagModel[];
   enabled: boolean;
   name: string;
   events: string;
   url: string;
   types: string;
+  id: string;
+  flags: FlagModel[];
 }

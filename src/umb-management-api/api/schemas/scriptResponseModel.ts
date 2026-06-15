@@ -8,9 +8,8 @@
 import type { ScriptResponseModelParent } from './scriptResponseModelParent.js';
 
 export interface ScriptResponseModel {
-  path: string;
-  name: string;
-  /** @nullable */
-  parent?: ScriptResponseModelParent;
   content: string;
+  name: string;
+  parent?: ScriptResponseModelParent;
+  path: string;
 }

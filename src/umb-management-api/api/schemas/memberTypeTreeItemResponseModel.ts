@@ -9,12 +9,12 @@ import type { MemberTypeTreeItemResponseModelParent } from './memberTypeTreeItem
 import type { FlagModel } from './flagModel.js';
 
 export interface MemberTypeTreeItemResponseModel {
-  hasChildren: boolean;
+  icon: string;
+  isFolder: boolean;
+  noAccess: boolean;
+  name: string;
   id: string;
-  /** @nullable */
   parent?: MemberTypeTreeItemResponseModelParent;
   flags: FlagModel[];
-  name: string;
-  isFolder: boolean;
-  icon: string;
+  hasChildren: boolean;
 }

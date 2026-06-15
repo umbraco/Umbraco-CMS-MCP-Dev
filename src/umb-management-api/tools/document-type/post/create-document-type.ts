@@ -145,6 +145,7 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
         compositionType: "Composition" as const,
       })),
       allowedAsRoot: model.allowedAsRoot,
+      allowedInLibrary: true,
       variesByCulture: false,
       variesBySegment: false,
       allowedTemplates: [],

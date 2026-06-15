@@ -5,32 +5,28 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MemberTypeCompositionModel } from './memberTypeCompositionModel.js';
+import type { CreateMemberTypeRequestModelParent } from './createMemberTypeRequestModelParent.js';
+import type { CreateMemberTypeRequestModelId } from './createMemberTypeRequestModelId.js';
+import type { CreateMemberTypeRequestModelDescription } from './createMemberTypeRequestModelDescription.js';
 import type { CreateMemberTypeRequestModelCollection } from './createMemberTypeRequestModelCollection.js';
 import type { CreateMemberTypePropertyTypeRequestModel } from './createMemberTypePropertyTypeRequestModel.js';
 import type { CreateMemberTypePropertyTypeContainerRequestModel } from './createMemberTypePropertyTypeContainerRequestModel.js';
-import type { CreateMemberTypeRequestModelParent } from './createMemberTypeRequestModelParent.js';
-import type { MemberTypeCompositionModel } from './memberTypeCompositionModel.js';
 
 export interface CreateMemberTypeRequestModel {
-  /** @minLength 1 */
+  compositions: MemberTypeCompositionModel[];
+  parent?: CreateMemberTypeRequestModelParent;
+  id?: CreateMemberTypeRequestModelId;
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
-  /** @minLength 1 */
+  description?: CreateMemberTypeRequestModelDescription;
   icon: string;
   allowedAsRoot: boolean;
   variesByCulture: boolean;
   variesBySegment: boolean;
-  /** @nullable */
   collection?: CreateMemberTypeRequestModelCollection;
   isElement: boolean;
+  allowedInLibrary: boolean;
   properties: CreateMemberTypePropertyTypeRequestModel[];
   containers: CreateMemberTypePropertyTypeContainerRequestModel[];
-  /** @nullable */
-  id?: string | null;
-  /** @nullable */
-  parent?: CreateMemberTypeRequestModelParent;
-  compositions: MemberTypeCompositionModel[];
 }

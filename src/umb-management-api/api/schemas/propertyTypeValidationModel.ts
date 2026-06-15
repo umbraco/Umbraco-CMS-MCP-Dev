@@ -5,13 +5,13 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { PropertyTypeValidationModelMandatoryMessage } from './propertyTypeValidationModelMandatoryMessage.js';
+import type { PropertyTypeValidationModelRegEx } from './propertyTypeValidationModelRegEx.js';
+import type { PropertyTypeValidationModelRegExMessage } from './propertyTypeValidationModelRegExMessage.js';
 
 export interface PropertyTypeValidationModel {
   mandatory: boolean;
-  /** @nullable */
-  mandatoryMessage?: string | null;
-  /** @nullable */
-  regEx?: string | null;
-  /** @nullable */
-  regExMessage?: string | null;
+  mandatoryMessage?: PropertyTypeValidationModelMandatoryMessage;
+  regEx?: PropertyTypeValidationModelRegEx;
+  regExMessage?: PropertyTypeValidationModelRegExMessage;
 }

@@ -5,17 +5,16 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { ReferenceByIdModel } from './referenceByIdModel.js';
+import type { CreateDocumentBlueprintRequestModelParent } from './createDocumentBlueprintRequestModelParent.js';
+import type { CreateDocumentBlueprintRequestModelId } from './createDocumentBlueprintRequestModelId.js';
 import type { DocumentValueModel } from './documentValueModel.js';
 import type { DocumentVariantRequestModel } from './documentVariantRequestModel.js';
-import type { CreateDocumentBlueprintRequestModelParent } from './createDocumentBlueprintRequestModelParent.js';
-import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
 export interface CreateDocumentBlueprintRequestModel {
+  documentType: ReferenceByIdModel;
+  parent?: CreateDocumentBlueprintRequestModelParent;
+  id?: CreateDocumentBlueprintRequestModelId;
   values: DocumentValueModel[];
   variants: DocumentVariantRequestModel[];
-  /** @nullable */
-  id?: string | null;
-  /** @nullable */
-  parent?: CreateDocumentBlueprintRequestModelParent;
-  documentType: ReferenceByIdModel;
 }

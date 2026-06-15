@@ -5,12 +5,12 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { TagResponseModelText } from './tagResponseModelText.js';
+import type { TagResponseModelGroup } from './tagResponseModelGroup.js';
 
 export interface TagResponseModel {
   id: string;
-  /** @nullable */
-  text?: string | null;
-  /** @nullable */
-  group?: string | null;
+  text?: TagResponseModelText;
+  group?: TagResponseModelGroup;
   nodeCount: number;
 }

@@ -10,6 +10,5 @@ export interface DocumentConfigurationResponseModel {
   disableDeleteWhenReferenced: boolean;
   disableUnpublishWhenReferenced: boolean;
   allowEditInvariantFromNonDefault: boolean;
-  /** @deprecated */
   allowNonExistingSegmentsCreation: boolean;
 }

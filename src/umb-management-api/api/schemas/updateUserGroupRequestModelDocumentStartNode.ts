@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type UpdateUserGroupRequestModelDocumentStartNode = ReferenceByIdModel | null;
+export type UpdateUserGroupRequestModelDocumentStartNode = null | ReferenceByIdModel;

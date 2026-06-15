@@ -13,4 +13,6 @@ export interface CalculatedUserStartNodesResponseModel {
   hasDocumentRootAccess: boolean;
   mediaStartNodeIds: ReferenceByIdModel[];
   hasMediaRootAccess: boolean;
+  elementStartNodeIds: ReferenceByIdModel[];
+  hasElementRootAccess: boolean;
 }

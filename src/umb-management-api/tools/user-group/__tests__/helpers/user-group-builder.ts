@@ -10,6 +10,7 @@ export class UserGroupBuilder {
     hasAccessToAllLanguages: true,
     documentRootAccess: false,
     mediaRootAccess: false,
+    elementRootAccess: false,
     fallbackPermissions: [],
     permissions: [],
   };

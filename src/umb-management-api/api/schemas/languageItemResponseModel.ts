@@ -7,8 +7,6 @@
  */
 
 export interface LanguageItemResponseModel {
-  /** @minLength 1 */
   name: string;
-  /** @minLength 1 */
   isoCode: string;
 }

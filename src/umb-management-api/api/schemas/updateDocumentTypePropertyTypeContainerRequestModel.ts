@@ -6,14 +6,12 @@
  * OpenAPI spec version: Latest
  */
 import type { UpdateDocumentTypePropertyTypeContainerRequestModelParent } from './updateDocumentTypePropertyTypeContainerRequestModelParent.js';
+import type { UpdateDocumentTypePropertyTypeContainerRequestModelName } from './updateDocumentTypePropertyTypeContainerRequestModelName.js';
 
 export interface UpdateDocumentTypePropertyTypeContainerRequestModel {
   id: string;
-  /** @nullable */
   parent?: UpdateDocumentTypePropertyTypeContainerRequestModelParent;
-  /** @nullable */
-  name?: string | null;
-  /** @minLength 1 */
+  name?: UpdateDocumentTypePropertyTypeContainerRequestModelName;
   type: string;
   sortOrder: number;
 }

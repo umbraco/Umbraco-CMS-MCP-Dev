@@ -7,8 +7,6 @@
  */
 
 export interface CultureReponseModel {
-  /** @minLength 1 */
   name: string;
-  /** @minLength 1 */
   englishName: string;
 }
