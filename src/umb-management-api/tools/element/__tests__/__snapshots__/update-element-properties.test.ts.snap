@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-element-properties should add a new property not yet set on the element 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "addedProperties": [
+      "subtitle",
+    ],
+    "element": {
+      "documentType": {
+        "collection": null,
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isTrashed": false,
+      "values": [
+        {
+          "alias": "title",
+          "culture": null,
+          "editorAlias": "Umbraco.TextBox",
+          "segment": null,
+          "value": "_Initial Title",
+        },
+        {
+          "alias": "subtitle",
+          "culture": null,
+          "editorAlias": "Umbraco.TextBox",
+          "segment": null,
+          "value": "_Subtitle Value",
+        },
+      ],
+      "variants": [
+        {
+          "createDate": "NORMALIZED_DATE",
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test Element Properties",
+          "publishDate": null,
+          "scheduledPublishDate": null,
+          "scheduledUnpublishDate": null,
+          "segment": null,
+          "state": "Draft",
+          "updateDate": "NORMALIZED_DATE",
+        },
+      ],
+    },
+    "message": "Successfully added 1 property value(s)",
+    "success": true,
+    "updatedProperties": [],
+  },
+}
+`;
+
+exports[`update-element-properties should update a property and preserve other properties 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "addedProperties": [],
+    "element": {
+      "documentType": {
+        "collection": null,
+        "icon": "icon-document",
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isTrashed": false,
+      "values": [
+        {
+          "alias": "title",
+          "culture": null,
+          "editorAlias": "Umbraco.TextBox",
+          "segment": null,
+          "value": "_Updated Title",
+        },
+        {
+          "alias": "subtitle",
+          "culture": null,
+          "editorAlias": "Umbraco.TextBox",
+          "segment": null,
+          "value": "_Subtitle Value",
+        },
+      ],
+      "variants": [
+        {
+          "createDate": "NORMALIZED_DATE",
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test Element Properties",
+          "publishDate": null,
+          "scheduledPublishDate": null,
+          "scheduledUnpublishDate": null,
+          "segment": null,
+          "state": "Draft",
+          "updateDate": "NORMALIZED_DATE",
+        },
+      ],
+    },
+    "message": "Successfully updated 1 property value(s)",
+    "success": true,
+    "updatedProperties": [
+      "title",
+    ],
+  },
+}
+`;

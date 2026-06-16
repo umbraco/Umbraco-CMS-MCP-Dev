@@ -25,7 +25,6 @@ const createElementSchema = z.object({
   values: z
     .array(
       z.object({
-        editorAlias: z.string().optional(),
         culture: z.string().nullable(),
         segment: z.string().nullable(),
         alias: z.string(),

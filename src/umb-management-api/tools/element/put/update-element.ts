@@ -19,12 +19,16 @@ const inputSchema = {
 
 const UpdateElementTool = {
   name: "update-element",
-  description: `Updates an element by Id.
+  description: `Updates an element by Id. USE AS LAST RESORT ONLY.
+
+  IMPORTANT: Prefer update-element-properties for changing individual property values — it is simpler and safer because it preserves everything else.
+
+  Only use this tool when you must replace the element's values/variants wholesale, or change variant-level data the properties tool cannot handle.
 
   If you must use this tool:
-  - Always read the current element value first
-  - Only update the required values
-  - Don't miss any properties from the original element`,
+  - Always read the current element first with get-element-by-id.
+  - Send the full set of values AND variants — they are replaced wholesale, so any value or variant you omit is removed.
+  - Include one variant entry per existing culture; do not drop variants you aren't changing.`,
   inputSchema: inputSchema,
   annotations: {
     idempotentHint: true,
