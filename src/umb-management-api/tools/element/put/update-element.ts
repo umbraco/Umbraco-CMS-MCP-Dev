@@ -19,12 +19,11 @@ const inputSchema = {
 
 const UpdateElementTool = {
   name: "update-element",
-  description: `Updates an element by Id.
+  description: `Updates an element by Id. This is the only tool for changing an element's values and variants, so send a complete payload.
 
-  If you must use this tool:
-  - Always read the current element value first
-  - Only update the required values
-  - Don't miss any properties from the original element`,
+  - Always read the current element first with get-element-by-id.
+  - Send the full set of values AND variants. The update replaces them wholesale: any value or variant you omit is removed.
+  - Include one variant entry per existing culture (each with its name); do not drop variants you aren't changing.`,
   inputSchema: inputSchema,
   annotations: {
     idempotentHint: true,
