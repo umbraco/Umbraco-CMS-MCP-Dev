@@ -39,7 +39,7 @@ describe("get-document-public-access", () => {
 
   it("should get public access for a valid document", async () => {
     const result = await GetDocumentPublicAccessTool.handler(
-      { id: docId, includeAncestors: false },
+      { id: docId, includeAncestors: undefined },
       createMockRequestHandlerExtra()
     );
     // Get structured content directly
@@ -67,7 +67,7 @@ describe("get-document-public-access", () => {
 
   it("should handle non-existent document", async () => {
     const result = await GetDocumentPublicAccessTool.handler(
-      { id: BLANK_UUID, includeAncestors: false },
+      { id: BLANK_UUID, includeAncestors: undefined },
       createMockRequestHandlerExtra()
     );
     // Non-existent document should return an error

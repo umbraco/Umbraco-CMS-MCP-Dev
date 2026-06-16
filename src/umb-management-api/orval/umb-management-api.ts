@@ -64,9 +64,42 @@ function camelCaseZodExports(paths: string[]): void {
   }
 }
 
+/**
+ * Restores orval 7's handling of query params that have a falsy spec default.
+ *
+ * Umbraco declares query params like `foldersOnly`/`includeAncestors`
+ * (`default: false`), `skip` (`default: 0`) and `filter` (`default: ""`).
+ * Orval 7 emitted these as `.optional()` (it ignored falsy defaults); orval 8
+ * emits `.default(<const>)`, which makes the schema's inferred output type a
+ * required field and breaks tools/tests that pass the param as `undefined`.
+ * Re-emit them as `.optional()` to keep the v7 surface. Truthy defaults (e.g.
+ * `take`'s `100`) are left as `.default(...)`, matching both versions. The
+ * generated default constants are kept (orval 7 kept them too).
+ */
+function restoreV7OptionalDefaults(paths: string[]): void {
+  for (const file of collectZodFiles(paths)) {
+    let content = fs.readFileSync(file, "utf8");
+
+    const falsy = new Set<string>();
+    for (const match of content.matchAll(/export const (\w+) = (.+?);/g)) {
+      const value = match[2].trim();
+      if (["0", "false", "''", '""', "``", "null"].includes(value)) {
+        falsy.add(match[1]);
+      }
+    }
+    if (falsy.size === 0) continue;
+
+    for (const name of falsy) {
+      content = content.replaceAll(`.default(${name})`, ".optional()");
+    }
+    fs.writeFileSync(file, content, "utf8");
+  }
+}
+
 function postProcessZodFiles(paths: string[]): void {
   relaxUuidToGuid(paths);
   camelCaseZodExports(paths);
+  restoreV7OptionalDefaults(paths);
 }
 
 export const UmbManagementApiOrvalConfig = defineConfig({

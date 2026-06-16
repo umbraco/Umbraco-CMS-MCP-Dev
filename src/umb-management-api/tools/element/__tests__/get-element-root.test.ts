@@ -28,7 +28,7 @@ describe("get-element-root", () => {
 
     // Act
     const result = await GetElementRootTool.handler(
-      { foldersOnly: false, dataTypeId: undefined },
+      { foldersOnly: undefined, dataTypeId: undefined },
       createMockRequestHandlerExtra()
     );
 
@@ -40,7 +40,7 @@ describe("get-element-root", () => {
   it("should return empty items when no root elements exist", async () => {
     // Act - call without creating any elements (may still return existing items)
     const result = await GetElementRootTool.handler(
-      { foldersOnly: false, dataTypeId: undefined },
+      { foldersOnly: undefined, dataTypeId: undefined },
       createMockRequestHandlerExtra()
     );
 

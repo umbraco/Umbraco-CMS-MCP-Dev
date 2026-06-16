@@ -54,7 +54,7 @@ describe("GetFilterUserGroupTool", () => {
 
   it("should handle empty filter", async () => {
     const result = await GetFilterUserGroupTool.handler({
-      filter: ""
+      filter: undefined
     }, createMockRequestHandlerExtra());
 
     // Verify the response contains all groups
@@ -64,7 +64,7 @@ describe("GetFilterUserGroupTool", () => {
 
   it("should handle pagination", async () => {
     const result = await GetFilterUserGroupTool.handler({
-      filter: ""
+      filter: undefined
     }, createMockRequestHandlerExtra());
 
     // Verify the response contains only 2 items
