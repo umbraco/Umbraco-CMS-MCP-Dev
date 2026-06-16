@@ -24,6 +24,7 @@ import CopyElementTool from "./post/copy-element.js";
 import ValidateElementTool from "./post/validate-element.js";
 import RollbackElementVersionTool from "./post/rollback-element-version.js";
 import UpdateElementTool from "./put/update-element.js";
+import UpdateElementPropertiesTool from "./put/update-element-properties.js";
 import MoveElementTool from "./put/move-element.js";
 import MoveElementToRecycleBinTool from "./put/move-element-to-recycle-bin.js";
 import PublishElementTool from "./put/publish-element.js";
@@ -90,6 +91,7 @@ export const ElementCollection: ToolCollectionExport = {
       tools.push(ValidateElementTool);
       tools.push(RollbackElementVersionTool);
       tools.push(UpdateElementTool);
+      tools.push(UpdateElementPropertiesTool);
       tools.push(MoveElementTool);
       tools.push(MoveElementToRecycleBinTool);
       tools.push(PublishElementTool);
