@@ -39,7 +39,7 @@ describe("get-element-siblings", () => {
         target: sibling1.getId(),
         before: undefined,
         after: 100,
-        foldersOnly: undefined,
+        foldersOnly: false,
         dataTypeId: undefined,
       },
       createMockRequestHandlerExtra()
@@ -57,7 +57,7 @@ describe("get-element-siblings", () => {
         target: BLANK_UUID,
         before: undefined,
         after: 100,
-        foldersOnly: undefined,
+        foldersOnly: false,
         dataTypeId: undefined,
       },
       createMockRequestHandlerExtra()

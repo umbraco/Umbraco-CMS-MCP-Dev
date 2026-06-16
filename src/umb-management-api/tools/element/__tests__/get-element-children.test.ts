@@ -57,7 +57,7 @@ describe("get-element-children", () => {
     const result = await GetElementChildrenTool.handler(
       {
         parentId: parentFolderId,
-        foldersOnly: undefined,
+        foldersOnly: false,
         dataTypeId: undefined,
       },
       createMockRequestHandlerExtra()
@@ -78,7 +78,7 @@ describe("get-element-children", () => {
     const result = await GetElementChildrenTool.handler(
       {
         parentId: BLANK_UUID,
-        foldersOnly: undefined,
+        foldersOnly: false,
         dataTypeId: undefined,
       },
       createMockRequestHandlerExtra()
