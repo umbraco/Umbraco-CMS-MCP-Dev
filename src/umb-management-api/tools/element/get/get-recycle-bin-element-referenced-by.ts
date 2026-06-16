@@ -12,7 +12,7 @@ import {
 const GetRecycleBinElementReferencedByTool = {
   name: "get-recycle-bin-element-referenced-by",
   description: `Lists all content that references any deleted element in the recycle bin (not scoped to a specific element).
-  Use skip/take to page the results. Useful before emptying the recycle bin to see what still references deleted elements.`,
+  Useful before emptying the recycle bin to see what still references deleted elements.`,
   inputSchema: getRecycleBinElementReferencedByQueryParams.shape,
   outputSchema: getRecycleBinElementReferencedByResponse.shape,
   annotations: {
