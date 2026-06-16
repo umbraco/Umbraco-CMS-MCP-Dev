@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-children should get children for a known element 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
+  },
+}
+`;
+
+exports[`get-element-children should return empty items for non-existent parent 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
+  },
+}
+`;

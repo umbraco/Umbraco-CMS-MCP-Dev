@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-recycle-bin-element-children should get children for an element in the recycle bin 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
+  },
+}
+`;
+
+exports[`get-recycle-bin-element-children should handle non-existent parent in recycle bin 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
+  },
+}
+`;
