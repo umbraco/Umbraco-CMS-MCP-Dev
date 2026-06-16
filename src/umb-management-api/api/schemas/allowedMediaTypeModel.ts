@@ -5,12 +5,12 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { AllowedMediaTypeModelDescription } from './allowedMediaTypeModelDescription.js';
+import type { AllowedMediaTypeModelIcon } from './allowedMediaTypeModelIcon.js';
 
 export interface AllowedMediaTypeModel {
   id: string;
   name: string;
-  /** @nullable */
-  description?: string | null;
-  /** @nullable */
-  icon?: string | null;
+  description?: AllowedMediaTypeModelDescription;
+  icon?: AllowedMediaTypeModelIcon;
 }

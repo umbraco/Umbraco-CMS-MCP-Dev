@@ -5,15 +5,15 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { UserKindModel } from './userKindModel.js';
+import type { CreateUserRequestModelId } from './createUserRequestModelId.js';
+import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
 export interface CreateUserRequestModel {
+  kind: UserKindModel;
+  id?: CreateUserRequestModelId;
   email: string;
   userName: string;
   name: string;
   userGroupIds: ReferenceByIdModel[];
-  /** @nullable */
-  id?: string | null;
-  kind: UserKindModel;
 }

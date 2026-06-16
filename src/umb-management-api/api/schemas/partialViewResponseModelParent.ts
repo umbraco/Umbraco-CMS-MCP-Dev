@@ -7,7 +7,4 @@
  */
 import type { FileSystemFolderModel } from './fileSystemFolderModel.js';
 
-/**
- * @nullable
- */
-export type PartialViewResponseModelParent = FileSystemFolderModel | null;
+export type PartialViewResponseModelParent = null | FileSystemFolderModel;

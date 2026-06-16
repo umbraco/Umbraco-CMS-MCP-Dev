@@ -5,11 +5,11 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { EntityImportAnalysisResponseModelAlias } from './entityImportAnalysisResponseModelAlias.js';
+import type { EntityImportAnalysisResponseModelKey } from './entityImportAnalysisResponseModelKey.js';
 
 export interface EntityImportAnalysisResponseModel {
   entityType: string;
-  /** @nullable */
-  alias?: string | null;
-  /** @nullable */
-  key?: string | null;
+  alias?: EntityImportAnalysisResponseModelAlias;
+  key?: EntityImportAnalysisResponseModelKey;
 }

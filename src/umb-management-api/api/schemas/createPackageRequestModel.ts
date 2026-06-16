@@ -5,11 +5,13 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { CreatePackageRequestModelId } from './createPackageRequestModelId.js';
+import type { CreatePackageRequestModelContentNodeId } from './createPackageRequestModelContentNodeId.js';
 
 export interface CreatePackageRequestModel {
+  id?: CreatePackageRequestModelId;
   name: string;
-  /** @nullable */
-  contentNodeId?: string | null;
+  contentNodeId?: CreatePackageRequestModelContentNodeId;
   contentLoadChildNodes: boolean;
   mediaIds: string[];
   mediaLoadChildNodes: boolean;
@@ -22,6 +24,4 @@ export interface CreatePackageRequestModel {
   scripts: string[];
   languages: string[];
   dictionaryItems: string[];
-  /** @nullable */
-  id?: string | null;
 }

@@ -5,15 +5,14 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { ValidateUpdateDocumentRequestModelCultures } from './validateUpdateDocumentRequestModelCultures.js';
+import type { ValidateUpdateDocumentRequestModelTemplate } from './validateUpdateDocumentRequestModelTemplate.js';
 import type { DocumentValueModel } from './documentValueModel.js';
 import type { DocumentVariantRequestModel } from './documentVariantRequestModel.js';
-import type { ValidateUpdateDocumentRequestModelTemplate } from './validateUpdateDocumentRequestModelTemplate.js';
 
 export interface ValidateUpdateDocumentRequestModel {
+  cultures?: ValidateUpdateDocumentRequestModelCultures;
+  template?: ValidateUpdateDocumentRequestModelTemplate;
   values: DocumentValueModel[];
   variants: DocumentVariantRequestModel[];
-  /** @nullable */
-  template?: ValidateUpdateDocumentRequestModelTemplate;
-  /** @nullable */
-  cultures?: string[] | null;
 }

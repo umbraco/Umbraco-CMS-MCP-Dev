@@ -7,7 +7,4 @@
  */
 import type { ItemReferenceByIdResponseModel } from './itemReferenceByIdResponseModel.js';
 
-/**
- * @nullable
- */
-export type MediaRecycleBinItemResponseModelParent = ItemReferenceByIdResponseModel | null;
+export type MediaRecycleBinItemResponseModelParent = null | ItemReferenceByIdResponseModel;

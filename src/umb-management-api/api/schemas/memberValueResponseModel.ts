@@ -5,17 +5,13 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { MemberValueResponseModelValue } from './memberValueResponseModelValue.js';
+import type { MemberValueResponseModelCulture } from './memberValueResponseModelCulture.js';
+import type { MemberValueResponseModelSegment } from './memberValueResponseModelSegment.js';
 
 export interface MemberValueResponseModel {
-  /** @nullable */
-  culture?: string | null;
-  /** @nullable */
-  segment?: string | null;
-  /** @minLength 1 */
-  alias: string;
-  /** @nullable */
-  value?: MemberValueResponseModelValue;
-  /** @minLength 1 */
   editorAlias: string;
+  culture?: MemberValueResponseModelCulture;
+  segment?: MemberValueResponseModelSegment;
+  alias: string;
+  value?: unknown;
 }

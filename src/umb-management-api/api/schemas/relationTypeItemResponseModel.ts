@@ -8,8 +8,8 @@
 import type { FlagModel } from './flagModel.js';
 
 export interface RelationTypeItemResponseModel {
+  isDeletable: boolean;
+  name: string;
   id: string;
   flags: FlagModel[];
-  name: string;
-  isDeletable: boolean;
 }

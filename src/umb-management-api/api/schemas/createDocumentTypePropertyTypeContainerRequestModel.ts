@@ -6,14 +6,12 @@
  * OpenAPI spec version: Latest
  */
 import type { CreateDocumentTypePropertyTypeContainerRequestModelParent } from './createDocumentTypePropertyTypeContainerRequestModelParent.js';
+import type { CreateDocumentTypePropertyTypeContainerRequestModelName } from './createDocumentTypePropertyTypeContainerRequestModelName.js';
 
 export interface CreateDocumentTypePropertyTypeContainerRequestModel {
   id: string;
-  /** @nullable */
   parent?: CreateDocumentTypePropertyTypeContainerRequestModelParent;
-  /** @nullable */
-  name?: string | null;
-  /** @minLength 1 */
+  name?: CreateDocumentTypePropertyTypeContainerRequestModelName;
   type: string;
   sortOrder: number;
 }

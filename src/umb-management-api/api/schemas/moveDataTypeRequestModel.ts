@@ -8,6 +8,5 @@
 import type { MoveDataTypeRequestModelTarget } from './moveDataTypeRequestModelTarget.js';
 
 export interface MoveDataTypeRequestModel {
-  /** @nullable */
   target?: MoveDataTypeRequestModelTarget;
 }

@@ -5,19 +5,18 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { WebhookResponseModelHeaders } from './webhookResponseModelHeaders.js';
 import type { WebhookEventResponseModel } from './webhookEventResponseModel.js';
+import type { WebhookResponseModelName } from './webhookResponseModelName.js';
+import type { WebhookResponseModelDescription } from './webhookResponseModelDescription.js';
+import type { WebhookResponseModelHeaders } from './webhookResponseModelHeaders.js';
 
 export interface WebhookResponseModel {
+  id: string;
+  events: WebhookEventResponseModel[];
   enabled: boolean;
-  /** @nullable */
-  name?: string | null;
-  /** @nullable */
-  description?: string | null;
-  /** @minLength 1 */
+  name?: WebhookResponseModelName;
+  description?: WebhookResponseModelDescription;
   url: string;
   contentTypeKeys: string[];
   headers: WebhookResponseModelHeaders;
-  id: string;
-  events: WebhookEventResponseModel[];
 }

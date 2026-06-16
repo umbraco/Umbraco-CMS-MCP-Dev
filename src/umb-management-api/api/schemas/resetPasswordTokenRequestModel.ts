@@ -8,8 +8,7 @@
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
 export interface ResetPasswordTokenRequestModel {
+  password: string;
   user: ReferenceByIdModel;
   resetCode: string;
-  /** @minLength 1 */
-  password: string;
 }

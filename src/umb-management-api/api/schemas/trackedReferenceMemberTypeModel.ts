@@ -5,13 +5,13 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { TrackedReferenceMemberTypeModelIcon } from './trackedReferenceMemberTypeModelIcon.js';
+import type { TrackedReferenceMemberTypeModelAlias } from './trackedReferenceMemberTypeModelAlias.js';
+import type { TrackedReferenceMemberTypeModelName } from './trackedReferenceMemberTypeModelName.js';
 
 export interface TrackedReferenceMemberTypeModel {
   id: string;
-  /** @nullable */
-  icon?: string | null;
-  /** @nullable */
-  alias?: string | null;
-  /** @nullable */
-  name?: string | null;
+  icon?: TrackedReferenceMemberTypeModelIcon;
+  alias?: TrackedReferenceMemberTypeModelAlias;
+  name?: TrackedReferenceMemberTypeModelName;
 }

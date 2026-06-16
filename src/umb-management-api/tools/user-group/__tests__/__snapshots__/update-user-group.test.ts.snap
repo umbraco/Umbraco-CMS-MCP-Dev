@@ -34,6 +34,8 @@ exports[`update-user-group should update a user group 2`] = `
         "description": "",
         "documentRootAccess": false,
         "documentStartNode": null,
+        "elementRootAccess": false,
+        "elementStartNode": null,
         "fallbackPermissions": [],
         "hasAccessToAllLanguages": true,
         "icon": null,

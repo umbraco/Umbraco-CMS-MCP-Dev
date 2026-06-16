@@ -8,8 +8,7 @@
 import type { DictionaryItemTranslationModel } from './dictionaryItemTranslationModel.js';
 
 export interface DictionaryItemResponseModel {
-  /** @minLength 1 */
+  id: string;
   name: string;
   translations: DictionaryItemTranslationModel[];
-  id: string;
 }

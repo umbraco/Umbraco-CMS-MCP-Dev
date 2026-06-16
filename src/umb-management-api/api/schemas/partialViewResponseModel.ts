@@ -8,9 +8,8 @@
 import type { PartialViewResponseModelParent } from './partialViewResponseModelParent.js';
 
 export interface PartialViewResponseModel {
-  path: string;
-  name: string;
-  /** @nullable */
-  parent?: PartialViewResponseModelParent;
   content: string;
+  name: string;
+  parent?: PartialViewResponseModelParent;
+  path: string;
 }

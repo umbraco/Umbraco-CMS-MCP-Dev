@@ -5,11 +5,11 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DocumentTypeCleanupModelKeepAllVersionsNewerThanDays } from './documentTypeCleanupModelKeepAllVersionsNewerThanDays.js';
+import type { DocumentTypeCleanupModelKeepLatestVersionPerDayForDays } from './documentTypeCleanupModelKeepLatestVersionPerDayForDays.js';
 
 export interface DocumentTypeCleanupModel {
   preventCleanup: boolean;
-  /** @nullable */
-  keepAllVersionsNewerThanDays?: number | null;
-  /** @nullable */
-  keepLatestVersionPerDayForDays?: number | null;
+  keepAllVersionsNewerThanDays?: DocumentTypeCleanupModelKeepAllVersionsNewerThanDays;
+  keepLatestVersionPerDayForDays?: DocumentTypeCleanupModelKeepLatestVersionPerDayForDays;
 }

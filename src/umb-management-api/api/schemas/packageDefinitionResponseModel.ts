@@ -5,11 +5,13 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { PackageDefinitionResponseModelContentNodeId } from './packageDefinitionResponseModelContentNodeId.js';
 
 export interface PackageDefinitionResponseModel {
+  id: string;
+  packagePath: string;
   name: string;
-  /** @nullable */
-  contentNodeId?: string | null;
+  contentNodeId?: PackageDefinitionResponseModelContentNodeId;
   contentLoadChildNodes: boolean;
   mediaIds: string[];
   mediaLoadChildNodes: boolean;
@@ -22,6 +24,4 @@ export interface PackageDefinitionResponseModel {
   scripts: string[];
   languages: string[];
   dictionaryItems: string[];
-  id: string;
-  readonly packagePath: string;
 }

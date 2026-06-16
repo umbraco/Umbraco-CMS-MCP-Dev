@@ -6,21 +6,18 @@
  * OpenAPI spec version: Latest
  */
 import type { CreateDocumentTypePropertyTypeRequestModelContainer } from './createDocumentTypePropertyTypeRequestModelContainer.js';
+import type { CreateDocumentTypePropertyTypeRequestModelDescription } from './createDocumentTypePropertyTypeRequestModelDescription.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { PropertyTypeValidationModel } from './propertyTypeValidationModel.js';
 import type { PropertyTypeAppearanceModel } from './propertyTypeAppearanceModel.js';
 
 export interface CreateDocumentTypePropertyTypeRequestModel {
   id: string;
-  /** @nullable */
   container?: CreateDocumentTypePropertyTypeRequestModelContainer;
   sortOrder: number;
-  /** @minLength 1 */
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
+  description?: CreateDocumentTypePropertyTypeRequestModelDescription;
   dataType: ReferenceByIdModel;
   variesByCulture: boolean;
   variesBySegment: boolean;

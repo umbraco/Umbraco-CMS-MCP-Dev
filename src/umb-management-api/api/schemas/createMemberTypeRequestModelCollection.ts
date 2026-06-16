@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type CreateMemberTypeRequestModelCollection = ReferenceByIdModel | null;
+export type CreateMemberTypeRequestModelCollection = null | ReferenceByIdModel;

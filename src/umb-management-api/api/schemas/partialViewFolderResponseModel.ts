@@ -8,8 +8,7 @@
 import type { PartialViewFolderResponseModelParent } from './partialViewFolderResponseModelParent.js';
 
 export interface PartialViewFolderResponseModel {
-  path: string;
   name: string;
-  /** @nullable */
   parent?: PartialViewFolderResponseModelParent;
+  path: string;
 }

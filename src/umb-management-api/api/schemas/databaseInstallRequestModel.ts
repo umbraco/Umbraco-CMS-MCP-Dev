@@ -5,21 +5,21 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DatabaseInstallRequestModelProviderName } from './databaseInstallRequestModelProviderName.js';
+import type { DatabaseInstallRequestModelServer } from './databaseInstallRequestModelServer.js';
+import type { DatabaseInstallRequestModelName } from './databaseInstallRequestModelName.js';
+import type { DatabaseInstallRequestModelUsername } from './databaseInstallRequestModelUsername.js';
+import type { DatabaseInstallRequestModelPassword } from './databaseInstallRequestModelPassword.js';
+import type { DatabaseInstallRequestModelConnectionString } from './databaseInstallRequestModelConnectionString.js';
 
 export interface DatabaseInstallRequestModel {
   id: string;
-  /** @minLength 1 */
-  providerName: string;
-  /** @nullable */
-  server?: string | null;
-  /** @nullable */
-  name?: string | null;
-  /** @nullable */
-  username?: string | null;
-  /** @nullable */
-  password?: string | null;
+  providerName: DatabaseInstallRequestModelProviderName;
+  server?: DatabaseInstallRequestModelServer;
+  name?: DatabaseInstallRequestModelName;
+  username?: DatabaseInstallRequestModelUsername;
+  password?: DatabaseInstallRequestModelPassword;
   useIntegratedAuthentication: boolean;
-  /** @nullable */
-  connectionString?: string | null;
+  connectionString?: DatabaseInstallRequestModelConnectionString;
   trustServerCertificate: boolean;
 }

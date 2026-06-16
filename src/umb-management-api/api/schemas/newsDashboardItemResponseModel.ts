@@ -5,18 +5,18 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { NewsDashboardItemResponseModelBody } from './newsDashboardItemResponseModelBody.js';
+import type { NewsDashboardItemResponseModelButtonText } from './newsDashboardItemResponseModelButtonText.js';
+import type { NewsDashboardItemResponseModelImageUrl } from './newsDashboardItemResponseModelImageUrl.js';
+import type { NewsDashboardItemResponseModelImageAltText } from './newsDashboardItemResponseModelImageAltText.js';
+import type { NewsDashboardItemResponseModelUrl } from './newsDashboardItemResponseModelUrl.js';
 
 export interface NewsDashboardItemResponseModel {
   priority: string;
   header: string;
-  /** @nullable */
-  body?: string | null;
-  /** @nullable */
-  buttonText?: string | null;
-  /** @nullable */
-  imageUrl?: string | null;
-  /** @nullable */
-  imageAltText?: string | null;
-  /** @nullable */
-  url?: string | null;
+  body?: NewsDashboardItemResponseModelBody;
+  buttonText?: NewsDashboardItemResponseModelButtonText;
+  imageUrl?: NewsDashboardItemResponseModelImageUrl;
+  imageAltText?: NewsDashboardItemResponseModelImageAltText;
+  url?: NewsDashboardItemResponseModelUrl;
 }

@@ -10,6 +10,5 @@ import type { DocumentTypeReferenceResponseModelCollection } from './documentTyp
 export interface DocumentTypeReferenceResponseModel {
   id: string;
   icon: string;
-  /** @nullable */
   collection?: DocumentTypeReferenceResponseModelCollection;
 }

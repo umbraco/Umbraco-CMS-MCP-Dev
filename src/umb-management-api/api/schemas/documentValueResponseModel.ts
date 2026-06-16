@@ -5,17 +5,13 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { DocumentValueResponseModelValue } from './documentValueResponseModelValue.js';
+import type { DocumentValueResponseModelCulture } from './documentValueResponseModelCulture.js';
+import type { DocumentValueResponseModelSegment } from './documentValueResponseModelSegment.js';
 
 export interface DocumentValueResponseModel {
-  /** @nullable */
-  culture?: string | null;
-  /** @nullable */
-  segment?: string | null;
-  /** @minLength 1 */
-  alias: string;
-  /** @nullable */
-  value?: DocumentValueResponseModelValue;
-  /** @minLength 1 */
   editorAlias: string;
+  culture?: DocumentValueResponseModelCulture;
+  segment?: DocumentValueResponseModelSegment;
+  alias: string;
+  value?: unknown;
 }

@@ -5,15 +5,16 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DocumentTypeItemResponseModelIcon } from './documentTypeItemResponseModelIcon.js';
+import type { DocumentTypeItemResponseModelDescription } from './documentTypeItemResponseModelDescription.js';
 import type { FlagModel } from './flagModel.js';
 
 export interface DocumentTypeItemResponseModel {
+  isElement: boolean;
+  allowedInLibrary: boolean;
+  icon?: DocumentTypeItemResponseModelIcon;
+  description?: DocumentTypeItemResponseModelDescription;
+  name: string;
   id: string;
   flags: FlagModel[];
-  name: string;
-  isElement: boolean;
-  /** @nullable */
-  icon?: string | null;
-  /** @nullable */
-  description?: string | null;
 }

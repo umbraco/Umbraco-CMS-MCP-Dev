@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type MoveDictionaryRequestModelTarget = ReferenceByIdModel | null;
+export type MoveDictionaryRequestModelTarget = null | ReferenceByIdModel;

@@ -5,16 +5,15 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { TemplateResponseModelLayoutTemplate } from './templateResponseModelLayoutTemplate.js';
 import type { TemplateResponseModelMasterTemplate } from './templateResponseModelMasterTemplate.js';
+import type { TemplateResponseModelContent } from './templateResponseModelContent.js';
 
 export interface TemplateResponseModel {
-  /** @minLength 1 */
-  name: string;
-  /** @minLength 1 */
-  alias: string;
-  /** @nullable */
-  content?: string | null;
   id: string;
-  /** @nullable */
+  layoutTemplate?: TemplateResponseModelLayoutTemplate;
   masterTemplate?: TemplateResponseModelMasterTemplate;
+  name: string;
+  alias: string;
+  content?: TemplateResponseModelContent;
 }

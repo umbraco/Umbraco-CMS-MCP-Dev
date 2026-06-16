@@ -9,13 +9,13 @@ import type { DocumentTypeTreeItemResponseModelParent } from './documentTypeTree
 import type { FlagModel } from './flagModel.js';
 
 export interface DocumentTypeTreeItemResponseModel {
-  hasChildren: boolean;
-  id: string;
-  /** @nullable */
-  parent?: DocumentTypeTreeItemResponseModelParent;
-  flags: FlagModel[];
-  name: string;
-  isFolder: boolean;
   isElement: boolean;
   icon: string;
+  isFolder: boolean;
+  noAccess: boolean;
+  name: string;
+  id: string;
+  parent?: DocumentTypeTreeItemResponseModelParent;
+  flags: FlagModel[];
+  hasChildren: boolean;
 }

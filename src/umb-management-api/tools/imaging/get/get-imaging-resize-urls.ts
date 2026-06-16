@@ -32,9 +32,9 @@ const GetImagingResizeUrlsTool = {
     readOnlyHint: true,
   },
   slices: ['read'],
-  handler: (async (model: GetImagingResizeUrlsParams) => {
+  handler: (async (model) => {
     return executeGetItemsApiCall((client) =>
-      client.getImagingResizeUrls(model, CAPTURE_RAW_HTTP_RESPONSE)
+      client.getImagingResizeUrls(model as GetImagingResizeUrlsParams, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
 } satisfies ToolDefinition<typeof getImagingResizeUrlsQueryParams.shape, typeof outputSchema.shape>;

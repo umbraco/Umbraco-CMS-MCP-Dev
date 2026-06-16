@@ -7,9 +7,7 @@
  */
 
 export interface CreateDocumentTypeTemplateRequestModel {
-  /** @minLength 1 */
   alias: string;
-  /** @minLength 1 */
   name: string;
   isDefault: boolean;
 }

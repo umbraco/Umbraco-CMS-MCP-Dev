@@ -5,32 +5,29 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MediaTypeSortModel } from './mediaTypeSortModel.js';
+import type { MediaTypeCompositionModel } from './mediaTypeCompositionModel.js';
+import type { MediaTypeResponseModelDescription } from './mediaTypeResponseModelDescription.js';
 import type { MediaTypeResponseModelCollection } from './mediaTypeResponseModelCollection.js';
 import type { MediaTypePropertyTypeResponseModel } from './mediaTypePropertyTypeResponseModel.js';
 import type { MediaTypePropertyTypeContainerResponseModel } from './mediaTypePropertyTypeContainerResponseModel.js';
-import type { MediaTypeSortModel } from './mediaTypeSortModel.js';
-import type { MediaTypeCompositionModel } from './mediaTypeCompositionModel.js';
 
 export interface MediaTypeResponseModel {
-  /** @minLength 1 */
-  alias: string;
-  /** @minLength 1 */
-  name: string;
-  /** @nullable */
-  description?: string | null;
-  /** @minLength 1 */
-  icon: string;
-  allowedAsRoot: boolean;
-  variesByCulture: boolean;
-  variesBySegment: boolean;
-  /** @nullable */
-  collection?: MediaTypeResponseModelCollection;
-  isElement: boolean;
-  properties: MediaTypePropertyTypeResponseModel[];
-  containers: MediaTypePropertyTypeContainerResponseModel[];
-  id: string;
   allowedMediaTypes: MediaTypeSortModel[];
   compositions: MediaTypeCompositionModel[];
   isDeletable: boolean;
   aliasCanBeChanged: boolean;
+  id: string;
+  alias: string;
+  name: string;
+  description?: MediaTypeResponseModelDescription;
+  icon: string;
+  allowedAsRoot: boolean;
+  variesByCulture: boolean;
+  variesBySegment: boolean;
+  collection?: MediaTypeResponseModelCollection;
+  isElement: boolean;
+  allowedInLibrary: boolean;
+  properties: MediaTypePropertyTypeResponseModel[];
+  containers: MediaTypePropertyTypeContainerResponseModel[];
 }

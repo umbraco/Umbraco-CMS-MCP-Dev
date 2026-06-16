@@ -5,24 +5,24 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { DocumentValueResponseModel } from './documentValueResponseModel.js';
-import type { DocumentVariantResponseModel } from './documentVariantResponseModel.js';
-import type { FlagModel } from './flagModel.js';
 import type { DocumentTypeCollectionReferenceResponseModel } from './documentTypeCollectionReferenceResponseModel.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
+import type { DocumentCollectionResponseModelUpdater } from './documentCollectionResponseModelUpdater.js';
+import type { DocumentCollectionResponseModelCreator } from './documentCollectionResponseModelCreator.js';
+import type { FlagModel } from './flagModel.js';
+import type { DocumentValueResponseModel } from './documentValueResponseModel.js';
+import type { DocumentVariantResponseModel } from './documentVariantResponseModel.js';
 
 export interface DocumentCollectionResponseModel {
-  values: DocumentValueResponseModel[];
-  variants: DocumentVariantResponseModel[];
-  id: string;
-  flags: FlagModel[];
-  /** @nullable */
-  creator?: string | null;
-  sortOrder: number;
   documentType: DocumentTypeCollectionReferenceResponseModel;
   isTrashed: boolean;
   isProtected: boolean;
   ancestors: ReferenceByIdModel[];
-  /** @nullable */
-  updater?: string | null;
+  updater?: DocumentCollectionResponseModelUpdater;
+  creator?: DocumentCollectionResponseModelCreator;
+  sortOrder: number;
+  id: string;
+  flags: FlagModel[];
+  values: DocumentValueResponseModel[];
+  variants: DocumentVariantResponseModel[];
 }

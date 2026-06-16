@@ -5,16 +5,15 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { DocumentRecycleBinItemResponseModelParent } from './documentRecycleBinItemResponseModelParent.js';
 import type { DocumentTypeReferenceResponseModel } from './documentTypeReferenceResponseModel.js';
 import type { DocumentVariantItemResponseModel } from './documentVariantItemResponseModel.js';
+import type { DocumentRecycleBinItemResponseModelParent } from './documentRecycleBinItemResponseModelParent.js';
 
 export interface DocumentRecycleBinItemResponseModel {
+  documentType: DocumentTypeReferenceResponseModel;
+  variants: DocumentVariantItemResponseModel[];
   id: string;
   createDate: string;
   hasChildren: boolean;
-  /** @nullable */
   parent?: DocumentRecycleBinItemResponseModelParent;
-  documentType: DocumentTypeReferenceResponseModel;
-  variants: DocumentVariantItemResponseModel[];
 }

@@ -5,37 +5,33 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { DocumentTypeResponseModelCollection } from './documentTypeResponseModelCollection.js';
-import type { DocumentTypePropertyTypeResponseModel } from './documentTypePropertyTypeResponseModel.js';
-import type { DocumentTypePropertyTypeContainerResponseModel } from './documentTypePropertyTypeContainerResponseModel.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { DocumentTypeResponseModelDefaultTemplate } from './documentTypeResponseModelDefaultTemplate.js';
 import type { DocumentTypeCleanupModel } from './documentTypeCleanupModel.js';
 import type { DocumentTypeSortModel } from './documentTypeSortModel.js';
 import type { DocumentTypeCompositionModel } from './documentTypeCompositionModel.js';
+import type { DocumentTypeResponseModelDescription } from './documentTypeResponseModelDescription.js';
+import type { DocumentTypeResponseModelCollection } from './documentTypeResponseModelCollection.js';
+import type { DocumentTypePropertyTypeResponseModel } from './documentTypePropertyTypeResponseModel.js';
+import type { DocumentTypePropertyTypeContainerResponseModel } from './documentTypePropertyTypeContainerResponseModel.js';
 
 export interface DocumentTypeResponseModel {
-  /** @minLength 1 */
-  alias: string;
-  /** @minLength 1 */
-  name: string;
-  /** @nullable */
-  description?: string | null;
-  /** @minLength 1 */
-  icon: string;
-  allowedAsRoot: boolean;
-  variesByCulture: boolean;
-  variesBySegment: boolean;
-  /** @nullable */
-  collection?: DocumentTypeResponseModelCollection;
-  isElement: boolean;
-  properties: DocumentTypePropertyTypeResponseModel[];
-  containers: DocumentTypePropertyTypeContainerResponseModel[];
-  id: string;
   allowedTemplates: ReferenceByIdModel[];
-  /** @nullable */
   defaultTemplate?: DocumentTypeResponseModelDefaultTemplate;
   cleanup: DocumentTypeCleanupModel;
   allowedDocumentTypes: DocumentTypeSortModel[];
   compositions: DocumentTypeCompositionModel[];
+  id: string;
+  alias: string;
+  name: string;
+  description?: DocumentTypeResponseModelDescription;
+  icon: string;
+  allowedAsRoot: boolean;
+  variesByCulture: boolean;
+  variesBySegment: boolean;
+  collection?: DocumentTypeResponseModelCollection;
+  isElement: boolean;
+  allowedInLibrary: boolean;
+  properties: DocumentTypePropertyTypeResponseModel[];
+  containers: DocumentTypePropertyTypeContainerResponseModel[];
 }

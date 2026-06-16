@@ -7,7 +7,4 @@
  */
 import type { FileSystemFolderModel } from './fileSystemFolderModel.js';
 
-/**
- * @nullable
- */
-export type FileSystemTreeItemPresentationModelParent = FileSystemFolderModel | null;
+export type FileSystemTreeItemPresentationModelParent = null | FileSystemFolderModel;

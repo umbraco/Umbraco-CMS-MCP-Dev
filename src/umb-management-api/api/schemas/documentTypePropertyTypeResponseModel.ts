@@ -6,21 +6,18 @@
  * OpenAPI spec version: Latest
  */
 import type { DocumentTypePropertyTypeResponseModelContainer } from './documentTypePropertyTypeResponseModelContainer.js';
+import type { DocumentTypePropertyTypeResponseModelDescription } from './documentTypePropertyTypeResponseModelDescription.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { PropertyTypeValidationModel } from './propertyTypeValidationModel.js';
 import type { PropertyTypeAppearanceModel } from './propertyTypeAppearanceModel.js';
 
 export interface DocumentTypePropertyTypeResponseModel {
   id: string;
-  /** @nullable */
   container?: DocumentTypePropertyTypeResponseModelContainer;
   sortOrder: number;
-  /** @minLength 1 */
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
+  description?: DocumentTypePropertyTypeResponseModelDescription;
   dataType: ReferenceByIdModel;
   variesByCulture: boolean;
   variesBySegment: boolean;

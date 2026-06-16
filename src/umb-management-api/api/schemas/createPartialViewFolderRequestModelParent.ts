@@ -7,7 +7,4 @@
  */
 import type { FileSystemFolderModel } from './fileSystemFolderModel.js';
 
-/**
- * @nullable
- */
-export type CreatePartialViewFolderRequestModelParent = FileSystemFolderModel | null;
+export type CreatePartialViewFolderRequestModelParent = null | FileSystemFolderModel;

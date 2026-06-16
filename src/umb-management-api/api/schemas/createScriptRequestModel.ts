@@ -8,8 +8,7 @@
 import type { CreateScriptRequestModelParent } from './createScriptRequestModelParent.js';
 
 export interface CreateScriptRequestModel {
-  name: string;
-  /** @nullable */
-  parent?: CreateScriptRequestModelParent;
   content: string;
+  name: string;
+  parent?: CreateScriptRequestModelParent;
 }

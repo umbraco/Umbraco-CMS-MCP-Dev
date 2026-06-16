@@ -5,10 +5,10 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { ScheduleRequestModelPublishTime } from './scheduleRequestModelPublishTime.js';
+import type { ScheduleRequestModelUnpublishTime } from './scheduleRequestModelUnpublishTime.js';
 
 export interface ScheduleRequestModel {
-  /** @nullable */
-  publishTime?: string | null;
-  /** @nullable */
-  unpublishTime?: string | null;
+  publishTime?: ScheduleRequestModelPublishTime;
+  unpublishTime?: ScheduleRequestModelUnpublishTime;
 }

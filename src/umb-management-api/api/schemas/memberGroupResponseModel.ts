@@ -7,6 +7,6 @@
  */
 
 export interface MemberGroupResponseModel {
-  name: string;
   id: string;
+  name: string;
 }

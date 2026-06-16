@@ -8,6 +8,5 @@
 import type { MoveDictionaryRequestModelTarget } from './moveDictionaryRequestModelTarget.js';
 
 export interface MoveDictionaryRequestModel {
-  /** @nullable */
   target?: MoveDictionaryRequestModelTarget;
 }

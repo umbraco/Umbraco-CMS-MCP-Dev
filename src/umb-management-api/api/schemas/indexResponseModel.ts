@@ -7,17 +7,15 @@
  */
 import type { HealthStatusResponseModel } from './healthStatusResponseModel.js';
 import type { IndexResponseModelProviderProperties } from './indexResponseModelProviderProperties.js';
+import type { IndexResponseModelUniqueKeyFieldName } from './indexResponseModelUniqueKeyFieldName.js';
 
 export interface IndexResponseModel {
-  /** @minLength 1 */
   name: string;
   healthStatus: HealthStatusResponseModel;
   canRebuild: boolean;
   searcherName: string;
   documentCount: number;
   fieldCount: number;
-  /** @nullable */
   providerProperties?: IndexResponseModelProviderProperties;
-  /** @nullable */
-  uniqueKeyFieldName?: string | null;
+  uniqueKeyFieldName?: IndexResponseModelUniqueKeyFieldName;
 }

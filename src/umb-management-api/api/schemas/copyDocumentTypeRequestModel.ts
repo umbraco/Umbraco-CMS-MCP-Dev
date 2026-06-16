@@ -8,6 +8,5 @@
 import type { CopyDocumentTypeRequestModelTarget } from './copyDocumentTypeRequestModelTarget.js';
 
 export interface CopyDocumentTypeRequestModel {
-  /** @nullable */
   target?: CopyDocumentTypeRequestModelTarget;
 }

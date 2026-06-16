@@ -11,6 +11,5 @@ export interface DocumentTypeCollectionReferenceResponseModel {
   id: string;
   alias: string;
   icon: string;
-  /** @nullable */
   collection?: DocumentTypeCollectionReferenceResponseModelCollection;
 }

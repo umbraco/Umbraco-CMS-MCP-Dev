@@ -8,8 +8,7 @@
 import type { ScriptFolderResponseModelParent } from './scriptFolderResponseModelParent.js';
 
 export interface ScriptFolderResponseModel {
-  path: string;
   name: string;
-  /** @nullable */
   parent?: ScriptFolderResponseModelParent;
+  path: string;
 }

@@ -8,9 +8,8 @@
 import type { StaticFileItemResponseModelParent } from './staticFileItemResponseModelParent.js';
 
 export interface StaticFileItemResponseModel {
-  path: string;
-  name: string;
-  /** @nullable */
-  parent?: StaticFileItemResponseModelParent;
   isFolder: boolean;
+  name: string;
+  parent?: StaticFileItemResponseModelParent;
+  path: string;
 }

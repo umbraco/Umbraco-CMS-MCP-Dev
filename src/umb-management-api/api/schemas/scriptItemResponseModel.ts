@@ -8,9 +8,8 @@
 import type { ScriptItemResponseModelParent } from './scriptItemResponseModelParent.js';
 
 export interface ScriptItemResponseModel {
-  path: string;
-  name: string;
-  /** @nullable */
-  parent?: ScriptItemResponseModelParent;
   isFolder: boolean;
+  name: string;
+  parent?: ScriptItemResponseModelParent;
+  path: string;
 }

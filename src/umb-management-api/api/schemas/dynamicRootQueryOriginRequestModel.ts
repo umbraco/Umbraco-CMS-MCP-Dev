@@ -5,9 +5,9 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DynamicRootQueryOriginRequestModelId } from './dynamicRootQueryOriginRequestModelId.js';
 
 export interface DynamicRootQueryOriginRequestModel {
   alias: string;
-  /** @nullable */
-  id?: string | null;
+  id?: DynamicRootQueryOriginRequestModelId;
 }

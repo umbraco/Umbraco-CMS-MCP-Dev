@@ -7,13 +7,13 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { RelationReferenceModel } from './relationReferenceModel.js';
+import type { RelationResponseModelComment } from './relationResponseModelComment.js';
 
 export interface RelationResponseModel {
   id: string;
   relationType: ReferenceByIdModel;
-  readonly parent: RelationReferenceModel;
-  readonly child: RelationReferenceModel;
-  readonly createDate: string;
-  /** @nullable */
-  readonly comment?: string | null;
+  parent: RelationReferenceModel;
+  child: RelationReferenceModel;
+  createDate: string;
+  comment?: RelationResponseModelComment;
 }

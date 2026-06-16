@@ -8,6 +8,6 @@
 import type { HealthCheckModel } from './healthCheckModel.js';
 
 export interface HealthCheckGroupPresentationModel {
-  name: string;
   checks: HealthCheckModel[];
+  name: string;
 }

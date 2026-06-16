@@ -7,7 +7,7 @@
  */
 
 export interface FolderResponseModel {
-  /** @minLength 1 */
-  name: string;
   id: string;
+  isTrashed: boolean;
+  name: string;
 }

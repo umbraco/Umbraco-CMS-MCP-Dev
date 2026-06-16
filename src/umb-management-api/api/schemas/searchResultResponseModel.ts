@@ -8,9 +8,8 @@
 import type { FieldPresentationModel } from './fieldPresentationModel.js';
 
 export interface SearchResultResponseModel {
-  /** @minLength 1 */
   id: string;
   score: number;
-  readonly fieldCount: number;
+  fieldCount: number;
   fields: FieldPresentationModel[];
 }

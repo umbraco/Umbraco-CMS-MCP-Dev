@@ -5,23 +5,22 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { DocumentTreeItemResponseModelParent } from './documentTreeItemResponseModelParent.js';
-import type { FlagModel } from './flagModel.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { DocumentTypeReferenceResponseModel } from './documentTypeReferenceResponseModel.js';
 import type { DocumentVariantItemResponseModel } from './documentVariantItemResponseModel.js';
+import type { DocumentTreeItemResponseModelParent } from './documentTreeItemResponseModelParent.js';
+import type { FlagModel } from './flagModel.js';
 
 export interface DocumentTreeItemResponseModel {
-  hasChildren: boolean;
-  id: string;
-  /** @nullable */
-  parent?: DocumentTreeItemResponseModelParent;
-  flags: FlagModel[];
-  noAccess: boolean;
-  isTrashed: boolean;
-  createDate: string;
   isProtected: boolean;
   ancestors: ReferenceByIdModel[];
   documentType: DocumentTypeReferenceResponseModel;
   variants: DocumentVariantItemResponseModel[];
+  noAccess: boolean;
+  isTrashed: boolean;
+  createDate: string;
+  id: string;
+  parent?: DocumentTreeItemResponseModelParent;
+  flags: FlagModel[];
+  hasChildren: boolean;
 }

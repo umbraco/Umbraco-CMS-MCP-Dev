@@ -5,18 +5,17 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DocumentBlueprintTreeItemResponseModelDocumentType } from './documentBlueprintTreeItemResponseModelDocumentType.js';
 import type { DocumentBlueprintTreeItemResponseModelParent } from './documentBlueprintTreeItemResponseModelParent.js';
 import type { FlagModel } from './flagModel.js';
-import type { DocumentBlueprintTreeItemResponseModelDocumentType } from './documentBlueprintTreeItemResponseModelDocumentType.js';
 
 export interface DocumentBlueprintTreeItemResponseModel {
-  hasChildren: boolean;
+  documentType?: DocumentBlueprintTreeItemResponseModelDocumentType;
+  isFolder: boolean;
+  noAccess: boolean;
+  name: string;
   id: string;
-  /** @nullable */
   parent?: DocumentBlueprintTreeItemResponseModelParent;
   flags: FlagModel[];
-  name: string;
-  isFolder: boolean;
-  /** @nullable */
-  documentType?: DocumentBlueprintTreeItemResponseModelDocumentType;
+  hasChildren: boolean;
 }

@@ -8,6 +8,5 @@
 import type { MoveDocumentBlueprintRequestModelTarget } from './moveDocumentBlueprintRequestModelTarget.js';
 
 export interface MoveDocumentBlueprintRequestModel {
-  /** @nullable */
   target?: MoveDocumentBlueprintRequestModelTarget;
 }

@@ -6,13 +6,13 @@
  * OpenAPI spec version: Latest
  */
 import type { FlagModel } from './flagModel.js';
-import type { DocumentVariantStateModel } from './documentVariantStateModel.js';
+import type { PublishableVariantStateModel } from './publishableVariantStateModel.js';
+import type { DocumentVariantItemResponseModelCulture } from './documentVariantItemResponseModelCulture.js';
 
 export interface DocumentVariantItemResponseModel {
-  name: string;
-  /** @nullable */
-  culture?: string | null;
-  readonly id: string;
+  id: string;
   flags: FlagModel[];
-  state: DocumentVariantStateModel;
+  state: PublishableVariantStateModel;
+  name: string;
+  culture?: DocumentVariantItemResponseModelCulture;
 }

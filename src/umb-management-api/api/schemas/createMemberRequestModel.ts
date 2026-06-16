@@ -5,20 +5,20 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { ReferenceByIdModel } from './referenceByIdModel.js';
+import type { CreateMemberRequestModelGroups } from './createMemberRequestModelGroups.js';
+import type { CreateMemberRequestModelId } from './createMemberRequestModelId.js';
 import type { MemberValueModel } from './memberValueModel.js';
 import type { MemberVariantRequestModel } from './memberVariantRequestModel.js';
-import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
 export interface CreateMemberRequestModel {
-  values: MemberValueModel[];
-  variants: MemberVariantRequestModel[];
-  /** @nullable */
-  id?: string | null;
   email: string;
   username: string;
   password: string;
   memberType: ReferenceByIdModel;
-  /** @nullable */
-  groups?: string[] | null;
+  groups?: CreateMemberRequestModelGroups;
   isApproved: boolean;
+  id?: CreateMemberRequestModelId;
+  values: MemberValueModel[];
+  variants: MemberVariantRequestModel[];
 }

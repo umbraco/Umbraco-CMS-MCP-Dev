@@ -8,6 +8,5 @@
 import type { CopyMemberTypeRequestModelTarget } from './copyMemberTypeRequestModelTarget.js';
 
 export interface CopyMemberTypeRequestModel {
-  /** @nullable */
   target?: CopyMemberTypeRequestModelTarget;
 }

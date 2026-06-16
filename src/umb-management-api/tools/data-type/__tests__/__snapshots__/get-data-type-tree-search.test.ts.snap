@@ -13,6 +13,7 @@ exports[`get-data-type-tree-search should find a created data type by name in tr
         "isDeletable": false,
         "isFolder": false,
         "name": "_Test TreeSearch DataType",
+        "noAccess": false,
         "parent": null,
       },
     ],

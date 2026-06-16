@@ -7,6 +7,5 @@
  */
 
 export interface SearcherResponseModel {
-  /** @minLength 1 */
   name: string;
 }

@@ -11,6 +11,7 @@ exports[`get-template should get a template by id 1`] = `
 	Layout = null;
 }",
     "id": "00000000-0000-0000-0000-000000000000",
+    "layoutTemplate": null,
     "masterTemplate": null,
     "name": "_Test Template Get",
   },

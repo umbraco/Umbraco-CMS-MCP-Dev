@@ -6,6 +6,7 @@ import { MediaTypeTestHelper } from "./media-type-helper.js";
 export class MediaTypeBuilder {
   private model: Partial<CreateMediaTypeRequestModel> = {
     allowedAsRoot: false,
+    allowedInLibrary: true,
     variesByCulture: false,
     variesBySegment: false,
     isElement: false,

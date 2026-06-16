@@ -8,8 +8,8 @@
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
 export interface PublicAccessRequestModel {
-  loginDocument: ReferenceByIdModel;
-  errorDocument: ReferenceByIdModel;
   memberUserNames: string[];
   memberGroupNames: string[];
+  loginDocument: ReferenceByIdModel;
+  errorDocument: ReferenceByIdModel;
 }

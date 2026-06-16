@@ -5,13 +5,9 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { PatchOperationRequestModelValue } from './patchOperationRequestModelValue.js';
 
 export interface PatchOperationRequestModel {
-  /** @minLength 1 */
   op: string;
-  /** @minLength 1 */
   path: string;
-  /** @nullable */
-  value?: PatchOperationRequestModelValue;
+  value?: unknown;
 }

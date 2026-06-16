@@ -10,6 +10,5 @@ import type { ImportDictionaryRequestModelParent } from './importDictionaryReque
 
 export interface ImportDictionaryRequestModel {
   temporaryFile: ReferenceByIdModel;
-  /** @nullable */
   parent?: ImportDictionaryRequestModelParent;
 }

@@ -6,9 +6,9 @@
  * OpenAPI spec version: Latest
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
+import type { ResendInviteUserRequestModelMessage } from './resendInviteUserRequestModelMessage.js';
 
 export interface ResendInviteUserRequestModel {
   user: ReferenceByIdModel;
-  /** @nullable */
-  message?: string | null;
+  message?: ResendInviteUserRequestModelMessage;
 }

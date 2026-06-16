@@ -7,6 +7,5 @@
  */
 
 export interface UpdateFolderResponseModel {
-  /** @minLength 1 */
   name: string;
 }

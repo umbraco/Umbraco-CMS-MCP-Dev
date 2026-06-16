@@ -6,14 +6,12 @@
  * OpenAPI spec version: Latest
  */
 import type { MemberTypePropertyTypeContainerResponseModelParent } from './memberTypePropertyTypeContainerResponseModelParent.js';
+import type { MemberTypePropertyTypeContainerResponseModelName } from './memberTypePropertyTypeContainerResponseModelName.js';
 
 export interface MemberTypePropertyTypeContainerResponseModel {
   id: string;
-  /** @nullable */
   parent?: MemberTypePropertyTypeContainerResponseModelParent;
-  /** @nullable */
-  name?: string | null;
-  /** @minLength 1 */
+  name?: MemberTypePropertyTypeContainerResponseModelName;
   type: string;
   sortOrder: number;
 }

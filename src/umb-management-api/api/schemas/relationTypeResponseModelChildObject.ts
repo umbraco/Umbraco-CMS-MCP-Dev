@@ -7,7 +7,4 @@
  */
 import type { ObjectTypeResponseModel } from './objectTypeResponseModel.js';
 
-/**
- * @nullable
- */
-export type RelationTypeResponseModelChildObject = ObjectTypeResponseModel | null;
+export type RelationTypeResponseModelChildObject = null | ObjectTypeResponseModel;

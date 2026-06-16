@@ -5,21 +5,21 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { UpdateMemberRequestModelOldPassword } from './updateMemberRequestModelOldPassword.js';
+import type { UpdateMemberRequestModelNewPassword } from './updateMemberRequestModelNewPassword.js';
+import type { UpdateMemberRequestModelGroups } from './updateMemberRequestModelGroups.js';
 import type { MemberValueModel } from './memberValueModel.js';
 import type { MemberVariantRequestModel } from './memberVariantRequestModel.js';
 
 export interface UpdateMemberRequestModel {
-  values: MemberValueModel[];
-  variants: MemberVariantRequestModel[];
   email: string;
   username: string;
-  /** @nullable */
-  oldPassword?: string | null;
-  /** @nullable */
-  newPassword?: string | null;
-  /** @nullable */
-  groups?: string[] | null;
+  oldPassword?: UpdateMemberRequestModelOldPassword;
+  newPassword?: UpdateMemberRequestModelNewPassword;
+  groups?: UpdateMemberRequestModelGroups;
   isApproved: boolean;
   isLockedOut: boolean;
   isTwoFactorEnabled: boolean;
+  values: MemberValueModel[];
+  variants: MemberVariantRequestModel[];
 }

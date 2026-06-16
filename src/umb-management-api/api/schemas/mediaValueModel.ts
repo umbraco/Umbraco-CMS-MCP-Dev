@@ -5,15 +5,12 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { MediaValueModelValue } from './mediaValueModelValue.js';
+import type { MediaValueModelCulture } from './mediaValueModelCulture.js';
+import type { MediaValueModelSegment } from './mediaValueModelSegment.js';
 
 export interface MediaValueModel {
-  /** @nullable */
-  culture?: string | null;
-  /** @nullable */
-  segment?: string | null;
-  /** @minLength 1 */
+  culture?: MediaValueModelCulture;
+  segment?: MediaValueModelSegment;
   alias: string;
-  /** @nullable */
-  value?: MediaValueModelValue;
+  value?: unknown;
 }

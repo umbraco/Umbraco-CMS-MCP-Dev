@@ -6,6 +6,7 @@
  * OpenAPI spec version: Latest
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
+import type { RedirectUrlResponseModelCulture } from './redirectUrlResponseModelCulture.js';
 
 export interface RedirectUrlResponseModel {
   id: string;
@@ -13,6 +14,5 @@ export interface RedirectUrlResponseModel {
   destinationUrl: string;
   created: string;
   document: ReferenceByIdModel;
-  /** @nullable */
-  culture?: string | null;
+  culture?: RedirectUrlResponseModelCulture;
 }

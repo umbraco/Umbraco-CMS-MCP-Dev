@@ -7,7 +7,4 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-/**
- * @nullable
- */
-export type UpdateMediaTypePropertyTypeContainerRequestModelParent = ReferenceByIdModel | null;
+export type UpdateMediaTypePropertyTypeContainerRequestModelParent = null | ReferenceByIdModel;

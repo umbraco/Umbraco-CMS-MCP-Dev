@@ -7,7 +7,4 @@
  */
 import type { DocumentTypeReferenceResponseModel } from './documentTypeReferenceResponseModel.js';
 
-/**
- * @nullable
- */
-export type DocumentBlueprintTreeItemResponseModelDocumentType = DocumentTypeReferenceResponseModel | null;
+export type DocumentBlueprintTreeItemResponseModelDocumentType = null | DocumentTypeReferenceResponseModel;

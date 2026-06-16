@@ -5,28 +5,29 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { CreateUserGroupRequestModelId } from './createUserGroupRequestModelId.js';
+import type { CreateUserGroupRequestModelDescription } from './createUserGroupRequestModelDescription.js';
+import type { CreateUserGroupRequestModelIcon } from './createUserGroupRequestModelIcon.js';
 import type { CreateUserGroupRequestModelDocumentStartNode } from './createUserGroupRequestModelDocumentStartNode.js';
 import type { CreateUserGroupRequestModelMediaStartNode } from './createUserGroupRequestModelMediaStartNode.js';
-import type { CreateUserGroupRequestModelPermissionsItem } from './createUserGroupRequestModelPermissionsItem.js';
+import type { CreateUserGroupRequestModelElementStartNode } from './createUserGroupRequestModelElementStartNode.js';
+import type { IPermissionPresentationModel } from './iPermissionPresentationModel.js';
 
 export interface CreateUserGroupRequestModel {
+  id?: CreateUserGroupRequestModelId;
   name: string;
   alias: string;
-  /** @nullable */
-  description?: string | null;
-  /** @nullable */
-  icon?: string | null;
+  description?: CreateUserGroupRequestModelDescription;
+  icon?: CreateUserGroupRequestModelIcon;
   sections: string[];
   languages: string[];
   hasAccessToAllLanguages: boolean;
-  /** @nullable */
   documentStartNode?: CreateUserGroupRequestModelDocumentStartNode;
   documentRootAccess: boolean;
-  /** @nullable */
   mediaStartNode?: CreateUserGroupRequestModelMediaStartNode;
   mediaRootAccess: boolean;
+  elementStartNode?: CreateUserGroupRequestModelElementStartNode;
+  elementRootAccess: boolean;
   fallbackPermissions: string[];
-  permissions: CreateUserGroupRequestModelPermissionsItem[];
-  /** @nullable */
-  id?: string | null;
+  permissions: IPermissionPresentationModel[];
 }

@@ -2,6 +2,7 @@ import { defineConfig } from "orval";
 import { orvalImportFixer } from "@umbraco-cms/mcp-server-sdk";
 import fs from "node:fs";
 import path from "node:path";
+import { relaxDiscriminatorType } from "./relax-discriminator-type.js";
 
 /**
  * Replaces zod.uuid() with zod.guid() in generated .zod.ts files.
@@ -36,11 +37,14 @@ function relaxUuidToGuid(paths: string[]): void {
 export const UmbManagementApiOrvalConfig = defineConfig({
   "umbraco-management-api": {
     input: {
-      target: "http://localhost:56472/umbraco/swagger/management/swagger.json",
+      target: "http://localhost:56472/umbraco/openapi/management.json",
       validation: false,
       filters: {
         mode: "exclude",
         tags: ["Temporary File"],
+      },
+      override: {
+        transformer: relaxDiscriminatorType,
       },
     },
     output: {
@@ -62,11 +66,14 @@ export const UmbManagementApiOrvalConfig = defineConfig({
   },
   "umbraco-management-api-zod": {
     input: {
-      target: "http://localhost:56472/umbraco/swagger/management/swagger.json",
+      target: "http://localhost:56472/umbraco/openapi/management.json",
       validation: false,
       filters: {
         mode: "exclude",
         tags: ["Temporary File"],
+      },
+      override: {
+        transformer: relaxDiscriminatorType,
       },
     },
     output: {

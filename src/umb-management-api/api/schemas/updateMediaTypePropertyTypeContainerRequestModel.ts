@@ -6,14 +6,12 @@
  * OpenAPI spec version: Latest
  */
 import type { UpdateMediaTypePropertyTypeContainerRequestModelParent } from './updateMediaTypePropertyTypeContainerRequestModelParent.js';
+import type { UpdateMediaTypePropertyTypeContainerRequestModelName } from './updateMediaTypePropertyTypeContainerRequestModelName.js';
 
 export interface UpdateMediaTypePropertyTypeContainerRequestModel {
   id: string;
-  /** @nullable */
   parent?: UpdateMediaTypePropertyTypeContainerRequestModelParent;
-  /** @nullable */
-  name?: string | null;
-  /** @minLength 1 */
+  name?: UpdateMediaTypePropertyTypeContainerRequestModelName;
   type: string;
   sortOrder: number;
 }

@@ -6,21 +6,18 @@
  * OpenAPI spec version: Latest
  */
 import type { UpdateDocumentTypePropertyTypeRequestModelContainer } from './updateDocumentTypePropertyTypeRequestModelContainer.js';
+import type { UpdateDocumentTypePropertyTypeRequestModelDescription } from './updateDocumentTypePropertyTypeRequestModelDescription.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { PropertyTypeValidationModel } from './propertyTypeValidationModel.js';
 import type { PropertyTypeAppearanceModel } from './propertyTypeAppearanceModel.js';
 
 export interface UpdateDocumentTypePropertyTypeRequestModel {
   id: string;
-  /** @nullable */
   container?: UpdateDocumentTypePropertyTypeRequestModelContainer;
   sortOrder: number;
-  /** @minLength 1 */
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
+  description?: UpdateDocumentTypePropertyTypeRequestModelDescription;
   dataType: ReferenceByIdModel;
   variesByCulture: boolean;
   variesBySegment: boolean;

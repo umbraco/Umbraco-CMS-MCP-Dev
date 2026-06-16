@@ -5,13 +5,12 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { DictionaryOverviewResponseModelName } from './dictionaryOverviewResponseModelName.js';
 import type { DictionaryOverviewResponseModelParent } from './dictionaryOverviewResponseModelParent.js';
 
 export interface DictionaryOverviewResponseModel {
-  /** @nullable */
-  name?: string | null;
+  name?: DictionaryOverviewResponseModelName;
   id: string;
-  /** @nullable */
   parent?: DictionaryOverviewResponseModelParent;
   translatedIsoCodes: string[];
 }

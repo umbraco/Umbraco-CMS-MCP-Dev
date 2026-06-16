@@ -5,12 +5,11 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MediaVariantRequestModelCulture } from './mediaVariantRequestModelCulture.js';
+import type { MediaVariantRequestModelSegment } from './mediaVariantRequestModelSegment.js';
 
 export interface MediaVariantRequestModel {
-  /** @nullable */
-  culture?: string | null;
-  /** @nullable */
-  segment?: string | null;
-  /** @minLength 1 */
+  culture?: MediaVariantRequestModelCulture;
+  segment?: MediaVariantRequestModelSegment;
   name: string;
 }

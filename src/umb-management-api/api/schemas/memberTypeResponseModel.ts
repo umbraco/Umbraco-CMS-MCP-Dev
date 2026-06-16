@@ -5,28 +5,25 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MemberTypeCompositionModel } from './memberTypeCompositionModel.js';
+import type { MemberTypeResponseModelDescription } from './memberTypeResponseModelDescription.js';
 import type { MemberTypeResponseModelCollection } from './memberTypeResponseModelCollection.js';
 import type { MemberTypePropertyTypeResponseModel } from './memberTypePropertyTypeResponseModel.js';
 import type { MemberTypePropertyTypeContainerResponseModel } from './memberTypePropertyTypeContainerResponseModel.js';
-import type { MemberTypeCompositionModel } from './memberTypeCompositionModel.js';
 
 export interface MemberTypeResponseModel {
-  /** @minLength 1 */
+  compositions: MemberTypeCompositionModel[];
+  id: string;
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
-  /** @minLength 1 */
+  description?: MemberTypeResponseModelDescription;
   icon: string;
   allowedAsRoot: boolean;
   variesByCulture: boolean;
   variesBySegment: boolean;
-  /** @nullable */
   collection?: MemberTypeResponseModelCollection;
   isElement: boolean;
+  allowedInLibrary: boolean;
   properties: MemberTypePropertyTypeResponseModel[];
   containers: MemberTypePropertyTypeContainerResponseModel[];
-  id: string;
-  compositions: MemberTypeCompositionModel[];
 }

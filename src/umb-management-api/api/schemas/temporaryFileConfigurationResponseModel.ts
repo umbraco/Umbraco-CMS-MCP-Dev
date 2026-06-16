@@ -5,11 +5,11 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { TemporaryFileConfigurationResponseModelMaxFileSize } from './temporaryFileConfigurationResponseModelMaxFileSize.js';
 
 export interface TemporaryFileConfigurationResponseModel {
   imageFileTypes: string[];
   disallowedUploadedFilesExtensions: string[];
   allowedUploadedFileExtensions: string[];
-  /** @nullable */
-  maxFileSize?: number | null;
+  maxFileSize?: TemporaryFileConfigurationResponseModelMaxFileSize;
 }

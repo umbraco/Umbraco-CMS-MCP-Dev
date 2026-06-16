@@ -5,33 +5,35 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { UserResponseModelLanguageIsoCode } from './userResponseModelLanguageIsoCode.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { UserStateModel } from './userStateModel.js';
+import type { UserResponseModelLastLoginDate } from './userResponseModelLastLoginDate.js';
+import type { UserResponseModelLastLockoutDate } from './userResponseModelLastLockoutDate.js';
+import type { UserResponseModelLastPasswordChangeDate } from './userResponseModelLastPasswordChangeDate.js';
 import type { UserKindModel } from './userKindModel.js';
 
 export interface UserResponseModel {
-  email: string;
-  userName: string;
-  name: string;
-  userGroupIds: ReferenceByIdModel[];
   id: string;
-  /** @nullable */
-  languageIsoCode?: string | null;
+  languageIsoCode?: UserResponseModelLanguageIsoCode;
   documentStartNodeIds: ReferenceByIdModel[];
   hasDocumentRootAccess: boolean;
   mediaStartNodeIds: ReferenceByIdModel[];
   hasMediaRootAccess: boolean;
+  elementStartNodeIds: ReferenceByIdModel[];
+  hasElementRootAccess: boolean;
   avatarUrls: string[];
   state: UserStateModel;
   failedLoginAttempts: number;
   createDate: string;
   updateDate: string;
-  /** @nullable */
-  lastLoginDate?: string | null;
-  /** @nullable */
-  lastLockoutDate?: string | null;
-  /** @nullable */
-  lastPasswordChangeDate?: string | null;
+  lastLoginDate?: UserResponseModelLastLoginDate;
+  lastLockoutDate?: UserResponseModelLastLockoutDate;
+  lastPasswordChangeDate?: UserResponseModelLastPasswordChangeDate;
   isAdmin: boolean;
   kind: UserKindModel;
+  email: string;
+  userName: string;
+  name: string;
+  userGroupIds: ReferenceByIdModel[];
 }

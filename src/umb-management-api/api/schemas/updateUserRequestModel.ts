@@ -8,13 +8,15 @@
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
 export interface UpdateUserRequestModel {
-  email: string;
-  userName: string;
-  name: string;
-  userGroupIds: ReferenceByIdModel[];
   languageIsoCode: string;
   documentStartNodeIds: ReferenceByIdModel[];
   hasDocumentRootAccess: boolean;
   mediaStartNodeIds: ReferenceByIdModel[];
   hasMediaRootAccess: boolean;
+  elementStartNodeIds: ReferenceByIdModel[];
+  hasElementRootAccess: boolean;
+  email: string;
+  userName: string;
+  name: string;
+  userGroupIds: ReferenceByIdModel[];
 }

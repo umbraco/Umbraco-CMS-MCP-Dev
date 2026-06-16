@@ -10,6 +10,5 @@ import type { MemberTypeReferenceResponseModelCollection } from './memberTypeRef
 export interface MemberTypeReferenceResponseModel {
   id: string;
   icon: string;
-  /** @nullable */
   collection?: MemberTypeReferenceResponseModelCollection;
 }

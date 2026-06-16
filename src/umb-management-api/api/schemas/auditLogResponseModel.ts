@@ -7,13 +7,13 @@
  */
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { AuditTypeModel } from './auditTypeModel.js';
+import type { AuditLogResponseModelComment } from './auditLogResponseModelComment.js';
+import type { AuditLogResponseModelParameters } from './auditLogResponseModelParameters.js';
 
 export interface AuditLogResponseModel {
   user: ReferenceByIdModel;
   timestamp: string;
   logType: AuditTypeModel;
-  /** @nullable */
-  comment?: string | null;
-  /** @nullable */
-  parameters?: string | null;
+  comment?: AuditLogResponseModelComment;
+  parameters?: AuditLogResponseModelParameters;
 }

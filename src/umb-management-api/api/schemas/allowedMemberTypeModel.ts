@@ -5,12 +5,12 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { AllowedMemberTypeModelDescription } from './allowedMemberTypeModelDescription.js';
+import type { AllowedMemberTypeModelIcon } from './allowedMemberTypeModelIcon.js';
 
 export interface AllowedMemberTypeModel {
   id: string;
   name: string;
-  /** @nullable */
-  description?: string | null;
-  /** @nullable */
-  icon?: string | null;
+  description?: AllowedMemberTypeModelDescription;
+  icon?: AllowedMemberTypeModelIcon;
 }

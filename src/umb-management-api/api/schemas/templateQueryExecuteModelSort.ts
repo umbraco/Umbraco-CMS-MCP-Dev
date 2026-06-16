@@ -7,7 +7,4 @@
  */
 import type { TemplateQueryExecuteSortModel } from './templateQueryExecuteSortModel.js';
 
-/**
- * @nullable
- */
-export type TemplateQueryExecuteModelSort = TemplateQueryExecuteSortModel | null;
+export type TemplateQueryExecuteModelSort = null | TemplateQueryExecuteSortModel;

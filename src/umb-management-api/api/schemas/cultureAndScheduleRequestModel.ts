@@ -5,11 +5,10 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { CultureAndScheduleRequestModelCulture } from './cultureAndScheduleRequestModelCulture.js';
 import type { CultureAndScheduleRequestModelSchedule } from './cultureAndScheduleRequestModelSchedule.js';
 
 export interface CultureAndScheduleRequestModel {
-  /** @nullable */
-  culture?: string | null;
-  /** @nullable */
+  culture?: CultureAndScheduleRequestModelCulture;
   schedule?: CultureAndScheduleRequestModelSchedule;
 }

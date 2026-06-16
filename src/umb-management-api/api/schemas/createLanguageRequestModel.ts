@@ -5,14 +5,12 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { CreateLanguageRequestModelFallbackIsoCode } from './createLanguageRequestModelFallbackIsoCode.js';
 
 export interface CreateLanguageRequestModel {
-  /** @minLength 1 */
+  isoCode: string;
   name: string;
   isDefault: boolean;
   isMandatory: boolean;
-  /** @nullable */
-  fallbackIsoCode?: string | null;
-  /** @minLength 1 */
-  isoCode: string;
+  fallbackIsoCode?: CreateLanguageRequestModelFallbackIsoCode;
 }

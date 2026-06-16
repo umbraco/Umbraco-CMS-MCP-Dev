@@ -8,7 +8,6 @@
 import type { CopyDocumentRequestModelTarget } from './copyDocumentRequestModelTarget.js';
 
 export interface CopyDocumentRequestModel {
-  /** @nullable */
   target?: CopyDocumentRequestModelTarget;
   relateToOriginal: boolean;
   includeDescendants: boolean;

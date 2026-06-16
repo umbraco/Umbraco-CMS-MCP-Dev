@@ -5,28 +5,25 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { MemberTypePropertyTypeVisibilityModel } from './memberTypePropertyTypeVisibilityModel.js';
 import type { MemberTypePropertyTypeResponseModelContainer } from './memberTypePropertyTypeResponseModelContainer.js';
+import type { MemberTypePropertyTypeResponseModelDescription } from './memberTypePropertyTypeResponseModelDescription.js';
 import type { ReferenceByIdModel } from './referenceByIdModel.js';
 import type { PropertyTypeValidationModel } from './propertyTypeValidationModel.js';
 import type { PropertyTypeAppearanceModel } from './propertyTypeAppearanceModel.js';
-import type { MemberTypePropertyTypeVisibilityModel } from './memberTypePropertyTypeVisibilityModel.js';
 
 export interface MemberTypePropertyTypeResponseModel {
+  isSensitive: boolean;
+  visibility: MemberTypePropertyTypeVisibilityModel;
   id: string;
-  /** @nullable */
   container?: MemberTypePropertyTypeResponseModelContainer;
   sortOrder: number;
-  /** @minLength 1 */
   alias: string;
-  /** @minLength 1 */
   name: string;
-  /** @nullable */
-  description?: string | null;
+  description?: MemberTypePropertyTypeResponseModelDescription;
   dataType: ReferenceByIdModel;
   variesByCulture: boolean;
   variesBySegment: boolean;
   validation: PropertyTypeValidationModel;
   appearance: PropertyTypeAppearanceModel;
-  isSensitive: boolean;
-  visibility: MemberTypePropertyTypeVisibilityModel;
 }

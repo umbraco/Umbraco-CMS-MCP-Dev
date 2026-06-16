@@ -5,9 +5,6 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
-import type { JsonNode } from './jsonNode.js';
+import type { JsonObject } from './jsonObject.js';
 
-/**
- * @nullable
- */
-export type DataTypeSchemaResponseModelJsonSchema = {[key: string]: JsonNode} | null;
+export type DataTypeSchemaResponseModelJsonSchema = null | JsonObject;

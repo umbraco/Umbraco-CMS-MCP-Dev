@@ -6,14 +6,12 @@
  * OpenAPI spec version: Latest
  */
 import type { MediaTypePropertyTypeContainerResponseModelParent } from './mediaTypePropertyTypeContainerResponseModelParent.js';
+import type { MediaTypePropertyTypeContainerResponseModelName } from './mediaTypePropertyTypeContainerResponseModelName.js';
 
 export interface MediaTypePropertyTypeContainerResponseModel {
   id: string;
-  /** @nullable */
   parent?: MediaTypePropertyTypeContainerResponseModelParent;
-  /** @nullable */
-  name?: string | null;
-  /** @minLength 1 */
+  name?: MediaTypePropertyTypeContainerResponseModelName;
   type: string;
   sortOrder: number;
 }

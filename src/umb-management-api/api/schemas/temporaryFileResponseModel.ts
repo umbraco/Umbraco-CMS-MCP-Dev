@@ -5,11 +5,10 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { TemporaryFileResponseModelAvailableUntil } from './temporaryFileResponseModelAvailableUntil.js';
 
 export interface TemporaryFileResponseModel {
   id: string;
-  /** @nullable */
-  availableUntil?: string | null;
-  /** @minLength 1 */
+  availableUntil?: TemporaryFileResponseModelAvailableUntil;
   fileName: string;
 }
