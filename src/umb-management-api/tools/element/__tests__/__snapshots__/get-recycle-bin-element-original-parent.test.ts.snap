@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-recycle-bin-element-original-parent should get the original parent of a recycled element 1`] = `
+{
+  "content": [],
+  "structuredContent": null,
+}
+`;
+
+exports[`get-recycle-bin-element-original-parent should handle non-existent recycled element 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The element could not be found",
+    "type": "Error",
+  },
+}
+`;

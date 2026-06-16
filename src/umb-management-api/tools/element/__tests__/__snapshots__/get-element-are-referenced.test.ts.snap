@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-are-referenced should check if elements are referenced 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
+  },
+}
+`;
+
+exports[`get-element-are-referenced should return empty result for non-referenced element id 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
+  },
+}
+`;
