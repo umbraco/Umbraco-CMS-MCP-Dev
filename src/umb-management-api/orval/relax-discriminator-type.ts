@@ -1,3 +1,4 @@
+import type { InputTransformerFn } from "orval";
 import type {
   OpenAPIObject,
   SchemaObject,
@@ -53,8 +54,9 @@ function fixUntypedArrays(schema: unknown): void {
   }
 }
 
-export function relaxDiscriminatorType(spec: OpenAPIObject): OpenAPIObject {
-  const schemas = spec.components?.schemas;
+export const relaxDiscriminatorType: InputTransformerFn = (spec) => {
+  const doc = spec as unknown as OpenAPIObject;
+  const schemas = doc.components?.schemas;
   if (!schemas) return spec;
 
   // Quirk 1 — resolve the $type/type discriminator collision.
@@ -96,6 +98,6 @@ export function relaxDiscriminatorType(spec: OpenAPIObject): OpenAPIObject {
   fixUntypedArrays(schemas);
 
   return spec;
-}
+};
 
 export default relaxDiscriminatorType;

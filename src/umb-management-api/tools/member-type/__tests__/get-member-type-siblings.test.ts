@@ -43,7 +43,7 @@ describe("get-member-type-siblings", () => {
         target: sibling1Builder.getId(),
         before: undefined,
         after: undefined,
-        foldersOnly: undefined,
+        foldersOnly: false,
       },
       createMockRequestHandlerExtra()
     );
@@ -60,7 +60,7 @@ describe("get-member-type-siblings", () => {
         target: BLANK_UUID,
         before: undefined,
         after: undefined,
-        foldersOnly: undefined,
+        foldersOnly: false,
       },
       createMockRequestHandlerExtra()
     );
