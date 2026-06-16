@@ -6,6 +6,7 @@ export const AdminGroupKeyString = "E5E7F6C8-7F9C-4B5B-8D5D-9E1E5A4F7E4D";
 export const sections = {
     content: "Umb.Section.Content",
     forms: "Umb.Section.Forms",
+    library: "Umb.Section.Library",
     media: "Umb.Section.Media",
     members: "Umb.Section.Members",
     packages: "Umb.Section.Packages",
@@ -73,6 +74,9 @@ export const AuthorizationPolicies = {
 
     TreeAccessDocuments: (user: CurrentUserResponseModel) =>
         user.allowedSections.some((section) => section === sections.content),
+
+    TreeAccessElements: (user: CurrentUserResponseModel) =>
+        user.allowedSections.some((section) => section === sections.library),
 
     TreeAccessDocumentsOrDocumentTypes: (user: CurrentUserResponseModel) =>
         user.allowedSections.some((section) => section === sections.content
