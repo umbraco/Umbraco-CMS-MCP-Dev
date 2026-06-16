@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-item-element-folder should get element folder items by ids 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Get Item Element Folder",
+      },
+    ],
+  },
+}
+`;
+
+exports[`get-item-element-folder should return empty items for non-existent folder id 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
+}
+`;

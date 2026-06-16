@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-item-ancestors should get ancestor chain for element ids 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "ancestors": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+    ],
+  },
+}
+`;
+
+exports[`get-element-item-ancestors should return empty items for non-existent ids 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
+}
+`;

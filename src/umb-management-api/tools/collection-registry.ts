@@ -5,6 +5,7 @@ import { DocumentBlueprintCollection } from "./document-blueprint/index.js";
 import { DocumentCollection } from "./document/index.js";
 import { DocumentTypeCollection } from "./document-type/index.js";
 import { DocumentVersionCollection } from "./document-version/index.js";
+import { ElementCollection } from "./element/index.js";
 import { HealthCollection } from "./health/index.js";
 import { ImagingCollection } from "./imaging/index.js";
 import { IndexerCollection } from "./indexer/index.js";
@@ -49,6 +50,7 @@ export const availableCollections: ToolCollectionExport[] = [
   DocumentCollection,
   DocumentTypeCollection,
   DocumentVersionCollection,
+  ElementCollection,
   HealthCollection,
   ImagingCollection,
   IndexerCollection,

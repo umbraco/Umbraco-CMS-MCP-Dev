@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-folder should get an element folder by id 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isTrashed": false,
+    "name": "_Test Get Element Folder",
+  },
+}
+`;
