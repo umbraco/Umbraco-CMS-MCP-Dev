@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-recycle-bin-element-referenced-by should handle empty recycle bin gracefully 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
+  },
+}
+`;
+
+exports[`get-recycle-bin-element-referenced-by should list content referencing recycled elements 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
+  },
+}
+`;

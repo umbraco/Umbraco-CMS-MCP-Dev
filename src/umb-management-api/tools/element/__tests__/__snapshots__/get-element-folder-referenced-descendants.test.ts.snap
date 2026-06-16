@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-folder-referenced-descendants should get referenced descendants for an element folder 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
+  },
+}
+`;
