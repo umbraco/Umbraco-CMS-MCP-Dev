@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-by-id-referenced-by should get documents that reference a specific element 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "$type": "DocumentReferenceResponseModel",
+        "documentType": {
+          "alias": "testdoctypewithelementref",
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Test DocType With ElementRef",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": null,
+        "published": false,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Document Referencing Element",
+            "state": "Draft",
+          },
+        ],
+      },
+    ],
+    "nextCursor": undefined,
+    "total": 1,
+  },
+}
+`;
