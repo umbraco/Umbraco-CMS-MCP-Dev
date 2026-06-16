@@ -19,6 +19,7 @@ exports[`create-element-type should create an element type 2`] = `
   "isElement": true,
   "isFolder": false,
   "name": "_Test ElementType Created",
+  "noAccess": false,
   "parent": null,
 }
 `;
@@ -42,6 +43,7 @@ exports[`create-element-type should create an element type with properties 2`] =
   "isElement": true,
   "isFolder": false,
   "name": "_Test ElementType Created",
+  "noAccess": false,
   "parent": null,
 }
 `;
@@ -51,6 +53,7 @@ exports[`create-element-type should create separate groups for same group name i
   "alias": "testelementtypecreated",
   "allowedAsRoot": false,
   "allowedDocumentTypes": [],
+  "allowedInLibrary": false,
   "allowedTemplates": [],
   "cleanup": {
     "keepAllVersionsNewerThanDays": null,

@@ -13,6 +13,7 @@ exports[`get-document-type-tree-search should find a created document type by na
         "isElement": false,
         "isFolder": false,
         "name": "_Test TreeSearch DocumentType",
+        "noAccess": false,
         "parent": null,
       },
     ],
