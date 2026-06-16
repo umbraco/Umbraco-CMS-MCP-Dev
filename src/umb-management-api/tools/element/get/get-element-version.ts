@@ -15,7 +15,7 @@ const GetElementVersionTool = {
   annotations: {
     readOnlyHint: true,
   },
-  slices: ['read'],
+  slices: ['list'],
   handler: (async (model: GetElementVersionParams) => {
     return executeGetApiCall((client) =>
       client.getElementVersion(model, CAPTURE_RAW_HTTP_RESPONSE)

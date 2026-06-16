@@ -7,7 +7,7 @@ import {
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
 
-const GetElementRecycleBinSiblingsTool = {
+const GetRecycleBinElementSiblingsTool = {
   name: "get-recycle-bin-element-siblings",
   description: "Gets sibling elements in the recycle bin for a given descendant id.",
   inputSchema: getRecycleBinElementSiblingsQueryParams.shape,
@@ -23,4 +23,4 @@ const GetElementRecycleBinSiblingsTool = {
   }),
 } satisfies ToolDefinition<typeof getRecycleBinElementSiblingsQueryParams.shape, typeof getRecycleBinElementSiblingsResponse.shape>;
 
-export default withStandardDecorators(GetElementRecycleBinSiblingsTool);
+export default withStandardDecorators(GetRecycleBinElementSiblingsTool);

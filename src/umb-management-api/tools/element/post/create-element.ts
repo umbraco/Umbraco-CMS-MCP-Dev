@@ -67,7 +67,7 @@ const CreateElementTool = {
   ## Critical Requirements
 
   ### Document Type Analysis (When Creating from Scratch)
-  1. Use get-element-type-by-id to understand the document type structure and required properties
+  1. Use get-document-type-by-id to understand the element type structure and required properties
   2. Ensure all required properties are included in the values array
 
   ### Parent ID Handling
