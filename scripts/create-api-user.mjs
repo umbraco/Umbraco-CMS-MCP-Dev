@@ -94,10 +94,6 @@ async function getBearerToken(cookies) {
     .update(codeVerifier)
     .digest("base64url");
 
-  // Umbraco 18 moved OpenAPI/Swagger from Swashbuckle to
-  // Microsoft.AspNetCore.OpenApi; the swagger UI's OAuth redirect URI
-  // registered for the umbraco-swagger client moved from
-  // /umbraco/swagger/oauth2-redirect.html to /umbraco/openapi/oauth2-redirect.html.
   const redirectUri = `${BASE_URL}/umbraco/openapi/oauth2-redirect.html`;
 
   const authorizeUrl = new URL(`${BASE_URL}${AUTHORIZE_PATH}`);
