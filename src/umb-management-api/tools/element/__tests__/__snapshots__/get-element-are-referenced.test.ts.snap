@@ -1,23 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`get-element-are-referenced should check if elements are referenced 1`] = `
+exports[`get-element-are-referenced should detect when an element is referenced by a document 1`] = `
 {
   "content": [],
   "structuredContent": {
-    "items": [],
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+    ],
     "nextCursor": undefined,
-    "total": 0,
-  },
-}
-`;
-
-exports[`get-element-are-referenced should return empty result for non-referenced element id 1`] = `
-{
-  "content": [],
-  "structuredContent": {
-    "items": [],
-    "nextCursor": undefined,
-    "total": 0,
+    "total": 1,
   },
 }
 `;

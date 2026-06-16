@@ -7,48 +7,62 @@ import {
   setupTestEnvironment,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
-const TEST_FOLDER_NAME = "_Test Element Folder for Recycle Bin Original Parent";
+const TEST_PARENT_FOLDER_NAME = "_Test Element FolderOriginalParent Parent";
+const TEST_CHILD_FOLDER_NAME = "_Test Element FolderOriginalParent Child";
 
 describe("get-recycle-bin-element-folder-original-parent", () => {
   setupTestEnvironment();
-  let folderBuilder: ElementFolderBuilder | null = null;
+  let parentFolderBuilder: ElementFolderBuilder | null = null;
+  let childFolderBuilder: ElementFolderBuilder | null = null;
 
   afterEach(async () => {
-    // Clean up the folder from the recycle bin if it was moved there
-    if (folderBuilder) {
-      try {
-        const client = UmbracoManagementClient.getClient();
-        await client.deleteRecycleBinElementFolderById(folderBuilder.getId());
-      } catch {
-        // Already cleaned up or not in recycle bin
-      }
-      folderBuilder = null;
+    // Clean up items in the recycle bin first
+    try {
+      const client = UmbracoManagementClient.getClient();
+      // Empty the recycle bin to clean recycled items
+      await client.deleteRecycleBinElement();
+    } catch {
+      // Ignore cleanup errors
     }
+
+    // Then clean up the parent folder (if not moved to recycle bin)
+    if (parentFolderBuilder) {
+      await parentFolderBuilder.cleanup();
+      parentFolderBuilder = null;
+    }
+    childFolderBuilder = null;
   });
 
-  it("should get the original parent of a recycled element folder", async () => {
-    // Arrange - create folder and move it to recycle bin
-    folderBuilder = new ElementFolderBuilder(TEST_FOLDER_NAME);
-    await folderBuilder.create();
-    const folderId = folderBuilder.getId();
+  it("should return the original parent folder of a recycled child folder", async () => {
+    // Arrange - create parent folder, then create child folder under it
+    parentFolderBuilder = new ElementFolderBuilder(TEST_PARENT_FOLDER_NAME);
+    await parentFolderBuilder.create();
+    const parentFolderId = parentFolderBuilder.getId();
 
+    childFolderBuilder = new ElementFolderBuilder(TEST_CHILD_FOLDER_NAME);
+    childFolderBuilder.withParent(parentFolderId);
+    await childFolderBuilder.create();
+    const childFolderId = childFolderBuilder.getId();
+
+    // Move child folder to recycle bin
     const client = UmbracoManagementClient.getClient();
-    await client.putElementFolderByIdMoveToRecycleBin(folderId);
+    await client.putElementFolderByIdMoveToRecycleBin(childFolderId);
 
-    // Act
+    // Act - get original parent of the recycled child folder
     const result = await GetRecycleBinElementFolderOriginalParentTool.handler(
-      { id: folderId },
+      { id: childFolderId },
       createMockRequestHandlerExtra()
     );
 
-    // Assert - might be null if no original parent (root-level folder)
-    const data = result.structuredContent;
-    if (data === null || data === undefined) {
-      expect(result).toMatchSnapshot();
-    } else {
-      const normalizedResult = createSnapshotResult(result);
-      expect(normalizedResult).toMatchSnapshot();
-    }
+    // Assert - original parent should be the parent folder (not null)
+    const normalizedResult = createSnapshotResult(result, parentFolderId);
+    expect(normalizedResult).toMatchSnapshot();
+
+    // Validate that the result has the parent folder id
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).not.toBeNull();
+    const structured = result.structuredContent as { id: string };
+    expect(structured.id).toBe(parentFolderId);
   });
 
   it("should handle non-existent recycled folder ID", async () => {
@@ -59,6 +73,6 @@ describe("get-recycle-bin-element-folder-original-parent", () => {
     );
 
     // Assert
-    expect(result).toMatchSnapshot();
+    expect(result.isError).toBe(true);
   });
 });

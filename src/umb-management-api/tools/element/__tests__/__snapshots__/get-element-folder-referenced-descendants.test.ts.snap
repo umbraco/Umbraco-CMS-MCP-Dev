@@ -4,9 +4,13 @@ exports[`get-element-folder-referenced-descendants should get referenced descend
 {
   "content": [],
   "structuredContent": {
-    "items": [],
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+    ],
     "nextCursor": undefined,
-    "total": 0,
+    "total": 1,
   },
 }
 `;
