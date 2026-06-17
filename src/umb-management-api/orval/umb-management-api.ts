@@ -2,7 +2,7 @@ import { defineConfig, type HookFunction } from "orval";
 import { orvalImportFixer } from "@umbraco-cms/mcp-server-sdk";
 import fs from "node:fs";
 import path from "node:path";
-import { relaxDiscriminatorType } from "./relax-discriminator-type.js";
+import { relaxUntypedArrays } from "./relax-untyped-arrays.js";
 
 function collectZodFiles(paths: string[]): string[] {
   const files: string[] = [];
@@ -112,7 +112,7 @@ export const UmbManagementApiOrvalConfig = defineConfig({
         tags: ["Temporary File"],
       },
       override: {
-        transformer: relaxDiscriminatorType,
+        transformer: relaxUntypedArrays,
       },
     },
     output: {
@@ -141,7 +141,7 @@ export const UmbManagementApiOrvalConfig = defineConfig({
         tags: ["Temporary File"],
       },
       override: {
-        transformer: relaxDiscriminatorType,
+        transformer: relaxUntypedArrays,
       },
     },
     output: {

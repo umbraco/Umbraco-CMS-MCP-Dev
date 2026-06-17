@@ -381,6 +381,7 @@ export * from './iPermissionPresentationModelUnknownTypePermissionPresentationMo
 export * from './iPermissionPresentationModelUnknownTypePermissionPresentationModelType.js';
 export * from './iReferenceResponseModel.js';
 export * from './iReferenceResponseModelDefaultReferenceResponseModel.js';
+export * from './iReferenceResponseModelDefaultReferenceResponseModelType.js';
 export * from './iReferenceResponseModelDocumentReferenceResponseModel.js';
 export * from './iReferenceResponseModelDocumentReferenceResponseModelType.js';
 export * from './iReferenceResponseModelDocumentTypePropertyTypeReferenceResponseModel.js';

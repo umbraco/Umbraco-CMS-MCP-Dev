@@ -168,6 +168,7 @@ export const getDataTypeByIdReferencedByQueryParams = zod.object({
 export const getDataTypeByIdReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
+  "$type": zod.enum(['DefaultReferenceResponseModel']),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish(),
   "id": zod.guid(),
@@ -1556,6 +1557,7 @@ export const getDocumentByIdReferencedByQueryParams = zod.object({
 export const getDocumentByIdReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
+  "$type": zod.enum(['DefaultReferenceResponseModel']),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish(),
   "id": zod.guid(),
@@ -2038,6 +2040,7 @@ export const getRecycleBinDocumentReferencedByQueryParams = zod.object({
 export const getRecycleBinDocumentReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
+  "$type": zod.enum(['DefaultReferenceResponseModel']),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish(),
   "id": zod.guid(),
@@ -4146,6 +4149,7 @@ export const getElementByIdReferencedByQueryParams = zod.object({
 export const getElementByIdReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
+  "$type": zod.enum(['DefaultReferenceResponseModel']),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish(),
   "id": zod.guid(),
@@ -4731,6 +4735,7 @@ export const getRecycleBinElementReferencedByQueryParams = zod.object({
 export const getRecycleBinElementReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
+  "$type": zod.enum(['DefaultReferenceResponseModel']),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish(),
   "id": zod.guid(),
@@ -6221,6 +6226,7 @@ export const getMediaByIdReferencedByQueryParams = zod.object({
 export const getMediaByIdReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
+  "$type": zod.enum(['DefaultReferenceResponseModel']),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish(),
   "id": zod.guid(),
@@ -6569,6 +6575,7 @@ export const getRecycleBinMediaReferencedByQueryParams = zod.object({
 export const getRecycleBinMediaReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
+  "$type": zod.enum(['DefaultReferenceResponseModel']),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish(),
   "id": zod.guid(),
@@ -8009,6 +8016,7 @@ export const getMemberByIdReferencedByQueryParams = zod.object({
 export const getMemberByIdReferencedByResponse = zod.object({
   "total": zod.number(),
   "items": zod.array(zod.union([zod.object({
+  "$type": zod.enum(['DefaultReferenceResponseModel']),
   "type": zod.string().nullish(),
   "icon": zod.string().nullish(),
   "id": zod.guid(),
