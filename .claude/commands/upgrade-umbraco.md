@@ -16,7 +16,7 @@ ARGUMENTS: $ARGUMENTS
 - Local SQL Server reachable from `demo-site/appsettings.local.json`
 - A working `.env` with `UMBRACO_CLIENT_ID`, `UMBRACO_CLIENT_SECRET`, `UMBRACO_BASE_URL`
 - `dotnet`, `npm`, `curl`, `python3` on PATH
-- The `umbraco-back-office-mcp` OAuth client must already exist in the target database (created manually once via the backoffice). Reuse the same DB across upgrades so the client persists; Umbraco will run forward migrations automatically.
+- Use a **new, empty database** for each upgrade — do not reuse the previous version's DB. The Development config has `InstallUnattended: true` (admin `admin@admin.com` / `1234567890`), so a brand-new DB auto-installs on first boot, and `scripts/create-api-user.mjs` then creates both the API user and the `umbraco-back-office-mcp` OAuth client. Nothing needs to be carried over from the old DB.
 
 ## Steps
 
@@ -53,11 +53,13 @@ Edit `demo-site-template/demo-site-template.csproj`:
 ```bash
 npm run umbraco:stop   # in case anything was running
 bash scripts/bootstrap-demo-site.sh --force
-# Make sure demo-site/appsettings.local.json has the same DB you used previously
-npm run umbraco:start  # NuGet restore, build, run forward migrations, listen on 44391/56472
+# Write demo-site/appsettings.local.json pointing at a NEW, empty DB name
+# (e.g. Database=umbraco-mcp-<new-version>) — do not reuse the old version's DB.
+npm run umbraco:start            # NuGet restore, build, unattended install on the fresh DB, listen on 44391/56472
+node scripts/create-api-user.mjs # idempotent; creates the API user + umbraco-back-office-mcp client
 ```
 
-Wait until `https://localhost:44391/umbraco` responds. Watch the startup log for migration messages so you know the schema upgraded cleanly.
+Wait until `https://localhost:44391/umbraco` responds. Because the DB is new, the boot log shows a clean unattended install rather than forward migrations — that is expected.
 
 ### 5. Regenerate the OpenAPI client
 
@@ -140,9 +142,36 @@ When tests are green (or only have snapshot diffs), summarise:
 
 Then create a PR using `superpowers:finishing-a-development-branch`.
 
+### 11. Refresh your local running instance (after merge)
+
+The steps above happen in the isolated upgrade worktree. Your primary checkout's `demo-site/` is **not** updated automatically — `npm run umbraco:start` skips re-bootstrapping whenever `demo-site/` already exists, so it keeps running the old version even after you pull the upgraded template. Once the upgrade is merged and pulled, refresh the local instance:
+
+```bash
+npm run umbraco:stop                      # stop the old version if running
+bash scripts/bootstrap-demo-site.sh --force   # rm -rf demo-site/ and recopy the upgraded template
+```
+
+`--force` deletes `demo-site/`, which discards the gitignored runtime data — `umbraco/`, `wwwroot/`, and `appsettings.local.json` are excluded from the template copy, so they are lost. Recreate them against a **new, empty database**:
+
+SQL Server does not auto-create the database, so create an empty one first using whatever client your setup provides (`sqlcmd`, Azure Data Studio, a Docker `mssql-tools` container, etc.):
+
+```sql
+IF DB_ID('umbraco-mcp-<new-version>') IS NULL CREATE DATABASE [umbraco-mcp-<new-version>];
+```
+
+Then point the site at it and boot:
+
+```bash
+# Write demo-site/appsettings.local.json pointing at that new DB (do not reuse the old one).
+npm run umbraco:start             # restore, build, unattended install on the fresh DB, listen on 44391/56472
+node scripts/create-api-user.mjs  # creates the API user + umbraco-back-office-mcp client
+```
+
+Confirm the running version with `grep 'Umbraco.Cms"' demo-site/demo-site.csproj` and watch the boot log for both ports listening.
+
 ## Common pitfalls
 
-- **Fresh database:** A brand-new DB will not have `umbraco-back-office-mcp` registered; integration tests will 401 with "client application was not found". Reuse the developer DB or register the client in the backoffice once.
+- **New database per upgrade:** Use a fresh, empty DB for each upgrade rather than reusing the old version's. SQL Server does not auto-create it — run `CREATE DATABASE` first (via whatever SQL client your setup uses), then let unattended install populate it on boot. The `umbraco-back-office-mcp` client and API user are not carried over from the old DB; `node scripts/create-api-user.mjs` recreates both (it logs in as the unattended admin, so no manual backoffice step). Skip that script and integration/E2E tests will 401 with "client application was not found".
 - **Two ports:** `44391` (HTTPS) is the browser/OAuth port; `56472` (HTTP) is the server-to-server port and the one Orval and the workerd hosted runtime hit. Both must be listening — never start with `--urls`.
 - **`zod.uuid()` vs `zod.guid()`:** Output schemas must accept Umbraco's non-RFC-4122 GUIDs. The `relaxUuidToGuid` hook handles this for generated zod files automatically; check it still applied if a test starts failing on an output validation pipeline.
 - **`demo-site/` is gitignored:** Always edit `demo-site-template/`. The site directory is rebuilt by `scripts/bootstrap-demo-site.sh`.
