@@ -4,9 +4,7 @@ import "./helpers/e2e-setup.js";
 
 // Exercises the Element Library end-to-end: an element type backs reusable
 // library elements, and a content document type references one of those
-// elements through an element-picker property (Umbraco.ContentPicker pointed
-// at the element). This mirrors the wiring proven by the
-// get-element-folder-referenced-descendants integration test.
+// elements through a real Element Picker property (Umbraco.ElementPicker).
 const ELEMENT_LIBRARY_TOOLS = [
   "get-icons",
   "find-data-type",
@@ -15,7 +13,7 @@ const ELEMENT_LIBRARY_TOOLS = [
   "create-element-type",
   "create-document-type",
   "delete-document-type",
-  "get-document-type-by-id",
+  "get-document-type-schema",
   "create-element",
   "search-element",
   "get-element-root",
@@ -36,14 +34,15 @@ describe("element library reference eval tests", () => {
 1. Use get-icons and pick any valid icon alias to reuse for the types you create.
 2. Use find-data-type to find the built-in 'Textstring' data type and note its ID. This is the text editor for the element type's property.
 3. Create an ELEMENT TYPE using create-element-type. Name it '_TestLibElementType', alias 'testLibElementType', icon from step 1. Add one property: name 'Heading', alias 'heading', dataTypeId set to the Textstring data type ID from step 2, tab 'Content'. Note the element type ID.
-4. Create a data type to act as the element picker using create-data-type. Name it '_TestElementPicker', editorAlias 'Umbraco.ContentPicker', editorUiAlias 'Umb.PropertyEditorUi.DocumentPicker'. Note the data type ID.
+4. Create a data type to act as the element picker using create-data-type. Name it '_TestElementPicker', editorAlias 'Umbraco.ElementPicker', editorUiAlias 'Umb.PropertyEditorUi.ElementPicker'. This is the Element Library picker that selects elements from the library. Note the data type ID.
 5. Create a content DOCUMENT TYPE using create-document-type. Name it '_TestElementHostPage', alias 'testElementHostPage', icon from step 1, allowedAsRoot true. Add one property: name 'Featured Element', alias 'featuredElement', dataTypeId set to the element picker data type ID from step 4, tab 'Content'. Note the document type ID.
 6. Create a library ELEMENT using create-element of the element type from step 3. Set documentTypeId to the element type ID, name '_TestLibraryElement', and set the 'heading' property value to 'Reusable library heading'. Note the element ID returned.
 7. Confirm the element exists in the library: use search-element (or get-element-root) to find '_TestLibraryElement' and verify its ID matches the one returned in step 6.
-8. Create a CONTENT NODE using create-document of the host document type from step 5. Set the name to '_TestElementHostDoc' and set the 'featuredElement' property value to the library element ID from step 6 (the ContentPicker value is the element's GUID string).
-9. Read the content node back with get-document-by-id and verify the 'featuredElement' property value equals the library element ID, confirming the content node references the library element.
-10. Clean up everything you created: delete the content node with delete-document, the library element with delete-element, the host document type and the element type with delete-document-type, and the element picker data type with delete-data-type.
-11. When successfully completed, say 'The element library reference workflow has completed successfully'`,
+8. Get the document type schema for the host document type using get-document-type-schema with the ID from step 5. This tells you the exact shape the 'featuredElement' element-picker value must take.
+9. Create a CONTENT NODE using create-document of the host document type from step 5. Set the name to '_TestElementHostDoc' and populate the 'featuredElement' property using the schema from step 8. The Umbraco.ElementPicker stores a selection of element GUIDs, so the value is an array containing the library element ID from step 6, e.g. ["<elementId>"].
+10. Read the content node back with get-document-by-id and verify the 'featuredElement' property value references the library element ID, confirming the content node references the library element.
+11. Clean up everything you created: delete the content node with delete-document, the library element with delete-element, the host document type and the element type with delete-document-type, and the element picker data type with delete-data-type.
+12. When successfully completed, say 'The element library reference workflow has completed successfully'`,
       tools: ELEMENT_LIBRARY_TOOLS,
       requiredTools: [
         "create-element-type",
@@ -51,7 +50,6 @@ describe("element library reference eval tests", () => {
         "create-document-type",
         "create-element",
         "create-document",
-        "get-document-by-id",
       ],
       successPattern: "element library reference workflow has completed successfully",
       options: { maxTurns: 30 },
