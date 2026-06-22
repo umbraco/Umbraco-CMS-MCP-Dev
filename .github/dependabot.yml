@@ -3,11 +3,21 @@ updates:
   - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: weekly
+      interval: monthly
     target-branch: dev
     open-pull-requests-limit: 10
+    groups:
+      npm-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: weekly
+      interval: monthly
     target-branch: dev
+    groups:
+      github-actions:
+        applies-to: version-updates
+        patterns:
+          - "*"
