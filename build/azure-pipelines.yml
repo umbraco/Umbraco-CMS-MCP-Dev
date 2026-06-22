@@ -3,6 +3,7 @@ trigger:
     include:
     - main
     - feature/*
+    - release/18.0.0-rc.*
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -49,7 +50,7 @@ stages:
 
 - stage: Deploy_Npm
   displayName: Npm release
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/18.0.0-rc.')))
   dependsOn:
     - BuildAndTest
   jobs:
