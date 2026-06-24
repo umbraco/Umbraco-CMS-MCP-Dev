@@ -12,9 +12,7 @@ import {
   validateCultureSegment,
   type ResolvedProperty
 } from "../../document/put/helpers/document-type-properties-resolver.js";
-import { validatePropertiesBeforeSave } from "../../document/put/helpers/property-value-validator.js";
 import { matchesProperty, getPropertyKey } from "../../document/put/helpers/property-matching.js";
-import { isUmbracoAtLeast } from "../../../runtime-context.js";
 import {
   type ToolDefinition,
   createToolResult,
@@ -199,37 +197,6 @@ const UpdateElementPropertiesTool = {
           availableProperties
         }
       });
-    }
-
-    // Step 4: Validate property values against Data Type configuration.
-    // Only needed on pre-17.4 Umbraco; from 17.4+ the get-*-schema tools expose
-    // JSON Schemas the caller can validate against and the Management API
-    // performs equivalent server-side checks. Remove this branch (and the
-    // property-value-validator helper) when the Umbraco floor reaches 18.
-    if (!isUmbracoAtLeast(17, 4)) {
-      const allPropertiesToValidate = [...propertiesToUpdate, ...propertiesToAdd];
-      if (allPropertiesToValidate.length > 0) {
-        const elemTypeProps = await getElementTypeProperties();
-        const propsToValidate = allPropertiesToValidate
-          .map(p => {
-            const def = elemTypeProps.find(d => d.alias === p.alias);
-            return { alias: p.alias, value: p.value, dataTypeId: def?.dataTypeId ?? '' };
-          })
-          .filter(p => p.dataTypeId);
-
-        if (propsToValidate.length > 0) {
-          const valueValidation = await validatePropertiesBeforeSave(propsToValidate);
-          if (!valueValidation.isValid) {
-            throw new ToolValidationError({
-              title: "Property value validation failed",
-              detail: valueValidation.errors.join("; "),
-              extensions: {
-                errors: valueValidation.errors
-              }
-            });
-          }
-        }
-      }
     }
 
     // Step 5: Merge updated properties with existing values
