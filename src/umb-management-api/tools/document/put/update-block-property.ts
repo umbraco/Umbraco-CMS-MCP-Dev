@@ -12,14 +12,12 @@ import {
   validateCultureSegment,
   type ResolvedProperty
 } from "./helpers/document-type-properties-resolver.js";
-import { validatePropertiesBeforeSave } from "./helpers/property-value-validator.js";
 import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
 import {
   discoverAllBlockArrays,
   findBlockByKey,
   type BlockDataItem
 } from "./helpers/block-discovery.js";
-import { isUmbracoAtLeast } from "../../../runtime-context.js";
 import {
   type ToolDefinition,
   createToolResult,
@@ -199,28 +197,8 @@ const UpdateBlockPropertyTool = {
       let updatedCount = 0;
       let addedCount = 0;
 
-      // Load Element Type properties for validation
+      // Load Element Type properties for alias validation
       const elementTypeProperties = await getElementTypeProperties(foundBlock.block.contentTypeKey);
-
-      // Validate property values against Data Type configuration on pre-17.4
-      // Umbraco. From 17.4+ the get-*-schema tools and Management API perform
-      // equivalent server-side checks. Remove this branch (and the
-      // property-value-validator helper) when the Umbraco floor reaches 18.
-      if (!isUmbracoAtLeast(17, 4) && elementTypeProperties.length > 0) {
-        const propsToValidate = update.properties
-          .map(p => {
-            const def = elementTypeProperties.find(d => d.alias === p.alias);
-            return { alias: p.alias, value: p.value, dataTypeId: def?.dataTypeId ?? '' };
-          })
-          .filter(p => p.dataTypeId);
-
-        if (propsToValidate.length > 0) {
-          const valueValidation = await validatePropertiesBeforeSave(propsToValidate);
-          if (!valueValidation.isValid) {
-            errors.push(...valueValidation.errors);
-          }
-        }
-      }
 
       for (const propUpdate of update.properties) {
         const blockProperty = foundBlock.block.values.find(v =>
@@ -233,7 +211,6 @@ const UpdateBlockPropertyTool = {
           updatedCount++;
         } else {
           // Property doesn't exist on block - check if it's valid on Element Type
-          // Note: elementTypeProperties is already loaded for value validation above
           const propertyDef = elementTypeProperties.find(p => p.alias === propUpdate.alias);
 
           if (propertyDef) {

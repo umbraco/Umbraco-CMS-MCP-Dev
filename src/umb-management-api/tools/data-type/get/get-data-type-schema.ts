@@ -1,13 +1,13 @@
+import { UmbracoManagementClient } from "@umb-management-client";
 import { getDataTypeByIdSchemaParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
 import {
   type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
   createToolResult,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
-import { isUmbracoAtLeast } from "../../../runtime-context.js";
-import { getDataTypeSchemaFromApi } from "./get-data-type-schema-modern.js";
-import { synthesizeDataTypeSchema } from "./get-data-type-schema-legacy.js";
+import { AxiosResponse } from "axios";
 
 // Custom output schema - the generated one is too strict for JSON Schema content
 export const dataTypeSchemaOutputSchema = z.object({
@@ -30,10 +30,12 @@ IMPORTANT: Use this tool BEFORE creating data types to understand the expected c
   },
   slices: ['read'],
   handler: async ({ id }: { id: string }) => {
-    const result = isUmbracoAtLeast(17, 4)
-      ? await getDataTypeSchemaFromApi(id)
-      : await synthesizeDataTypeSchema(id);
-    return createToolResult(result);
+    const client = UmbracoManagementClient.getClient();
+    const response = (await client.getDataTypeByIdSchema(
+      id,
+      CAPTURE_RAW_HTTP_RESPONSE
+    )) as unknown as AxiosResponse;
+    return createToolResult(response.data ?? {});
   },
 } satisfies ToolDefinition<typeof getDataTypeByIdSchemaParams.shape, typeof outputSchema.shape>;
 
