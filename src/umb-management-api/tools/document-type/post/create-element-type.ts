@@ -134,6 +134,7 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
         compositionType: "Composition" as const,
       })),
       allowedAsRoot: false,
+      allowedInLibrary: false,
       variesByCulture: false,
       variesBySegment: false,
       allowedTemplates: [],

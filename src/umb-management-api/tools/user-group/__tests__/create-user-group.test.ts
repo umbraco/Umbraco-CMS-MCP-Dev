@@ -31,6 +31,8 @@ describe("create-user-group", () => {
       documentRootAccess: false,
       mediaStartNode: undefined,
       mediaRootAccess: false,
+      elementStartNode: undefined,
+      elementRootAccess: false,
       fallbackPermissions: [],
       permissions: [],
       id: undefined
@@ -58,6 +60,8 @@ describe("create-user-group", () => {
       documentRootAccess: false,
       mediaStartNode: undefined,
       mediaRootAccess: false,
+      elementStartNode: undefined,
+      elementRootAccess: false,
       fallbackPermissions: [],
       permissions: [],
       id: undefined
@@ -76,6 +80,8 @@ describe("create-user-group", () => {
       documentRootAccess: false,
       mediaStartNode: undefined,
       mediaRootAccess: false,
+      elementStartNode: undefined,
+      elementRootAccess: false,
       fallbackPermissions: [],
       permissions: [],
       id: undefined

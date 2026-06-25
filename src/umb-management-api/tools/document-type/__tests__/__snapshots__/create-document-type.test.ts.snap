@@ -19,6 +19,7 @@ exports[`create-document-type should create a document type 2`] = `
   "isElement": false,
   "isFolder": false,
   "name": "_Test DocumentType Created",
+  "noAccess": false,
   "parent": null,
 }
 `;
@@ -42,6 +43,7 @@ exports[`create-document-type should create a document type with parent folder 2
   "isElement": false,
   "isFolder": false,
   "name": "_Test DocumentType With Parent",
+  "noAccess": false,
   "parent": {
     "id": "00000000-0000-0000-0000-000000000000",
   },
@@ -67,6 +69,7 @@ exports[`create-document-type should create a document type with properties 2`] 
   "isElement": false,
   "isFolder": false,
   "name": "_Test DocumentType Created",
+  "noAccess": false,
   "parent": null,
 }
 `;
@@ -76,6 +79,7 @@ exports[`create-document-type should create separate groups for same group name 
   "alias": "testdocumenttypecreated",
   "allowedAsRoot": false,
   "allowedDocumentTypes": [],
+  "allowedInLibrary": true,
   "allowedTemplates": [],
   "cleanup": {
     "keepAllVersionsNewerThanDays": null,

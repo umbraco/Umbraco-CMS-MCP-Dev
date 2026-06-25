@@ -9,6 +9,7 @@ exports[`get-document-type-batch should get a single document type with full con
         "alias": "testbatchdocumenttype",
         "allowedAsRoot": false,
         "allowedDocumentTypes": [],
+        "allowedInLibrary": true,
         "allowedTemplates": [],
         "cleanup": {
           "keepAllVersionsNewerThanDays": null,
@@ -43,6 +44,7 @@ exports[`get-document-type-batch should get multiple document types in a single 
         "alias": "testbatchdocumenttype",
         "allowedAsRoot": false,
         "allowedDocumentTypes": [],
+        "allowedInLibrary": true,
         "allowedTemplates": [],
         "cleanup": {
           "keepAllVersionsNewerThanDays": null,
@@ -66,6 +68,7 @@ exports[`get-document-type-batch should get multiple document types in a single 
         "alias": "testbatchdocumenttype2",
         "allowedAsRoot": false,
         "allowedDocumentTypes": [],
+        "allowedInLibrary": true,
         "allowedTemplates": [],
         "cleanup": {
           "keepAllVersionsNewerThanDays": null,
