@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-are-referenced should detect when an element is referenced by a document 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+    ],
+    "nextCursor": undefined,
+    "total": 1,
+  },
+}
+`;

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`move-element-folder-to-recycle-bin should move an element folder to the recycle bin 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

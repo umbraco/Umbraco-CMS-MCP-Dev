@@ -29,6 +29,7 @@ describe('DocumentTypeBuilder', () => {
         name: "",
         icon: "icon-document",
         allowedAsRoot: false,
+        allowedInLibrary: true,
         variesByCulture: false,
         variesBySegment: false,
         isElement: false,

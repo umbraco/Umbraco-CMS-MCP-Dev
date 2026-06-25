@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`set-element-version-prevent-cleanup should prevent cleanup for an element version 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

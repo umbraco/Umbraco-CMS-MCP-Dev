@@ -1,5 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { TemporaryFileResponseModel } from "@/umb-management-api/schemas/index.js";
+import { TemporaryFileResponseModel } from "@/umb-management-api/temporary-file/schemas/index.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 export class TemporaryFileTestHelper {

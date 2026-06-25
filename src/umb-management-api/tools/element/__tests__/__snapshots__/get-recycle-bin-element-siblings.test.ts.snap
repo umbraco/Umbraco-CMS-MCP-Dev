@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-recycle-bin-element-siblings should get sibling elements in recycle bin 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isFolder": false,
+        "name": "_Test RecycleBin ElementSiblings 1",
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test RecycleBin ElementSiblings 1",
+            "state": "Trashed",
+          },
+        ],
+      },
+      {
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isFolder": false,
+        "name": "_Test RecycleBin ElementSiblings 2",
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test RecycleBin ElementSiblings 2",
+            "state": "Trashed",
+          },
+        ],
+      },
+    ],
+    "totalAfter": 0,
+    "totalBefore": 0,
+  },
+}
+`;
+
+exports[`get-recycle-bin-element-siblings should handle non-existent target in recycle bin 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Not Found",
+    "status": 404,
+  },
+}
+`;

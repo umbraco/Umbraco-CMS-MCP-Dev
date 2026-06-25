@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-item-element should get element items by ids 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isTrashed": false,
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test GetItemElement 1",
+            "state": "Draft",
+          },
+        ],
+      },
+      {
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isTrashed": false,
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test GetItemElement 2",
+            "state": "Draft",
+          },
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`get-item-element should handle non-existent element ids 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [],
+  },
+}
+`;

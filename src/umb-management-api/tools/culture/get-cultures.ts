@@ -1,6 +1,5 @@
 import { GetCultureParams } from "@/umb-management-api/schemas/index.js";
-import { getCultureQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
-import { z } from "zod";
+import { getCultureQueryParams, getCultureResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
@@ -8,16 +7,7 @@ import {
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
 
-// WORKAROUND: Umbraco returns some cultures with empty name strings, but the generated
-// schema has .min(1). Override to allow empty strings.
-// Fixed in Umbraco 17.4 — remove this override and revert to getCultureResponse.shape after upgrade.
-const outputSchema = z.object({
-  total: z.number(),
-  items: z.array(z.object({
-    name: z.string(),
-    englishName: z.string(),
-  })),
-});
+const outputSchema = getCultureResponse;
 
 const GetCulturesTool = {
   name: "get-culture",

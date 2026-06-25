@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-version-by-id should get element version by ID 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "documentType": {
+      "collection": null,
+      "icon": "icon-document",
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "element": {
+      "id": "00000000-0000-0000-0000-000000000000",
+    },
+    "flags": [],
+    "id": "00000000-0000-0000-0000-000000000000",
+    "values": [],
+    "variants": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "culture": null,
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Element for Version By ID",
+        "publishDate": null,
+        "scheduledPublishDate": null,
+        "scheduledUnpublishDate": null,
+        "segment": null,
+        "state": "Draft",
+        "updateDate": "NORMALIZED_DATE",
+      },
+    ],
+  },
+}
+`;
+
+exports[`get-element-version-by-id should return error for non-existent version ID 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The requested version could not be found",
+    "type": "Error",
+  },
+}
+`;

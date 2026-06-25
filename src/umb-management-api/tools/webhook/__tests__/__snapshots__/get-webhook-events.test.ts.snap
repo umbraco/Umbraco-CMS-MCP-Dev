@@ -30,8 +30,23 @@ exports[`get-webhook-events should get list of webhook events 1`] = `
         "eventName": "Media Saved",
         "eventType": "Media",
       },
+      {
+        "alias": "Umbraco.ElementDelete",
+        "eventName": "Element Deleted",
+        "eventType": "Element",
+      },
+      {
+        "alias": "Umbraco.ElementPublish",
+        "eventName": "Element Published",
+        "eventType": "Element",
+      },
+      {
+        "alias": "Umbraco.ElementUnpublish",
+        "eventName": "Element Unpublished",
+        "eventType": "Element",
+      },
     ],
-    "total": 5,
+    "total": 8,
   },
 }
 `;

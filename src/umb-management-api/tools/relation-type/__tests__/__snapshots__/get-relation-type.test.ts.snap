@@ -36,6 +36,36 @@ exports[`get-relation-type should get relation types with default pagination 1`]
         },
       },
       {
+        "alias": "relateParentElementContainerOnContainerDelete",
+        "childObject": {
+          "id": "2815b0cf-9706-499f-aa2a-8a4c7aef005d",
+          "name": "Element Container",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": false,
+        "isDependency": false,
+        "name": "Relate Parent Element Container On Container Delete",
+        "parentObject": {
+          "id": "2815b0cf-9706-499f-aa2a-8a4c7aef005d",
+          "name": "Element Container",
+        },
+      },
+      {
+        "alias": "relateParentElementContainerOnElementDelete",
+        "childObject": {
+          "id": "3d7b623c-94b1-487d-8554-a46ec37568be",
+          "name": "Element",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": false,
+        "isDependency": false,
+        "name": "Relate Parent Element Container On Element Delete",
+        "parentObject": {
+          "id": "2815b0cf-9706-499f-aa2a-8a4c7aef005d",
+          "name": "Element Container",
+        },
+      },
+      {
         "alias": "relateParentMediaFolderOnDelete",
         "childObject": {
           "id": "b796f64c-1f99-4ffb-b886-4bf4bc011a9c",
@@ -60,6 +90,15 @@ exports[`get-relation-type should get relation types with default pagination 1`]
         "parentObject": null,
       },
       {
+        "alias": "umbElement",
+        "childObject": null,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": false,
+        "isDependency": true,
+        "name": "Related Element",
+        "parentObject": null,
+      },
+      {
         "alias": "umbMedia",
         "childObject": null,
         "id": "00000000-0000-0000-0000-000000000000",
@@ -79,7 +118,7 @@ exports[`get-relation-type should get relation types with default pagination 1`]
       },
     ],
     "nextCursor": undefined,
-    "total": 6,
+    "total": 9,
   },
 }
 `;
