@@ -19,6 +19,7 @@ exports[`create-data-type should create a data type 2`] = `
   "isDeletable": true,
   "isFolder": false,
   "name": "_Test DataType Created",
+  "noAccess": false,
   "parent": null,
 }
 `;
@@ -42,6 +43,7 @@ exports[`create-data-type should create a data type with parent folder 2`] = `
   "isDeletable": true,
   "isFolder": false,
   "name": "_Test DataType With Parent",
+  "noAccess": false,
   "parent": {
     "id": "00000000-0000-0000-0000-000000000000",
   },

@@ -34,7 +34,7 @@ import GetRecycleBinMediaOriginalParentTool from "./get/get-recycle-bin-media-or
 import GetMediaTypeSchemaTool from "./get/get-media-type-schema.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
-import { isUmbracoAtLeast, isFilePathUploadAllowed } from "../../runtime-context.js";
+import { isFilePathUploadAllowed } from "../../runtime-context.js";
 import {
   type ToolCollectionExport,
   type ToolDefinition,
@@ -89,10 +89,7 @@ export const MediaCollection: ToolCollectionExport = {
       tools.push(GetCollectionMediaTool);
       tools.push(GetRecycleBinMediaReferencedByTool);
       tools.push(GetRecycleBinMediaOriginalParentTool);
-      // Schema API endpoint introduced in Umbraco 17.4; omit on older versions.
-      if (isUmbracoAtLeast(17, 4)) {
-        tools.push(GetMediaTypeSchemaTool);
-      }
+      tools.push(GetMediaTypeSchemaTool);
     }
 
     return tools;

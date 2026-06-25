@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`publish-element should handle publishing a non-existent element 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "ContentNotFound",
+    "status": 404,
+    "title": "The requested element could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`publish-element should publish a valid element 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

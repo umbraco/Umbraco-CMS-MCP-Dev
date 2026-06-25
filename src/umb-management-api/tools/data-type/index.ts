@@ -26,7 +26,6 @@ import GetDataTypeTreeSearchTool from "./items/get/get-tree-search.js";
 import GetAllDataTypesTool from "./items/get/get-all.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
-import { isUmbracoAtLeast } from "../../runtime-context.js";
 import {
   type ToolCollectionExport,
   type ToolDefinition,
@@ -50,10 +49,7 @@ export const DataTypeCollection: ToolCollectionExport = {
       tools.push(GetDataTypeBatchTool);
       tools.push(GetDataTypeConfigurationTool);
       tools.push(GetDataTypeSchemaTool);
-      // Batch schema API endpoint introduced in Umbraco 17.4; only register on 17.4+.
-      if (isUmbracoAtLeast(17, 4)) {
-        tools.push(GetDataTypeSchemasTool);
-      }
+      tools.push(GetDataTypeSchemasTool);
     }
 
     if (AuthorizationPolicies.TreeAccessDataTypes(user)) {

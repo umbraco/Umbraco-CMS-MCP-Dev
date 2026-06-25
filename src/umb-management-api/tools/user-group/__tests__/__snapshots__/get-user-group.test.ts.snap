@@ -9,6 +9,8 @@ exports[`get-user-group should get a user group by id 1`] = `
     "description": "",
     "documentRootAccess": false,
     "documentStartNode": null,
+    "elementRootAccess": false,
+    "elementStartNode": null,
     "fallbackPermissions": [],
     "hasAccessToAllLanguages": true,
     "icon": null,

@@ -20,6 +20,8 @@ exports[`create-user-group should create a user group 2`] = `
         "description": "",
         "documentRootAccess": false,
         "documentStartNode": null,
+        "elementRootAccess": false,
+        "elementStartNode": null,
         "fallbackPermissions": [],
         "hasAccessToAllLanguages": true,
         "icon": null,

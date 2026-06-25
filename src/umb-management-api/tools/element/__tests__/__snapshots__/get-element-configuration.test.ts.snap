@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-configuration should get the element configuration 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "allowEditInvariantFromNonDefault": true,
+    "allowNonExistingSegmentsCreation": true,
+    "disableDeleteWhenReferenced": false,
+    "disableUnpublishWhenReferenced": false,
+  },
+}
+`;

@@ -6,6 +6,7 @@ exports[`get-member-type should get a member type by id 1`] = `
   "structuredContent": {
     "alias": "testmembertype",
     "allowedAsRoot": true,
+    "allowedInLibrary": true,
     "collection": null,
     "compositions": [],
     "containers": [],
