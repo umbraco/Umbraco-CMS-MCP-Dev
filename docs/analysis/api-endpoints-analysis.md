@@ -1,30 +1,31 @@
 # API Endpoints Analysis
 
-**Last Updated**: 2025-12-03
+**Last Updated**: 2026-06-25
 
 ## Summary
 
 | Collection | Tool Count |
 |------------|------------|
-| .claude | 0 |
+| __tests__ | 0 |
 | culture | 1 |
-| data-type | 22 |
+| data-type | 26 |
 | dictionary | 10 |
-| document | 45 |
+| document | 48 |
 | document-blueprint | 16 |
-| document-type | 27 |
+| document-type | 31 |
 | document-version | 4 |
+| element | 46 |
 | health | 4 |
 | imaging | 1 |
 | indexer | 3 |
 | language | 7 |
 | log-viewer | 9 |
 | manifest | 3 |
-| media | 31 |
-| media-type | 23 |
-| member | 13 |
+| media | 34 |
+| media-type | 26 |
+| member | 14 |
 | member-group | 7 |
-| member-type | 13 |
+| member-type | 15 |
 | models-builder | 3 |
 | partial-view | 15 |
 | property-type | 1 |
@@ -37,14 +38,14 @@
 | static-file | 4 |
 | stylesheet | 13 |
 | tag | 1 |
-| template | 13 |
+| template | 14 |
 | temporary-file | 4 |
 | user | 15 |
 | user-data | 5 |
 | user-group | 8 |
 | webhook | 9 |
 
-**Total MCP Tools**: 358
+**Total MCP Tools**: 425
 
 ## Tools by Collection
 
@@ -52,7 +53,7 @@
 
 - `get-culture`
 
-### data-type (22)
+### data-type (26)
 
 - `copy-data-type`
 - `create-data-type`
@@ -63,13 +64,17 @@
 - `get-all-data-types`
 - `get-data-type`
 - `get-data-type-ancestors`
+- `get-data-type-ancestors-batch`
+- `get-data-type-batch`
 - `get-data-type-children`
 - `get-data-type-configuration`
 - `get-data-type-folder`
-- `get-data-type-property-editor-template`
 - `get-data-type-root`
+- `get-data-type-schema`
+- `get-data-type-schemas`
 - `get-data-type-search`
 - `get-data-type-siblings`
+- `get-data-type-tree-search`
 - `get-data-types-by-id-array`
 - `get-references-data-type`
 - `is-used-data-type`
@@ -90,7 +95,7 @@
 - `move-dictionary-item`
 - `update-dictionary-item`
 
-### document (45)
+### document (48)
 
 - `copy-document`
 - `create-document`
@@ -101,6 +106,7 @@
 - `empty-recycle-bin`
 - `get-collection-document-by-id`
 - `get-document-ancestors`
+- `get-document-ancestors-batch`
 - `get-document-are-referenced`
 - `get-document-audit-log`
 - `get-document-available-segment-options`
@@ -111,12 +117,12 @@
 - `get-document-configuration`
 - `get-document-domains`
 - `get-document-notifications`
-- `get-document-property-value-template`
 - `get-document-public-access`
 - `get-document-publish`
 - `get-document-recycle-bin-siblings`
 - `get-document-root`
 - `get-document-siblings`
+- `get-document-type-schema`
 - `get-document-urls`
 - `get-item-document`
 - `get-recycle-bin-document-children`
@@ -135,7 +141,9 @@
 - `search-document`
 - `sort-document`
 - `unpublish-document`
+- `update-block-property`
 - `update-document`
+- `update-document-properties`
 - `validate-document`
 
 ### document-blueprint (16)
@@ -157,7 +165,7 @@
 - `update-document-blueprint`
 - `update-document-blueprint-folder`
 
-### document-type (27)
+### document-type (31)
 
 - `copy-document-type`
 - `create-document-type`
@@ -168,8 +176,11 @@
 - `get-all-document-types`
 - `get-document-type-allowed-at-root`
 - `get-document-type-allowed-children`
+- `get-document-type-allowed-parents`
 - `get-document-type-ancestors`
+- `get-document-type-ancestors-batch`
 - `get-document-type-available-compositions`
+- `get-document-type-batch`
 - `get-document-type-blueprint`
 - `get-document-type-by-id`
 - `get-document-type-children`
@@ -178,6 +189,7 @@
 - `get-document-type-folder`
 - `get-document-type-root`
 - `get-document-type-siblings`
+- `get-document-type-tree-search`
 - `get-document-types-by-id-array`
 - `get-icons`
 - `move-document-type`
@@ -193,6 +205,55 @@
 - `get-document-version`
 - `get-document-version-by-id`
 - `update-document-version-prevent-cleanup`
+
+### element (46)
+
+- `copy-element`
+- `create-element`
+- `create-element-folder`
+- `delete-element`
+- `delete-element-folder`
+- `delete-element-folder-from-recycle-bin`
+- `delete-element-from-recycle-bin`
+- `empty-element-recycle-bin`
+- `get-element-ancestors`
+- `get-element-are-referenced`
+- `get-element-audit-log`
+- `get-element-by-id`
+- `get-element-by-id-referenced-by`
+- `get-element-children`
+- `get-element-configuration`
+- `get-element-folder`
+- `get-element-folder-referenced-descendants`
+- `get-element-item-ancestors`
+- `get-element-root`
+- `get-element-siblings`
+- `get-element-version`
+- `get-element-version-by-id`
+- `get-item-element`
+- `get-item-element-folder`
+- `get-recycle-bin-element-children`
+- `get-recycle-bin-element-folder-original-parent`
+- `get-recycle-bin-element-original-parent`
+- `get-recycle-bin-element-referenced-by`
+- `get-recycle-bin-element-root`
+- `get-recycle-bin-element-siblings`
+- `move-element`
+- `move-element-folder`
+- `move-element-folder-to-recycle-bin`
+- `move-element-to-recycle-bin`
+- `publish-element`
+- `restore-element-folder`
+- `restore-element-from-recycle-bin`
+- `rollback-element-version`
+- `search-element`
+- `set-element-version-prevent-cleanup`
+- `unpublish-element`
+- `update-element`
+- `update-element-folder`
+- `update-element-properties`
+- `validate-element`
+- `validate-element-update`
 
 ### health (4)
 
@@ -239,9 +300,10 @@
 - `get-manifest-manifest-private`
 - `get-manifest-manifest-public`
 
-### media (31)
+### media (34)
 
 - `create-media`
+- `create-media-folder`
 - `create-media-multiple`
 - `delete-media`
 - `delete-media-from-recycle-bin`
@@ -249,6 +311,7 @@
 - `empty-media-recycle-bin`
 - `get-collection-media`
 - `get-media-ancestors`
+- `get-media-ancestors-batch`
 - `get-media-are-referenced`
 - `get-media-audit-log`
 - `get-media-by-id`
@@ -260,6 +323,7 @@
 - `get-media-recycle-bin-siblings`
 - `get-media-root`
 - `get-media-siblings`
+- `get-media-type-schema`
 - `get-media-urls`
 - `get-recycle-bin-media-children`
 - `get-recycle-bin-media-original-parent`
@@ -273,7 +337,7 @@
 - `validate-media`
 - `validate-media-update`
 
-### media-type (23)
+### media-type (26)
 
 - `copy-media-type`
 - `create-media-type`
@@ -284,8 +348,11 @@
 - `get-item-media-type`
 - `get-media-type-allowed-at-root`
 - `get-media-type-allowed-children`
+- `get-media-type-allowed-parents`
 - `get-media-type-ancestors`
+- `get-media-type-ancestors-batch`
 - `get-media-type-available-compositions`
+- `get-media-type-batch`
 - `get-media-type-by-id`
 - `get-media-type-by-ids`
 - `get-media-type-children`
@@ -299,17 +366,18 @@
 - `update-media-type`
 - `update-media-type-folder`
 
-### member (13)
+### member (14)
 
 - `create-member`
 - `delete-member`
 - `find-member`
 - `get-item-member-search`
 - `get-member`
+- `get-member-ancestors-batch`
 - `get-member-are-referenced`
 - `get-member-by-id-referenced-by`
 - `get-member-by-id-referenced-descendants`
-- `get-member-configuration`
+- `get-member-type-schema`
 - `get-members-by-id-array`
 - `update-member`
 - `validate-member`
@@ -325,13 +393,15 @@
 - `get-member-group-root`
 - `update-member-group`
 
-### member-type (13)
+### member-type (15)
 
 - `copy-member-type`
 - `create-member-type`
 - `delete-member-type`
 - `get-member-type`
+- `get-member-type-ancestors-batch`
 - `get-member-type-available-compositions`
+- `get-member-type-batch`
 - `get-member-type-by-id`
 - `get-member-type-composition-references`
 - `get-member-type-configuration`
@@ -442,13 +512,14 @@
 
 - `get-tags`
 
-### template (13)
+### template (14)
 
 - `create-template`
 - `delete-template`
 - `execute-template-query`
 - `get-template`
 - `get-template-ancestors`
+- `get-template-ancestors-batch`
 - `get-template-children`
 - `get-template-configuration`
 - `get-template-query-settings`
@@ -516,6 +587,6 @@
 
 ## Notes
 
-- This count includes only files that contain `CreateUmbracoTool` or `CreateUmbracoResource`
+- This count includes only files that contain `ToolDefinition` and `withStandardDecorators`
 - Excludes `index.ts` files and test files (`__tests__` directories)
 - Helper files, constants, and utilities are not counted
