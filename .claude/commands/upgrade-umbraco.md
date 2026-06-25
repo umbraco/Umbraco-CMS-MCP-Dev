@@ -64,7 +64,7 @@ Wait until `https://localhost:44391/umbraco` responds. Because the DB is new, th
 ### 5. Regenerate the OpenAPI client
 
 ```bash
-npm run generate       # orval reads http://localhost:56472/umbraco/swagger/management/swagger.json
+npm run generate       # orval reads http://localhost:56472/umbraco/openapi/management.json
 npm run compile        # catch type-level breakages immediately
 ```
 
