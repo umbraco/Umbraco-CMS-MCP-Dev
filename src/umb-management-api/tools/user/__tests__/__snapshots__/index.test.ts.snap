@@ -9,6 +9,8 @@ exports[`user-tool-index should have all tools when user has users section acces
   "get-user-current-permissions-document",
   "get-user-current-permissions-media",
   "upload-user-current-avatar",
+  "delete-user-current-avatar",
+  "update-user-current-profile",
   "get-user",
   "get-user-by-id",
   "find-user",
@@ -29,5 +31,7 @@ exports[`user-tool-index should only have self-service tools when user has no us
   "get-user-current-permissions-document",
   "get-user-current-permissions-media",
   "upload-user-current-avatar",
+  "delete-user-current-avatar",
+  "update-user-current-profile",
 ]
 `;
