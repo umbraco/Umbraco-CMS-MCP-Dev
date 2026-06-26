@@ -2,6 +2,7 @@ trigger:
   branches:
     include:
     - main
+    - v17/main
     - feature/*
 
 pool:
@@ -49,7 +50,7 @@ stages:
 
 - stage: Deploy_Npm
   displayName: Npm release
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/v17/main'))
   dependsOn:
     - BuildAndTest
   jobs:
@@ -98,15 +99,26 @@ stages:
             tar -tf "${files[0]}" | grep package/package.json | head -1 | xargs tar -xf "${files[0]}" --strip-components=1
             version=$(node -p "require('./package.json').version")
 
-            # Determine tag based on version
+            # Determine release channel from version
             if [[ "${version}" == *"alpha"* ]]; then
-              tag="alpha"
+              channel="alpha"
             elif [[ "${version}" == *"beta"* ]]; then
-              tag="beta"
+              channel="beta"
             elif [[ "${version}" == *"rc"* ]]; then
-              tag="rc"
+              channel="rc"
             else
-              tag="latest"
+              channel="latest"
+            fi
+
+            # Map channel to dist-tag, scoping the v17 line to lts-17*
+            if [[ "${BUILD_SOURCEBRANCH}" == "refs/heads/v17/main" ]]; then
+              if [ "$channel" = "latest" ]; then
+                tag="lts-17"
+              else
+                tag="lts-17-${channel}"
+              fi
+            else
+              tag="$channel"
             fi
 
             echo "Publishing version ${version} with tag ${tag}"
