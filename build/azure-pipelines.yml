@@ -123,7 +123,10 @@ stages:
             fi
 
             echo "Publishing version ${version} with tag ${tag}"
-            npm publish "${files[0]}" --tag $tag --access public
+            if ! npm publish "${files[0]}" --tag $tag --access public; then
+              echo "##vso[task.logissue type=error]npm publish failed for version ${version}"
+              exit 1
+            fi
 
             # Set output variable for MCP Registry stage
             if [ "$tag" = "latest" ]; then
