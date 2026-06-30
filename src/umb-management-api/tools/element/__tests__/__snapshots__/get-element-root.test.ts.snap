@@ -7,6 +7,18 @@ exports[`get-element-root should get root element items 1`] = `
     "items": [
       {
         "createDate": "NORMALIZED_DATE",
+        "documentType": null,
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isFolder": true,
+        "name": "Categories",
+        "noAccess": false,
+        "parent": null,
+        "variants": [],
+      },
+      {
+        "createDate": "NORMALIZED_DATE",
         "documentType": {
           "collection": null,
           "icon": "icon-document",
@@ -31,7 +43,7 @@ exports[`get-element-root should get root element items 1`] = `
       },
     ],
     "nextCursor": undefined,
-    "total": 1,
+    "total": 2,
   },
 }
 `;
