@@ -10,7 +10,7 @@ exports[`get-models-builder-dashboard should get the models builder dashboard 1`
     "modelsNamespace": "Umbraco.Cms.Web.Common.PublishedModels",
     "outOfDateModels": false,
     "trackingOutOfDateModels": false,
-    "version": "17.4.0+3aa87fe",
+    "version": "17.5.0+d48a8c1",
   },
 }
 `;
