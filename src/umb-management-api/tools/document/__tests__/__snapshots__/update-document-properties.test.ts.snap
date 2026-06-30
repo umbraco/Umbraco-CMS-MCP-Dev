@@ -20,6 +20,18 @@ exports[`update-document-properties should return error on invalid alias 1`] = `
   "structuredContent": {
     "availableProperties": [
       {
+        "alias": "title",
+        "name": "Title",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "subtitle",
+        "name": "Subtitle",
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
         "alias": "metaName",
         "name": "Meta Name",
         "variesByCulture": false,
@@ -46,18 +58,6 @@ exports[`update-document-properties should return error on invalid alias 1`] = `
       {
         "alias": "isFollowable",
         "name": "Is Followable",
-        "variesByCulture": false,
-        "variesBySegment": false,
-      },
-      {
-        "alias": "title",
-        "name": "Title",
-        "variesByCulture": false,
-        "variesBySegment": false,
-      },
-      {
-        "alias": "subtitle",
-        "name": "Subtitle",
         "variesByCulture": false,
         "variesBySegment": false,
       },
