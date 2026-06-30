@@ -8671,7 +8671,10 @@ export const getServerConfigurationResponse = zod.object({
   "allowPasswordReset": zod.boolean(),
   "versionCheckPeriod": zod.number(),
   "allowLocalLogin": zod.boolean(),
-  "umbracoCssPath": zod.string()
+  "umbracoCssPath": zod.string(),
+  "signalR": zod.object({
+  "skipNegotiation": zod.boolean()
+})
 })
 
 
@@ -10376,6 +10379,15 @@ export const getUserCurrentPermissionsMediaResponse = zod.object({
   "nodeKey": zod.guid(),
   "permissions": zod.array(zod.string())
 }))
+})
+
+
+/**
+ * Updates current user profile with the details from the request model.
+ * @summary Updates current user profile.
+ */
+export const putUserCurrentProfileBody = zod.object({
+  "languageIsoCode": zod.string()
 })
 
 

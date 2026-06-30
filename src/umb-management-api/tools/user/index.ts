@@ -13,6 +13,8 @@ import GetUserByIdCalculateStartNodesTool from "./get/get-user-by-id-calculate-s
 import UploadUserAvatarByIdTool from "./post/upload-user-avatar-by-id.js";
 import UploadUserCurrentAvatarTool from "./post/upload-user-current-avatar.js";
 import DeleteUserAvatarByIdTool from "./delete/delete-user-avatar-by-id.js";
+import DeleteUserCurrentAvatarTool from "./delete/delete-user-current-avatar.js";
+import UpdateUserCurrentProfileTool from "./put/update-user-current-profile.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import {
@@ -38,6 +40,8 @@ export const UserCollection: ToolCollectionExport = {
     tools.push(GetUserCurrentPermissionsDocumentTool);
     tools.push(GetUserCurrentPermissionsMediaTool);
     tools.push(UploadUserCurrentAvatarTool);
+    tools.push(DeleteUserCurrentAvatarTool);
+    tools.push(UpdateUserCurrentProfileTool);
 
     // Administrative tools (require SectionAccessUsers permission)
     if (AuthorizationPolicies.SectionAccessUsers(user)) {

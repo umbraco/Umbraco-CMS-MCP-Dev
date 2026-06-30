@@ -10,6 +10,11 @@ exports[`get-health-check-group-by-name should get health check group by valid n
         "id": "73dd0c1c-e0ca-4c31-9564-1dca509788af",
         "name": "Database data integrity check",
       },
+      {
+        "description": "Checks for untrusted foreign key or check constraints on SQL Server, which indicate pre-existing data integrity issues that must be resolved manually.",
+        "id": "0b1e71e4-8d37-4f9b-a9a4-86c5b9ea5b0b",
+        "name": "Untrusted database constraints",
+      },
     ],
     "name": "Data Integrity",
   },
