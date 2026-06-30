@@ -2,7 +2,7 @@ name: Test
 
 on:
   pull_request:
-    branches: [main, dev]
+    branches: [main, dev, v17/main, v17/dev]
 
 jobs:
   test:
@@ -132,7 +132,8 @@ jobs:
   evals:
     name: LLM Eval Tests
     if: >-
-      github.event.pull_request.base.ref == 'main' &&
+      (github.event.pull_request.base.ref == 'main' ||
+       github.event.pull_request.base.ref == 'v17/main') &&
       startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
 
