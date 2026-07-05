@@ -1,0 +1,56 @@
+# Deploy one worker (one major, one env) and push its cookie secret.
+# Invoked per matrix leg by deploy.yml. account_id is baked into each committed
+# wrangler config so wrangler skips the /memberships lookup and the CF token can
+# stay Workers-scoped.
+parameters:
+  - name: env
+    type: string
+
+steps:
+  - checkout: self
+
+  - task: NodeTool@0
+    displayName: Use Node.js 22.x
+    inputs:
+      versionSpec: '22.x'
+
+  - script: npm ci
+    displayName: Install deps
+
+  - bash: |
+      set -euo pipefail
+      SUFFIX=""
+      [ "${{ parameters.env }}" = "dev" ] && SUFFIX="-dev"
+      WORKER="umbraco-cms-developer-mcp-$(MAJOR)${SUFFIX}"
+      CONFIG="wrangler.${{ parameters.env }}.$(MAJOR).toml"
+      # OAUTH_KV id is supplied by the env's variable group (kv_id_17 / kv_id_18),
+      # never committed. Inject it into the config for this deploy only.
+      KV_VAR="KV_ID_$(MAJOR)"
+      KV_ID="${!KV_VAR:?variable group is missing kv_id_$(MAJOR)}"
+      sed -i "s|__OAUTH_KV_ID__|${KV_ID}|" "$CONFIG"
+      echo "##vso[task.setvariable variable=WORKER]$WORKER"
+      echo "##vso[task.setvariable variable=CONFIG]$CONFIG"
+      echo "##vso[task.setvariable variable=COOKIE_SECRET]${WORKER}-cookie-key"
+    displayName: Resolve worker + inject KV id
+
+  - bash: npx wrangler deploy --config "$(CONFIG)"
+    displayName: wrangler deploy $(WORKER)
+    env:
+      CLOUDFLARE_API_TOKEN: $(cf_api_key)
+
+  # Cookie key is TF-managed (stable random_id) and published to Key Vault by the
+  # infra pipeline. Read it by name and push it onto the freshly-deployed worker.
+  # Never regenerate it here — rotating it invalidates live OAuth sessions.
+  - task: AzureCLI@2
+    displayName: Push COOKIE_ENCRYPTION_KEY for $(WORKER)
+    inputs:
+      azureSubscription: $(azure_service_connection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        set -euo pipefail
+        KEY=$(az keyvault secret show --vault-name "$(key_vault_name)" \
+              --name "$(COOKIE_SECRET)" --query value -o tsv)
+        printf '%s' "$KEY" | npx wrangler secret put COOKIE_ENCRYPTION_KEY --config "$(CONFIG)"
+    env:
+      CLOUDFLARE_API_TOKEN: $(cf_api_key)

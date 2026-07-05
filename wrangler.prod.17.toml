@@ -1,0 +1,36 @@
+# Deploy config — cms-developer MCP, major 17, PROD. Source of truth for CI.
+# Deployed by azure-pipelines/deploy.yml on push to v17/main.
+# The OAUTH_KV id is injected at deploy time from the ai-mcp-global-live variable
+# group (kv_id_17) — never committed. Everything else here is stable/non-secret.
+name = "umbraco-cms-developer-mcp-17"
+main = "src/worker.ts"
+account_id = "1352d04baf3bee666f24908118f44d84"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat_v2"]
+find_additional_modules = true
+
+# Custom domain. wrangler provisions the domain + DNS + cert on deploy and
+# reconciles idempotently.
+[[routes]]
+pattern = "cms.developer.17.mcp.umbraco.ai"
+custom_domain = true
+
+[[kv_namespaces]]
+binding = "OAUTH_KV"
+id = "__OAUTH_KV_ID__"
+
+[durable_objects]
+bindings = [
+  { name = "MCP_AGENT", class_name = "UmbracoMcpAgent" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["UmbracoMcpAgent"]
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[vars]
+UMBRACO_ALLOWED_MEDIA_PATHS = "/tmp/uploads"
