@@ -1,8 +1,8 @@
-# Wrangler deploy of the cms-developer MCP workers (majors 17 + 18) to Cloudflare.
-# Branch is the gate — no approval Environments:
-#   v17/dev  -> dev  workers (-dev suffix, *.dev.mcp.umbraco.ai)
-#   v17/main -> prod workers (*.mcp.umbraco.ai)
-# Worker code is major-agnostic; 17 vs 18 differ only by the committed wrangler config.
+# Wrangler deploy of the cms-developer MCP worker (major 17) to Cloudflare.
+# This is the v17 branch line, so it deploys only major 17; major 18 is deployed
+# from its own branch line. Branch is the gate — no approval Environments:
+#   v17/dev  -> dev  worker (-dev suffix, cms.developer.17.dev.mcp.umbraco.ai)
+#   v17/main -> prod worker (cms.developer.17.mcp.umbraco.ai)
 trigger:
   branches:
     include:
@@ -16,36 +16,28 @@ pool:
 
 stages:
   - stage: DeployDev
-    displayName: 🚀 deploy → dev (17 + 18)
+    displayName: 🚀 deploy → dev (17)
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/v17/dev')
     variables:
       - group: ai-mcp-global-dev
+      - name: MAJOR
+        value: '17'
     jobs:
       - job: deploy
-        strategy:
-          matrix:
-            v17:
-              MAJOR: '17'
-            v18:
-              MAJOR: '18'
         steps:
           - template: steps/wrangler-deploy.yml
             parameters:
               env: dev
 
   - stage: DeployProd
-    displayName: 🚀 deploy → prod (17 + 18)
+    displayName: 🚀 deploy → prod (17)
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/v17/main')
     variables:
       - group: ai-mcp-global-live
+      - name: MAJOR
+        value: '17'
     jobs:
       - job: deploy
-        strategy:
-          matrix:
-            v17:
-              MAJOR: '17'
-            v18:
-              MAJOR: '18'
         steps:
           - template: steps/wrangler-deploy.yml
             parameters:

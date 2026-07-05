@@ -23,7 +23,7 @@ steps:
       [ "${{ parameters.env }}" = "dev" ] && SUFFIX="-dev"
       WORKER="umbraco-cms-developer-mcp-$(MAJOR)${SUFFIX}"
       CONFIG="wrangler.${{ parameters.env }}.$(MAJOR).toml"
-      # OAUTH_KV id is supplied by the env's variable group (kv_id_17 / kv_id_18),
+      # OAUTH_KV id is supplied by the env's variable group (kv_id_17),
       # never committed. Inject it into the config for this deploy only.
       KV_VAR="KV_ID_$(MAJOR)"
       KV_ID="${!KV_VAR:?variable group is missing kv_id_$(MAJOR)}"
