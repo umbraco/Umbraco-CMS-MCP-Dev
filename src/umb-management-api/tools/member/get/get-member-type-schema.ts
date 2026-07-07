@@ -3,11 +3,11 @@ import { getMemberTypeByIdSchemaParams } from "@/umb-management-api/umbracoManag
 import { z } from "zod";
 import {
   type ToolDefinition,
+  type HttpResponse,
   CAPTURE_RAW_HTTP_RESPONSE,
   createToolResult,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
-import { AxiosResponse } from "axios";
 
 // Wrap the JSON Schema in an object so MCP structured output validation works
 const outputSchema = z.object({
@@ -29,7 +29,7 @@ IMPORTANT: Use this tool BEFORE creating members to understand the expected prop
   slices: ['read'],
   handler: async ({ id }: { id: string }) => {
     const client = UmbracoManagementClient.getClient();
-    const response = await client.getMemberTypeByIdSchema(id, CAPTURE_RAW_HTTP_RESPONSE) as unknown as AxiosResponse;
+    const response = await client.getMemberTypeByIdSchema(id, CAPTURE_RAW_HTTP_RESPONSE) as unknown as HttpResponse;
     return createToolResult({ schema: response.data });
   },
 } satisfies ToolDefinition<typeof getMemberTypeByIdSchemaParams.shape, typeof outputSchema.shape>;
