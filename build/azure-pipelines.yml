@@ -122,6 +122,51 @@ stages:
           displayName: Push to npm with dynamic tagging
           workingDirectory: $(Pipeline.Workspace)/npm-package
 
+- stage: Create_GitHub_Release
+  displayName: GitHub release
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  dependsOn:
+    - Deploy_Npm
+  jobs:
+    - job: Release
+      displayName: Create GitHub Release
+      variables:
+        isStableRelease: $[ stageDependencies.Deploy_Npm.Publish.outputs['npmPublish.isStable'] ]
+      steps:
+        - checkout: self
+        - task: NodeTool@0
+          displayName: 'Use Node.js $(nodeVersion)'
+          inputs:
+            versionSpec: '$(nodeVersion)'
+        - script: |
+            VERSION=$(node -p "require('./package.json').version")
+            TAG="v${VERSION}"
+
+            # Determine if this is a prerelease
+            if [ "$(isStableRelease)" = "true" ]; then
+              PRERELEASE_FLAG=""
+            else
+              PRERELEASE_FLAG="--prerelease"
+            fi
+
+            # Generate release notes from commits since last tag
+            LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+            if [ -n "$LAST_TAG" ]; then
+              NOTES=$(git log ${LAST_TAG}..HEAD --oneline --no-merges | sed 's/^/- /')
+            else
+              NOTES="Initial release"
+            fi
+
+            echo "Creating GitHub release ${TAG}"
+            gh release create "${TAG}" \
+              --target main \
+              --title "${TAG}" \
+              --notes "${NOTES}" \
+              ${PRERELEASE_FLAG}
+          displayName: 'Create GitHub Release'
+          env:
+            GH_TOKEN: $(MCP_REGISTRY_GITHUB_TOKEN)
+
 - stage: Deploy_MCP_Registry
   displayName: MCP Registry release
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
