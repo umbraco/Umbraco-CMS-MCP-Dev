@@ -40,6 +40,10 @@ const createElementTypeSchema = z.object({
       )
     )
     .default([]),
+  allowedInLibrary: z
+    .boolean()
+    .default(false)
+    .describe("Allow standalone library elements to be created from this element type (Umbraco Element Library). Must be true before create-element will succeed for this type; otherwise create-element returns 'Operation not permitted' (NotAllowed)."),
 });
 
 type CreateElementTypeModel = z.infer<typeof createElementTypeSchema>;
@@ -134,7 +138,7 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
         compositionType: "Composition" as const,
       })),
       allowedAsRoot: false,
-      allowedInLibrary: false,
+      allowedInLibrary: model.allowedInLibrary,
       variesByCulture: false,
       variesBySegment: false,
       allowedTemplates: [],

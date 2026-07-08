@@ -174,7 +174,8 @@ describe("update-block-property", () => {
             group: "Content"
           }
         ],
-        description: undefined
+        description: undefined,
+        allowedInLibrary: false
       }, createMockRequestHandlerExtra());
 
       const elementResponse = validateToolResponse(CreateElementTypeTool, elementResult);
@@ -490,7 +491,8 @@ describe("update-block-property", () => {
             group: "Content"
           }
         ],
-        description: undefined
+        description: undefined,
+        allowedInLibrary: false
       }, createMockRequestHandlerExtra());
 
       const elementResponse = validateToolResponse(CreateElementTypeTool, elementResult);
@@ -758,7 +760,8 @@ describe("update-block-property", () => {
             group: "Content"
           }
         ],
-        description: undefined
+        description: undefined,
+        allowedInLibrary: false
       }, createMockRequestHandlerExtra());
 
       const elementResponse = validateToolResponse(CreateElementTypeTool, elementResult);
@@ -1099,7 +1102,8 @@ describe("update-block-property", () => {
             group: "Content"
           }
         ],
-        description: undefined
+        description: undefined,
+        allowedInLibrary: false
       }, createMockRequestHandlerExtra());
 
       const innerElementResponse = validateToolResponse(CreateElementTypeTool, innerElementResult);
@@ -1142,7 +1146,8 @@ describe("update-block-property", () => {
             group: "Content"
           }
         ],
-        description: undefined
+        description: undefined,
+        allowedInLibrary: false
       }, createMockRequestHandlerExtra());
 
       const gridElementResponse = validateToolResponse(CreateElementTypeTool, gridElementResult);
@@ -1526,7 +1531,8 @@ describe("update-block-property", () => {
             group: "Content"
           }
         ],
-        description: undefined
+        description: undefined,
+        allowedInLibrary: false
       }, createMockRequestHandlerExtra());
 
       const elementResponse = validateToolResponse(CreateElementTypeTool, elementResult);
@@ -1868,7 +1874,8 @@ describe("update-block-property", () => {
             group: "Content"
           }
         ],
-        description: undefined
+        description: undefined,
+        allowedInLibrary: false
       }, createMockRequestHandlerExtra());
 
       const innerElementResponse = validateToolResponse(CreateElementTypeTool, innerElementResult);
@@ -1911,7 +1918,8 @@ describe("update-block-property", () => {
             group: "Content"
           }
         ],
-        description: undefined
+        description: undefined,
+        allowedInLibrary: false
       }, createMockRequestHandlerExtra());
 
       const gridElementResponse = validateToolResponse(CreateElementTypeTool, gridElementResult);
