@@ -3,11 +3,11 @@ import { getDocumentTypeByIdSchemaParams } from "@/umb-management-api/umbracoMan
 import { z } from "zod";
 import {
   type ToolDefinition,
+  type HttpResponse,
   CAPTURE_RAW_HTTP_RESPONSE,
   createToolResult,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
-import { AxiosResponse } from "axios";
 
 // Wrap the JSON Schema in an object so MCP structured output validation works
 export const documentTypeSchemaOutputSchema = z.object({
@@ -33,7 +33,7 @@ IMPORTANT: Use this tool BEFORE creating documents to understand the expected pr
     const response = (await client.getDocumentTypeByIdSchema(
       id,
       CAPTURE_RAW_HTTP_RESPONSE
-    )) as unknown as AxiosResponse;
+    )) as unknown as HttpResponse;
     return createToolResult({ schema: response.data });
   },
 } satisfies ToolDefinition<typeof getDocumentTypeByIdSchemaParams.shape, typeof outputSchema.shape>;
