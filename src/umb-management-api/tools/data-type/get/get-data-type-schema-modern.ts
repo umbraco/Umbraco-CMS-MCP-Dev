@@ -1,6 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { CAPTURE_RAW_HTTP_RESPONSE } from "@umbraco-cms/mcp-server-sdk";
-import { AxiosResponse } from "axios";
+import { CAPTURE_RAW_HTTP_RESPONSE, type HttpResponse } from "@umbraco-cms/mcp-server-sdk";
 
 export async function getDataTypeSchemaFromApi(
   id: string
@@ -9,6 +8,6 @@ export async function getDataTypeSchemaFromApi(
   const response = (await client.getDataTypeByIdSchema(
     id,
     CAPTURE_RAW_HTTP_RESPONSE
-  )) as unknown as AxiosResponse;
+  )) as unknown as HttpResponse;
   return response.data ?? {};
 }
