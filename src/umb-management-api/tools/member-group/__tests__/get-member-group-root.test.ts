@@ -7,7 +7,6 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-
 const TEST_GROUP_NAME_1 = "_Test Member Group Root 1";
 const TEST_GROUP_NAME_2 = "_Test Member Group Root 2";
 
@@ -31,7 +30,7 @@ describe("get-member-group-root", () => {
 
   it("should get the root of the member group tree and include created groups", async () => {
     const result = await GetMemberGroupRootTool.handler(
-      { skip: undefined, take: 100 },
+      {},
       createMockRequestHandlerExtra()
     );
 

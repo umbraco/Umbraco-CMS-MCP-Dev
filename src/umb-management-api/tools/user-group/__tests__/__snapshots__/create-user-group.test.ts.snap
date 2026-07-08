@@ -17,8 +17,11 @@ exports[`create-user-group should create a user group 2`] = `
       {
         "alias": "testUserGroupCreated",
         "aliasCanBeChanged": true,
+        "description": "",
         "documentRootAccess": false,
         "documentStartNode": null,
+        "elementRootAccess": false,
+        "elementStartNode": null,
         "fallbackPermissions": [],
         "hasAccessToAllLanguages": true,
         "icon": null,

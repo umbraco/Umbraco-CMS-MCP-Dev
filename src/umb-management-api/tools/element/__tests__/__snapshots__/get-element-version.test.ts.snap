@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-version should list element versions 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "documentType": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "element": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isCurrentDraftVersion": true,
+        "isCurrentPublishedVersion": false,
+        "preventCleanup": false,
+        "user": {
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "versionDate": "NORMALIZED_DATE",
+      },
+    ],
+    "nextCursor": undefined,
+    "total": 1,
+  },
+}
+`;

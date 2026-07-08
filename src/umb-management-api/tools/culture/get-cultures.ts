@@ -7,11 +7,13 @@ import {
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
 
+const outputSchema = getCultureResponse;
+
 const GetCulturesTool = {
   name: "get-culture",
   description: "Retrieves a paginated list of cultures that Umbraco can be configured to use",
   inputSchema: getCultureQueryParams.shape,
-  outputSchema: getCultureResponse.shape,
+  outputSchema: outputSchema.shape,
   annotations: {
     readOnlyHint: true,
   },
@@ -21,6 +23,6 @@ const GetCulturesTool = {
       client.getCulture(params, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof getCultureQueryParams.shape, typeof getCultureResponse.shape>;
+} satisfies ToolDefinition<typeof getCultureQueryParams.shape, typeof outputSchema.shape>;
 
 export default withStandardDecorators(GetCulturesTool);

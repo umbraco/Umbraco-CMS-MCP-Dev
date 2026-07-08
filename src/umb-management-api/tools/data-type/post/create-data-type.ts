@@ -2,12 +2,12 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateDataTypeRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { AxiosResponse } from "axios";
 import {
   type ToolDefinition,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
@@ -26,7 +26,7 @@ type CreateDataTypeSchema = z.infer<typeof createDataTypeSchema>;
 
 export const createDataTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateDataTypeTool = {
@@ -43,11 +43,10 @@ const CreateDataTypeTool = {
   *** PROPERTY EDITOR CONFIGURATION ***
   When creating a new data type you will need to assign a property editor with the correct configuration.
 
-  IMPORTANT: Use the get-data-type-property-editor-template tool to:
-  - View all available property editors (call without parameters)
-  - Get the correct configuration template for a specific property editor (call with editorName parameter)
-  - Each template shows the required editorAlias, editorUiAlias, and values configuration
-  - Customize the template values to match your specific requirements
+  IMPORTANT: Use the get-data-type-schema tool to:
+  - Get the JSON Schema for an existing data type by its Id to understand its configuration structure
+  - Or use get-data-type-schemas to fetch schemas for multiple data types in a batch
+  - The schema describes the expected value structure for the property editor
 
   *** VALIDATION ***
   If you are not asked for a property editor then stop and ask the user to provide one.
@@ -76,7 +75,7 @@ const CreateDataTypeTool = {
     const response = await client.postDataType(payload, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       const output = {

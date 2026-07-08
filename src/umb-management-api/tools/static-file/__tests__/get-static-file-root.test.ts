@@ -1,29 +1,23 @@
 import GetStaticFileRootTool from "../items/get/get-root.js";
 import { StaticFileHelper } from "./helpers/static-file-helper.js";
+import { encodeCursor } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
   createSnapshotResult,
   setupTestEnvironment,
   validateToolResponse,
+  type CursorPaginatedResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
-const DEFAULT_TAKE = 100;
-const SMALL_TAKE = 5;
 const LARGE_SKIP = 1000;
 
 describe("get-static-file-root", () => {
   setupTestEnvironment();
 
   it.skip("should get root-level static files and folders with default pagination", async () => {
-    // Arrange
-    const params = {
-      skip: 0,
-      take: DEFAULT_TAKE
-    };
-
     // Act
     const result = await GetStaticFileRootTool.handler(
-      params,
+      {},
       createMockRequestHandlerExtra()
     );
 
@@ -54,16 +48,10 @@ describe("get-static-file-root", () => {
     }
   });
 
-  it.skip("should handle pagination with small take parameter", async () => {
-    // Arrange - get a small number of items
-    const params = {
-      skip: 0,
-      take: SMALL_TAKE
-    };
-
+  it.skip("should handle pagination with small page size", async () => {
     // Act
     const result = await GetStaticFileRootTool.handler(
-      params,
+      {},
       createMockRequestHandlerExtra()
     );
 
@@ -76,36 +64,30 @@ describe("get-static-file-root", () => {
     expect(response).toHaveProperty('items');
     expect(Array.isArray(response.items)).toBe(true);
 
-    // If there are items, should not exceed the take parameter
+    // If there are items, should not exceed the page size
     if (response.items && response.items.length > 0) {
-      expect(response.items.length).toBeLessThanOrEqual(SMALL_TAKE);
+      expect(response.items.length).toBeLessThanOrEqual(5);
 
       const isValidStructure = StaticFileHelper.verifyFileSystemStructure(response.items);
       expect(isValidStructure).toBe(true);
     }
   });
 
-  it.skip("should handle pagination with skip parameter", async () => {
-    // Arrange - first get total count to determine valid skip
+  it.skip("should handle pagination with cursor for second page", async () => {
+    // Arrange - first get initial page
     const initialResult = await GetStaticFileRootTool.handler(
-      { skip: 0, take: DEFAULT_TAKE },
+      {},
       createMockRequestHandlerExtra()
     );
 
     const initialResponse = validateToolResponse(GetStaticFileRootTool, initialResult);
     const totalItems = initialResponse.total || 0;
 
-    // Only test skip if there are items
-    if (totalItems > 1) {
-      const skipValue = Math.min(1, totalItems - 1); // Skip at least 1 but not beyond total
-      const params = {
-        skip: skipValue,
-        take: DEFAULT_TAKE
-      };
-
+    // Only test cursor if there are items and a next page
+    if (totalItems > 1 && (initialResponse as any).nextCursor) {
       // Act
       const result = await GetStaticFileRootTool.handler(
-        params,
+        { cursor: (initialResponse as any).nextCursor },
         createMockRequestHandlerExtra()
       );
 
@@ -125,14 +107,9 @@ describe("get-static-file-root", () => {
         expect(isValidStructure).toBe(true);
       }
     } else {
-      // If no items or only one item, just test the skip behavior doesn't break
-      const params = {
-        skip: 1,
-        take: DEFAULT_TAKE
-      };
-
+      // If no items or only one item, just test the cursor behavior doesn't break
       const result = await GetStaticFileRootTool.handler(
-        params,
+        { cursor: encodeCursor({ s: 1, t: 50 }) },
         createMockRequestHandlerExtra()
       );
 
@@ -141,15 +118,9 @@ describe("get-static-file-root", () => {
   });
 
   it.skip("should handle large skip value gracefully", async () => {
-    // Arrange - skip beyond available items
-    const params = {
-      skip: LARGE_SKIP,
-      take: DEFAULT_TAKE
-    };
-
-    // Act
+    // Act - skip beyond available items via cursor
     const result = await GetStaticFileRootTool.handler(
-      params,
+      { cursor: encodeCursor({ s: LARGE_SKIP, t: 50 }) },
       createMockRequestHandlerExtra()
     );
 
@@ -164,40 +135,10 @@ describe("get-static-file-root", () => {
     expect(typeof response.total).toBe('number');
   });
 
-  it.skip("should handle zero take parameter", async () => {
-    // Arrange
-    const params = {
-      skip: 0,
-      take: 0
-    };
-
-    // Act
-    const result = await GetStaticFileRootTool.handler(
-      params,
-      createMockRequestHandlerExtra()
-    );
-
-    // Assert - should return empty items but still have total count
-    expect(result).toMatchSnapshot();
-
-    const response = validateToolResponse(GetStaticFileRootTool, result);
-    expect(response).toHaveProperty('items');
-    expect(Array.isArray(response.items)).toBe(true);
-    expect(response.items.length).toBe(0); // Should be empty due to take: 0
-    expect(response).toHaveProperty('total');
-    expect(typeof response.total).toBe('number');
-  });
-
   it("should return items with proper file system properties for root items", async () => {
-    // Arrange
-    const params = {
-      skip: 0,
-      take: DEFAULT_TAKE
-    };
-
     // Act
     const result = await GetStaticFileRootTool.handler(
-      params,
+      {},
       createMockRequestHandlerExtra()
     );
 
@@ -227,12 +168,11 @@ describe("get-static-file-root", () => {
   it("should have consistent pagination behavior with helper method", async () => {
     // Arrange - compare tool result with helper result
     const skip = 0;
-    const take = DEFAULT_TAKE;
-    const params = { skip, take };
+    const take = 100;
 
     // Act - get results from both tool and helper
     const toolResult = await GetStaticFileRootTool.handler(
-      params,
+      {},
       createMockRequestHandlerExtra()
     );
 

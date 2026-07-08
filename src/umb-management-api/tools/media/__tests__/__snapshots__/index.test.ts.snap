@@ -4,6 +4,7 @@ exports[`media-tool-index should have all tools when user has all required acces
 [
   "get-media-by-id",
   "get-media-ancestors",
+  "get-media-ancestors-batch",
   "get-media-children",
   "get-media-siblings",
   "get-media-root",
@@ -34,6 +35,7 @@ exports[`media-tool-index should have all tools when user has all required acces
   "get-collection-media",
   "get-recycle-bin-media-referenced-by",
   "get-recycle-bin-media-original-parent",
+  "get-media-type-schema",
 ]
 `;
 
@@ -47,6 +49,7 @@ exports[`media-tool-index should have management tools when user has media secti
 [
   "get-media-by-id",
   "get-media-ancestors",
+  "get-media-ancestors-batch",
   "get-media-children",
   "get-media-siblings",
   "get-media-root",
@@ -77,6 +80,7 @@ exports[`media-tool-index should have management tools when user has media secti
   "get-collection-media",
   "get-recycle-bin-media-referenced-by",
   "get-recycle-bin-media-original-parent",
+  "get-media-type-schema",
 ]
 `;
 
@@ -84,6 +88,7 @@ exports[`media-tool-index should have tree tools when user has media tree access
 [
   "get-media-by-id",
   "get-media-ancestors",
+  "get-media-ancestors-batch",
   "get-media-children",
   "get-media-siblings",
   "get-media-root",
@@ -114,5 +119,6 @@ exports[`media-tool-index should have tree tools when user has media tree access
   "get-collection-media",
   "get-recycle-bin-media-referenced-by",
   "get-recycle-bin-media-original-parent",
+  "get-media-type-schema",
 ]
 `;

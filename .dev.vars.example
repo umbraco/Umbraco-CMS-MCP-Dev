@@ -1,0 +1,14 @@
+# Wrangler dev vars for the hosted MCP worker (src/worker.ts)
+# Copy to .dev.vars and update values for your environment.
+
+# Browser-facing URL for OAuth redirects (what the user's browser hits)
+UMBRACO_BASE_URL=https://localhost:44391
+
+# Server-to-server URL for token exchange (must be HTTP for local dev — workerd can't verify self-signed certs)
+UMBRACO_SERVER_URL=http://localhost:56472
+
+# OAuth client ID registered in Umbraco (see McpOAuthComposer.cs)
+UMBRACO_OAUTH_CLIENT_ID=umbraco-back-office-mcp
+
+# 32-byte hex key for encrypting session cookies (any random value works for local dev)
+COOKIE_ENCRYPTION_KEY=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef

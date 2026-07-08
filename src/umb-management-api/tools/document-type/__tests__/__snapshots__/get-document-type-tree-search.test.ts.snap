@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-type-tree-search should find a created document type by name in tree-node shape 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "hasChildren": false,
+        "icon": "",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isElement": false,
+        "isFolder": false,
+        "name": "_Test TreeSearch DocumentType",
+        "noAccess": false,
+        "parent": null,
+      },
+    ],
+    "nextCursor": undefined,
+    "total": 1,
+  },
+}
+`;

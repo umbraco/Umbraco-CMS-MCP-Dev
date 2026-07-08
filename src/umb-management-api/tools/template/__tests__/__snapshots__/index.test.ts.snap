@@ -11,6 +11,7 @@ exports[`template-tool-index should have all tools when user has settings sectio
   "execute-template-query",
   "get-template-query-settings",
   "get-template-ancestors",
+  "get-template-ancestors-batch",
   "get-template-children",
   "get-template-root",
   "get-template-search",

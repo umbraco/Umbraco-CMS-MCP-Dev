@@ -11,10 +11,11 @@ describe("get-language-items", () => {
   setupTestEnvironment();
 
   const TEST_LANGUAGE_NAME = "_Test Language Items";
-  const TEST_LANGUAGE_ISO = "en-GB";
+  const TEST_LANGUAGE_ISO = "en-IE";
   let builder: LanguageBuilder;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
     builder = new LanguageBuilder();
   });
 

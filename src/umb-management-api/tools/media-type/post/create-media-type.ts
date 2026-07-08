@@ -2,12 +2,12 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateMediaTypeRequestModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { postMediaTypeBody } from "@/umb-management-api/umbracoManagementAPI.zod.js";
 import { z } from "zod";
-import { AxiosResponse } from "axios";
 import {
   type ToolDefinition,
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 // Extract the property and container schemas from the generated schema
@@ -40,7 +40,7 @@ type CreateMediaTypeSchema = z.infer<typeof createMediaTypeSchema>;
 
 export const createMediaTypeOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const CreateMediaTypeTool = {
@@ -59,6 +59,7 @@ const CreateMediaTypeTool = {
       description: model.description,
       icon: model.icon,
       allowedAsRoot: model.allowedAsRoot,
+      allowedInLibrary: true,
       variesByCulture: model.variesByCulture,
       variesBySegment: model.variesBySegment,
       isElement: model.isElement,
@@ -74,11 +75,11 @@ const CreateMediaTypeTool = {
     const response = await client.postMediaType(payload, {
       returnFullResponse: true,
       validateStatus: () => true,
-    }) as unknown as AxiosResponse<ProblemDetails | void>;
+    }) as unknown as HttpResponse<ProblemDetails | void>;
 
     if (response.status === 201) {
       // Extract ID from Location header
-      const locationHeader = response.headers['location'] || response.headers['Location'];
+      const locationHeader = response.headers?.['location'] || response.headers?.['Location'];
       let createdId = model.id || '';
       if (locationHeader) {
         const idMatch = locationHeader.match(/([0-9a-f-]{36})$/i);

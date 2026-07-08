@@ -3,6 +3,7 @@
 exports[`get-item-document-type should get multiple document types by ID 1`] = `
 [
   {
+    "allowedInLibrary": true,
     "description": null,
     "flags": [],
     "icon": "icon-document",
@@ -11,6 +12,7 @@ exports[`get-item-document-type should get multiple document types by ID 1`] = `
     "name": "_Test Item DocumentType",
   },
   {
+    "allowedInLibrary": true,
     "description": null,
     "flags": [],
     "icon": "icon-document",
@@ -26,6 +28,7 @@ exports[`get-item-document-type should get no document types for empty request 1
 exports[`get-item-document-type should get single document type by ID 1`] = `
 [
   {
+    "allowedInLibrary": true,
     "description": null,
     "flags": [],
     "icon": "icon-document",

@@ -7,19 +7,24 @@ import packageJson from "../package.json" with { type: "json" };
 import { UmbracoToolFactory } from "./umb-management-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { checkUmbracoVersion, configureApiClient, initializeUmbracoAxios } from "@umbraco-cms/mcp-server-sdk";
-import { loadServerConfig, clearConfigCache } from "./config/index.js";
+import { checkUmbracoVersion, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
+import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
+import { availableCollections } from "./umb-management-api/tools/collection-registry.js";
+import { setUmbracoVersion, setAllowFilePathUploads } from "./umb-management-api/runtime-context.js";
 
 const main = async () => {
+  // Node/stdio environment supports filesystem access; enable filePath uploads.
+  setAllowFilePathUploads(true);
+
   // Clear config cache to ensure fresh config for each server start
   clearConfigCache();
 
   // Load and validate configuration
-  const serverConfig = loadServerConfig(true); // true = stdio mode (no logging)
+  const serverConfig = await loadServerConfig(true); // true = stdio mode (no logging)
   const config = serverConfig.umbraco;
 
-  // Initialize Axios client with configuration
-  initializeUmbracoAxios(config.auth);
+  // Initialize fetch client with configuration
+  initializeUmbracoFetch(config.auth);
 
   // Configure API client for SDK helpers (executeVoidApiCall, etc.)
   configureApiClient(() => UmbracoManagementClient.getClient());
@@ -33,10 +38,32 @@ const main = async () => {
 
   const user = await client.getUserCurrent();
 
-  // Check Umbraco version compatibility (logs result internally)
+  // Handle CLI introspection flags (--list-tools, --describe-tool, --generate-context)
+  // This runs after auth so we have the real user for tool filtering
+  const rawConfig = await getServerConfig(true);
+  const configLoader = createCollectionConfigLoader({
+    modeRegistry: allModes,
+    allModeNames,
+    allSliceNames,
+  });
+  const filterConfig = configLoader.loadFromConfig(config);
+  handleCliCommands(availableCollections, {
+    cliFlags: rawConfig.cliFlags,
+    serverName: "Umbraco CMS Developer MCP Server",
+    serverVersion: packageJson.version,
+    user,
+    filterConfig,
+    serverConfig: config,
+  });
+
+  // Check Umbraco version compatibility (logs result internally) and capture the
+  // version so collection registrations can gate tools whose endpoints were
+  // introduced in newer Umbraco releases.
+  const serverInfo = await client.getServerInformation();
+  setUmbracoVersion(serverInfo.version);
   await checkUmbracoVersion({
     mcpVersion: packageJson.version,
-    client: { getServerInformation: () => client.getServerInformation() }
+    client: { getServerInformation: async () => serverInfo }
   });
 
   UmbracoToolFactory(server, user, config);

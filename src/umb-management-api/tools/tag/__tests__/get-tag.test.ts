@@ -46,8 +46,6 @@ describe("get-tag", () => {
         query: undefined,
         tagGroup: undefined,
         culture: undefined,
-        skip: undefined,
-        take: 50,
       },
       createMockRequestHandlerExtra()
     );
@@ -78,8 +76,6 @@ describe("get-tag", () => {
         query: NON_EXISTENT_TAG,
         tagGroup: undefined,
         culture: undefined,
-        skip: undefined,
-        take: 100,
       },
       createMockRequestHandlerExtra()
     );
@@ -108,8 +104,6 @@ describe("get-tag", () => {
         query: "test",
         tagGroup: undefined,
         culture: undefined,
-        skip: undefined,
-        take: 100,
       },
       createMockRequestHandlerExtra()
     );

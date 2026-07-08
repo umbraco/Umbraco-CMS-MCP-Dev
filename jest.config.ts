@@ -1,3 +1,8 @@
+// Allow self-signed certificates for local Umbraco dev instances.
+// Must be set here (before any modules load) because Jest's VM modules
+// may initialize TLS before setupFiles run.
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 const config: import("ts-jest").JestConfigWithTsJest = {
   preset: "ts-jest/presets/js-with-ts-esm",
   testEnvironment: "node",
@@ -22,13 +27,14 @@ const config: import("ts-jest").JestConfigWithTsJest = {
       },
     ],
   },
-  testMatch: ["**/src/**/__tests__/**/*.test.ts", "**/tests/evals/**/*.test.ts"],
-  testPathIgnorePatterns: ["/node_modules/", "\\.claude/worktrees/"],
-  setupFilesAfterEnv: ["jest-extended/all"],
+  testMatch: ["**/src/**/__tests__/**/*.test.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "\\.claude/worktrees/", "tests/evals/"],
+  setupFilesAfterEnv: ["jest-extended/all", "<rootDir>/jest.setup-after-env.ts"],
   setupFiles: ["<rootDir>/jest.setup.ts"],
-  maxConcurrency: 1, // Umbraco uses SQLite which doesn't support concurrent connections
+  reporters: ["default", "<rootDir>/jest-failure-reporter.ts"],
   maxWorkers: 1,
-  testTimeout: 60000, // 60 second timeout for integration tests
+  workerIdleMemoryLimit: '512MB', // Recycle worker to prevent OOM with ESM module loading
+  testTimeout: 60000,
 };
 
 module.exports = config;

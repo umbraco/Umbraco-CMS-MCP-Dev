@@ -1,7 +1,5 @@
 import * as fs from "fs";
-import * as os from "os";
 import * as path from "path";
-import axios from "axios";
 import mime from "mime-types";
 import { validateFilePath } from "./validate-file-path.js";
 import {
@@ -11,6 +9,10 @@ import {
   STANDARD_MEDIA_TYPES,
   detectFileExtensionFromBuffer,
 } from "@umbraco-cms/mcp-server-sdk";
+
+/** Hard ceiling on decoded base64 uploads. Larger files must use sourceType
+ *  "url" (public direct-download URL) or "file" (host-attached chat file). */
+export const BASE64_MAX_BYTES = 10 * 1024;
 
 /**
  * Maps MIME types to file extensions using the mime-types library.
@@ -125,117 +127,117 @@ export function buildValueStructure(mediaTypeName: string, temporaryFileId: stri
 }
 
 /**
- * Creates a file stream based on source type.
- * Returns the stream and the temporary file path (if created).
- * Note: Temp files need a filename for Umbraco's string parsing to work correctly.
+ * Builds the upload payload for `postTemporaryFile` based on source type.
+ *
+ * Returns a Buffer (or a Node ReadStream for the local filePath branch) plus
+ * a filename. We deliberately avoid `os.tmpdir()` + `fs.writeFileSync` because
+ * Cloudflare Workers' unenv polyfill doesn't implement `fs.writeFileSync`.
+ *
  * Exported for testing.
  */
-export async function createFileStream(
+export async function createFilePayload(
   sourceType: "filePath" | "url" | "base64",
   filePath: string | undefined,
   fileUrl: string | undefined,
   fileAsBase64: string | undefined,
   fileName: string
-): Promise<{ readStream: fs.ReadStream; tempFilePath: string | null }> {
-  let tempFilePath: string | null = null;
-  let readStream: fs.ReadStream;
-
+): Promise<{ data: Buffer | fs.ReadStream; filename: string }> {
   switch (sourceType) {
-    case "filePath":
+    case "filePath": {
       if (!filePath) {
         throw new Error("filePath is required when sourceType is 'filePath'");
       }
-      // Validate file path is within allowed directories (security check)
-      const validatedPath = validateFilePath(filePath);
-      readStream = fs.createReadStream(validatedPath);
-      break;
+      // filePath is Node-only by definition — it reads from the local
+      // filesystem. On Cloudflare Workers (and any non-Node runtime),
+      // fs.createReadStream isn't implemented; reject up-front with a
+      // clear message rather than crashing somewhere deeper.
+      if (typeof fs.createReadStream !== "function") {
+        throw new Error(
+          "filePath source is not supported in this runtime (no filesystem). " +
+          "Use sourceType 'url' or 'base64' instead."
+        );
+      }
+      const validatedPath = await validateFilePath(filePath);
 
-    case "url":
+      // Umbraco's TemporaryFileService parses the extension from the upload
+      // filename and crashes if it's missing. If the user-supplied `name` has
+      // no extension, fall back to the on-disk filename which always does.
+      const filename = fileName.includes('.') ? fileName : path.basename(validatedPath);
+
+      return {
+        data: fs.createReadStream(validatedPath),
+        filename,
+      };
+    }
+
+    case "url": {
       if (!fileUrl) {
         throw new Error("fileUrl is required when sourceType is 'url'");
       }
       try {
-        const response = await axios.get(fileUrl, {
-          responseType: 'arraybuffer',
-          timeout: 30000,
-          validateStatus: (status) => status < 500, // Don't throw on 4xx errors
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+        let response: Response;
+        try {
+          response = await fetch(fileUrl, { signal: controller.signal });
+        } finally {
+          clearTimeout(timeoutId);
+        }
 
         if (response.status >= 400) {
           throw new Error(`Failed to fetch file from URL: HTTP ${response.status} ${response.statusText}`);
         }
 
-        // Extract extension from URL, or try to detect from Content-Type header
-        let fileNameWithExtension = fileName;
+        const buffer = Buffer.from(await response.arrayBuffer());
+
+        let filename = fileName;
         if (!fileName.includes('.')) {
           const urlPath = new URL(fileUrl).pathname;
           const urlExtension = path.extname(urlPath);
 
           if (urlExtension) {
-            // Use extension from URL
-            fileNameWithExtension = `${fileName}${urlExtension}`;
+            filename = `${fileName}${urlExtension}`;
           } else {
-            // Try to detect extension from Content-Type header
-            const contentType = response.headers['content-type'] as string | undefined;
+            const contentType = response.headers.get('content-type') ?? undefined;
             const extensionFromMime = getExtensionFromMimeType(contentType);
-            if (extensionFromMime) {
-              fileNameWithExtension = `${fileName}${extensionFromMime}`;
-            } else {
-              // Default to .bin if we can't determine the type
-              fileNameWithExtension = `${fileName}.bin`;
-            }
+            filename = extensionFromMime ? `${fileName}${extensionFromMime}` : `${fileName}.bin`;
           }
         }
 
-        // Use the filename with extension so Umbraco can parse it correctly
-        tempFilePath = path.join(os.tmpdir(), fileNameWithExtension);
-        fs.writeFileSync(tempFilePath, response.data);
-        readStream = fs.createReadStream(tempFilePath);
+        return { data: buffer, filename };
       } catch (error) {
-        const axiosError = error as any;
-        if (axiosError.response) {
-          throw new Error(`Failed to fetch URL: HTTP ${axiosError.response.status} - ${axiosError.response.statusText} (${fileUrl})`);
-        } else if (axiosError.code === 'ECONNABORTED') {
+        if ((error as any).name === 'AbortError') {
           throw new Error(`Request timeout after 30s fetching URL: ${fileUrl}`);
-        } else if (axiosError.code) {
-          throw new Error(`Network error (${axiosError.code}) fetching URL: ${fileUrl} - ${axiosError.message}`);
         }
         throw new Error(`Failed to fetch URL: ${fileUrl} - ${(error as Error).message}`);
       }
-      break;
+    }
 
-    case "base64":
+    case "base64": {
       if (!fileAsBase64) {
         throw new Error("fileAsBase64 is required when sourceType is 'base64'");
       }
-      const fileContent = Buffer.from(fileAsBase64, 'base64');
+      // LLMs reliably truncate large base64 strings or substitute thumbnail
+      // previews — both produce corrupt files. Estimate decoded size first so
+      // we reject without materialising the (potentially multi-MB) buffer.
+      const padding = fileAsBase64.endsWith("==") ? 2 : fileAsBase64.endsWith("=") ? 1 : 0;
+      const estimatedBytes = Math.floor((fileAsBase64.length * 3) / 4) - padding;
+      if (estimatedBytes > BASE64_MAX_BYTES) {
+        throw new Error(
+          `base64 upload rejected: decoded payload is ~${estimatedBytes.toLocaleString()} bytes ` +
+          `(limit is ${BASE64_MAX_BYTES.toLocaleString()} bytes). ` +
+          `Use sourceType="url" with a public direct-download URL, or sourceType="file" if the file is attached to the chat.`
+        );
+      }
+      const buffer = Buffer.from(fileAsBase64, 'base64');
 
-      // Ensure fileName has an extension - add one based on magic bytes if missing
-      let fileNameWithExtension = fileName;
+      let filename = fileName;
       if (!fileName.includes('.')) {
-        const extension = detectFileExtensionFromBuffer(fileContent);
-        fileNameWithExtension = `${fileName}${extension}`;
+        const extension = detectFileExtensionFromBuffer(buffer);
+        filename = `${fileName}${extension}`;
       }
 
-      // Use just the filename so Umbraco can parse it correctly
-      tempFilePath = path.join(os.tmpdir(), fileNameWithExtension);
-      fs.writeFileSync(tempFilePath, fileContent);
-      readStream = fs.createReadStream(tempFilePath);
-      break;
-  }
-
-  return { readStream, tempFilePath };
-}
-
-/**
- * Cleans up a temporary file if it exists.
- */
-export function cleanupTempFile(tempFilePath: string | null): void {
-  if (tempFilePath && fs.existsSync(tempFilePath)) {
-    try {
-      fs.unlinkSync(tempFilePath);
-    } catch (e) {
-      console.error('Failed to cleanup temp file:', e);
+      return { data: buffer, filename };
     }
   }
 }
@@ -258,90 +260,84 @@ export async function uploadMediaFile(
     temporaryFileId: string;
   }
 ): Promise<{name: string, id: string}> {
-  let tempFilePath: string | null = null;
+  // Step 1: Validate media type (SVG special case - only auto-correction we do)
+  // We trust the LLM for all other media type decisions
+  const validatedMediaTypeName = validateMediaTypeForSvg(
+    params.filePath,
+    params.fileUrl,
+    params.name,
+    params.mediaTypeName
+  );
 
+  // Step 2: Fetch media type ID
+  const mediaTypeId = await fetchMediaTypeId(client, validatedMediaTypeName);
+
+  // Step 3: Build the upload payload (Buffer for url/base64, ReadStream for filePath)
+  const { data, filename } = await createFilePayload(
+    params.sourceType,
+    params.filePath,
+    params.fileUrl,
+    params.fileAsBase64,
+    params.name
+  );
+
+  // Step 4: Upload to temporary file endpoint
   try {
-    // Step 1: Validate media type (SVG special case - only auto-correction we do)
-    // We trust the LLM for all other media type decisions
-    const validatedMediaTypeName = validateMediaTypeForSvg(
-      params.filePath,
-      params.fileUrl,
-      params.name,
-      params.mediaTypeName
-    );
-
-    // Step 2: Fetch media type ID
-    const mediaTypeId = await fetchMediaTypeId(client, validatedMediaTypeName);
-
-    // Step 3: Create file stream
-    const { readStream, tempFilePath: createdTempPath } = await createFileStream(
-      params.sourceType,
-      params.filePath,
-      params.fileUrl,
-      params.fileAsBase64,
-      params.name
-    );
-    tempFilePath = createdTempPath;
-
-    // Step 4: Upload to temporary file endpoint
-    try {
-      await client.postTemporaryFile({
-        Id: params.temporaryFileId,
-        File: readStream,
-      });
-    } catch (error) {
-      const err = error as any;
-      const errorData = err.response?.data
-        ? (typeof err.response.data === 'string' ? err.response.data : JSON.stringify(err.response.data))
-        : err.message;
-      throw new Error(`Failed to upload temporary file: ${err.response?.status || 'Unknown error'} - ${errorData}`);
-    }
-
-    // Step 5: Build value structure
-    const valueStructure = buildValueStructure(validatedMediaTypeName, params.temporaryFileId);
-
-    // Step 6: Create media item
-    let response: any;
-    try {
-      response = await client.postMedia({
-        mediaType: { id: mediaTypeId },
-        variants: [
-          {
-            culture: null,
-            segment: null,
-            name: params.name, // Use original name provided by user
-          },
-        ],
-        values: [valueStructure] as any,
-        parent: params.parentId ? { id: params.parentId } : null,
-      }, CAPTURE_RAW_HTTP_RESPONSE);
-    } catch (error) {
-      const err = error as any;
-      throw new Error(`Failed to create media item: ${err.response?.status || 'Unknown error'} - ${JSON.stringify(err.response?.data) || err.message}`);
-    }
-
-    // Check if request was successful (status 200-299)
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(`Request failed with status code ${response.status}`);
-    }
-
-    // Extract ID from Location header (standard REST pattern)
-    const locationHeader = response.headers?.location || response.headers?.Location;
-    if (!locationHeader) {
-      throw new Error("No Location header in response - cannot determine created media ID");
-    }
-
-    // Location header format: /umbraco/management/api/v1/media/{id}
-    const idMatch = locationHeader.match(/\/([a-f0-9-]{36})$/i);
-    if (!idMatch) {
-      throw new Error(`Could not extract ID from Location header: ${locationHeader}`);
-    }
-
-    const mediaId = idMatch[1];
-
-    // Return the original name and the created media ID
-    return { name: params.name, id: mediaId };
-  } finally {
-    cleanupTempFile(tempFilePath);
+    await client.postTemporaryFile({
+      Id: params.temporaryFileId,
+      File: data,
+      FileName: filename,
+    });
+  } catch (error) {
+    const err = error as any;
+    const errorData = err.response?.data
+      ? (typeof err.response.data === 'string' ? err.response.data : JSON.stringify(err.response.data))
+      : err.message;
+    throw new Error(`Failed to upload temporary file: ${err.response?.status || 'Unknown error'} - ${errorData}`);
   }
+
+  // Step 5: Build value structure
+  const valueStructure = buildValueStructure(validatedMediaTypeName, params.temporaryFileId);
+
+  // Step 6: Create media item
+  let response: any;
+  try {
+    response = await client.postMedia({
+      mediaType: { id: mediaTypeId },
+      variants: [
+        {
+          culture: null,
+          segment: null,
+          name: params.name, // Use original name provided by user
+        },
+      ],
+      values: [valueStructure] as any,
+      parent: params.parentId ? { id: params.parentId } : null,
+    }, CAPTURE_RAW_HTTP_RESPONSE);
+  } catch (error) {
+    const err = error as any;
+    throw new Error(`Failed to create media item: ${err.response?.status || 'Unknown error'} - ${JSON.stringify(err.response?.data) || err.message}`);
+  }
+
+  // Check if request was successful (status 200-299)
+  if (response.status < 200 || response.status >= 300) {
+    throw new Error(`Request failed with status code ${response.status}`);
+  }
+
+  // Extract ID from Location header (standard REST pattern)
+  const locationHeader = response.headers?.location || response.headers?.Location;
+  if (!locationHeader) {
+    throw new Error("No Location header in response - cannot determine created media ID");
+  }
+
+  // Location header format: /umbraco/management/api/v1/media/{id}
+  const idMatch = locationHeader.match(/\/([a-f0-9-]{36})$/i);
+  if (!idMatch) {
+    throw new Error(`Could not extract ID from Location header: ${locationHeader}`);
+  }
+
+  const mediaId = idMatch[1];
+
+  // Return the original name and the created media ID
+  return { name: params.name, id: mediaId };
 }

@@ -13,6 +13,7 @@ exports[`get-document-type-siblings should get sibling document types 1`] = `
         "isElement": false,
         "isFolder": false,
         "name": "_Test Target DocumentType",
+        "noAccess": false,
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
         },

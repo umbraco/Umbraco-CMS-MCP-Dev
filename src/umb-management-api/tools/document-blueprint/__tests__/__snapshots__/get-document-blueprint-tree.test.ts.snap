@@ -12,6 +12,7 @@ exports[`document-blueprint-tree ancestors should get ancestor items 1`] = `
         "id": "00000000-0000-0000-0000-000000000000",
         "isFolder": true,
         "name": "_Test Folder Blueprint",
+        "noAccess": false,
         "parent": null,
       },
       {
@@ -21,6 +22,7 @@ exports[`document-blueprint-tree ancestors should get ancestor items 1`] = `
         "id": "00000000-0000-0000-0000-000000000000",
         "isFolder": false,
         "name": "_Test Child Blueprint",
+        "noAccess": false,
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
         },
@@ -55,11 +57,13 @@ exports[`document-blueprint-tree children should get child items 1`] = `
         "id": "00000000-0000-0000-0000-000000000000",
         "isFolder": false,
         "name": "_Test Child Blueprint",
+        "noAccess": false,
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
         },
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -70,6 +74,7 @@ exports[`document-blueprint-tree children should handle non-existent parent 1`] 
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

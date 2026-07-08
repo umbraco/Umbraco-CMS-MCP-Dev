@@ -5,13 +5,12 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-
 describe("get-indexer", () => {
   setupTestEnvironment();
 
   it("should list all indexes with default parameters", async () => {
     const result = await GetIndexerTool.handler(
-      { skip: undefined, take: 100 },
+      {},
       createMockRequestHandlerExtra()
     );
 

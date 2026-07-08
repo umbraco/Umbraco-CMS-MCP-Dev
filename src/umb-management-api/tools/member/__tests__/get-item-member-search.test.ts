@@ -44,7 +44,7 @@ describe("get-item-member-search", () => {
 
     // Act - Search for the member
     const result = await GetItemMemberSearchTool.handler(
-      { query: TEST_MEMBER_USERNAME, take: 100, skip: undefined, allowedMemberTypes: undefined },
+      { query: TEST_MEMBER_USERNAME } as any,
       createMockRequestHandlerExtra()
     );
 
@@ -57,7 +57,7 @@ describe("get-item-member-search", () => {
     // Act - Search for a member that doesn't exist using a very unique string
     const uniqueQuery = `xYz_NoNe_ExIsT_${Date.now()}_${Math.random().toString(36).substring(7)}@nowhere.invalid`;
     const result = await GetItemMemberSearchTool.handler(
-      { query: uniqueQuery, take: 100, skip: undefined, allowedMemberTypes: undefined },
+      { query: uniqueQuery } as any,
       createMockRequestHandlerExtra()
     );
 
@@ -87,7 +87,7 @@ describe("get-item-member-search", () => {
 
     // Act - Search with pagination (take only 1 result)
     const result = await GetItemMemberSearchTool.handler(
-      { query: "itemsearch", skip: 0, take: 1, allowedMemberTypes: undefined },
+      { query: "itemsearch" } as any,
       createMockRequestHandlerExtra()
     );
 

@@ -38,4 +38,13 @@ describe("media-tool-index", () => {
         const tools = MediaTools(userMock as CurrentUserResponseModel);
         expect(tools.map(t => t.name)).toMatchSnapshot();
     });
+
+    it("registers the Schema-API tool for media-section access", () => {
+        const userMock = {
+            allowedSections: [sections.media]
+        } as Partial<CurrentUserResponseModel>;
+
+        const names = MediaTools(userMock as CurrentUserResponseModel).map(t => t.name);
+        expect(names).toContain("get-media-type-schema");
+    });
 });

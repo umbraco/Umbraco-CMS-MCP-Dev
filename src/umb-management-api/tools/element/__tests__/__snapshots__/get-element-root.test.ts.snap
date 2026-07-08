@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-root should get root element items 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "createDate": "NORMALIZED_DATE",
+        "documentType": null,
+        "flags": [],
+        "hasChildren": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isFolder": true,
+        "name": "Categories",
+        "noAccess": false,
+        "parent": null,
+        "variants": [],
+      },
+      {
+        "createDate": "NORMALIZED_DATE",
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "hasChildren": false,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isFolder": false,
+        "name": "_Test GetElementRoot",
+        "noAccess": false,
+        "parent": null,
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test GetElementRoot",
+            "state": "Draft",
+          },
+        ],
+      },
+    ],
+    "nextCursor": undefined,
+    "total": 2,
+  },
+}
+`;

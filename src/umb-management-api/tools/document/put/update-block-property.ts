@@ -12,7 +12,6 @@ import {
   validateCultureSegment,
   type ResolvedProperty
 } from "./helpers/document-type-properties-resolver.js";
-import { validatePropertiesBeforeSave } from "./helpers/property-value-validator.js";
 import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
 import {
   discoverAllBlockArrays,
@@ -29,7 +28,7 @@ import {
 // Output schema for successful responses
 const blockUpdateResultSchema = z.object({
   success: z.boolean(),
-  contentKey: z.string().uuid(),
+  contentKey: z.string().guid(),
   message: z.string(),
   updatedCount: z.number().optional(),
   addedCount: z.number().optional(),
@@ -105,7 +104,7 @@ const UpdateBlockPropertyTool = {
   - Update with culture: { documentId: "...", propertyAlias: "mainContent", culture: "es-ES", updates: [...] }
   - Batch update multiple blocks: { documentId: "...", propertyAlias: "mainContent", updates: [{ contentKey: "uuid1", ... }, { contentKey: "uuid2", ... }] }`,
   inputSchema: updateBlockPropertySchema,
-  outputSchema: updateBlockPropertyOutputSchema,
+  outputSchema: updateBlockPropertyOutputSchema.shape,
   annotations: {
     idempotentHint: true,
   },
@@ -198,25 +197,8 @@ const UpdateBlockPropertyTool = {
       let updatedCount = 0;
       let addedCount = 0;
 
-      // Load Element Type properties for validation
+      // Load Element Type properties for alias validation
       const elementTypeProperties = await getElementTypeProperties(foundBlock.block.contentTypeKey);
-
-      // Validate property values against Data Type configuration before processing
-      if (elementTypeProperties.length > 0) {
-        const propsToValidate = update.properties
-          .map(p => {
-            const def = elementTypeProperties.find(d => d.alias === p.alias);
-            return { alias: p.alias, value: p.value, dataTypeId: def?.dataTypeId ?? '' };
-          })
-          .filter(p => p.dataTypeId);
-
-        if (propsToValidate.length > 0) {
-          const valueValidation = await validatePropertiesBeforeSave(propsToValidate);
-          if (!valueValidation.isValid) {
-            errors.push(...valueValidation.errors);
-          }
-        }
-      }
 
       for (const propUpdate of update.properties) {
         const blockProperty = foundBlock.block.values.find(v =>
@@ -229,7 +211,6 @@ const UpdateBlockPropertyTool = {
           updatedCount++;
         } else {
           // Property doesn't exist on block - check if it's valid on Element Type
-          // Note: elementTypeProperties is already loaded for value validation above
           const propertyDef = elementTypeProperties.find(p => p.alias === propUpdate.alias);
 
           if (propertyDef) {
@@ -332,6 +313,6 @@ const UpdateBlockPropertyTool = {
       results
     });
   }),
-} satisfies ToolDefinition<typeof updateBlockPropertySchema, typeof updateBlockPropertyOutputSchema>;
+} satisfies ToolDefinition<typeof updateBlockPropertySchema, typeof updateBlockPropertyOutputSchema.shape>;
 
 export default withStandardDecorators(UpdateBlockPropertyTool);

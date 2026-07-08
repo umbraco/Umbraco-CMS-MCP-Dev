@@ -13,6 +13,7 @@ exports[`media-type-tree ancestors should get ancestor items 1`] = `
         "isDeletable": false,
         "isFolder": true,
         "name": "_Test Folder MediaType",
+        "noAccess": false,
         "parent": null,
       },
       {
@@ -23,6 +24,7 @@ exports[`media-type-tree ancestors should get ancestor items 1`] = `
         "isDeletable": false,
         "isFolder": false,
         "name": "_Test Child MediaType",
+        "noAccess": false,
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
         },
@@ -54,11 +56,13 @@ exports[`media-type-tree children should get child items 1`] = `
         "isDeletable": true,
         "isFolder": false,
         "name": "_Test Child MediaType",
+        "noAccess": false,
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
         },
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -69,6 +73,7 @@ exports[`media-type-tree children should handle non-existent parent 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

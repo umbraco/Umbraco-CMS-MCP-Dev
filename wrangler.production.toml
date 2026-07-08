@@ -1,0 +1,23 @@
+# Production Wrangler config for deploying to Cloudflare Workers.
+# Usage: wrangler deploy --config wrangler.production.toml
+
+name = "umbraco-cms-mcp"
+main = "src/worker.ts"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat_v2"]
+
+find_additional_modules = true
+
+[[kv_namespaces]]
+binding = "OAUTH_KV"
+# Replace with your production KV namespace ID from: wrangler kv namespace create OAUTH_KV
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[durable_objects]
+bindings = [
+  { name = "MCP_AGENT", class_name = "UmbracoMcpAgent" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["UmbracoMcpAgent"]

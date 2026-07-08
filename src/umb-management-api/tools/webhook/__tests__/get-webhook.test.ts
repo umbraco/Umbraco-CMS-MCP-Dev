@@ -11,7 +11,6 @@ import {
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
-
 describe("get-webhook", () => {
   const TEST_WEBHOOK_NAME = "_Test Webhook";
 
@@ -24,7 +23,7 @@ describe("get-webhook", () => {
   it("should get empty paged webhooks", async () => {
     // Get paged webhooks
     const result = await GetWebhookTool.handler(
-      { skip: 0, take: 10 },
+      {},
       createMockRequestHandlerExtra()
     );
     const response = validateToolResponse(GetWebhookTool, result);
@@ -45,7 +44,7 @@ describe("get-webhook", () => {
 
     // Get paged webhooks
     const result = await GetWebhookTool.handler(
-      { skip: 0, take: 10 },
+      {},
       createMockRequestHandlerExtra()
     );
     const response = validateToolResponse(GetWebhookTool, result);
@@ -68,7 +67,7 @@ describe("get-webhook", () => {
   it("should use pagination parameters", async () => {
     // Get webhooks with pagination parameters
     const result = await GetWebhookTool.handler(
-      { skip: 0, take: 100 },
+      {},
       createMockRequestHandlerExtra()
     );
     const response = validateToolResponse(GetWebhookTool, result);

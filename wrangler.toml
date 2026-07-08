@@ -1,0 +1,20 @@
+name = "umbraco-cms-mcp"
+main = "src/worker.ts"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat_v2"]
+
+# Use find_additional_modules to handle yargs resolution
+find_additional_modules = true
+
+[[kv_namespaces]]
+binding = "OAUTH_KV"
+id = "e2e-test-kv"
+
+[durable_objects]
+bindings = [
+  { name = "MCP_AGENT", class_name = "UmbracoMcpAgent" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["UmbracoMcpAgent"]

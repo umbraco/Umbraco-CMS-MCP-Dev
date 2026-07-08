@@ -40,13 +40,9 @@ describe("get-media-audit-log", () => {
     const result = await GetMediaAuditLogTool.handler(
       {
         id: mediaId,
-        data: {
-          orderDirection: "Ascending",
-          sinceDate: new Date().toISOString(),
-          skip: 0,
-          take: 100,
-        },
-      } as any,
+        orderDirection: "Ascending",
+        sinceDate: new Date().toISOString(),
+      },
       createMockRequestHandlerExtra()
     );
 
@@ -59,13 +55,9 @@ describe("get-media-audit-log", () => {
     const result = await GetMediaAuditLogTool.handler(
       {
         id: BLANK_UUID,
-        data: {
-          orderDirection: "Ascending",
-          sinceDate: new Date().toISOString(),
-          skip: 0,
-          take: 100,
-        },
-      } as any,
+        orderDirection: "Ascending",
+        sinceDate: new Date().toISOString(),
+      },
       createMockRequestHandlerExtra()
     );
 

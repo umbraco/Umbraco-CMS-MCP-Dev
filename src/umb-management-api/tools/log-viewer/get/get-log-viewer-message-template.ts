@@ -15,6 +15,7 @@ const GetLogViewerMessageTemplateTool = {
   annotations: {
     readOnlyHint: true,
   },
+  pageSize: 50,
   slices: ['diagnostics'],
   handler: (async (model: GetLogViewerMessageTemplateParams) => {
     return executeGetApiCall((client) =>

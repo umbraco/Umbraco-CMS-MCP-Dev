@@ -25,6 +25,7 @@ exports[`get-recycle-bin-media-children should get children of a media item in r
         ],
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -35,6 +36,7 @@ exports[`get-recycle-bin-media-children should handle non-existent media 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

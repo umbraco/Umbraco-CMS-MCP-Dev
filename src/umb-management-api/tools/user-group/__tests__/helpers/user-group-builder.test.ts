@@ -1,15 +1,20 @@
 import { UserGroupBuilder } from "./user-group-builder.js";
+import { UserGroupTestHelper } from "./user-group-helper.js";
 import { jest } from "@jest/globals";
+
+const TEST_GROUP_NAME = "Test User Group";
 
 describe("UserGroupBuilder", () => {
   let helper: UserGroupBuilder;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await UserGroupTestHelper.cleanup(TEST_GROUP_NAME);
     helper = new UserGroupBuilder();
   });
 
   afterEach(async () => {
     await helper.cleanup();
+    await UserGroupTestHelper.cleanup(TEST_GROUP_NAME);
   });
 
   it("should create a user group with name", async () => {

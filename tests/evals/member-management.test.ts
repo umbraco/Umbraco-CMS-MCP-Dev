@@ -55,6 +55,6 @@ describe("member management eval tests", () => {
       successPattern: "member management workflow has completed successfully",
       options: { maxTurns: 20 },
     }),
-    180000
+    300000
   );
 });

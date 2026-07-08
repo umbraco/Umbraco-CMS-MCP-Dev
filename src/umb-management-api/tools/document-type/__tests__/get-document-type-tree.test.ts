@@ -44,7 +44,6 @@ describe("document-type-tree", () => {
       // Act - Get children of folder
       const result = await GetDocumentTypeChildrenTool.handler(
         {
-          take: 100,
           parentId: folderBuilder.getId(),
         } as any, createMockRequestHandlerExtra()
       );
@@ -57,7 +56,6 @@ describe("document-type-tree", () => {
       // Act - Try to get children of non-existent parent
       const result = await GetDocumentTypeChildrenTool.handler(
         {
-          take: 100,
           parentId: BLANK_UUID,
         } as any, createMockRequestHandlerExtra()
       );

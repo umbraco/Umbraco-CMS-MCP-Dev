@@ -2,7 +2,6 @@ import { UmbracoManagementClient } from "@umb-management-client";
 import { CreateDocumentRequestModel, CurrentUserResponseModel, ProblemDetails } from "@/umb-management-api/schemas/index.js";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
-import { AxiosResponse } from "axios";
 import { UmbracoDocumentPermissions } from "../constants.js";
 import {
   type ToolDefinition,
@@ -10,17 +9,25 @@ import {
   createToolResult,
   createToolResultError,
   withStandardDecorators,
+  type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
 
 export const createOutputSchema = z.object({
   message: z.string(),
-  id: z.string().uuid()
+  id: z.string().guid()
 });
 
 const createDocumentSchema = z.object({
   documentTypeId: z.string().uuid("Must be a valid document type type UUID"),
   parentId: z.string().uuid("Must be a valid document UUID").optional(),
   name: z.string(),
+  templateId: z
+    .string()
+    .uuid("Must be a valid template UUID")
+    .optional()
+    .describe(
+      "Optional template ID to apply to the document. If omitted, the document type's default template is applied automatically. Provide a value only when you need a specific allowed template other than the default."
+    ),
   cultures: z.array(z.string()).optional().describe("Array of culture codes. If not provided or empty array, will create single variant with null culture."),
   values: z
     .array(
@@ -92,22 +99,23 @@ const CreateDocumentTool = {
 
   When creating documents, you need to provide property values that match the property editors defined in the document type.
 
-  IMPORTANT: Use the get-document-property-value-template tool to:
-  - View all available property editors (call without parameters)
-  - Get the correct value structure for a specific property editor (call with editorAlias parameter)
-  - Each template provides the editorAlias and value format
-  - You must add culture, segment, and alias based on your document's specific requirements
+  IMPORTANT: Use the get-document-type-schema tool to:
+  - Get the JSON Schema describing the expected property structure for a specific document type
+  - The schema includes all property definitions and their value formats
+  - Use the schema to construct the correct values array for your document
 
   The values parameter is an array of property value objects following this structure:
   {
-    "editorAlias": "Umbraco.TextBox",  // From template - the property editor type
+    "editorAlias": "Umbraco.TextBox",  // The property editor type
     "culture": null,                    // Document-specific - culture code or null
     "segment": null,                    // Document-specific - segment or null
-    "alias": "propertyAlias",          // Document-specific - property alias from document type
-    "value": "your value here"         // From template - customize the value structure
+    "alias": "propertyAlias",          // Property alias from document type
+    "value": "your value here"         // Value matching the schema structure
   }
 
-  Note: Some property editors (BlockList, BlockGrid, ImageCropper, UploadField) have special requirements - check their templates for important notes.
+  ## Default Template
+
+  The document type's default template is applied automatically. Pass an explicit \`templateId\` only when you need a specific allowed template other than the default. If the document type has no default template, the document is created without one.
   `,
   inputSchema: createDocumentSchema.shape,
   outputSchema: createOutputSchema.shape,
@@ -136,6 +144,18 @@ const CreateDocumentTool = {
       segment: null,
     }));
 
+    // Resolve the template: explicit override wins; otherwise use the
+    // document type's default template (which may itself be null).
+    let template: { id: string } | null;
+    if (model.templateId) {
+      template = { id: model.templateId };
+    } else {
+      const docType = await client.getDocumentTypeById(model.documentTypeId);
+      template = docType.defaultTemplate?.id
+        ? { id: docType.defaultTemplate.id }
+        : null;
+    }
+
     const payload: CreateDocumentRequestModel = {
       id: documentId,
       documentType: {
@@ -146,13 +166,13 @@ const CreateDocumentTool = {
           id: model.parentId,
         }
         : undefined,
-      template: null,
+      template,
       values: model.values,
       variants,
     };
 
     // Get full response to check status
-    const response = await client.postDocument(payload, CAPTURE_RAW_HTTP_RESPONSE) as unknown as AxiosResponse<ProblemDetails | void>;
+    const response = await client.postDocument(payload, CAPTURE_RAW_HTTP_RESPONSE) as unknown as HttpResponse<ProblemDetails | void>;
 
     // Check if the document was created successfully (201 Created)
     if (response.status === 201) {

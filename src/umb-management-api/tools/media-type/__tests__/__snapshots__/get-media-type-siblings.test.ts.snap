@@ -13,6 +13,7 @@ exports[`get-media-type-siblings should get sibling media types 1`] = `
         "isDeletable": true,
         "isFolder": false,
         "name": "_Test Target MediaType",
+        "noAccess": false,
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
         },

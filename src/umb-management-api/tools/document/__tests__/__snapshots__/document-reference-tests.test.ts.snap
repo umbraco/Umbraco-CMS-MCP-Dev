@@ -5,6 +5,7 @@ exports[`document-reference-tests get-document-are-referenced should check if do
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -15,6 +16,7 @@ exports[`document-reference-tests get-document-are-referenced should handle sing
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -25,6 +27,7 @@ exports[`document-reference-tests get-document-by-id-referenced-by should get do
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -35,6 +38,7 @@ exports[`document-reference-tests get-document-by-id-referenced-by should get re
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -43,12 +47,10 @@ exports[`document-reference-tests get-document-by-id-referenced-by should get re
 exports[`document-reference-tests get-document-by-id-referenced-by should handle non-existent document 1`] = `
 {
   "content": [],
-  "isError": true,
   "structuredContent": {
-    "operationStatus": "ContentNotFound",
-    "status": 404,
-    "title": "The requested content could not be found",
-    "type": "Error",
+    "items": [],
+    "nextCursor": undefined,
+    "total": 0,
   },
 }
 `;
@@ -58,6 +60,7 @@ exports[`document-reference-tests get-document-by-id-referenced-descendants shou
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -68,6 +71,7 @@ exports[`document-reference-tests get-document-by-id-referenced-descendants shou
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

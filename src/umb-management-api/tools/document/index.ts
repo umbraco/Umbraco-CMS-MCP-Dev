@@ -10,7 +10,7 @@ import GetDocumentAuditLogTool from "./get/get-document-audit-log.js";
 import GetDocumentPublishTool from "./get/get-document-publish.js";
 import GetDocumentConfigurationTool from "./get/get-document-configuration.js";
 import GetDocumentUrlsTool from "./get/get-document-urls.js";
-import GetDocumentPropertyValueTemplateTool from "./get/get-document-property-value-template.js";
+import GetDocumentTypeSchemaTool from "./get/get-document-type-schema.js";
 import SearchDocumentTool from "./get/search-document.js";
 import GetCollectionDocumentByIdTool from "./get/get-collection-document-by-id.js";
 import GetItemDocumentTool from "./get/get-item-document.js";
@@ -41,6 +41,7 @@ import UpdateBlockPropertyTool from "./put/update-block-property.js";
 import GetDocumentRootTool from "./items/get/get-root.js";
 import GetDocumentChildrenTool from "./items/get/get-children.js";
 import GetDocumentAncestorsTool from "./items/get/get-ancestors.js";
+import GetDocumentAncestorsBatchTool from "./items/get/get-ancestors-batch.js";
 import GetDocumentSiblingsTool from "./items/get/get-siblings.js";
 import GetRecycleBinRootTool from "./items/get/get-recycle-bin-root.js";
 import GetRecycleBinChildrenTool from "./items/get/get-recycle-bin-children.js";
@@ -66,7 +67,7 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(GetDocumentByIdTool);
     tools.push(GetDocumentPublishTool);
     tools.push(GetDocumentConfigurationTool);
-    tools.push(GetDocumentPropertyValueTemplateTool);
+    tools.push(GetDocumentTypeSchemaTool);
     tools.push(CopyDocumentTool);
     tools.push(CreateDocumentTool);
     tools.push(PostDocumentPublicAccessTool);
@@ -111,6 +112,7 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(GetDocumentRootTool);
     tools.push(GetDocumentChildrenTool);
     tools.push(GetDocumentAncestorsTool);
+    tools.push(GetDocumentAncestorsBatchTool);
     tools.push(GetDocumentSiblingsTool);
     tools.push(GetDocumentRecycleBinSiblingsTool);
   }

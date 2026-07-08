@@ -39,7 +39,7 @@ describe("get-document-public-access", () => {
 
   it("should get public access for a valid document", async () => {
     const result = await GetDocumentPublicAccessTool.handler(
-      { id: docId },
+      { id: docId, includeAncestors: undefined },
       createMockRequestHandlerExtra()
     );
     // Get structured content directly
@@ -56,9 +56,18 @@ describe("get-document-public-access", () => {
     expect(normalized).toMatchSnapshot();
   });
 
+  it("should accept includeAncestors=true", async () => {
+    const result = await GetDocumentPublicAccessTool.handler(
+      { id: docId, includeAncestors: true },
+      createMockRequestHandlerExtra()
+    );
+    const data = validateToolResponse(GetDocumentPublicAccessTool, result);
+    expect(typeof data.isProtectedByAncestor).toBe("boolean");
+  });
+
   it("should handle non-existent document", async () => {
     const result = await GetDocumentPublicAccessTool.handler(
-      { id: BLANK_UUID },
+      { id: BLANK_UUID, includeAncestors: undefined },
       createMockRequestHandlerExtra()
     );
     // Non-existent document should return an error

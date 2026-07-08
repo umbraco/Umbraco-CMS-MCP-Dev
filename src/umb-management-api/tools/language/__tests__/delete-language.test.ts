@@ -10,10 +10,11 @@ describe("delete-language", () => {
   setupTestEnvironment();
 
   const TEST_LANGUAGE_NAME = "_Test Language Delete";
-  const TEST_LANGUAGE_ISO = "en-GB";
+  const TEST_LANGUAGE_ISO = "en-TT";
   let builder: LanguageBuilder;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await LanguageTestHelper.cleanup(TEST_LANGUAGE_ISO);
     builder = new LanguageBuilder();
   });
 

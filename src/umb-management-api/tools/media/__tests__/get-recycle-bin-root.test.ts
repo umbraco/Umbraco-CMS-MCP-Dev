@@ -40,7 +40,6 @@ describe("get-recycle-bin-media-root", () => {
     // Get root items
     const result = await GetRecycleBinMediaRootTool.handler(
       {
-        take: 10
       } as any,
       createMockRequestHandlerExtra()
     );

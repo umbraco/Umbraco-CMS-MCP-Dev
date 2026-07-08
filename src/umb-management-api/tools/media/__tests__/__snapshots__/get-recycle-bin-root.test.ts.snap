@@ -23,6 +23,7 @@ exports[`get-recycle-bin-media-root should get root items from recycle bin 1`] =
         ],
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }

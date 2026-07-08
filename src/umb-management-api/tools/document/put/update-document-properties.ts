@@ -12,7 +12,6 @@ import {
   validateCultureSegment,
   type ResolvedProperty
 } from "./helpers/document-type-properties-resolver.js";
-import { validatePropertiesBeforeSave } from "./helpers/property-value-validator.js";
 import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js";
 import {
   type ToolDefinition,
@@ -75,7 +74,7 @@ const UpdateDocumentPropertiesTool = {
   - Update with culture: { id: "...", properties: [{ alias: "title", value: "Nuevo Título", culture: "es-ES" }] }
   - Mix update and add: { id: "...", properties: [{ alias: "title", value: "New" }, { alias: "newProp", value: "Value" }] }`,
   inputSchema: updateDocumentPropertiesSchema,
-  outputSchema: updateDocumentPropertiesOutputSchema,
+  outputSchema: updateDocumentPropertiesOutputSchema.shape,
   annotations: {
     idempotentHint: true,
   },
@@ -204,33 +203,6 @@ const UpdateDocumentPropertiesTool = {
       });
     }
 
-    // Step 4: Validate property values against Data Type configuration
-    const allPropertiesToValidate = [...propertiesToUpdate, ...propertiesToAdd];
-    if (allPropertiesToValidate.length > 0) {
-      // Get document type properties if not already loaded (needed for dataTypeId lookup)
-      const docTypeProps = await getDocumentTypeProperties();
-
-      const propsToValidate = allPropertiesToValidate
-        .map(p => {
-          const def = docTypeProps.find(d => d.alias === p.alias);
-          return { alias: p.alias, value: p.value, dataTypeId: def?.dataTypeId ?? '' };
-        })
-        .filter(p => p.dataTypeId);
-
-      if (propsToValidate.length > 0) {
-        const valueValidation = await validatePropertiesBeforeSave(propsToValidate);
-        if (!valueValidation.isValid) {
-          throw new ToolValidationError({
-            title: "Property value validation failed",
-            detail: valueValidation.errors.join("; "),
-            extensions: {
-              errors: valueValidation.errors
-            }
-          });
-        }
-      }
-    }
-
     // Step 5: Merge updated properties with existing values
     const updatedValues: DocumentValueModel[] = currentDocument.values.map(existingValue => {
       // Find if this property should be updated
@@ -313,6 +285,6 @@ const UpdateDocumentPropertiesTool = {
       document: updatedDocument
     });
   }),
-} satisfies ToolDefinition<typeof updateDocumentPropertiesSchema, typeof updateDocumentPropertiesOutputSchema>;
+} satisfies ToolDefinition<typeof updateDocumentPropertiesSchema, typeof updateDocumentPropertiesOutputSchema.shape>;
 
 export default withStandardDecorators(UpdateDocumentPropertiesTool);

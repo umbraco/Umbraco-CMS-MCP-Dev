@@ -1,5 +1,6 @@
 import CreateMemberTypeTool from "./post/create-member-type.js";
 import GetMemberTypesByIdArrayTool from "./get/get-member-type-by-id-array.js";
+import GetMemberTypeBatchTool from "./get/get-member-type-batch.js";
 import GetMemberTypeByIdTool from "./get/get-member-type-by-id.js";
 import DeleteMemberTypeTool from "./delete/delete-member-type.js";
 import UpdateMemberTypeTool from "./put/update-member-type.js";
@@ -9,6 +10,7 @@ import GetMemberTypeCompositionReferencesTool from "./get/get-member-type-compos
 import GetMemberTypeConfigurationTool from "./get/get-member-type-configuration.js";
 import GetMemberTypeRootTool from "./items/get/get-root.js";
 import GetMemberTypeSiblingsTool from "./items/get/get-siblings.js";
+import GetMemberTypeAncestorsBatchTool from "./items/get/get-ancestors-batch.js";
 import SearchMemberTypeItemsTool from "./get/get-item-member-type-search.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
@@ -32,6 +34,7 @@ export const MemberTypeCollection: ToolCollectionExport = {
     if (AuthorizationPolicies.TreeAccessMembersOrMemberTypes(user)) {
       tools.push(CreateMemberTypeTool);
       tools.push(GetMemberTypesByIdArrayTool);
+      tools.push(GetMemberTypeBatchTool);
       tools.push(DeleteMemberTypeTool);
       tools.push(UpdateMemberTypeTool);
       tools.push(CopyMemberTypeTool);
@@ -40,6 +43,7 @@ export const MemberTypeCollection: ToolCollectionExport = {
       tools.push(GetMemberTypeConfigurationTool);
       tools.push(GetMemberTypeRootTool);
       tools.push(GetMemberTypeSiblingsTool);
+      tools.push(GetMemberTypeAncestorsBatchTool);
       tools.push(SearchMemberTypeItemsTool);
     }
 

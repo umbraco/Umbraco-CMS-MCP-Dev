@@ -20,4 +20,13 @@ describe("member-tool-index", () => {
         const tools = MemberTools(userMock as CurrentUserResponseModel);
         expect(tools.map(t => t.name)).toMatchSnapshot();
     });
+
+    it("registers the Schema-API tool for members-section access", () => {
+        const userMock = {
+            allowedSections: [sections.members]
+        } as Partial<CurrentUserResponseModel>;
+
+        const names = MemberTools(userMock as CurrentUserResponseModel).map(t => t.name);
+        expect(names).toContain("get-member-type-schema");
+    });
 });

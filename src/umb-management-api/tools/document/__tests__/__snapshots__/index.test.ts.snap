@@ -5,7 +5,7 @@ exports[`document-tool-index should have all tools when user meets multiple poli
   "get-document-by-id",
   "get-document-publish",
   "get-document-configuration",
-  "get-document-property-value-template",
+  "get-document-type-schema",
   "copy-document",
   "create-document",
   "post-document-public-access",
@@ -47,6 +47,7 @@ exports[`document-tool-index should have all tools when user meets multiple poli
   "get-document-root",
   "get-document-children",
   "get-document-ancestors",
+  "get-document-ancestors-batch",
   "get-document-siblings",
   "get-document-recycle-bin-siblings",
 ]
@@ -59,7 +60,7 @@ exports[`document-tool-index should have tools when user meets TreeAccessDocumen
   "get-document-by-id",
   "get-document-publish",
   "get-document-configuration",
-  "get-document-property-value-template",
+  "get-document-type-schema",
   "copy-document",
   "create-document",
   "post-document-public-access",
@@ -101,6 +102,7 @@ exports[`document-tool-index should have tools when user meets TreeAccessDocumen
   "get-document-root",
   "get-document-children",
   "get-document-ancestors",
+  "get-document-ancestors-batch",
   "get-document-siblings",
   "get-document-recycle-bin-siblings",
 ]
@@ -111,6 +113,7 @@ exports[`document-tool-index should have tree tools when user meets SectionAcces
   "get-document-root",
   "get-document-children",
   "get-document-ancestors",
+  "get-document-ancestors-batch",
   "get-document-siblings",
   "get-document-recycle-bin-siblings",
 ]

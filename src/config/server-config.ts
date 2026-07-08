@@ -71,12 +71,12 @@ let cachedConfig: ServerConfig | null = null;
  * @param isStdioMode - Whether the server is running in stdio mode (suppresses logging)
  * @returns Combined base and custom configuration
  */
-export function loadServerConfig(isStdioMode: boolean): ServerConfig {
+export async function loadServerConfig(isStdioMode: boolean): Promise<ServerConfig> {
   if (cachedConfig) {
     return cachedConfig;
   }
 
-  const { config, custom } = getServerConfig(isStdioMode, {
+  const { config, custom } = await getServerConfig(isStdioMode, {
     additionalFields: customFields,
   });
 

@@ -1,14 +1,21 @@
-import { defineConfig } from "orval";
-import { orvalImportFixer } from "@umbraco-cms/mcp-server-sdk";
+import { defineConfig, type HookFunction } from "orval";
+import {
+  orvalImportFixer,
+  relaxUntypedArrays,
+  postProcessZodFiles,
+} from "@umbraco-cms/mcp-server-sdk";
 
 export const UmbManagementApiOrvalConfig = defineConfig({
   "umbraco-management-api": {
     input: {
-      target: "http://localhost:56472/umbraco/swagger/management/swagger.json",
-      validation: false,
+      target: "http://localhost:56472/umbraco/openapi/management.json",
+      unsafeDisableValidation: true,
       filters: {
         mode: "exclude",
         tags: ["Temporary File"],
+      },
+      override: {
+        transformer: relaxUntypedArrays,
       },
     },
     output: {
@@ -19,22 +26,25 @@ export const UmbManagementApiOrvalConfig = defineConfig({
       client: "axios",
       override: {
         mutator: {
-          path: "@umbraco-cms/mcp-server-sdk",
+          path: "./src/umb-management-api/api/client.ts",
           name: "UmbracoManagementClient",
         },
       },
     },
     hooks: {
-      afterAllFilesWrite: orvalImportFixer,
+      afterAllFilesWrite: orvalImportFixer as HookFunction,
     },
   },
   "umbraco-management-api-zod": {
     input: {
-      target: "http://localhost:56472/umbraco/swagger/management/swagger.json",
-      validation: false,
+      target: "http://localhost:56472/umbraco/openapi/management.json",
+      unsafeDisableValidation: true,
       filters: {
         mode: "exclude",
         tags: ["Temporary File"],
+      },
+      override: {
+        transformer: relaxUntypedArrays,
       },
     },
     output: {
@@ -60,6 +70,9 @@ export const UmbManagementApiOrvalConfig = defineConfig({
           },
         },
       },
+    },
+    hooks: {
+      afterAllFilesWrite: postProcessZodFiles as HookFunction,
     },
   },
 });

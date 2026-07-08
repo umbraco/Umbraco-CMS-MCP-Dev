@@ -10,6 +10,7 @@ import {
 export class MemberTypeBuilder {
   private model: Partial<CreateMemberTypeRequestModel> = {
     allowedAsRoot: false,
+    allowedInLibrary: true,
     variesByCulture: false,
     variesBySegment: false,
     isElement: false,
@@ -139,6 +140,7 @@ export class MemberTypeBuilder {
       description: this.model.description ?? undefined,
       icon: this.model.icon ?? "icon-user",
       allowedAsRoot: this.model.allowedAsRoot ?? false,
+      allowedInLibrary: this.model.allowedInLibrary ?? true,
       variesByCulture: this.model.variesByCulture ?? false,
       variesBySegment: this.model.variesBySegment ?? false,
       isElement: this.model.isElement ?? false,

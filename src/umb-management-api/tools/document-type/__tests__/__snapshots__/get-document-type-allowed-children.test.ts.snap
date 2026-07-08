@@ -12,6 +12,7 @@ exports[`get-document-type-allowed-children should get allowed children for a do
         "name": "_Test Child DocumentType",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -22,6 +23,7 @@ exports[`get-document-type-allowed-children should handle document type with no 
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }

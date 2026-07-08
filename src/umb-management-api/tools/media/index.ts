@@ -1,5 +1,5 @@
-import CreateMediaTool from "./post/create-media.js";
-import CreateMediaMultipleTool from "./post/create-media-multiple.js";
+import { createCreateMediaTool } from "./post/create-media.js";
+import { createCreateMediaMultipleTool } from "./post/create-media-multiple.js";
 import CreateMediaFolderTool from "./post/create-media-folder.js";
 import DeleteMediaTool from "./delete/delete-media.js";
 import GetMediaByIdTool from "./get/get-media-by-id.js";
@@ -12,6 +12,7 @@ import SortMediaTool from "./put/sort-media.js";
 import GetMediaByIdArrayTool from "./get/get-media-by-id-array.js";
 import MoveMediaTool from "./put/move-media.js";
 import GetMediaAncestorsTool from "./items/get/get-ancestors.js";
+import GetMediaAncestorsBatchTool from "./items/get/get-ancestors-batch.js";
 import GetMediaChildrenTool from "./items/get/get-children.js";
 import GetMediaSiblingsTool from "./items/get/get-siblings.js";
 import GetMediaRootTool from "./items/get/get-root.js";
@@ -30,8 +31,10 @@ import GetMediaByIdReferencedDescendantsTool from "./get/get-media-by-id-referen
 import GetCollectionMediaTool from "./get/get-collection-media.js";
 import GetRecycleBinMediaReferencedByTool from "./get/get-recycle-bin-media-referenced-by.js";
 import GetRecycleBinMediaOriginalParentTool from "./get/get-recycle-bin-media-original-parent.js";
+import GetMediaTypeSchemaTool from "./get/get-media-type-schema.js";
 import { CurrentUserResponseModel } from "@/umb-management-api/schemas/index.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
+import { isFilePathUploadAllowed } from "../../runtime-context.js";
 import {
   type ToolCollectionExport,
   type ToolDefinition,
@@ -51,14 +54,16 @@ export const MediaCollection: ToolCollectionExport = {
 
     if (AuthorizationPolicies.SectionAccessForMediaTree(user)) {
       tools.push(GetMediaAncestorsTool);
+      tools.push(GetMediaAncestorsBatchTool);
       tools.push(GetMediaChildrenTool);
       tools.push(GetMediaSiblingsTool);
       tools.push(GetMediaRootTool);
     }
 
     if (AuthorizationPolicies.SectionAccessMedia(user)) {
-      tools.push(CreateMediaTool);
-      tools.push(CreateMediaMultipleTool);
+      const allowFilePath = isFilePathUploadAllowed();
+      tools.push(createCreateMediaTool({ allowFilePath }));
+      tools.push(createCreateMediaMultipleTool({ allowFilePath }));
       tools.push(CreateMediaFolderTool);
       tools.push(DeleteMediaTool);
       tools.push(UpdateMediaTool);
@@ -84,6 +89,7 @@ export const MediaCollection: ToolCollectionExport = {
       tools.push(GetCollectionMediaTool);
       tools.push(GetRecycleBinMediaReferencedByTool);
       tools.push(GetRecycleBinMediaOriginalParentTool);
+      tools.push(GetMediaTypeSchemaTool);
     }
 
     return tools;

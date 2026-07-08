@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-media-type-batch should get a single media type with full configuration 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "testbatchmediatype",
+        "aliasCanBeChanged": true,
+        "allowedAsRoot": false,
+        "allowedInLibrary": true,
+        "allowedMediaTypes": [],
+        "collection": null,
+        "compositions": [],
+        "containers": [],
+        "description": null,
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "isElement": false,
+        "name": "_Test Batch MediaType",
+        "properties": [],
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+    ],
+    "total": 1,
+  },
+}
+`;
+
+exports[`get-media-type-batch should get multiple media types in a single request 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "alias": "testbatchmediatype",
+        "aliasCanBeChanged": true,
+        "allowedAsRoot": false,
+        "allowedInLibrary": true,
+        "allowedMediaTypes": [],
+        "collection": null,
+        "compositions": [],
+        "containers": [],
+        "description": null,
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "isElement": false,
+        "name": "_Test Batch MediaType",
+        "properties": [],
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+      {
+        "alias": "testbatchmediatype2",
+        "aliasCanBeChanged": true,
+        "allowedAsRoot": false,
+        "allowedInLibrary": true,
+        "allowedMediaTypes": [],
+        "collection": null,
+        "compositions": [],
+        "containers": [],
+        "description": null,
+        "icon": "icon-folder",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isDeletable": true,
+        "isElement": false,
+        "name": "_Test Batch MediaType2",
+        "properties": [],
+        "variesByCulture": false,
+        "variesBySegment": false,
+      },
+    ],
+    "total": 2,
+  },
+}
+`;

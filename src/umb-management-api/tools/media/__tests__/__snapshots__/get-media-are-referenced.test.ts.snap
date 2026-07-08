@@ -9,6 +9,7 @@ exports[`get-media-are-referenced should detect when media is referenced by a do
         "id": "00000000-0000-0000-0000-000000000000",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -19,6 +20,7 @@ exports[`get-media-are-referenced should handle non-existent media IDs 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -29,6 +31,7 @@ exports[`get-media-are-referenced should return empty when media is not referenc
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
