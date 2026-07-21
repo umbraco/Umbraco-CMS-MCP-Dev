@@ -9,7 +9,7 @@ Migrates MCP tools from the old pattern to the new standardized pattern using he
 
 Example:
 ```
-/migrate-tools src/umb-management-api/tools/document-type
+/migrate-tools src/umbraco-api/tools/document-type
 ```
 
 ## Description
@@ -80,7 +80,7 @@ const GetTool = CreateUmbracoTool(
 **New Pattern:**
 ```typescript
 import { withStandardDecorators, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
-import { getByIdResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getByIdResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
 
 const GetTool = {
   name: "get-item",
@@ -195,7 +195,7 @@ export default withStandardDecorators(UpdateTool);
    import { ToolDefinition } from "types/tool-definition.js";
    import { withStandardDecorators, executeVoidApiCall, executeGetApiCall, CAPTURE_RAW_HTTP_RESPONSE } from "@/helpers/mcp/tool-decorators.js";
    // For GET operations, also import the response schema:
-   import { getXxxResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+   import { getXxxResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
    ```
 
 3. **Convert to Object Literal Pattern**
@@ -273,7 +273,7 @@ For each tool, verify:
 
 ## Common Zod Response Schemas
 
-Import from `@/umb-management-api/umbracoManagementAPI.zod.js`:
+Import from `@/umbraco-api/umbracoManagementAPI.zod.js`:
 - `get{Entity}ByIdResponse` - Single entity GET
 - `get{Entity}Response` - List GET
 - `getTree{Entity}ChildrenResponse` - Tree children
@@ -383,7 +383,7 @@ Run:
 
 Example:
 ```
-/migrate-tests src/umb-management-api/tools/document-type/__tests__
+/migrate-tests src/umbraco-api/tools/document-type/__tests__
 ```
 
 The migrate-tests command will:

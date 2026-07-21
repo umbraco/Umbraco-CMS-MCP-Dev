@@ -1,0 +1,33 @@
+import { getManifestManifestResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import { UmbracoManagementClient } from "@umb-management-client";
+import { z } from "zod";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  createToolResult,
+  executeGetItemsApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
+
+// Wrap array response in object (MCP requirement)
+const outputSchema = z.object({
+  items: getManifestManifestResponse,
+});
+
+const GetManifestManifestTool = {
+  name: "get-manifest-manifest",
+  description: "Gets all manifests (both public and private) from the Umbraco installation. Each manifest contains an extensions property showing what the package exposes to Umbraco. Use to see which packages are installed, troubleshoot package issues, or list available extensions.",
+  inputSchema: {},
+  outputSchema: outputSchema.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
+  slices: ['read'],
+  handler: (async () => {
+    return executeGetItemsApiCall((client) =>
+      client.getManifestManifest(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof outputSchema.shape>;
+
+export default withStandardDecorators(GetManifestManifestTool);
