@@ -27,6 +27,8 @@
     "generate": "orval --config orval.config.ts",
     "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:all": "npm run build && npm run test && npm run test:evals",
+    "test:one": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --forceExit",
     "test:rerun-failures": "grep '^FAIL ' test-failures.log 2>/dev/null | sed 's/^FAIL //' | tr '\\n' ' ' | xargs -r node --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage || echo 'No failures to rerun (test-failures.log not found or empty)'",
     "test:evals": "node --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage --config tests/evals/jest.config.ts",
     "patch-publish-alpha": "npm version prerelease --preid=alpha && npm publish --tag alpha --access public",
@@ -36,6 +38,7 @@
     "test:e2e": "npx playwright test --config tests/cms-hosted-e2e/playwright.config.ts",
     "umbraco:bootstrap": "bash scripts/bootstrap-demo-site.sh",
     "umbraco:start": "bash scripts/bootstrap-demo-site.sh && dotnet run --project demo-site",
+    "start:umbraco": "npm run umbraco:start",
     "umbraco:stop": "lsof -ti :44391 | xargs kill 2>/dev/null; lsof -ti :56472 | xargs kill 2>/dev/null",
     "dev:hosted": "wrangler dev"
   },

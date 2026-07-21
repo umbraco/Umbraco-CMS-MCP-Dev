@@ -60,16 +60,16 @@ File path uploads are optional. The following alternatives work without configur
 
 ### Core Files
 - `src/config.ts` - Configuration parsing and validation
-- `src/umb-management-api/tools/media/post/helpers/validate-file-path.ts` - Path validation logic
-- `src/umb-management-api/tools/media/post/helpers/media-upload-helpers.ts` - Integration point
+- `src/umbraco-api/tools/media/post/helpers/validate-file-path.ts` - Path validation logic
+- `src/umbraco-api/tools/media/post/helpers/media-upload-helpers.ts` - Integration point
 
 ### Tool Updates
-- `src/umb-management-api/tools/media/post/create-media.ts` - Security warnings in schema
-- `src/umb-management-api/tools/media/post/create-media-multiple.ts` - Security warnings in schema
+- `src/umbraco-api/tools/media/post/create-media.ts` - Security warnings in schema
+- `src/umbraco-api/tools/media/post/create-media-multiple.ts` - Security warnings in schema
 
 ### Tests
-- `src/umb-management-api/tools/media/post/helpers/__tests__/validate-file-path.test.ts` - 12 comprehensive tests
-- `src/umb-management-api/tools/media/__tests__/helpers/media-upload-helpers.test.ts` - Updated with mocks
+- `src/umbraco-api/tools/media/post/helpers/__tests__/validate-file-path.test.ts` - 12 comprehensive tests
+- `src/umbraco-api/tools/media/__tests__/helpers/media-upload-helpers.test.ts` - Updated with mocks
 
 ### Documentation
 - `README.md` - Security configuration section added
@@ -198,4 +198,4 @@ UMBRACO_ALLOWED_MEDIA_PATHS="/tmp/test-uploads"
 ## References
 
 - Original security analysis: `docs/security-plan-media-file-path-whitelisting.md`
-- User Group security analysis: `src/umb-management-api/tools/user-group/USER_GROUP_SECURITY_ANALYSIS.md`
+- User Group security analysis: `src/umbraco-api/tools/user-group/USER_GROUP_SECURITY_ANALYSIS.md`

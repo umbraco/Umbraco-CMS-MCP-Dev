@@ -20,7 +20,7 @@ This command analyzes the current state of MCP tool implementation and generates
    - Parse `src/api/umbraco/client.ts` to extract all API methods
    - Group endpoints by API category/tag from the OpenAPI spec
    - Update `docs/analysis/api-endpoints-analysis.md` with the complete endpoint list
-2. Scan all implemented MCP tools in `src/umb-management-api/tools/`
+2. Scan all implemented MCP tools in `src/umbraco-api/tools/`
 3. Match implemented tools against API endpoints
 4. Calculate coverage percentages per API group
 5. Generate formatted report with statistics and recommendations

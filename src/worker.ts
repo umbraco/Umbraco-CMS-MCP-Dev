@@ -24,8 +24,8 @@ import { umbracoCloudSiteRouting } from "@umbraco-cms/mcp-hosted/cloud";
 
 // CMS collections and registries
 import { collections, allModes, allModeNames, allSliceNames } from "./collections.js";
-import { UmbracoManagementClient } from "./umb-management-api/umbraco-management-client.js";
-import { setStreamingAuthContext } from "./umb-management-api/tools/media/post/helpers/streaming-upload.js";
+import { UmbracoManagementClient } from "./umbraco-api/umbraco-management-client.js";
+import { setStreamingAuthContext } from "./umbraco-api/tools/media/post/helpers/streaming-upload.js";
 
 // ============================================================================
 // Server Configuration

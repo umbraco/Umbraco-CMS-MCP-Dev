@@ -1,0 +1,33 @@
+import GetSearcherTool from "./get/get-searcher.js";
+import GetSearcherBySearcherNameQueryTool from "./get/get-searcher-by-searcher-name-query.js";
+import { CurrentUserResponseModel } from "@/umbraco-api/schemas/index.js";
+import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
+import {
+  type ToolCollectionExport,
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
+
+export const SearcherCollection: ToolCollectionExport = {
+  metadata: {
+    name: 'searcher',
+    displayName: 'Searcher',
+    description: 'Searcher management and query operations',
+    dependencies: []
+  },
+  tools: (user: CurrentUserResponseModel) => {
+
+    const tools: ToolDefinition<any, any>[] = [];
+
+    if (AuthorizationPolicies.SectionAccessSettings(user)) {
+      tools.push(GetSearcherTool);
+      tools.push(GetSearcherBySearcherNameQueryTool);
+    }
+
+    return tools;
+  }
+};
+
+// Backwards compatibility export
+export const SearcherTools = (user: CurrentUserResponseModel) => {
+  return SearcherCollection.tools(user);
+};

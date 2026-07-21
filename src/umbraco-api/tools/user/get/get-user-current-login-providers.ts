@@ -1,0 +1,29 @@
+import { getUserCurrentLoginProvidersResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import { z } from "zod";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetItemsApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
+
+// Wrap array response in object for MCP compliance
+const outputSchema = z.object({
+  items: getUserCurrentLoginProvidersResponse,
+});
+
+const GetUserCurrentLoginProvidersTool = {
+  name: "get-user-current-login-providers",
+  description: "Gets the current user's available login providers",
+  inputSchema: {},
+  outputSchema: outputSchema.shape,
+  annotations: { readOnlyHint: true },
+  slices: ['current-user'],
+  handler: (async () => {
+    return executeGetItemsApiCall((client) =>
+      client.getUserCurrentLoginProviders(CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<{}, typeof outputSchema.shape>;
+
+export default withStandardDecorators(GetUserCurrentLoginProvidersTool);
