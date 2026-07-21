@@ -1,0 +1,25 @@
+import { getLogViewerValidateLogsSizeQueryParams } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import { GetLogViewerValidateLogsSizeParams } from "@/umbraco-api/schemas/index.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeVoidApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
+
+const GetLogViewerValidateLogsSizeTool = {
+  name: "get-log-viewer-validate-logs-size",
+  description: "Validates the size of the logs, for the given start and end date, or the lase day if not provided",
+  inputSchema: getLogViewerValidateLogsSizeQueryParams.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
+  slices: ['diagnostics'],
+  handler: (async (model: GetLogViewerValidateLogsSizeParams) => {
+    return executeVoidApiCall((client) =>
+      client.getLogViewerValidateLogsSize(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getLogViewerValidateLogsSizeQueryParams.shape>;
+
+export default withStandardDecorators(GetLogViewerValidateLogsSizeTool);

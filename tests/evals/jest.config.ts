@@ -20,8 +20,8 @@ const config: Config = {
     "^@/clients/(.*)\\.js$": "<rootDir>/src/clients/$1",
     "^@/helpers/(.*)\\.js$": "<rootDir>/src/helpers/$1",
     "^@/constants/(.*)\\.js$": "<rootDir>/src/constants/$1",
-    "^@/umb-management-api/(.*)\\.js$": "<rootDir>/src/umb-management-api/api/$1",
-    "^@umb-management-client": "<rootDir>/src/umb-management-api/umbraco-management-client.ts",
+    "^@/umbraco-api/(.*)\\.js$": "<rootDir>/src/umbraco-api/api/$1",
+    "^@umb-management-client": "<rootDir>/src/umbraco-api/umbraco-management-client.ts",
   },
   transform: {
     "^.+\\.tsx?$": [
