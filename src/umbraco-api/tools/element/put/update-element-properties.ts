@@ -25,7 +25,11 @@ export const updateElementPropertiesOutputSchema = z.object({
   message: z.string(),
   updatedProperties: z.array(z.string()),
   addedProperties: z.array(z.string()),
-  element: z.any().describe("The updated element object"),
+  element: z.any().describe(
+    "The updated element state, computed locally from the pre-update read plus the applied changes " +
+    "(no fresh server fetch after the write). Per-value editorAlias and per-variant server metadata " +
+    "(id, createDate, updateDate, state) reflect the pre-update read rather than the server's post-update state."
+  ),
 });
 
 const propertySchema = z.object({
@@ -251,8 +255,20 @@ const UpdateElementPropertiesTool = {
     // Step 9: Update the element
     await client.putElementById(model.id, updatePayload);
 
-    // Step 10: Re-fetch the element to return the updated state
-    const updatedElement = await client.getElementById(model.id);
+    // Step 10: Build the returned element state from data already in memory
+    // (the initial fetch plus the updates just applied) instead of re-fetching
+    // the element from the server. This avoids a redundant GET round-trip on
+    // every successful call; the trade-off is that per-value `editorAlias` and
+    // per-variant server metadata (id, dates, state) reflect the pre-update
+    // read rather than a fresh server response.
+    const updatedElement = {
+      id: currentElement.id,
+      documentType: currentElement.documentType,
+      isTrashed: currentElement.isTrashed,
+      flags: currentElement.flags,
+      values: updatedValues,
+      variants: variants,
+    };
 
     // Step 11: Build lists for the success message
     const updatedPropertyKeys = propertiesToUpdate.map(p =>

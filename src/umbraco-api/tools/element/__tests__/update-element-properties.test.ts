@@ -16,6 +16,11 @@ import {
  * Normalizes the nested element object inside an update-element-properties
  * tool result so that dynamic IDs (element ID and element type ID) are
  * replaced with BLANK_UUID for stable snapshot assertions.
+ *
+ * The `element` field is now built locally by the handler from data already
+ * in memory (no re-fetch after the PUT), so it no longer carries the
+ * server-only fields a fresh GET would include (per-value `editorAlias`,
+ * per-variant `id`/`createDate`/`updateDate`/`state`/`flags`).
  */
 function normalizeUpdateResult(result: any, elementId: string, elementTypeId: string): any {
   const base = createSnapshotResult(result, elementId);
@@ -33,12 +38,6 @@ function normalizeUpdateResult(result: any, elementId: string, elementTypeId: st
         documentType: el.documentType
           ? { ...el.documentType, id: BLANK_UUID }
           : el.documentType,
-        variants: el.variants?.map((v: any) => ({
-          ...v,
-          id: BLANK_UUID,
-          createDate: "NORMALIZED_DATE",
-          updateDate: "NORMALIZED_DATE",
-        })),
       },
     },
   };
