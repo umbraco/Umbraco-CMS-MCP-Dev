@@ -13,7 +13,6 @@ import { v4 as uuidv4 } from "uuid";
 import { BLANK_UUID } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
-  createSnapshotResult,
   setupTestEnvironment,
   validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
@@ -26,6 +25,23 @@ const TEST_ELEMENT_TYPE_WITH_BLOCKS_NAME = "_Test ElementType With Blocks";
 const INVALID_ALIAS = "nonExistentProperty";
 const FAKE_CONTENT_KEY = "00000000-0000-0000-0000-000000000001";
 const NON_EXISTENT_PROPERTY_ALIAS = "nonExistentPropertyAlias";
+
+/**
+ * Shape of the update-element-block-property success result.
+ */
+type BlockUpdateResponse = {
+  success: boolean;
+  message: string;
+  results: Array<{
+    success: boolean;
+    contentKey: string;
+    message: string;
+    updatedCount?: number;
+    addedCount?: number;
+    warnings?: string[];
+    errors?: string[];
+  }>;
+};
 
 /**
  * Seeds a block value onto an element via update-element-properties.
@@ -120,7 +136,8 @@ describe("update-element-block-property", () => {
       );
 
       // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      expect(result.isError).toBe(true);
+      expect((result.structuredContent as { title: string }).title).toBe("Property not found");
     });
 
     it("should return error for property without block structure", async () => {
@@ -146,7 +163,8 @@ describe("update-element-block-property", () => {
       );
 
       // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      expect(result.isError).toBe(true);
+      expect((result.structuredContent as { title: string }).title).toBe("No block structure found");
     });
 
     it("should handle non-existent element", async () => {
@@ -169,7 +187,7 @@ describe("update-element-block-property", () => {
       );
 
       // Assert
-      expect(result).toMatchSnapshot();
+      expect(result.isError).toBe(true);
     });
   });
 
@@ -317,15 +335,20 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - handler response
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.success).toBe(true);
+      expect(response.results).toHaveLength(1);
+      expect(response.results[0].contentKey).toBe(blockKey);
+      expect(response.results[0].success).toBe(true);
+      expect(response.results[0].updatedCount).toBe(1);
 
+      // Assert - persistence
       const updatedBlockValue = (await getBlockPropertyValue(elementId, "blocks")) as {
         contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }>;
       };
       const updatedBlock = updatedBlockValue.contentData.find((b) => b.key === blockKey);
-      const updatedProperty = updatedBlock?.values.find((v) => v.alias === "blockTitle");
-      expect(updatedProperty?.value).toBe("Updated Title");
+      expect(updatedBlock?.values.find((v) => v.alias === "blockTitle")?.value).toBe("Updated Title");
     });
 
     it("should return error with available blocks when block not found", async () => {
@@ -355,15 +378,16 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - thrown validation error (all blocks not found)
+      expect(result.isError).toBe(true);
+      expect((result.structuredContent as { title: string }).title).toBe("Blocks not found");
 
+      // Assert - original block unchanged
       const blockValue = (await getBlockPropertyValue(elementId, "blocks")) as {
         contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }>;
       };
       const originalBlock = blockValue.contentData.find((b) => b.key === blockKey);
-      const originalProperty = originalBlock?.values.find((v) => v.alias === "blockTitle");
-      expect(originalProperty?.value).toBe("Test Block");
+      expect(originalBlock?.values.find((v) => v.alias === "blockTitle")?.value).toBe("Test Block");
     });
 
     it("should batch update multiple blocks in single call", async () => {
@@ -402,9 +426,13 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - handler response
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.success).toBe(true);
+      expect(response.results).toHaveLength(2);
+      expect(response.results.every((r) => r.updatedCount === 1)).toBe(true);
 
+      // Assert - persistence
       const updatedBlockValue = (await getBlockPropertyValue(elementId, "blocks")) as {
         contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }>;
       };
@@ -414,7 +442,7 @@ describe("update-element-block-property", () => {
       expect(updatedBlock2?.values.find((v) => v.alias === "blockTitle")?.value).toBe("Updated Block 2");
     });
 
-    it("should return error when property not found in block and not on Element Type", async () => {
+    it("should report error when property not found in block and not on Element Type", async () => {
       // Arrange
       const { containerElementTypeId: containerId } = await createBlockListInfrastructure();
       const blockKey = uuidv4();
@@ -441,9 +469,12 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - block found but property invalid -> per-result error, not a thrown error
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.results[0].success).toBe(false);
+      expect(response.results[0].errors?.some((e) => e.includes("does not exist on Element Type"))).toBe(true);
 
+      // Assert - original block unchanged
       const blockValue = (await getBlockPropertyValue(elementId, "blocks")) as {
         contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }>;
       };
@@ -608,9 +639,12 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - handler response
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.success).toBe(true);
+      expect(response.results[0].addedCount).toBe(1);
 
+      // Assert - persistence
       const updatedBlockValue = (await getBlockPropertyValue(elementId, "blocks")) as {
         contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }>;
       };
@@ -653,9 +687,13 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - handler response
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.success).toBe(true);
+      expect(response.results[0].updatedCount).toBe(1);
+      expect(response.results[0].addedCount).toBe(1);
 
+      // Assert - persistence
       const updatedBlockValue = (await getBlockPropertyValue(elementId, "blocks")) as {
         contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }>;
       };
@@ -664,7 +702,7 @@ describe("update-element-block-property", () => {
       expect(updatedBlock?.values.find((v) => v.alias === "blockSubtitle")?.value).toBe("New Subtitle");
     });
 
-    it("should return error when property does not exist on Element Type", async () => {
+    it("should report error when property does not exist on Element Type", async () => {
       // Arrange
       const { blockElementTypeId: contentTypeKey, containerElementTypeId: containerId } =
         await createBlockListWithExtraProperties();
@@ -696,7 +734,9 @@ describe("update-element-block-property", () => {
       );
 
       // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.results[0].success).toBe(false);
+      expect(response.results[0].errors?.some((e) => e.includes("does not exist on Element Type"))).toBe(true);
     });
   });
 
@@ -849,9 +889,12 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - handler response
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.success).toBe(true);
+      expect(response.results[0].updatedCount).toBe(1);
 
+      // Assert - persistence
       const updatedBlockValue = (await getBlockPropertyValue(elementId, "gridBlocks")) as {
         contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }>;
       };
@@ -895,9 +938,13 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - handler response
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.success).toBe(true);
+      expect(response.results).toHaveLength(2);
+      expect(response.results.every((r) => r.updatedCount === 1)).toBe(true);
 
+      // Assert - persistence
       const updatedBlockValue = (await getBlockPropertyValue(elementId, "gridBlocks")) as {
         contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }>;
       };
@@ -1149,9 +1196,12 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - handler response
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.success).toBe(true);
+      expect(response.results[0].updatedCount).toBe(1);
 
+      // Assert - persistence
       const updatedBlockValue = (await getBlockPropertyValue(elementId, "nestedGridBlocks")) as {
         contentData: Array<{
           key: string;
@@ -1161,7 +1211,6 @@ describe("update-element-block-property", () => {
           }>;
         }>;
       };
-
       const gridBlock = updatedBlockValue.contentData.find((b) => b.key === gridBlockKey);
       const nestedBlocksProperty = gridBlock?.values.find((v) => v.alias === "nestedBlocks");
       const innerBlock = nestedBlocksProperty?.value.contentData.find((b) => b.key === innerBlockKey);
@@ -1207,13 +1256,16 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - handler response
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.success).toBe(true);
+      expect(response.results).toHaveLength(2);
+      expect(response.results.every((r) => r.updatedCount === 1)).toBe(true);
 
+      // Assert - persistence
       const updatedBlockValue = (await getBlockPropertyValue(elementId, "nestedGridBlocks")) as {
         contentData: Array<{ key: string; values: Array<{ alias: string; value: any }> }>;
       };
-
       const gridBlock = updatedBlockValue.contentData.find((b) => b.key === gridBlockKey);
       expect(gridBlock?.values.find((v) => v.alias === "gridSectionTitle")?.value).toBe("Updated Grid Section");
       const nestedBlocksProperty = gridBlock?.values.find((v) => v.alias === "nestedBlocks");
@@ -1364,9 +1416,12 @@ describe("update-element-block-property", () => {
         createMockRequestHandlerExtra()
       );
 
-      // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      // Assert - handler response
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.success).toBe(true);
+      expect(response.results[0].updatedCount).toBe(1);
 
+      // Assert - persistence
       const updatedBlockValue = (await getBlockPropertyValue(elementId, "richContent")) as {
         blocks: { contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }> };
       };
@@ -1374,7 +1429,7 @@ describe("update-element-block-property", () => {
       expect(updatedBlock?.values.find((v) => v.alias === "rteBlockTitle")?.value).toBe("Updated RTE Block Title");
     });
 
-    it("should return error when property not found in RTE block and not on Element Type", async () => {
+    it("should report error when property not found in RTE block and not on Element Type", async () => {
       // Arrange
       const { containerElementTypeId: containerId } = await createRteInfrastructure();
       const blockKey = uuidv4();
@@ -1402,8 +1457,11 @@ describe("update-element-block-property", () => {
       );
 
       // Assert
-      expect(createSnapshotResult(result, elementId)).toMatchSnapshot();
+      const response = validateToolResponse(UpdateElementBlockPropertyTool, result) as BlockUpdateResponse;
+      expect(response.results[0].success).toBe(false);
+      expect(response.results[0].errors?.some((e) => e.includes("does not exist on Element Type"))).toBe(true);
 
+      // Assert - persistence unchanged
       const blockValue = (await getBlockPropertyValue(elementId, "richContent")) as {
         blocks: { contentData: Array<{ key: string; values: Array<{ alias: string; value: string }> }> };
       };
