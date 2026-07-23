@@ -6,12 +6,14 @@ exports[`manifest tools get-manifest-manifest should get all manifests 1`] = `
   "structuredContent": {
     "items": [
       {
+        "cacheBuster": "18.1.0-rc",
         "extensions": [],
         "id": null,
         "name": "@umbraco-cms/backoffice",
-        "version": "18.0.0",
+        "version": "18.1.0-rc",
       },
       {
+        "cacheBuster": "8.0.0",
         "extensions": [
           {},
         ],
@@ -30,12 +32,14 @@ exports[`manifest tools get-manifest-manifest-private should get private manifes
   "structuredContent": {
     "items": [
       {
+        "cacheBuster": "18.1.0-rc",
         "extensions": [],
         "id": null,
         "name": "@umbraco-cms/backoffice",
-        "version": "18.0.0",
+        "version": "18.1.0-rc",
       },
       {
+        "cacheBuster": "8.0.0",
         "extensions": [
           {},
         ],
