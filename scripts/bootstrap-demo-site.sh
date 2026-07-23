@@ -13,11 +13,30 @@ TEMPLATE_DIR="$PROJECT_DIR/demo-site-template"
 SITE_DIR="$PROJECT_DIR/demo-site"
 
 FORCE=0
+SQLITE=0
 for arg in "$@"; do
   case "$arg" in
     --force) FORCE=1 ;;
+    --sqlite) SQLITE=1 ;;
   esac
 done
+
+write_sqlite_config() {
+  local config_file="$SITE_DIR/appsettings.local.json"
+  if [ -f "$config_file" ] && [ "$FORCE" -eq 0 ]; then
+    echo "$config_file already exists; leaving it untouched (pass --force to overwrite)" >&2
+    return 0
+  fi
+  cat > "$config_file" <<'EOF'
+{
+  "ConnectionStrings": {
+    "umbracoDbDSN": "Data Source=|DataDirectory|/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True",
+    "umbracoDbDSN_ProviderName": "Microsoft.Data.Sqlite"
+  }
+}
+EOF
+  echo "Wrote $config_file (server-less SQLite, no SQL Server needed)" >&2
+}
 
 if [ ! -d "$TEMPLATE_DIR" ]; then
   echo "Error: $TEMPLATE_DIR does not exist" >&2
@@ -26,6 +45,9 @@ fi
 
 if [ -d "$SITE_DIR" ] && [ "$FORCE" -eq 0 ]; then
   echo "demo-site/ already exists; skipping bootstrap (pass --force to overwrite)" >&2
+  if [ "$SQLITE" -eq 1 ]; then
+    write_sqlite_config
+  fi
   exit 0
 fi
 
@@ -50,6 +72,13 @@ if [ -f "$SITE_DIR/demo-site-template.csproj" ]; then
 fi
 
 echo "demo-site/ created from demo-site-template/" >&2
-echo "Next steps:" >&2
-echo "  - Write demo-site/appsettings.local.json with your DB connection string" >&2
-echo "  - Run 'npm run umbraco:start'" >&2
+
+if [ "$SQLITE" -eq 1 ]; then
+  write_sqlite_config
+  echo "Next steps:" >&2
+  echo "  - Run 'npm run umbraco:start'" >&2
+else
+  echo "Next steps:" >&2
+  echo "  - Write demo-site/appsettings.local.json with your DB connection string" >&2
+  echo "  - Run 'npm run umbraco:start'" >&2
+fi
