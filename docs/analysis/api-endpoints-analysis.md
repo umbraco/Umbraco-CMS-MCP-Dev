@@ -439,12 +439,13 @@
 
 - `get-property-type-is-used`
 
-### redirect (4)
+### redirect (5)
 
 - `delete-redirect`
 - `get-all-redirects`
 - `get-redirect-by-id`
 - `get-redirect-status`
+- `update-redirect-status`
 
 ### relation (1)
 

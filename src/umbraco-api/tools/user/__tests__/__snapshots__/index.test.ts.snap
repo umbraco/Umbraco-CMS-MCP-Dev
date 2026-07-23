@@ -15,6 +15,7 @@ exports[`user-tool-index should have all tools when user has users section acces
   "get-item-user",
   "get-user-configuration",
   "get-user-by-id-calculate-start-nodes",
+  "get-user-batch",
   "upload-user-avatar-by-id",
   "delete-user-avatar-by-id",
 ]
