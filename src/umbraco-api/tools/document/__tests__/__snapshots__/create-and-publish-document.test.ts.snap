@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-and-publish-document should create and publish an invariant document using the default culturesToPublish 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document created and published successfully",
+  },
+}
+`;
+
+exports[`create-and-publish-document should create and publish an invariant document using the default culturesToPublish 2`] = `
+{
+  "ancestors": [],
+  "createDate": "NORMALIZED_DATE",
+  "documentType": {
+    "collection": null,
+    "icon": "icon-home color-blue",
+    "id": "00000000-0000-0000-0000-000000000000",
+  },
+  "flags": [],
+  "hasChildren": false,
+  "id": "00000000-0000-0000-0000-000000000000",
+  "isProtected": false,
+  "isTrashed": false,
+  "noAccess": false,
+  "parent": null,
+  "variants": [
+    {
+      "culture": null,
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "_Test CreateAndPublishDocument",
+      "state": "Published",
+    },
+  ],
+}
+`;
+
+exports[`create-and-publish-document should create and publish an invariant document with an explicit empty culturesToPublish array 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Document created and published successfully",
+  },
+}
+`;

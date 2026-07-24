@@ -32,7 +32,7 @@ describe("get-document-urls", () => {
     await builder.publish();
     const item = builder.getCreatedItem();
     const result = await GetDocumentUrlsTool.handler(
-      { id: [item.id] },
+      { id: [item.id], culture: undefined },
       createMockRequestHandlerExtra()
     );
     const data = validateToolResponse(GetDocumentUrlsTool, result);
@@ -41,7 +41,7 @@ describe("get-document-urls", () => {
 
   it("should handle non-existent document id", async () => {
     const result = await GetDocumentUrlsTool.handler(
-      { id: [BLANK_UUID] },
+      { id: [BLANK_UUID], culture: undefined },
       createMockRequestHandlerExtra()
     );
     const data = validateToolResponse(GetDocumentUrlsTool, result);
@@ -64,7 +64,7 @@ describe("get-document-urls", () => {
     await childBuilder.publish();
     const childItem = childBuilder.getCreatedItem();
     const result = await GetDocumentUrlsTool.handler(
-      { id: [childItem.id] },
+      { id: [childItem.id], culture: undefined },
       createMockRequestHandlerExtra()
     );
     const data = validateToolResponse(GetDocumentUrlsTool, result);

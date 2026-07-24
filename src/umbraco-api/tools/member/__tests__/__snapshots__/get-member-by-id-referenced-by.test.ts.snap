@@ -14,7 +14,7 @@ exports[`get-member-by-id-referenced-by should get reference data for a specific
           "name": "_Test DocType With Member Ref",
         },
         "id": "00000000-0000-0000-0000-000000000000",
-        "name": null,
+        "name": "_Test Document With Member Ref",
         "published": false,
         "variants": [
           {

@@ -1,4 +1,5 @@
 import GetElementByIdTool from "./get/get-element-by-id.js";
+import GetElementPublishedTool from "./get/get-element-published.js";
 import GetElementConfigurationTool from "./get/get-element-configuration.js";
 import GetElementAuditLogTool from "./get/get-element-audit-log.js";
 import GetElementAreReferencedTool from "./get/get-element-are-referenced.js";
@@ -20,10 +21,12 @@ import GetRecycleBinElementRootTool from "./items/get/get-recycle-bin-element-ro
 import GetRecycleBinElementChildrenTool from "./items/get/get-recycle-bin-element-children.js";
 import GetRecycleBinElementSiblingsTool from "./items/get/get-recycle-bin-element-siblings.js";
 import CreateElementTool from "./post/create-element.js";
+import CreateAndPublishElementTool from "./post/create-and-publish-element.js";
 import CopyElementTool from "./post/copy-element.js";
 import ValidateElementTool from "./post/validate-element.js";
 import RollbackElementVersionTool from "./post/rollback-element-version.js";
 import UpdateElementTool from "./put/update-element.js";
+import UpdateAndPublishElementTool from "./put/update-and-publish-element.js";
 import UpdateElementPropertiesTool from "./put/update-element-properties.js";
 import MoveElementTool from "./put/move-element.js";
 import MoveElementToRecycleBinTool from "./put/move-element-to-recycle-bin.js";
@@ -64,6 +67,7 @@ export const ElementCollection: ToolCollectionExport = {
     if (AuthorizationPolicies.TreeAccessElements(user)) {
       // Read
       tools.push(GetElementByIdTool);
+      tools.push(GetElementPublishedTool);
       tools.push(GetElementConfigurationTool);
       tools.push(GetElementAuditLogTool);
       tools.push(GetElementAreReferencedTool);
@@ -87,10 +91,12 @@ export const ElementCollection: ToolCollectionExport = {
       tools.push(GetRecycleBinElementSiblingsTool);
       // Create / actions
       tools.push(CreateElementTool);
+      tools.push(CreateAndPublishElementTool);
       tools.push(CopyElementTool);
       tools.push(ValidateElementTool);
       tools.push(RollbackElementVersionTool);
       tools.push(UpdateElementTool);
+      tools.push(UpdateAndPublishElementTool);
       tools.push(UpdateElementPropertiesTool);
       tools.push(MoveElementTool);
       tools.push(MoveElementToRecycleBinTool);
