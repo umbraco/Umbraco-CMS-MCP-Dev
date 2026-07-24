@@ -1,0 +1,56 @@
+import { UmbracoManagementClient } from "@umb-management-client";
+import { CreatePartialViewFolderRequestModel, ProblemDetails } from "@/umbraco-api/schemas/index.js";
+import { postPartialViewFolderBody } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import { z } from "zod";
+import {
+  type ToolDefinition,
+  createToolResult,
+  createToolResultError,
+  withStandardDecorators,
+  type HttpResponse,
+} from "@umbraco-cms/mcp-server-sdk";
+
+export const createPartialViewFolderOutputSchema = z.object({
+  message: z.string(),
+  path: z.string()
+});
+
+const CreatePartialViewFolderTool = {
+  name: "create-partial-view-folder",
+  description: "Creates a new partial view folder",
+  inputSchema: postPartialViewFolderBody.shape,
+  outputSchema: createPartialViewFolderOutputSchema.shape,
+  slices: ['create', 'folders'],
+  handler: (async (model: CreatePartialViewFolderRequestModel) => {
+    const client = UmbracoManagementClient.getClient();
+    const response = await client.postPartialViewFolder(model, {
+      returnFullResponse: true,
+      validateStatus: () => true,
+    }) as unknown as HttpResponse<ProblemDetails | void>;
+
+    if (response.status === 201) {
+      // Extract path from Location header
+      const locationHeader = response.headers?.['location'] || response.headers?.['Location'];
+      let createdPath = '';
+      if (locationHeader) {
+        // Location header format: /umbraco/management/api/v1/partial-view/folder/{encodedPath}
+        const pathMatch = locationHeader.match(/partial-view\/folder\/(.+)$/);
+        if (pathMatch) {
+          createdPath = decodeURIComponent(pathMatch[1]);
+        }
+      }
+      return createToolResult({
+        message: "Partial view folder created successfully",
+        path: createdPath
+      });
+    } else {
+      const errorData: ProblemDetails = response.data || {
+        status: response.status,
+        detail: response.statusText,
+      };
+      return createToolResultError(errorData);
+    }
+  }),
+} satisfies ToolDefinition<typeof postPartialViewFolderBody.shape, typeof createPartialViewFolderOutputSchema.shape>;
+
+export default withStandardDecorators(CreatePartialViewFolderTool);

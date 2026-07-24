@@ -113,7 +113,7 @@ export default GetLangagueDefaultResource;
 ```
 import { UmbracoManagementClient } from "@/clients/umbraco-management-client.js";
 import { CreateUmbracoTemplateResource } from "@/helpers/create-umbraco-template-resource.js";
-import { getTreeDataTypeRootQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getTreeDataTypeRootQueryParams } from "@/umbraco-api/umbracoManagementAPI.zod.js";
 import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 const GetDataTypeRootResource = CreateUmbracoTemplateResource(
@@ -161,8 +161,8 @@ In MCP tools are endpoints for LLM's to query and perform actions against a reso
 ```
 import { UmbracoManagementClient } from "@/clients/umbraco-management-client.js";
 import { CreateUmbracoTool } from "@/helpers/create-umbraco-tool.js";
-import { GetFilterDataTypeParams } from "@/umb-management-api/schemas/index.js";
-import { getFilterDataTypeQueryParams } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { GetFilterDataTypeParams } from "@/umbraco-api/schemas/index.js";
+import { getFilterDataTypeQueryParams } from "@/umbraco-api/umbracoManagementAPI.zod.js";
 
 const FindDataTypeTool = CreateUmbracoTool(
   "find-data-type",

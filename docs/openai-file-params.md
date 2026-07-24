@@ -34,9 +34,9 @@ duration of the tool call.
    feed it into whatever upload path you already have.
 
 The reference example is the `sourceType: "file"` branch of `create-media`
-(`src/umb-management-api/tools/media/post/create-media.ts`) and the
+(`src/umbraco-api/tools/media/post/create-media.ts`) and the
 `sourceType: "file"` branch of `create-media-multiple`
-(`src/umb-management-api/tools/media/post/create-media-multiple.ts`). Both
+(`src/umbraco-api/tools/media/post/create-media-multiple.ts`). Both
 declare `_meta: { "openai/fileParams": ["file"] }` (or `["files"]` for the
 batch tool) and reuse the streaming `streamingUploadFromUrl` helper via the
 host-provided `download_url`.
