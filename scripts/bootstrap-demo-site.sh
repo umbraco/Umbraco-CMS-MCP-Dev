@@ -13,11 +13,26 @@ TEMPLATE_DIR="$PROJECT_DIR/demo-site-template"
 SITE_DIR="$PROJECT_DIR/demo-site"
 
 FORCE=0
+SQLITE=0
 for arg in "$@"; do
   case "$arg" in
     --force) FORCE=1 ;;
+    --sqlite) SQLITE=1 ;;
   esac
 done
+
+# Writes a server-less SQLite appsettings.local.json so Umbraco can boot
+# without SQL Server / Docker.
+write_sqlite_config() {
+  cat > "$SITE_DIR/appsettings.local.json" <<'EOF'
+{
+  "ConnectionStrings": {
+    "umbracoDbDSN": "Data Source=|DataDirectory|/Umbraco.sqlite.db;Cache=Shared;Foreign Keys=True;Pooling=True",
+    "umbracoDbDSN_ProviderName": "Microsoft.Data.Sqlite"
+  }
+}
+EOF
+}
 
 if [ ! -d "$TEMPLATE_DIR" ]; then
   echo "Error: $TEMPLATE_DIR does not exist" >&2
@@ -49,7 +64,20 @@ if [ -f "$SITE_DIR/demo-site-template.csproj" ]; then
   mv "$SITE_DIR/demo-site-template.csproj" "$SITE_DIR/demo-site.csproj"
 fi
 
+if [ "$SQLITE" -eq 1 ]; then
+  if [ ! -f "$SITE_DIR/appsettings.local.json" ] || [ "$FORCE" -eq 1 ]; then
+    write_sqlite_config
+    echo "demo-site/appsettings.local.json written for server-less SQLite" >&2
+  else
+    echo "demo-site/appsettings.local.json already exists; leaving untouched (pass --force to overwrite)" >&2
+  fi
+fi
+
 echo "demo-site/ created from demo-site-template/" >&2
 echo "Next steps:" >&2
-echo "  - Write demo-site/appsettings.local.json with your DB connection string" >&2
+if [ "$SQLITE" -eq 1 ]; then
+  echo "  - appsettings.local.json already written for server-less SQLite" >&2
+else
+  echo "  - Write demo-site/appsettings.local.json with your DB connection string" >&2
+fi
 echo "  - Run 'npm run umbraco:start'" >&2
