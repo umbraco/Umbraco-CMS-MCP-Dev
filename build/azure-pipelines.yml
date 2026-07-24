@@ -52,7 +52,7 @@ stages:
 
 - stage: Deploy_Npm
   displayName: Npm release
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), and(startsWith(variables['Build.SourceBranch'], 'refs/heads/v'), endsWith(variables['Build.SourceBranch'], '/main'))))
   dependsOn:
     - BuildAndTest
   jobs:
@@ -127,7 +127,7 @@ stages:
 
 - stage: Create_GitHub_Release
   displayName: GitHub release
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), and(startsWith(variables['Build.SourceBranch'], 'refs/heads/v'), endsWith(variables['Build.SourceBranch'], '/main'))))
   dependsOn:
     - Deploy_Npm
   jobs:
@@ -172,7 +172,7 @@ stages:
 
 - stage: Deploy_MCP_Registry
   displayName: MCP Registry release
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), and(startsWith(variables['Build.SourceBranch'], 'refs/heads/v'), endsWith(variables['Build.SourceBranch'], '/main'))))
   dependsOn:
     - Deploy_Npm
   jobs:
