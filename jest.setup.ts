@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { initializeUmbracoFetch, configureApiClient } from '@umbraco-cms/mcp-server-sdk';
-import { UmbracoManagementClient } from './src/umb-management-api/umbraco-management-client.js';
-import { setUmbracoVersion } from './src/umb-management-api/runtime-context.js';
+import { UmbracoManagementClient } from './src/umbraco-api/umbraco-management-client.js';
+import { setUmbracoVersion } from './src/umbraco-api/runtime-context.js';
 import { resolve } from 'path';
 
 // Load environment variables from .env

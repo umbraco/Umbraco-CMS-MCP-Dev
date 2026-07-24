@@ -1,0 +1,24 @@
+import { getTreeMemberTypeSiblingsQueryParams, getTreeMemberTypeSiblingsResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import { GetTreeMemberTypeSiblingsParams } from "@/umbraco-api/schemas/index.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
+
+const GetMemberTypeSiblingsTool = {
+  name: "get-member-type-siblings",
+  description: "Gets sibling member types or member type folders for a given descendant id",
+  inputSchema: getTreeMemberTypeSiblingsQueryParams.shape,
+  outputSchema: getTreeMemberTypeSiblingsResponse.shape,
+  annotations: { readOnlyHint: true },
+  slices: ['tree'],
+  handler: (async (params: GetTreeMemberTypeSiblingsParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeMemberTypeSiblings(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeMemberTypeSiblingsQueryParams.shape, typeof getTreeMemberTypeSiblingsResponse.shape>;
+
+export default withStandardDecorators(GetMemberTypeSiblingsTool);

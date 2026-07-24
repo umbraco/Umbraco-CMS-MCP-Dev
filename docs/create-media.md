@@ -69,7 +69,7 @@ cleanly (verified on `umbraco-cms-dev-mcp-staging`).
 
 ## Implementation pointers
 
-- Streaming logic lives in `src/umb-management-api/tools/media/post/helpers/streaming-upload.ts`.
+- Streaming logic lives in `src/umbraco-api/tools/media/post/helpers/streaming-upload.ts`.
 - It needs the per-tenant base URL and the KV-stored OAuth token; the worker
   stashes those via `setStreamingAuthContext({ env, tokenKey })` in `init()`.
 - Before each streaming POST, the helper issues a cheap SDK call
