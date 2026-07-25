@@ -22,6 +22,7 @@ const UpdateDocumentTool = {
   description: `Updates a document by Id. USE AS LAST RESORT ONLY.
 
   IMPORTANT: Prefer these specialized tools instead:
+  - update-document-name: For renaming a document (or a specific culture variant) - the safe way to change the name
   - update-document-properties: For updating individual property values (simpler, safer)
   - update-block-property: For updating properties within BlockList/BlockGrid/RichText blocks
 
@@ -31,7 +32,10 @@ const UpdateDocumentTool = {
   If you must use this tool:
   - Always read the current document value first
   - Only update the required values
-  - Don't miss any properties from the original document`,
+  - Don't miss any properties from the original document
+  - WARNING: passing an empty "values" array will DELETE all existing property values on the document.
+    Always include the full, unmodified "values" array from the document you just read unless you
+    intend to clear every property.`,
   inputSchema: inputSchema,
   annotations: {
     idempotentHint: true,
