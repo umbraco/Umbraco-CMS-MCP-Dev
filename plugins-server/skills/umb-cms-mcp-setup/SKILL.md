@@ -9,7 +9,7 @@ This covers running `@umbraco-cms/mcp-dev` as a live MCP server connected to an 
 
 For install steps, verifying the connection, and troubleshooting, use the official docs rather than this skill — they're the source of truth and won't drift out of sync the way a duplicated copy here would:
 
-**[Umbraco MCP Documentation](https://docs.umbraco.com/umbraco-developer-mcp)**
+**[Umbraco MCP Documentation](https://docs.umbraco.com/umbraco-in-ai/mcp/cms-developer-mcp)**
 
 For per-client configuration, go straight to the guide for the client actually in use rather than the general page above:
 
@@ -49,7 +49,12 @@ When the client is a coding agent working against a project (Claude Code, Cursor
 
 Keep real `UMBRACO_CLIENT_ID` / `UMBRACO_CLIENT_SECRET` values out of any file that gets committed — use a local, git-ignored env file or your client's secret-reference mechanism instead of hardcoding them in a checked-in `.mcp.json`.
 
-The `@lts-17` tag above matches Umbraco CMS 17.x (the current LTS). Don't assume this tag for every project — check the target site's Umbraco major version and pick the matching dist-tag from the docs' [Version Compatibility table](https://docs.umbraco.com/umbraco-in-ai/17.latest/mcp/cms-developer-mcp) (e.g. `@16` for Umbraco 16.x) rather than hardcoding one.
+Don't assume the `@lts-17` tag above for every project — the dist-tag depends on the target site's Umbraco major version. The two you'll hit most often:
+
+- **`@latest`** — Umbraco 18.x (current release)
+- **`@lts-17`** — Umbraco 17.x (current LTS)
+
+For anything older (`@16` for 16.x, `@alpha` for the pre-16 package) or to confirm this mapping is still current, check the docs' [Version Compatibility table](https://docs.umbraco.com/umbraco-in-ai/mcp/cms-developer-mcp).
 
 ## Required and Optional Environment Variables
 
