@@ -1,0 +1,30 @@
+import { getDocumentByIdParams, getDocumentByIdResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import { CurrentUserResponseModel } from "@/umbraco-api/schemas/index.js";
+import { UmbracoDocumentPermissions } from "../constants.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
+
+const GetDocumentByIdTool = {
+  name: "get-document-by-id",
+  description: `Gets a document by id
+  Use this to retrieve existing documents. When creating new documents,
+  first get an existing document of similar type, then use the Copy document endpoint.`,
+  inputSchema: getDocumentByIdParams.shape,
+  outputSchema: getDocumentByIdResponse.shape,
+  annotations: {
+    readOnlyHint: true,
+  },
+  slices: ['read'],
+  enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Read),
+  handler: (async ({ id }: { id: string }) => {
+    return executeGetApiCall((client) =>
+      client.getDocumentById(id, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getDocumentByIdParams.shape, typeof getDocumentByIdResponse.shape>;
+
+export default withStandardDecorators(GetDocumentByIdTool);
