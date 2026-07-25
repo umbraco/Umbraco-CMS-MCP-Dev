@@ -128,6 +128,40 @@ describe("update-document-name", () => {
     expect(result).toMatchSnapshot();
   });
 
+  it("should return a helpful error when a culture is given for an invariant document", async () => {
+    // Arrange - Create an invariant document (single variant, culture: null)
+    const builder = await new DocumentBuilder()
+      .withName(TEST_DOCUMENT_NAME)
+      .withDocumentType(ROOT_DOCUMENT_TYPE_ID)
+      .create();
+
+    // Act - Try to rename it while specifying a culture that doesn't exist on it
+    const result = await UpdateDocumentNameTool.handler(
+      {
+        id: builder.getId(),
+        name: RENAMED_DOCUMENT_NAME,
+        culture: "en-US",
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    // Assert - Should fail with a helpful error listing the actual (invariant) variant
+    expect(result.isError).toBe(true);
+    const responseData = result.structuredContent as {
+      title: string;
+      availableCultures: { culture: string | null; name: string }[];
+    };
+    expect(responseData.title).toBe("Invalid culture");
+    expect(responseData.availableCultures).toEqual([
+      { culture: null, name: TEST_DOCUMENT_NAME },
+    ]);
+
+    // The invariant variant's name must remain untouched
+    const client = UmbracoManagementClient.getClient();
+    const document = await client.getDocumentById(builder.getId());
+    expect(document.variants[0].name).toBe(TEST_DOCUMENT_NAME);
+  });
+
   describe("multi-culture support", () => {
     const MULTI_CULTURE_DOC_NAME = "_Test Multi-Culture Rename Document";
     const MULTI_CULTURE_DOC_TYPE_NAME = "_Test Multi-Culture Rename DocType";

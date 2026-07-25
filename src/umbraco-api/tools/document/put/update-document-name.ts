@@ -31,6 +31,7 @@ const updateDocumentNameSchema = {
   name: z.string().min(1).describe("The new name for the document (or the document variant matching the given culture)"),
   culture: z
     .string()
+    .min(1)
     .nullish()
     .describe(
       "Optional culture code identifying which variant to rename (e.g., 'en-US'). Required when the document varies by culture and has more than one variant; omit for invariant documents."
