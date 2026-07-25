@@ -27,6 +27,7 @@
     "generate": "orval --config orval.config.ts",
     "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:changed": "node scripts/test-changed.mjs",
     "test:rerun-failures": "grep '^FAIL ' test-failures.log 2>/dev/null | sed 's/^FAIL //' | tr '\\n' ' ' | xargs -r node --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage || echo 'No failures to rerun (test-failures.log not found or empty)'",
     "test:evals": "node --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage --config tests/evals/jest.config.ts",
     "patch-publish-alpha": "npm version prerelease --preid=alpha && npm publish --tag alpha --access public",
