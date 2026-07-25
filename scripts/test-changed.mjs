@@ -10,7 +10,7 @@
  *
  * Flow:
  *   1. Resolve the diff base (GITHUB_BASE_REF when set, else this repo's
- *      default branch, main).
+ *      gitflow integration branch, dev, falling back to main).
  *   2. Find changed *.ts files under src/ relative to that base.
  *   3. Run `jest --findRelatedTests` over the changed non-test source files,
  *      so dependents (e.g. a shared helper's tests) are included.
@@ -58,14 +58,15 @@ function refExists(ref) {
  * Resolve the diff base to compare HEAD against. Prefers the PR's actual
  * base branch (GITHUB_BASE_REF, set by GitHub Actions on pull_request
  * events) so the "changed files" set matches what the PR will merge. Falls
- * back to this repo's default branch, main (there is no dev branch here).
+ * back to this repo's gitflow integration branch, dev, then main (main is
+ * reserved for release PRs).
  */
 function resolveDiffBase() {
   const candidates = [];
   if (process.env.GITHUB_BASE_REF) {
     candidates.push(`origin/${process.env.GITHUB_BASE_REF}`);
   }
-  candidates.push("origin/main", "main");
+  candidates.push("origin/dev", "dev", "origin/main", "main");
 
   for (const candidate of candidates) {
     if (refExists(candidate)) {

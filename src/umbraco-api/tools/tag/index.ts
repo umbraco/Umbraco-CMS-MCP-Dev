@@ -1,0 +1,19 @@
+import GetTagsTool from "./get/get-tags.js";
+import { CurrentUserResponseModel } from "@/umbraco-api/schemas/index.js";
+import {
+  type ToolCollectionExport,
+  type ToolDefinition,
+} from "@umbraco-cms/mcp-server-sdk";
+
+export const TagCollection: ToolCollectionExport = {
+  metadata: {
+    name: 'tag',
+    displayName: 'Tag Management',
+    description: 'Tag management and retrieval',
+    dependencies: []
+  },
+  tools: (user: CurrentUserResponseModel) => {
+    const tools: ToolDefinition<any, any>[] = [GetTagsTool];
+    return tools;
+  }
+};

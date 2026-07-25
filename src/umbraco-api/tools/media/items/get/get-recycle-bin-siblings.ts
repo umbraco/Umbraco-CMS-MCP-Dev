@@ -1,0 +1,24 @@
+import { GetRecycleBinMediaSiblingsParams } from "@/umbraco-api/schemas/index.js";
+import { getRecycleBinMediaSiblingsQueryParams, getRecycleBinMediaSiblingsResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
+
+const GetMediaRecycleBinSiblingsTool = {
+  name: "get-media-recycle-bin-siblings",
+  description: "Gets sibling media items in the recycle bin for a given descendant id",
+  inputSchema: getRecycleBinMediaSiblingsQueryParams.shape,
+  outputSchema: getRecycleBinMediaSiblingsResponse.shape,
+  annotations: { readOnlyHint: true },
+  slices: ['tree', 'recycle-bin'],
+  handler: (async (params: GetRecycleBinMediaSiblingsParams) => {
+    return executeGetApiCall((client) =>
+      client.getRecycleBinMediaSiblings(params, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getRecycleBinMediaSiblingsQueryParams.shape, typeof getRecycleBinMediaSiblingsResponse.shape>;
+
+export default withStandardDecorators(GetMediaRecycleBinSiblingsTool);
