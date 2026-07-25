@@ -34,7 +34,7 @@ When the client is a coding agent working against a project (Claude Code, Cursor
   "mcpServers": {
     "umbraco-mcp": {
       "command": "npx",
-      "args": ["@umbraco-cms/mcp-dev@lts-17"],
+      "args": ["@umbraco-cms/mcp-dev@latest"],
       "env": {
         "NODE_TLS_REJECT_UNAUTHORIZED": "0",
         "UMBRACO_CLIENT_ID": "your-api-user-id",
@@ -49,7 +49,7 @@ When the client is a coding agent working against a project (Claude Code, Cursor
 
 Keep real `UMBRACO_CLIENT_ID` / `UMBRACO_CLIENT_SECRET` values out of any file that gets committed — use a local, git-ignored env file or your client's secret-reference mechanism instead of hardcoding them in a checked-in `.mcp.json`.
 
-Don't assume the `@lts-17` tag above for every project — the dist-tag depends on the target site's Umbraco major version. The two you'll hit most often:
+Don't assume the `@latest` tag above for every project — the dist-tag depends on the target site's Umbraco major version. The two you'll hit most often:
 
 - **`@latest`** — Umbraco 18.x (current release)
 - **`@lts-17`** — Umbraco 17.x (current LTS)
