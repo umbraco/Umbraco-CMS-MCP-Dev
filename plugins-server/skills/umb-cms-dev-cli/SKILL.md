@@ -71,7 +71,7 @@ Introspection commands (`--list-tools`, `--describe-tool`, `--generate-context`)
 | `--umbraco-include-tools` | `UMBRACO_INCLUDE_TOOLS` | Only expose these specific tools |
 | `--umbraco-exclude-tools` | `UMBRACO_EXCLUDE_TOOLS` | Hide these specific tools |
 
-Available slices: `read`, `list`, `create`, `update`, `delete`, `search`, `tree`, `publish`, `move`, `copy`.
+Available slices (from `src/config/slice-registry.ts`, the single source of truth): `create`, `read`, `update`, `delete`, `tree`, `folders`, `search`, `list`, `references`, `publish`, `recycle-bin`, `move`, `copy`, `sort`, `validate`, `rename`, `configuration`, `audit`, `urls`, `domains`, `permissions`, `user-status`, `current-user`, `notifications`, `public-access`, `scaffolding`, `blueprints`, `server-info`, `diagnostics`, `templates` — plus `other` as a catch-all for tools with no slices assigned.
 
 Exclude takes precedence over include. Filters combine.
 
