@@ -7,9 +7,17 @@ description: Guide for installing and configuring the Umbraco MCP server (@umbra
 
 This covers running `@umbraco-cms/mcp-dev` as a live MCP server connected to an AI client (Claude Desktop, Claude Code, Cursor, VS Code, etc). For debugging the package directly on the command line (`--list-tools`, `--call`, `--debug-config`), see the `umb-cms-dev-cli` skill instead — the same env vars apply either way.
 
-For install steps, per-client configuration, verifying the connection, and troubleshooting, use the official docs rather than this skill — they're the source of truth and won't drift out of sync the way a duplicated copy here would:
+For install steps, verifying the connection, and troubleshooting, use the official docs rather than this skill — they're the source of truth and won't drift out of sync the way a duplicated copy here would:
 
 **[Umbraco MCP Documentation](https://docs.umbraco.com/umbraco-developer-mcp)**
+
+For per-client configuration, go straight to the guide for the client actually in use rather than the general page above:
+
+- [Claude Desktop](https://docs.umbraco.com/umbraco-in-ai/17.latest/mcp/local-mcp-setup/claude-desktop)
+- [Claude Code](https://docs.umbraco.com/umbraco-in-ai/17.latest/mcp/local-mcp-setup/claude-code)
+- [Cursor](https://docs.umbraco.com/umbraco-in-ai/17.latest/mcp/local-mcp-setup/cursor)
+- [GitHub Copilot](https://docs.umbraco.com/umbraco-in-ai/17.latest/mcp/local-mcp-setup/github-copilot)
+- [OpenAI Codex](https://docs.umbraco.com/umbraco-in-ai/17.latest/mcp/local-mcp-setup/openai-codex)
 
 ## Prerequisites
 
@@ -26,7 +34,7 @@ When the client is a coding agent working against a project (Claude Code, Cursor
   "mcpServers": {
     "umbraco-mcp": {
       "command": "npx",
-      "args": ["@umbraco-cms/mcp-dev@17"],
+      "args": ["@umbraco-cms/mcp-dev@lts-17"],
       "env": {
         "NODE_TLS_REJECT_UNAUTHORIZED": "0",
         "UMBRACO_CLIENT_ID": "your-api-user-id",
@@ -40,6 +48,8 @@ When the client is a coding agent working against a project (Claude Code, Cursor
 ```
 
 Keep real `UMBRACO_CLIENT_ID` / `UMBRACO_CLIENT_SECRET` values out of any file that gets committed — use a local, git-ignored env file or your client's secret-reference mechanism instead of hardcoding them in a checked-in `.mcp.json`.
+
+The `@lts-17` tag above matches Umbraco CMS 17.x (the current LTS). Don't assume this tag for every project — check the target site's Umbraco major version and pick the matching dist-tag from the docs' [Version Compatibility table](https://docs.umbraco.com/umbraco-in-ai/17.latest/mcp/cms-developer-mcp) (e.g. `@16` for Umbraco 16.x) rather than hardcoding one.
 
 ## Required and Optional Environment Variables
 
