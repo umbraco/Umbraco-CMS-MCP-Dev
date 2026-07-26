@@ -75,23 +75,9 @@ For anything older (`@16` for 16.x, `@alpha` for the pre-16 package) or to confi
 
 Beyond collections (`document`, `media`, etc.), the server supports two more ways to shape which tools a client sees:
 
-**A slice is the operation kind a tool performs** (its verb), independent of which collection it belongs to. Every tool is tagged with one or more slices, so slice filtering cuts across collections — e.g. `UMBRACO_INCLUDE_SLICES=read,search` exposes only read/search tools across every enabled collection. Available slices (from `src/config/slice-registry.ts`, the source of truth): `create`, `read`, `update`, `delete`, `tree`, `folders`, `search`, `list`, `references`, `publish`, `recycle-bin`, `move`, `copy`, `sort`, `validate`, `rename`, `configuration`, `audit`, `urls`, `domains`, `permissions`, `user-status`, `current-user`, `notifications`, `public-access`, `scaffolding`, `blueprints`, `server-info`, `diagnostics`, `templates` — plus `other` as a catch-all for tools with no slices assigned.
+**A slice is the operation kind a tool performs** (its verb), independent of which collection it belongs to. Every tool is tagged with one or more slices, so slice filtering cuts across collections — e.g. `UMBRACO_INCLUDE_SLICES=read,search` exposes only read/search tools across every enabled collection. Slices are defined in [`src/config/slice-registry.ts`](https://github.com/umbraco/Umbraco-CMS-MCP-Dev/blob/main/src/config/slice-registry.ts) — the single source of truth; check that file for the current list rather than trusting a copy here (examples: `create`, `read`, `update`, `delete`, `search`, `publish`). Tools with no slices assigned fall back to `other`.
 
-**A mode is a named preset that maps to a fixed set of collections** — a shortcut for "give me everything related to X" instead of listing collections by hand via `UMBRACO_INCLUDE_TOOL_COLLECTIONS`. Set `UMBRACO_TOOL_MODES` to a comma-separated list to enable more than one. Current modes (from `src/config/mode-registry.ts`):
-
-| Mode | Description |
-|------|-------------|
-| `content` | Document creation, editing, versioning, and blueprints |
-| `content-modeling` | Document and media structure: types, data types, and content to see the output |
-| `front-end` | Templates, partial views, stylesheets, scripts, and static files |
-| `media` | Media library, imaging operations, and file uploads |
-| `search` | Examine indexes and search functionality |
-| `users` | Back office users, user groups, and user data |
-| `members` | Front-end members, member types, and member groups |
-| `health` | Health checks and log viewer |
-| `translation` | Cultures, languages, and dictionary items |
-| `system` | Server information, manifest, and models builder |
-| `integrations` | Webhooks, redirects, relations, and tags |
+**A mode is a named preset that maps to a fixed set of collections** — a shortcut for "give me everything related to X" instead of listing collections by hand via `UMBRACO_INCLUDE_TOOL_COLLECTIONS`. Set `UMBRACO_TOOL_MODES` to a comma-separated list to enable more than one. Modes and what each one maps to are defined in [`src/config/mode-registry.ts`](https://github.com/umbraco/Umbraco-CMS-MCP-Dev/blob/main/src/config/mode-registry.ts) — the single source of truth; check that file for the current list rather than trusting a copy here (examples: `content`, `media`, `users`, `translation`).
 
 Modes, slices, and the collection/tool include-exclude filters all combine (exclude always wins over include) — e.g. `UMBRACO_TOOL_MODES=content` plus `UMBRACO_EXCLUDE_SLICES=delete` exposes every content-management tool except deletions.
 
