@@ -1,0 +1,31 @@
+import { MoveDocumentTypeRequestModel } from "@/umbraco-api/schemas/moveDocumentTypeRequestModel.js";
+import {
+  putDocumentTypeByIdMoveParams,
+  putDocumentTypeByIdMoveBody,
+} from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import { z } from "zod";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeVoidApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
+
+const moveDocumentTypeSchema = {
+  id: putDocumentTypeByIdMoveParams.shape.id,
+  data: z.object(putDocumentTypeByIdMoveBody.shape),
+};
+
+const MoveDocumentTypeTool = {
+  name: "move-document-type",
+  description: "Move a document type to a new location",
+  inputSchema: moveDocumentTypeSchema,
+  slices: ['move'],
+  handler: (async (model: { id: string; data: MoveDocumentTypeRequestModel }) => {
+    return executeVoidApiCall((client) =>
+      client.putDocumentTypeByIdMove(model.id, model.data, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof moveDocumentTypeSchema>;
+
+export default withStandardDecorators(MoveDocumentTypeTool);
