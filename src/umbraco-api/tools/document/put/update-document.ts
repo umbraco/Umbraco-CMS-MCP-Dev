@@ -10,7 +10,6 @@ import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
   ToolValidationError,
-  UmbracoApiError,
   executeVoidApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
@@ -62,8 +61,12 @@ const UpdateDocumentTool = {
       } catch (error) {
         // Only swallow "not found" - the update call below will surface it with the
         // correct error shape. Any other failure (network, auth, server error) should
-        // not silently disable this safety guard.
-        if (!(error instanceof UmbracoApiError && error.problemDetails.status === 404)) {
+        // not silently disable this safety guard. Raw client calls throw a plain Error
+        // with a `.response.status` attached (see the SDK's fetch mutator) rather than
+        // the ToolValidationError-style UmbracoApiError, which is only constructed later
+        // by the withErrorHandling decorator.
+        const status = (error as { response?: { status?: number } })?.response?.status;
+        if (status !== 404) {
           throw error;
         }
       }
