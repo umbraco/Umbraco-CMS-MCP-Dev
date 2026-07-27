@@ -1,0 +1,24 @@
+import { GetTreeStylesheetChildrenParams } from "@/umbraco-api/schemas/index.js";
+import { getTreeStylesheetChildrenQueryParams, getTreeStylesheetChildrenResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import {
+  type ToolDefinition,
+  CAPTURE_RAW_HTTP_RESPONSE,
+  executeGetApiCall,
+  withStandardDecorators,
+} from "@umbraco-cms/mcp-server-sdk";
+
+const GetStylesheetChildrenTool = {
+  name: "get-stylesheet-children",
+  description: "Gets the children of a stylesheet in the tree structure",
+  inputSchema: getTreeStylesheetChildrenQueryParams.shape,
+  outputSchema: getTreeStylesheetChildrenResponse.shape,
+  annotations: { readOnlyHint: true },
+  slices: ['tree'],
+  handler: (async (model: GetTreeStylesheetChildrenParams) => {
+    return executeGetApiCall((client) =>
+      client.getTreeStylesheetChildren(model, CAPTURE_RAW_HTTP_RESPONSE)
+    );
+  }),
+} satisfies ToolDefinition<typeof getTreeStylesheetChildrenQueryParams.shape, typeof getTreeStylesheetChildrenResponse.shape>;
+
+export default withStandardDecorators(GetStylesheetChildrenTool);

@@ -18,9 +18,9 @@
       "@/helpers/*": ["./helpers/*"],
       "@/test-helpers/*": ["./test-helpers/*"],
       "@/constants/*": ["./constants/*"],
-      "@/umb-management-api/*": ["./umb-management-api/api/*"],
+      "@/umbraco-api/*": ["./umbraco-api/api/*"],
       "@umb-management-client": [
-        "./umb-management-api/umbraco-management-client.ts"
+        "./umbraco-api/umbraco-management-client.ts"
       ],
     }
   },

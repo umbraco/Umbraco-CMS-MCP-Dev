@@ -9,7 +9,7 @@ Migrates MCP tool tests from the old pattern to the new standardized pattern usi
 
 Example:
 ```
-/migrate-tests src/umb-management-api/tools/document-type/__tests__
+/migrate-tests src/umbraco-api/tools/document-type/__tests__
 ```
 
 ## Description
@@ -31,7 +31,7 @@ expect(data.name).toBe("expected");
 **New Pattern:**
 ```typescript
 import { createMockRequestHandlerExtra, validateStructuredContent } from "@/test-helpers/create-mock-request-handler-extra.js";
-import { getEntityResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+import { getEntityResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
 
 const result = await Tool.handler(params, createMockRequestHandlerExtra());
 const data = validateStructuredContent(result, getEntityResponse);
@@ -169,7 +169,7 @@ const items = (result.structuredContent as any).items;
    import { validateStructuredContent, validateErrorResult } from "@/test-helpers/create-mock-request-handler-extra.js";
    import { createSnapshotResult } from "@/test-helpers/create-snapshot-result.js";
    // Import the response schema for the tool being tested
-   import { getEntityResponse } from "@/umb-management-api/umbracoManagementAPI.zod.js";
+   import { getEntityResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
    // Or for create operations, import the output schema from the tool
    import { createOutputSchema } from "../post/create-entity.js";
    ```
@@ -199,7 +199,7 @@ const items = (result.structuredContent as any).items;
 ## Response Schema Reference
 
 For `validateStructuredContent`, use the appropriate Zod schema from:
-- `@/umb-management-api/umbracoManagementAPI.zod.js` - Generated API response schemas
+- `@/umbraco-api/umbracoManagementAPI.zod.js` - Generated API response schemas
 - Tool file exports - Custom output schemas for create operations
 
 Common schemas:

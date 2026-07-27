@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-document-name should handle non-existent document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "ContentNotFound",
+    "status": 404,
+    "title": "The document could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`update-document-name should rename an invariant document 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "culture": null,
+    "document": {
+      "documentType": {
+        "collection": null,
+        "icon": "icon-home color-blue",
+        "id": "00000000-0000-0000-0000-000000000000",
+      },
+      "flags": [],
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isTrashed": false,
+      "template": {
+        "id": "907d26a5-c929-4c69-bb1d-0d0d5342d6f6",
+      },
+      "values": [
+        {
+          "alias": "title",
+          "culture": null,
+          "editorAlias": "Umbraco.TextBox",
+          "segment": null,
+          "value": "_Initial Title",
+        },
+      ],
+      "variants": [
+        {
+          "createDate": "NORMALIZED_DATE",
+          "culture": null,
+          "flags": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "name": "_Renamed Test Document",
+          "publishDate": null,
+          "scheduledPublishDate": null,
+          "scheduledUnpublishDate": null,
+          "segment": null,
+          "state": "Draft",
+          "updateDate": "NORMALIZED_DATE",
+        },
+      ],
+    },
+    "message": "Successfully renamed document from "_Test Document Name" to "_Renamed Test Document"",
+    "name": "_Renamed Test Document",
+    "previousName": "_Test Document Name",
+    "success": true,
+  },
+}
+`;
