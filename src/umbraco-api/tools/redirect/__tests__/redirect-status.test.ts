@@ -29,17 +29,35 @@ describe("Redirect Status Tools", () => {
         await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra())
       );
 
-      await UpdateRedirectStatusTool.handler(
-        { status: before.status === "Enabled" ? "Disabled" : "Enabled" },
-        createMockRequestHandlerExtra()
-      );
+      try {
+        const updateResult = await UpdateRedirectStatusTool.handler(
+          { status: before.status === "Enabled" ? "Disabled" : "Enabled" },
+          createMockRequestHandlerExtra()
+        );
+        expect(updateResult.isError).toBeFalsy();
 
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const after = validateToolResponse(
-        GetRedirectStatusTool,
-        await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra())
-      );
-      expect(after.status).toBe(before.status);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const after = validateToolResponse(
+          GetRedirectStatusTool,
+          await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra())
+        );
+        expect(after.status).toBe(before.status);
+      } finally {
+        // Defensive restore. On 17.6+ this is itself a no-op, but if the endpoint
+        // ever does take effect again, leaving tracking disabled would break
+        // redirect-management.test.ts, which needs it enabled to create redirects.
+        const current = validateToolResponse(
+          GetRedirectStatusTool,
+          await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra())
+        );
+        if (current.status !== before.status) {
+          await UpdateRedirectStatusTool.handler(
+            { status: before.status },
+            createMockRequestHandlerExtra()
+          );
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
     });
   });
 });

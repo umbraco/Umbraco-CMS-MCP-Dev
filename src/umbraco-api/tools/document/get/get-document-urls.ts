@@ -13,7 +13,10 @@ const outputSchema = z.object({
 
 const GetDocumentUrlsTool = {
   name: "get-document-urls",
-  description: "Gets the URLs for a document.",
+  description: `Gets the URLs for a document.
+  Parameters:
+  - id: The ids of the documents to get URLs for (array of GUIDs)
+  - culture: Optional culture to get the URLs for, e.g. "en-US". Omit to get URLs for all cultures.`,
   inputSchema: getDocumentUrlsQueryParams.shape,
   outputSchema: outputSchema.shape,
   annotations: {
