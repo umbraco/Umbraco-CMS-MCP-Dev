@@ -2,6 +2,7 @@ import UpdateDocumentTool from "../put/update-document.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { ROOT_DOCUMENT_TYPE_ID } from "../../../../constants/constants.js";
+import { UmbracoManagementClient } from "@umb-management-client";
 import {
   BLANK_UUID,
 } from "@umbraco-cms/mcp-server-sdk";
@@ -39,6 +40,7 @@ describe("update-document", () => {
       {
         id: builder.getId(),
         data: updateModel,
+        confirmClearValues: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -65,6 +67,7 @@ describe("update-document", () => {
       {
         id: BLANK_UUID,
         data: updateModel,
+        confirmClearValues: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -92,6 +95,7 @@ describe("update-document", () => {
       {
         id: builder.getId(),
         data: updateModel,
+        confirmClearValues: undefined,
       },
       createMockRequestHandlerExtra()
     );
@@ -107,5 +111,73 @@ describe("update-document", () => {
       UPDATED_DOCUMENT_NAME
     );
     // Add property verification if needed
+  });
+
+  it("should reject an empty values array when the document has existing values (regression for #253)", async () => {
+    const INITIAL_TITLE = "_Initial Title";
+
+    // Create a document with a property value set
+    const builder = await new DocumentBuilder()
+      .withName(TEST_DOCUMENT_NAME)
+      .withDocumentType(ROOT_DOCUMENT_TYPE_ID)
+      .withValue("title", INITIAL_TITLE)
+      .create();
+
+    // Attempt to update with an empty "values" array (the footgun from #253) - no confirmClearValues
+    const updateModel = new DocumentBuilder()
+      .withName(UPDATED_DOCUMENT_NAME)
+      .withDocumentType(ROOT_DOCUMENT_TYPE_ID)
+      .build();
+
+    const result = await UpdateDocumentTool.handler(
+      {
+        id: builder.getId(),
+        data: updateModel,
+        confirmClearValues: undefined,
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    expect(result.isError).toBe(true);
+    const responseData = result.structuredContent as { title: string };
+    expect(responseData.title).toBe("This update would clear all property values");
+
+    // The document's values must remain untouched - the update must not have gone through
+    const client = UmbracoManagementClient.getClient();
+    const document = await client.getDocumentById(builder.getId());
+    const titleValue = document.values.find((v) => v.alias === "title");
+    expect(titleValue?.value).toBe(INITIAL_TITLE);
+  });
+
+  it("should allow clearing values when confirmClearValues is true", async () => {
+    const INITIAL_TITLE = "_Initial Title";
+
+    // Create a document with a property value set
+    const builder = await new DocumentBuilder()
+      .withName(TEST_DOCUMENT_NAME)
+      .withDocumentType(ROOT_DOCUMENT_TYPE_ID)
+      .withValue("title", INITIAL_TITLE)
+      .create();
+
+    const updateModel = new DocumentBuilder()
+      .withName(UPDATED_DOCUMENT_NAME)
+      .withDocumentType(ROOT_DOCUMENT_TYPE_ID)
+      .build();
+
+    const result = await UpdateDocumentTool.handler(
+      {
+        id: builder.getId(),
+        data: updateModel,
+        confirmClearValues: true,
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    expect(result.isError).toBeUndefined();
+
+    // The values must actually have been cleared
+    const client = UmbracoManagementClient.getClient();
+    const document = await client.getDocumentById(builder.getId());
+    expect(document.values.find((v) => v.alias === "title")).toBeUndefined();
   });
 });
