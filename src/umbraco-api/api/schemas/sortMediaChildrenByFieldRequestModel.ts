@@ -5,8 +5,10 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { ContentSortFieldModel } from './contentSortFieldModel.js';
+import type { DirectionModel } from './directionModel.js';
 
-export type GetDocumentUrlsParams = {
-id?: string[];
-culture?: string;
-};
+export interface SortMediaChildrenByFieldRequestModel {
+  field: ContentSortFieldModel;
+  direction: DirectionModel;
+}

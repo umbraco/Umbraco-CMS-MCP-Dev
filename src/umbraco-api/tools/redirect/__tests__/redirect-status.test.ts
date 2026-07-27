@@ -19,25 +19,27 @@ describe("Redirect Status Tools", () => {
   });
 
   describe("UpdateRedirectStatusTool", () => {
-    it("should disable redirect management", async () => {
+    // As of Umbraco 17.6 the underlying POST /redirect-management/status endpoint is
+    // deprecated: it still returns success but no longer modifies the configuration.
+    // Redirect URL tracking is now controlled by the
+    // Umbraco:CMS:WebRouting:DisableRedirectUrlTracking configuration key instead.
+    it("should succeed but no longer change the status", async () => {
+      const before = validateToolResponse(
+        GetRedirectStatusTool,
+        await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra())
+      );
+
       await UpdateRedirectStatusTool.handler(
-        { status: "Disabled" },
+        { status: before.status === "Enabled" ? "Disabled" : "Enabled" },
         createMockRequestHandlerExtra()
       );
 
       await new Promise(resolve => setTimeout(resolve, 500));
-      const status = await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra());
-      const data = validateToolResponse(GetRedirectStatusTool, status);
-      expect(data.status).toBe("Disabled");
-    });
-
-    // Ensure redirect management is enabled after each test
-    afterEach(async () => {
-      await UpdateRedirectStatusTool.handler(
-        { status: "Enabled" },
-        createMockRequestHandlerExtra()
+      const after = validateToolResponse(
+        GetRedirectStatusTool,
+        await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra())
       );
-      await new Promise(resolve => setTimeout(resolve, 500));
+      expect(after.status).toBe(before.status);
     });
   });
 });

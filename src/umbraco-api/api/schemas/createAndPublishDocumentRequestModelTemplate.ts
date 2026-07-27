@@ -5,8 +5,9 @@
  * This shows all APIs available in this version of Umbraco - including all the legacy apis that are available for backward compatibility
  * OpenAPI spec version: Latest
  */
+import type { ReferenceByIdModel } from './referenceByIdModel.js';
 
-export type GetDocumentUrlsParams = {
-id?: string[];
-culture?: string;
-};
+/**
+ * @nullable
+ */
+export type CreateAndPublishDocumentRequestModelTemplate = ReferenceByIdModel | null;
