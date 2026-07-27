@@ -1,4 +1,4 @@
-import { UmbManagementApiOrvalConfig } from "./src/umb-management-api/orval/umb-management-api.js";
+import { UmbManagementApiOrvalConfig } from "./src/umbraco-api/orval/umbraco-api.js";
 
 export default {
   ...UmbManagementApiOrvalConfig

@@ -23,6 +23,7 @@ demo-site/
 **/.clinerules/
 **/.clineignore
 **/CLAUDE.md
+!/CLAUDE.md
 **/.claude/memories/
 **/.claude/settings.local.json
 **/AGENTS.md

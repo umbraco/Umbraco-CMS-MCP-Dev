@@ -66,16 +66,16 @@ npm run generate       # orval reads http://localhost:56472/umbraco/swagger/mana
 npm run compile        # catch type-level breakages immediately
 ```
 
-The Orval config lives in `src/umb-management-api/orval/umb-management-api.ts`. The `relaxUuidToGuid` hook rewrites `zod.uuid()` → `zod.guid()` in the generated `*.zod.ts` files.
+The Orval config lives in `src/umbraco-api/orval/umbraco-api.ts`. The `relaxUuidToGuid` hook rewrites `zod.uuid()` → `zod.guid()` in the generated `*.zod.ts` files.
 
 ### 6. Diff the regenerated API surface
 
 Quickly list new vs removed endpoints:
 
 ```bash
-git show HEAD:src/umb-management-api/api/api/umbracoManagementAPI.ts \
+git show HEAD:src/umbraco-api/api/api/umbracoManagementAPI.ts \
   | grep -oE "\['[a-zA-Z0-9]+'\]" | sort -u > /tmp/api-old-fns.txt
-grep -oE "\['[a-zA-Z0-9]+'\]" src/umb-management-api/api/api/umbracoManagementAPI.ts \
+grep -oE "\['[a-zA-Z0-9]+'\]" src/umbraco-api/api/api/umbracoManagementAPI.ts \
   | sort -u > /tmp/api-new-fns.txt
 echo "--- NEW endpoints ---"
 comm -23 /tmp/api-new-fns.txt /tmp/api-old-fns.txt
@@ -83,7 +83,7 @@ echo "--- REMOVED endpoints ---"
 comm -13 /tmp/api-new-fns.txt /tmp/api-old-fns.txt
 ```
 
-Also inspect `git status` for any new schemas in `src/umb-management-api/api/schemas/` and any field-level diffs in modified schemas.
+Also inspect `git status` for any new schemas in `src/umbraco-api/api/schemas/` and any field-level diffs in modified schemas.
 
 ### 7. Fix compile-only breakages
 
@@ -113,14 +113,14 @@ For each new endpoint identified in step 6, decide:
 - Is it covered by an existing tool? (e.g. `getDataTypeBatch` overlaps with the existing `getItemDataType` items endpoint, but returns full `DataTypeResponseModel` objects rather than lightweight items — both are useful.)
 - Is it a meaningful new capability for an LLM caller?
 
-When adding tools, follow the conventions in this codebase (tools live under `src/umb-management-api/tools/<entity>/{get,post,put,delete,items,folders}/`, registered in the entity `index.ts`):
+When adding tools, follow the conventions in this codebase (tools live under `src/umbraco-api/tools/<entity>/{get,post,put,delete,items,folders}/`, registered in the entity `index.ts`):
 
 - Use `withStandardDecorators` and `ToolDefinition` (see `.claude/commands/migrate-tools.md`).
 - For array responses, wrap in `z.object({ items: ... })`.
 - Use `executeGetApiCall` / `executeGetItemsApiCall` / `executeVoidApiCall` from the SDK.
 - Add the tool import + registration to the entity's `index.ts` and respect the existing `AuthorizationPolicies` / `slices` pattern.
 
-After each tool, add a smoke test under `src/umb-management-api/tools/<entity>/__tests__/` mirroring the existing builder + helper conventions (Dictionary is the gold standard — see `.claude/memories/cursor-mcp-testing.md`). The integration test should:
+After each tool, add a smoke test under `src/umbraco-api/tools/<entity>/__tests__/` mirroring the existing builder + helper conventions (Dictionary is the gold standard — see `.claude/memories/cursor-mcp-testing.md`). The integration test should:
 
 - Use `setupTestEnvironment()` and `createMockRequestHandlerExtra()` from `@umbraco-cms/mcp-server-sdk/testing`.
 - Arrange via the entity's existing builder.

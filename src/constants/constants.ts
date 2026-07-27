@@ -22,4 +22,4 @@ export const TAG_DATA_TYPE_ID = "b6b73142-b9c1-4bf8-a16d-e1c23320b549";
 
 // Test helper constants
 export const EXAMPLE_IMAGE_PATH =
-  "/src/umb-management-api/tools/temporary-file/__tests__/helpers/example.jpg";
+  "/src/umbraco-api/tools/temporary-file/__tests__/helpers/example.jpg";
