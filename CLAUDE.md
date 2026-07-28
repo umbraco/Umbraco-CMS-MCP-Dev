@@ -4,11 +4,17 @@ This file is the canonical conventions source for build agents and MCP tooling.
 The detailed rules live in `.rulesync/rules/*.md`; this file summarises the
 build/test/tooling conventions and points at them.
 
+Shared agents, skills, and general MCP/testing patterns are consumed from the base
+`umbraco-mcp-skills` Claude Code plugin (from `umbraco/Umbraco-MCP-Base`). The
+`.rulesync/rules/*.md` files below and the agents/commands under `.claude/` only
+cover what's specific to this repo — see each file for what it does (and doesn't)
+duplicate from the base plugin.
+
 ## Rule references
 
-- `.rulesync/rules/cursor-mcp.md` — MCP development guide (tools, resources, Umbraco API integration)
-- `.rulesync/rules/cursor-mcp-testing.md` — testing guide (builders, helpers, snapshot testing)
-- `.rulesync/rules/cursor-model-context-provider-typescript.md` — MCP TypeScript SDK reference
+- `.rulesync/rules/cursor-mcp.md` — project-specific MCP notes: Umbraco API integration facts and the Resources/ResourceTemplate patterns (not covered by the base plugin)
+- `.rulesync/rules/cursor-mcp-testing.md` — project-specific testing delta: password-field rule, Dictionary-as-gold-standard reference, entity build ordering
+- `.rulesync/rules/cursor-model-context-provider-typescript.md` — pointer to the upstream `@modelcontextprotocol/sdk` README (no longer a local copy)
 - `.rulesync/rules/cursor-project-context.md` — project context and background
 - `.rulesync/rules/schema-flattening-addition-for-folders.md` — folder schema flattening notes
 

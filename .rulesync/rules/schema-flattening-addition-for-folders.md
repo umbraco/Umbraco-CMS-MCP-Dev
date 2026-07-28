@@ -1,8 +1,14 @@
-# Schema Flattening Rule for CLAUDE.md
-
-> **Copy this section into `/Users/philw/Projects/umbraco-mcp/CLAUDE.md`**
-
 ---
+root: false
+targets:
+  - '*'
+description: MCP tool schema design rule for flattening nested parent objects
+globs:
+  - '**/*'
+cursorRuleType: always
+---
+
+# Schema Flattening Rule for CLAUDE.md
 
 ## MCP Tool Schema Design: Flatten Nested Parent Objects
 
