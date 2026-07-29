@@ -20,7 +20,7 @@ export const UmbManagementApiOrvalConfig = defineConfig({
         tags: ["Temporary File"],
       },
       override: {
-        // Transformers compose: stamp the constant, then relax the schemas.
+        // Transformers compose: relax the schemas, then stamp the constant.
         transformer: (spec) => stampTargetMajor(relaxUntypedArrays(spec)),
       },
     },
