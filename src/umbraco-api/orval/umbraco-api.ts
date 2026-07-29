@@ -3,7 +3,12 @@ import {
   orvalImportFixer,
   relaxUntypedArrays,
   postProcessZodFiles,
+  createUmbracoTargetMajorTransformer,
 } from "@umbraco-cms/mcp-server-sdk";
+
+const stampTargetMajor = createUmbracoTargetMajorTransformer({
+  outputPath: "./src/config/umbraco-target.generated.ts",
+});
 
 export const UmbManagementApiOrvalConfig = defineConfig({
   "umbraco-management-api": {
@@ -15,7 +20,8 @@ export const UmbManagementApiOrvalConfig = defineConfig({
         tags: ["Temporary File"],
       },
       override: {
-        transformer: relaxUntypedArrays,
+        // Transformers compose: stamp the constant, then relax the schemas.
+        transformer: (spec) => stampTargetMajor(relaxUntypedArrays(spec)),
       },
     },
     output: {

@@ -7,8 +7,9 @@ import packageJson from "../package.json" with { type: "json" };
 import { UmbracoToolFactory } from "./umbraco-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { checkUmbracoVersion, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
+import { checkUmbracoVersion, configureVersionCheckHook, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
+import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { availableCollections } from "./umbraco-api/tools/collection-registry.js";
 import { setUmbracoVersion, setAllowFilePathUploads } from "./umbraco-api/runtime-context.js";
 
@@ -63,8 +64,10 @@ const main = async () => {
   setUmbracoVersion(serverInfo.version);
   await checkUmbracoVersion({
     mcpVersion: packageJson.version,
+    expectedUmbracoMajor: UMBRACO_TARGET_MAJOR,
     client: { getServerInformation: async () => serverInfo }
   });
+  configureVersionCheckHook();
 
   UmbracoToolFactory(server, user, config);
 
