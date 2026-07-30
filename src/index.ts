@@ -63,6 +63,7 @@ const main = async () => {
   setUmbracoVersion(serverInfo.version);
   await checkUmbracoVersion({
     mcpVersion: packageJson.version,
+    expectedUmbracoMajor: process.env.UMBRACO_EXPECTED_MAJOR ?? packageJson.version.split(".")[0],
     client: { getServerInformation: async () => serverInfo }
   });
 
