@@ -87,7 +87,7 @@ describe("get-item-member-search", () => {
 
     // Act - Search with pagination (take only 1 result)
     const result = await GetItemMemberSearchTool.handler(
-      { query: "itemsearch" } as any,
+      { query: "itemsearch", take: 1 } as any,
       createMockRequestHandlerExtra()
     );
 
