@@ -24,6 +24,7 @@ import { umbracoCloudSiteRouting } from "@umbraco-cms/mcp-hosted/cloud";
 
 // CMS collections and registries
 import { collections, allModes, allModeNames, allSliceNames } from "./collections.js";
+import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { UmbracoManagementClient } from "./umbraco-api/umbraco-management-client.js";
 import { setStreamingAuthContext } from "./umbraco-api/tools/media/post/helpers/streaming-upload.js";
 
@@ -34,6 +35,14 @@ import { setStreamingAuthContext } from "./umbraco-api/tools/media/post/helpers/
 const options = {
   name: "umbraco-cms-mcp",
   version: "17.1.2",
+  // Hosted counterpart of the stdio entry point's version check: when set,
+  // createPerRequestServer verifies the connected Umbraco's major on every
+  // request and folds a mismatch warning into that request's `instructions`.
+  // `env.UMBRACO_EXPECTED_MAJOR` overrides it per-deployment, matching the
+  // stdio override precedence. Unlike stdio, this never blocks a tool call —
+  // createPerRequestServer has no pre-execution-hook equivalent, so a
+  // mismatch here is warn-only.
+  expectedUmbracoMajor: UMBRACO_TARGET_MAJOR,
   collections,
   modeRegistry: allModes,
   allModeNames,
