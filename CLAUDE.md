@@ -23,7 +23,10 @@ build/test/tooling conventions and points at them.
 
 - `npm run compile` — tsc type-check (safe to run anytime).
 - `npm run build` — tsup build.
-- `npm run generate` — regenerate the Orval client (requires Umbraco running).
+- `npm run generate` — regenerate the Orval client (requires Umbraco running, plus
+  `UMBRACO_BASE_URL`/`UMBRACO_CLIENT_ID`/`UMBRACO_CLIENT_SECRET` in `.env` — the SDK's
+  target-major transformer reads the instance's version to stamp
+  `src/config/umbraco-target.generated.ts`, and fails the run if it can't).
 - `npm test` — integration/unit suite (requires Umbraco running).
 - `npm run test:one -- <path-to-test>` — run a single test file (`--runInBand --forceExit`, no path pattern).
 - `npm run test:evals` — eval tests (requires Umbraco running).

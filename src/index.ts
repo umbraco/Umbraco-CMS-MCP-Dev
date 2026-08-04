@@ -7,8 +7,9 @@ import packageJson from "../package.json" with { type: "json" };
 import { UmbracoToolFactory } from "./umbraco-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { checkUmbracoVersion, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
+import { checkUmbracoVersion, configureVersionCheckHook, getVersionCheckMessage, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
+import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { availableCollections } from "./umbraco-api/tools/collection-registry.js";
 import { setUmbracoVersion, setAllowFilePathUploads } from "./umbraco-api/runtime-context.js";
 
@@ -29,11 +30,6 @@ const main = async () => {
   // Configure API client for SDK helpers (executeVoidApiCall, etc.)
   configureApiClient(() => UmbracoManagementClient.getClient());
 
-  // Create an MCP server
-  const server = new McpServer({
-    name: "Umbraco CMS Developer MCP Server",
-    version: packageJson.version,
-  });
   const client = UmbracoManagementClient.getClient();
 
   const user = await client.getUserCurrent();
@@ -63,9 +59,29 @@ const main = async () => {
   setUmbracoVersion(serverInfo.version);
   await checkUmbracoVersion({
     mcpVersion: packageJson.version,
-    expectedUmbracoMajor: process.env.UMBRACO_EXPECTED_MAJOR ?? packageJson.version.split(".")[0],
+    // UMBRACO_TARGET_MAJOR is stamped into src/config/umbraco-target.generated.ts
+    // by the orval target-major transformer, from the Umbraco instance the API
+    // client was generated against. Override to point at a different major.
+    expectedUmbracoMajor: process.env.UMBRACO_EXPECTED_MAJOR ?? UMBRACO_TARGET_MAJOR,
     client: { getServerInformation: async () => serverInfo }
   });
+  // Bridge the version check to the pre-execution hook, so a mismatch actually
+  // pauses tool execution until the user acknowledges it. Without this the
+  // check records a message that nothing ever reads back out.
+  configureVersionCheckHook();
+
+  // Surface any mismatch warning to the client during `initialize` — most hosts
+  // fold `instructions` into the model's system prompt.
+  const versionCheckMessage = getVersionCheckMessage();
+
+  // Create an MCP server
+  const server = new McpServer(
+    {
+      name: "Umbraco CMS Developer MCP Server",
+      version: packageJson.version,
+    },
+    versionCheckMessage ? { instructions: versionCheckMessage } : undefined,
+  );
 
   UmbracoToolFactory(server, user, config);
 
