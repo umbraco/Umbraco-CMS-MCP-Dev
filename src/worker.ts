@@ -39,7 +39,9 @@ const options = {
   // createPerRequestServer verifies the connected Umbraco's major on every
   // request and folds a mismatch warning into that request's `instructions`.
   // `env.UMBRACO_EXPECTED_MAJOR` overrides it per-deployment, matching the
-  // stdio override precedence.
+  // stdio override precedence. Unlike stdio, this never blocks a tool call —
+  // createPerRequestServer has no pre-execution-hook equivalent, so a
+  // mismatch here is warn-only.
   expectedUmbracoMajor: UMBRACO_TARGET_MAJOR,
   collections,
   modeRegistry: allModes,

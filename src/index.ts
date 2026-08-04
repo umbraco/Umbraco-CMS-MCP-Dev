@@ -62,12 +62,16 @@ const main = async () => {
     // UMBRACO_TARGET_MAJOR is stamped into src/config/umbraco-target.generated.ts
     // by the orval target-major transformer, from the Umbraco instance the API
     // client was generated against. Override to point at a different major.
-    expectedUmbracoMajor: process.env.UMBRACO_EXPECTED_MAJOR ?? UMBRACO_TARGET_MAJOR,
+    // (`?.trim() ||`, not `??`: an env var set to an empty string must still
+    // fall back, or the check silently no-ops with no log output at all.)
+    expectedUmbracoMajor: process.env.UMBRACO_EXPECTED_MAJOR?.trim() || UMBRACO_TARGET_MAJOR,
     client: { getServerInformation: async () => serverInfo }
   });
-  // Bridge the version check to the pre-execution hook, so a mismatch actually
-  // pauses tool execution until the user acknowledges it. Without this the
-  // check records a message that nothing ever reads back out.
+  // checkUmbracoVersion only writes into its internal service state; this hook
+  // and getVersionCheckMessage() below are two independent readers of that same
+  // state. This one gates tool execution: a mismatch fails the *next* tool call
+  // with a warning, then clears itself — a one-time speed bump, not a
+  // persistent block.
   configureVersionCheckHook();
 
   // Surface any mismatch warning to the client during `initialize` — most hosts
