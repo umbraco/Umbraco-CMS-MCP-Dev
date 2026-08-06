@@ -1,0 +1,360 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-element-block-property BlockGrid integration tests should batch update multiple BlockGrid blocks in single call 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 2 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(gridBlocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(gridBlocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property BlockGrid integration tests should update property in BlockGrid content block 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 1 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(gridBlocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property BlockList integration tests should batch update multiple blocks in single call 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 2 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(blocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(blocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property BlockList integration tests should return error when property not found in block and not on Element Type 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 1 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": [
+          "Property 'nonExistentPropertyAlias' does not exist on Element Type",
+        ],
+        "message": "No properties were processed in block at property(blocks)",
+        "success": false,
+        "updatedCount": undefined,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property BlockList integration tests should return error with available blocks when block not found 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "availableBlocks": [
+      {
+        "key": "00000000-0000-0000-0000-000000000000",
+        "path": "property(blocks)",
+        "type": "content",
+      },
+    ],
+    "detail": "None of the specified blocks were found in the element",
+    "notFoundBlocks": [
+      {
+        "blockType": "content",
+        "contentKey": "00000000-0000-0000-0000-000000000001",
+      },
+    ],
+    "status": 400,
+    "title": "Blocks not found",
+    "type": "https://httpstatuses.com/400",
+  },
+}
+`;
+
+exports[`update-element-block-property BlockList integration tests should update property in BlockList content block 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 1 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(blocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property Nested BlockList within BlockGrid integration tests should update both grid block and nested block in same call 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 2 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(nestedGridBlocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(nestedGridBlocks).contentData[0].values[1](nestedBlocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property Nested BlockList within BlockGrid integration tests should update property in nested BlockList block within BlockGrid 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 1 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(nestedGridBlocks).contentData[0].values[1](nestedBlocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property RichText Editor (RTE) integration tests should return error when property not found in RTE block and not on Element Type 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 1 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": [
+          "Property 'nonExistentPropertyAlias' does not exist on Element Type",
+        ],
+        "message": "No properties were processed in block at property(richContent).blocks",
+        "success": false,
+        "updatedCount": undefined,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property RichText Editor (RTE) integration tests should update property in RTE block content 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 1 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 properties in block at property(richContent).blocks",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property add new properties to blocks should add new property that exists on Element Type but not on block 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 1 block update(s)",
+    "results": [
+      {
+        "addedCount": 1,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Added 1 properties in block at property(blocks)",
+        "success": true,
+        "updatedCount": undefined,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property add new properties to blocks should mix update and add in single block call 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 1 block update(s)",
+    "results": [
+      {
+        "addedCount": 1,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": undefined,
+        "message": "Updated 1 and added 1 properties in block at property(blocks)",
+        "success": true,
+        "updatedCount": 1,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property add new properties to blocks should return error when property does not exist on Element Type 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Successfully processed 1 block update(s)",
+    "results": [
+      {
+        "addedCount": undefined,
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "errors": [
+          "Property 'nonExistentOnElementType' does not exist on Element Type",
+        ],
+        "message": "No properties were processed in block at property(blocks)",
+        "success": false,
+        "updatedCount": undefined,
+        "warnings": undefined,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`update-element-block-property error handling integration tests should handle non-existent element 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "NotFound",
+    "status": 404,
+    "title": "The content could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`update-element-block-property error handling integration tests should return error for non-existent element property 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "availableProperties": [
+      {
+        "alias": "title",
+        "culture": null,
+        "editorAlias": "Umbraco.TextBox",
+        "segment": null,
+      },
+    ],
+    "detail": "Property 'nonExistentProperty' does not exist on this element",
+    "status": 400,
+    "title": "Property not found",
+    "type": "https://httpstatuses.com/400",
+  },
+}
+`;
+
+exports[`update-element-block-property error handling integration tests should return error for property without block structure 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Property 'title' does not contain a BlockList, BlockGrid, or RichText block structure",
+    "propertyValue": "Simple Text Value",
+    "status": 400,
+    "title": "No block structure found",
+    "type": "https://httpstatuses.com/400",
+  },
+}
+`;
