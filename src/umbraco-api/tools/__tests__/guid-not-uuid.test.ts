@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
  * (e.g. 0000003f-0000-0000-0000-000000000000). Zod's uuid() enforces
  * RFC 4122 version/variant bits and rejects these.
  *
- * The Orval afterAllFilesWrite hook `relaxUuidToGuid` replaces zod.uuid()
+ * The Orval afterAllFilesWrite hook `postProcessZodFiles` replaces zod.uuid()
  * with zod.guid() in generated files. This test ensures that replacement
  * has been applied — if it fails, the hook didn't run or was removed.
  */
