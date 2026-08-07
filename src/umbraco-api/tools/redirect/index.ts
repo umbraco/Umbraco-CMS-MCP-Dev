@@ -2,7 +2,6 @@ import GetAllRedirectsTool from "./get/get-all-redirects.js";
 import GetRedirectByIdTool from "./get/get-redirect-by-id.js";
 import DeleteRedirectTool from "./delete/delete-redirect.js";
 import GetRedirectStatusTool from "./get/get-redirect-status.js";
-import UpdateRedirectStatusTool from "./post/update-redirect-status.js";
 import { CurrentUserResponseModel } from "@/umbraco-api/schemas/index.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import {
@@ -25,7 +24,6 @@ export const RedirectCollection: ToolCollectionExport = {
       tools.push(GetRedirectByIdTool);
       tools.push(DeleteRedirectTool);
       tools.push(GetRedirectStatusTool);
-      tools.push(UpdateRedirectStatusTool);
     }
 
     return tools;

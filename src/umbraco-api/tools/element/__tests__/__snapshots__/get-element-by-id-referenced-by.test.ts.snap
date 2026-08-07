@@ -14,7 +14,7 @@ exports[`get-element-by-id-referenced-by should get documents that reference a s
           "name": "_Test DocType With ElementRef",
         },
         "id": "00000000-0000-0000-0000-000000000000",
-        "name": null,
+        "name": "_Test Document Referencing Element",
         "published": false,
         "variants": [
           {

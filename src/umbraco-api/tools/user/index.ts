@@ -10,6 +10,7 @@ import GetUserCurrentPermissionsTool from "./get/get-user-current-permissions.js
 import GetUserCurrentPermissionsDocumentTool from "./get/get-user-current-permissions-document.js";
 import GetUserCurrentPermissionsMediaTool from "./get/get-user-current-permissions-media.js";
 import GetUserByIdCalculateStartNodesTool from "./get/get-user-by-id-calculate-start-nodes.js";
+import GetUserBatchTool from "./get/get-user-batch.js";
 import UploadUserAvatarByIdTool from "./post/upload-user-avatar-by-id.js";
 import UploadUserCurrentAvatarTool from "./post/upload-user-current-avatar.js";
 import DeleteUserAvatarByIdTool from "./delete/delete-user-avatar-by-id.js";
@@ -47,6 +48,7 @@ export const UserCollection: ToolCollectionExport = {
       tools.push(GetItemUserTool);
       tools.push(GetUserConfigurationTool);
       tools.push(GetUserByIdCalculateStartNodesTool);
+      tools.push(GetUserBatchTool);
       tools.push(UploadUserAvatarByIdTool);
       tools.push(DeleteUserAvatarByIdTool);
     }

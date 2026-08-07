@@ -6,7 +6,6 @@ exports[`redirect-tool-index should have all tools when user has content access 
   "get-redirect-by-id",
   "delete-redirect",
   "get-redirect-status",
-  "update-redirect-status",
 ]
 `;
 
