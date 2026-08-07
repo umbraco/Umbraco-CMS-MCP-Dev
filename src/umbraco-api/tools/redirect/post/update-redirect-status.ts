@@ -11,9 +11,14 @@ type SchemaParams = z.infer<typeof postRedirectManagementStatusQueryParams>;
 
 const UpdateRedirectStatusTool = {
   name: "update-redirect-status",
-  description: `Updates the status of redirect management.
+  description: `DEPRECATED on Umbraco 17.6 and later, where this no longer changes anything.
+  On 17.6+ the underlying endpoint still succeeds but does not modify the configuration,
+  so calling it will NOT enable or disable redirect URL tracking; set the
+  "Umbraco:CMS:WebRouting:DisableRedirectUrlTracking" configuration key instead.
+  Earlier 17.x versions still honour this call.
+  Either way, use get-redirect-status to confirm the resulting status.
   Parameters:
-  - status: The new status, either "Enabled" or "Disabled" (string)`,
+  - status: The new status, either "Enabled" or "Disabled" (string). Ignored on 17.6+.`,
   inputSchema: postRedirectManagementStatusQueryParams.shape,
   annotations: {
     idempotentHint: true,

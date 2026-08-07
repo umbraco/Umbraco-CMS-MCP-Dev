@@ -6,7 +6,6 @@
  * OpenAPI spec version: Latest
  */
 
-export type GetDocumentUrlsParams = {
+export type GetUserBatchParams = {
 id?: string[];
-culture?: string;
 };

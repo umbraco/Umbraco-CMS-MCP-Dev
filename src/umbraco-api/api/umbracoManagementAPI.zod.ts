@@ -3039,6 +3039,21 @@ export const getDocumentByIdReferencedDescendantsResponse = zod.object({
 
 
 /**
+ * Sorts the children of the specified parent document by a system field in the given direction. When sorting by name, an optional culture selects the variant name; the culture is not validated, so children that do not vary by it (or an unrecognised culture) fall back to the invariant name.
+ * @summary Sorts the children of a document by a field.
+ */
+export const putDocumentByIdSortChildrenParams = zod.object({
+  "id": zod.guid()
+})
+
+export const putDocumentByIdSortChildrenBody = zod.object({
+  "field": zod.enum(['Name', 'CreateDate', 'UpdateDate']),
+  "direction": zod.enum(['Ascending', 'Descending']),
+  "culture": zod.string().nullish()
+})
+
+
+/**
  * Unpublishes a document identified by the provided Id.
  * @summary Unpublishes a document.
  */
@@ -3048,6 +3063,37 @@ export const putDocumentByIdUnpublishParams = zod.object({
 
 export const putDocumentByIdUnpublishBody = zod.object({
   "cultures": zod.array(zod.string()).nullish()
+})
+
+
+/**
+ * Updates and publishes a document identified by the provided Id with the details from the request model.
+ * @summary Updates and publishes a document.
+ */
+export const putDocumentByIdUpdateAndPublishParams = zod.object({
+  "id": zod.guid()
+})
+
+
+
+
+
+export const putDocumentByIdUpdateAndPublishBody = zod.object({
+  "values": zod.array(zod.object({
+  "culture": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "alias": zod.string().min(1),
+  "value": zod.unknown().nullish()
+})),
+  "variants": zod.array(zod.object({
+  "culture": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "name": zod.string().min(1)
+})),
+  "template": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "culturesToPublish": zod.array(zod.string())
 })
 
 
@@ -3115,6 +3161,51 @@ export const getDocumentConfigurationResponse = zod.object({
 
 
 /**
+ * Creates and publishes a new document with the configuration specified in the request model.
+ * @summary Creates and publishes a new document.
+ */
+
+
+
+
+export const postDocumentCreateAndPublishBody = zod.object({
+  "values": zod.array(zod.object({
+  "culture": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "alias": zod.string().min(1),
+  "value": zod.unknown().nullish()
+})),
+  "variants": zod.array(zod.object({
+  "culture": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "name": zod.string().min(1)
+})),
+  "id": zod.guid().nullish(),
+  "parent": zod.object({
+  "id": zod.guid()
+}).nullish(),
+  "documentType": zod.object({
+  "id": zod.guid()
+}),
+  "template": zod.object({
+  "id": zod.guid()
+}).nullable(),
+  "culturesToPublish": zod.array(zod.string())
+})
+
+
+/**
+ * Sorts the root-level documents by a system field in the given direction. When sorting by name, an optional culture selects the variant name; the culture is not validated, so documents that do not vary by it (or an unrecognised culture) fall back to the invariant name.
+ * @summary Sorts the root-level documents by a field.
+ */
+export const putDocumentRootSortChildrenBody = zod.object({
+  "field": zod.enum(['Name', 'CreateDate', 'UpdateDate']),
+  "direction": zod.enum(['Ascending', 'Descending']),
+  "culture": zod.string().nullish()
+})
+
+
+/**
  * Sorts documents in the specified parent container according to the provided sort order.
  * @summary Sorts documents.
  */
@@ -3134,7 +3225,8 @@ export const putDocumentSortBody = zod.object({
  * @summary Gets URLs for a document.
  */
 export const getDocumentUrlsQueryParams = zod.object({
-  "id": zod.array(zod.guid()).optional()
+  "id": zod.array(zod.guid()).optional(),
+  "culture": zod.string().optional()
 })
 
 export const getDocumentUrlsResponseItem = zod.object({
@@ -4424,6 +4516,7 @@ export const getManifestManifestResponseItem = zod.object({
   "name": zod.string().min(1),
   "id": zod.string().nullish(),
   "version": zod.string().nullish(),
+  "cacheBuster": zod.string().nullish(),
   "extensions": zod.array(zod.unknown())
 })
 export const getManifestManifestResponse = zod.array(getManifestManifestResponseItem)
@@ -4440,6 +4533,7 @@ export const getManifestManifestPrivateResponseItem = zod.object({
   "name": zod.string().min(1),
   "id": zod.string().nullish(),
   "version": zod.string().nullish(),
+  "cacheBuster": zod.string().nullish(),
   "extensions": zod.array(zod.unknown())
 })
 export const getManifestManifestPrivateResponse = zod.array(getManifestManifestPrivateResponseItem)
@@ -4456,6 +4550,7 @@ export const getManifestManifestPublicResponseItem = zod.object({
   "name": zod.string().min(1),
   "id": zod.string().nullish(),
   "version": zod.string().nullish(),
+  "cacheBuster": zod.string().nullish(),
   "extensions": zod.array(zod.unknown())
 })
 export const getManifestManifestPublicResponse = zod.array(getManifestManifestPublicResponseItem)
@@ -5723,6 +5818,20 @@ export const getMediaByIdReferencedDescendantsResponse = zod.object({
 
 
 /**
+ * Sorts the children of the specified parent media item by a system field in the given direction.
+ * @summary Sorts the children of a media item by a field.
+ */
+export const putMediaByIdSortChildrenParams = zod.object({
+  "id": zod.guid()
+})
+
+export const putMediaByIdSortChildrenBody = zod.object({
+  "field": zod.enum(['Name', 'CreateDate', 'UpdateDate']),
+  "direction": zod.enum(['Ascending', 'Descending'])
+})
+
+
+/**
  * Validates the request model for updating a media item without actually updating it.
  * @summary Validates updating a media item.
  */
@@ -5776,6 +5885,16 @@ export const getMediaAreReferencedResponse = zod.object({
 export const getMediaConfigurationResponse = zod.object({
   "disableDeleteWhenReferenced": zod.boolean(),
   "disableUnpublishWhenReferenced": zod.boolean()
+})
+
+
+/**
+ * Sorts the root-level media items by a system field in the given direction.
+ * @summary Sorts the root-level media items by a field.
+ */
+export const putMediaRootSortChildrenBody = zod.object({
+  "field": zod.enum(['Name', 'CreateDate', 'UpdateDate']),
+  "direction": zod.enum(['Ascending', 'Descending'])
 })
 
 
@@ -8182,8 +8301,9 @@ export const getRedirectManagementStatusResponse = zod.object({
 
 
 /**
- * Updates the redirect URL tracking configuration according to the provided status.
- * @summary Sets the redirect URL tracking status.
+ * This endpoint is deprecated and no longer modifies the configuration. To toggle redirect URL tracking, set the Umbraco:CMS:WebRouting:DisableRedirectUrlTracking configuration key instead.
+ * @deprecated
+ * @summary Deprecated. No longer changes the redirect URL tracking status.
  */
 export const postRedirectManagementStatusQueryParams = zod.object({
   "status": zod.enum(['Enabled', 'Disabled']).optional()
@@ -10154,6 +10274,47 @@ export const postUserAvatarByIdBody = zod.object({
   "file": zod.object({
   "id": zod.guid()
 })
+})
+
+
+/**
+ * Gets multiple users identified by the provided Ids.
+ * @summary Gets multiple users.
+ */
+export const getUserBatchQueryParams = zod.object({
+  "id": zod.array(zod.guid()).optional()
+})
+
+export const getUserBatchResponse = zod.object({
+  "total": zod.number(),
+  "items": zod.array(zod.object({
+  "email": zod.string(),
+  "userName": zod.string(),
+  "name": zod.string(),
+  "userGroupIds": zod.array(zod.object({
+  "id": zod.guid()
+})),
+  "id": zod.guid(),
+  "languageIsoCode": zod.string().nullish(),
+  "documentStartNodeIds": zod.array(zod.object({
+  "id": zod.guid()
+})),
+  "hasDocumentRootAccess": zod.boolean(),
+  "mediaStartNodeIds": zod.array(zod.object({
+  "id": zod.guid()
+})),
+  "hasMediaRootAccess": zod.boolean(),
+  "avatarUrls": zod.array(zod.string()),
+  "state": zod.enum(['Active', 'Disabled', 'LockedOut', 'Invited', 'Inactive', 'All']),
+  "failedLoginAttempts": zod.number(),
+  "createDate": zod.iso.datetime({"local":true,"offset":true}),
+  "updateDate": zod.iso.datetime({"local":true,"offset":true}),
+  "lastLoginDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
+  "lastLockoutDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
+  "lastPasswordChangeDate": zod.iso.datetime({"local":true,"offset":true}).nullish(),
+  "isAdmin": zod.boolean(),
+  "kind": zod.enum(['Default', 'Api'])
+}))
 })
 
 
