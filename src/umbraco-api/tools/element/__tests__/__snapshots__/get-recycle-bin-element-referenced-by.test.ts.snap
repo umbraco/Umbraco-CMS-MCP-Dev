@@ -14,7 +14,7 @@ exports[`get-recycle-bin-element-referenced-by should list content referencing a
           "name": "_Test DocType RecycleBin ElementRef",
         },
         "id": "00000000-0000-0000-0000-000000000000",
-        "name": null,
+        "name": "_Test Document With Recycled ElementRef",
         "published": false,
         "variants": [
           {

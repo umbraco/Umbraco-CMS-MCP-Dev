@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-and-publish-element should create and publish an invariant element using the default culturesToPublish 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "message": "Element created and published successfully",
+  },
+}
+`;

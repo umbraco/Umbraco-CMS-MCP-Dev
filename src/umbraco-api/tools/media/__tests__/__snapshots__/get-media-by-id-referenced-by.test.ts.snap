@@ -14,7 +14,7 @@ exports[`get-media-by-id-referenced-by should get documents that reference a spe
           "name": "_Test DocType With Media Ref",
         },
         "id": "00000000-0000-0000-0000-000000000000",
-        "name": null,
+        "name": "_Test Document With Media Ref",
         "published": false,
         "variants": [
           {
