@@ -1,46 +1,40 @@
-import { defineConfig } from "orval";
-import { orvalImportFixer } from "@umbraco-cms/mcp-server-sdk";
-import fs from "node:fs";
-import path from "node:path";
+// The target-major transformer authenticates against the running Umbraco to
+// read its version, using the same UMBRACO_BASE_URL / UMBRACO_CLIENT_ID /
+// UMBRACO_CLIENT_SECRET the server runs on. Orval does not load `.env` itself.
+import "dotenv/config";
+import { defineConfig, type HookFunction } from "orval";
+import {
+  createUmbracoTargetMajorTransformer,
+  orvalImportFixer,
+  relaxUntypedArrays,
+  postProcessZodFiles,
+} from "@umbraco-cms/mcp-server-sdk/orval";
 
 /**
- * Replaces zod.uuid() with zod.guid() in generated .zod.ts files.
+ * Stamps the Umbraco major this server targets into a generated constant.
  *
- * Umbraco uses GUIDs that are not RFC 4122 compliant UUIDs (e.g. sequential
- * version IDs like 0000003f-0000-0000-0000-000000000000). Zod's uuid()
- * enforces RFC 4122 version/variant bits and rejects these. Zod's guid()
- * validates the 8-4-4-4-12 hex shape without RFC 4122 constraints.
+ * The value is read from the Umbraco instance the client is generated against
+ * (`GET /umbraco/management/api/v1/server/information`), so it can never drift
+ * from the tool surface. `src/index.ts` feeds the constant to
+ * `checkUmbracoVersion`. Requires `UMBRACO_BASE_URL`, `UMBRACO_CLIENT_ID` and
+ * `UMBRACO_CLIENT_SECRET` to be set when running `npm run generate`.
  */
-function relaxUuidToGuid(paths: string[]): void {
-  for (const p of paths) {
-    if (!fs.existsSync(p)) continue;
-
-    const stat = fs.lstatSync(p);
-    const files = stat.isDirectory()
-      ? fs.readdirSync(p)
-          .filter((f) => f.endsWith(".zod.ts"))
-          .map((f) => path.join(p, f))
-      : p.endsWith(".zod.ts")
-        ? [p]
-        : [];
-
-    for (const file of files) {
-      const content = fs.readFileSync(file, "utf8");
-      if (content.includes("zod.uuid()")) {
-        fs.writeFileSync(file, content.replaceAll("zod.uuid()", "zod.guid()"), "utf8");
-      }
-    }
-  }
-}
+const stampTargetMajor = createUmbracoTargetMajorTransformer({
+  outputPath: "./src/config/umbraco-target.generated.ts",
+});
 
 export const UmbManagementApiOrvalConfig = defineConfig({
   "umbraco-management-api": {
     input: {
       target: "http://localhost:56472/umbraco/swagger/management/swagger.json",
-      validation: false,
+      unsafeDisableValidation: true,
       filters: {
         mode: "exclude",
         tags: ["Temporary File"],
+      },
+      override: {
+        // Transformers compose: relax the schemas, then stamp the target major.
+        transformer: (spec) => stampTargetMajor(relaxUntypedArrays(spec)),
       },
     },
     output: {
@@ -57,16 +51,19 @@ export const UmbManagementApiOrvalConfig = defineConfig({
       },
     },
     hooks: {
-      afterAllFilesWrite: orvalImportFixer,
+      afterAllFilesWrite: orvalImportFixer as HookFunction,
     },
   },
   "umbraco-management-api-zod": {
     input: {
       target: "http://localhost:56472/umbraco/swagger/management/swagger.json",
-      validation: false,
+      unsafeDisableValidation: true,
       filters: {
         mode: "exclude",
         tags: ["Temporary File"],
+      },
+      override: {
+        transformer: relaxUntypedArrays,
       },
     },
     output: {
@@ -94,7 +91,7 @@ export const UmbManagementApiOrvalConfig = defineConfig({
       },
     },
     hooks: {
-      afterAllFilesWrite: relaxUuidToGuid,
+      afterAllFilesWrite: postProcessZodFiles as HookFunction,
     },
   },
 });
