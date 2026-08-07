@@ -22,13 +22,19 @@ and points at them.
 
 ## Dependencies
 
-This branch targets the v17 LTS line and pins the hosted/SDK packages to the
-matching major:
+This branch targets the v17 LTS line. The hosted/SDK packages' own version
+numbering is independent of the Umbraco major they target — the packages
+moved from a `17.0.0-beta.x` line (which stopped publishing at `beta.29`) to
+the same `1.0.0-beta.x` line `dev` uses; the Umbraco major this server targets
+is tracked separately, in `src/config/umbraco-target.generated.ts`
+(`UMBRACO_TARGET_MAJOR`), stamped at `npm run generate` time from the
+connected instance:
 
-- `@umbraco-cms/mcp-hosted@^17.0.0-beta.28`
-- `@umbraco-cms/mcp-server-sdk@^17.0.0-beta.28`
+- `@umbraco-cms/mcp-hosted@^1.0.0-beta.35`
+- `@umbraco-cms/mcp-server-sdk@^1.0.0-beta.35`
 
-Do not bump these across a major version without following the upgrade process.
+Do not bump these across a major version of `UMBRACO_TARGET_MAJOR` without
+following the upgrade process.
 
 ## Build / test / tooling
 
