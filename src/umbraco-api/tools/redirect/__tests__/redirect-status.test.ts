@@ -19,25 +19,45 @@ describe("Redirect Status Tools", () => {
   });
 
   describe("UpdateRedirectStatusTool", () => {
-    it("should disable redirect management", async () => {
-      await UpdateRedirectStatusTool.handler(
-        { status: "Disabled" },
-        createMockRequestHandlerExtra()
+    // As of Umbraco 17.6 the underlying POST /redirect-management/status endpoint is
+    // deprecated: it still returns success but no longer modifies the configuration.
+    // Redirect URL tracking is now controlled by the
+    // Umbraco:CMS:WebRouting:DisableRedirectUrlTracking configuration key instead.
+    it("should succeed but no longer change the status", async () => {
+      const before = validateToolResponse(
+        GetRedirectStatusTool,
+        await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra())
       );
 
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const status = await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra());
-      const data = validateToolResponse(GetRedirectStatusTool, status);
-      expect(data.status).toBe("Disabled");
-    });
+      try {
+        const updateResult = await UpdateRedirectStatusTool.handler(
+          { status: before.status === "Enabled" ? "Disabled" : "Enabled" },
+          createMockRequestHandlerExtra()
+        );
+        expect(updateResult.isError).toBeFalsy();
 
-    // Ensure redirect management is enabled after each test
-    afterEach(async () => {
-      await UpdateRedirectStatusTool.handler(
-        { status: "Enabled" },
-        createMockRequestHandlerExtra()
-      );
-      await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const after = validateToolResponse(
+          GetRedirectStatusTool,
+          await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra())
+        );
+        expect(after.status).toBe(before.status);
+      } finally {
+        // Defensive restore. On 17.6+ this is itself a no-op, but if the endpoint
+        // ever does take effect again, leaving tracking disabled would break
+        // redirect-management.test.ts, which needs it enabled to create redirects.
+        const current = validateToolResponse(
+          GetRedirectStatusTool,
+          await GetRedirectStatusTool.handler({}, createMockRequestHandlerExtra())
+        );
+        if (current.status !== before.status) {
+          await UpdateRedirectStatusTool.handler(
+            { status: before.status },
+            createMockRequestHandlerExtra()
+          );
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
     });
   });
 });

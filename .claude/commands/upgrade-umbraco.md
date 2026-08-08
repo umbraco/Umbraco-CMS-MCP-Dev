@@ -66,7 +66,7 @@ npm run generate       # orval reads http://localhost:56472/umbraco/swagger/mana
 npm run compile        # catch type-level breakages immediately
 ```
 
-The Orval config lives in `src/umbraco-api/orval/umbraco-api.ts`. The `relaxUuidToGuid` hook rewrites `zod.uuid()` → `zod.guid()` in the generated `*.zod.ts` files.
+The Orval config lives in `src/umbraco-api/orval/umbraco-api.ts`. The `postProcessZodFiles` hook (from `@umbraco-cms/mcp-server-sdk/orval`) rewrites `zod.uuid()` → `zod.guid()` in the generated `*.zod.ts` files.
 
 ### 6. Diff the regenerated API surface
 
@@ -144,7 +144,7 @@ Then create a PR using `superpowers:finishing-a-development-branch`.
 
 - **Fresh database:** A brand-new DB will not have `umbraco-back-office-mcp` registered; integration tests will 401 with "client application was not found". Reuse the developer DB or register the client in the backoffice once.
 - **Two ports:** `44391` (HTTPS) is the browser/OAuth port; `56472` (HTTP) is the server-to-server port and the one Orval and the workerd hosted runtime hit. Both must be listening — never start with `--urls`.
-- **`zod.uuid()` vs `zod.guid()`:** Output schemas must accept Umbraco's non-RFC-4122 GUIDs. The `relaxUuidToGuid` hook handles this for generated zod files automatically; check it still applied if a test starts failing on an output validation pipeline.
+- **`zod.uuid()` vs `zod.guid()`:** Output schemas must accept Umbraco's non-RFC-4122 GUIDs. The `postProcessZodFiles` hook handles this for generated zod files automatically; check it still applied if a test starts failing on an output validation pipeline.
 - **`demo-site/` is gitignored:** Always edit `demo-site-template/`. The site directory is rebuilt by `scripts/bootstrap-demo-site.sh`.
 - **Snapshot updates:** Don't run `-u` blindly across the whole suite. The user will accept snapshots per-test on review.
 
