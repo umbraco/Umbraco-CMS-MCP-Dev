@@ -1,5 +1,7 @@
 # Umbraco MCP ![GitHub License](https://img.shields.io/github/license/umbraco/Umbraco-CMS-MCP-Dev?style=plastic&link=https%3A%2F%2Fgithub.com%2Fumbraco%2FUmbraco-CMS-MCP-Dev%2Fblob%2Fmain%2FLICENSE)
 
+[![MCP Toplist](https://mcptoplist.com/badge/io.github.umbraco%2FUmbraco-CMS-MCP-Dev.svg)](https://mcptoplist.com/server/io.github.umbraco%2FUmbraco-CMS-MCP-Dev)
+
 An MCP (Model Context Protocol) server for [Umbraco CMS](https://umbraco.com/) that unlocks AI-powered content management. It provides comprehensive access to the Umbraco Management API, enabling your AI agent to perform back office tasks through natural conversation - freeing you from the UI and making complex, repetitive workflows that would be tedious or impossible manually become effortless.
 
 ## Intro
