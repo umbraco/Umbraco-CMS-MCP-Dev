@@ -6,6 +6,7 @@
  */
 
 // Wrangler virtual modules
+import { tracing } from "cloudflare:workers";
 import { McpAgent } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import OAuthProvider from "@cloudflare/workers-oauth-provider";
@@ -27,6 +28,7 @@ import { collections, allModes, allModeNames, allSliceNames } from "./collection
 import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { UmbracoManagementClient } from "./umbraco-api/umbraco-management-client.js";
 import { setStreamingAuthContext } from "./umbraco-api/tools/media/post/helpers/streaming-upload.js";
+import packageJson from "../package.json" with { type: "json" };
 
 // ============================================================================
 // Server Configuration
@@ -34,7 +36,7 @@ import { setStreamingAuthContext } from "./umbraco-api/tools/media/post/helpers/
 
 const options = {
   name: "umbraco-cms-mcp",
-  version: "17.1.2",
+  version: packageJson.version,
   // Hosted counterpart of the stdio entry point's version check: when set,
   // createPerRequestServer verifies the connected Umbraco's major on every
   // request and folds a mismatch warning into that request's `instructions`.
@@ -43,6 +45,7 @@ const options = {
   // createPerRequestServer has no pre-execution-hook equivalent, so a
   // mismatch here is warn-only.
   expectedUmbracoMajor: UMBRACO_TARGET_MAJOR,
+  telemetry: { tracing },
   collections,
   modeRegistry: allModes,
   allModeNames,
