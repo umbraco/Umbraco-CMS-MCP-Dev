@@ -19,6 +19,7 @@ import {
   createSiteRoutingApiHandler,
   getServerOptions,
   type HostedMcpEnv,
+  type HostedMcpServerOptions,
   type AuthProps,
 } from "@umbraco-cms/mcp-hosted";
 import { umbracoCloudSiteRouting } from "@umbraco-cms/mcp-hosted/cloud";
@@ -34,7 +35,7 @@ import packageJson from "../package.json" with { type: "json" };
 // Server Configuration
 // ============================================================================
 
-const options = {
+const options: HostedMcpServerOptions = {
   name: "umbraco-cms-mcp",
   version: packageJson.version,
   // Hosted counterpart of the stdio entry point's version check: when set,
@@ -45,7 +46,6 @@ const options = {
   // createPerRequestServer has no pre-execution-hook equivalent, so a
   // mismatch here is warn-only.
   expectedUmbracoMajor: UMBRACO_TARGET_MAJOR,
-  telemetry: { tracing },
   collections,
   modeRegistry: allModes,
   allModeNames,
@@ -56,7 +56,10 @@ const options = {
   siteRouting: umbracoCloudSiteRouting({ oauthClientId: "umbraco-cms-dev-mcp-hosted" }),
 };
 
-const serverOptions = getServerOptions(options);
+// `telemetry` lives on `CreateServerOptions`, not `HostedMcpServerOptions` —
+// getServerOptions() builds a fresh CreateServerOptions object and would
+// silently drop it if it were set on `options` above instead.
+const serverOptions = { ...getServerOptions(options), telemetry: { tracing } };
 
 // ============================================================================
 // McpAgent Durable Object
