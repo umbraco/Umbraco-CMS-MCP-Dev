@@ -123,8 +123,22 @@ jobs:
           cat test-failures.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "No failure log found"
           echo '```' >> $GITHUB_STEP_SUMMARY
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('package-lock.json') }}
+
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+        timeout-minutes: 5
+
+      - name: Install Playwright OS dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+        timeout-minutes: 5
 
       - name: Run Playwright E2E tests
         run: npm run test:e2e
