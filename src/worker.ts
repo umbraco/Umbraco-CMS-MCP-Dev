@@ -6,6 +6,7 @@
  */
 
 // Wrangler virtual modules
+import { tracing } from "cloudflare:workers";
 import { McpAgent } from "agents/mcp";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import OAuthProvider from "@cloudflare/workers-oauth-provider";
@@ -18,6 +19,7 @@ import {
   createSiteRoutingApiHandler,
   getServerOptions,
   type HostedMcpEnv,
+  type HostedMcpServerOptions,
   type AuthProps,
 } from "@umbraco-cms/mcp-hosted";
 import { umbracoCloudSiteRouting } from "@umbraco-cms/mcp-hosted/cloud";
@@ -27,14 +29,15 @@ import { collections, allModes, allModeNames, allSliceNames } from "./collection
 import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { UmbracoManagementClient } from "./umbraco-api/umbraco-management-client.js";
 import { setStreamingAuthContext } from "./umbraco-api/tools/media/post/helpers/streaming-upload.js";
+import packageJson from "../package.json" with { type: "json" };
 
 // ============================================================================
 // Server Configuration
 // ============================================================================
 
-const options = {
+const options: HostedMcpServerOptions = {
   name: "umbraco-cms-mcp",
-  version: "17.1.2",
+  version: packageJson.version,
   // Hosted counterpart of the stdio entry point's version check: when set,
   // createPerRequestServer verifies the connected Umbraco's major on every
   // request and folds a mismatch warning into that request's `instructions`.
@@ -53,7 +56,10 @@ const options = {
   siteRouting: umbracoCloudSiteRouting({ oauthClientId: "umbraco-cms-dev-mcp-hosted" }),
 };
 
-const serverOptions = getServerOptions(options);
+// `telemetry` lives on `CreateServerOptions`, not `HostedMcpServerOptions` —
+// getServerOptions() builds a fresh CreateServerOptions object and would
+// silently drop it if it were set on `options` above instead.
+const serverOptions = { ...getServerOptions(options), telemetry: { tracing } };
 
 // ============================================================================
 // McpAgent Durable Object
