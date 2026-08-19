@@ -1,0 +1,38 @@
+name: sync-main-to-dev
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Open or update a main -> dev sync PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          BRANCH=chore/merge-main-to-dev
+          git fetch origin dev main
+          git checkout -B "$BRANCH" origin/main
+          git push -f origin "$BRANCH"
+
+          # create the PR if one isn't already open for this branch
+          if [ -z "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')" ]; then
+            gh pr create --base dev --head "$BRANCH" \
+              --title "chore: merge main into dev" \
+              --body  "Automated sync of release commits from main back into dev."
+          else
+            echo "sync PR already open for $BRANCH — nothing to do"
+          fi
