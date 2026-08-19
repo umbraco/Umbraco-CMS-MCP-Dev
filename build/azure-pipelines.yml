@@ -170,31 +170,34 @@ stages:
           env:
             GH_TOKEN: $(MCP_REGISTRY_GITHUB_TOKEN)
 
-- stage: Deploy_MCP_Registry
-  displayName: MCP Registry release
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-  dependsOn:
-    - Deploy_Npm
-  jobs:
-    - job: Publish_MCP
-      displayName: Push to MCP Registry
-      variables:
-        isStableRelease: $[ stageDependencies.Deploy_Npm.Publish.outputs['npmPublish.isStable'] ]
-      condition: eq(variables['isStableRelease'], 'true')
-      steps:
-        - checkout: self
-
-        - script: |
-            # Install mcp-publisher (download and extract pre-built binary)
-            curl -L -o mcp-publisher.tar.gz https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz
-            tar -xzf mcp-publisher.tar.gz
-            chmod +x mcp-publisher
-          displayName: 'Install mcp-publisher'
-
-        - script: |
-            ./mcp-publisher login github --token=$(MCP_REGISTRY_GITHUB_TOKEN)
-          displayName: 'Authenticate with MCP Registry'
-
-        - script: |
-            ./mcp-publisher publish
-          displayName: 'Publish to MCP Registry'
+# MCP Registry publishing is temporarily disabled — the registry auth token has
+# expired/is invalid, and publish steps were failing. Re-enable once a valid
+# MCP_REGISTRY_GITHUB_TOKEN is in place.
+# - stage: Deploy_MCP_Registry
+#   displayName: MCP Registry release
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+#   dependsOn:
+#     - Deploy_Npm
+#   jobs:
+#     - job: Publish_MCP
+#       displayName: Push to MCP Registry
+#       variables:
+#         isStableRelease: $[ stageDependencies.Deploy_Npm.Publish.outputs['npmPublish.isStable'] ]
+#       condition: eq(variables['isStableRelease'], 'true')
+#       steps:
+#         - checkout: self
+#
+#         - script: |
+#             # Install mcp-publisher (download and extract pre-built binary)
+#             curl -L -o mcp-publisher.tar.gz https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz
+#             tar -xzf mcp-publisher.tar.gz
+#             chmod +x mcp-publisher
+#           displayName: 'Install mcp-publisher'
+#
+#         - script: |
+#             ./mcp-publisher login github --token=$(MCP_REGISTRY_GITHUB_TOKEN)
+#           displayName: 'Authenticate with MCP Registry'
+#
+#         - script: |
+#             ./mcp-publisher publish
+#           displayName: 'Publish to MCP Registry'
