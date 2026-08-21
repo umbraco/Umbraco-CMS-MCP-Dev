@@ -40,4 +40,4 @@ jobs:
           esac
           git tag "$VERSION"
           git push origin "$VERSION"
-          gh release create "$VERSION" --title "$VERSION" --generate-notes $PRERELEASE_FLAG
+          gh release create "$VERSION" --title "$VERSION" --generate-notes --latest=false $PRERELEASE_FLAG
