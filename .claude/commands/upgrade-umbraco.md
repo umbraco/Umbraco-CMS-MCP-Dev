@@ -113,12 +113,20 @@ For each new endpoint identified in step 6, decide:
 - Is it covered by an existing tool? (e.g. `getDataTypeBatch` overlaps with the existing `getItemDataType` items endpoint, but returns full `DataTypeResponseModel` objects rather than lightweight items — both are useful.)
 - Is it a meaningful new capability for an LLM caller?
 
+Default to adding a tool. Treat "defer" as the exception that needs a reason, not the default path — a past upgrade (17.6, PR #334) judged 7 new endpoints as "convenience variants" not worth tools, said so only in the PR description, and that follow-up was never picked up again; the tools were still missing months later.
+
+**If you decide not to add a tool for a new endpoint in this PR** (out of time, wants a design discussion, etc.), you MUST do both of the following before finishing the upgrade — noting it in the PR description only is not enough, because nothing tracks PR prose:
+
+1. File a GitHub issue for it (`gh issue create`) titled something like "Add MCP tools for new Umbraco X.Y endpoints (deferred from upgrade PR #N)", listing each deferred endpoint, its generated client function name (from step 6's diff), and a one-line reason for deferring.
+2. Link that issue in the upgrade PR description under a "Deferred follow-up" heading.
+
 When adding tools, follow the conventions in this codebase (tools live under `src/umbraco-api/tools/<entity>/{get,post,put,delete,items,folders}/`, registered in the entity `index.ts`):
 
 - Use `withStandardDecorators` and `ToolDefinition` (see `.claude/commands/migrate-tools.md`).
 - For array responses, wrap in `z.object({ items: ... })`.
 - Use `executeGetApiCall` / `executeGetItemsApiCall` / `executeVoidApiCall` from the SDK.
 - Add the tool import + registration to the entity's `index.ts` and respect the existing `AuthorizationPolicies` / `slices` pattern.
+- **This branch is the v17 LTS line and supports the whole 17.x range, not just the version you just upgraded to.** If the new endpoint was introduced mid-line (check the Umbraco-CMS source: `git log --oneline <prev-tag>..<new-tag> -- src/Umbraco.Cms.Api.Management/Controllers`), gate its tool registration behind `isUmbracoAtLeast(major, minor)` from `runtime-context.ts` in the entity's `index.ts`, following the existing `GetMediaTypeSchemaTool` / `GetDataTypeSchemaTool` pattern (introduced at 17.4). Do not register it unconditionally — older 17.x instances on this branch will 404 on the route.
 
 After each tool, add a smoke test under `src/umbraco-api/tools/<entity>/__tests__/` mirroring the existing builder + helper conventions (Dictionary is the gold standard — see `.claude/memories/cursor-mcp-testing.md`). The integration test should:
 

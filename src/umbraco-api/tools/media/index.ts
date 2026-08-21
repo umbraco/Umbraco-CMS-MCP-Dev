@@ -9,6 +9,8 @@ import GetMediaUrlsTool from "./get/get-media-urls.js";
 import ValidateMediaTool from "./post/validate-media.js";
 import ValidateMediaUpdateTool from "./put/validate-media.js";
 import SortMediaTool from "./put/sort-media.js";
+import SortMediaChildrenTool from "./put/sort-media-children.js";
+import SortMediaRootChildrenTool from "./put/sort-media-root-children.js";
 import GetMediaByIdArrayTool from "./get/get-media-by-id-array.js";
 import MoveMediaTool from "./put/move-media.js";
 import GetMediaAncestorsTool from "./items/get/get-ancestors.js";
@@ -72,6 +74,11 @@ export const MediaCollection: ToolCollectionExport = {
       tools.push(ValidateMediaTool);
       tools.push(ValidateMediaUpdateTool);
       tools.push(SortMediaTool);
+      // sort-children endpoints introduced in Umbraco 17.6; omit on older versions.
+      if (isUmbracoAtLeast(17, 6)) {
+        tools.push(SortMediaChildrenTool);
+        tools.push(SortMediaRootChildrenTool);
+      }
       tools.push(GetMediaByIdArrayTool);
       tools.push(MoveMediaTool);
       tools.push(GetMediaAuditLogTool);

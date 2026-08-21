@@ -10,6 +10,7 @@ import GetUserCurrentPermissionsTool from "./get/get-user-current-permissions.js
 import GetUserCurrentPermissionsDocumentTool from "./get/get-user-current-permissions-document.js";
 import GetUserCurrentPermissionsMediaTool from "./get/get-user-current-permissions-media.js";
 import GetUserByIdCalculateStartNodesTool from "./get/get-user-by-id-calculate-start-nodes.js";
+import GetUserBatchTool from "./get/get-user-batch.js";
 import UploadUserAvatarByIdTool from "./post/upload-user-avatar-by-id.js";
 import UploadUserCurrentAvatarTool from "./post/upload-user-current-avatar.js";
 import DeleteUserAvatarByIdTool from "./delete/delete-user-avatar-by-id.js";
@@ -17,6 +18,7 @@ import DeleteUserCurrentAvatarTool from "./delete/delete-user-current-avatar.js"
 import UpdateUserCurrentProfileTool from "./put/update-user-current-profile.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umbraco-api/schemas/index.js";
+import { isUmbracoAtLeast } from "../../runtime-context.js";
 import {
   type ToolCollectionExport,
   type ToolDefinition,
@@ -51,6 +53,10 @@ export const UserCollection: ToolCollectionExport = {
       tools.push(GetItemUserTool);
       tools.push(GetUserConfigurationTool);
       tools.push(GetUserByIdCalculateStartNodesTool);
+      // batch endpoint introduced in Umbraco 17.6; omit on older versions.
+      if (isUmbracoAtLeast(17, 6)) {
+        tools.push(GetUserBatchTool);
+      }
       tools.push(UploadUserAvatarByIdTool);
       tools.push(DeleteUserAvatarByIdTool);
     }
