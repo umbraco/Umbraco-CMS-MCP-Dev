@@ -24,18 +24,22 @@ import PostDocumentPublicAccessTool from "./post/post-document-public-access.js"
 import ValidateDocumentTool from "./post/validate-document.js";
 import CopyDocumentTool from "./post/copy-document.js";
 import CreateDocumentTool from "./post/create-document.js";
+import CreateAndPublishDocumentTool from "./post/create-and-publish-document.js";
 import PutDocumentPublicAccessTool from "./put/put-document-public-access.js";
 import PutDocumentDomainsTool from "./put/put-document-domains.js";
 import PutDocumentNotificationsTool from "./put/put-document-notifications.js";
 import PublishDocumentWithDescendantsTool from "./put/publish-document-with-descendants.js";
 import UnpublishDocumentTool from "./put/unpublish-document.js";
 import SortDocumentTool from "./put/sort-document.js";
+import SortDocumentChildrenTool from "./put/sort-document-children.js";
+import SortDocumentRootChildrenTool from "./put/sort-document-root-children.js";
 import MoveDocumentTool from "./put/move-document.js";
 import PublishDocumentTool from "./put/publish-document.js";
 import EmptyRecycleBinTool from "./put/empty-recycle-bin.js";
 import RestoreFromRecycleBinTool from "./put/restore-from-recycle-bin.js";
 import MoveToRecycleBinTool from "./put/move-to-recycle-bin.js";
 import UpdateDocumentTool from "./put/update-document.js";
+import UpdateAndPublishDocumentTool from "./put/update-and-publish-document.js";
 import UpdateDocumentPropertiesTool from "./put/update-document-properties.js";
 import UpdateDocumentNameTool from "./put/update-document-name.js";
 import UpdateBlockPropertyTool from "./put/update-block-property.js";
@@ -49,6 +53,7 @@ import GetRecycleBinChildrenTool from "./items/get/get-recycle-bin-children.js";
 import GetDocumentRecycleBinSiblingsTool from "./items/get/get-recycle-bin-siblings.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umbraco-api/schemas/index.js";
+import { isUmbracoAtLeast } from "../../runtime-context.js";
 import {
   type ToolCollectionExport,
   type ToolDefinition,
@@ -71,6 +76,10 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(GetDocumentTypeSchemaTool);
     tools.push(CopyDocumentTool);
     tools.push(CreateDocumentTool);
+    // create-and-publish endpoint introduced in Umbraco 17.6; omit on older versions.
+    if (isUmbracoAtLeast(17, 6)) {
+      tools.push(CreateAndPublishDocumentTool);
+    }
     tools.push(PostDocumentPublicAccessTool);
     tools.push(DeleteDocumentTool);
     tools.push(DeleteDocumentPublicAccessTool);
@@ -85,8 +94,17 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(PublishDocumentTool);
     tools.push(PublishDocumentWithDescendantsTool);
     tools.push(SortDocumentTool);
+    // sort-children endpoints introduced in Umbraco 17.6; omit on older versions.
+    if (isUmbracoAtLeast(17, 6)) {
+      tools.push(SortDocumentChildrenTool);
+      tools.push(SortDocumentRootChildrenTool);
+    }
     tools.push(UnpublishDocumentTool);
     tools.push(UpdateDocumentTool);
+    // update-and-publish endpoint introduced in Umbraco 17.6; omit on older versions.
+    if (isUmbracoAtLeast(17, 6)) {
+      tools.push(UpdateAndPublishDocumentTool);
+    }
     tools.push(UpdateDocumentPropertiesTool);
     tools.push(UpdateDocumentNameTool);
     tools.push(UpdateBlockPropertyTool);
