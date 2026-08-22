@@ -149,6 +149,18 @@ jobs:
             # Scope extraction to lines after the header so a stray two-space-indented
             # token elsewhere in merged stdout/stderr can't be picked up as a package.
             DEPS=$(printf '%s\n' "$OUT" | sed -n '/^Missing system dependencies/,$ { s/^  \([a-zA-Z0-9][a-zA-Z0-9.+-]*\)$/\1/p }' | sort | tr '\n' ' ')
+            # The header's own count is a cheap cross-check: if the extraction found
+            # zero (or fewer than reported) packages, that's an empty result indistinguishable
+            # from "nothing missing" downstream, which would silently skip installing
+            # anything instead of failing — e.g. if a Playwright bump changes this
+            # log's exact formatting. Fail loudly instead of degrading silently.
+            EXPECTED=$(printf '%s\n' "$OUT" | sed -n 's/^Missing system dependencies (\([0-9]*\)):.*/\1/p' | head -1)
+            FOUND=$(printf '%s\n' "$DEPS" | wc -w)
+            if [ "$FOUND" -eq 0 ] || [ "$FOUND" -ne "${EXPECTED:-0}" ]; then
+              echo "::error::Parsed $FOUND package(s) but install-deps reported ${EXPECTED:-?} missing"
+              printf '%s\n' "$OUT"
+              exit 1
+            fi
             echo "packages=$DEPS" >> "$GITHUB_OUTPUT"
             # The apt cache key below is derived from a digest, not the raw list, so
             # it can't blow past GitHub's 512-char cache-key limit as the package set
