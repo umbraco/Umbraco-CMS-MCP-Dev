@@ -138,14 +138,35 @@ jobs:
       - name: List Playwright OS dependencies
         id: playwright-os-deps
         run: |
-          DEPS=$(npx playwright install-deps chromium --dry-run 2>&1 | tail -n +2 | sed 's/^ *//' | tr '\n' ' ')
-          echo "packages=$DEPS" >> "$GITHUB_OUTPUT"
+          # --dry-run exits 1 on the normal "packages are missing" path, so don't
+          # let that fail the step — instead check the actual output shape rather
+          # than assuming success by line position (it also has a distinct failure
+          # shape, e.g. an unresolvable package name after an OS image bump).
+          OUT=$(npx playwright install-deps chromium --dry-run 2>&1) || true
+          if printf '%s\n' "$OUT" | grep -q '^All system dependencies are installed\.'; then
+            echo "packages=" >> "$GITHUB_OUTPUT"
+          elif printf '%s\n' "$OUT" | grep -q '^Missing system dependencies'; then
+            DEPS=$(printf '%s\n' "$OUT" | sed -n 's/^  \([a-zA-Z0-9][a-zA-Z0-9.+-]*\)$/\1/p' | sort | tr '\n' ' ')
+            echo "packages=$DEPS" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Unexpected output from 'playwright install-deps --dry-run'"
+            printf '%s\n' "$OUT"
+            exit 1
+          fi
+        timeout-minutes: 2
 
-      - name: Cache and install Playwright OS dependencies
+      - name: Cache apt archives for Playwright OS dependencies
         if: steps.playwright-os-deps.outputs.packages != ''
-        uses: awalsh128/cache-apt-pkgs-action@v1
+        uses: actions/cache@v6
         with:
-          packages: ${{ steps.playwright-os-deps.outputs.packages }}
+          path: /var/cache/apt/archives/*.deb
+          key: apt-playwright-deps-${{ steps.playwright-os-deps.outputs.packages }}
+
+      - name: Install Playwright OS dependencies
+        if: steps.playwright-os-deps.outputs.packages != ''
+        run: |
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=10 update
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=10 install -y --no-install-recommends ${{ steps.playwright-os-deps.outputs.packages }}
         timeout-minutes: 5
 
       - name: Run Playwright E2E tests
