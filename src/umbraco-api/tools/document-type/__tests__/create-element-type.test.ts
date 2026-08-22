@@ -149,8 +149,59 @@ describe("create-element-type", () => {
     expect(propertyB).toBeDefined();
     expect(propertyB!.description).toBe("Property B description");
     expect(propertyB!.validation.mandatory).toBe(false);
-    // No explicit sortOrder supplied for Property B - falls back to its array index
-    expect(propertyB!.sortOrder).toBe(1);
+    // No explicit sortOrder supplied for Property B - falls back to the first
+    // position not already claimed by another property's explicit sortOrder (5)
+    expect(propertyB!.sortOrder).toBe(0);
+  });
+
+  it("should avoid sortOrder collisions between explicit and defaulted properties", async () => {
+    const elementModel = {
+      name: TEST_ELEMENT_NAME,
+      alias: TEST_ELEMENT_NAME.toLowerCase().replace(/\s+/g, ""),
+      icon: "icon-document",
+      compositions: [],
+      properties: [
+        {
+          name: "Property A",
+          alias: "propertyA",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content",
+          sortOrder: 0,
+        },
+        {
+          name: "Property B",
+          alias: "propertyB",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content",
+          // No explicit sortOrder - naively defaulting to its array index (1) would
+          // be fine here, but must not collide once Property C also claims 1.
+        },
+        {
+          name: "Property C",
+          alias: "propertyC",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content",
+          sortOrder: 1,
+        },
+      ],
+    };
+
+    const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
+    const responseData = validateToolResponse(CreateElementTypeTool, result);
+
+    const fullElementType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
+    const propertyA = fullElementType.properties.find(p => p.alias === "propertyA");
+    const propertyB = fullElementType.properties.find(p => p.alias === "propertyB");
+    const propertyC = fullElementType.properties.find(p => p.alias === "propertyC");
+
+    // Explicit sortOrder values are always honored as-is...
+    expect(propertyA!.sortOrder).toBe(0);
+    expect(propertyC!.sortOrder).toBe(1);
+    // ...and the defaulted property is pushed past both, instead of colliding with C.
+    expect(propertyB!.sortOrder).toBe(2);
+
+    const sortOrders = [propertyA!.sortOrder, propertyB!.sortOrder, propertyC!.sortOrder];
+    expect(new Set(sortOrders).size).toBe(sortOrders.length);
   });
 
   it("should reject property without tab or group", async () => {

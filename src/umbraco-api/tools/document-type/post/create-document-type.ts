@@ -41,7 +41,7 @@ const createDocumentTypeSchema = z.object({
         group: z.string().optional(),
         description: z.string().optional(),
         mandatory: z.boolean().optional(),
-        sortOrder: z.number().int().nonnegative().optional(),
+        sortOrder: z.number().int().nonnegative().max(2147483647).optional(),
       }).refine(
         (data) => data.tab || data.group,
         {
@@ -83,7 +83,7 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
 8. Properties optionally accept 'description', 'mandatory' and 'sortOrder':
    - 'description' sets the property's help text (defaults to none)
    - 'mandatory' marks the property as required (defaults to false)
-   - 'sortOrder' controls the property's position within its container (defaults to its position in the 'properties' array)`,
+   - 'sortOrder' controls the property's position (defaults to the next position not already claimed by another property's explicit sortOrder)`,
   inputSchema: createDocumentTypeSchema.shape,
   outputSchema: createDocumentTypeOutputSchema.shape,
   slices: ['create'],
@@ -99,8 +99,18 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
       model.properties
     );
 
+    // Properties without an explicit sortOrder fall back to their position in the
+    // array, skipping any position already claimed by another property's explicit
+    // sortOrder - otherwise an explicit value can silently collide with a fallback.
+    const explicitSortOrders = new Set(
+      model.properties
+        .map((prop) => prop.sortOrder)
+        .filter((sortOrder): sortOrder is number => sortOrder !== undefined)
+    );
+    let nextSortOrder = 0;
+
     // Create properties with their container references
-    const properties = model.properties.map((prop, index) => {
+    const properties = model.properties.map((prop) => {
       // Determine which container to use
       let containerId: string | undefined;
       if (prop.group) {
@@ -111,15 +121,24 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
         containerId = containerIds.get(prop.tab);
       }
 
+      let sortOrder = prop.sortOrder;
+      if (sortOrder === undefined) {
+        while (explicitSortOrders.has(nextSortOrder)) {
+          nextSortOrder++;
+        }
+        sortOrder = nextSortOrder;
+        nextSortOrder++;
+      }
+
       return {
         id: uuidv4(),
         name: prop.name,
         alias: prop.alias,
-        description: prop.description || null,
+        description: prop.description ?? null,
         dataType: {
           id: prop.dataTypeId,
         },
-        sortOrder: prop.sortOrder ?? index,
+        sortOrder,
         appearance: {
           labelOnTop: false,
         },
