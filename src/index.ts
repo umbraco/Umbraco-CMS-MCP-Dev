@@ -34,7 +34,7 @@ const main = async () => {
 
   const user = await client.getUserCurrent();
 
-  // Handle CLI introspection flags (--list-tools, --describe-tool, --generate-context)
+  // Handle CLI introspection flags (--list-tools, --describe-tool, --generate-context, --call)
   // This runs after auth so we have the real user for tool filtering
   const rawConfig = await getServerConfig(true);
   const configLoader = createCollectionConfigLoader({
@@ -43,7 +43,13 @@ const main = async () => {
     allSliceNames,
   });
   const filterConfig = configLoader.loadFromConfig(config);
-  handleCliCommands(availableCollections, {
+  // Must be awaited: handleCliCommands exits the process itself for every
+  // recognized flag, but --call resolves via an async tool handler before it
+  // gets there. Without awaiting, main() races ahead into MCP server startup
+  // (StdioServerTransport attaches to stdin) while the tool call is still in
+  // flight — a programmatic caller with piped/open stdin then hangs waiting
+  // on MCP protocol input instead of getting the --call result. See #424.
+  await handleCliCommands(availableCollections, {
     cliFlags: rawConfig.cliFlags,
     serverName: "Umbraco CMS Developer MCP Server",
     serverVersion: packageJson.version,
