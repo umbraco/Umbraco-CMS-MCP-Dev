@@ -13,6 +13,12 @@
 # never checks out or executes PR head code — it only forwards event metadata to the
 # reusable workflow, which routes on the payload and checks out trusted mcp-ops.
 #
+# `issue_comment` is the one trigger that isn't label-driven: it carries the next round of an
+# `ai-discuss` conversation. It fires on EVERY comment on every issue and PR in the repo, and
+# the gating happens at the edge in route-event.sh (issue carries `ai-discuss` and is open, the
+# comment is neither the loop's own nor `//`-prefixed, the author is trusted, not a PR) — so a
+# normal comment costs one short Actions job and wakes no routine.
+#
 # Requires two secrets on the repo (or the org):
 #   LOOP_DISPATCH_FIRE_URL  — the routine's Fire URL (Routines UI → Call via API)
 #   LOOP_DISPATCH_TOKEN     — the token generated for that routine
@@ -23,6 +29,8 @@ on:
     types: [labeled]
   pull_request_target:
     types: [labeled]
+  issue_comment:
+    types: [created]
 
 jobs:
   dispatch:
