@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import fs from "node:fs";
 import path from "node:path";
 
 // Regression test for #424: invoking the CLI with `--call` while stdin is
@@ -12,6 +13,23 @@ import path from "node:path";
 // for MCP protocol input instead of getting its `--call` result.
 describe("CLI --call with piped/open stdin", () => {
   const CLI_PATH = path.resolve(process.cwd(), "dist/index.js");
+  const SRC_PATH = path.resolve(process.cwd(), "src/index.ts");
+
+  beforeAll(() => {
+    // This test spawns the built bundle, not source-through-ts-jest like the
+    // rest of the suite. `npm test` alone doesn't build (only `npm run
+    // test:all` does), so a stale or missing dist/index.js would otherwise
+    // let this test silently pass against old behaviour or fail with a
+    // confusing ENOENT/non-zero-exit unrelated to the current source.
+    if (!fs.existsSync(CLI_PATH)) {
+      throw new Error(`${CLI_PATH} is missing — run \`npm run build\` before this test.`);
+    }
+    if (fs.statSync(CLI_PATH).mtimeMs < fs.statSync(SRC_PATH).mtimeMs) {
+      throw new Error(
+        `${CLI_PATH} is older than ${SRC_PATH} — run \`npm run build\` before this test.`,
+      );
+    }
+  });
 
   it("executes the tool call and exits promptly without waiting on stdin", async () => {
     const child = spawn(process.execPath, [CLI_PATH, "--call", "get-server-information"], {
@@ -48,7 +66,9 @@ describe("CLI --call with piped/open stdin", () => {
       });
     });
 
-    expect(exitCode).toBe(0);
+    if (exitCode !== 0) {
+      throw new Error(`CLI exited with code ${exitCode} (expected 0). stdout=${stdout} stderr=${stderr}`);
+    }
     expect(stdout).toContain("version");
   }, 25000);
 });
