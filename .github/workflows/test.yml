@@ -132,12 +132,20 @@ jobs:
 
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
         timeout-minutes: 5
 
-      - name: Install Playwright OS dependencies
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
+      - name: List Playwright OS dependencies
+        id: playwright-os-deps
+        run: |
+          DEPS=$(npx playwright install-deps chromium --dry-run 2>&1 | tail -n +2 | sed 's/^ *//' | tr '\n' ' ')
+          echo "packages=$DEPS" >> "$GITHUB_OUTPUT"
+
+      - name: Cache and install Playwright OS dependencies
+        if: steps.playwright-os-deps.outputs.packages != ''
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: ${{ steps.playwright-os-deps.outputs.packages }}
         timeout-minutes: 5
 
       - name: Run Playwright E2E tests
