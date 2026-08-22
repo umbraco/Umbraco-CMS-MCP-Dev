@@ -107,6 +107,52 @@ describe("create-element-type", () => {
     expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
+  it("should apply description, mandatory and sortOrder on properties", async () => {
+    const elementModel = {
+      name: TEST_ELEMENT_NAME,
+      alias: TEST_ELEMENT_NAME.toLowerCase().replace(/\s+/g, ""),
+      icon: "icon-document",
+      compositions: [],
+      properties: [
+        {
+          name: "Property A",
+          alias: "propertyA",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content",
+          description: "Property A description",
+          mandatory: true,
+          sortOrder: 5,
+        },
+        {
+          name: "Property B",
+          alias: "propertyB",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content",
+          description: "Property B description",
+          mandatory: false,
+        },
+      ],
+    };
+
+    const result = await CreateElementTypeTool.handler(elementModel as any, createMockRequestHandlerExtra());
+    const responseData = validateToolResponse(CreateElementTypeTool, result);
+
+    const fullElementType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
+    const propertyA = fullElementType.properties.find(p => p.alias === "propertyA");
+    const propertyB = fullElementType.properties.find(p => p.alias === "propertyB");
+
+    expect(propertyA).toBeDefined();
+    expect(propertyA!.description).toBe("Property A description");
+    expect(propertyA!.validation.mandatory).toBe(true);
+    expect(propertyA!.sortOrder).toBe(5);
+
+    expect(propertyB).toBeDefined();
+    expect(propertyB!.description).toBe("Property B description");
+    expect(propertyB!.validation.mandatory).toBe(false);
+    // No explicit sortOrder supplied for Property B - falls back to its array index
+    expect(propertyB!.sortOrder).toBe(1);
+  });
+
   it("should reject property without tab or group", async () => {
     const elementModel = {
       name: TEST_ELEMENT_NAME,

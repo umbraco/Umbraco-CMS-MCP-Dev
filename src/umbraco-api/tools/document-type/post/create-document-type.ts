@@ -39,6 +39,9 @@ const createDocumentTypeSchema = z.object({
         dataTypeId: z.string().uuid("Must be a valid data type UUID"),
         tab: z.string().optional(),
         group: z.string().optional(),
+        description: z.string().optional(),
+        mandatory: z.boolean().optional(),
+        sortOrder: z.number().int().nonnegative().optional(),
       }).refine(
         (data) => data.tab || data.group,
         {
@@ -76,7 +79,11 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
    - Property with only tab: appears directly in the tab
    - Property with only group: appears in the group (group has no parent tab)
    - Property with both tab and group: group is nested inside the tab, property appears in the group
-   - The tool will automatically create the container hierarchy`,
+   - The tool will automatically create the container hierarchy
+8. Properties optionally accept 'description', 'mandatory' and 'sortOrder':
+   - 'description' sets the property's help text (defaults to none)
+   - 'mandatory' marks the property as required (defaults to false)
+   - 'sortOrder' controls the property's position within its container (defaults to its position in the 'properties' array)`,
   inputSchema: createDocumentTypeSchema.shape,
   outputSchema: createDocumentTypeOutputSchema.shape,
   slices: ['create'],
@@ -108,16 +115,17 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
         id: uuidv4(),
         name: prop.name,
         alias: prop.alias,
+        description: prop.description || null,
         dataType: {
           id: prop.dataTypeId,
         },
-        sortOrder: index,
+        sortOrder: prop.sortOrder ?? index,
         appearance: {
           labelOnTop: false,
         },
         validation: {
           regEx: null,
-          mandatory: false,
+          mandatory: prop.mandatory ?? false,
           regExMessage: null,
           mandatoryMessage: null,
         },

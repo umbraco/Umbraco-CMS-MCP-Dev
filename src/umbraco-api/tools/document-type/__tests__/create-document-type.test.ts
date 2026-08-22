@@ -116,6 +116,54 @@ describe("create-document-type", () => {
     expect(normalizeObject(item!)).toMatchSnapshot();
   });
 
+  it("should apply description, mandatory and sortOrder on properties", async () => {
+    const docTypeModel: CreateDocumentTypeModel = {
+      name: TEST_DOCTYPE_NAME,
+      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      allowedAsRoot: false,
+      compositions: [],
+      allowedDocumentTypes: [],
+      properties: [
+        {
+          name: "Property A",
+          alias: "propertyA",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content",
+          description: "Property A description",
+          mandatory: true,
+          sortOrder: 5
+        },
+        {
+          name: "Property B",
+          alias: "propertyB",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content",
+          description: "Property B description",
+          mandatory: false
+        }
+      ]
+    };
+
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
+    const responseData = validateToolResponse(CreateDocumentTypeTool, result);
+
+    const fullDocType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
+    const propertyA = fullDocType.properties.find(p => p.alias === "propertyA");
+    const propertyB = fullDocType.properties.find(p => p.alias === "propertyB");
+
+    expect(propertyA).toBeDefined();
+    expect(propertyA!.description).toBe("Property A description");
+    expect(propertyA!.validation.mandatory).toBe(true);
+    expect(propertyA!.sortOrder).toBe(5);
+
+    expect(propertyB).toBeDefined();
+    expect(propertyB!.description).toBe("Property B description");
+    expect(propertyB!.validation.mandatory).toBe(false);
+    // No explicit sortOrder supplied for Property B - falls back to its array index
+    expect(propertyB!.sortOrder).toBe(1);
+  });
+
   it("should create a document type with parent folder", async () => {
     // Arrange: Create parent folder
     const folderBuilder = await new DocumentTypeFolderBuilder(TEST_FOLDER_NAME)
