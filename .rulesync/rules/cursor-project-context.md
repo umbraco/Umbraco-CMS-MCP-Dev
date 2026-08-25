@@ -44,6 +44,4 @@ This is a **well-established, production-ready codebase** with:
 - **`./docs/crd.md`** - Content requirements and specifications for new features
 - **`README.md`** - Complete tool documentation and setup instructions
 
-Tool/test creation workflow, agent usage, and step-by-step build processes are covered by the base `umbraco-mcp-skills` plugin (skills such as `build-tools` and `build-tools-tests`) — not repeated here.
-
 When working on this project, always refer to existing implementations as the gold standard and maintain consistency with established patterns.

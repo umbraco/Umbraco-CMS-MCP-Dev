@@ -7,13 +7,13 @@ build/test/tooling conventions and points at them.
 Shared agents, skills, and general MCP/testing patterns are consumed from the base
 `umbraco-mcp-skills` Claude Code plugin (from `umbraco/Umbraco-MCP-Base`). The
 `.rulesync/rules/*.md` files below and the agents/commands under `.claude/` only
-cover what's specific to this repo — see each file for what it does (and doesn't)
-duplicate from the base plugin.
+cover what's specific to this repo — content duplicated by the base plugin has been
+removed rather than left as a pointer.
 
 ## Rule references
 
-- `.rulesync/rules/cursor-mcp.md` — project-specific MCP notes: Umbraco API integration facts and the Resources/ResourceTemplate patterns (not covered by the base plugin)
-- `.rulesync/rules/cursor-mcp-testing.md` — project-specific testing delta: Dictionary-as-gold-standard reference, entity build ordering
+- `.rulesync/rules/cursor-mcp.md` — Umbraco API integration facts and the Resources/ResourceTemplate patterns
+- `.rulesync/rules/cursor-mcp-testing.md` — Dictionary-as-gold-standard reference, entity build ordering
 - `.rulesync/rules/cursor-model-context-provider-typescript.md` — pointer to the upstream `@modelcontextprotocol/sdk` README (no longer a local copy)
 - `.rulesync/rules/cursor-project-context.md` — project context and background
 

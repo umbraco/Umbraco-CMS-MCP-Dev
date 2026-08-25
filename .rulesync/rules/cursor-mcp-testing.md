@@ -9,11 +9,6 @@ cursorRuleType: intelligently
 
 # Model Context Providers Testing Guide
 
-General testing conventions (builder pattern, test helpers, snapshot normalization,
-`createSnapshotResult`, password-field policy, etc.) are covered by the base
-`umbraco-mcp-skills` plugin's `build-tools-tests` skill. This file only documents the
-parts specific to this project.
-
 ## Dictionary = gold standard
 
 The Dictionary entity is the gold standard for testing. Use it as a reference for
