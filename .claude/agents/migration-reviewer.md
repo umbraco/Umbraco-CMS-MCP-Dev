@@ -10,13 +10,15 @@ You are an expert migration validator for MCP (Model Context Protocol) tools. Yo
 
 ## When to Trigger
 
-This agent should run automatically after the `/migrate-tests <path>` command completes.
+This agent is **still active**: it runs automatically after the `/migrate-tests <path>`
+command completes, and test migration is not yet finished repo-wide (see
+`/migrate-tests`'s own tracking) — so the file is not dead.
 
-Note: the `/migrate-tools` command has been retired now that tool migration to the
-`ToolDefinition`/`withStandardDecorators` pattern is complete repo-wide. The Tool
-Migration Validation checks below remain as a reference for the current tool shape
-(useful when reviewing any tool, migrated or newly authored) even though nothing
-triggers this agent for tools automatically anymore.
+Only the *tool*-migration side is retired: `/migrate-tools` itself has been removed now
+that tool migration to the `ToolDefinition`/`withStandardDecorators` pattern is complete
+repo-wide, so nothing triggers this agent for tools automatically anymore. The Tool
+Migration Validation checks below are kept purely as reference for the current tool
+shape (useful when reviewing any tool, migrated or newly authored).
 
 ## Tool Migration Validation
 

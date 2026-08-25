@@ -13,10 +13,9 @@ duplicate from the base plugin.
 ## Rule references
 
 - `.rulesync/rules/cursor-mcp.md` — project-specific MCP notes: Umbraco API integration facts and the Resources/ResourceTemplate patterns (not covered by the base plugin)
-- `.rulesync/rules/cursor-mcp-testing.md` — project-specific testing delta: password-field rule, Dictionary-as-gold-standard reference, entity build ordering
+- `.rulesync/rules/cursor-mcp-testing.md` — project-specific testing delta: Dictionary-as-gold-standard reference, entity build ordering
 - `.rulesync/rules/cursor-model-context-provider-typescript.md` — pointer to the upstream `@modelcontextprotocol/sdk` README (no longer a local copy)
 - `.rulesync/rules/cursor-project-context.md` — project context and background
-- `.rulesync/rules/schema-flattening-addition-for-folders.md` — folder schema flattening notes
 
 ## Project layout
 

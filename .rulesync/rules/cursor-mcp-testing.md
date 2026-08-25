@@ -10,14 +10,9 @@ cursorRuleType: intelligently
 # Model Context Providers Testing Guide
 
 General testing conventions (builder pattern, test helpers, snapshot normalization,
-`createSnapshotResult`, etc.) are covered by the base `umbraco-mcp-skills` plugin's
-`build-tools-tests` skill. This file only documents the parts specific to this
-project.
-
-## Password fields
-
-Any password field will need to be at least 10 characters and contain at least one
-number and one symbol.
+`createSnapshotResult`, password-field policy, etc.) are covered by the base
+`umbraco-mcp-skills` plugin's `build-tools-tests` skill. This file only documents the
+parts specific to this project.
 
 ## Dictionary = gold standard
 
