@@ -102,7 +102,7 @@ npm test -- --no-coverage
 
 Failures fall into three buckets:
 
-1. **Snapshot drift** — additive fields, deprecated markers, or new enum values changed the response shape. Leave these; the user reviews snapshot diffs and accepts via `/accept-snapshot` or `npm test -- -u`.
+1. **Snapshot drift** — additive fields, deprecated markers, or new enum values changed the response shape. Leave these; the user reviews snapshot diffs and accepts via the base plugin's snapshot-acceptance skill or `npm test -- -u`.
 2. **Type-level breakages from new optional params** — fix per step 7 (add `field: undefined`).
 3. **Real regressions** — tool no longer matches the API contract. Investigate and fix the tool.
 
@@ -124,12 +124,12 @@ Default to adding a tool. Treat "defer" as the exception that needs a reason, no
 
 When adding tools, follow the conventions in this codebase (tools live under `src/umbraco-api/tools/<entity>/{get,post,put,delete,items,folders}/`, registered in the entity `index.ts`):
 
-- Use `withStandardDecorators` and `ToolDefinition` (see `.claude/commands/migrate-tools.md`).
+- Use `withStandardDecorators` and `ToolDefinition` (see the base plugin's `build-tools` skill).
 - For array responses, wrap in `z.object({ items: ... })`.
 - Use `executeGetApiCall` / `executeGetItemsApiCall` / `executeVoidApiCall` from the SDK.
 - Add the tool import + registration to the entity's `index.ts` and respect the existing `AuthorizationPolicies` / `slices` pattern.
 
-After each tool, add a smoke test under `src/umbraco-api/tools/<entity>/__tests__/` mirroring the existing builder + helper conventions (Dictionary is the gold standard — see `.claude/memories/cursor-mcp-testing.md`). The integration test should:
+After each tool, add a smoke test under `src/umbraco-api/tools/<entity>/__tests__/` mirroring the existing builder + helper conventions (Dictionary is the gold standard — see `.rulesync/rules/cursor-mcp-testing.md`). The integration test should:
 
 - Use `setupTestEnvironment()` and `createMockRequestHandlerExtra()` from `@umbraco-cms/mcp-server-sdk/testing`.
 - Arrange via the entity's existing builder.

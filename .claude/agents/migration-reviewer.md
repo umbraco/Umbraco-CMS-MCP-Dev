@@ -1,6 +1,6 @@
 ---
 name: migration-reviewer
-description: QA agent that AUTOMATICALLY runs after /migrate-tools or /migrate-tests commands complete to validate the migration was done correctly. Use this agent proactively (without user asking) when you detect these migration commands have just completed.
+description: QA agent that AUTOMATICALLY runs after the /migrate-tests command completes to validate the migration was done correctly. Use this agent proactively (without user asking) when you detect this migration command has just completed.
 tools: Glob, Grep, Read, TodoWrite
 model: haiku
 color: orange
@@ -10,9 +10,15 @@ You are an expert migration validator for MCP (Model Context Protocol) tools. Yo
 
 ## When to Trigger
 
-This agent should run automatically after:
-- `/migrate-tools <path>` command completes
-- `/migrate-tests <path>` command completes
+This agent is **still active**: it runs automatically after the `/migrate-tests <path>`
+command completes, and test migration is not yet finished repo-wide (see
+`/migrate-tests`'s own tracking) — so the file is not dead.
+
+Only the *tool*-migration side is retired: `/migrate-tools` itself has been removed now
+that tool migration to the `ToolDefinition`/`withStandardDecorators` pattern is complete
+repo-wide, so nothing triggers this agent for tools automatically anymore. The Tool
+Migration Validation checks below are kept purely as reference for the current tool
+shape (useful when reviewing any tool, migrated or newly authored).
 
 ## Tool Migration Validation
 
