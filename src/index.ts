@@ -7,7 +7,7 @@ import packageJson from "../package.json" with { type: "json" };
 import { UmbracoToolFactory } from "./umbraco-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { checkUmbracoVersion, configureVersionCheckHook, getVersionCheckMessage, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
+import { checkUmbracoVersion, configureVersionCheckHook, getVersionCheckMessage, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader, useDraft202012ToolSchemas } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
 import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { availableCollections } from "./umbraco-api/tools/collection-registry.js";
@@ -86,6 +86,8 @@ const main = async () => {
     },
     versionCheckMessage ? { instructions: versionCheckMessage } : undefined,
   );
+
+  useDraft202012ToolSchemas(server);
 
   UmbracoToolFactory(server, user, config);
 
