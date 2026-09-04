@@ -53,7 +53,7 @@ const options: HostedMcpServerOptions = {
   enableConsentToolSelection: true,
   authOptions: { showReauthButton: true },
   clientFactory: () => UmbracoManagementClient.getClient(),
-  siteRouting: umbracoCloudSiteRouting({ oauthClientId: "umbraco-cms-dev-mcp-hosted" }),
+  siteRouting: umbracoCloudSiteRouting({ oauthClientId: "umbraco-cms-developer-mcp-hosted" }),
   telemetry: { tracing },
 };
 
