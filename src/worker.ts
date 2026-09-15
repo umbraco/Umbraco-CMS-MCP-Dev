@@ -53,13 +53,11 @@ const options: HostedMcpServerOptions = {
   enableConsentToolSelection: true,
   authOptions: { showReauthButton: true },
   clientFactory: () => UmbracoManagementClient.getClient(),
-  siteRouting: umbracoCloudSiteRouting({ oauthClientId: "umbraco-cms-dev-mcp-hosted" }),
+  siteRouting: umbracoCloudSiteRouting({ oauthClientId: "umbraco-cms-developer-mcp-hosted" }),
+  telemetry: { tracing },
 };
 
-// `telemetry` lives on `CreateServerOptions`, not `HostedMcpServerOptions` —
-// getServerOptions() builds a fresh CreateServerOptions object and would
-// silently drop it if it were set on `options` above instead.
-const serverOptions = { ...getServerOptions(options), telemetry: { tracing } };
+const serverOptions = getServerOptions(options);
 
 // ============================================================================
 // McpAgent Durable Object

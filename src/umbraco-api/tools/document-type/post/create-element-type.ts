@@ -31,6 +31,9 @@ const createElementTypeSchema = z.object({
         dataTypeId: z.string().uuid("Must be a valid data type UUID"),
         tab: z.string().optional(),
         group: z.string().optional(),
+        description: z.string().optional(),
+        mandatory: z.boolean().optional(),
+        sortOrder: z.number().int().nonnegative().max(2147483647).optional(),
       }).refine(
         (data) => data.tab || data.group,
         {
@@ -69,7 +72,11 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
    - Property with only tab: appears directly in the tab
    - Property with only group: appears in the group (group has no parent tab)
    - Property with both tab and group: group is nested inside the tab, property appears in the group
-   - The tool will automatically create the container hierarchy`,
+   - The tool will automatically create the container hierarchy
+7. Properties optionally accept 'description', 'mandatory' and 'sortOrder':
+   - 'description' sets the property's help text (defaults to none)
+   - 'mandatory' marks the property as required (defaults to false)
+   - 'sortOrder' controls the property's position (defaults to the next position not already claimed by another property's explicit sortOrder)`,
   inputSchema: createElementTypeSchema.shape,
   outputSchema: createElementTypeOutputSchema.shape,
   slices: ['create'],
@@ -85,8 +92,18 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
       model.properties
     );
 
+    // Properties without an explicit sortOrder fall back to their position in the
+    // array, skipping any position already claimed by another property's explicit
+    // sortOrder - otherwise an explicit value can silently collide with a fallback.
+    const explicitSortOrders = new Set(
+      model.properties
+        .map((prop) => prop.sortOrder)
+        .filter((sortOrder): sortOrder is number => sortOrder !== undefined)
+    );
+    let nextSortOrder = 0;
+
     // Create properties with their container references
-    const properties = model.properties.map((prop, index) => {
+    const properties = model.properties.map((prop) => {
       // Determine which container to use
       let containerId: string | undefined;
       if (prop.group) {
@@ -97,20 +114,30 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
         containerId = containerIds.get(prop.tab);
       }
 
+      let sortOrder = prop.sortOrder;
+      if (sortOrder === undefined) {
+        while (explicitSortOrders.has(nextSortOrder)) {
+          nextSortOrder++;
+        }
+        sortOrder = nextSortOrder;
+        nextSortOrder++;
+      }
+
       return {
         id: uuidv4(),
         name: prop.name,
         alias: prop.alias,
+        description: prop.description ?? null,
         dataType: {
           id: prop.dataTypeId,
         },
-        sortOrder: index,
+        sortOrder,
         appearance: {
           labelOnTop: false,
         },
         validation: {
           regEx: null,
-          mandatory: false,
+          mandatory: prop.mandatory ?? false,
           regExMessage: null,
           mandatoryMessage: null,
         },
