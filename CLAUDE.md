@@ -122,6 +122,70 @@ node scripts/create-api-user.mjs
 
 The script is idempotent (it checks for the user first and exits if already present).
 
+## Branching & releases
+
+This repo maintains **two live majors in parallel**, each with its own gitflow pair. The
+generic `release-and-branching` skill assumes a single `dev`/`main` pair — that is only true
+of the 18 line here, so the table below wins over the skill.
+
+| Line | Status | Work branches off | Release PR into | Latest tag |
+|---|---|---|---|---|
+| **18.x** | current | `dev` | `main` | `v18.1.2` |
+| **17.x** | **maintained (LTS)** | `v17/dev` | `v17/main` | `v17.6.3` |
+| **16.x** | archived — no `v16/dev`, don't target it | — | — | `v16.0.1` |
+
+`main` is and stays the repo's **default branch**. Don't retarget PRs at `main` or move the
+default branch to make GitHub's closing keywords fire (see *Issue lifecycle* below) — that
+would break the release flow.
+
+### Picking a line
+
+Work goes on the **18 line by default**: branch off `dev`, PR into `dev`, squash-merge.
+Only branch off `v17/dev` when the issue is explicitly a 17.x fix.
+
+**Do not create back-ports to the 17 line.** A fix landing on `dev` is 18-only unless a
+maintainer explicitly asks for a 17 back-port — don't open back-port PRs or issues off your
+own judgement, and don't treat "17 is still supported" as a standing instruction to port.
+
+### Cutting a release
+
+Same shape on both lines, one level over:
+
+1. Branch `release/<version>` off the line's dev branch (`dev`, or `v17/dev`).
+2. Bump the version and verify no stale version strings remain.
+3. PR into the line's main branch (`main`, or `v17/main`).
+4. Merge with a **merge commit, never a squash** — `release-tag.yml` keys off the real
+   version-bump commit.
+
+`release-tag.yml` then tags `v<version>` and creates the GitHub Release. It exists on both
+lines, each triggering on its own branch (`main` on the 18 line, `v17/main` on the 17 line).
+
+**Merge-back differs between the lines:** the 18 line has `sync-main-to-dev.yml`, which
+merges `main` back into `dev` automatically. The 17 line has **no such workflow** — after a
+17.x release, merge `v17/main` back into `v17/dev` by hand via a
+`chore/merge-v17-main-to-v17-dev` branch (as in #418, #411).
+
+### Issue lifecycle & labels
+
+Issues move through one stage label at a time:
+
+| Label | Meaning |
+|---|---|
+| `ready-for-ai` | queued for the issue loop to build. Adding it triggers a build. |
+| `generated-by-ai` | built — a PR is open. |
+| `ready-for-release` | the PR is **merged**, but the fix hasn't shipped in a tag yet. |
+
+**Close issues at release, not at merge.** An issue stays open with `ready-for-release` from
+the moment its PR merges until the version containing it is tagged — that's what makes
+"finished but not released" visible on the board. Filter `label:ready-for-release` to see
+exactly what a pending release will close.
+
+This is manual by necessity: `main` is the default branch, and GitHub only fires a PR's
+`Closes #N` keyword on a merge into the **default** branch. Merges into `dev`, `v17/dev` or
+`v17/main` never auto-close their linked issue, so nothing closes at merge time and nothing
+closes at release time either — closing out `ready-for-release` issues is a step in cutting
+a release.
+
 ## PR / CI workflow
 
 Whenever you create a new PR or push updates to an existing PR, do NOT consider the task done at push time. Watch the CI checks and fix any failures automatically:
