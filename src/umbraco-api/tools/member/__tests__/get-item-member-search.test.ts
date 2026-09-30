@@ -15,8 +15,8 @@ const TEST_MEMBER_NAME = "_Test Item Member Search";
 const TEST_MEMBER_EMAIL = "itemsearch@example.com";
 const TEST_MEMBER_USERNAME = "itemsearch@example.com";
 const TEST_MEMBER_NAME_2 = "_Test Item Member Search 2";
-const TEST_MEMBER_EMAIL_2 = "itemsearch2@example.com";
-const TEST_MEMBER_USERNAME_2 = "itemsearch2@example.com";
+const TEST_MEMBER_EMAIL_2 = "othermember2@example.com";
+const TEST_MEMBER_USERNAME_2 = "othermember2@example.com";
 
 describe("get-item-member-search", () => {
   setupTestEnvironment();
@@ -85,14 +85,25 @@ describe("get-item-member-search", () => {
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
 
-    // Act - Search with pagination (take only 1 result)
-    const result = await GetItemMemberSearchTool.handler(
-      { query: "itemsearch", take: 1 } as any,
-      createMockRequestHandlerExtra()
-    );
+    // Act - Search with pagination (take only 1 result). "itemsearch" now matches
+    // only TEST_MEMBER_USERNAME (member 2's email/username no longer contains that
+    // substring), so there is exactly one candidate for Examine to index - no
+    // ambiguous second match to race against. Examine indexes asynchronously, so
+    // poll briefly for that single, unambiguous member to become searchable rather
+    // than asserting immediately; this does not wait out a multi-match race, since
+    // there is only one possible match to wait for.
+    let data: any;
+    for (let attempt = 0; attempt < 10; attempt++) {
+      const result = await GetItemMemberSearchTool.handler(
+        { query: "itemsearch", take: 1 } as any,
+        createMockRequestHandlerExtra()
+      );
+      data = validateToolResponse(GetItemMemberSearchTool, result);
+      if (data.items.length >= 1) break;
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
 
     // Assert - Validate response against tool's output schema
-    const data = validateToolResponse(GetItemMemberSearchTool, result);
-    expect(data.items.length).toBeLessThanOrEqual(1);
+    expect(data.items.length).toBe(1);
   });
 });
