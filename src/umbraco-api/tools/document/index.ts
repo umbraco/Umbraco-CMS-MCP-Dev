@@ -43,6 +43,8 @@ import UpdateAndPublishDocumentTool from "./put/update-and-publish-document.js";
 import UpdateDocumentPropertiesTool from "./put/update-document-properties.js";
 import UpdateDocumentNameTool from "./put/update-document-name.js";
 import UpdateBlockPropertyTool from "./put/update-block-property.js";
+import CreateDocumentBlockTool from "./put/create-document-block.js";
+import DeleteDocumentBlockTool from "./put/delete-document-block.js";
 import GetDocumentRootTool from "./items/get/get-root.js";
 import GetDocumentChildrenTool from "./items/get/get-children.js";
 import GetDocumentAncestorsTool from "./items/get/get-ancestors.js";
@@ -98,6 +100,8 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(UpdateDocumentPropertiesTool);
     tools.push(UpdateDocumentNameTool);
     tools.push(UpdateBlockPropertyTool);
+    tools.push(CreateDocumentBlockTool);
+    tools.push(DeleteDocumentBlockTool);
     tools.push(PutDocumentDomainsTool);
     tools.push(PutDocumentNotificationsTool);
     tools.push(PutDocumentPublicAccessTool);

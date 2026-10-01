@@ -1,6 +1,7 @@
 /**
  * Pure helper functions for block structure discovery and traversal.
- * Used by update-block-property tool to navigate BlockList, BlockGrid, and RichText blocks.
+ * Used by update-block-property, create-document-block and delete-document-block to navigate
+ * BlockList, BlockGrid, and RichText blocks.
  */
 
 /**
@@ -19,11 +20,32 @@ export interface BlockDataItem {
 }
 
 /**
+ * An entry in a block value's `expose` array. A block (and everything nested in it) is only
+ * rendered for the culture/segment combinations it is exposed for.
+ */
+export interface BlockExposeItem {
+  contentKey: string;
+  culture?: string | null;
+  segment?: string | null;
+}
+
+/**
+ * A block value's `layout` object, keyed by editor alias
+ * (e.g. "Umbraco.BlockList", "Umbraco.BlockGrid", "Umbraco.RichText").
+ */
+export type BlockLayout = Record<string, any[]>;
+
+/**
  * Represents a discovered set of block arrays with their location path.
+ * `layout` and `expose` are references to the same objects/arrays held in the block value,
+ * so mutating them mutates the value in place. They are undefined only when the source value
+ * omits them entirely.
  */
 export interface DiscoveredBlockArrays {
   contentData: BlockDataItem[];
   settingsData: BlockDataItem[];
+  layout?: BlockLayout;
+  expose?: BlockExposeItem[];
   path: string;
 }
 
@@ -98,6 +120,8 @@ export function discoverAllBlockArrays(value: any, path: string = "root"): Disco
     results.push({
       contentData: value.contentData,
       settingsData: value.settingsData,
+      layout: value.layout && typeof value.layout === "object" ? value.layout : undefined,
+      expose: Array.isArray(value.expose) ? value.expose : undefined,
       path
     });
 
