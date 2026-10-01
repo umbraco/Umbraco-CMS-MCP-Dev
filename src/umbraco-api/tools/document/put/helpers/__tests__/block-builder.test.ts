@@ -17,6 +17,7 @@ import {
   insertRteBlockElement,
   isBlockListOrGridValue,
   isRteWithBlocks,
+  normaliseRichTextBlockValue,
   removeBlockFromContainer,
   removeRteBlockElement,
   type BlockLayoutItem,
@@ -92,9 +93,62 @@ describe("block-builder helpers", () => {
       expect(container!.contentData).toBe(value.contentData);
     });
 
+    it("should normalise a null layout and expose in place", () => {
+      const value: any = { layout: null, contentData: [], settingsData: [], expose: null };
+      getTopLevelBlockContainer(value, "BlockGrid");
+      expect(value.layout).toEqual({ "Umbraco.BlockGrid": [] });
+      expect(value.expose).toEqual([]);
+    });
+
+    it("should throw instead of resetting a present but malformed layout or expose", () => {
+      const withBlock = (overrides: Record<string, unknown>) => ({
+        layout: { "Umbraco.BlockList": [{ contentKey: KEY_A }] },
+        contentData: [buildBlockEntry(KEY_A, TYPE_KEY, [])],
+        settingsData: [],
+        expose: buildExposeEntries(KEY_A, []),
+        ...overrides
+      });
+
+      const layoutNotArray: any = withBlock({ layout: { "Umbraco.BlockList": { contentKey: KEY_A } } });
+      expect(() => getTopLevelBlockContainer(layoutNotArray, "BlockList")).toThrow(/malformed block structure/);
+      expect(layoutNotArray.layout).toEqual({ "Umbraco.BlockList": { contentKey: KEY_A } });
+
+      const layoutNotObject: any = withBlock({ layout: [{ contentKey: KEY_A }] });
+      expect(() => getTopLevelBlockContainer(layoutNotObject, "BlockList")).toThrow(/malformed block structure/);
+
+      const exposeString: any = withBlock({ expose: "broken" });
+      expect(() => getTopLevelBlockContainer(exposeString, "BlockList")).toThrow(/malformed block structure/);
+      expect(exposeString.expose).toBe("broken");
+    });
+
     it("should return null when the structure doesn't match the editor", () => {
       expect(getTopLevelBlockContainer(createEmptyBlockValue("BlockList"), "RichText")).toBeNull();
       expect(getTopLevelBlockContainer({ foo: 1 }, "BlockList")).toBeNull();
+    });
+  });
+
+  describe("normaliseRichTextBlockValue", () => {
+    it("should initialise missing markup and blocks", () => {
+      const value: any = { markup: null };
+      normaliseRichTextBlockValue(value);
+      expect(value).toEqual(createEmptyBlockValue("RichText"));
+
+      const partial: any = { markup: "<p>Hi</p>", blocks: { layout: {} } };
+      normaliseRichTextBlockValue(partial);
+      expect(partial.blocks).toEqual({ layout: {}, contentData: [], settingsData: [] });
+    });
+
+    it("should throw instead of resetting present but malformed fields", () => {
+      const blocksNumber: any = { markup: "<p>Hi</p>", blocks: 42 };
+      expect(() => normaliseRichTextBlockValue(blocksNumber)).toThrow(/malformed block structure/);
+      expect(blocksNumber.blocks).toBe(42);
+
+      const markupObject: any = { markup: { html: "<p>Hi</p>" }, blocks: createEmptyBlockValue("RichText").blocks };
+      expect(() => normaliseRichTextBlockValue(markupObject)).toThrow(/malformed block structure/);
+
+      const contentDataObject: any = { markup: "", blocks: { contentData: {}, settingsData: [] } };
+      expect(() => normaliseRichTextBlockValue(contentDataObject)).toThrow(/malformed block structure/);
+      expect(contentDataObject.blocks.contentData).toEqual({});
     });
   });
 
@@ -254,6 +308,17 @@ describe("block-builder helpers", () => {
     it("should drop a paragraph left empty by removing an inline block", () => {
       const markup = `<p>${buildRteBlockElement(KEY_A, true)}</p><p>Keep</p>`;
       expect(removeRteBlockElement(markup, KEY_A)).toBe("<p>Keep</p>");
+    });
+
+    it("should leave unrelated empty paragraphs untouched", () => {
+      const spacer = "<p> </p>";
+      const markup = `<p>Intro</p>${spacer}<p>${buildRteBlockElement(KEY_A, true)}</p><p></p>${blockA}<p>Outro</p>`;
+      expect(removeRteBlockElement(markup, KEY_A)).toBe(`<p>Intro</p>${spacer}<p></p>${blockA}<p>Outro</p>`);
+    });
+
+    it("should keep a paragraph that holds other content besides the removed inline block", () => {
+      const markup = `<p>Before ${buildRteBlockElement(KEY_A, true)} after</p>`;
+      expect(removeRteBlockElement(markup, KEY_A)).toBe("<p>Before  after</p>");
     });
   });
 

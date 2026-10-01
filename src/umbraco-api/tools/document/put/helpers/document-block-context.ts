@@ -17,6 +17,7 @@ import {
   getBlockEditorKind,
   getBlockTypeConfigurations,
   getTopLevelBlockContainer,
+  normaliseRichTextBlockValue,
   type BlockEditorKind,
   type BlockTypeConfiguration
 } from "./block-builder.js";
@@ -35,7 +36,8 @@ export interface DocumentBlockContext {
  * Loads everything create/delete-document-block need: the document, the property definition
  * (validating culture/segment against its variance), the property's data type (editor kind and
  * block configuration), and the property's top-level block container. A missing or empty
- * property value is initialised to an empty block value for the editor.
+ * property value is initialised to an empty block value for the editor; a present but malformed
+ * block structure is rejected rather than overwritten.
  */
 export async function loadDocumentBlockContext(model: {
   documentId: string;
@@ -92,15 +94,8 @@ export async function loadDocumentBlockContext(model: {
   if (valueEntry.value === null || valueEntry.value === undefined || valueEntry.value === "") {
     valueEntry.value = createEmptyBlockValue(kind);
   } else if (kind === "RichText" && typeof valueEntry.value === "object") {
-    const rte = valueEntry.value as Record<string, any>;
-    if (typeof rte.markup !== "string") {
-      rte.markup = "";
-    }
-    if (!rte.blocks || typeof rte.blocks !== "object") {
-      rte.blocks = createEmptyBlockValue("RichText").blocks;
-    }
-    if (!Array.isArray(rte.blocks.contentData)) rte.blocks.contentData = [];
-    if (!Array.isArray(rte.blocks.settingsData)) rte.blocks.settingsData = [];
+    // Initialises missing fields; throws on present-but-malformed ones rather than overwriting them.
+    normaliseRichTextBlockValue(valueEntry.value as Record<string, any>);
   }
 
   const propertyValue = valueEntry.value as Record<string, any>;

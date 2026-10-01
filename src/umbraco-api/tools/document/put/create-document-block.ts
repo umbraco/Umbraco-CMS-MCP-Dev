@@ -57,7 +57,10 @@ const gridSchema = z.object({
   rowSpan: z.number().int().positive().optional().describe("BlockGrid row span (default 1)"),
   areaKey: z.string().uuid().optional().describe("Key of the named area to insert into (requires parentContentKey)"),
   parentContentKey: z.string().uuid().optional().describe("contentKey of the block that owns the area (requires areaKey)"),
-});
+}).refine(
+  g => !!g.areaKey === !!g.parentContentKey,
+  { message: "areaKey and parentContentKey must be provided together", path: ["parentContentKey"] }
+);
 
 const createDocumentBlockSchema = {
   documentId: z.string().uuid().describe("The document to add the block to"),
@@ -155,6 +158,7 @@ const CreateDocumentBlockTool = {
     }
     const areaKey = model.grid?.areaKey;
     const parentContentKey = model.grid?.parentContentKey;
+    // Also enforced by gridSchema; kept as a guard for callers that bypass schema validation.
     if (!!areaKey !== !!parentContentKey) {
       throw new ToolValidationError({
         title: "Incomplete area target",
@@ -265,7 +269,7 @@ const CreateDocumentBlockTool = {
         if (notAllowed) {
           throw new ToolValidationError({ title: "Element type not allowed in area", detail: notAllowed });
         }
-        if (targetArea.maxAllowed && targetItems.length >= targetArea.maxAllowed) {
+        if (targetArea.maxAllowed != null && targetItems.length >= targetArea.maxAllowed) {
           throw new ToolValidationError({
             title: "Area is full",
             detail: `Area '${targetArea.alias ?? targetArea.key}' allows at most ${targetArea.maxAllowed} block(s)`

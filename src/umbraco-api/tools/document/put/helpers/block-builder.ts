@@ -7,6 +7,7 @@
  * DiscoveredBlockArrays shape. Nothing in here calls the Management API.
  */
 
+import { ToolValidationError } from "@umbraco-cms/mcp-server-sdk";
 import {
   discoverAllBlockArrays,
   isBlockStructure,
@@ -140,12 +141,60 @@ export function createEmptyBlockValue(kind: BlockEditorKind): Record<string, any
   return kind === "RichText" ? { markup: "", blocks } : blocks;
 }
 
+function isPlainObject(value: unknown): value is Record<string, any> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+/**
+ * Error for a block structure field that is present but has the wrong shape. Such a value is
+ * never silently reset, because rewriting it would drop the existing blocks' entries in it.
+ */
+export function malformedBlockStructureError(field: string, expected: string): ToolValidationError {
+  return new ToolValidationError({
+    title: "Malformed block structure",
+    detail: `Property has a malformed block structure and cannot be safely modified: '${field}' is present but is not ${expected}`
+  });
+}
+
+/**
+ * Initialises `target[key]` when it is missing (undefined/null); throws when it is present but
+ * fails `isValid`.
+ */
+function ensureField(
+  target: Record<string, any>,
+  key: string,
+  expected: string,
+  isValid: (value: unknown) => boolean,
+  createDefault: () => unknown,
+  fieldLabel: string = key
+): void {
+  const current = target[key];
+  if (current === undefined || current === null) {
+    target[key] = createDefault();
+  } else if (!isValid(current)) {
+    throw malformedBlockStructureError(fieldLabel, expected);
+  }
+}
+
+/**
+ * Normalises a RichText property value in place so it carries a block structure: a missing
+ * `markup`, `blocks`, `blocks.contentData` or `blocks.settingsData` is initialised; a present but
+ * malformed one throws instead of being overwritten.
+ */
+export function normaliseRichTextBlockValue(rte: Record<string, any>): void {
+  ensureField(rte, "markup", "a string", v => typeof v === "string", () => "");
+  ensureField(rte, "blocks", "an object", isPlainObject, () => createEmptyBlockValue("RichText").blocks);
+  ensureField(rte.blocks, "contentData", "an array", Array.isArray, () => [], "blocks.contentData");
+  ensureField(rte.blocks, "settingsData", "an array", Array.isArray, () => [], "blocks.settingsData");
+}
+
 /**
  * Returns the top-level block container of a property value, normalising a missing `layout`,
  * layout array for the editor, or `expose` array in place so callers can mutate them.
  * Only the top-level container is returned, never a block structure nested inside a block.
  *
  * @returns The container, or null if the value doesn't match the editor kind's structure.
+ * @throws ToolValidationError when `layout`, its editor array, or `expose` is present but malformed.
  */
 export function getTopLevelBlockContainer(
   value: any,
@@ -157,16 +206,10 @@ export function getTopLevelBlockContainer(
   }
 
   const raw = kind === "RichText" ? value.blocks : value;
-  if (!raw.layout || typeof raw.layout !== "object") {
-    raw.layout = {};
-  }
   const layoutAlias = BLOCK_EDITOR_ALIASES[kind];
-  if (!Array.isArray(raw.layout[layoutAlias])) {
-    raw.layout[layoutAlias] = [];
-  }
-  if (!Array.isArray(raw.expose)) {
-    raw.expose = [];
-  }
+  ensureField(raw, "layout", "an object", isPlainObject, () => ({}));
+  ensureField(raw.layout, layoutAlias, "an array", Array.isArray, () => [], `layout['${layoutAlias}']`);
+  ensureField(raw, "expose", "an array", Array.isArray, () => []);
 
   // The first discovered entry is always the top-level container (discovery pushes it before recursing).
   const [topLevel] = discoverAllBlockArrays(value, "root");
@@ -408,8 +451,8 @@ export function insertRteBlockElement(
 }
 
 /**
- * Removes a block's element from RichText markup. A paragraph left empty by removing an inline
- * block is removed too.
+ * Removes a block's element from RichText markup. A paragraph that directly wraps only the removed
+ * element (as an inline block's does) is removed with it; other markup is left untouched.
  *
  * @returns The new markup, or null if the element isn't present.
  */
@@ -418,8 +461,14 @@ export function removeRteBlockElement(markup: string, contentKey: string): strin
   if (!found) {
     return null;
   }
-  const result = markup.slice(0, found.start) + markup.slice(found.end);
-  return result.replace(/<p>\s*<\/p>/g, "");
+  let { start, end } = found;
+  const openingParagraph = /<p\b[^>]*>\s*$/i.exec(markup.slice(0, start));
+  const closingParagraph = /^\s*<\/p>/i.exec(markup.slice(end));
+  if (openingParagraph && closingParagraph) {
+    start -= openingParagraph[0].length;
+    end += closingParagraph[0].length;
+  }
+  return markup.slice(0, start) + markup.slice(end);
 }
 
 // ---------------------------------------------------------------------------------------------

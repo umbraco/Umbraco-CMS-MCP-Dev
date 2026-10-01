@@ -8,6 +8,7 @@ import {
   SECOND_CULTURE,
   type DocumentBlockInfrastructure
 } from "./helpers/document-block-test-helper.js";
+import { z } from "zod";
 import { BLANK_UUID } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
@@ -20,6 +21,7 @@ const TEST_DOCUMENT_NAME = "_Test Create Document Block";
 const TEST_VARIANT_DOCUMENT_NAME = "_Test Create Document Block Variant";
 const TEST_VARIANT_DOCUMENT_NAME_DA = "_Test Create Document Block Variant DA";
 const EXISTING_KEY = "7d0e9c1a-1b2c-4d3e-8f4a-5b6c7d8e9f01";
+const DOCUMENT_ID_PLACEHOLDER = "7d0e9c1a-1b2c-4d3e-8f4a-5b6c7d8e9f03";
 const MISSING_KEY = "7d0e9c1a-1b2c-4d3e-8f4a-5b6c7d8e9f02";
 const FIRST_TITLE = "First block";
 const NEW_TITLE = "New block";
@@ -219,7 +221,97 @@ describe("create-document-block", () => {
     });
   });
 
+  describe("BlockGrid area target", () => {
+    const inputSchema = z.object(CreateDocumentBlockTool.inputSchema);
+    const baseInput = {
+      documentId: DOCUMENT_ID_PLACEHOLDER,
+      propertyAlias: ALIASES.blockGrid,
+      contentTypeKey: EXISTING_KEY
+    };
+
+    it.each([
+      ["areaKey without parentContentKey", { areaKey: DOCUMENT_BLOCK_AREA_KEY }],
+      ["parentContentKey without areaKey", { parentContentKey: EXISTING_KEY }]
+    ])("should reject %s", async (_label, grid) => {
+      // Arrange
+      const documentId = await createDocument();
+
+      // Act
+      const parsed = inputSchema.safeParse({ ...baseInput, grid });
+      const result = await call({ documentId, propertyAlias: ALIASES.blockGrid, contentTypeKey: infra.elementTypeId, grid });
+
+      // Assert - rejected by the schema, and by the handler for callers that bypass it
+      expect(parsed.success).toBe(false);
+      expect(parsed.error?.issues.map(i => i.message)).toContain("areaKey and parentContentKey must be provided together");
+      expect(inputSchema.safeParse({ ...baseInput, grid: { areaKey: DOCUMENT_BLOCK_AREA_KEY, parentContentKey: EXISTING_KEY } }).success).toBe(true);
+      expect(result.isError).toBe(true);
+      expect(JSON.stringify(result.structuredContent)).toContain("must be provided together");
+      expect(await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockGrid)).toBeFalsy();
+    });
+
+    it.each([0, 1])("should reject an insert beyond an area's maxAllowed of %i", async (maxAllowed) => {
+      // Arrange - recreate the infrastructure with a capped area, then fill it to capacity
+      await DocumentBlockTestHelper.cleanup([TEST_DOCUMENT_NAME]);
+      infra = await DocumentBlockTestHelper.createInfrastructure({ areaMaxAllowed: maxAllowed });
+      const documentId = await createDocument();
+      const parentResult = await call({ documentId, propertyAlias: ALIASES.blockGrid, contentTypeKey: infra.containerTypeId });
+      const parentKey = validateStructuredContent(parentResult, createDocumentBlockOutputSchema).results[0].contentKey;
+      const grid = { areaKey: DOCUMENT_BLOCK_AREA_KEY, parentContentKey: parentKey };
+      for (let i = 0; i < maxAllowed; i++) {
+        const filled = await call({ documentId, propertyAlias: ALIASES.blockGrid, contentTypeKey: infra.elementTypeId, grid });
+        validateStructuredContent(filled, createDocumentBlockOutputSchema);
+      }
+
+      // Act
+      const result = await call({ documentId, propertyAlias: ALIASES.blockGrid, contentTypeKey: infra.elementTypeId, grid });
+
+      // Assert - rejected, and the area keeps exactly maxAllowed blocks
+      expect(result.isError).toBe(true);
+      expect(JSON.stringify(result.structuredContent)).toContain("Area is full");
+      const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockGrid);
+      const area = value.layout["Umbraco.BlockGrid"][0].areas.find((a: any) => a.key === DOCUMENT_BLOCK_AREA_KEY);
+      expect(area.items).toHaveLength(maxAllowed);
+      expect(value.contentData).toHaveLength(1 + maxAllowed);
+      expect(value.expose).toHaveLength(1 + maxAllowed);
+    });
+  });
+
   describe("RichText", () => {
+    it("should write nothing when the sibling does not exist", async () => {
+      // Arrange
+      const documentId = await createDocument({
+        [ALIASES.richText]: {
+          markup: `<p>Intro</p><umb-rte-block data-content-key="${EXISTING_KEY}"><!--Umbraco-Block--></umb-rte-block>`,
+          blocks: {
+            layout: { "Umbraco.RichText": [{ contentKey: EXISTING_KEY }] },
+            contentData: [{ key: EXISTING_KEY, contentTypeKey: infra.elementTypeId, values: [{ alias: "title", value: FIRST_TITLE }] }],
+            settingsData: [],
+            expose: [{ contentKey: EXISTING_KEY, culture: null, segment: null }]
+          }
+        }
+      });
+      const before = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.richText);
+
+      // Act
+      const result = await call({
+        documentId,
+        propertyAlias: ALIASES.richText,
+        contentTypeKey: infra.elementTypeId,
+        properties: [{ alias: "title", value: NEW_TITLE }],
+        placement: { position: "after", contentKey: MISSING_KEY }
+      });
+
+      // Assert - error, and none of markup/layout/contentData/expose was written
+      expect(result.isError).toBe(true);
+      expect(JSON.stringify(result.structuredContent)).toContain("Sibling block not found");
+      const after = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.richText);
+      expect(after.markup).toEqual(before.markup);
+      expect(after.blocks.layout).toEqual(before.blocks.layout);
+      expect(after.blocks.contentData).toEqual(before.blocks.contentData);
+      expect(after.blocks.expose).toEqual(before.blocks.expose);
+      expect(after.blocks.contentData).toHaveLength(1);
+    });
+
     it("should write the markup element alongside the layout entry", async () => {
       // Arrange
       const documentId = await createDocument();
@@ -278,6 +370,32 @@ describe("create-document-block", () => {
       expect(titles).toEqual(expect.arrayContaining([
         expect.objectContaining({ culture: DEFAULT_CULTURE, value: EN_TITLE }),
         expect.objectContaining({ culture: SECOND_CULTURE, value: DA_TITLE })
+      ]));
+    });
+
+    it("should expose a culture-variant block in the document's cultures when no culture is given", async () => {
+      // Arrange
+      const { variantElementTypeId, variantDocTypeId } = await DocumentBlockTestHelper.createVariantInfrastructure();
+      const documentId = (await new DocumentBuilder()
+        .withDocumentType(variantDocTypeId)
+        .withVariant(TEST_VARIANT_DOCUMENT_NAME, DEFAULT_CULTURE)
+        .withVariant(TEST_VARIANT_DOCUMENT_NAME_DA, SECOND_CULTURE)
+        .create()).getId();
+
+      // Act - no model.culture and no per-property culture
+      const result = await call({
+        documentId,
+        propertyAlias: ALIASES.variantBlockList,
+        contentTypeKey: variantElementTypeId
+      });
+
+      // Assert - one expose entry per existing document culture
+      const contentKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
+      const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.variantBlockList);
+      expect(value.expose).toHaveLength(2);
+      expect(value.expose).toEqual(expect.arrayContaining([
+        { contentKey, culture: DEFAULT_CULTURE, segment: null },
+        { contentKey, culture: SECOND_CULTURE, segment: null }
       ]));
     });
   });

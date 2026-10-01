@@ -44,6 +44,11 @@ export interface DocumentBlockInfrastructure {
   docTypeId: string;
 }
 
+export interface DocumentBlockInfrastructureOptions {
+  /** maxAllowed for the container block type's named area (default null: unlimited). */
+  areaMaxAllowed?: number | null;
+}
+
 export interface VariantDocumentBlockInfrastructure {
   variantElementTypeId: string;
   variantDocTypeId: string;
@@ -67,7 +72,7 @@ async function createElementType(name: string, propertyAlias: string, variesByCu
 export class DocumentBlockTestHelper {
   private static createdLanguage: LanguageBuilder | null = null;
 
-  static async createInfrastructure(): Promise<DocumentBlockInfrastructure> {
+  static async createInfrastructure(options: DocumentBlockInfrastructureOptions = {}): Promise<DocumentBlockInfrastructure> {
     const elementTypeId = await createElementType(DOCUMENT_BLOCK_NAMES.element, "title");
     const settingsTypeId = await createElementType(DOCUMENT_BLOCK_NAMES.settings, "cssClass");
     const containerTypeId = await createElementType(DOCUMENT_BLOCK_NAMES.container, "heading");
@@ -112,7 +117,7 @@ export class DocumentBlockTestHelper {
               columnSpan: 12,
               rowSpan: 1,
               minAllowed: 0,
-              maxAllowed: null,
+              maxAllowed: options.areaMaxAllowed ?? null,
               specifiedAllowance: []
             }
           ]
