@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`delete-document-block BlockGrid should delete a block from a named area 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Deleted 1 block from BlockGrid property 'blockGrid'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Deleted block",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`delete-document-block BlockGrid should refuse to delete a block whose areas still contain blocks 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "detail": "Block '3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c01' still contains 1 block(s) in its areas: 3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c02. Delete them first.",
+    "nestedContentKeys": [
+      "3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c02",
+    ],
+    "status": 400,
+    "title": "Block has nested blocks",
+    "type": "https://httpstatuses.com/400",
+  },
+}
+`;
+
+exports[`delete-document-block should handle a non-existent document 1`] = `
+{
+  "content": [],
+  "isError": true,
+  "structuredContent": {
+    "operationStatus": "ContentNotFound",
+    "status": 404,
+    "title": "The document could not be found",
+    "type": "Error",
+  },
+}
+`;
+
+exports[`delete-document-block should remove a BlockList block with its settings, expose, and layout entries 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Deleted 1 block from BlockList property 'blockList'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Deleted block and its settings",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`delete-document-block should remove a RichText block's markup element and layout entry 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Deleted 1 block from RichText property 'richText'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Deleted block",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
