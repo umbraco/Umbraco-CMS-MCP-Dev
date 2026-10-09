@@ -28,13 +28,12 @@ exports[`get-user-group should get a user group by id 1`] = `
 
 exports[`get-user-group should handle non-existent user group 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The user group could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The user group could not be found",
-    "type": "Error",
-  },
 }
 `;

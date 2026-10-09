@@ -2,15 +2,13 @@
 
 exports[`update-document-type should handle non-existent document type 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not Found","status":404,"detail":"The specified document type was not found","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified document type was not found",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Not Found",
-    "type": "Error",
-  },
 }
 `;
 

@@ -12,14 +12,12 @@ exports[`create-language should create a language 1`] = `
 
 exports[`create-language should handle existing language 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Duplicate ISO code","status":400,"detail":"Another language already exists with the attempted ISO code.","operationStatus":"DuplicateIsoCode"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Another language already exists with the attempted ISO code.",
-    "operationStatus": "DuplicateIsoCode",
-    "status": 400,
-    "title": "Duplicate ISO code",
-    "type": "Error",
-  },
 }
 `;

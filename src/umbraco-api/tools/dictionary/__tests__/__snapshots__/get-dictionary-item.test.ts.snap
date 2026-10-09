@@ -18,13 +18,12 @@ exports[`get-dictionary-item should get a dictionary item by id 1`] = `
 
 exports[`get-dictionary-item should handle non-existent dictionary item 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The dictionary item could not be found","status":404,"operationStatus":"ItemNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "ItemNotFound",
-    "status": 404,
-    "title": "The dictionary item could not be found",
-    "type": "Error",
-  },
 }
 `;

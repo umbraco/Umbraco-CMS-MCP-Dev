@@ -11,14 +11,12 @@ exports[`get-user-current-permissions-media should get current user media permis
 
 exports[`get-user-current-permissions-media should handle non-existent media ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Media node not found","status":404,"detail":"The specified media node was not found.","operationStatus":"MediaNodeNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified media node was not found.",
-    "operationStatus": "MediaNodeNotFound",
-    "status": 404,
-    "title": "Media node not found",
-    "type": "Error",
-  },
 }
 `;

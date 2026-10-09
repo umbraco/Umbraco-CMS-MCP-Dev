@@ -11,14 +11,12 @@ exports[`get-user-current-permissions should get current user permissions 1`] = 
 
 exports[`get-user-current-permissions should handle non-existent ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Node not found","status":404,"detail":"The specified node was not found.","operationStatus":"NodeNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified node was not found.",
-    "operationStatus": "NodeNotFound",
-    "status": 404,
-    "title": "Node not found",
-    "type": "Error",
-  },
 }
 `;

@@ -7,6 +7,7 @@ import {
   createMockRequestHandlerExtra,
   createSnapshotResult,
   setupTestEnvironment,
+  validateErrorResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_IMAGE_NAME = "_Test Image Upload";
@@ -37,7 +38,7 @@ describe("create-media", () => {
     );
     const seedId = (result.structuredContent as any)?.id;
     if (!seedId) {
-      throw new Error(`Failed to seed URL fixture: ${JSON.stringify(result.structuredContent)}`);
+      throw new Error(`Failed to seed URL fixture: ${JSON.stringify(result.content)}`);
     }
     const urls = await UmbracoManagementClient.getClient().getMediaUrls({ id: [seedId] });
     const resolved = urls[0]?.urlInfos[0]?.url;
@@ -144,7 +145,7 @@ describe("create-media", () => {
       createMockRequestHandlerExtra(),
     );
     expect(result.isError).toBe(true);
-    expect((result.structuredContent as any)?.detail).toMatch(/sourceType is 'file' but no file object was provided/);
+    expect(validateErrorResult(result).detail).toMatch(/sourceType is 'file' but no file object was provided/);
   });
 
   it("should create media from base64", async () => {

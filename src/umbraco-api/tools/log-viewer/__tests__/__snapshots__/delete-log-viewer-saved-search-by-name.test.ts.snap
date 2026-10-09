@@ -13,24 +13,24 @@ exports[`delete-log-viewer-saved-search-by-name should delete a saved search by 
 
 exports[`delete-log-viewer-saved-search-by-name should handle empty name parameter 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;
 
 exports[`delete-log-viewer-saved-search-by-name should handle non-existent saved search 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The log search could not be found","status":404,"operationStatus":"NotFoundLogSearch"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFoundLogSearch",
-    "status": 404,
-    "title": "The log search could not be found",
-    "type": "Error",
-  },
 }
 `;

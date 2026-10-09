@@ -2,27 +2,25 @@
 
 exports[`move-document should handle moving non-existent document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The content could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The content could not be found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`move-document should handle moving to non-existent target 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The targeted content parent could not be found","status":404,"operationStatus":"ParentNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "ParentNotFound",
-    "status": 404,
-    "title": "The targeted content parent could not be found",
-    "type": "Error",
-  },
 }
 `;
 

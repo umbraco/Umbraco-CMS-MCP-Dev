@@ -35,27 +35,25 @@ exports[`document-type-folder delete should delete a folder 1`] = `
 
 exports[`document-type-folder delete should handle non-existent folder 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The folder could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The folder could not be found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`document-type-folder update should handle non-existent folder 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The folder could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The folder could not be found",
-    "type": "Error",
-  },
 }
 `;
 

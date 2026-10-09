@@ -2,14 +2,12 @@
 
 exports[`get-collection-media should handle non-existent data type ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Missing media when specifying a collection data type","status":400,"detail":"The specified collection data type needs to be used in conjunction with a media item.","operationStatus":"DataTypeWithoutContentType"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified collection data type needs to be used in conjunction with a media item.",
-    "operationStatus": "DataTypeWithoutContentType",
-    "status": 400,
-    "title": "Missing media when specifying a collection data type",
-    "type": "Error",
-  },
 }
 `;
