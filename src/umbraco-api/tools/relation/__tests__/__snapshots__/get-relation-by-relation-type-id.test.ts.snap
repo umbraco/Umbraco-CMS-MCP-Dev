@@ -2,14 +2,12 @@
 
 exports[`get-relation-by-relation-type-id should handle invalid relation type ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Relation type not found","status":400,"detail":"The relation type could not be found.","operationStatus":"RelationTypeNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The relation type could not be found.",
-    "operationStatus": "RelationTypeNotFound",
-    "status": 400,
-    "title": "Relation type not found",
-    "type": "Error",
-  },
 }
 `;

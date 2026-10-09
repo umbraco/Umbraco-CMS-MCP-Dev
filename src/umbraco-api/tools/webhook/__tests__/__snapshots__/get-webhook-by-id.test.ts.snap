@@ -29,12 +29,12 @@ exports[`get-webhook-by-id should get a webhook by id 1`] = `
 
 exports[`get-webhook-by-id should handle non-existent webhook 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The webhook could not be found","status":404}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "status": 404,
-    "title": "The webhook could not be found",
-    "type": "Error",
-  },
 }
 `;

@@ -23,11 +23,12 @@ exports[`get-template-siblings should get sibling templates 1`] = `
 
 exports[`get-template-siblings should handle non-existent template 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;

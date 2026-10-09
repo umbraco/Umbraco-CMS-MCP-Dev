@@ -13,12 +13,13 @@ exports[`update-document-version-prevent-cleanup should allow cleanup for a docu
 
 exports[`update-document-version-prevent-cleanup should handle non-existent version ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;
 

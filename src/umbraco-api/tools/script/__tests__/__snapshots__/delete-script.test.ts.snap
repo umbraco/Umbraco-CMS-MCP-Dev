@@ -13,15 +13,13 @@ exports[`delete-script delete-script should delete a script 1`] = `
 
 exports[`delete-script delete-script should handle non-existent script 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The script could not be found","status":404,"detail":"The script was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The script was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The script could not be found",
-    "type": "Error",
-  },
 }
 `;
 
@@ -38,14 +36,12 @@ exports[`delete-script delete-script-folder should delete a script folder 1`] = 
 
 exports[`delete-script delete-script-folder should handle non-existent script folder 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not found","status":404,"detail":"The specified folder was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified folder was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Not found",
-    "type": "Error",
-  },
 }
 `;

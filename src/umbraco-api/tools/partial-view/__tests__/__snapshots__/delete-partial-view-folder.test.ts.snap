@@ -13,28 +13,24 @@ exports[`delete-partial-view-folder should delete an empty partial view folder 1
 
 exports[`delete-partial-view-folder should handle attempt to delete a non-empty partial view folder 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not empty","status":400,"detail":"The folder is not empty and can therefore not be deleted.","operationStatus":"NotEmpty"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The folder is not empty and can therefore not be deleted.",
-    "operationStatus": "NotEmpty",
-    "status": 400,
-    "title": "Not empty",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`delete-partial-view-folder should handle non-existent partial view folder 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not found","status":404,"detail":"The specified folder was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified folder was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Not found",
-    "type": "Error",
-  },
 }
 `;

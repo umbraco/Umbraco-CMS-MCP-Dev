@@ -43,14 +43,12 @@ exports[`create-user-group should create a user group 2`] = `
 
 exports[`create-user-group should handle existing user group 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Duplicate alias","status":409,"detail":"A user group already exists with the attempted alias.","operationStatus":"DuplicateAlias"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "A user group already exists with the attempted alias.",
-    "operationStatus": "DuplicateAlias",
-    "status": 409,
-    "title": "Duplicate alias",
-    "type": "Error",
-  },
 }
 `;

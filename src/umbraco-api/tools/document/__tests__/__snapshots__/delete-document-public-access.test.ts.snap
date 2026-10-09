@@ -2,41 +2,36 @@
 
 exports[`delete-document-public-access should delete public access for a valid document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Entry not found","status":404,"detail":"The specified entry was not found.","operationStatus":"EntryNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified entry was not found.",
-    "operationStatus": "EntryNotFound",
-    "status": 404,
-    "title": "Entry not found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`delete-document-public-access should delete public access for a valid document 2`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Entry not found","status":404,"detail":"The specified entry was not found.","operationStatus":"EntryNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified entry was not found.",
-    "operationStatus": "EntryNotFound",
-    "status": 404,
-    "title": "Entry not found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`delete-document-public-access should handle non-existent document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The document could not be found","status":404,"operationStatus":"ContentNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "ContentNotFound",
-    "status": 404,
-    "title": "The document could not be found",
-    "type": "Error",
-  },
 }
 `;

@@ -2,21 +2,13 @@
 
 exports[`get-document-version should handle non-existent document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":[{"$.documentId":["The value 'non-existent-id' is not valid."]}],"traceId":"normalized-trace-id"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "errors": [
-      {
-        "$.documentId": [
-          "The value 'non-existent-id' is not valid.",
-        ],
-      },
-    ],
-    "status": 400,
-    "title": "One or more validation errors occurred.",
-    "traceId": "normalized-trace-id",
-    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
-  },
 }
 `;
 

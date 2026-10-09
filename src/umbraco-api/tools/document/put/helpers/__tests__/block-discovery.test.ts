@@ -228,6 +228,36 @@ describe("block-discovery helpers", () => {
         expect(result[0].contentData[0].key).toBe("block-1");
       });
 
+      it("should surface layout and expose by reference", () => {
+        const value = {
+          layout: { "Umbraco.BlockList": [{ contentKey: "block-1" }] },
+          contentData: [{ key: "block-1", contentTypeKey: "type-1", values: [] }],
+          settingsData: [],
+          expose: [{ contentKey: "block-1", culture: null, segment: null }]
+        };
+        const result = discoverAllBlockArrays(value);
+        expect(result[0].layout).toBe(value.layout);
+        expect(result[0].expose).toBe(value.expose);
+      });
+
+      it("should leave layout and expose undefined when absent", () => {
+        const result = discoverAllBlockArrays({ contentData: [], settingsData: [] });
+        expect(result[0].layout).toBeUndefined();
+        expect(result[0].expose).toBeUndefined();
+      });
+
+      it("should surface layout and expose of RichText blocks", () => {
+        const blocks = {
+          layout: { "Umbraco.RichText": [{ contentKey: "rte-1" }] },
+          contentData: [{ key: "rte-1", contentTypeKey: "type-1", values: [] }],
+          settingsData: [],
+          expose: [{ contentKey: "rte-1", culture: null, segment: null }]
+        };
+        const result = discoverAllBlockArrays({ markup: "", blocks });
+        expect(result[0].layout).toBe(blocks.layout);
+        expect(result[0].expose).toBe(blocks.expose);
+      });
+
       it("should use custom path when provided", () => {
         const value = {
           contentData: [],

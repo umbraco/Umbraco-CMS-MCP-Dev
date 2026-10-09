@@ -11,14 +11,12 @@ exports[`get-user-current-permissions-document should get current user document 
 
 exports[`get-user-current-permissions-document should handle non-existent document ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Content node not found","status":404,"detail":"The specified content node was not found.","operationStatus":"ContentNodeNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified content node was not found.",
-    "operationStatus": "ContentNodeNotFound",
-    "status": 404,
-    "title": "Content node not found",
-    "type": "Error",
-  },
 }
 `;
