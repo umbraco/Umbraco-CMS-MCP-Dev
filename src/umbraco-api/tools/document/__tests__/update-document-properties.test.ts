@@ -16,6 +16,7 @@ import {
   createSnapshotResult,
   setupTestEnvironment,
   validateStructuredContent,
+  validateErrorResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("update-document-properties", () => {
@@ -139,7 +140,7 @@ describe("update-document-properties", () => {
 
     // Verify the error content structure (ProblemDetails format)
     expect(result.isError).toBe(true);
-    const responseData = result.structuredContent as { title: string; invalidAliases: string[]; availableProperties: any[] };
+    const responseData = validateErrorResult(result) as { title: string; invalidAliases: string[]; availableProperties: any[] };
     expect(responseData.title).toBe("Invalid property aliases");
     expect(responseData.invalidAliases).toContain(INVALID_ALIAS);
     expect(Array.isArray(responseData.availableProperties)).toBe(true);
@@ -682,7 +683,7 @@ describe("update-document-properties", () => {
 
       // Assert - Should fail with variance error (ProblemDetails format)
       expect(result.isError).toBe(true);
-      const responseData = result.structuredContent as { title: string; detail: string };
+      const responseData = validateErrorResult(result) as { title: string; detail: string };
       expect(responseData.title).toBe("Culture/segment validation failed");
       expect(responseData.detail).toContain("author");
       expect(responseData.detail).toContain("does not vary by culture");
@@ -722,7 +723,7 @@ describe("update-document-properties", () => {
 
       // Assert - Should fail with variance error (ProblemDetails format)
       expect(result.isError).toBe(true);
-      const responseData = result.structuredContent as { title: string; detail: string };
+      const responseData = validateErrorResult(result) as { title: string; detail: string };
       expect(responseData.title).toBe("Culture/segment validation failed");
       expect(responseData.detail).toContain("author");
       expect(responseData.detail).toContain("culture is required");
@@ -760,7 +761,7 @@ describe("update-document-properties", () => {
 
       // Assert - Should fail with invalid aliases (ProblemDetails format)
       expect(result.isError).toBe(true);
-      const responseData = result.structuredContent as { title: string; invalidAliases: string[]; availableProperties: { alias: string }[] };
+      const responseData = validateErrorResult(result) as { title: string; invalidAliases: string[]; availableProperties: { alias: string }[] };
       expect(responseData.title).toBe("Invalid property aliases");
       expect(responseData.invalidAliases).toContain("nonExistentProperty");
       expect(responseData.availableProperties).toBeDefined();

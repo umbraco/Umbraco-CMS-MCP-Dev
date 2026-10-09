@@ -2,29 +2,25 @@
 
 exports[`rename-script should handle non-existent script 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The script could not be found","status":404,"detail":"The script was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The script was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The script could not be found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`rename-script should handle renaming script to same name 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Script already exists","status":400,"detail":"A script with the same path already exists","operationStatus":"AlreadyExists"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "A script with the same path already exists",
-    "operationStatus": "AlreadyExists",
-    "status": 400,
-    "title": "Script already exists",
-    "type": "Error",
-  },
 }
 `;
 
@@ -41,15 +37,13 @@ exports[`rename-script should handle renaming with folder path (tests path handl
 
 exports[`rename-script should handle script folder rename attempt 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The script could not be found","status":404,"detail":"The script was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The script was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The script could not be found",
-    "type": "Error",
-  },
 }
 `;
 

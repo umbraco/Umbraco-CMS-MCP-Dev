@@ -22,14 +22,12 @@ exports[`create-stylesheet should create stylesheet with parent folder 1`] = `
 
 exports[`create-stylesheet should handle existing stylesheet name 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Stylesheet already exists","status":400,"detail":"A stylesheet with the same path already exists","operationStatus":"AlreadyExists"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "A stylesheet with the same path already exists",
-    "operationStatus": "AlreadyExists",
-    "status": 400,
-    "title": "Stylesheet already exists",
-    "type": "Error",
-  },
 }
 `;

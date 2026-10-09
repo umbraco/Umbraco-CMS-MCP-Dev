@@ -60,14 +60,12 @@ exports[`create-document-blueprint should create a document blueprint with paren
 
 exports[`create-document-blueprint should handle existing document blueprint 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Duplicate name","status":400,"detail":"The supplied name is already in use for the same content type.","operationStatus":"DuplicateName"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The supplied name is already in use for the same content type.",
-    "operationStatus": "DuplicateName",
-    "status": 400,
-    "title": "Duplicate name",
-    "type": "Error",
-  },
 }
 `;

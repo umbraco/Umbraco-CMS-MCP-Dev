@@ -2,27 +2,25 @@
 
 exports[`move-data-type should handle moving non-existent data type 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The data type could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The data type could not be found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`move-data-type should handle moving to non-existent folder 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The targeted parent for the data type operation was not found.","status":404,"operationStatus":"ParentNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "ParentNotFound",
-    "status": 404,
-    "title": "The targeted parent for the data type operation was not found.",
-    "type": "Error",
-  },
 }
 `;
 

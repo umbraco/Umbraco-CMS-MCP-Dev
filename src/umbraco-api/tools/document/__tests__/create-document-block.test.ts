@@ -15,6 +15,7 @@ import {
   createSnapshotResult,
   setupTestEnvironment,
   validateStructuredContent,
+  validateErrorResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCUMENT_NAME = "_Test Create Document Block";
@@ -156,7 +157,7 @@ describe("create-document-block", () => {
       // Assert
       expect(gridResult).toMatchSnapshot();
       expect(typeResult.isError).toBe(true);
-      expect(JSON.stringify(typeResult.structuredContent)).toContain("Element type not allowed");
+      expect(JSON.stringify(validateErrorResult(typeResult))).toContain("Element type not allowed");
     });
   });
 
@@ -215,7 +216,7 @@ describe("create-document-block", () => {
 
       // Assert
       expect(result.isError).toBe(true);
-      expect(JSON.stringify(result.structuredContent)).toContain("not allowed in areas");
+      expect(JSON.stringify(validateErrorResult(result))).toContain("not allowed in areas");
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockGrid);
       expect(value.contentData).toHaveLength(1);
     });
@@ -245,7 +246,7 @@ describe("create-document-block", () => {
       expect(parsed.error?.issues.map(i => i.message)).toContain("areaKey and parentContentKey must be provided together");
       expect(inputSchema.safeParse({ ...baseInput, grid: { areaKey: DOCUMENT_BLOCK_AREA_KEY, parentContentKey: EXISTING_KEY } }).success).toBe(true);
       expect(result.isError).toBe(true);
-      expect(JSON.stringify(result.structuredContent)).toContain("must be provided together");
+      expect(JSON.stringify(validateErrorResult(result))).toContain("must be provided together");
       expect(await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockGrid)).toBeFalsy();
     });
 
@@ -267,7 +268,7 @@ describe("create-document-block", () => {
 
       // Assert - rejected, and the area keeps exactly maxAllowed blocks
       expect(result.isError).toBe(true);
-      expect(JSON.stringify(result.structuredContent)).toContain("Area is full");
+      expect(JSON.stringify(validateErrorResult(result))).toContain("Area is full");
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockGrid);
       const area = value.layout["Umbraco.BlockGrid"][0].areas.find((a: any) => a.key === DOCUMENT_BLOCK_AREA_KEY);
       expect(area.items).toHaveLength(maxAllowed);
@@ -303,7 +304,7 @@ describe("create-document-block", () => {
 
       // Assert - error, and none of markup/layout/contentData/expose was written
       expect(result.isError).toBe(true);
-      expect(JSON.stringify(result.structuredContent)).toContain("Sibling block not found");
+      expect(JSON.stringify(validateErrorResult(result))).toContain("Sibling block not found");
       const after = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.richText);
       expect(after.markup).toEqual(before.markup);
       expect(after.blocks.layout).toEqual(before.blocks.layout);

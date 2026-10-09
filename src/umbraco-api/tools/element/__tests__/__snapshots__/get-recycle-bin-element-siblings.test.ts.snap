@@ -58,11 +58,12 @@ exports[`get-recycle-bin-element-siblings should get sibling elements in recycle
 
 exports[`get-recycle-bin-element-siblings should handle non-existent target in recycle bin 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;

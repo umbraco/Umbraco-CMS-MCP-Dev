@@ -35,14 +35,13 @@ exports[`get-media-by-id-referenced-by should get documents that reference a spe
 
 exports[`get-media-by-id-referenced-by should handle non-existent media ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The requested content could not be found","status":404,"operationStatus":"ContentNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "ContentNotFound",
-    "status": 404,
-    "title": "The requested content could not be found",
-    "type": "Error",
-  },
 }
 `;
 

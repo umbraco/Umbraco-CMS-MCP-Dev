@@ -10,6 +10,7 @@ import {
   createMockRequestHandlerExtra,
   createSnapshotResult,
   setupTestEnvironment,
+  validateErrorResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 /**
@@ -195,7 +196,7 @@ describe("update-element-properties", () => {
 
     // Assert - should be an error response with invalid alias details
     expect(result.isError).toBe(true);
-    const responseData = result.structuredContent as {
+    const responseData = validateErrorResult(result) as {
       title: string;
       invalidAliases: string[];
       availableProperties: { alias: string }[];

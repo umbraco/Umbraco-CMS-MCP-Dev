@@ -27,11 +27,12 @@ exports[`get-document-type-siblings should get sibling document types 1`] = `
 
 exports[`get-document-type-siblings should handle non-existent document type 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;

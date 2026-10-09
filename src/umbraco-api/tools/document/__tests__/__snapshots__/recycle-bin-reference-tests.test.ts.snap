@@ -9,46 +9,48 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-original-parent sh
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-original-parent should handle non-existent recycled document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The document could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The document could not be found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should get references for recycled document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should get references with pagination for recycled document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;
 
 exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by should handle non-existent recycled document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;

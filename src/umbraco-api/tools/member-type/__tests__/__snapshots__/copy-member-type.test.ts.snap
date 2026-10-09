@@ -12,14 +12,12 @@ exports[`copy-member-type should copy a member type 1`] = `
 
 exports[`copy-member-type should handle non-existent member type 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not Found","status":404,"detail":"The specified member type was not found","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified member type was not found",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Not Found",
-    "type": "Error",
-  },
 }
 `;

@@ -36,13 +36,12 @@ exports[`get-element-version-by-id should get element version by ID 1`] = `
 
 exports[`get-element-version-by-id should return error for non-existent version ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The requested version could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The requested version could not be found",
-    "type": "Error",
-  },
 }
 `;
