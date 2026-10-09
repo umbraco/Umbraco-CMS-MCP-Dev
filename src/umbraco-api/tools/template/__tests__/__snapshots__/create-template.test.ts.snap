@@ -27,14 +27,12 @@ exports[`create-template should create a template 2`] = `
 
 exports[`create-template should handle existing template 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Duplicate alias","status":400,"detail":"A template with that alias already exists.","operationStatus":"DuplicateAlias"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "A template with that alias already exists.",
-    "operationStatus": "DuplicateAlias",
-    "status": 400,
-    "title": "Duplicate alias",
-    "type": "Error",
-  },
 }
 `;

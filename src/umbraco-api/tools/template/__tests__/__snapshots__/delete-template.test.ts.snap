@@ -13,13 +13,12 @@ exports[`delete-template should delete a template 1`] = `
 
 exports[`delete-template should handle non-existent template 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The template could not be found","status":404,"operationStatus":"TemplateNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "TemplateNotFound",
-    "status": 404,
-    "title": "The template could not be found",
-    "type": "Error",
-  },
 }
 `;

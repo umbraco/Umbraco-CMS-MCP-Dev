@@ -71,13 +71,12 @@ exports[`get-media-by-id should get a media item by ID 1`] = `
 
 exports[`get-media-by-id should return error for non-existent ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The requested Media could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The requested Media could not be found",
-    "type": "Error",
-  },
 }
 `;

@@ -22,14 +22,12 @@ exports[`create-partial-view should create partial view with parent folder 1`] =
 
 exports[`create-partial-view should handle existing partial view name 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Partial view already exists","status":400,"detail":"A partial view with the same path already exists","operationStatus":"AlreadyExists"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "A partial view with the same path already exists",
-    "operationStatus": "AlreadyExists",
-    "status": 400,
-    "title": "Partial view already exists",
-    "type": "Error",
-  },
 }
 `;

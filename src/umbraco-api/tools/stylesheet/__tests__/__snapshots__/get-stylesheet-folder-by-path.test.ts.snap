@@ -16,14 +16,12 @@ exports[`get-stylesheet-folder-by-path should get a stylesheet folder by path 1`
 
 exports[`get-stylesheet-folder-by-path should handle non-existent folder 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not found","status":404,"detail":"The specified folder was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified folder was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Not found",
-    "type": "Error",
-  },
 }
 `;

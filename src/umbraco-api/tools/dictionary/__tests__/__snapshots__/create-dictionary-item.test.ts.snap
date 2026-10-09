@@ -50,14 +50,12 @@ exports[`create-dictionary-item should create a dictionary item with parent 2`] 
 
 exports[`create-dictionary-item should handle existing dictionary item 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Duplicate dictionary item name detected","status":409,"detail":"Another dictionary item exists with the same name. Dictionary item names must be unique.","operationStatus":"DuplicateItemKey"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Another dictionary item exists with the same name. Dictionary item names must be unique.",
-    "operationStatus": "DuplicateItemKey",
-    "status": 409,
-    "title": "Duplicate dictionary item name detected",
-    "type": "Error",
-  },
 }
 `;

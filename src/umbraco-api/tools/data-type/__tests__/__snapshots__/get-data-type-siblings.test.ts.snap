@@ -26,11 +26,12 @@ exports[`get-data-type-siblings should get sibling data types 1`] = `
 
 exports[`get-data-type-siblings should handle non-existent target 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;

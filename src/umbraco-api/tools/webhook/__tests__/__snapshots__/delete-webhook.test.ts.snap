@@ -13,12 +13,12 @@ exports[`delete-webhook should delete a webhook 1`] = `
 
 exports[`delete-webhook should handle non-existent webhook 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The webhook could not be found","status":404}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "status": 404,
-    "title": "The webhook could not be found",
-    "type": "Error",
-  },
 }
 `;

@@ -48,14 +48,12 @@ exports[`get-media-type-by-ids should get media types by ids 1`] = `
 
 exports[`get-media-type-by-ids should handle non-existent media types 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not Found","status":404,"detail":"The specified media type was not found","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified media type was not found",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Not Found",
-    "type": "Error",
-  },
 }
 `;

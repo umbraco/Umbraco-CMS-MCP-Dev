@@ -13,13 +13,12 @@ exports[`delete-document-blueprint should delete a document blueprint 1`] = `
 
 exports[`delete-document-blueprint should handle non-existent document blueprint 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The content could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The content could not be found",
-    "type": "Error",
-  },
 }
 `;

@@ -31,29 +31,25 @@ exports[`get-partial-view GetPartialViewByPathTool should get a partial view in 
 
 exports[`get-partial-view GetPartialViewByPathTool should handle invalid path format 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Partial view not found","status":404,"detail":"The partial view was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The partial view was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Partial view not found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`get-partial-view GetPartialViewByPathTool should handle non-existent partial view 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Partial view not found","status":404,"detail":"The partial view was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The partial view was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Partial view not found",
-    "type": "Error",
-  },
 }
 `;
 
@@ -73,28 +69,24 @@ exports[`get-partial-view GetPartialViewFolderByPathTool should get a partial vi
 
 exports[`get-partial-view GetPartialViewFolderByPathTool should handle getting folder that is actually a partial view 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not found","status":404,"detail":"The specified folder was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified folder was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Not found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`get-partial-view GetPartialViewFolderByPathTool should handle non-existent partial view folder 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not found","status":404,"detail":"The specified folder was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified folder was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Not found",
-    "type": "Error",
-  },
 }
 `;

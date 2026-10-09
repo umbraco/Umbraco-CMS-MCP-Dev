@@ -67,13 +67,12 @@ exports[`get-document-notifications should add and then get notifications for a 
 
 exports[`get-document-notifications should handle non-existent document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The document could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The document could not be found",
-    "type": "Error",
-  },
 }
 `;
