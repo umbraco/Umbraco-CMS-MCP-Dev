@@ -19,30 +19,25 @@ exports[`delete-document-block BlockGrid should delete a block from a named area
 
 exports[`delete-document-block BlockGrid should refuse to delete a block whose areas still contain blocks 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"Block has nested blocks","status":400,"detail":"Block '3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c01' still contains 1 block(s) in its areas: 3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c02. Delete them first.","nestedContentKeys":["3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c02"]}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Block '3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c01' still contains 1 block(s) in its areas: 3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c02. Delete them first.",
-    "nestedContentKeys": [
-      "3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c02",
-    ],
-    "status": 400,
-    "title": "Block has nested blocks",
-    "type": "https://httpstatuses.com/400",
-  },
 }
 `;
 
 exports[`delete-document-block should handle a non-existent document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The document could not be found","status":404,"operationStatus":"ContentNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "ContentNotFound",
-    "status": 404,
-    "title": "The document could not be found",
-    "type": "Error",
-  },
 }
 `;
 

@@ -15,13 +15,12 @@ exports[`get-language-by-iso-code should get a language by isoCode 1`] = `
 
 exports[`get-language-by-iso-code should handle non-existent language 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The language could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The language could not be found",
-    "type": "Error",
-  },
 }
 `;

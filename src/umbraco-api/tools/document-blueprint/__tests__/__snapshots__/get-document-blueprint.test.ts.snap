@@ -33,13 +33,12 @@ exports[`get-document-blueprint should get a document blueprint by id 1`] = `
 
 exports[`get-document-blueprint should handle non-existent document blueprint 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The document blueprint could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The document blueprint could not be found",
-    "type": "Error",
-  },
 }
 `;

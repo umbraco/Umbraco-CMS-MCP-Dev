@@ -9,6 +9,7 @@ import {
 import {
   createMockRequestHandlerExtra,
   setupTestEnvironment,
+  validateErrorResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("update-document", () => {
@@ -139,7 +140,7 @@ describe("update-document", () => {
     );
 
     expect(result.isError).toBe(true);
-    const responseData = result.structuredContent as { title: string };
+    const responseData = validateErrorResult(result) as { title: string };
     expect(responseData.title).toBe("This update would clear all property values");
 
     // The document's values must remain untouched - the update must not have gone through

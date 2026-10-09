@@ -12,13 +12,12 @@ exports[`get-default-language should get the default language 1`] = `
 
 exports[`get-default-language should handle error from client 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Error","detail":"Simulated error","status":500}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Simulated error",
-    "status": 500,
-    "title": "Error",
-    "type": "Error",
-  },
 }
 `;

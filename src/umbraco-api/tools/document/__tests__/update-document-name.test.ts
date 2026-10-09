@@ -18,6 +18,7 @@ import {
   createSnapshotResult,
   setupTestEnvironment,
   validateStructuredContent,
+  validateErrorResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("update-document-name", () => {
@@ -147,7 +148,7 @@ describe("update-document-name", () => {
 
     // Assert - Should fail with a helpful error listing the actual (invariant) variant
     expect(result.isError).toBe(true);
-    const responseData = result.structuredContent as {
+    const responseData = validateErrorResult(result) as {
       title: string;
       availableCultures: { culture: string | null; name: string }[];
     };
@@ -291,7 +292,7 @@ describe("update-document-name", () => {
       );
 
       expect(result.isError).toBe(true);
-      const responseData = result.structuredContent as {
+      const responseData = validateErrorResult(result) as {
         title: string;
         availableCultures: { culture: string | null; name: string }[];
       };
@@ -332,7 +333,7 @@ describe("update-document-name", () => {
       );
 
       expect(result.isError).toBe(true);
-      const responseData = result.structuredContent as {
+      const responseData = validateErrorResult(result) as {
         title: string;
         availableCultures: { culture: string | null; name: string }[];
       };

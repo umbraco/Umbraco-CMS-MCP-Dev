@@ -11,14 +11,13 @@ exports[`is-used-data-type should check if a data type is used 1`] = `
 
 exports[`is-used-data-type should handle non-existent data type 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The data type could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The data type could not be found",
-    "type": "Error",
-  },
 }
 `;
 

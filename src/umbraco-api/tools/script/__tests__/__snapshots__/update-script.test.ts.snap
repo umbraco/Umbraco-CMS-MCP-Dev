@@ -2,15 +2,13 @@
 
 exports[`update-script should handle non-existent script 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The script could not be found","status":404,"detail":"The script was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The script was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The script could not be found",
-    "type": "Error",
-  },
 }
 `;
 

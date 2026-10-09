@@ -15,6 +15,7 @@ import {
   createSnapshotResult,
   setupTestEnvironment,
   validateStructuredContent,
+  validateErrorResult,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 const TEST_DOCUMENT_NAME = "_Test Delete Document Block";
@@ -214,7 +215,7 @@ describe("delete-document-block", () => {
 
     // Assert
     expect(result.isError).toBe(true);
-    expect(JSON.stringify(result.structuredContent)).toContain(`No block with contentKey '${MISSING_KEY}'`);
+    expect(JSON.stringify(validateErrorResult(result))).toContain(`No block with contentKey '${MISSING_KEY}'`);
   });
 
   it("should handle a non-existent document", async () => {

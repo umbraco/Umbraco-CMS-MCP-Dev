@@ -23,14 +23,12 @@ exports[`get-relation-type-by-id should get relation type by ID 1`] = `
 
 exports[`get-relation-type-by-id should handle invalid relation type ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Relation type not found","status":404,"detail":"A relation type with the given key does not exist","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "A relation type with the given key does not exist",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Relation type not found",
-    "type": "Error",
-  },
 }
 `;

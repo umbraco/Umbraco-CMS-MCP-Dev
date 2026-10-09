@@ -9,15 +9,13 @@ exports[`create-script create-script should create a script 1`] = `
 
 exports[`create-script create-script should handle existing script 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Script already exists","status":400,"detail":"A script with the same path already exists","operationStatus":"AlreadyExists"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "A script with the same path already exists",
-    "operationStatus": "AlreadyExists",
-    "status": 400,
-    "title": "Script already exists",
-    "type": "Error",
-  },
 }
 `;
 
@@ -30,14 +28,12 @@ exports[`create-script create-script-folder should create a script folder 1`] = 
 
 exports[`create-script create-script-folder should handle existing script folder 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Folder already exists","status":400,"detail":"The folder already exists","operationStatus":"AlreadyExists"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The folder already exists",
-    "operationStatus": "AlreadyExists",
-    "status": 400,
-    "title": "Folder already exists",
-    "type": "Error",
-  },
 }
 `;

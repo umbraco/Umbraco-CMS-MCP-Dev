@@ -2,14 +2,13 @@
 
 exports[`publish-element should handle publishing a non-existent element 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The requested element could not be found","status":404,"operationStatus":"ContentNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "ContentNotFound",
-    "status": 404,
-    "title": "The requested element could not be found",
-    "type": "Error",
-  },
 }
 `;
 

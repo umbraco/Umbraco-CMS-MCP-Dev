@@ -13,13 +13,12 @@ exports[`delete-element should delete an element 1`] = `
 
 exports[`delete-element should handle non-existent element 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The content could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The content could not be found",
-    "type": "Error",
-  },
 }
 `;

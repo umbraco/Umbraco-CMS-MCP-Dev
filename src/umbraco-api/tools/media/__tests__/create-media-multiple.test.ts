@@ -39,7 +39,7 @@ describe("create-media-multiple", () => {
     );
     const seedId = (result.structuredContent as any)?.id;
     if (!seedId) {
-      throw new Error(`Failed to seed URL fixture: ${JSON.stringify(result.structuredContent)}`);
+      throw new Error(`Failed to seed URL fixture: ${JSON.stringify(result.content)}`);
     }
     const urls = await UmbracoManagementClient.getClient().getMediaUrls({ id: [seedId] });
     const resolved = urls[0]?.urlInfos[0]?.url;
