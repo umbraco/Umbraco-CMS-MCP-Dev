@@ -13,13 +13,12 @@ exports[`delete-media-from-recycle-bin should delete a media item from recycle b
 
 exports[`delete-media-from-recycle-bin should handle non-existent media 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The content could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The content could not be found",
-    "type": "Error",
-  },
 }
 `;

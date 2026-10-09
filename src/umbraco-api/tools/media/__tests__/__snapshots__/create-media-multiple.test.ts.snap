@@ -86,11 +86,13 @@ exports[`create-media-multiple should create multiple media from URLs 1`] = `
 
 exports[`create-media-multiple should handle batch size limit validation 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"detail":"Batch upload limited to 20 files per call. You provided 21 files. Please split into multiple batches."}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Batch upload limited to 20 files per call. You provided 21 files. Please split into multiple batches.",
-  },
 }
 `;
 

@@ -12,13 +12,12 @@ exports[`create-member-group should create a member group 1`] = `
 
 exports[`create-member-group should handle existing member group 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Duplicate name","status":400,"detail":"Another group with the same name already exists."}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Another group with the same name already exists.",
-    "status": 400,
-    "title": "Duplicate name",
-    "type": "Error",
-  },
 }
 `;

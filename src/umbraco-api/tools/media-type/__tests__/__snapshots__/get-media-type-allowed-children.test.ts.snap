@@ -31,14 +31,12 @@ exports[`get-media-type-allowed-children should handle media type with no allowe
 
 exports[`get-media-type-allowed-children should handle non-existent media type 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Not Found","status":404,"detail":"The specified media type was not found","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified media type was not found",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Not Found",
-    "type": "Error",
-  },
 }
 `;

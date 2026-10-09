@@ -55,27 +55,13 @@ exports[`update-block-property BlockGrid integration tests should return error w
 
 exports[`update-block-property BlockGrid integration tests should return error with available blocks when BlockGrid block not found 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"Blocks not found","status":400,"detail":"None of the specified blocks were found in the document","notFoundBlocks":[{"contentKey":"00000000-0000-0000-0000-000000000001","blockType":"content"}],"availableBlocks":[{"key":"00000000-0000-0000-0000-000000000000","type":"content","path":"property(gridBlocks)"}]}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "availableBlocks": [
-      {
-        "key": "00000000-0000-0000-0000-000000000000",
-        "path": "property(gridBlocks)",
-        "type": "content",
-      },
-    ],
-    "detail": "None of the specified blocks were found in the document",
-    "notFoundBlocks": [
-      {
-        "blockType": "content",
-        "contentKey": "00000000-0000-0000-0000-000000000001",
-      },
-    ],
-    "status": 400,
-    "title": "Blocks not found",
-    "type": "https://httpstatuses.com/400",
-  },
 }
 `;
 
@@ -155,27 +141,13 @@ exports[`update-block-property BlockList integration tests should return error w
 
 exports[`update-block-property BlockList integration tests should return error with available blocks when block not found 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"Blocks not found","status":400,"detail":"None of the specified blocks were found in the document","notFoundBlocks":[{"contentKey":"00000000-0000-0000-0000-000000000001","blockType":"content"}],"availableBlocks":[{"key":"00000000-0000-0000-0000-000000000000","type":"content","path":"property(blocks)"}]}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "availableBlocks": [
-      {
-        "key": "00000000-0000-0000-0000-000000000000",
-        "path": "property(blocks)",
-        "type": "content",
-      },
-    ],
-    "detail": "None of the specified blocks were found in the document",
-    "notFoundBlocks": [
-      {
-        "blockType": "content",
-        "contentKey": "00000000-0000-0000-0000-000000000001",
-      },
-    ],
-    "status": 400,
-    "title": "Blocks not found",
-    "type": "https://httpstatuses.com/400",
-  },
 }
 `;
 
@@ -440,27 +412,13 @@ exports[`update-block-property RichText Editor (RTE) integration tests should re
 
 exports[`update-block-property RichText Editor (RTE) integration tests should return error with available blocks when RTE block not found 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"Blocks not found","status":400,"detail":"None of the specified blocks were found in the document","notFoundBlocks":[{"contentKey":"00000000-0000-0000-0000-000000000001","blockType":"content"}],"availableBlocks":[{"key":"00000000-0000-0000-0000-000000000000","type":"content","path":"property(richContent).blocks"}]}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "availableBlocks": [
-      {
-        "key": "00000000-0000-0000-0000-000000000000",
-        "path": "property(richContent).blocks",
-        "type": "content",
-      },
-    ],
-    "detail": "None of the specified blocks were found in the document",
-    "notFoundBlocks": [
-      {
-        "blockType": "content",
-        "contentKey": "00000000-0000-0000-0000-000000000001",
-      },
-    ],
-    "status": 400,
-    "title": "Blocks not found",
-    "type": "https://httpstatuses.com/400",
-  },
 }
 `;
 
@@ -552,48 +510,36 @@ exports[`update-block-property add new properties to blocks should return error 
 
 exports[`update-block-property error handling integration tests should handle non-existent document 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The document could not be found","status":404,"operationStatus":"ContentNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "ContentNotFound",
-    "status": 404,
-    "title": "The document could not be found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`update-block-property error handling integration tests should return error for non-existent document property 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"Property not found","status":400,"detail":"Property 'nonExistentProperty' does not exist on this document","availableProperties":[{"alias":"title","culture":null,"segment":null,"editorAlias":"Umbraco.TextBox"}]}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "availableProperties": [
-      {
-        "alias": "title",
-        "culture": null,
-        "editorAlias": "Umbraco.TextBox",
-        "segment": null,
-      },
-    ],
-    "detail": "Property 'nonExistentProperty' does not exist on this document",
-    "status": 400,
-    "title": "Property not found",
-    "type": "https://httpstatuses.com/400",
-  },
 }
 `;
 
 exports[`update-block-property error handling integration tests should return error for property without block structure 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"No block structure found","status":400,"detail":"Property 'title' does not contain a BlockList, BlockGrid, or RichText block structure","propertyValue":"Simple Text Value"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Property 'title' does not contain a BlockList, BlockGrid, or RichText block structure",
-    "propertyValue": "Simple Text Value",
-    "status": 400,
-    "title": "No block structure found",
-    "type": "https://httpstatuses.com/400",
-  },
 }
 `;

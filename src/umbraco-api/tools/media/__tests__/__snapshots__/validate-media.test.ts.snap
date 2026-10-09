@@ -2,26 +2,13 @@
 
 exports[`validate-media should handle invalid media model 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":[{"$.$":["JSON deserialization for type 'Umbraco.Cms.Api.Management.ViewModels.Media.CreateMediaRequestModel' was missing required properties including: 'mediaType'."]},{"$.requestModel":["The requestModel field is required."]}],"traceId":"normalized-trace-id"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "errors": [
-      {
-        "$.$": [
-          "JSON deserialization for type 'Umbraco.Cms.Api.Management.ViewModels.Media.CreateMediaRequestModel' was missing required properties including: 'mediaType'.",
-        ],
-      },
-      {
-        "$.requestModel": [
-          "The requestModel field is required.",
-        ],
-      },
-    ],
-    "status": 400,
-    "title": "One or more validation errors occurred.",
-    "traceId": "normalized-trace-id",
-    "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
-  },
 }
 `;
 

@@ -181,14 +181,12 @@ exports[`create-document-type should create separate groups for same group name 
 
 exports[`create-document-type should handle existing document type 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Duplicate alias","status":400,"detail":"The specified document type alias is already in use","operationStatus":"DuplicateAlias"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The specified document type alias is already in use",
-    "operationStatus": "DuplicateAlias",
-    "status": 400,
-    "title": "Duplicate alias",
-    "type": "Error",
-  },
 }
 `;

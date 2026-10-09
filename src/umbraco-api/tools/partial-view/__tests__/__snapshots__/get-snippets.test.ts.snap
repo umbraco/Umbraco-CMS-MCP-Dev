@@ -114,29 +114,25 @@ exports[`get-snippets GetPartialViewSnippetByIdTool should handle empty snippet 
 
 exports[`get-snippets GetPartialViewSnippetByIdTool should handle invalid snippet ID format 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Partial view not found","status":404,"detail":"The partial view was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The partial view was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Partial view not found",
-    "type": "Error",
-  },
 }
 `;
 
 exports[`get-snippets GetPartialViewSnippetByIdTool should handle non-existent snippet ID 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Partial view not found","status":404,"detail":"The partial view was not found.","operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The partial view was not found.",
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "Partial view not found",
-    "type": "Error",
-  },
 }
 `;
 

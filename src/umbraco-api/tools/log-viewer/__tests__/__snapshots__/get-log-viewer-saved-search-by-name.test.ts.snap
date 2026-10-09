@@ -63,12 +63,12 @@ exports[`get-log-viewer-saved-search-by-name should handle empty name parameter 
 
 exports[`get-log-viewer-saved-search-by-name should handle non-existent saved search 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The saved search could not be found","status":404}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "status": 404,
-    "title": "The saved search could not be found",
-    "type": "Error",
-  },
 }
 `;

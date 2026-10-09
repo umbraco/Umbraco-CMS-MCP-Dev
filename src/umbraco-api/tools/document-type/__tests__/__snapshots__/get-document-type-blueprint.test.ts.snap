@@ -28,13 +28,12 @@ exports[`get-document-type-blueprint should handle document type with no bluepri
 
 exports[`get-document-type-blueprint should handle non-existent document type 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The specified document type was not found","status":404,"operationStatus":"ContentTypeNotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "ContentTypeNotFound",
-    "status": 404,
-    "title": "The specified document type was not found",
-    "type": "Error",
-  },
 }
 `;

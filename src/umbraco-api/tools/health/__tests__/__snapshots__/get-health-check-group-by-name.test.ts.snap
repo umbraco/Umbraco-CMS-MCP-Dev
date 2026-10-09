@@ -52,12 +52,12 @@ exports[`get-health-check-group-by-name should handle empty group name 1`] = `
 
 exports[`get-health-check-group-by-name should handle non-existent health check group 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The health check group could not be found","status":404}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "status": 404,
-    "title": "The health check group could not be found",
-    "type": "Error",
-  },
 }
 `;

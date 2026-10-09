@@ -22,14 +22,12 @@ exports[`create-stylesheet-folder should create folder with parent folder 1`] = 
 
 exports[`create-stylesheet-folder should handle existing folder name 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"Folder already exists","status":400,"detail":"The folder already exists","operationStatus":"AlreadyExists"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "The folder already exists",
-    "operationStatus": "AlreadyExists",
-    "status": 400,
-    "title": "Folder already exists",
-    "type": "Error",
-  },
 }
 `;

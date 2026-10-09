@@ -12,13 +12,12 @@ exports[`get-member-group should get a member group by id 1`] = `
 
 exports[`get-member-group should handle non-existent member group 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The requested member group could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "operationStatus": "NotFound",
-    "status": 404,
-    "title": "The requested member group could not be found",
-    "type": "Error",
-  },
 }
 `;

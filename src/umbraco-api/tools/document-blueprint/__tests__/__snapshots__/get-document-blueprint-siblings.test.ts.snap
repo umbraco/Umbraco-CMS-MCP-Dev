@@ -29,11 +29,12 @@ exports[`get-document-blueprint-siblings should get sibling blueprints 1`] = `
 
 exports[`get-document-blueprint-siblings should handle non-existent target 1`] = `
 {
-  "content": [],
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Not Found"}",
+      "type": "text",
+    },
+  ],
   "isError": true,
-  "structuredContent": {
-    "detail": "Not Found",
-    "status": 404,
-  },
 }
 `;
