@@ -15,8 +15,8 @@ const TEST_MEMBER_NAME = "_Test Item Member Search";
 const TEST_MEMBER_EMAIL = "itemsearch@example.com";
 const TEST_MEMBER_USERNAME = "itemsearch@example.com";
 const TEST_MEMBER_NAME_2 = "_Test Item Member Search 2";
-const TEST_MEMBER_EMAIL_2 = "itemsearch2@example.com";
-const TEST_MEMBER_USERNAME_2 = "itemsearch2@example.com";
+const TEST_MEMBER_EMAIL_2 = "othermember2@example.com";
+const TEST_MEMBER_USERNAME_2 = "othermember2@example.com";
 
 describe("get-item-member-search", () => {
   setupTestEnvironment();
@@ -85,14 +85,21 @@ describe("get-item-member-search", () => {
       .withMemberType(Default_Memeber_TYPE_ID)
       .create();
 
-    // Act - Search with pagination (take only 1 result)
-    const result = await GetItemMemberSearchTool.handler(
-      { query: "itemsearch" } as any,
-      createMockRequestHandlerExtra()
-    );
+    // Act - Search with pagination (take only 1 result). Examine indexes members
+    // asynchronously, so poll until the just-created member is searchable rather
+    // than asserting against whatever the index has caught up with so far.
+    let data: any;
+    for (let attempt = 0; attempt < 40; attempt++) {
+      const result = await GetItemMemberSearchTool.handler(
+        { query: "itemsearch", take: 1 } as any,
+        createMockRequestHandlerExtra()
+      );
+      data = validateToolResponse(GetItemMemberSearchTool, result);
+      if (data.items.length > 0) break;
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
 
     // Assert - Validate response against tool's output schema
-    const data = validateToolResponse(GetItemMemberSearchTool, result);
-    expect(data.items.length).toBeLessThanOrEqual(1);
+    expect(data.items.length).toBe(1);
   });
 });
