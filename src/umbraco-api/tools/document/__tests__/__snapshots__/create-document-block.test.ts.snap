@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create-document-block BlockGrid should insert into a named area of a block created by this tool 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Created 1 block in BlockGrid property 'blockGrid'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Created block",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`create-document-block BlockList should insert before an existing sibling with settings 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Created 1 block in BlockList property 'blockList'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Created block with settings",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`create-document-block BlockList should reject grid options and element types the data type does not allow 1`] = `
+{
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"grid options not supported","status":400,"detail":"'grid' only applies to BlockGrid properties; 'blockList' is a BlockList property"}",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;
+
+exports[`create-document-block BlockList should write contentData, expose, and layout into an empty property 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Created 1 block in BlockList property 'blockList'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Created block",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`create-document-block BlockList should write nothing when the sibling does not exist 1`] = `
+{
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"Sibling block not found","status":400,"detail":"No block with contentKey '7d0e9c1a-1b2c-4d3e-8f4a-5b6c7d8e9f02' exists in property 'blockList'"}",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;
+
+exports[`create-document-block RichText should write the markup element alongside the layout entry 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Created 1 block in RichText property 'richText'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Created block",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`create-document-block culture variance should write one expose entry per culture for a culture-variant block 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Created 1 block in BlockList property 'variantBlocks'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Created block",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`create-document-block pre-17.4 value validation should reject content and settings values that do not match their Data Type and write nothing 1`] = `
+{
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"Invalid block properties","status":400,"detail":"Content: Property 'title': Value must be a string for Umbraco.TextBox editor, got number; Settings: Property 'cssClass': Value must be a string for Umbraco.TextBox editor, got number","errors":["Content: Property 'title': Value must be a string for Umbraco.TextBox editor, got number","Settings: Property 'cssClass': Value must be a string for Umbraco.TextBox editor, got number"]}",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;
+
+exports[`create-document-block should handle a non-existent document 1`] = `
+{
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The document could not be found","status":404,"operationStatus":"ContentNotFound"}",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;
