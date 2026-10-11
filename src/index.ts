@@ -50,16 +50,22 @@ const main = async () => {
   // try/catch, so a failure here is caught locally: an unreachable or
   // unauthorised /server/information must not throw out of main() and kill
   // every CLI command (including ones, like --list-tools, that don't need
-  // the version at all). Leaving serverInfo undefined lets checkUmbracoVersion
-  // make (and fail) the same call itself, logging its own "unable to verify"
-  // message instead.
+  // the version at all). Leaving serverInfo undefined makes the wrapper below
+  // rethrow this same cached failure into checkUmbracoVersion's own
+  // try/catch, which logs its "unable to verify" message instead — the call
+  // itself isn't repeated. Only the fetch is guarded here: setUmbracoVersion
+  // is a trivial assignment that can't fail on its own, and keeping it
+  // outside the try means a future change to it can't inherit this call's
+  // error handling by accident.
   let serverInfo: Awaited<ReturnType<typeof client.getServerInformation>> | undefined;
   let serverInfoError: unknown;
   try {
     serverInfo = await client.getServerInformation();
-    setUmbracoVersion(serverInfo.version);
   } catch (error) {
     serverInfoError = error;
+  }
+  if (serverInfo) {
+    setUmbracoVersion(serverInfo.version);
   }
   await checkUmbracoVersion({
     mcpVersion: packageJson.version,
