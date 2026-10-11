@@ -45,8 +45,22 @@ const main = async () => {
   // and the introspection flags (--list-tools, --describe-tool, etc, which
   // already authenticate above via getUserCurrent) — gets the same
   // major-mismatch warning instead of only the MCP tool-call path. See #426.
-  const serverInfo = await client.getServerInformation();
-  setUmbracoVersion(serverInfo.version);
+  //
+  // getServerInformation() is awaited outside checkUmbracoVersion's own
+  // try/catch, so a failure here is caught locally: an unreachable or
+  // unauthorised /server/information must not throw out of main() and kill
+  // every CLI command (including ones, like --list-tools, that don't need
+  // the version at all). Leaving serverInfo undefined lets checkUmbracoVersion
+  // make (and fail) the same call itself, logging its own "unable to verify"
+  // message instead.
+  let serverInfo: Awaited<ReturnType<typeof client.getServerInformation>> | undefined;
+  let serverInfoError: unknown;
+  try {
+    serverInfo = await client.getServerInformation();
+    setUmbracoVersion(serverInfo.version);
+  } catch (error) {
+    serverInfoError = error;
+  }
   await checkUmbracoVersion({
     mcpVersion: packageJson.version,
     // UMBRACO_TARGET_MAJOR is stamped into src/config/umbraco-target.generated.ts
@@ -55,14 +69,13 @@ const main = async () => {
     // (`?.trim() ||`, not `??`: an env var set to an empty string must still
     // fall back, or the check silently no-ops with no log output at all.)
     expectedUmbracoMajor: process.env.UMBRACO_EXPECTED_MAJOR?.trim() || UMBRACO_TARGET_MAJOR,
-    client: { getServerInformation: async () => serverInfo }
+    client: {
+      getServerInformation: async () => {
+        if (serverInfo) return serverInfo;
+        throw serverInfoError ?? new Error("Unable to fetch Umbraco server information");
+      },
+    },
   });
-  // checkUmbracoVersion only writes into its internal service state; this hook
-  // and getVersionCheckMessage() below are two independent readers of that same
-  // state. This one gates tool execution: a mismatch fails the *next* tool call
-  // with a warning, then clears itself — a one-time speed bump, not a
-  // persistent block.
-  configureVersionCheckHook();
 
   // Handle CLI introspection flags (--list-tools, --describe-tool, --generate-context, --call)
   // This runs after auth so we have the real user for tool filtering
@@ -87,6 +100,18 @@ const main = async () => {
     filterConfig,
     serverConfig: config,
   });
+
+  // Reaching here means no CLI flag matched (handleCliCommands exits the
+  // process itself for every one it handles), so we're about to start the
+  // real MCP stdio server. Only now does a version mismatch gate tool
+  // execution: checkUmbracoVersion above already logged the warning
+  // unconditionally (including for --call and the introspection flags), but
+  // configuring this hook any earlier would also block the --call branch's
+  // direct tool.handler() invocation above, turning "warn" into "refuse" for
+  // a warn-only check. This one gates the MCP path's *next* tool call with a
+  // warning, then clears itself — a one-time speed bump, not a persistent
+  // block.
+  configureVersionCheckHook();
 
   // Surface any mismatch warning to the client during `initialize` — most hosts
   // fold `instructions` into the model's system prompt.

@@ -1,19 +1,32 @@
 import { jest } from "@jest/globals";
+import { UMBRACO_TARGET_MAJOR } from "../config/umbraco-target.generated.js";
 
-// Regression test for #426: the Umbraco major-mismatch version check must run
-// before `handleCliCommands(...)` in src/index.ts.
+// Derive a version that matches UMBRACO_TARGET_MAJOR, and one that doesn't,
+// instead of hardcoding both sides — the generated target major changes
+// whenever `npm run generate` is re-run against a newer Umbraco instance.
+const MATCHING_VERSION = `${UMBRACO_TARGET_MAJOR}.0.0`;
+const MISMATCHED_VERSION = `${Number(UMBRACO_TARGET_MAJOR) + 1}.0.0`;
+
+// Regression test for #426 / the PR #540 review: the Umbraco major-mismatch
+// version check must *warn*, never *block*, on the `--call` and introspection
+// CLI paths — only the live MCP stdio path may have a mismatch gate its next
+// tool call.
 //
-// `handleCliCommands`'s `--call` branch invokes a tool handler directly and
-// calls `process.exit()` itself once the call resolves, so any code placed
-// after that call never runs for `--call` invocations. Previously the
-// version check (`getServerInformation` -> `setUmbracoVersion` ->
-// `checkUmbracoVersion` -> `configureVersionCheckHook`) sat after
-// `handleCliCommands`, so a `--call` against a mismatched-major Umbraco
-// instance skipped the warning entirely — only the MCP stdio tool-call path
-// ever saw it. This test fully mocks the SDK boundary and asserts the
-// version check settles before `handleCliCommands` is invoked at all,
-// regardless of how long either one takes.
-describe("CLI version-check ordering (regression for #426)", () => {
+// `configureVersionCheckHook()` registers a pre-execution hook that every
+// tool (wrapped by the SDK's `withPreExecutionCheck`) consults before running
+// its real handler: if the hook reports `blocked`, the tool returns an
+// `isError` result instead of running at all. `handleCliCommands`'s `--call`
+// branch invokes `tool.handler()` directly and turns an `isError` result into
+// a non-zero exit — so if the hook is configured *before* `handleCliCommands`
+// runs, a major mismatch silently turns `--call` from "warn" into "refuse"
+// (each `--call` is a fresh process, so retrying never gets past it).
+//
+// This test models that real control flow (the version-check service's
+// blocked/message state, the pre-execution hook, and the handler-gating it
+// drives) faithfully rather than stubbing it out as inert jest.fn()s, so it
+// actually fails if the ordering regresses — unlike the previous version of
+// this test, which only asserted call order against mocks with no behaviour.
+describe("CLI version-check ordering (regression for #426 / PR #540 review)", () => {
   const realExit = process.exit;
 
   afterEach(() => {
@@ -21,54 +34,82 @@ describe("CLI version-check ordering (regression for #426)", () => {
     process.exit = realExit;
   });
 
-  it("checks the Umbraco server version before handling CLI commands (e.g. --call)", async () => {
-    const events: string[] = [];
+  // Mirrors `VersionCheckService` + `checkUmbracoVersion` + `withPreExecutionCheck`
+  // from `@umbraco-cms/mcp-server-sdk` closely enough to exercise the same
+  // blocking behaviour, without depending on a live Umbraco instance.
+  function createVersionCheckState() {
+    let blocked = false;
+    let message: string | null = null;
+    let preExecutionHook: (() => { blocked: boolean; message?: string; clearAfterUse?: () => void } | undefined) | null = null;
 
-    const checkUmbracoVersion = jest.fn(async () => {
-      events.push("version-checked");
-    });
+    const checkUmbracoVersion = jest.fn(
+      async (options: { expectedUmbracoMajor: string; client: { getServerInformation: () => Promise<{ version: string }> } }) => {
+        try {
+          const info = await options.client.getServerInformation();
+          const actualMajor = info.version.split(".")[0];
+          if (actualMajor === options.expectedUmbracoMajor) {
+            message = null;
+            blocked = false;
+            return;
+          }
+          message = `⚠️ Version Mismatch: Connected to Umbraco ${actualMajor}.x, but this server targets Umbraco ${options.expectedUmbracoMajor}.x`;
+          blocked = true;
+          console.error(message);
+        } catch (error) {
+          message = `⚠️ Unable to verify Umbraco version compatibility: ${error instanceof Error ? error.message : "Unknown error"}`;
+          blocked = false;
+          console.error(message);
+        }
+      },
+    );
+
     const configureVersionCheckHook = jest.fn(() => {
-      events.push("version-hook-configured");
-    });
-    const handleCliCommands = jest.fn(async () => {
-      events.push("cli-commands-handled");
+      preExecutionHook = () =>
+        blocked ? { blocked: true, message: message ?? undefined, clearAfterUse: () => { blocked = false; } } : undefined;
     });
 
+    const getVersionCheckMessage = jest.fn(() => message);
+
+    // Mirrors handleCliCommands's `--call` branch: run the pre-execution hook
+    // (if one has been configured), then either short-circuit with the
+    // blocked message (exit 1, like a real `isError` tool result) or run the
+    // handler for real (exit 0).
+    const runCall = async (handler: () => Promise<unknown>) => {
+      if (preExecutionHook) {
+        const result = preExecutionHook();
+        if (result?.blocked) {
+          result.clearAfterUse?.();
+          console.log(JSON.stringify({ error: result.message }));
+          process.exit(1);
+          return;
+        }
+      }
+      const value = await handler();
+      console.log(JSON.stringify(value));
+      process.exit(0);
+    };
+
+    return { checkUmbracoVersion, configureVersionCheckHook, getVersionCheckMessage, runCall };
+  }
+
+  function mockModules(state: ReturnType<typeof createVersionCheckState>, handleCliCommands: ReturnType<typeof jest.fn>) {
     class FakeTransport {}
     class FakeServer {
       constructor(..._args: unknown[]) {}
-      async connect(..._args: unknown[]) {
-        events.push("server-connect");
-      }
+      async connect(..._args: unknown[]) {}
     }
 
-    jest.unstable_mockModule("@modelcontextprotocol/sdk/server/mcp.js", () => ({
-      McpServer: FakeServer,
-    }));
-    jest.unstable_mockModule("@modelcontextprotocol/sdk/server/stdio.js", () => ({
-      StdioServerTransport: FakeTransport,
-    }));
+    jest.unstable_mockModule("@modelcontextprotocol/sdk/server/mcp.js", () => ({ McpServer: FakeServer }));
+    jest.unstable_mockModule("@modelcontextprotocol/sdk/server/stdio.js", () => ({ StdioServerTransport: FakeTransport }));
     jest.unstable_mockModule("@umbraco-cms/mcp-server-sdk", () => ({
-      checkUmbracoVersion,
-      configureVersionCheckHook,
-      getVersionCheckMessage: jest.fn(() => undefined),
+      checkUmbracoVersion: state.checkUmbracoVersion,
+      configureVersionCheckHook: state.configureVersionCheckHook,
+      getVersionCheckMessage: state.getVersionCheckMessage,
       configureApiClient: jest.fn(),
       initializeUmbracoFetch: jest.fn(),
-      getServerConfig: jest.fn(async () => ({
-        cliFlags: { callTool: "get-server-information" },
-      })),
+      getServerConfig: jest.fn(async () => ({ cliFlags: { callTool: "get-server-information" } })),
       handleCliCommands,
-      createCollectionConfigLoader: jest.fn(() => ({
-        loadFromConfig: () => ({}),
-      })),
-    }));
-    jest.unstable_mockModule("@umb-management-client", () => ({
-      UmbracoManagementClient: {
-        getClient: () => ({
-          getUserCurrent: async () => ({}),
-          getServerInformation: async () => ({ version: "18.0.0" }),
-        }),
-      },
+      createCollectionConfigLoader: jest.fn(() => ({ loadFromConfig: () => ({}) })),
     }));
     jest.unstable_mockModule("../config/index.js", () => ({
       loadServerConfig: jest.fn(async () => ({ umbraco: { auth: {} } })),
@@ -77,12 +118,8 @@ describe("CLI version-check ordering (regression for #426)", () => {
       allModeNames: [],
       allSliceNames: [],
     }));
-    jest.unstable_mockModule("../umbraco-api/tools/collection-registry.js", () => ({
-      availableCollections: [],
-    }));
-    jest.unstable_mockModule("../umbraco-api/tools/tool-factory.js", () => ({
-      UmbracoToolFactory: jest.fn(),
-    }));
+    jest.unstable_mockModule("../umbraco-api/tools/collection-registry.js", () => ({ availableCollections: [] }));
+    jest.unstable_mockModule("../umbraco-api/tools/tool-factory.js", () => ({ UmbracoToolFactory: jest.fn() }));
     jest.unstable_mockModule("../umbraco-api/runtime-context.js", () => ({
       setUmbracoVersion: jest.fn(),
       setAllowFilePathUploads: jest.fn(),
@@ -93,24 +130,148 @@ describe("CLI version-check ordering (regression for #426)", () => {
     process.exit = ((code?: number) => {
       throw new Error(`process.exit(${code}) called during test`);
     }) as never;
+  }
 
-    // Importing src/index.ts triggers `main().catch(...)` as a module
-    // side-effect — exactly like running the CLI.
+  it("warns on a major mismatch but still lets --call run the tool and exit 0", async () => {
+    const state = createVersionCheckState();
+    const toolResult = { version: "17.0.0" };
+
+    const handleCliCommands = jest.fn(async () => {
+      await state.runCall(async () => toolResult);
+    });
+
+    mockModules(state, handleCliCommands);
+    jest.unstable_mockModule("@umb-management-client", () => ({
+      UmbracoManagementClient: {
+        getClient: () => ({
+          getUserCurrent: async () => ({}),
+          getServerInformation: async () => ({ version: MISMATCHED_VERSION }),
+        }),
+      },
+    }));
+
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const exitSpy = jest.fn();
+    process.exit = exitSpy as never;
+
     await import("../index.js");
-
-    // Let everything settle.
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    expect(checkUmbracoVersion).toHaveBeenCalled();
-    expect(configureVersionCheckHook).toHaveBeenCalled();
+    // The mismatch warning went to stderr...
+    expect(errorSpy.mock.calls.some((call) => String(call[0]).includes("⚠️ Version Mismatch"))).toBe(true);
+    // ...but the hook was never configured before handleCliCommands ran, so
+    // the --call branch executed the real handler and printed its result.
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify(toolResult));
+    expect(exitSpy).toHaveBeenCalledWith(0);
+
+    errorSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  it("does not block --call when the server's version matches", async () => {
+    const state = createVersionCheckState();
+    const toolResult = { version: "17.0.0" };
+
+    const handleCliCommands = jest.fn(async () => {
+      await state.runCall(async () => toolResult);
+    });
+
+    mockModules(state, handleCliCommands);
+    jest.unstable_mockModule("@umb-management-client", () => ({
+      UmbracoManagementClient: {
+        getClient: () => ({
+          getUserCurrent: async () => ({}),
+          getServerInformation: async () => ({ version: MATCHING_VERSION }),
+        }),
+      },
+    }));
+
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const exitSpy = jest.fn();
+    process.exit = exitSpy as never;
+
+    await import("../index.js");
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify(toolResult));
+    expect(exitSpy).toHaveBeenCalledWith(0);
+
+    logSpy.mockRestore();
+  });
+
+  it("does not crash the CLI when fetching server information fails, and still runs --list-tools", async () => {
+    const state = createVersionCheckState();
+
+    const handleCliCommands = jest.fn(async () => {
+      console.log("tool table");
+      process.exit(0);
+    });
+
+    mockModules(state, handleCliCommands);
+    jest.unstable_mockModule("@umb-management-client", () => ({
+      UmbracoManagementClient: {
+        getClient: () => ({
+          getUserCurrent: async () => ({}),
+          getServerInformation: async () => {
+            throw new Error("getaddrinfo ENOTFOUND umbraco.example");
+          },
+        }),
+      },
+    }));
+
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const exitSpy = jest.fn();
+    process.exit = exitSpy as never;
+
+    await import("../index.js");
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // checkUmbracoVersion's own try/catch handled the failure (logged to
+    // stderr)...
+    expect(errorSpy.mock.calls.some((call) => String(call[0]).includes("Unable to verify Umbraco version compatibility"))).toBe(true);
+    // ...instead of throwing out of main() and killing every CLI command:
+    // handleCliCommands (here, standing in for the real --list-tools branch)
+    // still ran and exited cleanly.
     expect(handleCliCommands).toHaveBeenCalled();
-    expect(events).toContain("version-checked");
-    expect(events).toContain("cli-commands-handled");
-    expect(events.indexOf("version-checked")).toBeLessThan(
-      events.indexOf("cli-commands-handled"),
-    );
-    expect(events.indexOf("version-hook-configured")).toBeLessThan(
-      events.indexOf("cli-commands-handled"),
-    );
+    expect(logSpy).toHaveBeenCalledWith("tool table");
+    expect(exitSpy).toHaveBeenCalledWith(0);
+
+    errorSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  it("checks the Umbraco server version before handling CLI commands, and only configures the blocking hook after", async () => {
+    const events: string[] = [];
+    const state = createVersionCheckState();
+    state.checkUmbracoVersion.mockImplementation(async () => {
+      events.push("version-checked");
+    });
+    state.configureVersionCheckHook.mockImplementation(() => {
+      events.push("version-hook-configured");
+    });
+
+    const handleCliCommands = jest.fn(async () => {
+      events.push("cli-commands-handled");
+    });
+
+    mockModules(state, handleCliCommands);
+    jest.unstable_mockModule("@umb-management-client", () => ({
+      UmbracoManagementClient: {
+        getClient: () => ({
+          getUserCurrent: async () => ({}),
+          getServerInformation: async () => ({ version: MATCHING_VERSION }),
+        }),
+      },
+    }));
+
+    await import("../index.js");
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(events.indexOf("version-checked")).toBeLessThan(events.indexOf("cli-commands-handled"));
+    // The blocking hook must be configured strictly after handleCliCommands,
+    // not before — see the long comment at the top of this file.
+    expect(events.indexOf("version-hook-configured")).toBeGreaterThan(events.indexOf("cli-commands-handled"));
   });
 });
