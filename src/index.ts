@@ -34,6 +34,36 @@ const main = async () => {
 
   const user = await client.getUserCurrent();
 
+  // Check Umbraco version compatibility (logs result internally) and capture the
+  // version so collection registrations can gate tools whose endpoints were
+  // introduced in newer Umbraco releases.
+  //
+  // This must run before handleCliCommands below: handleCliCommands's --call
+  // branch invokes a tool handler directly and calls process.exit() itself,
+  // so anything placed after it never runs for `--call`. Running the check
+  // here instead means every CLI entry point — the MCP stdio server, --call,
+  // and the introspection flags (--list-tools, --describe-tool, etc, which
+  // already authenticate above via getUserCurrent) — gets the same
+  // major-mismatch warning instead of only the MCP tool-call path. See #426.
+  const serverInfo = await client.getServerInformation();
+  setUmbracoVersion(serverInfo.version);
+  await checkUmbracoVersion({
+    mcpVersion: packageJson.version,
+    // UMBRACO_TARGET_MAJOR is stamped into src/config/umbraco-target.generated.ts
+    // by the orval target-major transformer, from the Umbraco instance the API
+    // client was generated against. Override to point at a different major.
+    // (`?.trim() ||`, not `??`: an env var set to an empty string must still
+    // fall back, or the check silently no-ops with no log output at all.)
+    expectedUmbracoMajor: process.env.UMBRACO_EXPECTED_MAJOR?.trim() || UMBRACO_TARGET_MAJOR,
+    client: { getServerInformation: async () => serverInfo }
+  });
+  // checkUmbracoVersion only writes into its internal service state; this hook
+  // and getVersionCheckMessage() below are two independent readers of that same
+  // state. This one gates tool execution: a mismatch fails the *next* tool call
+  // with a warning, then clears itself — a one-time speed bump, not a
+  // persistent block.
+  configureVersionCheckHook();
+
   // Handle CLI introspection flags (--list-tools, --describe-tool, --generate-context, --call)
   // This runs after auth so we have the real user for tool filtering
   const rawConfig = await getServerConfig(true);
@@ -57,28 +87,6 @@ const main = async () => {
     filterConfig,
     serverConfig: config,
   });
-
-  // Check Umbraco version compatibility (logs result internally) and capture the
-  // version so collection registrations can gate tools whose endpoints were
-  // introduced in newer Umbraco releases.
-  const serverInfo = await client.getServerInformation();
-  setUmbracoVersion(serverInfo.version);
-  await checkUmbracoVersion({
-    mcpVersion: packageJson.version,
-    // UMBRACO_TARGET_MAJOR is stamped into src/config/umbraco-target.generated.ts
-    // by the orval target-major transformer, from the Umbraco instance the API
-    // client was generated against. Override to point at a different major.
-    // (`?.trim() ||`, not `??`: an env var set to an empty string must still
-    // fall back, or the check silently no-ops with no log output at all.)
-    expectedUmbracoMajor: process.env.UMBRACO_EXPECTED_MAJOR?.trim() || UMBRACO_TARGET_MAJOR,
-    client: { getServerInformation: async () => serverInfo }
-  });
-  // checkUmbracoVersion only writes into its internal service state; this hook
-  // and getVersionCheckMessage() below are two independent readers of that same
-  // state. This one gates tool execution: a mismatch fails the *next* tool call
-  // with a warning, then clears itself — a one-time speed bump, not a
-  // persistent block.
-  configureVersionCheckHook();
 
   // Surface any mismatch warning to the client during `initialize` — most hosts
   // fold `instructions` into the model's system prompt.
