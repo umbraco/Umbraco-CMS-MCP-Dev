@@ -1,9 +1,7 @@
 import {
-  getStoredUmbracoToken,
-  type HostedMcpEnv,
-} from "@umbraco-cms/mcp-hosted";
-import {
   CAPTURE_RAW_HTTP_RESPONSE,
+  getActiveRequestContext,
+  getSessionUmbracoAuth,
   createToolResult,
   createToolResultError,
   normalizeBaseUrl,
@@ -16,39 +14,20 @@ import {
 } from "./media-upload-helpers.js";
 
 // Tool handlers don't receive env/props, and the streaming POST must bypass
-// the orval transport to use `duplex: "half"`. Worker init stashes the auth
-// material here; the DO model means there's one active request per isolate
-// per moment, so the module-level slot is safe.
-type StreamingAuthContext = { env: HostedMcpEnv; tokenKey: string };
-let authContext: StreamingAuthContext | null = null;
-
-export function setStreamingAuthContext(ctx: StreamingAuthContext): void {
-  authContext = ctx;
-}
-
-export function isStreamingAuthContextConfigured(): boolean {
-  return authContext !== null;
+// the orval transport to use `duplex: "half"`. The session's Umbraco auth comes
+// from the SDK's per-request store, which only the hosted worker sets up. One
+// isolate hosts several sessions, so it must never be kept in module scope.
+// Outside a hosted tool call (stdio, CLI, tests) streaming is unavailable and
+// callers use the buffered upload instead.
+export function isStreamingUploadAvailable(): boolean {
+  return getActiveRequestContext()?.umbracoAuth !== undefined;
 }
 
 async function resolveAuth(): Promise<{ accessToken: string; baseUrl: string }> {
-  if (!authContext) {
-    throw new Error(
-      "Streaming auth context not configured. setStreamingAuthContext() must be called in worker init()."
-    );
-  }
-  const entry = await getStoredUmbracoToken(authContext.env.OAUTH_KV, authContext.tokenKey);
-  if (!entry?.tokens?.access_token) {
-    throw new Error("No Umbraco access token in KV. Reconnect the MCP connector.");
-  }
-  const baseUrl =
-    entry.site?.serverUrl ??
-    entry.site?.baseUrl ??
-    authContext.env.UMBRACO_SERVER_URL ??
-    authContext.env.UMBRACO_BASE_URL;
-  if (!baseUrl) {
-    throw new Error("No Umbraco base URL resolvable from site or env.");
-  }
-  return { accessToken: entry.tokens.access_token, baseUrl: normalizeBaseUrl(baseUrl) };
+  // Refreshes up front when the token is expired or near expiry; the raw
+  // streaming POST below can't be retried after a 401.
+  const { accessToken, baseUrl } = await getSessionUmbracoAuth();
+  return { accessToken, baseUrl: normalizeBaseUrl(baseUrl) };
 }
 
 // Umbraco's TempFile service parses the extension off the upload filename and
@@ -84,11 +63,9 @@ export async function streamingUploadFromUrl(
 ): Promise<StreamingUploadResult> {
   const client = UmbracoManagementClient.getClient();
 
-  // Run prelude concurrently: SVG → media-type id, KV token read, and a
-  // cheap SDK call that gives the transport a chance to refresh the OAuth
-  // token before we read it directly from KV (we bypass the SDK transport
-  // for the streaming POST, so we lose its refresh-on-401 retry). Warmup
-  // errors don't abort — `resolveAuth` will produce a clearer message.
+  // Run prelude concurrently: SVG → media-type id, and the session's auth
+  // (refreshed up front if needed, since the streaming POST bypasses the SDK
+  // transport and its refresh-on-401 retry).
   const validatedMediaTypeName = validateMediaTypeForSvg(
     undefined,
     params.sourceUrl,
@@ -97,10 +74,7 @@ export async function streamingUploadFromUrl(
   );
   const [mediaTypeId, auth] = await Promise.all([
     fetchMediaTypeId(client, validatedMediaTypeName),
-    (async () => {
-      await client.getTemporaryFileConfiguration().catch(() => undefined);
-      return resolveAuth();
-    })(),
+    resolveAuth(),
   ]);
   const { accessToken, baseUrl } = auth;
 

@@ -15,7 +15,7 @@ exports[`delete-user-data should handle non-existent user data 1`] = `
 {
   "content": [
     {
-      "text": "{"status":404,"detail":"Not Found"}",
+      "text": "{"status":404,"title":"Not Found"}",
       "type": "text",
     },
   ],

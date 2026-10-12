@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { BASE64_MAX_BYTES, uploadMediaFile } from "./helpers/media-upload-helpers.js";
 import { buildSourceTypeSection } from "./helpers/source-type-helpers.js";
 import {
-  isStreamingAuthContextConfigured,
+  isStreamingUploadAvailable,
   streamingUploadToToolResult,
 } from "./helpers/streaming-upload.js";
 import {
@@ -122,7 +122,7 @@ ${filePathSection}
       // url goes through the streaming helper in hosted (Worker) mode where the
       // auth context is wired up at init; Node stdio + Jest fall through to the
       // buffered orval path below, which handles url/filePath/base64 uniformly.
-      if (effectiveSourceType === "url" && isStreamingAuthContextConfigured()) {
+      if (effectiveSourceType === "url" && isStreamingUploadAvailable()) {
         if (!effectiveFileUrl) {
           return createToolResultError({
             detail: "Error creating media: fileUrl is required when sourceType is 'url'",

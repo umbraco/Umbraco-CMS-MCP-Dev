@@ -25,7 +25,7 @@ exports[`get-template-siblings should handle non-existent template 1`] = `
 {
   "content": [
     {
-      "text": "{"status":404,"detail":"Not Found"}",
+      "text": "{"status":404,"title":"Not Found"}",
       "type": "text",
     },
   ],
