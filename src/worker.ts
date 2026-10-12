@@ -28,7 +28,6 @@ import { umbracoCloudSiteRouting } from "@umbraco-cms/mcp-hosted/cloud";
 import { collections, allModes, allModeNames, allSliceNames } from "./collections.js";
 import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { UmbracoManagementClient } from "./umbraco-api/umbraco-management-client.js";
-import { setStreamingAuthContext } from "./umbraco-api/tools/media/post/helpers/streaming-upload.js";
 import packageJson from "../package.json" with { type: "json" };
 
 // ============================================================================
@@ -67,14 +66,23 @@ export class UmbracoMcpAgent extends McpAgent<HostedMcpEnv, unknown, AuthProps> 
   server!: McpServer;
 
   async init() {
+    // The MCP session id goes on the init span so degraded starts can be
+    // traced back to their session. Telemetry only: `getSessionId()` throws
+    // when the Durable Object name carries no session id, and that must not
+    // stop the server from starting.
+    let sessionId: string | undefined;
+    try {
+      sessionId = this.getSessionId?.();
+    } catch (error) {
+      console.warn("[mcp-hosted] could not read MCP session id for telemetry:", error);
+      sessionId = undefined;
+    }
     this.server = await createPerRequestServer(
       serverOptions,
       this.env,
       this.props!,
+      sessionId,
     );
-    // Streaming uploads bypass the orval transport for `duplex: "half"`, so
-    // they need direct KV/env access. Tool handlers don't receive either.
-    setStreamingAuthContext({ env: this.env, tokenKey: this.props!.umbracoTokenKey });
   }
 
   // Diagnostic: surface stack traces for the otherwise-opaque
