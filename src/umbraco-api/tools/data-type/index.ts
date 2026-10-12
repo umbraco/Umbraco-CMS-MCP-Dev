@@ -39,7 +39,7 @@ export const DataTypeCollection: ToolCollectionExport = {
     description: 'Data type definitions and management',
     dependencies: []
   },
-  tools: (user: CurrentUserResponseModel) => {
+  tools: (user: CurrentUserResponseModel, options?: { umbracoVersion?: string }) => {
     const tools: ToolDefinition<any, any>[] = [GetDataTypeSearchTool];
 
     if (AuthorizationPolicies.TreeAccessDocumentsOrMediaOrMembersOrContentTypes(user)) {
@@ -51,7 +51,7 @@ export const DataTypeCollection: ToolCollectionExport = {
       tools.push(GetDataTypeConfigurationTool);
       tools.push(GetDataTypeSchemaTool);
       // Batch schema API endpoint introduced in Umbraco 17.4; only register on 17.4+.
-      if (isUmbracoAtLeast(17, 4)) {
+      if (isUmbracoAtLeast(17, 4, options?.umbracoVersion)) {
         tools.push(GetDataTypeSchemasTool);
       }
     }
