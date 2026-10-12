@@ -23,7 +23,7 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by shou
 {
   "content": [
     {
-      "text": "{"status":404,"detail":"Not Found"}",
+      "text": "{"status":404,"title":"Not Found"}",
       "type": "text",
     },
   ],
@@ -35,7 +35,7 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by shou
 {
   "content": [
     {
-      "text": "{"status":404,"detail":"Not Found"}",
+      "text": "{"status":404,"title":"Not Found"}",
       "type": "text",
     },
   ],
@@ -47,7 +47,7 @@ exports[`recycle-bin-reference-tests get-recycle-bin-document-referenced-by shou
 {
   "content": [
     {
-      "text": "{"status":404,"detail":"Not Found"}",
+      "text": "{"status":404,"title":"Not Found"}",
       "type": "text",
     },
   ],

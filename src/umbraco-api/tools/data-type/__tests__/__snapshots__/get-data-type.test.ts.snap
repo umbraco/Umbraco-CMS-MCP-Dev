@@ -19,7 +19,7 @@ exports[`get-data-type should handle invalid ID format 1`] = `
 {
   "content": [
     {
-      "text": "{"status":404,"detail":"Not Found"}",
+      "text": "{"status":404,"title":"Not Found"}",
       "type": "text",
     },
   ],
