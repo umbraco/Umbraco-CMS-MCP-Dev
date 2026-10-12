@@ -31,14 +31,16 @@ describe("CLI --call with piped/open stdin", () => {
     }
   });
 
-  it("executes the tool call and exits promptly without waiting on stdin", async () => {
-    const child = spawn(process.execPath, [CLI_PATH, "--call", "get-server-information"], {
-      // Deliberately mirror the reported repro: stdin is a pipe that is
-      // never written to and never closed by us. If the CLI ever attaches
-      // a stdio MCP transport, the process will hang until this test's
-      // timeout kills it.
+  // Shared by both tests below: spawn the CLI, collect stdout/stderr, and
+  // resolve once it exits (or reject on a timeout/hang).
+  async function spawnCli(args: string[], env: NodeJS.ProcessEnv) {
+    const child = spawn(process.execPath, [CLI_PATH, ...args], {
+      // Deliberately mirror the #424 repro: stdin is a pipe that is never
+      // written to and never closed by us. If the CLI ever attaches a stdio
+      // MCP transport, the process will hang until this test's timeout kills
+      // it.
       stdio: ["pipe", "pipe", "pipe"],
-      env: process.env,
+      env,
     });
 
     let stdout = "";
@@ -66,9 +68,48 @@ describe("CLI --call with piped/open stdin", () => {
       });
     });
 
+    return { stdout, stderr, exitCode };
+  }
+
+  it("executes the tool call and exits promptly without waiting on stdin", async () => {
+    const { stdout, stderr, exitCode } = await spawnCli(["--call", "get-server-information"], process.env);
+
     if (exitCode !== 0) {
       throw new Error(`CLI exited with code ${exitCode} (expected 0). stdout=${stdout} stderr=${stderr}`);
     }
     expect(stdout).toContain("version");
+  }, 25000);
+
+  // Regression test for the PR #540 review: a major-version mismatch must
+  // *warn*, never *block*, on the `--call` path. See the long comment in
+  // src/index.ts above the `checkUmbracoVersion`/`configureVersionCheckHook`
+  // ordering for why the hook must only be configured after
+  // `handleCliCommands` runs. This spawns the real built CLI against the
+  // live Umbraco instance (unlike cli-version-check-ordering.test.ts, which
+  // mocks the SDK boundary), so it exercises the actual pre-execution check
+  // the MCP SDK applies to `tool.handler()`, not a model of it.
+  it("warns on a major-version mismatch but still runs --call and exits 0", async () => {
+    // "0" rather than `UMBRACO_TARGET_MAJOR + 1`: no real Umbraco instance
+    // will ever report major 0, so this is a mismatch regardless of which
+    // major the live test instance happens to be on (unlike +1, which would
+    // falsely match if the instance were already a major ahead of the
+    // client's generated target).
+    const mismatchedMajor = "0";
+    const { stdout, stderr, exitCode } = await spawnCli(["--call", "get-server-information"], {
+      ...process.env,
+      UMBRACO_EXPECTED_MAJOR: mismatchedMajor,
+    });
+
+    if (exitCode !== 0) {
+      throw new Error(`CLI exited with code ${exitCode} (expected 0). stdout=${stdout} stderr=${stderr}`);
+    }
+    // Asserts the exact target major, not just the generic warning prefix:
+    // loadServerConfig() reloads .env with `override: true` *after* this
+    // process's env is set, so a developer's own .env defining
+    // UMBRACO_EXPECTED_MAJOR would otherwise silently replace the major this
+    // test asked for. This fails loudly (wrong major in the message) instead
+    // of passing against an unintended value.
+    expect(stderr).toContain(`targets Umbraco ${mismatchedMajor}.x`);
+    expect(() => JSON.parse(stdout)).not.toThrow();
   }, 25000);
 });

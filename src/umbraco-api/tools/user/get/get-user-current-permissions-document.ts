@@ -3,7 +3,6 @@ import {
   getUserCurrentPermissionsDocumentQueryParams,
   getUserCurrentPermissionsDocumentResponse,
 } from "@/umbraco-api/umbracoManagementAPI.zod.js";
-import { z } from "zod";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
@@ -11,16 +10,11 @@ import {
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
 
-// Wrap array response in object for MCP compliance
-const outputSchema = z.object({
-  items: getUserCurrentPermissionsDocumentResponse,
-});
-
 const GetUserCurrentPermissionsDocumentTool = {
   name: "get-user-current-permissions-document",
   description: "Gets the current user's document permissions for specific documents",
   inputSchema: getUserCurrentPermissionsDocumentQueryParams.shape,
-  outputSchema: outputSchema.shape,
+  outputSchema: getUserCurrentPermissionsDocumentResponse.shape,
   annotations: { readOnlyHint: true },
   slices: ['permissions'],
   handler: (async (params: GetUserCurrentPermissionsDocumentParams) => {
@@ -28,6 +22,6 @@ const GetUserCurrentPermissionsDocumentTool = {
       client.getUserCurrentPermissionsDocument(params, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof getUserCurrentPermissionsDocumentQueryParams.shape, typeof outputSchema.shape>;
+} satisfies ToolDefinition<typeof getUserCurrentPermissionsDocumentQueryParams.shape, typeof getUserCurrentPermissionsDocumentResponse.shape>;
 
 export default withStandardDecorators(GetUserCurrentPermissionsDocumentTool);
