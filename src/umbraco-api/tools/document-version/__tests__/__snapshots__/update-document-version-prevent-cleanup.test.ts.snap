@@ -15,7 +15,7 @@ exports[`update-document-version-prevent-cleanup should handle non-existent vers
 {
   "content": [
     {
-      "text": "{"status":404,"detail":"Not Found"}",
+      "text": "{"status":404,"title":"Not Found"}",
       "type": "text",
     },
   ],

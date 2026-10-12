@@ -15,7 +15,7 @@ exports[`delete-log-viewer-saved-search-by-name should handle empty name paramet
 {
   "content": [
     {
-      "text": "{"status":404,"detail":"Not Found"}",
+      "text": "{"status":404,"title":"Not Found"}",
       "type": "text",
     },
   ],

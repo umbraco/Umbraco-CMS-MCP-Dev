@@ -17,9 +17,11 @@ ls dist/index.js .env 2>/dev/null
 ```
 
 - If `dist/index.js` exists: use `node dist/index.js`
-- Otherwise: use `npx @umbraco-cms/mcp-dev@latest`
+- Otherwise: use `npx @umbraco-cms/mcp-dev@<site major>` (e.g. `@17` for an Umbraco 17.x site) rather than `@latest`
 
 All examples below use `<cli>` as a placeholder — substitute the correct command.
+
+**Prefer pinning to the target site's Umbraco major over `@latest`.** Tool schemas track the Management API of the CLI's own major, so a CLI major ahead of (or behind) the site's major can fail confusingly mid-task on a shape mismatch. The CLI checks the connected server's version on startup and prints a warning to stderr when the majors differ, but pinning the version up front avoids the mismatch entirely.
 
 ## Quick Reference
 

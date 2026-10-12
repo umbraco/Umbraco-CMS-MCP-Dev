@@ -39,6 +39,8 @@ Download and install the [Claude Desktop app](https://claude.ai/download), then 
 
 3. Fully restart Claude Desktop (including in the system tray on Windows)
 
+> **Tip:** Pin `@umbraco-cms/mcp-dev` to your site's Umbraco major (e.g. `@17` above, or `@18` for an Umbraco 18.x site) rather than `@latest`. Tool schemas track the Management API of the package's own major, so a mismatched major can fail confusingly mid-task once a tool's shape has drifted. The server checks the connected site's version on startup and warns on a mismatch, but pinning avoids it altogether.
+
 ## Documentation
 
 For complete installation instructions, configuration options, tool listings, and usage examples, see the full documentation:

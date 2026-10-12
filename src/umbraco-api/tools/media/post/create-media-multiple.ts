@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
 import { buildSourceTypeSection } from "./helpers/source-type-helpers.js";
 import {
-  isStreamingAuthContextConfigured,
+  isStreamingUploadAvailable,
   streamingUploadFromUrl,
 } from "./helpers/streaming-upload.js";
 import {
@@ -129,7 +129,7 @@ ${filePathSection}
       }
 
       const client = UmbracoManagementClient.getClient();
-      const streamingAvailable = isStreamingAuthContextConfigured();
+      const streamingAvailable = isStreamingUploadAvailable();
 
       const results = await mapWithConcurrency<FileEntry, UploadResult>(
         model.files,

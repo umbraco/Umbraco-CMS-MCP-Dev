@@ -7,6 +7,7 @@ import {
   createMockRequestHandlerExtra,
   createSnapshotResult,
   setupTestEnvironment,
+  validateToolResponse,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 
 describe("get-user-current-permissions-document", () => {
@@ -18,6 +19,8 @@ describe("get-user-current-permissions-document", () => {
     const result = await GetUserCurrentPermissionsDocumentTool.handler(params as any, createMockRequestHandlerExtra());
 
     // Assert
+    // The MCP server rejects results that don't match the outputSchema (#548)
+    validateToolResponse(GetUserCurrentPermissionsDocumentTool, result);
     const normalizedResult = createSnapshotResult(result);
     expect(normalizedResult).toMatchSnapshot();
   });
