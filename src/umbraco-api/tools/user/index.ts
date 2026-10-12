@@ -31,7 +31,7 @@ export const UserCollection: ToolCollectionExport = {
     description: 'User account management and administration',
     dependencies: ['temporary-file']
   },
-  tools: (user: CurrentUserResponseModel) => {
+  tools: (user: CurrentUserResponseModel, options?: { umbracoVersion?: string }) => {
     const tools: ToolDefinition<any, any>[] = [];
 
     // Self-service tools (available to all authenticated users)
@@ -54,7 +54,7 @@ export const UserCollection: ToolCollectionExport = {
       tools.push(GetUserConfigurationTool);
       tools.push(GetUserByIdCalculateStartNodesTool);
       // batch endpoint introduced in Umbraco 17.6; omit on older versions.
-      if (isUmbracoAtLeast(17, 6)) {
+      if (isUmbracoAtLeast(17, 6, options?.umbracoVersion)) {
         tools.push(GetUserBatchTool);
       }
       tools.push(UploadUserAvatarByIdTool);

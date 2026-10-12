@@ -68,7 +68,7 @@ export const DocumentCollection: ToolCollectionExport = {
     description: 'Document content management and publishing',
     dependencies: []
   },
-  tools: (user: CurrentUserResponseModel) => {
+  tools: (user: CurrentUserResponseModel, options?: { umbracoVersion?: string }) => {
   const tools: ToolDefinition<any, any>[] = [];
 
   if (AuthorizationPolicies.TreeAccessDocuments(user)) {
@@ -79,7 +79,7 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(CopyDocumentTool);
     tools.push(CreateDocumentTool);
     // create-and-publish endpoint introduced in Umbraco 17.6; omit on older versions.
-    if (isUmbracoAtLeast(17, 6)) {
+    if (isUmbracoAtLeast(17, 6, options?.umbracoVersion)) {
       tools.push(CreateAndPublishDocumentTool);
     }
     tools.push(PostDocumentPublicAccessTool);
@@ -97,14 +97,14 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(PublishDocumentWithDescendantsTool);
     tools.push(SortDocumentTool);
     // sort-children endpoints introduced in Umbraco 17.6; omit on older versions.
-    if (isUmbracoAtLeast(17, 6)) {
+    if (isUmbracoAtLeast(17, 6, options?.umbracoVersion)) {
       tools.push(SortDocumentChildrenTool);
       tools.push(SortDocumentRootChildrenTool);
     }
     tools.push(UnpublishDocumentTool);
     tools.push(UpdateDocumentTool);
     // update-and-publish endpoint introduced in Umbraco 17.6; omit on older versions.
-    if (isUmbracoAtLeast(17, 6)) {
+    if (isUmbracoAtLeast(17, 6, options?.umbracoVersion)) {
       tools.push(UpdateAndPublishDocumentTool);
     }
     tools.push(UpdateDocumentPropertiesTool);

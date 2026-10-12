@@ -49,7 +49,7 @@ export const MediaCollection: ToolCollectionExport = {
     description: 'Media asset management and organization',
     dependencies: ['temporary-file']
   },
-  tools: (user: CurrentUserResponseModel) => {
+  tools: (user: CurrentUserResponseModel, options?: { umbracoVersion?: string }) => {
     const tools: ToolDefinition<any, any>[] = [];
 
     tools.push(GetMediaByIdTool);
@@ -75,7 +75,7 @@ export const MediaCollection: ToolCollectionExport = {
       tools.push(ValidateMediaUpdateTool);
       tools.push(SortMediaTool);
       // sort-children endpoints introduced in Umbraco 17.6; omit on older versions.
-      if (isUmbracoAtLeast(17, 6)) {
+      if (isUmbracoAtLeast(17, 6, options?.umbracoVersion)) {
         tools.push(SortMediaChildrenTool);
         tools.push(SortMediaRootChildrenTool);
       }
@@ -97,7 +97,7 @@ export const MediaCollection: ToolCollectionExport = {
       tools.push(GetRecycleBinMediaReferencedByTool);
       tools.push(GetRecycleBinMediaOriginalParentTool);
       // Schema API endpoint introduced in Umbraco 17.4; omit on older versions.
-      if (isUmbracoAtLeast(17, 4)) {
+      if (isUmbracoAtLeast(17, 4, options?.umbracoVersion)) {
         tools.push(GetMediaTypeSchemaTool);
       }
     }

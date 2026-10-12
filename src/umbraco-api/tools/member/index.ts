@@ -26,7 +26,7 @@ export const MemberCollection: ToolCollectionExport = {
     description: 'Member account management and administration',
     dependencies: []
   },
-  tools: (user: CurrentUserResponseModel) => {
+  tools: (user: CurrentUserResponseModel, options?: { umbracoVersion?: string }) => {
     const tools: ToolDefinition<any, any>[] = [];
     if (AuthorizationPolicies.SectionAccessMembers(user)) {
 
@@ -40,7 +40,7 @@ export const MemberCollection: ToolCollectionExport = {
       tools.push(GetMemberByIdReferencedByTool);
       tools.push(GetMemberByIdReferencedDescendantsTool);
       // Schema API endpoint introduced in Umbraco 17.4; omit on older versions.
-      if (isUmbracoAtLeast(17, 4)) {
+      if (isUmbracoAtLeast(17, 4, options?.umbracoVersion)) {
         tools.push(GetMemberTypeSchemaTool);
       }
     }

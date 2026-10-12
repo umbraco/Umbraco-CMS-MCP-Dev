@@ -28,7 +28,7 @@ exports[`get-media-type-siblings should handle non-existent media type 1`] = `
 {
   "content": [
     {
-      "text": "{"status":404,"detail":"Not Found"}",
+      "text": "{"status":404,"title":"Not Found"}",
       "type": "text",
     },
   ],
