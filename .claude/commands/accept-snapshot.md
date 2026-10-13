@@ -1,1 +1,0 @@
-Please accept the snapshot for the test that I pass you. If I don't pass you the test name ask for one.
