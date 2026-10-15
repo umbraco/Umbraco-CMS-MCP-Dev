@@ -40,6 +40,8 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: false,
       properties: []
     };
 
@@ -68,6 +70,8 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: false,
       properties: []
     };
 
@@ -90,6 +94,8 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: false,
       properties: [
         {
           name: "Property 1",
@@ -124,6 +130,8 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: false,
       properties: [
         {
           name: "Property A",
@@ -173,6 +181,8 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: false,
       properties: [
         {
           name: "Property A",
@@ -231,6 +241,8 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: false,
       properties: [],
       parentId: folderBuilder.getId()  // Flattened parent ID
     };
@@ -266,6 +278,8 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: false,
       properties: [
         {
           name: "Bad Property",
@@ -289,6 +303,8 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: false,
       properties: [
         {
           name: "Prop1",
@@ -329,6 +345,110 @@ describe("create-document-type", () => {
     // Verify with snapshot
     const normalized = DocumentTypeTestHelper.normaliseFullDocumentType(fullDocType);
     expect(normalized).toMatchSnapshot();
+  });
+
+  it("should default variesByCulture and variesBySegment to false when not specified", async () => {
+    const docTypeModel: CreateDocumentTypeModel = {
+      name: TEST_DOCTYPE_NAME,
+      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      allowedAsRoot: false,
+      compositions: [],
+      allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: false,
+      properties: [
+        {
+          name: "Property 1",
+          alias: "property1",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content"
+        }
+      ]
+    };
+
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
+    const responseData = validateToolResponse(CreateDocumentTypeTool, result);
+
+    const fullDocType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
+    expect(fullDocType.variesByCulture).toBe(false);
+    expect(fullDocType.variesBySegment).toBe(false);
+    expect(fullDocType.properties[0].variesByCulture).toBe(false);
+    expect(fullDocType.properties[0].variesBySegment).toBe(false);
+  });
+
+  it("should create a segment-varying document type with a segment-varying property", async () => {
+    const docTypeModel: CreateDocumentTypeModel = {
+      name: TEST_DOCTYPE_NAME,
+      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      allowedAsRoot: false,
+      compositions: [],
+      allowedDocumentTypes: [],
+      variesByCulture: false,
+      variesBySegment: true,
+      properties: [
+        {
+          name: "Segment Property",
+          alias: "segmentProperty",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content",
+          variesBySegment: true
+        },
+        {
+          name: "Invariant Property",
+          alias: "invariantProperty",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content"
+        }
+      ]
+    };
+
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
+    const responseData = validateToolResponse(CreateDocumentTypeTool, result);
+
+    const fullDocType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
+    expect(fullDocType.variesBySegment).toBe(true);
+    expect(fullDocType.variesByCulture).toBe(false);
+
+    const segmentProperty = fullDocType.properties.find(p => p.alias === "segmentProperty");
+    const invariantProperty = fullDocType.properties.find(p => p.alias === "invariantProperty");
+    expect(segmentProperty!.variesBySegment).toBe(true);
+    expect(segmentProperty!.variesByCulture).toBe(false);
+    expect(invariantProperty!.variesBySegment).toBe(false);
+  });
+
+  it("should create a culture-varying document type with a culture-varying property", async () => {
+    const docTypeModel: CreateDocumentTypeModel = {
+      name: TEST_DOCTYPE_NAME,
+      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
+      icon: "icon-document",
+      allowedAsRoot: false,
+      compositions: [],
+      allowedDocumentTypes: [],
+      variesByCulture: true,
+      variesBySegment: false,
+      properties: [
+        {
+          name: "Culture Property",
+          alias: "cultureProperty",
+          dataTypeId: TextString_DATA_TYPE_ID,
+          tab: "Content",
+          variesByCulture: true
+        }
+      ]
+    };
+
+    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
+    const responseData = validateToolResponse(CreateDocumentTypeTool, result);
+
+    const fullDocType = await DocumentTypeTestHelper.getFullDocumentType(responseData.id);
+    expect(fullDocType.variesByCulture).toBe(true);
+    expect(fullDocType.variesBySegment).toBe(false);
+
+    const cultureProperty = fullDocType.properties.find(p => p.alias === "cultureProperty");
+    expect(cultureProperty!.variesByCulture).toBe(true);
+    expect(cultureProperty!.variesBySegment).toBe(false);
   });
 
 });

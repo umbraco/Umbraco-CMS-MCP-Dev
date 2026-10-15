@@ -31,6 +31,8 @@ const createDocumentTypeSchema = z.object({
     .string()
     .uuid("Must be a valid collection data type UUID")
     .optional(),
+  variesByCulture: z.boolean().default(false),
+  variesBySegment: z.boolean().default(false),
   properties: z
     .array(
       z.object({
@@ -42,6 +44,8 @@ const createDocumentTypeSchema = z.object({
         description: z.string().optional(),
         mandatory: z.boolean().optional(),
         sortOrder: z.number().int().nonnegative().max(2147483647).optional(),
+        variesByCulture: z.boolean().optional(),
+        variesBySegment: z.boolean().optional(),
       }).refine(
         (data) => data.tab || data.group,
         {
@@ -83,7 +87,11 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
 8. Properties optionally accept 'description', 'mandatory' and 'sortOrder':
    - 'description' sets the property's help text (defaults to none)
    - 'mandatory' marks the property as required (defaults to false)
-   - 'sortOrder' controls the property's position (defaults to the next position not already claimed by another property's explicit sortOrder)`,
+   - 'sortOrder' controls the property's position (defaults to the next position not already claimed by another property's explicit sortOrder)
+9. 'variesByCulture' and 'variesBySegment' control content variation (both default to false):
+   - Set at the document type level to enable variation, and on each property that should vary - a property's own flags only take effect when the document type itself allows that kind of variation
+   - 'variesByCulture' enables language/culture variation (requires multiple languages to be configured)
+   - 'variesBySegment' enables segment variation (e.g. for A/B testing or audience targeting)`,
   inputSchema: createDocumentTypeSchema.shape,
   outputSchema: createDocumentTypeOutputSchema.shape,
   slices: ['create'],
@@ -148,8 +156,8 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
           regExMessage: null,
           mandatoryMessage: null,
         },
-        variesByCulture: false,
-        variesBySegment: false,
+        variesByCulture: prop.variesByCulture ?? false,
+        variesBySegment: prop.variesBySegment ?? false,
         container: containerId ? { id: containerId } : undefined,
       };
     });
@@ -173,8 +181,8 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
       })),
       allowedAsRoot: model.allowedAsRoot,
       allowedInLibrary: true,
-      variesByCulture: false,
-      variesBySegment: false,
+      variesByCulture: model.variesByCulture,
+      variesBySegment: model.variesBySegment,
       allowedTemplates: [],
       allowedDocumentTypes: model.allowedDocumentTypes.map((id, index) => ({
         documentType: { id },
