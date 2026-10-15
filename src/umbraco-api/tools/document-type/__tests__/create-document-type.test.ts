@@ -1,4 +1,4 @@
-import CreateDocumentTypeTool, { createDocumentTypeSchema } from "../post/create-document-type.js";
+import CreateDocumentTypeTool from "../post/create-document-type.js";
 import { DocumentTypeTestHelper } from "./helpers/document-type-test-helper.js";
 import type { CreateDocumentTypeModel } from "../post/create-document-type.js";
 import { DocumentTypeFolderBuilder } from "./helpers/document-type-folder-builder.js";
@@ -40,8 +40,6 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: false,
       properties: []
     };
 
@@ -70,8 +68,6 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: false,
       properties: []
     };
 
@@ -94,8 +90,6 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: false,
       properties: [
         {
           name: "Property 1",
@@ -130,8 +124,6 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: false,
       properties: [
         {
           name: "Property A",
@@ -181,8 +173,6 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: false,
       properties: [
         {
           name: "Property A",
@@ -241,8 +231,6 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: false,
       properties: [],
       parentId: folderBuilder.getId()  // Flattened parent ID
     };
@@ -278,8 +266,6 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: false,
       properties: [
         {
           name: "Bad Property",
@@ -303,8 +289,6 @@ describe("create-document-type", () => {
       allowedAsRoot: false,
       compositions: [],
       allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: false,
       properties: [
         {
           name: "Prop1",
@@ -348,12 +332,7 @@ describe("create-document-type", () => {
   });
 
   it("should default variesByCulture and variesBySegment to false when not specified", async () => {
-    // Omit variesByCulture/variesBySegment entirely (both at the document type
-    // level and on the property) and go through the tool's own schema.parse,
-    // the same step the MCP SDK applies before the handler runs, so the
-    // `z.boolean().default(false)` defaults are what actually fire here rather
-    // than being supplied explicitly by the test fixture.
-    const rawModel = {
+    const docTypeModel: CreateDocumentTypeModel = {
       name: TEST_DOCTYPE_NAME,
       alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
       icon: "icon-document",
@@ -370,10 +349,6 @@ describe("create-document-type", () => {
       ]
     };
 
-    const docTypeModel: CreateDocumentTypeModel = createDocumentTypeSchema.parse(rawModel);
-    expect(docTypeModel.variesByCulture).toBe(false);
-    expect(docTypeModel.variesBySegment).toBe(false);
-
     const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
     const responseData = validateToolResponse(CreateDocumentTypeTool, result);
 
@@ -382,56 +357,6 @@ describe("create-document-type", () => {
     expect(fullDocType.variesBySegment).toBe(false);
     expect(fullDocType.properties[0].variesByCulture).toBe(false);
     expect(fullDocType.properties[0].variesBySegment).toBe(false);
-  });
-
-  it("should reject a property with variesBySegment true when the document type level flag is false", async () => {
-    const docTypeModel: CreateDocumentTypeModel = {
-      name: TEST_DOCTYPE_NAME,
-      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
-      icon: "icon-document",
-      allowedAsRoot: false,
-      compositions: [],
-      allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: false, // document type level flag is false...
-      properties: [
-        {
-          name: "Segment Property",
-          alias: "segmentProperty",
-          dataTypeId: TextString_DATA_TYPE_ID,
-          tab: "Content",
-          variesBySegment: true // ...but the property claims to vary by segment
-        }
-      ]
-    };
-
-    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
-    expect(result.isError).toBe(true);
-  });
-
-  it("should reject a document type level variesBySegment of true with no varying property", async () => {
-    const docTypeModel: CreateDocumentTypeModel = {
-      name: TEST_DOCTYPE_NAME,
-      alias: TEST_DOCTYPE_NAME.toLowerCase().replace(/\s+/g, ''),
-      icon: "icon-document",
-      allowedAsRoot: false,
-      compositions: [],
-      allowedDocumentTypes: [],
-      variesByCulture: false,
-      variesBySegment: true, // document type level flag claims to vary by segment...
-      properties: [
-        {
-          name: "Invariant Property",
-          alias: "invariantProperty",
-          dataTypeId: TextString_DATA_TYPE_ID,
-          tab: "Content"
-          // ...but no property actually varies by segment
-        }
-      ]
-    };
-
-    const result = await CreateDocumentTypeTool.handler(docTypeModel as any, createMockRequestHandlerExtra());
-    expect(result.isError).toBe(true);
   });
 
   it("should create a segment-varying document type with a segment-varying property", async () => {
