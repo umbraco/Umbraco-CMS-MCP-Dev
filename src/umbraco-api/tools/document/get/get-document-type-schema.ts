@@ -38,7 +38,15 @@ IMPORTANT: Use this tool BEFORE creating documents to understand the expected pr
     )) as unknown as HttpResponse;
     // Surface non-2xx responses (e.g. 404 ProblemDetails) as an error result,
     // the same way executeGetApiCall does, instead of wrapping them as a schema.
-    if (typeof response.status === "number" && (response.status < 200 || response.status >= 300)) {
+    if (typeof response.status !== "number") {
+      // Mirrors the SDK's own validateApiResponse warning: an HttpResponse should
+      // always carry a numeric status when CAPTURE_RAW_HTTP_RESPONSE is honored, so
+      // this means the client/transport shape has changed under us. We can't tell
+      // success from failure here, so fall through as before, but make it loud.
+      console.warn(
+        "[get-document-type-schema] API response had no numeric status; treating as success. Did the generated client's CAPTURE_RAW_HTTP_RESPONSE wiring change?"
+      );
+    } else if (response.status < 200 || response.status >= 300) {
       throw new UmbracoApiError(toProblemDetails(response));
     }
     return createToolResult({ schema: response.data });
