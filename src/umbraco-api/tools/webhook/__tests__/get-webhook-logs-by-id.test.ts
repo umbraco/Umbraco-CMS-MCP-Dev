@@ -1,7 +1,9 @@
+import { jest } from "@jest/globals";
 import GetWebhookLogsTool from "../get/get-webhook-logs-by-id.js";
 import { WebhookBuilder } from "./helpers/webhook-builder.js";
 import { CONTENT_PUBLISHED_EVENT, TEST_WEBHOOOK_URL } from "./webhook-constants.js";
 import { encodeCursor } from "@umbraco-cms/mcp-server-sdk";
+import { UmbracoManagementClient } from "@umb-management-client";
 import {
   createMockRequestHandlerExtra,
   setupTestEnvironment,
@@ -74,5 +76,55 @@ describe("get-webhook-logs", () => {
     expect(Array.isArray(parsed.items)).toBe(true);
     expect(parsed.items.length).toBeLessThanOrEqual(1);
     expect(typeof parsed.total).toBe("number");
+  });
+
+  it("passes the decoded skip/take through to the Management API client", async () => {
+    // Triggering a real webhook delivery log entry isn't practical in this test
+    // environment, so this test mocks the API client to verify the fix directly:
+    // that skip/take (decoded from the cursor) actually reach getWebhookByIdLogs,
+    // rather than being discarded as they were before this fix.
+    const fakeLog = {
+      key: "11111111-1111-1111-1111-111111111111",
+      webhookKey: "22222222-2222-2222-2222-222222222222",
+      statusCode: "200",
+      isSuccessStatusCode: true,
+      date: "2026-01-01T00:00:00+00:00",
+      eventAlias: CONTENT_PUBLISHED_EVENT,
+      url: TEST_WEBHOOOK_URL,
+      retryCount: 0,
+      requestHeaders: "{}",
+      requestBody: "{}",
+      responseHeaders: "{}",
+      responseBody: "{}",
+      exceptionOccured: false,
+    };
+    const getWebhookByIdLogsSpy = jest.fn(async () => ({
+      data: { items: [fakeLog], total: 5 },
+    }));
+    const clientSpy = jest
+      .spyOn(UmbracoManagementClient, "getClient")
+      .mockReturnValue({ getWebhookByIdLogs: getWebhookByIdLogsSpy } as any);
+
+    try {
+      const id = "33333333-3333-3333-3333-333333333333";
+      const result = await GetWebhookLogsTool.handler(
+        { id, cursor: encodeCursor({ s: 0, t: 1 }) },
+        createMockRequestHandlerExtra()
+      );
+
+      expect(getWebhookByIdLogsSpy).toHaveBeenCalledWith(
+        id,
+        { skip: 0, take: 1 },
+        expect.anything()
+      );
+
+      const parsed = validateToolResponse(GetWebhookLogsTool, result) as CursorPaginatedResult;
+      expect(parsed.total).toBe(5);
+      expect(parsed.items).toHaveLength(1);
+      // 5 total, 1 returned after skip 0 -> more pages remain
+      expect(parsed.nextCursor).toBeDefined();
+    } finally {
+      clientSpy.mockRestore();
+    }
   });
 });
