@@ -5,7 +5,9 @@ import {
   type ToolDefinition,
   type HttpResponse,
   CAPTURE_RAW_HTTP_RESPONSE,
+  UmbracoApiError,
   createToolResult,
+  toProblemDetails,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
 
@@ -34,6 +36,11 @@ IMPORTANT: Use this tool BEFORE creating documents to understand the expected pr
       id,
       CAPTURE_RAW_HTTP_RESPONSE
     )) as unknown as HttpResponse;
+    // Surface non-2xx responses (e.g. 404 ProblemDetails) as an error result,
+    // the same way executeGetApiCall does, instead of wrapping them as a schema.
+    if (typeof response.status === "number" && (response.status < 200 || response.status >= 300)) {
+      throw new UmbracoApiError(toProblemDetails(response));
+    }
     return createToolResult({ schema: response.data });
   },
 } satisfies ToolDefinition<typeof getDocumentTypeByIdSchemaParams.shape, typeof outputSchema.shape>;

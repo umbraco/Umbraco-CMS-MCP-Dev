@@ -5,6 +5,16 @@ import GetDocumentTypeSchemaTool, {
 import { UmbracoManagementClient } from "@umb-management-client";
 import { createMockRequestHandlerExtra } from "@umbraco-cms/mcp-server-sdk/testing";
 
+// withErrorHandling logs caught errors via console.error; keep test output quiet.
+async function withSilencedConsoleError<T>(fn: () => T | Promise<T>): Promise<T> {
+  const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+  try {
+    return await fn();
+  } finally {
+    spy.mockRestore();
+  }
+}
+
 const DOC_TYPE_ID = "11111111-1111-1111-1111-111111111111";
 
 describe("get-document-type-schema", () => {
@@ -31,5 +41,33 @@ describe("get-document-type-schema", () => {
 
     expect(result.structuredContent).toEqual({ schema: fakeSchema });
     expect(documentTypeSchemaOutputSchema.safeParse(result.structuredContent).success).toBe(true);
+  });
+
+  it("returns an error result carrying the ProblemDetails when the id does not exist", async () => {
+    const problemDetails = {
+      type: "Error",
+      title: "Not Found",
+      status: 404,
+      detail: "The specified document type was not found",
+      operationStatus: "NotFound",
+    };
+    clientSpy.mockReturnValue({
+      getDocumentTypeByIdSchema: jest.fn(async () => ({
+        status: 404,
+        statusText: "Not Found",
+        data: problemDetails,
+      })),
+    } as any);
+
+    const result: any = await withSilencedConsoleError(() =>
+      GetDocumentTypeSchemaTool.handler(
+        { id: DOC_TYPE_ID },
+        createMockRequestHandlerExtra()
+      )
+    );
+
+    expect(result.isError).toBe(true);
+    expect(result.structuredContent).toBeUndefined();
+    expect(JSON.parse(result.content[0].text)).toEqual(problemDetails);
   });
 });
