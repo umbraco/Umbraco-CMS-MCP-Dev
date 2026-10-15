@@ -99,6 +99,7 @@ describe("get-webhook-logs", () => {
       exceptionOccured: false,
     };
     const getWebhookByIdLogsSpy = jest.fn(async () => ({
+      status: 200,
       data: { items: [fakeLog], total: 5 },
     }));
     const clientSpy = jest
