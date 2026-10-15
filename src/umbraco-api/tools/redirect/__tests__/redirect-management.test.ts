@@ -121,8 +121,8 @@ describe("Redirect Management Tools", () => {
       // Create a second, unrelated redirect whose url does not contain urlFragment,
       // so a loose "is our redirect present" assertion can't pass by accident -
       // the filter must actually exclude it for this test to be meaningful.
-      const secondName = "_Test Redirect Filter Unrelated";
-      const secondRenamedName = "_Test Redirect Filter Unrelated Renamed";
+      const secondName = "_Zzz Unrelated Filter Page";
+      const secondRenamedName = "_Zzz Unrelated Filter Page Renamed";
       const secondBuilder = await new DocumentBuilder()
         .withName(secondName)
         .withRootDocumentType()
