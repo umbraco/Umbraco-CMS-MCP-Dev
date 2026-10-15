@@ -27,8 +27,8 @@ const GetReferencesDataTypeTool = {
   (name, alias) that use the specified data type.
 
   Results are paginated (20 per page by default). Check the returned "total" against the number of
-  "items" returned - if total is greater, use skip/take to page through the remaining references so
-  the list is complete before acting on it.
+  "items" returned - if total is greater, call again with "cursor" set to the returned "nextCursor"
+  to page through the remaining references so the list is complete before acting on it.
   `,
   inputSchema: inputSchema.shape,
   outputSchema: getDataTypeByIdReferencedByResponse.shape,

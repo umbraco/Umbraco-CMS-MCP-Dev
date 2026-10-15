@@ -17,7 +17,8 @@ const GetWebhookLogsTool = {
   description: `Gets logs for a specific webhook.
 
   Results are paginated (100 per page by default). Check the returned "total" against the number of
-  "items" returned - if total is greater, use skip/take to page through the remaining logs.`,
+  "items" returned - if total is greater, call again with "cursor" set to the returned "nextCursor"
+  to page through the remaining logs.`,
   inputSchema: inputSchema.shape,
   outputSchema: getWebhookByIdLogsResponse.shape,
   annotations: { readOnlyHint: true },

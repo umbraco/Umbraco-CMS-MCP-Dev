@@ -15,7 +15,8 @@ const GetAllRedirectsTool = {
   destination URL.
 
   Results are paginated (100 per page by default). Check the returned "total" against the number of
-  "items" returned - if total is greater, use skip/take to page through the remaining redirects.`,
+  "items" returned - if total is greater, call again with "cursor" set to the returned "nextCursor"
+  to page through the remaining redirects.`,
   inputSchema: getRedirectManagementQueryParams.shape,
   outputSchema: getRedirectManagementResponse.shape,
   annotations: { readOnlyHint: true },
