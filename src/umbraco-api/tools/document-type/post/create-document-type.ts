@@ -14,7 +14,9 @@ import {
 } from "@umbraco-cms/mcp-server-sdk";
 
 // Flattened schema - prevents LLM JSON stringification of parent object
-const createDocumentTypeSchema = z.object({
+// Exported for tests that need to exercise the MCP SDK's own schema.parse
+// (and its defaults) ahead of calling the handler directly.
+export const createDocumentTypeSchema = z.object({
   name: z.string().min(1, "Name is required"),
   alias: z.string().min(1, "Alias is required"),
   description: z.string().optional(),
@@ -61,6 +63,50 @@ type CreateDocumentTypeModel = z.infer<typeof createDocumentTypeSchema>;
 
 export type { CreateDocumentTypeModel };
 
+// Umbraco's ContentTypeEditingServiceBase.ValidateAsync performs no cross-field
+// reconciliation between a document type's own variation flags and its properties'
+// flags - MapProperty calls SetVariesBy unconditionally and will silently persist
+// an inconsistent combination (e.g. a segment-varying property on a document type
+// that itself doesn't vary by segment, or a type-level flag with no varying
+// property at all). We enforce the consistency Umbraco doesn't, rejecting the
+// mismatch up front instead of letting it succeed as an unusable configuration.
+//
+// Kept separate from `createDocumentTypeSchema` (used for `inputSchema.shape`)
+// because `.superRefine()` returns a `ZodEffects`, which has no `.shape`.
+const createDocumentTypeValidatedSchema = createDocumentTypeSchema.superRefine(
+  (data, ctx) => {
+    const checkVariation = (
+      typeLevelFlag: boolean,
+      propFlagKey: "variesByCulture" | "variesBySegment"
+    ) => {
+      const varyingPropertyIndexes = data.properties
+        .map((prop, index) => (prop[propFlagKey] ? index : -1))
+        .filter((index) => index !== -1);
+
+      if (!typeLevelFlag && varyingPropertyIndexes.length > 0) {
+        for (const index of varyingPropertyIndexes) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["properties", index, propFlagKey],
+            message: `Property at index ${index} has '${propFlagKey}: true', but the document type's own '${propFlagKey}' is false. Umbraco does not reconcile this - it silently persists the mismatch and the property's variation never takes effect. Set '${propFlagKey}: true' at the document type level, or remove it from this property.`,
+          });
+        }
+      }
+
+      if (typeLevelFlag && varyingPropertyIndexes.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [propFlagKey],
+          message: `'${propFlagKey}' is true at the document type level, but no property has '${propFlagKey}: true'. This creates a document type that claims to vary but has nothing that actually varies - a dead-end configuration Umbraco will accept without complaint. Set '${propFlagKey}: true' on at least one property, or set '${propFlagKey}: false' at the document type level.`,
+        });
+      }
+    };
+
+    checkVariation(data.variesByCulture, "variesByCulture");
+    checkVariation(data.variesBySegment, "variesBySegment");
+  }
+);
+
 export const createDocumentTypeOutputSchema = z.object({
   message: z.string(),
   id: z.string().guid()
@@ -89,15 +135,17 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
    - 'mandatory' marks the property as required (defaults to false)
    - 'sortOrder' controls the property's position (defaults to the next position not already claimed by another property's explicit sortOrder)
 9. 'variesByCulture' and 'variesBySegment' control content variation (both default to false):
-   - Set at the document type level to enable variation, and on each property that should vary - a property's own flags only take effect when the document type itself allows that kind of variation
+   - The document type level flag and the property level flags must agree, and this tool enforces it before calling Umbraco: setting the document type level flag to true requires at least one property with the matching flag true, and a property with a flag true requires the matching document type level flag to be true. A mismatch is rejected up front with a validation error naming the offending property.
+   - This check exists because Umbraco itself does NOT reconcile the two levels - it will silently persist an inconsistent combination (e.g. a segment-varying property on a type that doesn't vary by segment) rather than rejecting or clamping it, leaving a document type that looks created successfully but has unusable variation.
    - 'variesByCulture' enables language/culture variation (requires multiple languages to be configured)
    - 'variesBySegment' enables segment variation (e.g. for A/B testing or audience targeting)`,
   inputSchema: createDocumentTypeSchema.shape,
   outputSchema: createDocumentTypeOutputSchema.shape,
   slices: ['create'],
   handler: (async (rawModel: CreateDocumentTypeModel) => {
-    // Validate the model with the schema (including refine rules)
-    const model = createDocumentTypeSchema.parse(rawModel);
+    // Validate the model with the schema (including refine/superRefine rules,
+    // such as the cross-field variation consistency check above)
+    const model = createDocumentTypeValidatedSchema.parse(rawModel);
 
     // Generate UUIDs for the document type and its components
     const documentTypeId = uuidv4();
