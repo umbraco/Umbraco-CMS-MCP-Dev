@@ -18,6 +18,7 @@ exports[`get-references-data-type should get references for a data type used in 
         "name": "Test Property",
       },
     ],
+    "nextCursor": undefined,
     "total": 1,
   },
 }
@@ -28,6 +29,7 @@ exports[`get-references-data-type should handle non-existent data type 1`] = `
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
@@ -38,6 +40,7 @@ exports[`get-references-data-type should return empty array for unreferenced dat
   "content": [],
   "structuredContent": {
     "items": [],
+    "nextCursor": undefined,
     "total": 0,
   },
 }
