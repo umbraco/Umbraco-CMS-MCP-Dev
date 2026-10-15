@@ -39,6 +39,33 @@ describe("get-data-type-schema (wrapper)", () => {
     expect(dataTypeSchemaOutputSchema.safeParse(result.structuredContent).success).toBe(true);
   });
 
+  it("on 17.4+ returns an error result carrying ProblemDetails when the data type is missing", async () => {
+    setUmbracoVersion("17.4.0");
+    const problemDetails = {
+      type: "Error",
+      title: "Not Found",
+      status: 404,
+      detail: "The specified data type was not found",
+      operationStatus: "NotFound",
+    };
+    clientSpy.mockReturnValue({
+      getDataTypeByIdSchema: jest.fn(async () => ({
+        status: 404,
+        statusText: "Not Found",
+        data: problemDetails,
+      })),
+    } as any);
+
+    const result: any = await GetDataTypeSchemaTool.handler(
+      { id: DATA_TYPE_ID },
+      createMockRequestHandlerExtra()
+    );
+
+    expect(result.isError).toBe(true);
+    expect(result.structuredContent).toBeUndefined();
+    expect(JSON.parse(result.content[0].text)).toEqual(problemDetails);
+  });
+
   it("on <17.4 synthesizes a schema from the data type's editor alias", async () => {
     setUmbracoVersion("17.3.0");
 
