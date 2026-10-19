@@ -104,6 +104,7 @@ describe("create-document-block", () => {
       });
 
       // Assert
+      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
       const contentKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockList);
       const layout = value.layout["Umbraco.BlockList"];
