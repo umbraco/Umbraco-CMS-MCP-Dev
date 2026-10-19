@@ -91,6 +91,31 @@ describe("create-document-block", () => {
       expect(value.expose).toEqual([{ contentKey, culture: null, segment: null }]);
     });
 
+    it("should create an empty settings entry when the block type has settings and none are given", async () => {
+      // Arrange
+      const documentId = await createDocument();
+
+      // Act
+      const result = await call({
+        documentId,
+        propertyAlias: ALIASES.blockList,
+        contentTypeKey: infra.elementTypeId,
+        properties: [{ alias: "title", value: NEW_TITLE }]
+      });
+
+      // Assert
+      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
+      const contentKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
+      const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockList);
+      const layout = value.layout["Umbraco.BlockList"];
+      expect(layout[0]).toMatchObject({ contentKey });
+      expect(layout[0].settingsKey).toBeTruthy();
+      expect(value.settingsData).toHaveLength(1);
+      expect(value.settingsData[0].key).toBe(layout[0].settingsKey);
+      expect(value.settingsData[0].contentTypeKey).toBe(infra.settingsTypeId);
+      expect(value.settingsData[0].values ?? []).toEqual([]);
+    });
+
     it("should insert before an existing sibling with settings", async () => {
       // Arrange
       const documentId = await createDocument({ [ALIASES.blockList]: existingBlockList() });
