@@ -54,7 +54,7 @@ exports[`create-document-block BlockList should write contentData, expose, and l
     "results": [
       {
         "contentKey": "00000000-0000-0000-0000-000000000000",
-        "message": "Created block",
+        "message": "Created block with settings",
         "success": true,
       },
     ],
