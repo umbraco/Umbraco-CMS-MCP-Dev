@@ -31,6 +31,8 @@ const createDocumentTypeSchema = z.object({
     .string()
     .uuid("Must be a valid collection data type UUID")
     .optional(),
+  variesByCulture: z.boolean().optional(),
+  variesBySegment: z.boolean().optional(),
   properties: z
     .array(
       z.object({
@@ -42,6 +44,8 @@ const createDocumentTypeSchema = z.object({
         description: z.string().optional(),
         mandatory: z.boolean().optional(),
         sortOrder: z.number().int().nonnegative().max(2147483647).optional(),
+        variesByCulture: z.boolean().optional(),
+        variesBySegment: z.boolean().optional(),
       }).refine(
         (data) => data.tab || data.group,
         {
@@ -83,7 +87,11 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
 8. Properties optionally accept 'description', 'mandatory' and 'sortOrder':
    - 'description' sets the property's help text (defaults to none)
    - 'mandatory' marks the property as required (defaults to false)
-   - 'sortOrder' controls the property's position (defaults to the next position not already claimed by another property's explicit sortOrder)`,
+   - 'sortOrder' controls the property's position (defaults to the next position not already claimed by another property's explicit sortOrder)
+9. 'variesByCulture' and 'variesBySegment' (both default to false) can be set on the document type and on each property:
+   - 'variesByCulture' enables language/culture variation
+   - 'variesBySegment' enables segment variation (e.g. for A/B testing or audience targeting)
+   - A property only varies if the document type has the same flag set; otherwise Umbraco ignores the property's flag`,
   inputSchema: createDocumentTypeSchema.shape,
   outputSchema: createDocumentTypeOutputSchema.shape,
   slices: ['create'],
@@ -148,8 +156,8 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
           regExMessage: null,
           mandatoryMessage: null,
         },
-        variesByCulture: false,
-        variesBySegment: false,
+        variesByCulture: prop.variesByCulture ?? false,
+        variesBySegment: prop.variesBySegment ?? false,
         container: containerId ? { id: containerId } : undefined,
       };
     });
@@ -173,8 +181,8 @@ IMPORTANT: IMPLEMENTATION REQUIREMENTS
       })),
       allowedAsRoot: model.allowedAsRoot,
       allowedInLibrary: true,
-      variesByCulture: false,
-      variesBySegment: false,
+      variesByCulture: model.variesByCulture ?? false,
+      variesBySegment: model.variesBySegment ?? false,
       allowedTemplates: [],
       allowedDocumentTypes: model.allowedDocumentTypes.map((id, index) => ({
         documentType: { id },
