@@ -1,10 +1,16 @@
-import { getDataTypeByIdReferencedByParams, getDataTypeByIdReferencedByResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import { getDataTypeByIdReferencedByParams, getDataTypeByIdReferencedByQueryParams, getDataTypeByIdReferencedByResponse } from "@/umbraco-api/umbracoManagementAPI.zod.js";
+import { z } from "zod";
 import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
   executeGetApiCall,
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
+
+const inputSchema = z.object({
+  ...getDataTypeByIdReferencedByParams.shape,
+  ...getDataTypeByIdReferencedByQueryParams.shape,
+});
 
 const GetReferencesDataTypeTool = {
   name: "get-references-data-type",
@@ -19,18 +25,22 @@ const GetReferencesDataTypeTool = {
 
   Returns a detailed list with content type information (id, type, name, icon) and all properties
   (name, alias) that use the specified data type.
+
+  Results are paginated (20 per page by default). Check the returned "total" against the number of
+  "items" returned - if total is greater, call again with "cursor" set to the returned "nextCursor"
+  to page through the remaining references so the list is complete before acting on it.
   `,
-  inputSchema: getDataTypeByIdReferencedByParams.shape,
+  inputSchema: inputSchema.shape,
   outputSchema: getDataTypeByIdReferencedByResponse.shape,
   annotations: {
     readOnlyHint: true,
   },
   slices: ['references'],
-  handler: (async ({ id }: { id: string }) => {
+  handler: (async ({ id, skip, take }: z.infer<typeof inputSchema>) => {
     return executeGetApiCall((client) =>
-      client.getDataTypeByIdReferencedBy(id, undefined, CAPTURE_RAW_HTTP_RESPONSE)
+      client.getDataTypeByIdReferencedBy(id, { skip, take }, CAPTURE_RAW_HTTP_RESPONSE)
     );
   }),
-} satisfies ToolDefinition<typeof getDataTypeByIdReferencedByParams.shape, typeof getDataTypeByIdReferencedByResponse.shape>;
+} satisfies ToolDefinition<typeof inputSchema.shape, typeof getDataTypeByIdReferencedByResponse.shape>;
 
 export default withStandardDecorators(GetReferencesDataTypeTool);
