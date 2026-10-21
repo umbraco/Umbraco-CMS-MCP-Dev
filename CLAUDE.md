@@ -19,6 +19,19 @@ build/test/tooling conventions and points at them.
 - The Orval config is `src/umbraco-api/orval/umbraco-api.ts` (wrapped by the root `orval.config.ts`).
 - Path aliases: `@/umbraco-api/*` → `src/umbraco-api/api/*`; `@umb-management-client` → `src/umbraco-api/umbraco-management-client.ts`.
 
+## Releasing: version-bearing files
+
+A release bumps the version in exactly these files. Bump all of them, and nothing else:
+
+- `package.json`: `version`
+- `package-lock.json`: `version` and `packages[""].version`
+- `server.json`: `version` and `packages[0].version`
+- `.claude-plugin/marketplace.json`: `metadata.version` and `plugins[0].version`
+- `plugins-server/.claude-plugin/plugin.json`: `version`
+
+Check after bumping: `git grep -nF "<previous version>" -- . ':!**/__snapshots__/**'`
+should find nothing.
+
 ## Build / test / tooling
 
 - `npm run compile` — tsc type-check (safe to run anytime).

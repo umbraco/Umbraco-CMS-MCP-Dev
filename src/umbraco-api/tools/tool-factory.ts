@@ -35,9 +35,11 @@ export function UmbracoToolFactory(server: McpServer, user: CurrentUserResponseM
     ToolRegistrar.registerTools(server, user, tools, config, readonlyMode, filteredTools);
   });
 
-  // Log filtered tools in readonly mode
+  // Log filtered tools in readonly mode. This runs before the stdio transport
+  // attaches, but stdout is still the JSON-RPC channel for the stdio client
+  // from process start, so this must go to stderr, not stdout (console.log).
   if (readonlyMode && filteredTools.length > 0) {
-    console.log(`\nReadonly mode: Disabled ${filteredTools.length} write tools:`);
-    console.log(`  ${filteredTools.join(', ')}`);
+    console.error(`\nReadonly mode: Disabled ${filteredTools.length} write tools:`);
+    console.error(`  ${filteredTools.join(', ')}`);
   }
 }
