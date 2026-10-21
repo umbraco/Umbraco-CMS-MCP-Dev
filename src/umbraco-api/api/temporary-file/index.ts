@@ -31,32 +31,13 @@ export const getTemporaryFileAPI = () => ({
     formData.append("Id", postTemporaryFileBody.Id);
 
     const file = postTemporaryFileBody.File as Buffer | ReadStream;
-    console.log("[temp-file] incoming file:", {
-      typeofFile: typeof file,
-      isBuffer: Buffer.isBuffer(file),
-      ctorName: (file as any)?.constructor?.name,
-      hasByteLength: typeof (file as any)?.byteLength,
-      hasLength: typeof (file as any)?.length,
-      keys: file ? Object.keys(file).slice(0, 10) : [],
-    });
     const buffer = Buffer.isBuffer(file) ? file : await readStreamToBuffer(file as ReadStream);
-    console.log("[temp-file] buffer:", { length: buffer.byteLength });
     // Slice into a fresh ArrayBuffer-backed Uint8Array — Blob requires
     // ArrayBufferView<ArrayBuffer>, not the wider ArrayBufferLike that Buffer uses.
     const bytes = new Uint8Array(buffer.byteLength);
     bytes.set(buffer);
     const blob = new Blob([bytes]);
-    console.log("[temp-file] blob:", { size: blob.size, type: blob.type, fileName: postTemporaryFileBody.FileName });
     formData.append("File", blob, postTemporaryFileBody.FileName);
-    const entries: Array<{ name: string; valueKind: string; valueSize?: number }> = [];
-    for (const [k, v] of (formData as any).entries()) {
-      entries.push({
-        name: k,
-        valueKind: typeof v === "string" ? "string" : (v?.constructor?.name ?? typeof v),
-        valueSize: typeof v === "string" ? v.length : (v?.size ?? undefined),
-      });
-    }
-    console.log("[temp-file] formData entries:", entries);
 
     return UmbracoManagementClient<void>(
       {
