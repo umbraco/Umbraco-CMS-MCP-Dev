@@ -17,6 +17,23 @@ exports[`create-document-block BlockGrid should insert into a named area of a bl
 }
 `;
 
+exports[`create-document-block BlockList should create an empty settings entry when the block type has settings and none are given 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Created 1 block in BlockList property 'blockList'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Created block with settings",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
 exports[`create-document-block BlockList should insert before an existing sibling with settings 1`] = `
 {
   "content": [],
@@ -54,7 +71,7 @@ exports[`create-document-block BlockList should write contentData, expose, and l
     "results": [
       {
         "contentKey": "00000000-0000-0000-0000-000000000000",
-        "message": "Created block",
+        "message": "Created block with settings",
         "success": true,
       },
     ],

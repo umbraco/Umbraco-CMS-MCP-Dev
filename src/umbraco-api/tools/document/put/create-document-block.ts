@@ -71,7 +71,7 @@ const createDocumentBlockSchema = {
   properties: z.array(blockPropertyValueSchema).optional().describe("Content property values for the new block"),
   settings: z.object({
     properties: z.array(blockPropertyValueSchema).describe("Settings property values"),
-  }).optional().describe("Settings for the new block; the settings element type comes from the data type configuration"),
+  }).optional().describe("Settings for the new block; the settings element type comes from the data type configuration. When the block type has a settings element type, a settings entry is always created (empty if this is omitted), as the backoffice does"),
   placement: placementSchema.optional().describe("Where to place the block relative to siblings (default: append)"),
   grid: gridSchema.optional().describe("BlockGrid-only layout options. Rejected for BlockList/RichText properties"),
 };
@@ -285,7 +285,10 @@ const CreateDocumentBlockTool = {
 
     // --- Build the new block
     const contentKey = uuidv4();
-    const settingsKey = model.settings ? uuidv4() : null;
+    // The backoffice always creates a settings entry when the block type has a settings
+    // element type, so renderers can rely on it being there. Match that, even when no
+    // settings values are given.
+    const settingsKey = blockConfig.settingsElementTypeKey ? uuidv4() : null;
     const layoutEntry = buildLayoutEntry(kind, {
       contentKey,
       settingsKey,
