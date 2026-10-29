@@ -6,12 +6,28 @@ trigger:
     - v17/dev
     - feature/*
 
+resources:
+  repositories:
+  - repository: build
+    type: github
+    name: Umbraco/Umbraco.Build
+    endpoint: github.com_umbraco
+
+parameters:
+  - name: sbom_generate
+    displayName: Generate SBOM
+    type: boolean
+    default: false
+
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
   - name: nodeVersion
     value: '22.x'
+  # Dependency-Track product name
+  - name: productName
+    value: 'Umbraco.Cms.Mcp-Dev'
 
 stages:
 - stage: BuildAndTest
@@ -49,11 +65,34 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'npm-package'
 
+# Runs in parallel with the build and gates the npm release: a failed SBOM (e.g. a license policy
+# violation) must stop a publish. Runs on the same branches as Deploy_Npm (main or v17/main), or on any
+# branch when sbom_generate is set (a forced run is not flagged isLatest in Dependency-Track).
+- stage: GenerateSBOM
+  displayName: Generate SBOM
+  dependsOn: []
+  condition: or(in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/v17/main'), eq('${{ parameters.sbom_generate }}', 'true'))
+  variables:
+  - group: dependency-track
+  jobs:
+  - job: GenerateSBOM
+    displayName: Generate SBOM
+    steps:
+    - template: devops/templates/generate-sbom-template.yml@build
+      parameters:
+        sbom_nuget: false
+        sbom_npm_paths: ['.']
+        sbom_version_from: package.json # e.g. version 17.6.11 is uploaded to project "Umbraco.Cms.Mcp-Dev v17"
+        # a run forced with sbom_generate must not displace the latest version in Dependency-Track
+        ${{ if eq(parameters.sbom_generate, true) }}:
+          sbom_is_latest: 'false'
+
 - stage: Deploy_Npm
   displayName: Npm release
   condition: and(succeeded(), in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/v17/main'))
   dependsOn:
     - BuildAndTest
+    - GenerateSBOM
   jobs:
     - job: Publish
       displayName: Push to NPM
