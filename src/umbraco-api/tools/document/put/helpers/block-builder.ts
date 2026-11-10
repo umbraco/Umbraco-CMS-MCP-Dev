@@ -75,11 +75,19 @@ export interface BlockTypeConfiguration {
 }
 
 /**
- * A BlockGrid layout item. BlockList/RichText layout items only use contentKey/settingsKey.
+ * A block layout item. BlockList/RichText layout items only use key/contentKey/settingsKey/isExternalContent;
+ * BlockGrid items add columnSpan/rowSpan/areas.
+ *
+ * Since Umbraco 19 a layout item has its own `key`, and `contentKey` can point either at a local
+ * contentData entry or — when `isExternalContent` is true — at an Element in the Library
+ * (reusable content). External blocks have no contentData or expose entries in the block value;
+ * their settings stay local.
  */
 export interface BlockLayoutItem {
+  key?: string;
   contentKey: string;
   settingsKey?: string | null;
+  isExternalContent?: boolean;
   columnSpan?: number;
   rowSpan?: number;
   areas?: Array<{ key: string; items: BlockLayoutItem[] }>;
@@ -248,16 +256,25 @@ export function buildBlockEntry(
 export function buildLayoutEntry(
   kind: BlockEditorKind,
   options: {
+    /** The layout item's own key (Umbraco 19+). */
+    layoutKey?: string;
     contentKey: string;
     settingsKey?: string | null;
+    /** True when contentKey references a Library Element rather than local contentData. */
+    isExternalContent?: boolean;
     columnSpan?: number;
     rowSpan?: number;
     areaKeys?: string[];
   }
 ): BlockLayoutItem {
-  const entry: BlockLayoutItem = { contentKey: options.contentKey };
+  const entry: BlockLayoutItem = options.layoutKey
+    ? { key: options.layoutKey, contentKey: options.contentKey }
+    : { contentKey: options.contentKey };
   if (options.settingsKey) {
     entry.settingsKey = options.settingsKey;
+  }
+  if (options.isExternalContent) {
+    entry.isExternalContent = true;
   }
   if (kind === "BlockGrid") {
     entry.columnSpan = options.columnSpan ?? DEFAULT_GRID_COLUMN_SPAN;
@@ -311,7 +328,9 @@ export function insertAtPosition<T>(
 }
 
 /**
- * Finds a layout item by contentKey, searching BlockGrid areas recursively.
+ * Finds a layout item by contentKey — or by the layout item's own key (Umbraco 19+), which is
+ * the only unambiguous handle when the same Library Element is placed more than once —
+ * searching BlockGrid areas recursively.
  */
 export function findLayoutLocation(
   items: BlockLayoutItem[],
@@ -321,7 +340,7 @@ export function findLayoutLocation(
 ): LayoutLocation | null {
   for (let index = 0; index < items.length; index++) {
     const entry = items[index];
-    if (entry.contentKey === contentKey) {
+    if (entry.contentKey === contentKey || (entry.key !== undefined && entry.key === contentKey)) {
       return { items, index, entry, parent, areaKey };
     }
     for (const area of entry.areas ?? []) {
@@ -350,23 +369,30 @@ export function collectNestedAreaContentKeys(entry: BlockLayoutItem): string[] {
 /**
  * Removes a block from a top-level container: its layout entry, contentData entry, settingsData
  * entry (resolved via the layout entry's settingsKey) and every expose entry. Mutates in place.
+ * For a Library (external) block only the layout and settings entries are removed (it has no
+ * local contentData or expose entries, and the Element itself is left untouched).
  * Callers must check for nested area children first; this does not cascade.
  *
- * @returns The removed layout entry, or null if the block isn't in the layout or contentData.
+ * @returns The removed layout entry, or null if a local block isn't in contentData.
  */
 export function removeBlockFromContainer(
   container: DiscoveredBlockArrays & { expose: BlockExposeItem[] },
   location: LayoutLocation
 ): { layoutEntry: BlockLayoutItem; settingsKey: string | null } | null {
   const contentKey = location.entry.contentKey;
-  const contentIndex = container.contentData.findIndex(b => b.key === contentKey);
-  if (contentIndex === -1) {
+  const isExternal = location.entry.isExternalContent === true;
+  // A Library (external) block has no local contentData — only the reference is removed,
+  // the Element itself is left untouched.
+  const contentIndex = isExternal ? -1 : container.contentData.findIndex(b => b.key === contentKey);
+  if (!isExternal && contentIndex === -1) {
     return null;
   }
 
   const settingsKey = location.entry.settingsKey ?? null;
   location.items.splice(location.index, 1);
-  container.contentData.splice(contentIndex, 1);
+  if (contentIndex !== -1) {
+    container.contentData.splice(contentIndex, 1);
+  }
 
   if (settingsKey) {
     const settingsIndex = container.settingsData.findIndex(b => b.key === settingsKey);
@@ -375,9 +401,11 @@ export function removeBlockFromContainer(
     }
   }
 
-  for (let i = container.expose.length - 1; i >= 0; i--) {
-    if (container.expose[i].contentKey === contentKey) {
-      container.expose.splice(i, 1);
+  if (!isExternal) {
+    for (let i = container.expose.length - 1; i >= 0; i--) {
+      if (container.expose[i].contentKey === contentKey) {
+        container.expose.splice(i, 1);
+      }
     }
   }
 

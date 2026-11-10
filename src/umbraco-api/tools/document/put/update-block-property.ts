@@ -16,6 +16,7 @@ import { matchesProperty, getPropertyKey } from "./helpers/property-matching.js"
 import {
   discoverAllBlockArrays,
   findBlockByKey,
+  findExternalLayoutReference,
   type BlockDataItem
 } from "./helpers/block-discovery.js";
 import {
@@ -29,6 +30,7 @@ import {
 const blockUpdateResultSchema = z.object({
   success: z.boolean(),
   contentKey: z.string().guid(),
+  layoutKey: z.string().guid().optional(),
   message: z.string(),
   updatedCount: z.number().optional(),
   addedCount: z.number().optional(),
@@ -182,6 +184,18 @@ const UpdateBlockPropertyTool = {
       const foundBlock = findBlockByKey(discoveredArrays, update.contentKey, update.blockType);
 
       if (!foundBlock) {
+        // A Library (external) block has no local contentData: its content lives in the Element.
+        const external = update.blockType === "content"
+          ? findExternalLayoutReference(discoveredArrays, update.contentKey)
+          : null;
+        if (external) {
+          results.push({
+            success: false,
+            contentKey: update.contentKey,
+            message: `Block '${update.contentKey}' references Library Element '${external.contentKey}'; its content is stored in the Element, not this block. Update the Element with update-element-properties (id '${external.contentKey}') — the change applies everywhere the Element is used.`
+          });
+          continue;
+        }
         notFoundBlocks.push({ contentKey: update.contentKey, blockType: update.blockType });
         results.push({
           success: false,

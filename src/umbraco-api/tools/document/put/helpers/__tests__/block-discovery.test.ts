@@ -1,4 +1,5 @@
 import {
+  findExternalLayoutReference,
   isRichTextValue,
   isBlockStructure,
   discoverAllBlockArrays,
@@ -639,5 +640,32 @@ describe("block-discovery helpers", () => {
         expect(result!.block.contentTypeKey).toBe("type-1");
       });
     });
+  });
+});
+
+describe("findExternalLayoutReference", () => {
+  const ELEMENT_KEY = "aaaaaaaa-0000-0000-0000-00000000000e";
+  const value = {
+    layout: {
+      "Umbraco.BlockGrid": [
+        {
+          contentKey: "local-1",
+          areas: [{ key: "area", items: [{ key: "layout-1", contentKey: ELEMENT_KEY, isExternalContent: true, settingsKey: "s-1" }] }]
+        }
+      ]
+    },
+    contentData: [{ key: "local-1", contentTypeKey: "type", values: [] }],
+    settingsData: [],
+    expose: []
+  };
+
+  it("should find an external reference nested in a BlockGrid area by contentKey or layout key", () => {
+    const discovered = discoverAllBlockArrays(value);
+    expect(findExternalLayoutReference(discovered, ELEMENT_KEY)).toEqual({ contentKey: ELEMENT_KEY, settingsKey: "s-1", path: "root" });
+    expect(findExternalLayoutReference(discovered, "layout-1")?.contentKey).toBe(ELEMENT_KEY);
+  });
+
+  it("should ignore local blocks", () => {
+    expect(findExternalLayoutReference(discoverAllBlockArrays(value), "local-1")).toBeNull();
   });
 });
