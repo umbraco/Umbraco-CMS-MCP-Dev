@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transfer-document-block-to-library should move a BlockList block's content into a published Library Element and reference it 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Transferred 1 block in BlockList property 'blockList' to the Library",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Created Library Element '_Test Transferred Library Element' (published); the block now references it",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;

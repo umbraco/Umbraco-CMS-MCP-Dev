@@ -44,6 +44,8 @@ import UpdateDocumentNameTool from "./put/update-document-name.js";
 import UpdateBlockPropertyTool from "./put/update-block-property.js";
 import CreateDocumentBlockTool from "./put/create-document-block.js";
 import DeleteDocumentBlockTool from "./put/delete-document-block.js";
+import TransferDocumentBlockToLibraryTool from "./put/transfer-document-block-to-library.js";
+import DisconnectDocumentBlockFromLibraryTool from "./put/disconnect-document-block-from-library.js";
 import GetDocumentRootTool from "./items/get/get-root.js";
 import GetDocumentChildrenTool from "./items/get/get-children.js";
 import GetDocumentAncestorsTool from "./items/get/get-ancestors.js";
@@ -101,6 +103,11 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(UpdateBlockPropertyTool);
     tools.push(CreateDocumentBlockTool);
     tools.push(DeleteDocumentBlockTool);
+    // Library (reusable content) block tools read or create Elements, so need Library access too.
+    if (AuthorizationPolicies.TreeAccessElements(user)) {
+      tools.push(TransferDocumentBlockToLibraryTool);
+      tools.push(DisconnectDocumentBlockFromLibraryTool);
+    }
     tools.push(PutDocumentDomainsTool);
     tools.push(PutDocumentNotificationsTool);
     tools.push(PutDocumentPublicAccessTool);

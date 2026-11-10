@@ -499,6 +499,23 @@ export function removeRteBlockElement(markup: string, contentKey: string): strin
   return markup.slice(0, start) + markup.slice(end);
 }
 
+/**
+ * Points a block's RichText markup element at a new contentKey (used when a block is transferred
+ * to, or disconnected from, the Library). Returns null when no element for oldKey exists.
+ */
+export function rekeyRteBlockElement(markup: string, oldKey: string, newKey: string): string | null {
+  const found = findRteBlockElement(markup, oldKey);
+  if (!found) {
+    return null;
+  }
+  const element = markup.slice(found.start, found.end);
+  const rekeyed = element.replace(
+    new RegExp(`(\\bdata-content-key=["'])${escapeRegExp(oldKey)}(["'])`, "i"),
+    `$1${newKey}$2`
+  );
+  return markup.slice(0, found.start) + rekeyed + markup.slice(found.end);
+}
+
 // ---------------------------------------------------------------------------------------------
 // Data type block configuration
 // ---------------------------------------------------------------------------------------------
