@@ -4,6 +4,7 @@ exports[`create-document-block BlockGrid should insert into a named area of a bl
 {
   "content": [],
   "structuredContent": {
+    "kind": "BlockGrid",
     "message": "Created 1 block in BlockGrid property 'blockGrid'",
     "results": [
       {
@@ -21,6 +22,7 @@ exports[`create-document-block BlockList should create an empty settings entry w
 {
   "content": [],
   "structuredContent": {
+    "kind": "BlockList",
     "message": "Created 1 block in BlockList property 'blockList'",
     "results": [
       {
@@ -38,6 +40,7 @@ exports[`create-document-block BlockList should insert before an existing siblin
 {
   "content": [],
   "structuredContent": {
+    "kind": "BlockList",
     "message": "Created 1 block in BlockList property 'blockList'",
     "results": [
       {
@@ -67,6 +70,7 @@ exports[`create-document-block BlockList should write contentData, expose, and l
 {
   "content": [],
   "structuredContent": {
+    "kind": "BlockList",
     "message": "Created 1 block in BlockList property 'blockList'",
     "results": [
       {
@@ -96,6 +100,7 @@ exports[`create-document-block RichText should write the markup element alongsid
 {
   "content": [],
   "structuredContent": {
+    "kind": "RichText",
     "message": "Created 1 block in RichText property 'richText'",
     "results": [
       {
@@ -113,6 +118,7 @@ exports[`create-document-block culture variance should write one expose entry pe
 {
   "content": [],
   "structuredContent": {
+    "kind": "BlockList",
     "message": "Created 1 block in BlockList property 'variantBlocks'",
     "results": [
       {
@@ -123,6 +129,36 @@ exports[`create-document-block culture variance should write one expose entry pe
     ],
     "success": true,
   },
+}
+`;
+
+exports[`create-document-block expectedKind should create the block and return its kind when the editor matches 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "kind": "RichText",
+    "message": "Created 1 block in RichText property 'richText'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Created block",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
+exports[`create-document-block expectedKind should write nothing when the property uses a different editor 1`] = `
+{
+  "content": [
+    {
+      "text": "{"type":"https://httpstatuses.com/400","title":"Unexpected block editor","status":400,"detail":"Property 'blockList' is a BlockList property, not BlockGrid"}",
+      "type": "text",
+    },
+  ],
+  "isError": true,
 }
 `;
 
