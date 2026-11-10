@@ -33,7 +33,6 @@ describe("DocumentBlueprintBuilder", () => {
         variants: [
           {
             culture: null,
-            segment: null,
             name: TEST_BLUEPRINT_NAME,
           },
         ],
@@ -99,20 +98,17 @@ describe("DocumentBlueprintBuilder", () => {
 
       expect(model.variants).toContainEqual({
         culture: null,
-        segment: null,
         name: TEST_VARIANT_NAME,
       });
     });
 
-    it("should add variant with culture and segment", () => {
+    it("should add variant with culture", () => {
       const culture = "en-US";
-      const segment = "mobile";
-      builder.withVariant(TEST_VARIANT_NAME, culture, segment);
+      builder.withVariant(TEST_VARIANT_NAME, culture);
       const model = builder.build();
 
       expect(model.variants).toContainEqual({
         culture,
-        segment,
         name: TEST_VARIANT_NAME,
       });
     });
@@ -141,12 +137,10 @@ describe("DocumentBlueprintBuilder", () => {
         variants: [
           {
             culture: null,
-            segment: null,
             name: TEST_BLUEPRINT_NAME,
           },
           {
             culture: null,
-            segment: null,
             name: TEST_VARIANT_NAME,
           },
         ],

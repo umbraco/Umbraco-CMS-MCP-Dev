@@ -17,6 +17,7 @@ import DeleteDataTypeFolderTool from "./folders/delete/delete-folder.js";
 import GetDataTypeFolderTool from "./folders/get/get-folder.js";
 import GetDataTypeSearchTool from "./items/get/get-search.js";
 import UpdateDataTypeFolderTool from "./folders/put/update-folder.js";
+import MoveDataTypeFolderTool from "./folders/put/move-folder.js";
 import GetDataTypeRootTool from "./items/get/get-root.js";
 import GetDataTypeChildrenTool from "./items/get/get-children.js";
 import GetDataTypeSiblingsTool from "./items/get/get-siblings.js";
@@ -78,6 +79,7 @@ export const DataTypeCollection: ToolCollectionExport = {
       tools.push(DeleteDataTypeFolderTool);
       tools.push(GetDataTypeFolderTool);
       tools.push(UpdateDataTypeFolderTool);
+      tools.push(MoveDataTypeFolderTool);
     }
 
     return tools;

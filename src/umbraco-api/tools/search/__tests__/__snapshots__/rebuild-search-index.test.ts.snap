@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rebuild-search-index should handle a non-existent index alias 1`] = `
+{
+  "content": [
+    {
+      "text": "{"status":400,"detail":"Could not rebuild the index with the specified index alias. See the log for details."}",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;
+
+exports[`rebuild-search-index should trigger a rebuild of a single index 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

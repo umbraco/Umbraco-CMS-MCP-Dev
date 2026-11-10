@@ -62,7 +62,7 @@ describe("create-document-block", () => {
     layout: { "Umbraco.BlockList": [{ contentKey: EXISTING_KEY }] },
     contentData: [{ key: EXISTING_KEY, contentTypeKey: infra.elementTypeId, values: [{ alias: "title", value: FIRST_TITLE }] }],
     settingsData: [],
-    expose: [{ contentKey: EXISTING_KEY, culture: null, segment: null }]
+    expose: [{ contentKey: EXISTING_KEY, culture: null }]
   });
 
   describe("BlockList", () => {
@@ -87,7 +87,7 @@ describe("create-document-block", () => {
       expect(value.contentData).toHaveLength(1);
       expect(value.contentData[0].key).toBe(contentKey);
       expect(value.contentData[0].values.find((v: any) => v.alias === "title")?.value).toBe(NEW_TITLE);
-      expect(value.expose).toEqual([{ contentKey, culture: null, segment: null }]);
+      expect(value.expose).toEqual([{ contentKey, culture: null }]);
     });
 
     it("should create an empty settings entry when the block type has settings and none are given", async () => {
@@ -218,7 +218,8 @@ describe("create-document-block", () => {
       expect(area.items).toHaveLength(1);
       expect(area.items[0]).toMatchObject({ contentKey: childKey, columnSpan: 6, rowSpan: 1 });
       expect(value.contentData.map((b: any) => b.key)).toEqual([parentKey, childKey]);
-      expect(value.expose.map((e: any) => e.contentKey)).toEqual([parentKey, childKey]);
+      // Expose order carries no meaning and Umbraco 19 does not preserve it on save.
+      expect(value.expose.map((e: any) => e.contentKey).sort()).toEqual([parentKey, childKey].sort());
     });
 
     it("should reject an element type the area does not allow", async () => {
@@ -312,7 +313,7 @@ describe("create-document-block", () => {
             layout: { "Umbraco.RichText": [{ contentKey: EXISTING_KEY }] },
             contentData: [{ key: EXISTING_KEY, contentTypeKey: infra.elementTypeId, values: [{ alias: "title", value: FIRST_TITLE }] }],
             settingsData: [],
-            expose: [{ contentKey: EXISTING_KEY, culture: null, segment: null }]
+            expose: [{ contentKey: EXISTING_KEY, culture: null }]
           }
         }
       });
@@ -358,7 +359,7 @@ describe("create-document-block", () => {
       expect(value.blocks.layout["Umbraco.RichText"]).toHaveLength(1);
       expect(value.blocks.layout["Umbraco.RichText"][0]).toMatchObject({ contentKey });
       expect(value.blocks.contentData[0].key).toBe(contentKey);
-      expect(value.blocks.expose).toEqual([{ contentKey, culture: null, segment: null }]);
+      expect(value.blocks.expose).toEqual([{ contentKey, culture: null }]);
     });
   });
 
@@ -388,8 +389,8 @@ describe("create-document-block", () => {
       const contentKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.variantBlockList);
       expect(value.expose).toEqual(expect.arrayContaining([
-        { contentKey, culture: DEFAULT_CULTURE, segment: null },
-        { contentKey, culture: SECOND_CULTURE, segment: null }
+        { contentKey, culture: DEFAULT_CULTURE },
+        { contentKey, culture: SECOND_CULTURE }
       ]));
       expect(value.expose).toHaveLength(2);
       const titles = value.contentData[0].values.filter((v: any) => v.alias === "title");
@@ -420,8 +421,8 @@ describe("create-document-block", () => {
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.variantBlockList);
       expect(value.expose).toHaveLength(2);
       expect(value.expose).toEqual(expect.arrayContaining([
-        { contentKey, culture: DEFAULT_CULTURE, segment: null },
-        { contentKey, culture: SECOND_CULTURE, segment: null }
+        { contentKey, culture: DEFAULT_CULTURE },
+        { contentKey, culture: SECOND_CULTURE }
       ]));
     });
   });

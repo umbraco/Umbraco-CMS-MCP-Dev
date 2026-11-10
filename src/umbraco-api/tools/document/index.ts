@@ -17,7 +17,6 @@ import GetItemDocumentTool from "./get/get-item-document.js";
 import GetDocumentAreReferencedTool from "./get/get-document-are-referenced.js";
 import GetDocumentByIdReferencedByTool from "./get/get-document-by-id-referenced-by.js";
 import GetDocumentByIdReferencedDescendantsTool from "./get/get-document-by-id-referenced-descendants.js";
-import GetDocumentAvailableSegmentOptionsTool from "./get/get-document-available-segment-options.js";
 import GetRecycleBinDocumentOriginalParentTool from "./get/get-recycle-bin-document-original-parent.js";
 import GetRecycleBinDocumentReferencedByTool from "./get/get-recycle-bin-document-referenced-by.js";
 import PostDocumentPublicAccessTool from "./post/post-document-public-access.js";
@@ -117,7 +116,6 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(GetDocumentAreReferencedTool);
     tools.push(GetDocumentByIdReferencedByTool);
     tools.push(GetDocumentByIdReferencedDescendantsTool);
-    tools.push(GetDocumentAvailableSegmentOptionsTool);
     tools.push(GetRecycleBinDocumentOriginalParentTool);
     tools.push(GetRecycleBinDocumentReferencedByTool);
   }

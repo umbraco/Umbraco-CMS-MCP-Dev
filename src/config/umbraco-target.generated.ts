@@ -6,11 +6,11 @@
  * Read from the Umbraco instance this server's tools were generated against,
  * via `GET /umbraco/management/api/v1/server/information`.
  *
- * Reported version: 18.0.0+c087ce9.
+ * Reported version: 19.0.0-beta1+e9aeed2.
  *
  * Passed to `checkUmbracoVersion` at startup, which blocks tool execution when
  * the connected instance's major differs. Set `UMBRACO_EXPECTED_MAJOR` (or
  * `--umbraco-expected-major`) to override it at runtime when deliberately
  * pointing at a different Umbraco major.
  */
-export const UMBRACO_TARGET_MAJOR = "18";
+export const UMBRACO_TARGET_MAJOR = "19";

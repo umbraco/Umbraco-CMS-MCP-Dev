@@ -21,7 +21,6 @@ export class DocumentVersionBuilder {
     this.model.variants = [
       {
         culture: this.culture,
-        segment: null,
         name: name,
       },
     ];

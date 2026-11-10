@@ -34,7 +34,6 @@ describe("validate-element-update", () => {
           variants: [
             {
               culture: null,
-              segment: null,
               name: TEST_ELEMENT_NAME,
             },
           ],
@@ -56,7 +55,6 @@ describe("validate-element-update", () => {
           variants: [
             {
               culture: null,
-              segment: null,
               name: TEST_ELEMENT_NAME,
             },
           ],

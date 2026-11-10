@@ -55,7 +55,7 @@ describe("delete-document-block", () => {
       .create()).getId();
 
   const block = (key: string, contentTypeKey: string) => ({ key, contentTypeKey, values: [] });
-  const expose = (key: string) => ({ contentKey: key, culture: null, segment: null });
+  const expose = (key: string) => ({ contentKey: key, culture: null });
 
   it("should remove a BlockList block with its settings, expose, and layout entries", async () => {
     // Arrange
@@ -193,8 +193,8 @@ describe("delete-document-block", () => {
     const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.variantBlockList);
     expect(value.expose.filter((e: any) => e.contentKey === contentKey)).toEqual([]);
     expect(value.expose).toEqual(expect.arrayContaining([
-      { contentKey: keptKey, culture: DEFAULT_CULTURE, segment: null },
-      { contentKey: keptKey, culture: SECOND_CULTURE, segment: null }
+      { contentKey: keptKey, culture: DEFAULT_CULTURE },
+      { contentKey: keptKey, culture: SECOND_CULTURE }
     ]));
     expect(value.expose).toHaveLength(2);
     expect(value.contentData.map((b: any) => b.key)).toEqual([keptKey]);

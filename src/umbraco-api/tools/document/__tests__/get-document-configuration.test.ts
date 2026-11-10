@@ -14,7 +14,5 @@ describe("get-document-configuration", () => {
     const data = validateToolResponse(GetDocumentConfigurationTool, result);
     expect(data).toHaveProperty("disableDeleteWhenReferenced");
     expect(data).toHaveProperty("disableUnpublishWhenReferenced");
-    expect(data).toHaveProperty("allowEditInvariantFromNonDefault");
-    expect(data).toHaveProperty("allowNonExistingSegmentsCreation");
   });
 }); 

@@ -86,7 +86,6 @@ export class ElementBuilder {
     this.model.variants = [
       {
         culture: null,
-        segment: null,
         name: name,
       },
     ];

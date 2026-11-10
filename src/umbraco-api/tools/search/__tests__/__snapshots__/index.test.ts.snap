@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`search-tool-index should have all tools when user has settings access and is an admin 1`] = `
+[
+  "get-search-indexes",
+  "get-search-index",
+  "rebuild-search-index",
+  "search-indexed-content",
+]
+`;
+
+exports[`search-tool-index should have index tools but not search when user has settings access only 1`] = `
+[
+  "get-search-indexes",
+  "get-search-index",
+  "rebuild-search-index",
+]
+`;
+
+exports[`search-tool-index should have no tools when user has no permissions 1`] = `[]`;

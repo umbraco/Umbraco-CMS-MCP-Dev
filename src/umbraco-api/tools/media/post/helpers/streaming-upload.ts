@@ -164,7 +164,7 @@ export async function streamingUploadFromUrl(
     const response = (await client.postMedia(
       {
         mediaType: { id: mediaTypeId },
-        variants: [{ culture: null, segment: null, name: params.name }],
+        variants: [{ culture: null, name: params.name }],
         values: [valueStructure] as any,
         parent: params.parentId ? { id: params.parentId } : null,
       },

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-blueprint-folder-by-id-array should get folder items for multiple ids 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Blueprint Folder Items 1",
+      },
+      {
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "name": "_Test Blueprint Folder Items 2",
+      },
+    ],
+  },
+}
+`;

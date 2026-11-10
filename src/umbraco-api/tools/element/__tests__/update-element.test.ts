@@ -35,7 +35,6 @@ describe("update-element", () => {
           variants: [
             {
               culture: null,
-              segment: null,
               name: UPDATED_ELEMENT_NAME,
             },
           ],
@@ -60,7 +59,6 @@ describe("update-element", () => {
           variants: [
             {
               culture: null,
-              segment: null,
               name: UPDATED_ELEMENT_NAME,
             },
           ],

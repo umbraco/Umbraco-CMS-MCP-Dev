@@ -141,7 +141,6 @@ const CreateDocumentTool = {
     const variants = culturesToUse.map(culture => ({
       culture,
       name: model.name,
-      segment: null,
     }));
 
     // Resolve the template: explicit override wins; otherwise use the

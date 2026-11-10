@@ -31,8 +31,8 @@ export const baseModes: ToolModeDefinition[] = [
   {
     name: 'search',
     displayName: 'Search',
-    description: 'Examine indexes and search functionality',
-    collections: ['indexer', 'searcher']
+    description: 'Umbraco Search indexes and search functionality',
+    collections: ['search']
   },
   {
     name: 'users',

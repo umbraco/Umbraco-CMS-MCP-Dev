@@ -309,7 +309,6 @@ const CreateDocumentBlockTool = {
         exposeCultures = valueCultures.length > 0 ? valueCultures : documentCultures.length > 0 ? documentCultures : [null];
       }
     }
-    const exposeSegment = elementType.variesBySegment ? (model.segment ?? null) : null;
 
     // RichText markup must be computed before mutating anything, so a missing sibling fails cleanly.
     let newMarkup: string | null = null;
@@ -341,7 +340,7 @@ const CreateDocumentBlockTool = {
     if (settingsKey && blockConfig.settingsElementTypeKey) {
       container.settingsData.push(buildBlockEntry(settingsKey, blockConfig.settingsElementTypeKey, settingsProperties));
     }
-    container.expose.push(...buildExposeEntries(contentKey, exposeCultures, exposeSegment));
+    container.expose.push(...buildExposeEntries(contentKey, exposeCultures));
     if (newMarkup !== null) {
       ctx.propertyValue.markup = newMarkup;
     }

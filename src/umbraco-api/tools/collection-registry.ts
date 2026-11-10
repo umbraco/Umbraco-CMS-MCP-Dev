@@ -8,7 +8,6 @@ import { DocumentVersionCollection } from "./document-version/index.js";
 import { ElementCollection } from "./element/index.js";
 import { HealthCollection } from "./health/index.js";
 import { ImagingCollection } from "./imaging/index.js";
-import { IndexerCollection } from "./indexer/index.js";
 import { LanguageCollection } from "./language/index.js";
 import { LogViewerCollection } from "./log-viewer/index.js";
 import { ManifestCollection } from "./manifest/index.js";
@@ -24,7 +23,7 @@ import { RedirectCollection } from "./redirect/index.js";
 import { RelationCollection } from "./relation/index.js";
 import { RelationTypeCollection } from "./relation-type/index.js";
 import { ScriptCollection } from "./script/index.js";
-import { SearcherCollection } from "./searcher/index.js";
+import { SearchCollection } from "./search/index.js";
 import { ServerCollection } from "./server/index.js";
 import { StaticFileCollection } from "./static-file/index.js";
 import { StylesheetCollection } from "./stylesheet/index.js";
@@ -53,7 +52,6 @@ export const availableCollections: ToolCollectionExport[] = [
   ElementCollection,
   HealthCollection,
   ImagingCollection,
-  IndexerCollection,
   LanguageCollection,
   LogViewerCollection,
   ManifestCollection,
@@ -69,7 +67,7 @@ export const availableCollections: ToolCollectionExport[] = [
   RelationCollection,
   RelationTypeCollection,
   ScriptCollection,
-  SearcherCollection,
+  SearchCollection,
   ServerCollection,
   StaticFileCollection,
   StylesheetCollection,

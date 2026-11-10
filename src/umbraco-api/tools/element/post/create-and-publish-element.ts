@@ -129,7 +129,6 @@ const CreateAndPublishElementTool = {
     const variants = culturesToUse.map(culture => ({
       culture,
       name: model.name,
-      segment: null,
     }));
 
     // Determine which cultures should be published immediately.

@@ -293,7 +293,6 @@ const UpdateElementBlockPropertyTool = {
     // Step 6: Convert variants from response format to request format
     const variants: ElementVariantRequestModel[] = currentElement.variants.map(v => ({
       culture: v.culture,
-      segment: v.segment,
       name: v.name
     }));
 

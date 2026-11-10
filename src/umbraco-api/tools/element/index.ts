@@ -1,4 +1,5 @@
 import GetElementByIdTool from "./get/get-element-by-id.js";
+import GetElementBatchTool from "./get/get-element-batch.js";
 import GetElementPublishedTool from "./get/get-element-published.js";
 import GetElementConfigurationTool from "./get/get-element-configuration.js";
 import GetElementAuditLogTool from "./get/get-element-audit-log.js";
@@ -68,6 +69,7 @@ export const ElementCollection: ToolCollectionExport = {
     if (AuthorizationPolicies.TreeAccessElements(user)) {
       // Read
       tools.push(GetElementByIdTool);
+      tools.push(GetElementBatchTool);
       tools.push(GetElementPublishedTool);
       tools.push(GetElementConfigurationTool);
       tools.push(GetElementAuditLogTool);

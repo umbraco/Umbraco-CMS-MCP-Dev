@@ -181,13 +181,13 @@ describe("block-builder helpers", () => {
 
   describe("buildExposeEntries", () => {
     it("should build one invariant entry by default", () => {
-      expect(buildExposeEntries(KEY_A, [])).toEqual([{ contentKey: KEY_A, culture: null, segment: null }]);
+      expect(buildExposeEntries(KEY_A, [])).toEqual([{ contentKey: KEY_A, culture: null }]);
     });
 
     it("should build one entry per distinct culture", () => {
       expect(buildExposeEntries(KEY_A, ["en-US", "da-DK", "en-US"])).toEqual([
-        { contentKey: KEY_A, culture: "en-US", segment: null },
-        { contentKey: KEY_A, culture: "da-DK", segment: null }
+        { contentKey: KEY_A, culture: "en-US" },
+        { contentKey: KEY_A, culture: "da-DK" }
       ]);
     });
   });

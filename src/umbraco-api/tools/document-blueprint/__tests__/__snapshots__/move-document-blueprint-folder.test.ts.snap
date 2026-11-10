@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`move-document-blueprint-folder should handle non-existent folder 1`] = `
+{
+  "content": [
+    {
+      "text": "{"type":"Error","title":"The folder could not be found","status":404,"operationStatus":"NotFound"}",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;
+
+exports[`move-document-blueprint-folder should move a folder into another folder 1`] = `
+{
+  "content": [
+    {
+      "text": "",
+      "type": "text",
+    },
+  ],
+}
+`;

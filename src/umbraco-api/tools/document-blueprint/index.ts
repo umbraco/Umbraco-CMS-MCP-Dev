@@ -9,10 +9,12 @@ import GetDocumentBlueprintSiblingsTool from "./get/get-siblings.js";
 import GetDocumentBlueprintScaffoldTool from "./get/get-document-blueprint-scaffold.js";
 import CreateDocumentBlueprintFromDocumentTool from "./post/create-document-blueprint-from-document.js";
 import GetDocumentBlueprintByIdArrayTool from "./get/get-document-blueprint-by-id-array.js";
+import GetDocumentBlueprintFolderByIdArrayTool from "./get/get-document-blueprint-folder-by-id-array.js";
 import MoveDocumentBlueprintTool from "./put/move-blueprint.js";
 import CreateDocumentBlueprintFolderTool from "./folders/post/create-folder.js";
 import GetDocumentBlueprintFolderTool from "./folders/get/get-folder.js";
 import UpdateDocumentBlueprintFolderTool from "./folders/put/update-folder.js";
+import MoveDocumentBlueprintFolderTool from "./folders/put/move-folder.js";
 import DeleteDocumentBlueprintFolderTool from "./folders/delete/delete-folder.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umbraco-api/schemas/index.js";
@@ -41,6 +43,7 @@ export const DocumentBlueprintCollection: ToolCollectionExport = {
 
       // Blueprint queries
       tools.push(GetDocumentBlueprintByIdArrayTool);
+      tools.push(GetDocumentBlueprintFolderByIdArrayTool);
       tools.push(GetDocumentBlueprintScaffoldTool);
       tools.push(CreateDocumentBlueprintFromDocumentTool);
 
@@ -54,6 +57,7 @@ export const DocumentBlueprintCollection: ToolCollectionExport = {
       tools.push(CreateDocumentBlueprintFolderTool);
       tools.push(GetDocumentBlueprintFolderTool);
       tools.push(UpdateDocumentBlueprintFolderTool);
+      tools.push(MoveDocumentBlueprintFolderTool);
       tools.push(DeleteDocumentBlueprintFolderTool);
     }
 

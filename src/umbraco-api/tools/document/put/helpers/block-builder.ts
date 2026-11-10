@@ -269,14 +269,14 @@ export function buildLayoutEntry(
 
 /**
  * Builds expose entries for a new block: one per culture (null for invariant).
+ * Umbraco 19 removed segment from block expose entries (BlockItemVariation).
  */
 export function buildExposeEntries(
   contentKey: string,
-  cultures: Array<string | null>,
-  segment: string | null = null
+  cultures: Array<string | null>
 ): BlockExposeItem[] {
   const unique = Array.from(new Set(cultures.length > 0 ? cultures : [null]));
-  return unique.map(culture => ({ contentKey, culture, segment }));
+  return unique.map(culture => ({ contentKey, culture }));
 }
 
 /**

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`search-indexed-content should handle a non-existent index alias 1`] = `
+{
+  "content": [
+    {
+      "text": "{"status":404,"detail":"No searcher was found for the index alias '_NonExistentIndex'."}",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;

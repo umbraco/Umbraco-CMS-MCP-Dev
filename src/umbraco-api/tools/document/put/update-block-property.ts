@@ -293,7 +293,6 @@ const UpdateBlockPropertyTool = {
     // Step 6: Convert variants from response format to request format
     const variants: DocumentVariantRequestModel[] = currentDocument.variants.map(v => ({
       culture: v.culture,
-      segment: v.segment,
       name: v.name
     }));
 

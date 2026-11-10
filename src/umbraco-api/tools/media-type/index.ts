@@ -18,6 +18,7 @@ import GetMediaTypeFolderTool from "./folders/get/get-folder.js";
 import CreateMediaTypeFolderTool from "./folders/post/create-folder.js";
 import DeleteMediaTypeFolderTool from "./folders/delete/delete-folder.js";
 import UpdateMediaTypeFolderTool from "./folders/put/update-folder.js";
+import MoveMediaTypeFolderTool from "./folders/put/move-folder.js";
 import CreateMediaTypeTool from "./post/create-media-type.js";
 import CopyMediaTypeTool from "./post/copy-media-type.js";
 import GetMediaTypeAvailableCompositionsTool from "./post/get-media-type-available-compositions.js";
@@ -46,6 +47,7 @@ export const MediaTypeCollection: ToolCollectionExport = {
       tools.push(CreateMediaTypeFolderTool);
       tools.push(DeleteMediaTypeFolderTool);
       tools.push(UpdateMediaTypeFolderTool);
+      tools.push(MoveMediaTypeFolderTool);
 
       tools.push(CreateMediaTypeTool);
       tools.push(CopyMediaTypeTool);

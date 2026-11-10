@@ -15,7 +15,6 @@ export class MemberBuilder {
     this.model.variants = [
       {
         culture: null,
-        segment: null,
         name: name,
       },
     ];
