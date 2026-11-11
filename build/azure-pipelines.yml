@@ -67,7 +67,7 @@ stages:
 
 # Runs in parallel with the build and gates the npm release: a failed SBOM (e.g. a license policy
 # violation) must stop a publish. Runs on the same branches as Deploy_Npm (main or v17/main), or on any
-# branch when sbom_generate is set (a forced run is not flagged isLatest in Dependency-Track).
+# branch when sbom_generate is set (a forced run is also flagged isLatest in Dependency-Track).
 - stage: GenerateSBOM
   displayName: Generate SBOM
   dependsOn: []
@@ -83,9 +83,6 @@ stages:
         sbom_nuget: false
         sbom_npm_paths: ['.']
         sbom_version_from: package.json # e.g. version 17.6.11 is uploaded to project "Umbraco.Cms.Mcp-Dev v17"
-        # a run forced with sbom_generate must not displace the latest version in Dependency-Track
-        ${{ if eq(parameters.sbom_generate, true) }}:
-          sbom_is_latest: 'false'
 
 - stage: Deploy_Npm
   displayName: Npm release
