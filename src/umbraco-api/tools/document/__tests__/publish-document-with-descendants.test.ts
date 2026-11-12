@@ -143,7 +143,10 @@ describe("publish-document-with-descendants - polling failure modes", () => {
     );
 
     expect(result.isError).toBe(true);
-    expect(JSON.parse(result.content[0].text)).toEqual(failedBranchProblem);
+    expect(JSON.parse(result.content[0].text)).toEqual({
+      ...failedBranchProblem,
+      taskId: TASK_ID,
+    });
   });
 
   it("returns an error result when the poll HTTP call itself fails", async () => {

@@ -81,9 +81,14 @@ const PublishDocumentWithDescendantsTool = {
 
         // The CMS came back with a ProblemDetails error - some branch items
         // may have failed to publish (see failedBranchItems on the body).
-        return createToolResultError(statusResponse.data || {
-          status: statusResponse.status,
-          detail: statusResponse.statusText,
+        // Keep the taskId on the error so the caller can still follow up with
+        // get-document-publish-with-descendants-result.
+        const problem = statusResponse.data && typeof statusResponse.data === "object"
+          ? statusResponse.data
+          : { status: statusResponse.status, detail: statusResponse.statusText };
+        return createToolResultError({
+          ...problem,
+          taskId: initialResponse.taskId,
         });
       } catch (error) {
         // The poll HTTP call itself failed (network error, etc).
