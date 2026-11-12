@@ -11,8 +11,9 @@ let worker: Unstable_DevWorker | undefined;
 let workerUrl: string | undefined;
 
 const BASE_VARS = {
-  UMBRACO_BASE_URL: "https://localhost:44391",
-  UMBRACO_SERVER_URL: "http://localhost:56472",
+  // Overridable so the suite can run against a site on other ports.
+  UMBRACO_BASE_URL: process.env.UMBRACO_BASE_URL ?? "https://localhost:44391",
+  UMBRACO_SERVER_URL: process.env.UMBRACO_SERVER_URL ?? "http://localhost:56472",
   UMBRACO_OAUTH_CLIENT_ID: "umbraco-cms-developer-mcp-hosted",
   COOKIE_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
   ENABLE_INFO_ENDPOINT: "true",
