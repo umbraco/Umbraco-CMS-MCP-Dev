@@ -4,6 +4,7 @@ import {
   type CollectionConfiguration,
   type ToolDefinition,
   createToolAnnotations,
+  getRegisteredOutputSchema,
 } from "@umbraco-cms/mcp-server-sdk";
 
 /**
@@ -80,7 +81,9 @@ export const ToolRegistrar = {
       server.registerTool(tool.name, {
         description: tool.description,
         inputSchema: tool.inputSchema,
-        outputSchema: tool.outputSchema,
+        // In dry-run, a mutation tool returns a preview rather than its real
+        // result, so its outputSchema must not be advertised (or enforced).
+        outputSchema: getRegisteredOutputSchema(tool),
         annotations,
       }, tool.handler);
     });
