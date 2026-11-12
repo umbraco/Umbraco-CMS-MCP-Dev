@@ -181,13 +181,13 @@ describe("block-builder helpers", () => {
 
   describe("buildExposeEntries", () => {
     it("should build one invariant entry by default", () => {
-      expect(buildExposeEntries(KEY_A, [])).toEqual([{ contentKey: KEY_A, culture: null, segment: null }]);
+      expect(buildExposeEntries(KEY_A, [])).toEqual([{ contentKey: KEY_A, culture: null }]);
     });
 
     it("should build one entry per distinct culture", () => {
       expect(buildExposeEntries(KEY_A, ["en-US", "da-DK", "en-US"])).toEqual([
-        { contentKey: KEY_A, culture: "en-US", segment: null },
-        { contentKey: KEY_A, culture: "da-DK", segment: null }
+        { contentKey: KEY_A, culture: "en-US" },
+        { contentKey: KEY_A, culture: "da-DK" }
       ]);
     });
   });
@@ -354,5 +354,52 @@ describe("block-builder helpers", () => {
       expect(checkAllowedInArea(configs[1], restricted)).toContain("not allowed in area 'main'");
       expect(checkAllowedInArea(configs[1], { key: AREA_KEY, specifiedAllowance: [{ groupKey: GROUP_KEY }] })).toBeNull();
     });
+  });
+});
+
+describe("Library (external) blocks", () => {
+  const LAYOUT_KEY = "eeeeeeee-0000-0000-0000-000000000005";
+
+  it("should build a layout entry with its own key and the external flag", () => {
+    expect(buildLayoutEntry("BlockList", { layoutKey: LAYOUT_KEY, contentKey: KEY_A, isExternalContent: true })).toEqual({
+      key: LAYOUT_KEY,
+      contentKey: KEY_A,
+      isExternalContent: true
+    });
+  });
+
+  it("should not add key or isExternalContent unless asked", () => {
+    expect(buildLayoutEntry("BlockList", { contentKey: KEY_A })).toEqual({ contentKey: KEY_A });
+  });
+
+  it("should find a layout entry by its layout key", () => {
+    const items: BlockLayoutItem[] = [
+      { key: "k1", contentKey: KEY_A, isExternalContent: true },
+      { key: LAYOUT_KEY, contentKey: KEY_A, isExternalContent: true }
+    ];
+    expect(findLayoutLocation(items, LAYOUT_KEY)?.index).toBe(1);
+    expect(findLayoutLocation(items, KEY_A)?.index).toBe(0);
+  });
+
+  it("should remove only the layout and settings of an external block", () => {
+    const container = {
+      contentData: [{ key: KEY_B, contentTypeKey: KEY_C, values: [] }],
+      settingsData: [{ key: SETTINGS_KEY, contentTypeKey: KEY_C, values: [] }],
+      expose: [{ contentKey: KEY_B, culture: null }],
+      layoutItems: [
+        { key: LAYOUT_KEY, contentKey: KEY_A, isExternalContent: true, settingsKey: SETTINGS_KEY },
+        { contentKey: KEY_B }
+      ] as BlockLayoutItem[],
+      path: "root"
+    };
+    const location = findLayoutLocation(container.layoutItems, LAYOUT_KEY)!;
+
+    const removed = removeBlockFromContainer(container as any, location);
+
+    expect(removed).toEqual({ layoutEntry: expect.objectContaining({ contentKey: KEY_A }), settingsKey: SETTINGS_KEY });
+    expect(container.layoutItems.map(i => i.contentKey)).toEqual([KEY_B]);
+    expect(container.settingsData).toEqual([]);
+    expect(container.contentData.map(b => b.key)).toEqual([KEY_B]);
+    expect(container.expose).toEqual([{ contentKey: KEY_B, culture: null }]);
   });
 });

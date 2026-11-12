@@ -307,7 +307,6 @@ export async function uploadMediaFile(
       variants: [
         {
           culture: null,
-          segment: null,
           name: params.name, // Use original name provided by user
         },
       ],

@@ -20,7 +20,6 @@ export class DocumentBlueprintBuilder {
       variants: [
         {
           culture: null,
-          segment: null,
           name: name,
         },
       ],
@@ -62,12 +61,10 @@ export class DocumentBlueprintBuilder {
 
   withVariant(
     name: string,
-    culture: string | null = null,
-    segment: string | null = null
+    culture: string | null = null
   ): DocumentBlueprintBuilder {
     this.model.variants.push({
       culture,
-      segment,
       name,
     });
     return this;

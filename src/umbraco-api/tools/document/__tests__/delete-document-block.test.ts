@@ -1,6 +1,8 @@
 import DeleteDocumentBlockTool, { deleteDocumentBlockOutputSchema } from "../put/delete-document-block.js";
 import CreateDocumentBlockTool, { createDocumentBlockOutputSchema } from "../put/create-document-block.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
+import { ElementBuilder } from "../../element/__tests__/helpers/element-builder.js";
+import { ElementTestHelper } from "../../element/__tests__/helpers/element-test-helper.js";
 import {
   DocumentBlockTestHelper,
   DOCUMENT_BLOCK_AREA_KEY,
@@ -55,7 +57,7 @@ describe("delete-document-block", () => {
       .create()).getId();
 
   const block = (key: string, contentTypeKey: string) => ({ key, contentTypeKey, values: [] });
-  const expose = (key: string) => ({ contentKey: key, culture: null, segment: null });
+  const expose = (key: string) => ({ contentKey: key, culture: null });
 
   it("should remove a BlockList block with its settings, expose, and layout entries", async () => {
     // Arrange
@@ -193,8 +195,8 @@ describe("delete-document-block", () => {
     const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.variantBlockList);
     expect(value.expose.filter((e: any) => e.contentKey === contentKey)).toEqual([]);
     expect(value.expose).toEqual(expect.arrayContaining([
-      { contentKey: keptKey, culture: DEFAULT_CULTURE, segment: null },
-      { contentKey: keptKey, culture: SECOND_CULTURE, segment: null }
+      { contentKey: keptKey, culture: DEFAULT_CULTURE },
+      { contentKey: keptKey, culture: SECOND_CULTURE }
     ]));
     expect(value.expose).toHaveLength(2);
     expect(value.contentData.map((b: any) => b.key)).toEqual([keptKey]);
@@ -224,5 +226,50 @@ describe("delete-document-block", () => {
 
     // Assert
     expect(result).toMatchSnapshot();
+  });
+
+  describe("Library elements", () => {
+    const LIBRARY_ELEMENT_NAME = "_Test Delete Block Library Element";
+
+    afterEach(async () => {
+      await ElementTestHelper.cleanup(LIBRARY_ELEMENT_NAME);
+    });
+
+    it("should remove only the reference and settings of a Library Element block", async () => {
+      // Arrange - the same Library Element placed twice, plus a local block
+      const elementId = (await new ElementBuilder()
+        .withName(LIBRARY_ELEMENT_NAME)
+        .withDocumentType(infra.elementTypeId)
+        .withValue("title", LIBRARY_ELEMENT_NAME)
+        .create()).getId();
+      const LAYOUT_KEY_1 = "3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c11";
+      const LAYOUT_KEY_2 = "3f9b2c1d-4e5f-4a6b-8c7d-9e0f1a2b3c12";
+      const documentId = await createDocument(ALIASES.blockList, {
+        layout: {
+          "Umbraco.BlockList": [
+            { key: LAYOUT_KEY_1, contentKey: elementId, isExternalContent: true, settingsKey: SETTINGS_KEY },
+            { key: LAYOUT_KEY_2, contentKey: elementId, isExternalContent: true },
+            { contentKey: KEY_B }
+          ]
+        },
+        contentData: [block(KEY_B, infra.elementTypeId)],
+        settingsData: [block(SETTINGS_KEY, infra.settingsTypeId)],
+        expose: [expose(KEY_B)]
+      });
+
+      // Act - target the first placement by its layout key
+      const result = await call({ documentId, propertyAlias: ALIASES.blockList, contentKey: LAYOUT_KEY_1 });
+
+      // Assert
+      expect(result.isError).toBeFalsy();
+      const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockList);
+      expect(value.layout["Umbraco.BlockList"].map((l: any) => l.key ?? l.contentKey)).toEqual([LAYOUT_KEY_2, expect.anything()]);
+      expect(value.layout["Umbraco.BlockList"][1].contentKey).toBe(KEY_B);
+      expect(value.settingsData).toEqual([]);
+      expect(value.contentData.map((b: any) => b.key)).toEqual([KEY_B]);
+      expect(value.expose.map((e: any) => e.contentKey)).toEqual([KEY_B]);
+      // The Element itself is untouched
+      expect(await ElementTestHelper.findElement(LIBRARY_ELEMENT_NAME)).toBeDefined();
+    });
   });
 });

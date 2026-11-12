@@ -1,5 +1,12 @@
 import UpdateBlockPropertyTool from "../put/update-block-property.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
+import {
+  DocumentBlockTestHelper,
+  DOCUMENT_BLOCK_PROPERTY_ALIASES as BLOCK_ALIASES,
+  type DocumentBlockInfrastructure
+} from "./helpers/document-block-test-helper.js";
+import { ElementBuilder } from "../../element/__tests__/helpers/element-builder.js";
+import { ElementTestHelper } from "../../element/__tests__/helpers/element-test-helper.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
 import { DocumentTypeBuilder } from "../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../document-type/__tests__/helpers/document-type-test-helper.js";
@@ -2310,6 +2317,59 @@ describe("update-block-property", () => {
       const rteBlock = rteProperty?.value.blocks.contentData.find(b => b.key === rteBlockKey);
       const originalProperty = rteBlock?.values.find(v => v.alias === "innerRteTitle");
       expect(originalProperty?.value).toBe("Test RTE Block");
+    });
+  });
+
+  describe("Library elements", () => {
+    const LIBRARY_DOCUMENT_NAME = "_Test Update Block Library Document";
+    const LIBRARY_ELEMENT_NAME = "_Test Update Block Library Element";
+    let infra: DocumentBlockInfrastructure;
+
+    beforeEach(async () => {
+      await DocumentBlockTestHelper.cleanup([LIBRARY_DOCUMENT_NAME]);
+      infra = await DocumentBlockTestHelper.createInfrastructure();
+    });
+
+    afterEach(async () => {
+      await DocumentTestHelper.cleanup(LIBRARY_DOCUMENT_NAME);
+      await ElementTestHelper.cleanup(LIBRARY_ELEMENT_NAME);
+      await DocumentBlockTestHelper.cleanup([LIBRARY_DOCUMENT_NAME]);
+    });
+
+    it("should point to the element tools when the block references a Library Element", async () => {
+      // Arrange
+      const elementId = (await new ElementBuilder()
+        .withName(LIBRARY_ELEMENT_NAME)
+        .withDocumentType(infra.elementTypeId)
+        .withValue("title", LIBRARY_ELEMENT_NAME)
+        .create()).getId();
+      const documentId = (await new DocumentBuilder()
+        .withName(LIBRARY_DOCUMENT_NAME)
+        .withDocumentType(infra.docTypeId)
+        .withValue(BLOCK_ALIASES.blockList, {
+          layout: { "Umbraco.BlockList": [{ key: uuidv4(), contentKey: elementId, isExternalContent: true }] },
+          contentData: [],
+          settingsData: [],
+          expose: []
+        })
+        .create()).getId();
+
+      // Act
+      const result = await UpdateBlockPropertyTool.handler(
+        {
+          documentId,
+          propertyAlias: BLOCK_ALIASES.blockList,
+          updates: [{ contentKey: elementId, blockType: "content", properties: [{ alias: "title", value: "Updated" }] }],
+          culture: null,
+          segment: null
+        },
+        createMockRequestHandlerExtra()
+      );
+
+      // Assert
+      const text = JSON.stringify(result);
+      expect(text).toContain("references Library Element");
+      expect(text).toContain("update-element-properties");
     });
   });
 });

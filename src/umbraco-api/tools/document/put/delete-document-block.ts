@@ -24,7 +24,7 @@ const deleteDocumentBlockSchema = {
   propertyAlias: z.string().min(1).describe("Document property alias of the BlockList, BlockGrid, or RichText property"),
   culture: z.string().nullish().describe("Culture, only for culture-variant document properties"),
   segment: z.string().nullish().describe("Segment, only for segment-variant document properties"),
-  contentKey: z.string().uuid().describe("contentKey of the block to delete"),
+  contentKey: z.string().uuid().describe("contentKey of the block to delete, or its layout key (needed to pick one placement when a Library Element is used more than once)"),
 };
 
 type DeleteDocumentBlockModel = {
@@ -43,6 +43,10 @@ const DeleteDocumentBlockTool = {
   its expose entries, and its layout entry (and, for RichText, its <umb-rte-block> markup element)
   together in a single document update. Acts on the property's top-level blocks only; BlockGrid
   blocks inside named areas can be deleted too.
+
+  For a block that references a Library Element (reusable content), only the reference (layout entry and
+  its local settings) is removed — the Element itself stays in the Library. When the same Element is used
+  more than once in the property, pass the block's layout key to pick the placement.
 
   A BlockGrid block whose areas still contain blocks is refused — delete the nested blocks first.
   The document is saved, not published.
@@ -83,7 +87,7 @@ const DeleteDocumentBlockTool = {
     // RichText markup is computed first so a mismatch fails before anything is mutated.
     let newMarkup: string | null = null;
     if (kind === "RichText") {
-      newMarkup = removeRteBlockElement(ctx.propertyValue.markup ?? "", model.contentKey);
+      newMarkup = removeRteBlockElement(ctx.propertyValue.markup ?? "", location.entry.contentKey);
       if (newMarkup === null) {
         throw new ToolValidationError({
           title: "Block markup not found",

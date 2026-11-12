@@ -8,6 +8,7 @@ exports[`create-document-block BlockGrid should insert into a named area of a bl
     "results": [
       {
         "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
         "message": "Created block",
         "success": true,
       },
@@ -25,6 +26,7 @@ exports[`create-document-block BlockList should create an empty settings entry w
     "results": [
       {
         "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
         "message": "Created block with settings",
         "success": true,
       },
@@ -42,6 +44,7 @@ exports[`create-document-block BlockList should insert before an existing siblin
     "results": [
       {
         "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
         "message": "Created block with settings",
         "success": true,
       },
@@ -71,6 +74,7 @@ exports[`create-document-block BlockList should write contentData, expose, and l
     "results": [
       {
         "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
         "message": "Created block with settings",
         "success": true,
       },
@@ -92,6 +96,24 @@ exports[`create-document-block BlockList should write nothing when the sibling d
 }
 `;
 
+exports[`create-document-block Library elements should insert a Library Element as a layout reference without contentData or expose 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Created 1 block in BlockList property 'blockList'",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Inserted Library Element as a block, with settings",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;
+
 exports[`create-document-block RichText should write the markup element alongside the layout entry 1`] = `
 {
   "content": [],
@@ -100,6 +122,7 @@ exports[`create-document-block RichText should write the markup element alongsid
     "results": [
       {
         "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
         "message": "Created block",
         "success": true,
       },
@@ -117,6 +140,7 @@ exports[`create-document-block culture variance should write one expose entry pe
     "results": [
       {
         "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
         "message": "Created block",
         "success": true,
       },

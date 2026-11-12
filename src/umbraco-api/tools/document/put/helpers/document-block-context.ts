@@ -133,7 +133,6 @@ export async function saveDocumentValues(documentId: string, document: DocumentR
 
   const variants: DocumentVariantRequestModel[] = document.variants.map(v => ({
     culture: v.culture,
-    segment: v.segment,
     name: v.name
   }));
 

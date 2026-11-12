@@ -16,6 +16,7 @@ import { matchesProperty, getPropertyKey } from "../../document/put/helpers/prop
 import {
   discoverAllBlockArrays,
   findBlockByKey,
+  findExternalLayoutReference,
   type BlockDataItem
 } from "../../document/put/helpers/block-discovery.js";
 import {
@@ -182,6 +183,18 @@ const UpdateElementBlockPropertyTool = {
       const foundBlock = findBlockByKey(discoveredArrays, update.contentKey, update.blockType);
 
       if (!foundBlock) {
+        // A Library (external) block has no local contentData: its content lives in the Element.
+        const external = update.blockType === "content"
+          ? findExternalLayoutReference(discoveredArrays, update.contentKey)
+          : null;
+        if (external) {
+          results.push({
+            success: false,
+            contentKey: update.contentKey,
+            message: `Block '${update.contentKey}' references Library Element '${external.contentKey}'; its content is stored in the Element, not this block. Update the Element with update-element-properties (id '${external.contentKey}') — the change applies everywhere the Element is used.`
+          });
+          continue;
+        }
         notFoundBlocks.push({ contentKey: update.contentKey, blockType: update.blockType });
         results.push({
           success: false,
@@ -293,7 +306,6 @@ const UpdateElementBlockPropertyTool = {
     // Step 6: Convert variants from response format to request format
     const variants: ElementVariantRequestModel[] = currentElement.variants.map(v => ({
       culture: v.culture,
-      segment: v.segment,
       name: v.name
     }));
 

@@ -2,8 +2,6 @@ import GetServerInformationTool from "./get/get-server-information.js";
 import GetServerStatusTool from "./get/get-server-status.js";
 import GetServerConfigurationTool from "./get/get-server-configuration.js";
 import GetServerTroubleshootingTool from "./get/get-server-troubleshooting.js";
-import GetServerUpgradeCheckTool from "./get/get-server-upgrade-check.js";
-import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
 import { CurrentUserResponseModel } from "@/umbraco-api/schemas/index.js";
 import {
   type ToolCollectionExport,
@@ -27,11 +25,6 @@ export const ServerCollection: ToolCollectionExport = {
     // Available to all authenticated users (BackOfficeAccess)
     tools.push(GetServerInformationTool);
     tools.push(GetServerTroubleshootingTool);
-
-    // Admin only (RequireAdminAccess)
-    if (AuthorizationPolicies.RequireAdminAccess(user)) {
-      tools.push(GetServerUpgradeCheckTool);
-    }
 
     return tools;
   }

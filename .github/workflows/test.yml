@@ -42,7 +42,9 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
+          # Umbraco 19 targets net11.0, which is only available as a preview/RC for now.
+          dotnet-quality: 'preview'
 
       - name: Cache NuGet packages
         uses: actions/cache@v6
@@ -251,7 +253,9 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
+          # Umbraco 19 targets net11.0, which is only available as a preview/RC for now.
+          dotnet-quality: 'preview'
 
       - name: Cache NuGet packages
         uses: actions/cache@v6

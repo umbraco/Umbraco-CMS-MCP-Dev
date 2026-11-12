@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-search-indexes should list the registered search indexes 1`] = `
+[
+  {
+    "indexAlias": "Umb_Content",
+    "providerName": "search-examine-provider",
+  },
+  {
+    "indexAlias": "Umb_PublishedContent",
+    "providerName": "search-examine-provider",
+  },
+  {
+    "indexAlias": "Umb_Media",
+    "providerName": "search-examine-provider",
+  },
+  {
+    "indexAlias": "Umb_Members",
+    "providerName": "search-examine-provider",
+  },
+  {
+    "indexAlias": "Umb_Elements",
+    "providerName": "search-examine-provider",
+  },
+]
+`;

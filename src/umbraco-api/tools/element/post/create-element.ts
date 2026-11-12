@@ -115,7 +115,6 @@ const CreateElementTool = {
     const variants = culturesToUse.map(culture => ({
       culture,
       name: model.name,
-      segment: null,
     }));
 
     const payload: CreateElementRequestModel = {

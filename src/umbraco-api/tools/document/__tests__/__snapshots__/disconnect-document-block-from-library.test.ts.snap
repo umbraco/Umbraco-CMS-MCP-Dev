@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`disconnect-document-block-from-library should copy the Element's content into a local block 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "message": "Disconnected 1 block in BlockList property 'blockList' from the Library",
+    "results": [
+      {
+        "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
+        "message": "Copied the Library Element's content into a local block; the Element itself is unchanged",
+        "success": true,
+      },
+    ],
+    "success": true,
+  },
+}
+`;

@@ -1,7 +1,10 @@
 import CreateDocumentBlockTool, { createDocumentBlockOutputSchema } from "../put/create-document-block.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
+import { ElementBuilder } from "../../element/__tests__/helpers/element-builder.js";
+import { ElementTestHelper } from "../../element/__tests__/helpers/element-test-helper.js";
 import {
   DocumentBlockTestHelper,
+  createBlockSnapshotResult,
   DOCUMENT_BLOCK_AREA_KEY,
   DOCUMENT_BLOCK_PROPERTY_ALIASES as ALIASES,
   DEFAULT_CULTURE,
@@ -62,7 +65,7 @@ describe("create-document-block", () => {
     layout: { "Umbraco.BlockList": [{ contentKey: EXISTING_KEY }] },
     contentData: [{ key: EXISTING_KEY, contentTypeKey: infra.elementTypeId, values: [{ alias: "title", value: FIRST_TITLE }] }],
     settingsData: [],
-    expose: [{ contentKey: EXISTING_KEY, culture: null, segment: null }]
+    expose: [{ contentKey: EXISTING_KEY, culture: null }]
   });
 
   describe("BlockList", () => {
@@ -79,7 +82,7 @@ describe("create-document-block", () => {
       });
 
       // Assert
-      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
+      expect(createBlockSnapshotResult(result, documentId)).toMatchSnapshot();
       const contentKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockList);
       expect(value.layout["Umbraco.BlockList"]).toHaveLength(1);
@@ -87,7 +90,7 @@ describe("create-document-block", () => {
       expect(value.contentData).toHaveLength(1);
       expect(value.contentData[0].key).toBe(contentKey);
       expect(value.contentData[0].values.find((v: any) => v.alias === "title")?.value).toBe(NEW_TITLE);
-      expect(value.expose).toEqual([{ contentKey, culture: null, segment: null }]);
+      expect(value.expose).toEqual([{ contentKey, culture: null }]);
     });
 
     it("should create an empty settings entry when the block type has settings and none are given", async () => {
@@ -103,7 +106,7 @@ describe("create-document-block", () => {
       });
 
       // Assert
-      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
+      expect(createBlockSnapshotResult(result, documentId)).toMatchSnapshot();
       const contentKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockList);
       const layout = value.layout["Umbraco.BlockList"];
@@ -130,7 +133,7 @@ describe("create-document-block", () => {
       });
 
       // Assert
-      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
+      expect(createBlockSnapshotResult(result, documentId)).toMatchSnapshot();
       const contentKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockList);
       const layout = value.layout["Umbraco.BlockList"];
@@ -208,7 +211,7 @@ describe("create-document-block", () => {
       });
 
       // Assert
-      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
+      expect(createBlockSnapshotResult(result, documentId)).toMatchSnapshot();
       const childKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockGrid);
       const root = value.layout["Umbraco.BlockGrid"];
@@ -218,7 +221,8 @@ describe("create-document-block", () => {
       expect(area.items).toHaveLength(1);
       expect(area.items[0]).toMatchObject({ contentKey: childKey, columnSpan: 6, rowSpan: 1 });
       expect(value.contentData.map((b: any) => b.key)).toEqual([parentKey, childKey]);
-      expect(value.expose.map((e: any) => e.contentKey)).toEqual([parentKey, childKey]);
+      // Expose order carries no meaning and Umbraco 19 does not preserve it on save.
+      expect(value.expose.map((e: any) => e.contentKey).sort()).toEqual([parentKey, childKey].sort());
     });
 
     it("should reject an element type the area does not allow", async () => {
@@ -312,7 +316,7 @@ describe("create-document-block", () => {
             layout: { "Umbraco.RichText": [{ contentKey: EXISTING_KEY }] },
             contentData: [{ key: EXISTING_KEY, contentTypeKey: infra.elementTypeId, values: [{ alias: "title", value: FIRST_TITLE }] }],
             settingsData: [],
-            expose: [{ contentKey: EXISTING_KEY, culture: null, segment: null }]
+            expose: [{ contentKey: EXISTING_KEY, culture: null }]
           }
         }
       });
@@ -351,14 +355,14 @@ describe("create-document-block", () => {
       });
 
       // Assert
-      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
+      expect(createBlockSnapshotResult(result, documentId)).toMatchSnapshot();
       const contentKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.richText);
       expect(value.markup).toContain(`data-content-key="${contentKey}"`);
       expect(value.blocks.layout["Umbraco.RichText"]).toHaveLength(1);
       expect(value.blocks.layout["Umbraco.RichText"][0]).toMatchObject({ contentKey });
       expect(value.blocks.contentData[0].key).toBe(contentKey);
-      expect(value.blocks.expose).toEqual([{ contentKey, culture: null, segment: null }]);
+      expect(value.blocks.expose).toEqual([{ contentKey, culture: null }]);
     });
   });
 
@@ -384,12 +388,12 @@ describe("create-document-block", () => {
       });
 
       // Assert
-      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
+      expect(createBlockSnapshotResult(result, documentId)).toMatchSnapshot();
       const contentKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.variantBlockList);
       expect(value.expose).toEqual(expect.arrayContaining([
-        { contentKey, culture: DEFAULT_CULTURE, segment: null },
-        { contentKey, culture: SECOND_CULTURE, segment: null }
+        { contentKey, culture: DEFAULT_CULTURE },
+        { contentKey, culture: SECOND_CULTURE }
       ]));
       expect(value.expose).toHaveLength(2);
       const titles = value.contentData[0].values.filter((v: any) => v.alias === "title");
@@ -420,8 +424,8 @@ describe("create-document-block", () => {
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.variantBlockList);
       expect(value.expose).toHaveLength(2);
       expect(value.expose).toEqual(expect.arrayContaining([
-        { contentKey, culture: DEFAULT_CULTURE, segment: null },
-        { contentKey, culture: SECOND_CULTURE, segment: null }
+        { contentKey, culture: DEFAULT_CULTURE },
+        { contentKey, culture: SECOND_CULTURE }
       ]));
     });
   });
@@ -436,5 +440,150 @@ describe("create-document-block", () => {
 
     // Assert
     expect(result).toMatchSnapshot();
+  });
+
+  describe("Library elements", () => {
+    const LIBRARY_ELEMENT_NAME = "_Test Create Block Library Element";
+    const LIBRARY_CONTAINER_NAME = "_Test Create Block Library Container";
+
+    // Elements must go before the element types the outer afterEach deletes.
+    afterEach(async () => {
+      await ElementTestHelper.cleanup(LIBRARY_ELEMENT_NAME);
+      await ElementTestHelper.cleanup(LIBRARY_CONTAINER_NAME);
+    });
+
+    const createLibraryElement = async (name: string, contentTypeKey: string, alias: string) =>
+      (await new ElementBuilder()
+        .withName(name)
+        .withDocumentType(contentTypeKey)
+        .withValue(alias, name)
+        .create()).getId();
+
+    it("should insert a Library Element as a layout reference without contentData or expose", async () => {
+      // Arrange
+      const documentId = await createDocument();
+      const elementId = await createLibraryElement(LIBRARY_ELEMENT_NAME, infra.elementTypeId, "title");
+
+      // Act
+      const result = await call({ documentId, propertyAlias: ALIASES.blockList, libraryElementId: elementId });
+
+      // Assert
+      const created = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0];
+      expect(created.contentKey).toBe(elementId);
+      expect(created.layoutKey).toBeDefined();
+      expect(createBlockSnapshotResult(result, documentId)).toMatchSnapshot();
+      const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockList);
+      const layout = value.layout["Umbraco.BlockList"];
+      expect(layout).toHaveLength(1);
+      expect(layout[0]).toMatchObject({ key: created.layoutKey, contentKey: elementId, isExternalContent: true });
+      expect(value.contentData).toEqual([]);
+      expect(value.expose).toEqual([]);
+      // The block type has a settings element type, so a local settings entry is created as usual.
+      expect(value.settingsData).toHaveLength(1);
+      expect(layout[0].settingsKey).toBe(value.settingsData[0].key);
+    });
+
+    it("should reject properties for a Library Element", async () => {
+      // Arrange
+      const documentId = await createDocument();
+      const elementId = await createLibraryElement(LIBRARY_ELEMENT_NAME, infra.elementTypeId, "title");
+
+      // Act
+      const result = await call({
+        documentId,
+        propertyAlias: ALIASES.blockList,
+        libraryElementId: elementId,
+        properties: [{ alias: "title", value: NEW_TITLE }]
+      });
+
+      // Assert
+      expect(result.isError).toBe(true);
+      expect(JSON.stringify(validateErrorResult(result))).toContain("Properties not supported for Library blocks");
+    });
+
+    it("should require exactly one of contentTypeKey or libraryElementId", async () => {
+      // Arrange
+      const documentId = await createDocument();
+      const elementId = await createLibraryElement(LIBRARY_ELEMENT_NAME, infra.elementTypeId, "title");
+
+      // Act
+      const both = await call({ documentId, propertyAlias: ALIASES.blockList, contentTypeKey: infra.elementTypeId, libraryElementId: elementId });
+      const neither = await call({ documentId, propertyAlias: ALIASES.blockList });
+
+      // Assert
+      expect(JSON.stringify(validateErrorResult(both))).toContain("Invalid block source");
+      expect(JSON.stringify(validateErrorResult(neither))).toContain("Invalid block source");
+    });
+
+    it("should reject a Library Element whose element type is not a configured block", async () => {
+      // Arrange - the container type is configured on the grid, not on the BlockList
+      const documentId = await createDocument();
+      const elementId = await createLibraryElement(LIBRARY_CONTAINER_NAME, infra.containerTypeId, "heading");
+
+      // Act
+      const result = await call({ documentId, propertyAlias: ALIASES.blockList, libraryElementId: elementId });
+
+      // Assert
+      expect(result.isError).toBe(true);
+      expect(JSON.stringify(validateErrorResult(result))).toContain("Element type not allowed");
+    });
+
+    it("should reject an unknown Library Element", async () => {
+      // Arrange
+      const documentId = await createDocument();
+
+      // Act
+      const result = await call({ documentId, propertyAlias: ALIASES.blockList, libraryElementId: BLANK_UUID });
+
+      // Assert
+      expect(result.isError).toBe(true);
+      expect(JSON.stringify(validateErrorResult(result))).toContain("Library Element not found");
+    });
+
+    it("should insert a local block into an area of a Library Element block in a BlockGrid", async () => {
+      // Arrange - a Library container placed at the grid root
+      const documentId = await createDocument();
+      const containerId = await createLibraryElement(LIBRARY_CONTAINER_NAME, infra.containerTypeId, "heading");
+      const parentResult = await call({ documentId, propertyAlias: ALIASES.blockGrid, libraryElementId: containerId });
+      expect(parentResult.isError).toBeFalsy();
+
+      // Act
+      const result = await call({
+        documentId,
+        propertyAlias: ALIASES.blockGrid,
+        contentTypeKey: infra.elementTypeId,
+        properties: [{ alias: "title", value: NEW_TITLE }],
+        grid: { areaKey: DOCUMENT_BLOCK_AREA_KEY, parentContentKey: containerId }
+      });
+
+      // Assert
+      expect(result.isError).toBeFalsy();
+      const childKey = validateStructuredContent(result, createDocumentBlockOutputSchema).results[0].contentKey;
+      const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockGrid);
+      const root = value.layout["Umbraco.BlockGrid"];
+      expect(root).toHaveLength(1);
+      expect(root[0]).toMatchObject({ contentKey: containerId, isExternalContent: true });
+      const area = root[0].areas.find((a: any) => a.key === DOCUMENT_BLOCK_AREA_KEY);
+      expect(area.items.map((i: any) => i.contentKey)).toEqual([childKey]);
+      expect(value.contentData.map((b: any) => b.key)).toEqual([childKey]);
+    });
+
+    it("should write the markup element for a Library Element in a RichText property", async () => {
+      // Arrange
+      const documentId = await createDocument();
+      const elementId = await createLibraryElement(LIBRARY_ELEMENT_NAME, infra.elementTypeId, "title");
+
+      // Act
+      const result = await call({ documentId, propertyAlias: ALIASES.richText, libraryElementId: elementId });
+
+      // Assert
+      expect(result.isError).toBeFalsy();
+      const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.richText);
+      expect(value.markup).toContain(`data-content-key="${elementId}"`);
+      expect(value.blocks.layout["Umbraco.RichText"]).toEqual([
+        expect.objectContaining({ contentKey: elementId, isExternalContent: true })
+      ]);
+      expect(value.blocks.contentData).toEqual([]);
+    });
   });
 });

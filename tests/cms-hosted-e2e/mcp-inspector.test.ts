@@ -28,7 +28,6 @@ const SERVER_TOOLS = [
   "get-server-status",
   "get-server-configuration",
   "get-server-troubleshooting",
-  "get-server-upgrade-check",
 ];
 
 /** Language collection tools (translation mode) — always visible */

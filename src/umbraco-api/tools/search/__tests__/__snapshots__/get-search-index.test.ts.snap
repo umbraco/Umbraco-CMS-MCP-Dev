@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-search-index should get a search index by alias 1`] = `"search-examine-provider"`;
+
+exports[`get-search-index should handle a non-existent index alias 1`] = `
+{
+  "content": [
+    {
+      "text": "{"status":404,"detail":"Could not resolve the indexer for the specified index."}",
+      "type": "text",
+    },
+  ],
+  "isError": true,
+}
+`;

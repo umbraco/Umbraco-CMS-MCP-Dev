@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-element-batch should get multiple elements by id 1`] = `
+{
+  "content": [],
+  "structuredContent": {
+    "items": [
+      {
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isTrashed": false,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test GetElementBatch 1",
+            "publishDate": null,
+            "scheduledPublishDate": null,
+            "scheduledUnpublishDate": null,
+            "state": "Draft",
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+      {
+        "documentType": {
+          "collection": null,
+          "icon": "icon-document",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
+        "flags": [],
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isTrashed": false,
+        "values": [],
+        "variants": [
+          {
+            "createDate": "NORMALIZED_DATE",
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test GetElementBatch 2",
+            "publishDate": null,
+            "scheduledPublishDate": null,
+            "scheduledUnpublishDate": null,
+            "state": "Draft",
+            "updateDate": "NORMALIZED_DATE",
+          },
+        ],
+      },
+    ],
+    "total": 2,
+  },
+}
+`;

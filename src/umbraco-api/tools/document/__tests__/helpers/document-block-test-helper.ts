@@ -1,5 +1,6 @@
 import { UmbracoManagementClient } from "@umb-management-client";
-import { TextString_DATA_TYPE_ID } from "@umbraco-cms/mcp-server-sdk";
+import { BLANK_UUID, TextString_DATA_TYPE_ID } from "@umbraco-cms/mcp-server-sdk";
+import { createSnapshotResult } from "@umbraco-cms/mcp-server-sdk/testing";
 import { DocumentTestHelper } from "./document-test-helper.js";
 import { DocumentTypeBuilder } from "../../../document-type/__tests__/helpers/document-type-builder.js";
 import { DocumentTypeTestHelper } from "../../../document-type/__tests__/helpers/document-type-test-helper.js";
@@ -210,4 +211,32 @@ export class DocumentBlockTestHelper {
       this.createdLanguage = null;
     }
   }
+}
+
+/**
+ * createSnapshotResult, plus normalisation of the generated layout key (Umbraco 19+) that block
+ * tools return per result — the SDK normaliser only covers contentKey.
+ */
+export function createBlockSnapshotResult(result: any, idToReplace?: string): any {
+  const snapshot = createSnapshotResult(result, idToReplace);
+  const normalise = (content: any) => {
+    if (content && Array.isArray(content.results)) {
+      content.results = content.results.map((r: any) => (r.layoutKey ? { ...r, layoutKey: BLANK_UUID } : r));
+    }
+    return content;
+  };
+  if (snapshot?.structuredContent) {
+    snapshot.structuredContent = normalise(snapshot.structuredContent);
+  }
+  if (Array.isArray(snapshot?.content)) {
+    snapshot.content = snapshot.content.map((c: any) => {
+      if (c?.type !== "text") return c;
+      try {
+        return { ...c, text: JSON.stringify(normalise(JSON.parse(c.text))) };
+      } catch {
+        return c;
+      }
+    });
+  }
+  return snapshot;
 }

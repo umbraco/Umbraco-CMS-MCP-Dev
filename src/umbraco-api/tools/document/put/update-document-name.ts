@@ -117,7 +117,6 @@ const UpdateDocumentNameTool = {
     // Step 5: Build the variants payload, renaming only the matched variant
     const updatedVariants: DocumentVariantRequestModel[] = variants.map((v) => ({
       culture: v.culture,
-      segment: v.segment,
       name: v === targetVariant ? model.name : v.name,
     }));
 

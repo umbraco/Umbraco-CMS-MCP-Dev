@@ -191,3 +191,35 @@ export function findBlockByKey(
   }
   return null;
 }
+
+/**
+ * Finds a layout item that references a Library Element (Umbraco 19+ reusable content,
+ * `isExternalContent: true`) by its contentKey or layout key, across all discovered block arrays
+ * (BlockGrid areas included). Such blocks have no local contentData: their content lives in the
+ * Element and is edited with the element tools.
+ */
+export function findExternalLayoutReference(
+  discoveredArrays: DiscoveredBlockArrays[],
+  key: string
+): { contentKey: string; settingsKey?: string | null; path: string } | null {
+  const search = (items: any[], path: string): { contentKey: string; settingsKey?: string | null; path: string } | null => {
+    for (const item of items ?? []) {
+      if (!item || typeof item !== "object") continue;
+      if (item.isExternalContent === true && (item.contentKey === key || item.key === key)) {
+        return { contentKey: item.contentKey, settingsKey: item.settingsKey ?? null, path };
+      }
+      for (const area of item.areas ?? []) {
+        const found = search(area?.items ?? [], path);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+  for (const discovered of discoveredArrays) {
+    for (const items of Object.values(discovered.layout ?? {})) {
+      const found = search(items, discovered.path);
+      if (found) return found;
+    }
+  }
+  return null;
+}

@@ -136,18 +136,25 @@ describe("get-collection-media", () => {
       .withImageValue(tempFileBuilder.getId())
       .create();
 
-    const result = await GetCollectionMediaTool.handler(
-      {
-        filter: "Test Collection",
-        orderBy: "name",
-      } as any,
-      createMockRequestHandlerExtra()
-    );
+    // Since Umbraco 19, a filtered collection query is served from the search index
+    // (Umb_Media), which is updated asynchronously - poll until the new item is indexed.
+    let result: Awaited<ReturnType<typeof GetCollectionMediaTool.handler>> | undefined;
+    let names: string[] = [];
+    for (let attempt = 0; attempt < 20; attempt++) {
+      result = await GetCollectionMediaTool.handler(
+        {
+          filter: "_Test Collection",
+          orderBy: "name",
+        } as any,
+        createMockRequestHandlerExtra()
+      );
+      const data = result.structuredContent as any;
+      names = (data?.items ?? []).map((item: any) => item.variants?.[0]?.name);
+      if (result.isError || names.includes(TEST_MEDIA_NAME)) break;
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
 
-    expect(result.isError).toBeFalsy();
-    const data = result.structuredContent as any;
-    expect(data.items.length).toBeGreaterThanOrEqual(1);
-    const names = data.items.map((item: any) => item.variants?.[0]?.name);
+    expect(result!.isError).toBeFalsy();
     expect(names).toContain(TEST_MEDIA_NAME);
   });
 

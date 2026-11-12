@@ -15,7 +15,9 @@ import CreateDocumentTypeFolderTool from "./folders/post/create-folder.js";
 import DeleteDocumentTypeFolderTool from "./folders/delete/delete-folder.js";
 import GetDocumentTypeFolderTool from "./folders/get/get-folder.js";
 import UpdateDocumentTypeFolderTool from "./folders/put/update-folder.js";
+import MoveDocumentTypeFolderTool from "./folders/put/move-folder.js";
 import GetDocumentTypeBlueprintTool from "./get/get-document-type-blueprint.js";
+import GetDocumentTypeAllowedForBlueprintTool from "./get/get-document-type-allowed-for-blueprint.js";
 import GetDocumentTypeCompositionReferencesTool from "./get/get-document-type-composition-references.js";
 import GetDocumentTypeAvailableCompositionsTool from "./post/get-document-type-available-compositions.js";
 import GetDocumentTypeAllowedChildrenTool from "./get/get-document-type-allowed-children.js";
@@ -47,6 +49,7 @@ export const DocumentTypeCollection: ToolCollectionExport = {
     if (AuthorizationPolicies.TreeAccessDocumentsOrDocumentTypes(user)) {
       tools.push(GetDocumentTypeConfigurationTool);
       tools.push(GetDocumentTypeBlueprintTool);
+      tools.push(GetDocumentTypeAllowedForBlueprintTool);
       tools.push(GetDocumentTypesByIdArrayTool);
       tools.push(GetDocumentTypeBatchTool);
     }
@@ -68,6 +71,7 @@ export const DocumentTypeCollection: ToolCollectionExport = {
       tools.push(DeleteDocumentTypeFolderTool);
       tools.push(GetDocumentTypeFolderTool);
       tools.push(UpdateDocumentTypeFolderTool);
+      tools.push(MoveDocumentTypeFolderTool);
 
       tools.push(GetDocumentTypeRootTool);
       tools.push(GetDocumentTypeAncestorsTool);

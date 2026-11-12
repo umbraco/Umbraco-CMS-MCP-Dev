@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`get-document-type-allowed-for-blueprint should include a newly created document type at the root 1`] = `
+{
+  "icon": "icon-document",
+  "name": "_Test DocumentType AllowedForBlueprint",
+}
+`;

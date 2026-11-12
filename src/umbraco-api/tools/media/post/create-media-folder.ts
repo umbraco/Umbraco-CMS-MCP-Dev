@@ -39,7 +39,6 @@ const CreateMediaFolderTool = {
         variants: [
           {
             culture: null,
-            segment: null,
             name: model.name,
           },
         ],

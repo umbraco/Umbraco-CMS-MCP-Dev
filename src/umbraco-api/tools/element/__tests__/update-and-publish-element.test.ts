@@ -39,7 +39,6 @@ describe("update-and-publish-element", () => {
           variants: [
             {
               culture: null,
-              segment: null,
               name: UPDATED_ELEMENT_NAME,
             },
           ],
@@ -68,7 +67,6 @@ describe("update-and-publish-element", () => {
           variants: [
             {
               culture: null,
-              segment: null,
               name: UPDATED_ELEMENT_NAME,
             },
           ],
