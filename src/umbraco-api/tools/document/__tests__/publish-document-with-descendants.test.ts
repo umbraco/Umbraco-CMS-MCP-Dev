@@ -145,8 +145,72 @@ describe("publish-document-with-descendants - polling failure modes", () => {
     expect(result.isError).toBe(true);
     expect(JSON.parse(result.content[0].text)).toEqual({
       ...failedBranchProblem,
+      documentId: DOC_ID,
       taskId: TASK_ID,
     });
+  });
+
+  it("returns a sane fallback (with status present) when the non-2xx response body is empty/falsy", async () => {
+    clientSpy.mockReturnValue({
+      putDocumentByIdPublishWithDescendants: jest.fn(async () => ({
+        taskId: TASK_ID,
+        isComplete: false,
+      })),
+      getDocumentByIdPublishWithDescendantsResultByTaskId: jest.fn(async () => ({
+        status: 500,
+        statusText: "Internal Server Error",
+        data: undefined,
+      })),
+    } as any);
+
+    const result: any = await PublishDocumentWithDescendantsTool.handler(
+      {
+        id: DOC_ID,
+        data: { includeUnpublishedDescendants: true, cultures: [] },
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    expect(result.isError).toBe(true);
+    const body = JSON.parse(result.content[0].text);
+    expect(body.status).toBe(500);
+    expect(body.taskId).toBe(TASK_ID);
+    expect(body.documentId).toBe(DOC_ID);
+  });
+
+  it("returns the silent success result once polling reaches isComplete: true", async () => {
+    const getResult = jest
+      .fn()
+      .mockImplementationOnce(async () => ({
+        status: 200,
+        statusText: "OK",
+        data: { taskId: TASK_ID, isComplete: false },
+      }))
+      .mockImplementationOnce(async () => ({
+        status: 200,
+        statusText: "OK",
+        data: { taskId: TASK_ID, isComplete: true },
+      }));
+
+    clientSpy.mockReturnValue({
+      putDocumentByIdPublishWithDescendants: jest.fn(async () => ({
+        taskId: TASK_ID,
+        isComplete: false,
+      })),
+      getDocumentByIdPublishWithDescendantsResultByTaskId: getResult,
+    } as any);
+
+    const result: any = await PublishDocumentWithDescendantsTool.handler(
+      {
+        id: DOC_ID,
+        data: { includeUnpublishedDescendants: true, cultures: [] },
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    expect(result.isError).toBeFalsy();
+    expect(result.content[0].text).toBe("\"\"");
+    expect(getResult).toHaveBeenCalledTimes(2);
   });
 
   it("returns an error result when the poll HTTP call itself fails", async () => {
@@ -172,6 +236,7 @@ describe("publish-document-with-descendants - polling failure modes", () => {
     const body = JSON.parse(result.content[0].text);
     expect(body.taskId).toBe(TASK_ID);
     expect(body.detail).toContain("network boom");
+    expect(body.status).toBe(500);
   });
 
   it("reports that publishing is still in progress (not an error) once the 60-attempt limit is reached", async () => {

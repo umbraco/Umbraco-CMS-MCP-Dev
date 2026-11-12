@@ -7,6 +7,7 @@ import {
   type ToolDefinition,
   CAPTURE_RAW_HTTP_RESPONSE,
   createToolResultError,
+  toProblemDetails,
   withStandardDecorators,
   type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
@@ -56,49 +57,49 @@ const PublishDocumentWithDescendantsTool = {
       // Wait before polling
       await new Promise(resolve => setTimeout(resolve, pollInterval));
 
+      let statusResponse: HttpResponse<ProblemDetails | { taskId: string; isComplete: boolean }>;
       try {
-        const statusResponse = await client.getDocumentByIdPublishWithDescendantsResultByTaskId(
+        statusResponse = await client.getDocumentByIdPublishWithDescendantsResultByTaskId(
           model.id,
           initialResponse.taskId,
           CAPTURE_RAW_HTTP_RESPONSE
         ) as unknown as HttpResponse<ProblemDetails | { taskId: string; isComplete: boolean }>;
-
-        if (statusResponse.status >= 200 && statusResponse.status < 300) {
-          const data = statusResponse.data as { taskId: string; isComplete: boolean } | undefined;
-          if (data?.isComplete) {
-            return {
-              content: [
-                {
-                  type: "text" as const,
-                  text: "\"\"",
-                },
-              ],
-            };
-          }
-          // Not complete yet - keep polling
-          continue;
-        }
-
-        // The CMS came back with a ProblemDetails error - some branch items
-        // may have failed to publish (see failedBranchItems on the body).
-        // Keep the taskId on the error so the caller can still follow up with
-        // get-document-publish-with-descendants-result.
-        const problem = statusResponse.data && typeof statusResponse.data === "object"
-          ? statusResponse.data
-          : { status: statusResponse.status, detail: statusResponse.statusText };
-        return createToolResultError({
-          ...problem,
-          taskId: initialResponse.taskId,
-        });
       } catch (error) {
         // The poll HTTP call itself failed (network error, etc).
         return createToolResultError({
           type: "Error",
           title: "Failed to poll publish-with-descendants status",
           detail: error instanceof Error ? error.message : String(error),
+          status: 500,
           taskId: initialResponse.taskId,
         });
       }
+
+      if (statusResponse.status >= 200 && statusResponse.status < 300) {
+        const data = statusResponse.data as { taskId: string; isComplete: boolean } | undefined;
+        if (data?.isComplete) {
+          return {
+            content: [
+              {
+                type: "text" as const,
+                text: "\"\"",
+              },
+            ],
+          };
+        }
+        // Not complete yet - keep polling
+        continue;
+      }
+
+      // The CMS came back with a ProblemDetails error - some branch items
+      // may have failed to publish (see failedBranchItems on the body).
+      // Keep the taskId (and document id) on the error so the caller can still
+      // follow up with get-document-publish-with-descendants-result.
+      return createToolResultError({
+        ...toProblemDetails(statusResponse),
+        documentId: model.id,
+        taskId: initialResponse.taskId,
+      });
     }
 
     // Timeout reached. This is NOT an error - nothing has failed, the publish
