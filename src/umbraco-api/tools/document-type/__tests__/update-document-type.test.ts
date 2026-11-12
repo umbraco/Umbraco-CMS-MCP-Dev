@@ -115,6 +115,10 @@ describe("update-document-type", () => {
 
     expect(result.isError).toBe(true);
     expect(getResultText(result)).toContain("control characters");
+
+    // The stored property description must be unchanged
+    const unchanged = await DocumentTypeTestHelper.getFullDocumentType(builder.getId());
+    expect(unchanged.properties[0].description).toBeNull();
   });
 
   it("should handle non-existent document type", async () => {
