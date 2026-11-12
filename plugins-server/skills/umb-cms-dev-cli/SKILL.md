@@ -59,7 +59,7 @@ UMBRACO_CLIENT_SECRET=your-secret
 UMBRACO_BASE_URL=https://localhost:44391
 ```
 
-Introspection commands (`--list-tools`, `--describe-tool`, `--generate-context`) do not require auth.
+Introspection commands (`--list-tools`, `--describe-tool`, `--generate-context`) currently still require a reachable, configured Umbraco site: `src/index.ts` authenticates (`getUserCurrent()`) before dispatching any CLI flag, so with no `.env` these fail with `Missing required configuration: baseUrl`, and against an unreachable site they fail with a connection error. Have `.env` pointing at a real, running instance before using them.
 
 ## Tool Filtering
 

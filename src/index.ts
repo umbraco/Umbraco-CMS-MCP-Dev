@@ -13,6 +13,25 @@ import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { availableCollections } from "./umbraco-api/tools/collection-registry.js";
 import { setUmbracoVersion, setAllowFilePathUploads } from "./umbraco-api/runtime-context.js";
 
+/**
+ * Wraps a bare connection failure (Node's fetch throws `TypeError: fetch
+ * failed` with no indication of *where* it tried to connect) with the
+ * configured base URL, so the fatal error printed at the bottom of this file
+ * says which site was unreachable instead of just "fetch failed". Anything
+ * else — wrong credentials, a non-2xx response, etc — already carries its
+ * own clear message (e.g. "Token request failed: 401 Unauthorized") and is
+ * rethrown unchanged. Never includes clientId/clientSecret: only the base
+ * URL, which isn't a secret.
+ */
+const describeUnreachableServer = (error: unknown, baseUrl: string): unknown => {
+  if (error instanceof TypeError && error.message === "fetch failed") {
+    const cause = (error as { cause?: unknown }).cause;
+    const causeMessage = cause instanceof Error ? `: ${cause.message}` : "";
+    return new Error(`Could not reach Umbraco at ${baseUrl || "(no base URL configured)"} (fetch failed${causeMessage})`, { cause: error });
+  }
+  return error;
+};
+
 const main = async () => {
   // Node/stdio environment supports filesystem access; enable filePath uploads.
   setAllowFilePathUploads(true);
@@ -32,7 +51,12 @@ const main = async () => {
 
   const client = UmbracoManagementClient.getClient();
 
-  const user = await client.getUserCurrent();
+  let user: Awaited<ReturnType<typeof client.getUserCurrent>>;
+  try {
+    user = await client.getUserCurrent();
+  } catch (error) {
+    throw describeUnreachableServer(error, config.auth.baseUrl);
+  }
 
   // Check Umbraco version compatibility (logs result internally) and capture the
   // version so collection registrations can gate tools whose endpoints were
@@ -140,6 +164,11 @@ const main = async () => {
 };
 
 main().catch((error) => {
-  console.error("Error:", error);
+  // Print the message once. `error` is usually an Error object, and
+  // console.error("Error:", error) would log its full `util.inspect`
+  // rendering — whose stack trace already starts with "Error: <message>" —
+  // producing a doubled "Error: Error: <message>" prefix. Logging just the
+  // message avoids that while keeping the single "Error:" lead-in.
+  console.error("Error:", error instanceof Error ? error.message : error);
   process.exit(1);
 });
