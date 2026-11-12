@@ -17,7 +17,9 @@ const SortDocumentRootChildrenTool = {
 
   When sorting by Name, an optional culture selects which variant name to sort by; the culture is not validated, so documents that do not vary by it (or an unrecognised culture) fall back to the invariant name.`,
   inputSchema: putDocumentRootSortChildrenBody.shape,
-  annotations: {},
+  annotations: {
+    idempotentHint: true,
+  },
   slices: ['sort'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Sort),
   handler: (async (model: z.infer<typeof putDocumentRootSortChildrenBody>) => {
