@@ -1,7 +1,11 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { uploadMediaFile } from "./helpers/media-upload-helpers.js";
+import {
+  getMediaTypeWarning,
+  uploadMediaFile,
+  type MediaUploadResult,
+} from "./helpers/media-upload-helpers.js";
 import { buildSourceTypeSection } from "./helpers/source-type-helpers.js";
 import {
   isStreamingUploadAvailable,
@@ -26,7 +30,9 @@ export const createMediaMultipleOutputSchema = z.object({
     success: z.boolean(),
     name: z.string(),
     id: z.string().guid().optional(),
-    error: z.string().optional()
+    error: z.string().optional(),
+    /** Set only when the site lacks the requested media type and another was used (e.g. Video → File). */
+    warning: z.string().optional(),
   }))
 });
 
@@ -35,6 +41,12 @@ interface UploadResult {
   name: string;
   id?: string;
   error?: string;
+  warning?: string;
+}
+
+function toSuccessResult(upload: MediaUploadResult): UploadResult {
+  const warning = getMediaTypeWarning(upload);
+  return { success: true, name: upload.name, id: upload.id, ...(warning ? { warning } : {}) };
 }
 
 // Marked `[raw]` so withInputSanitization passes the host-injected object
@@ -166,17 +178,17 @@ ${filePathSection}
                   error: "fileUrl is required when sourceType is 'url'.",
                 };
               }
-              const { name: actualName, id: mediaId } = await streamingUploadFromUrl({
+              const upload = await streamingUploadFromUrl({
                 sourceUrl: effectiveFileUrl,
                 name: file.name,
                 mediaTypeName,
                 parentId: model.parentId,
               });
-              return { success: true, name: actualName, id: mediaId };
+              return toSuccessResult(upload);
             }
 
             const temporaryFileId = uuidv4();
-            const { name: actualName, id: mediaId } = await uploadMediaFile(client, {
+            const upload = await uploadMediaFile(client, {
               sourceType: effectiveSourceType,
               name: file.name,
               mediaTypeName,
@@ -186,7 +198,7 @@ ${filePathSection}
               parentId: model.parentId,
               temporaryFileId,
             });
-            return { success: true, name: actualName, id: mediaId };
+            return toSuccessResult(upload);
           } catch (error) {
             return { success: false, name: file.name, error: (error as Error).message };
           }

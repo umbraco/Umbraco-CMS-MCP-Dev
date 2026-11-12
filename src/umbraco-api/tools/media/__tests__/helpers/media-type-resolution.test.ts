@@ -19,6 +19,8 @@ import {
   setupTestEnvironment,
 } from "@umbraco-cms/mcp-server-sdk/testing";
 import CreateMediaFolderTool from "../../post/create-media-folder.js";
+import CreateMediaTool from "../../post/create-media.js";
+import CreateMediaMultipleTool from "../../post/create-media-multiple.js";
 import {
   fetchMediaTypeId,
   uploadMediaFile,
@@ -211,6 +213,8 @@ describe("media type resolution on upgraded sites", () => {
       const result = await upload("photo.png", "Image");
 
       expect(result.id).toBe(CREATED_MEDIA_ID);
+      expect(result.mediaTypeName).toBe("Image");
+      expect(result.substitutedFor).toBeUndefined();
       expect(postedMedia[0].mediaType.id).toBe(UPGRADED_KEYS.Image);
       expect(postedMedia[0].values[0].editorAlias).toBe("Umbraco.ImageCropper");
       expect(postedMedia[0].values[0].value).toHaveProperty("focalPoint");
@@ -222,6 +226,8 @@ describe("media type resolution on upgraded sites", () => {
       const result = await upload("clip.mp4", "Video");
 
       expect(result.id).toBe(CREATED_MEDIA_ID);
+      expect(result.mediaTypeName).toBe("File");
+      expect(result.substitutedFor).toBe("Video");
       expect(postedMedia[0].mediaType.id).toBe(UPGRADED_KEYS.File);
       expect(postedMedia[0].values[0].editorAlias).toBe("Umbraco.UploadField");
       expect(postedMedia[0].values[0].value).toEqual({
@@ -247,6 +253,84 @@ describe("media type resolution on upgraded sites", () => {
       expect(postedMedia[0].mediaType.id).toBe(UPGRADED_KEYS.File);
       expect(postedMedia[0].values[0].editorAlias).toBe("Umbraco.UploadField");
       expect(postedMedia[0].values[0].value).not.toHaveProperty("focalPoint");
+    });
+
+    it("does not report a substitution for a case-only difference", async () => {
+      serveSite(UPGRADED_SITE);
+
+      const result = await upload("photo.png", "image");
+
+      expect(result.mediaTypeName).toBe("Image");
+      expect(result.substitutedFor).toBeUndefined();
+    });
+  });
+
+  describe("tool results", () => {
+    const base64Input = {
+      sourceType: "base64",
+      name: "clip.mp4",
+      mediaTypeName: "Video",
+      fileAsBase64: TINY_PNG_BASE64,
+    };
+
+    it("create-media says the video was created as File on a site without Video", async () => {
+      serveSite(PRE_8_14_SITE);
+
+      const result = await CreateMediaTool.handler(base64Input as any, createMockRequestHandlerExtra());
+
+      expect(result.isError).toBeFalsy();
+      expect(getStructuredContent(result)).toEqual({
+        message: `Media "clip.mp4" created as 'File' — this site has no 'Video' media type.`,
+        name: "clip.mp4",
+        id: CREATED_MEDIA_ID,
+        warning: "This site has no 'Video' media type, so 'File' was used instead.",
+      });
+    });
+
+    it("create-media keeps the plain success message when Video exists", async () => {
+      serveSite(UPGRADED_SITE);
+
+      const result = await CreateMediaTool.handler(base64Input as any, createMockRequestHandlerExtra());
+
+      expect(getStructuredContent(result)).toEqual({
+        message: `Media "clip.mp4" created successfully`,
+        name: "clip.mp4",
+        id: CREATED_MEDIA_ID,
+      });
+    });
+
+    it("create-media-multiple adds a per-file warning on a site without Video", async () => {
+      serveSite(PRE_8_14_SITE);
+      const realFetch = globalThis.fetch;
+      globalThis.fetch = (async () => new Response("bytes")) as typeof fetch;
+
+      try {
+        const result = await CreateMediaMultipleTool.handler(
+          {
+            sourceType: "url",
+            files: [
+              { name: "clip.mp4", fileUrl: "https://files.example/clip.mp4", mediaTypeName: "Video" },
+              { name: "doc.txt", fileUrl: "https://files.example/doc.txt" },
+            ],
+          } as any,
+          createMockRequestHandlerExtra()
+        );
+
+        expect(getStructuredContent(result)).toMatchObject({
+          results: [
+            {
+              success: true,
+              name: "clip.mp4",
+              id: CREATED_MEDIA_ID,
+              warning: "This site has no 'Video' media type, so 'File' was used instead.",
+            },
+            { success: true, name: "doc.txt", id: CREATED_MEDIA_ID },
+          ],
+        });
+        expect((getStructuredContent(result) as any).results[1]).not.toHaveProperty("warning");
+      } finally {
+        globalThis.fetch = realFetch;
+      }
     });
   });
 });

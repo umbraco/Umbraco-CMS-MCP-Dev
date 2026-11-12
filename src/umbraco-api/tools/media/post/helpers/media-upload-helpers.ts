@@ -82,12 +82,62 @@ export type ResolvedMediaType = {
   /** Media type id on the connected site. */
   id: string;
   /**
-   * Name of the media type used. Differs from the requested name when a
-   * built-in type was missing and File was used instead. Drives the editor
-   * alias and value shape (see `buildValueStructure`).
+   * Name of the media type actually used. Can differ from the requested name
+   * for three reasons: a built-in type's canonical casing is substituted
+   * regardless of the casing requested (e.g. `image` → `Image`); a custom
+   * type's name is taken from the search result rather than the query; or a
+   * missing built-in type fell back to File. Drives the editor alias and value
+   * shape (see `buildValueStructure`) — always use this value, never the
+   * originally requested string.
    */
   name: string;
 };
+
+/** What an upload created, plus the media type it was created as. */
+export type MediaUploadResult = {
+  /** Media item name, as provided by the caller. */
+  name: string;
+  /** Id of the created media item. */
+  id: string;
+  /** Name of the media type actually used (`ResolvedMediaType.name`). */
+  mediaTypeName: string;
+  /**
+   * The requested media type name, set only when the site doesn't have it and
+   * `mediaTypeName` was used instead (e.g. Video on a site installed before
+   * Umbraco 8.14 falls back to File). Undefined when the requested type was used.
+   */
+  substitutedFor?: string;
+};
+
+/**
+ * Returns the requested name when a different media type was used, else
+ * undefined. Case-insensitive, so canonical casing of a built-in or custom
+ * type name is not reported as a substitution; the only remaining cause of a
+ * difference is the File fallback in `fetchMediaTypeId`.
+ *
+ * `requestedName` is the name after SVG auto-correction
+ * (`validateMediaTypeForSvg`), since that is what was looked up.
+ */
+export function getSubstitutedMediaType(
+  requestedName: string,
+  resolved: ResolvedMediaType
+): string | undefined {
+  return requestedName.toLowerCase() === resolved.name.toLowerCase() ? undefined : requestedName;
+}
+
+/** Warning for the tool result when a different media type was used, else undefined. */
+export function getMediaTypeWarning(result: MediaUploadResult): string | undefined {
+  return result.substitutedFor
+    ? `This site has no '${result.substitutedFor}' media type, so '${result.mediaTypeName}' was used instead.`
+    : undefined;
+}
+
+/** Success message for a created media item, mentioning any media type substitution. */
+export function formatMediaCreatedMessage(result: MediaUploadResult): string {
+  return result.substitutedFor
+    ? `Media "${result.name}" created as '${result.mediaTypeName}' — this site has no '${result.substitutedFor}' media type.`
+    : `Media "${result.name}" created successfully`;
+}
 
 /**
  * Resolves the media type to use for an upload on the connected site.
@@ -300,7 +350,7 @@ export async function createFilePayload(
 /**
  * Uploads media file to Umbraco.
  * Handles the complete workflow: file stream creation, temporary file upload, and media creation.
- * Returns the media item name and ID.
+ * Returns the media item name and ID, plus the media type actually used.
  */
 export async function uploadMediaFile(
   client: any,
@@ -314,7 +364,7 @@ export async function uploadMediaFile(
     parentId?: string;
     temporaryFileId: string;
   }
-): Promise<{name: string, id: string}> {
+): Promise<MediaUploadResult> {
   // Step 1: Validate media type (SVG special case - only auto-correction we do)
   // We trust the LLM for all other media type decisions
   const validatedMediaTypeName = validateMediaTypeForSvg(
@@ -393,6 +443,11 @@ export async function uploadMediaFile(
 
   const mediaId = idMatch[1];
 
-  // Return the original name and the created media ID
-  return { name: params.name, id: mediaId };
+  // Return the original name, the created media ID and the media type used
+  return {
+    name: params.name,
+    id: mediaId,
+    mediaTypeName: mediaType.name,
+    substitutedFor: getSubstitutedMediaType(validatedMediaTypeName, mediaType),
+  };
 }
