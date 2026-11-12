@@ -471,6 +471,7 @@ describe("update-document-properties", () => {
     const COMPOSITION_DOC_TYPE_NAME = "_Test Composition DocType";
     const AUTHOR_VALUE = "_Test Author";
     const SUBTITLE_VALUE = "_Test Subtitle";
+    const SEO_TITLE_VALUE = "_Test Seo Title";
 
     // Track builders for cleanup
     let docTypeBuilder: DocumentTypeBuilder | null = null;
@@ -594,6 +595,70 @@ describe("update-document-properties", () => {
       const updatedDocument = await client.getDocumentById(documentId);
       const subtitleValue = updatedDocument.values.find((v) => v.alias === "subtitle");
       expect(subtitleValue?.value).toBe(SUBTITLE_VALUE);
+    });
+
+    it("should add culture-variant property from composition on invariant document type without requiring culture", async () => {
+      const client = UmbracoManagementClient.getClient();
+
+      // Arrange - Create a culture-variant composition with a culture-variant property
+      // (mirrors a real-world "SEO" mixin: variesByCulture(true) on both the composition
+      // and the property it contributes).
+      compositionBuilder = await new DocumentTypeBuilder()
+        .withName(COMPOSITION_DOC_TYPE_NAME)
+        .variesByCulture(true)
+        .withProperty("seoTitle", "Seo Title", TextString_DATA_TYPE_ID, {
+          variesByCulture: true,
+        })
+        .create();
+
+      // Create the main document type WITHOUT calling .variesByCulture(true), so it stays
+      // invariant (the default) even though it consumes a culture-variant composition.
+      // Umbraco allows this: the composition's values are stored invariant on this type.
+      docTypeBuilder = await new DocumentTypeBuilder()
+        .withName(ADD_PROPS_DOC_TYPE_NAME)
+        .allowAsRoot(true)
+        .withComposition(compositionBuilder.getId())
+        .create();
+
+      // Create an invariant document of that type with no value set yet for the
+      // composition's culture-variant property.
+      const docBuilder = await new DocumentBuilder()
+        .withName(ADD_PROPS_DOC_NAME)
+        .withDocumentType(docTypeBuilder.getId())
+        .create();
+
+      const documentId = docBuilder.getId();
+
+      // Act - Add a value for the composition's culture-variant property with NO culture.
+      // Since the document itself is invariant, there is no culture to pass - Umbraco
+      // stores this value with culture: null. Before the fix, this fails with
+      // "Culture/segment validation failed" / "culture is required" because the resolver
+      // used the composition's own variesByCulture flag instead of the consuming
+      // document type's.
+      const result = await UpdateDocumentPropertiesTool.handler(
+        {
+          id: documentId,
+          properties: [
+            {
+              alias: "seoTitle",
+              value: SEO_TITLE_VALUE,
+            },
+          ],
+        },
+        createMockRequestHandlerExtra()
+      );
+
+      // Assert - Should succeed with the property added
+      const responseData = validateStructuredContent(result, updateDocumentPropertiesOutputSchema);
+      expect(responseData.success).toBe(true);
+      expect(responseData.addedProperties).toContain("seoTitle");
+
+      // Verify the value was stored invariant (culture: null), matching how Umbraco
+      // actually stores it on an invariant document type.
+      const updatedDocument = await client.getDocumentById(documentId);
+      const seoTitleValue = updatedDocument.values.find((v) => v.alias === "seoTitle");
+      expect(seoTitleValue?.value).toBe(SEO_TITLE_VALUE);
+      expect(seoTitleValue?.culture).toBeNull();
     });
 
     it("should mix update and add in single call", async () => {
