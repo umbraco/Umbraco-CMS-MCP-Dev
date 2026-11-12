@@ -426,6 +426,50 @@ describe("create-document-block", () => {
     });
   });
 
+  describe("expectedKind", () => {
+    it("should write nothing when the property uses a different editor", async () => {
+      // Arrange
+      const documentId = await createDocument({ [ALIASES.blockList]: existingBlockList() });
+
+      // Act
+      const result = await call({
+        documentId,
+        propertyAlias: ALIASES.blockList,
+        contentTypeKey: infra.elementTypeId,
+        properties: [{ alias: "title", value: NEW_TITLE }],
+        expectedKind: "BlockGrid"
+      });
+
+      // Assert - error naming the actual editor, and none of contentData/expose/layout was written
+      expect(result).toMatchSnapshot();
+      const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.blockList);
+      expect(value.contentData).toHaveLength(1);
+      expect(value.expose).toHaveLength(1);
+      expect(value.layout["Umbraco.BlockList"]).toHaveLength(1);
+    });
+
+    it("should create the block and return its kind when the editor matches", async () => {
+      // Arrange
+      const documentId = await createDocument();
+
+      // Act
+      const result = await call({
+        documentId,
+        propertyAlias: ALIASES.richText,
+        contentTypeKey: infra.elementTypeId,
+        properties: [{ alias: "title", value: NEW_TITLE }],
+        expectedKind: "RichText"
+      });
+
+      // Assert
+      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
+      const output = validateStructuredContent(result, createDocumentBlockOutputSchema);
+      expect(output.kind).toBe("RichText");
+      const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.richText);
+      expect(value.blocks.contentData.map((b: any) => b.key)).toEqual([output.results[0].contentKey]);
+    });
+  });
+
   it("should handle a non-existent document", async () => {
     // Act
     const result = await call({

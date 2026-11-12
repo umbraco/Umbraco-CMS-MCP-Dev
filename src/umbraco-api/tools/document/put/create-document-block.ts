@@ -21,6 +21,7 @@ import {
   insertRteBlockElement,
   type BlockGridAreaConfiguration,
   type BlockLayoutItem,
+  type BlockEditorKind,
   type BlockPlacement,
   type BlockPropertyValueInput
 } from "./helpers/block-builder.js";
@@ -33,7 +34,11 @@ import {
   withStandardDecorators,
 } from "@umbraco-cms/mcp-server-sdk";
 
-export const createDocumentBlockOutputSchema = updateBlockPropertyOutputSchema;
+const blockEditorKindSchema = z.enum(["BlockList", "BlockGrid", "RichText"]);
+
+export const createDocumentBlockOutputSchema = updateBlockPropertyOutputSchema.extend({
+  kind: blockEditorKindSchema,
+});
 
 const blockPropertyValueSchema = z.object({
   alias: z.string().min(1).describe("The property alias on the block's element type"),
@@ -74,6 +79,8 @@ const createDocumentBlockSchema = {
   }).optional().describe("Settings for the new block; the settings element type comes from the data type configuration. When the block type has a settings element type, a settings entry is always created (empty if this is omitted), as the backoffice does"),
   placement: placementSchema.optional().describe("Where to place the block relative to siblings (default: append)"),
   grid: gridSchema.optional().describe("BlockGrid-only layout options. Rejected for BlockList/RichText properties"),
+  expectedKind: blockEditorKindSchema.optional()
+    .describe("Optional guard: the editor the property must use. If the property uses a different editor, nothing is written and the call is rejected"),
 };
 
 type CreateDocumentBlockModel = {
@@ -86,6 +93,7 @@ type CreateDocumentBlockModel = {
   settings?: { properties: BlockPropertyValueInput[] };
   placement?: { position: "before" | "after" | "append" | "prepend"; contentKey?: string | null };
   grid?: { columnSpan?: number; rowSpan?: number; areaKey?: string; parentContentKey?: string };
+  expectedKind?: BlockEditorKind;
 };
 
 /**
@@ -129,7 +137,9 @@ const CreateDocumentBlockTool = {
     or the named area given in grid.
   - grid (BlockGrid only): columnSpan (default 12), rowSpan (default 1), and areaKey + parentContentKey
     to insert into a named area of an existing block.
-  - New block keys are generated; the result returns the new contentKey.
+  - expectedKind (optional): "BlockList" | "BlockGrid" | "RichText". When given, the call is rejected
+    without writing anything if the property uses a different editor.
+  - New block keys are generated; the result returns the new contentKey and the property's editor kind.
   - The document is saved, not published.
 
   Example: { documentId: "...", propertyAlias: "mainContent", contentTypeKey: "...",
@@ -148,6 +158,14 @@ const CreateDocumentBlockTool = {
     const placement = (model.placement ?? { position: "append" }) as BlockPlacement;
     const contentProperties = model.properties ?? [];
     const settingsProperties = model.settings?.properties ?? [];
+
+    // --- Validate the property's editor against the caller's expectation
+    if (model.expectedKind && kind !== model.expectedKind) {
+      throw new ToolValidationError({
+        title: "Unexpected block editor",
+        detail: `Property '${model.propertyAlias}' is a ${kind} property, not ${model.expectedKind}`
+      });
+    }
 
     // --- Validate grid options against the editor kind
     if (model.grid && kind !== "BlockGrid") {
@@ -351,6 +369,7 @@ const CreateDocumentBlockTool = {
     return createToolResult({
       success: true,
       message: `Created 1 block in ${kind} property '${getPropertyKey(model.propertyAlias, model.culture, model.segment)}'`,
+      kind,
       results: [{
         success: true,
         contentKey,
