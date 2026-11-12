@@ -1,6 +1,8 @@
+import { jest } from "@jest/globals";
 import PublishDocumentWithDescendantsTool from "../put/publish-document-with-descendants.js";
 import { DocumentBuilder } from "./helpers/document-builder.js";
 import { DocumentTestHelper } from "./helpers/document-test-helper.js";
+import { UmbracoManagementClient } from "@umb-management-client";
 import {
   BLANK_UUID,
 } from "@umbraco-cms/mcp-server-sdk";
@@ -84,5 +86,117 @@ describe("publish-document-with-descendants", () => {
       createMockRequestHandlerExtra()
     );
     expect(result).toMatchSnapshot();
+  });
+});
+
+describe("publish-document-with-descendants - polling failure modes", () => {
+  setupTestEnvironment();
+
+  const TASK_ID = "11111111-1111-1111-1111-111111111111";
+  const DOC_ID = "22222222-2222-2222-2222-222222222222";
+
+  let clientSpy: jest.SpiedFunction<typeof UmbracoManagementClient.getClient>;
+
+  beforeEach(() => {
+    clientSpy = jest.spyOn(UmbracoManagementClient, "getClient");
+    // Speed through the 1-second poll interval without waiting for real time.
+    jest.spyOn(global, "setTimeout").mockImplementation(((fn: () => void) => {
+      fn();
+      return 0 as any;
+    }) as any);
+  });
+
+  afterEach(() => {
+    clientSpy.mockRestore();
+    jest.restoreAllMocks();
+  });
+
+  it("returns an error result carrying the ProblemDetails when some branch items fail to publish", async () => {
+    const failedBranchProblem = {
+      type: "Error",
+      title: "Branch publish partially failed",
+      status: 400,
+      detail: "Some descendants failed to publish",
+      failedBranchItems: [
+        { id: "33333333-3333-3333-3333-333333333333", operationStatus: "CancelledByEvent" },
+      ],
+    };
+
+    clientSpy.mockReturnValue({
+      putDocumentByIdPublishWithDescendants: jest.fn(async () => ({
+        taskId: TASK_ID,
+        isComplete: false,
+      })),
+      getDocumentByIdPublishWithDescendantsResultByTaskId: jest.fn(async () => ({
+        status: 400,
+        statusText: "Bad Request",
+        data: failedBranchProblem,
+      })),
+    } as any);
+
+    const result: any = await PublishDocumentWithDescendantsTool.handler(
+      {
+        id: DOC_ID,
+        data: { includeUnpublishedDescendants: true, cultures: [] },
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    expect(result.isError).toBe(true);
+    expect(JSON.parse(result.content[0].text)).toEqual(failedBranchProblem);
+  });
+
+  it("returns an error result when the poll HTTP call itself fails", async () => {
+    clientSpy.mockReturnValue({
+      putDocumentByIdPublishWithDescendants: jest.fn(async () => ({
+        taskId: TASK_ID,
+        isComplete: false,
+      })),
+      getDocumentByIdPublishWithDescendantsResultByTaskId: jest.fn(async () => {
+        throw new Error("network boom");
+      }),
+    } as any);
+
+    const result: any = await PublishDocumentWithDescendantsTool.handler(
+      {
+        id: DOC_ID,
+        data: { includeUnpublishedDescendants: true, cultures: [] },
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    expect(result.isError).toBe(true);
+    const body = JSON.parse(result.content[0].text);
+    expect(body.taskId).toBe(TASK_ID);
+    expect(body.detail).toContain("network boom");
+  });
+
+  it("reports that publishing is still in progress (not an error) once the 60-attempt limit is reached", async () => {
+    clientSpy.mockReturnValue({
+      putDocumentByIdPublishWithDescendants: jest.fn(async () => ({
+        taskId: TASK_ID,
+        isComplete: false,
+      })),
+      getDocumentByIdPublishWithDescendantsResultByTaskId: jest.fn(async () => ({
+        status: 200,
+        statusText: "OK",
+        data: { taskId: TASK_ID, isComplete: false },
+      })),
+    } as any);
+
+    const result: any = await PublishDocumentWithDescendantsTool.handler(
+      {
+        id: DOC_ID,
+        data: { includeUnpublishedDescendants: true, cultures: [] },
+      },
+      createMockRequestHandlerExtra()
+    );
+
+    expect(result.isError).toBeFalsy();
+    const body = JSON.parse(result.content[0].text);
+    expect(body.status).toBe("in-progress");
+    expect(body.taskId).toBe(TASK_ID);
+    expect(body.message).toContain("get-document-publish-with-descendants-result");
+    expect(body.message).toContain(TASK_ID);
   });
 });
