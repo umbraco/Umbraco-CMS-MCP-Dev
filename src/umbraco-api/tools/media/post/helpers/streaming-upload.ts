@@ -72,7 +72,7 @@ export async function streamingUploadFromUrl(
     params.name,
     params.mediaTypeName,
   );
-  const [mediaTypeId, auth] = await Promise.all([
+  const [mediaType, auth] = await Promise.all([
     fetchMediaTypeId(client, validatedMediaTypeName),
     resolveAuth(),
   ]);
@@ -160,10 +160,10 @@ export async function streamingUploadFromUrl(
       );
     }
 
-    const valueStructure = buildValueStructure(validatedMediaTypeName, temporaryFileId);
+    const valueStructure = buildValueStructure(mediaType.name, temporaryFileId);
     const response = (await client.postMedia(
       {
-        mediaType: { id: mediaTypeId },
+        mediaType: { id: mediaType.id },
         variants: [{ culture: null, segment: null, name: params.name }],
         values: [valueStructure] as any,
         parent: params.parentId ? { id: params.parentId } : null,
