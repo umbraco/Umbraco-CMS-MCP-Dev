@@ -23,10 +23,24 @@ import { setUmbracoVersion, setAllowFilePathUploads } from "./umbraco-api/runtim
  * rethrown unchanged. Never includes clientId/clientSecret: only the base
  * URL, which isn't a secret.
  */
+const describeFetchFailureCause = (cause: unknown): string => {
+  // Node's fetch retries dual-stack `localhost` lookups (IPv6 then IPv4); if
+  // both fail, the cause is an AggregateError whose own .message is empty —
+  // the useful detail (e.g. ECONNREFUSED) is one level deeper, in .errors.
+  if (cause instanceof AggregateError) {
+    const details = cause.errors
+      .map((inner) => (inner instanceof Error ? inner.message : String(inner)))
+      .filter(Boolean)
+      .join("; ");
+    return details ? `: ${details}` : "";
+  }
+  return cause instanceof Error && cause.message ? `: ${cause.message}` : "";
+};
+
 const describeUnreachableServer = (error: unknown, baseUrl: string): unknown => {
   if (error instanceof TypeError && error.message === "fetch failed") {
     const cause = (error as { cause?: unknown }).cause;
-    const causeMessage = cause instanceof Error ? `: ${cause.message}` : "";
+    const causeMessage = describeFetchFailureCause(cause);
     return new Error(`Could not reach Umbraco at ${baseUrl || "(no base URL configured)"} (fetch failed${causeMessage})`, { cause: error });
   }
   return error;
@@ -164,11 +178,17 @@ const main = async () => {
 };
 
 main().catch((error) => {
-  // Print the message once. `error` is usually an Error object, and
-  // console.error("Error:", error) would log its full `util.inspect`
-  // rendering — whose stack trace already starts with "Error: <message>" —
-  // producing a doubled "Error: Error: <message>" prefix. Logging just the
-  // message avoids that while keeping the single "Error:" lead-in.
-  console.error("Error:", error instanceof Error ? error.message : error);
+  // An Error's own util.inspect rendering already starts with "<name>:
+  // <message>" (and includes the stack trace and any .cause chain), so
+  // passing it to console.error with no literal "Error:" prefix avoids the
+  // doubled "Error: Error: <message>" this used to produce — without
+  // dropping the stack trace, which is the only diagnostic for anything
+  // unanticipated. A non-Error throw has no such rendering, so it keeps the
+  // explicit prefix.
+  if (error instanceof Error) {
+    console.error(error);
+  } else {
+    console.error("Error:", error);
+  }
   process.exit(1);
 });
