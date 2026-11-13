@@ -25,7 +25,9 @@ const SortDocumentChildrenTool = {
 
   When sorting by Name, an optional culture selects which variant name to sort by; the culture is not validated, so children that do not vary by it (or an unrecognised culture) fall back to the invariant name.`,
   inputSchema: inputSchema,
-  annotations: {},
+  annotations: {
+    idempotentHint: true,
+  },
   slices: ['sort'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Sort),
   handler: (async (model: { id: string; data: any }) => {
