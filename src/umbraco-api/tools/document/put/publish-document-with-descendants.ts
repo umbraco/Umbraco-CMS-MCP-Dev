@@ -23,7 +23,11 @@ const PublishDocumentWithDescendantsTool = {
   The tool polls for completion for up to 60 seconds. If the publish is still running or ambiguous when that limit is reached, follow up with get-document-publish-with-descendants-result using the returned taskId.`,
   inputSchema: inputSchema,
   annotations: {
-    idempotentHint: true,
+    // Unlike the other document put/ tools, this one starts a new async,
+    // recursive publish task on every call rather than converging to the
+    // same end state — a retried call fires a second concurrent job over
+    // the same subtree, so it is not safe to advertise as idempotent.
+    idempotentHint: false,
   },
   slices: ['publish'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Publish),
