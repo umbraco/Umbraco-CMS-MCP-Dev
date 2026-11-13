@@ -22,7 +22,9 @@ const PublishDocumentWithDescendantsTool = {
   description: `Publishes a document and its descendants by Id. This is an asynchronous operation that may take time for large document trees.
   The tool polls for completion for up to 60 seconds. If the publish is still running or ambiguous when that limit is reached, follow up with get-document-publish-with-descendants-result using the returned taskId.`,
   inputSchema: inputSchema,
-  annotations: {},
+  annotations: {
+    idempotentHint: true,
+  },
   slices: ['publish'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Publish),
   handler: (async (model: { id: string; data: any }) => {
