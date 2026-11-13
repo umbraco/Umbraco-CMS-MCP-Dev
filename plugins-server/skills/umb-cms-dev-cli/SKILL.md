@@ -59,7 +59,9 @@ UMBRACO_CLIENT_SECRET=your-secret
 UMBRACO_BASE_URL=https://localhost:44391
 ```
 
-Introspection commands (`--list-tools`, `--describe-tool`, `--generate-context`, `--debug-config`) currently still require a reachable, configured Umbraco site: `src/index.ts` validates config and authenticates (`getUserCurrent()`) before dispatching any CLI flag, so with no `.env` they fail with `Missing required configuration: baseUrl` (thrown by config validation, before any flag runs), and with a valid `.env` pointing at an unreachable site they fail with a connection error from the `getUserCurrent()` call. Have `.env` pointing at a real, running instance before using them.
+Every command, including the introspection ones (`--list-tools`, `--describe-tool`, `--generate-context`, `--debug-config`), needs a `.env` pointing at a running Umbraco instance.
+
+Start-up failures print a single line. Set `UMBRACO_MCP_DEBUG=true` to get the full stack trace.
 
 ## Tool Filtering
 

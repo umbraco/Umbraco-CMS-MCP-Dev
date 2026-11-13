@@ -12,39 +12,7 @@ import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNam
 import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { availableCollections } from "./umbraco-api/tools/collection-registry.js";
 import { setUmbracoVersion, setAllowFilePathUploads } from "./umbraco-api/runtime-context.js";
-
-/**
- * Wraps a bare connection failure (Node's fetch throws `TypeError: fetch
- * failed` with no indication of *where* it tried to connect) with the
- * configured base URL, so the fatal error printed at the bottom of this file
- * says which site was unreachable instead of just "fetch failed". Anything
- * else — wrong credentials, a non-2xx response, etc — already carries its
- * own clear message (e.g. "Token request failed: 401 Unauthorized") and is
- * rethrown unchanged. Never includes clientId/clientSecret: only the base
- * URL, which isn't a secret.
- */
-const describeFetchFailureCause = (cause: unknown): string => {
-  // Node's fetch retries dual-stack `localhost` lookups (IPv6 then IPv4); if
-  // both fail, the cause is an AggregateError whose own .message is empty —
-  // the useful detail (e.g. ECONNREFUSED) is one level deeper, in .errors.
-  if (cause instanceof AggregateError) {
-    const details = cause.errors
-      .map((inner) => (inner instanceof Error ? inner.message : String(inner)))
-      .filter(Boolean)
-      .join("; ");
-    return details ? `: ${details}` : "";
-  }
-  return cause instanceof Error && cause.message ? `: ${cause.message}` : "";
-};
-
-const describeUnreachableServer = (error: unknown, baseUrl: string): unknown => {
-  if (error instanceof TypeError && error.message === "fetch failed") {
-    const cause = (error as { cause?: unknown }).cause;
-    const causeMessage = describeFetchFailureCause(cause);
-    return new Error(`Could not reach Umbraco at ${baseUrl || "(no base URL configured)"} (fetch failed${causeMessage})`, { cause: error });
-  }
-  return error;
-};
+import { describeUnreachableServer, formatFatalError, isDebugEnabled } from "./startup-errors.js";
 
 const main = async () => {
   // Node/stdio environment supports filesystem access; enable filePath uploads.
@@ -178,17 +146,8 @@ const main = async () => {
 };
 
 main().catch((error) => {
-  // An Error's own util.inspect rendering already starts with "<name>:
-  // <message>" (and includes the stack trace and any .cause chain), so
-  // passing it to console.error with no literal "Error:" prefix avoids the
-  // doubled "Error: Error: <message>" this used to produce — without
-  // dropping the stack trace, which is the only diagnostic for anything
-  // unanticipated. A non-Error throw has no such rendering, so it keeps the
-  // explicit prefix.
-  if (error instanceof Error) {
-    console.error(error);
-  } else {
-    console.error("Error:", error);
-  }
+  // One line by default; full stack trace and cause chain when
+  // UMBRACO_MCP_DEBUG is set (see startup-errors.ts).
+  console.error(...formatFatalError(error, isDebugEnabled()));
   process.exit(1);
 });
