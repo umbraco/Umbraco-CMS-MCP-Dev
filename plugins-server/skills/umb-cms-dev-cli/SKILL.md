@@ -59,7 +59,9 @@ UMBRACO_CLIENT_SECRET=your-secret
 UMBRACO_BASE_URL=https://localhost:44391
 ```
 
-Introspection commands (`--list-tools`, `--describe-tool`, `--generate-context`) do not require auth.
+Every command, including the introspection ones (`--list-tools`, `--describe-tool`, `--generate-context`, `--debug-config`), needs a `.env` pointing at a running Umbraco instance.
+
+Start-up failures print a single line. Set `UMBRACO_MCP_DEBUG=true` to get the full stack trace.
 
 ## Tool Filtering
 
