@@ -5,7 +5,8 @@ import {
   CAPTURE_RAW_HTTP_RESPONSE,
   createToolResult,
   createToolResultError,
-  FOLDER_MEDIA_TYPE_ID,
+  MEDIA_TYPE_ALIASES,
+  resolveMediaTypeId,
   withStandardDecorators,
   type HttpResponse,
 } from "@umbraco-cms/mcp-server-sdk";
@@ -33,6 +34,15 @@ const CreateMediaFolderTool = {
     try {
       const client = UmbracoManagementClient.getClient();
 
+      // Built-in media type keys differ between fresh and upgraded sites,
+      // so look the Folder type up by alias on the connected site.
+      const folderMediaTypeId = await resolveMediaTypeId(MEDIA_TYPE_ALIASES.Folder);
+      if (!folderMediaTypeId) {
+        return createToolResultError({
+          detail: `Error creating media folder: no media type with alias '${MEDIA_TYPE_ALIASES.Folder}' was found on this Umbraco site.`,
+        });
+      }
+
       // Cast needed: Orval types don't reflect that CAPTURE_RAW_HTTP_RESPONSE returns HttpResponse
       const response = await client.postMedia({
         values: [],
@@ -44,7 +54,7 @@ const CreateMediaFolderTool = {
           },
         ],
         parent: model.parentId ? { id: model.parentId } : null,
-        mediaType: { id: FOLDER_MEDIA_TYPE_ID },
+        mediaType: { id: folderMediaTypeId },
       }, CAPTURE_RAW_HTTP_RESPONSE) as unknown as HttpResponse;
 
       // Check if request was successful (status 200-299)

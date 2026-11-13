@@ -10,7 +10,11 @@ import { UmbracoManagementClient } from "../../../../umbraco-management-client.j
 import {
   buildValueStructure,
   fetchMediaTypeId,
+  formatMediaCreatedMessage,
+  getMediaTypeWarning,
+  getSubstitutedMediaType,
   validateMediaTypeForSvg,
+  type MediaUploadResult,
 } from "./media-upload-helpers.js";
 
 // Tool handlers don't receive env/props, and the streaming POST must bypass
@@ -53,10 +57,7 @@ export type StreamingUploadParams = {
   parentId?: string;
 };
 
-export type StreamingUploadResult = {
-  name: string;
-  id: string;
-};
+export type StreamingUploadResult = MediaUploadResult;
 
 export async function streamingUploadFromUrl(
   params: StreamingUploadParams,
@@ -72,7 +73,7 @@ export async function streamingUploadFromUrl(
     params.name,
     params.mediaTypeName,
   );
-  const [mediaTypeId, auth] = await Promise.all([
+  const [mediaType, auth] = await Promise.all([
     fetchMediaTypeId(client, validatedMediaTypeName),
     resolveAuth(),
   ]);
@@ -160,10 +161,10 @@ export async function streamingUploadFromUrl(
       );
     }
 
-    const valueStructure = buildValueStructure(validatedMediaTypeName, temporaryFileId);
+    const valueStructure = buildValueStructure(mediaType.name, temporaryFileId);
     const response = (await client.postMedia(
       {
-        mediaType: { id: mediaTypeId },
+        mediaType: { id: mediaType.id },
         variants: [{ culture: null, segment: null, name: params.name }],
         values: [valueStructure] as any,
         parent: params.parentId ? { id: params.parentId } : null,
@@ -183,7 +184,12 @@ export async function streamingUploadFromUrl(
         `Could not extract media id from Location header: ${locationHeader ?? "(missing)"}`,
       );
     }
-    return { name: params.name, id: idMatch[1] };
+    return {
+      name: params.name,
+      id: idMatch[1],
+      mediaTypeName: mediaType.name,
+      substitutedFor: getSubstitutedMediaType(validatedMediaTypeName, mediaType),
+    };
   } finally {
     clearTimeout(overallTimeout);
   }
@@ -194,11 +200,13 @@ export async function streamingUploadFromUrl(
  *  (host-injected download_url via `openai/fileParams`). */
 export async function streamingUploadToToolResult(params: StreamingUploadParams) {
   try {
-    const { name, id } = await streamingUploadFromUrl(params);
+    const result = await streamingUploadFromUrl(params);
+    const warning = getMediaTypeWarning(result);
     return createToolResult({
-      message: `Media "${name}" created successfully`,
-      name,
-      id,
+      message: formatMediaCreatedMessage(result),
+      name: result.name,
+      id: result.id,
+      ...(warning ? { warning } : {}),
     });
   } catch (error) {
     return createToolResultError({
