@@ -1,6 +1,6 @@
 {
   "name": "@umbraco-cms/mcp-dev",
-  "version": "18.1.10",
+  "version": "18.1.11",
   "type": "module",
   "description": "A model context protocol (MCP) server for Umbraco CMS",
   "main": "dist/index.js",
@@ -44,7 +44,7 @@
     "dev:hosted": "wrangler dev"
   },
   "engines": {
-    "node": ">=22.3.0"
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
   },
   "files": [
     "dist",
@@ -69,18 +69,18 @@
   },
   "homepage": "https://github.com/umbraco/Umbraco-CMS-MCP-Dev#readme",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.28.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "@types/uuid": "^10.0.0",
     "@types/yargs": "^17.0.33",
-    "@umbraco-cms/mcp-hosted": "^1.0.0-beta.47",
-    "@umbraco-cms/mcp-server-sdk": "^1.0.0-beta.47",
+    "@umbraco-cms/mcp-hosted": "^1.0.0-beta.48",
+    "@umbraco-cms/mcp-server-sdk": "^1.0.0-beta.48",
     "dotenv": "^16.5.0",
     "form-data": "^4.0.4",
     "mime-types": "^3.0.1",
     "qs": "^6.14.0",
     "uuid": "^11.1.0",
     "yargs": "^18.0.0",
-    "zod": "^4.2.1"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@anthropic-ai/claude-agent-sdk": "0.2.39",

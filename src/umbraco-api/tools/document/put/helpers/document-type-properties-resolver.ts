@@ -1,4 +1,5 @@
 import { UmbracoManagementClient } from "@umb-management-client";
+import type { GetDocumentTypeByIdResult } from "@/umbraco-api/api/umbracoManagementAPI.js";
 
 /**
  * Represents a resolved property from a document type, including properties from compositions
@@ -14,22 +15,33 @@ export interface ResolvedProperty {
 /**
  * Recursively resolves all properties from a document type, including properties from compositions.
  *
+ * A property's *effective* variance on a given document is the AND of its own definition
+ * (which, for a property inherited from a composition, is that composition's own flag) and
+ * the root document type's own variance flag. If the document type being edited is itself
+ * invariant, every property on it is stored invariant (culture: null / segment: null)
+ * regardless of what a composition declares for that property - Umbraco does not let a
+ * property vary more than the document type that consumes it.
+ *
  * @param documentTypeId - The ID of the document type to resolve properties for
- * @returns Array of resolved properties with their variance flags
+ * @returns Array of resolved properties with their effective variance flags
  */
 export async function getAllDocumentTypeProperties(documentTypeId: string): Promise<ResolvedProperty[]> {
   const client = UmbracoManagementClient.getClient();
   const visitedIds = new Set<string>();
   const properties: ResolvedProperty[] = [];
 
-  async function resolveDocumentType(docTypeId: string): Promise<void> {
+  const rootDocType = await client.getDocumentTypeById(documentTypeId);
+  const rootVariesByCulture = rootDocType.variesByCulture;
+  const rootVariesBySegment = rootDocType.variesBySegment;
+
+  async function resolveDocumentType(docTypeId: string, preloaded?: GetDocumentTypeByIdResult): Promise<void> {
     // Prevent infinite recursion from circular compositions
     if (visitedIds.has(docTypeId)) {
       return;
     }
     visitedIds.add(docTypeId);
 
-    const docType = await client.getDocumentTypeById(docTypeId);
+    const docType = preloaded ?? await client.getDocumentTypeById(docTypeId);
 
     // Add direct properties
     for (const prop of docType.properties) {
@@ -39,8 +51,10 @@ export async function getAllDocumentTypeProperties(documentTypeId: string): Prom
           alias: prop.alias,
           name: prop.name,
           dataTypeId: prop.dataType.id,
-          variesByCulture: prop.variesByCulture,
-          variesBySegment: prop.variesBySegment
+          // AND with the root document type's own flag: a composition's property can't
+          // vary more than the document type it's actually used on.
+          variesByCulture: prop.variesByCulture && rootVariesByCulture,
+          variesBySegment: prop.variesBySegment && rootVariesBySegment
         });
       }
     }
@@ -51,7 +65,7 @@ export async function getAllDocumentTypeProperties(documentTypeId: string): Prom
     }
   }
 
-  await resolveDocumentType(documentTypeId);
+  await resolveDocumentType(documentTypeId, rootDocType);
   return properties;
 }
 

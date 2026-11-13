@@ -8,6 +8,7 @@ import GetDocumentNotificationsTool from "./get/get-document-notifications.js";
 import GetDocumentPublicAccessTool from "./get/get-document-public-access.js";
 import GetDocumentAuditLogTool from "./get/get-document-audit-log.js";
 import GetDocumentPublishTool from "./get/get-document-publish.js";
+import GetDocumentPublishWithDescendantsResultTool from "./get/get-document-publish-with-descendants-result.js";
 import GetDocumentConfigurationTool from "./get/get-document-configuration.js";
 import GetDocumentUrlsTool from "./get/get-document-urls.js";
 import GetDocumentTypeSchemaTool from "./get/get-document-type-schema.js";
@@ -73,6 +74,7 @@ export const DocumentCollection: ToolCollectionExport = {
   if (AuthorizationPolicies.TreeAccessDocuments(user)) {
     tools.push(GetDocumentByIdTool);
     tools.push(GetDocumentPublishTool);
+    tools.push(GetDocumentPublishWithDescendantsResultTool);
     tools.push(GetDocumentConfigurationTool);
     tools.push(GetDocumentTypeSchemaTool);
     tools.push(CopyDocumentTool);
