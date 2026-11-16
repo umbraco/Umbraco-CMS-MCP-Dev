@@ -120,6 +120,10 @@ const provider = new OAuthProvider({
   clientRegistrationEndpoint: "/register",
   // Advertise and accept S256 only (the hosted authorize handler also enforces it).
   allowPlainPKCE: false,
+  // Registered clients never expire (the 0.8.x default is 90 days, unlike the
+  // 0.2.4 library this worker ran before). Must be set explicitly — omitting
+  // this option applies the 90-day default.
+  clientRegistrationTTL: undefined,
 });
 
 export default createWorkerExport(provider, options);
