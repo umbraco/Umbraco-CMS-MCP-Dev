@@ -1,7 +1,11 @@
 name: Temp Regenerate Lockfile
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - feature/issue-650-upgrade-1.0.0
+    paths:
+      - .github/workflows/_tmp-regen-lockfile.yml
 
 permissions:
   contents: write
