@@ -9,6 +9,3 @@ UMBRACO_SERVER_URL=http://localhost:56472
 
 # OAuth client ID registered in Umbraco (see McpOAuthComposer.cs)
 UMBRACO_OAUTH_CLIENT_ID=umbraco-back-office-mcp
-
-# 32-byte hex key for encrypting session cookies (any random value works for local dev)
-COOKIE_ENCRYPTION_KEY=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
