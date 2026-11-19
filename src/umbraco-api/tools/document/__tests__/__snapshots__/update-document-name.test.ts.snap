@@ -48,7 +48,6 @@ exports[`update-document-name should rename an invariant document 1`] = `
           "publishDate": null,
           "scheduledPublishDate": null,
           "scheduledUnpublishDate": null,
-          "segment": null,
           "state": "Draft",
           "updateDate": "NORMALIZED_DATE",
         },

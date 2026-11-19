@@ -28,6 +28,7 @@ exports[`data-type-tool-index should have tools when user meets TreeAccessDataTy
   "delete-data-type-folder",
   "get-data-type-folder",
   "update-data-type-folder",
+  "move-data-type-folder",
 ]
 `;
 
@@ -74,6 +75,7 @@ exports[`data-type-tool-index should have tools when user meets multiple policie
   "delete-data-type-folder",
   "get-data-type-folder",
   "update-data-type-folder",
+  "move-data-type-folder",
 ]
 `;
 

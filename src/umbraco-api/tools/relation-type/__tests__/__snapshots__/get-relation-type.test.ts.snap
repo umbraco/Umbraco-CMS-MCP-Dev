@@ -99,6 +99,15 @@ exports[`get-relation-type should get relation types with default pagination 1`]
         "parentObject": null,
       },
       {
+        "alias": "umbExternalBlockElement",
+        "childObject": null,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isBidirectional": false,
+        "isDependency": true,
+        "name": "Related External Block Element",
+        "parentObject": null,
+      },
+      {
         "alias": "umbMedia",
         "childObject": null,
         "id": "00000000-0000-0000-0000-000000000000",
@@ -118,7 +127,7 @@ exports[`get-relation-type should get relation types with default pagination 1`]
       },
     ],
     "nextCursor": undefined,
-    "total": 9,
+    "total": 10,
   },
 }
 `;

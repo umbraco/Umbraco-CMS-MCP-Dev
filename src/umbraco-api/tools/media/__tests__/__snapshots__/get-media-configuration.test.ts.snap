@@ -5,7 +5,6 @@ exports[`get-media-configuration should get media configuration 1`] = `
   "content": [],
   "structuredContent": {
     "disableDeleteWhenReferenced": false,
-    "disableUnpublishWhenReferenced": false,
   },
 }
 `;

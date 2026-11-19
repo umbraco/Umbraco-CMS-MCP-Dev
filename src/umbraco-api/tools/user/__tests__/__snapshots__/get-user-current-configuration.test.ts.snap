@@ -14,6 +14,7 @@ exports[`get-user-current-configuration should get the current user configuratio
       "requireNonLetterOrDigit": false,
       "requireUppercase": false,
     },
+    "timeoutUtc": null,
   },
 }
 `;

@@ -31,7 +31,7 @@ exports[`get-log-viewer-saved-search should get saved searches with custom param
       },
       {
         "name": "Find logs where one of the items in the SortedComponentTypes property array is equal to",
-        "query": "SortedComponentTypes[?] = 'Umbraco.Web.Search.ExamineComponent'",
+        "query": "SortedComponentTypes[?] = 'Umbraco.Cms.Infrastructure.Runtime.CoreRuntime'",
       },
       {
         "name": "Find logs where one of the items in the SortedComponentTypes property array contains",
@@ -91,7 +91,7 @@ exports[`get-log-viewer-saved-search should get saved searches with default para
       },
       {
         "name": "Find logs where one of the items in the SortedComponentTypes property array is equal to",
-        "query": "SortedComponentTypes[?] = 'Umbraco.Web.Search.ExamineComponent'",
+        "query": "SortedComponentTypes[?] = 'Umbraco.Cms.Infrastructure.Runtime.CoreRuntime'",
       },
       {
         "name": "Find logs where one of the items in the SortedComponentTypes property array contains",
@@ -151,7 +151,7 @@ exports[`get-log-viewer-saved-search should handle empty result set 1`] = `
       },
       {
         "name": "Find logs where one of the items in the SortedComponentTypes property array is equal to",
-        "query": "SortedComponentTypes[?] = 'Umbraco.Web.Search.ExamineComponent'",
+        "query": "SortedComponentTypes[?] = 'Umbraco.Cms.Infrastructure.Runtime.CoreRuntime'",
       },
       {
         "name": "Find logs where one of the items in the SortedComponentTypes property array contains",

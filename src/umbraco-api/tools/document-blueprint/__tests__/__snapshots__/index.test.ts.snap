@@ -8,6 +8,7 @@ exports[`document-blueprint-tool-index should have all blueprint tools when user
   "delete-document-blueprint",
   "move-document-blueprint",
   "get-document-blueprint-by-id-array",
+  "get-document-blueprint-folder-by-id-array",
   "get-document-blueprint-scaffold",
   "create-document-blueprint-from-document",
   "get-document-blueprint-ancestors",
@@ -17,6 +18,7 @@ exports[`document-blueprint-tool-index should have all blueprint tools when user
   "create-document-blueprint-folder",
   "get-document-blueprint-folder",
   "update-document-blueprint-folder",
+  "move-document-blueprint-folder",
   "delete-document-blueprint-folder",
 ]
 `;
