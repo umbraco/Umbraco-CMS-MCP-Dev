@@ -212,9 +212,9 @@ describe("media-upload-helpers", () => {
           getItemMediaTypeSearch: mockFn
         };
 
-        const id = await fetchMediaTypeId(mockClient, "Custom Type");
+        const resolved = await fetchMediaTypeId(mockClient, "Custom Type");
 
-        expect(id).toBe(customId);
+        expect(resolved).toEqual({ id: customId, name: "Custom Type" });
         expect(mockClient.getItemMediaTypeSearch).toHaveBeenCalledWith({ query: "Custom Type" });
       });
 
@@ -247,9 +247,9 @@ describe("media-upload-helpers", () => {
           getItemMediaTypeSearch: mockFn
         };
 
-        const id = await fetchMediaTypeId(mockClient, "my custom type");
+        const resolved = await fetchMediaTypeId(mockClient, "my custom type");
 
-        expect(id).toBe(customId);
+        expect(resolved).toEqual({ id: customId, name: "My Custom Type" });
         expect(mockClient.getItemMediaTypeSearch).toHaveBeenCalledWith({ query: "my custom type" });
       });
     });

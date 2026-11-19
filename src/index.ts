@@ -12,6 +12,7 @@ import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNam
 import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { availableCollections } from "./umbraco-api/tools/collection-registry.js";
 import { setUmbracoVersion, setAllowFilePathUploads } from "./umbraco-api/runtime-context.js";
+import { describeUnreachableServer, formatFatalError, isDebugEnabled } from "./startup-errors.js";
 
 const main = async () => {
   // Node/stdio environment supports filesystem access; enable filePath uploads.
@@ -32,7 +33,12 @@ const main = async () => {
 
   const client = UmbracoManagementClient.getClient();
 
-  const user = await client.getUserCurrent();
+  let user: Awaited<ReturnType<typeof client.getUserCurrent>>;
+  try {
+    user = await client.getUserCurrent();
+  } catch (error) {
+    throw describeUnreachableServer(error, config.auth.baseUrl);
+  }
 
   // Check Umbraco version compatibility (logs result internally) and capture the
   // version so collection registrations can gate tools whose endpoints were
@@ -140,6 +146,8 @@ const main = async () => {
 };
 
 main().catch((error) => {
-  console.error("Error:", error);
+  // One line by default; full stack trace and cause chain when
+  // UMBRACO_MCP_DEBUG is set (see startup-errors.ts).
+  console.error(...formatFatalError(error, isDebugEnabled()));
   process.exit(1);
 });

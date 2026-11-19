@@ -35,6 +35,9 @@ All examples below use `<cli>` as a placeholder — substitute the correct comma
 # Call a tool directly (requires auth via .env)
 <cli> --call <tool-name> --call-args '{"key":"value"}'
 
+# Call a tool using a JSON file instead of inline args (large/complex payloads, or any call on Windows)
+<cli> --call <tool-name> --call-args-file ./args.json
+
 # Generate context documentation
 <cli> --generate-context > CONTEXT.md
 
@@ -59,7 +62,9 @@ UMBRACO_CLIENT_SECRET=your-secret
 UMBRACO_BASE_URL=https://localhost:44391
 ```
 
-Introspection commands (`--list-tools`, `--describe-tool`, `--generate-context`) do not require auth.
+Every command, including the introspection ones (`--list-tools`, `--describe-tool`, `--generate-context`, `--debug-config`), needs a `.env` pointing at a running Umbraco instance.
+
+Start-up failures print a single line. Set `UMBRACO_MCP_DEBUG=true` to get the full stack trace.
 
 ## Tool Filtering
 
@@ -103,8 +108,11 @@ These print output and exit immediately — they do not start the MCP server.
 | `--debug-config` | Print resolved config (secrets masked) |
 | `--call <name>` | Call a tool directly, print JSON result |
 | `--call-args <json>` | JSON arguments for `--call` (default: `{}`) |
+| `--call-args-file <path>` | Path to a file containing JSON arguments for `--call` (use instead of `--call-args` for large/complex payloads) |
 
 Introspection respects all filtering. `--list-tools` with `UMBRACO_READONLY=true` shows exactly what the LLM would see.
+
+**Prefer `--call-args-file` whenever the payload has quotes inside string values or markup — and always on Windows.** If a `content` field contains HTML/Razor with embedded `"` and `<`/`>`/`&` (e.g. a template body), passing it inline via `--call-args` means the JSON has to survive the shell's own quoting on top of your own. On Windows this is worse: `npx`/Volta shims route through `cmd.exe`, which can read `<`, `>`, or `&` inside an escaped-quote JSON string as redirection/command-separator operators, producing confusing errors like `< was unexpected at this time.`, `The system cannot find the file specified.`, or `& was unexpected at this time.`. `--call-args-file` reads the JSON from disk instead, so it never passes through shell argument parsing. Note: `--call-args` and `--call-args-file` are mutually exclusive (passing both errors out), and a missing file or invalid JSON in the file produces its own clear error (the file is read as UTF-8 with a leading BOM stripped, so Windows/PowerShell-saved files still work).
 
 ## Efficient CLI Usage
 

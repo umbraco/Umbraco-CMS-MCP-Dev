@@ -1,7 +1,12 @@
 import { UmbracoManagementClient } from "@umb-management-client";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { BASE64_MAX_BYTES, uploadMediaFile } from "./helpers/media-upload-helpers.js";
+import {
+  BASE64_MAX_BYTES,
+  formatMediaCreatedMessage,
+  getMediaTypeWarning,
+  uploadMediaFile,
+} from "./helpers/media-upload-helpers.js";
 import { buildSourceTypeSection } from "./helpers/source-type-helpers.js";
 import {
   isStreamingUploadAvailable,
@@ -33,7 +38,9 @@ const fileObjectSchema = z.object({
 export const createMediaOutputSchema = z.object({
   message: z.string(),
   name: z.string(),
-  id: z.string().guid()
+  id: z.string().guid(),
+  /** Set only when the site lacks the requested media type and another was used (e.g. Video → File). */
+  warning: z.string().optional(),
 });
 
 export function createCreateMediaTool(options: { allowFilePath: boolean }) {
@@ -139,7 +146,7 @@ ${filePathSection}
       try {
         const client = UmbracoManagementClient.getClient();
         const temporaryFileId = uuidv4();
-        const { name: actualName, id } = await uploadMediaFile(client, {
+        const result = await uploadMediaFile(client, {
           sourceType: effectiveSourceType,
           name: model.name,
           mediaTypeName: model.mediaTypeName,
@@ -149,10 +156,12 @@ ${filePathSection}
           parentId: model.parentId,
           temporaryFileId,
         });
+        const warning = getMediaTypeWarning(result);
         return createToolResult({
-          message: `Media "${actualName}" created successfully`,
-          name: actualName,
-          id,
+          message: formatMediaCreatedMessage(result),
+          name: result.name,
+          id: result.id,
+          ...(warning ? { warning } : {}),
         });
       } catch (error) {
         return createToolResultError({

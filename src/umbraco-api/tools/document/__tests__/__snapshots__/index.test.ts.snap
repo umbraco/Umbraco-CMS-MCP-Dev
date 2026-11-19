@@ -4,6 +4,7 @@ exports[`document-tool-index should have all tools when user meets multiple poli
 [
   "get-document-by-id",
   "get-document-publish",
+  "get-document-publish-with-descendants-result",
   "get-document-configuration",
   "get-document-type-schema",
   "copy-document",
@@ -66,6 +67,7 @@ exports[`document-tool-index should have tools when user meets TreeAccessDocumen
 [
   "get-document-by-id",
   "get-document-publish",
+  "get-document-publish-with-descendants-result",
   "get-document-configuration",
   "get-document-type-schema",
   "copy-document",

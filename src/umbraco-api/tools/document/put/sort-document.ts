@@ -13,7 +13,9 @@ const SortDocumentTool = {
   name: "sort-document",
   description: "Sorts the order of documents under a parent.",
   inputSchema: putDocumentSortBody.shape,
-  annotations: {},
+  annotations: {
+    idempotentHint: true,
+  },
   slices: ['sort'],
   enabled: (user: CurrentUserResponseModel) => user.fallbackPermissions.includes(UmbracoDocumentPermissions.Sort),
   handler: (async (model: z.infer<typeof putDocumentSortBody>) => {
