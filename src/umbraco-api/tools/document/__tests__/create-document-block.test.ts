@@ -15,7 +15,6 @@ import { z } from "zod";
 import { BLANK_UUID } from "@umbraco-cms/mcp-server-sdk";
 import {
   createMockRequestHandlerExtra,
-  createSnapshotResult,
   setupTestEnvironment,
   validateStructuredContent,
   validateErrorResult,
@@ -466,7 +465,7 @@ describe("create-document-block", () => {
       });
 
       // Assert
-      expect(createSnapshotResult(result, documentId)).toMatchSnapshot();
+      expect(createBlockSnapshotResult(result, documentId)).toMatchSnapshot();
       const output = validateStructuredContent(result, createDocumentBlockOutputSchema);
       expect(output.kind).toBe("RichText");
       const value = await DocumentBlockTestHelper.getPropertyValue(documentId, ALIASES.richText);

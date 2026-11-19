@@ -104,6 +104,7 @@ exports[`create-document-block Library elements should insert a Library Element 
 {
   "content": [],
   "structuredContent": {
+    "kind": "BlockList",
     "message": "Created 1 block in BlockList property 'blockList'",
     "results": [
       {
@@ -165,6 +166,7 @@ exports[`create-document-block expectedKind should create the block and return i
     "results": [
       {
         "contentKey": "00000000-0000-0000-0000-000000000000",
+        "layoutKey": "00000000-0000-0000-0000-000000000000",
         "message": "Created block",
         "success": true,
       },
