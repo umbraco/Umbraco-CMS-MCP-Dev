@@ -2,7 +2,7 @@ name: release-tag
 
 on:
   push:
-    branches: [main]
+    branches: [v19/main]
 
 permissions:
   contents: write # push tags + create releases
