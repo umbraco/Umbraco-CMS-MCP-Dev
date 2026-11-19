@@ -8,10 +8,12 @@ exports[`find-user should find user by name 1`] = `
       {
         "avatarUrls": [],
         "createDate": "NORMALIZED_DATE",
+        "documentBlueprintStartNodeIds": [],
         "documentStartNodeIds": [],
         "elementStartNodeIds": [],
         "email": "test-user-find-NORMALIZED@example.com",
         "failedLoginAttempts": 0,
+        "hasDocumentBlueprintRootAccess": false,
         "hasDocumentRootAccess": false,
         "hasElementRootAccess": false,
         "hasMediaRootAccess": false,

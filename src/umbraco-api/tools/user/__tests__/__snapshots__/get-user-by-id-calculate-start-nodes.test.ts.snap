@@ -4,8 +4,10 @@ exports[`get-user-by-id-calculate-start-nodes should calculate start nodes for a
 {
   "content": [],
   "structuredContent": {
+    "documentBlueprintStartNodeIds": [],
     "documentStartNodeIds": [],
     "elementStartNodeIds": [],
+    "hasDocumentBlueprintRootAccess": true,
     "hasDocumentRootAccess": true,
     "hasElementRootAccess": true,
     "hasMediaRootAccess": true,

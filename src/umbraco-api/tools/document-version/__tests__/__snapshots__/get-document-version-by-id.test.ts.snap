@@ -25,7 +25,6 @@ exports[`get-document-version-by-id should get document version by ID 1`] = `
         "publishDate": "NORMALIZED_DATE",
         "scheduledPublishDate": null,
         "scheduledUnpublishDate": null,
-        "segment": null,
         "state": "Published",
         "updateDate": "NORMALIZED_DATE",
       },
