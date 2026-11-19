@@ -35,7 +35,7 @@ curl -s "https://api.nuget.org/v3-flatcontainer/umbraco.cms/index.json" \
       if not any(x in v for x in ['rc','beta','alpha','pre'])))"
 ```
 
-Also confirm the matching version of `Umbraco.Cms.DevelopmentMode.Backoffice`. `Umbraco.ExaminePDF` is on its own track — check for an updated major if the CMS major changed.
+Also confirm the matching version of `Umbraco.Cms.DevelopmentMode.Backoffice`.
 
 ### 3. Update package versions in the template
 
