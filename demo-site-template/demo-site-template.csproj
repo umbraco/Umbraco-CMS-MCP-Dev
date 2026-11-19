@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="clean" Version="8.0.0" />
-    <PackageReference Include="Umbraco.Cms" Version="19.0.0-beta1" />
-    <PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="19.0.0-beta1" />
+    <PackageReference Include="Umbraco.Cms" Version="19.0.0-rc1" />
+    <PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="19.0.0-rc1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
 
