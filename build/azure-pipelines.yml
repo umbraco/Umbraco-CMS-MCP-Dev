@@ -67,12 +67,12 @@ stages:
         artifact: 'npm-package'
 
 # Runs in parallel with the build and gates the npm release: a failed SBOM (e.g. a license policy
-# violation) must stop a publish. Runs on main, or on any branch when sbom_generate is set (a forced
+# violation) must stop a publish. Runs on main and v19/main, or on any branch when sbom_generate is set (a forced
 # run is also flagged isLatest in Dependency-Track).
 - stage: GenerateSBOM
   displayName: Generate SBOM
   dependsOn: []
-  condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq('${{ parameters.sbom_generate }}', 'true'))
+  condition: or(in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/v19/main'), eq('${{ parameters.sbom_generate }}', 'true'))
   variables:
   - group: dependency-track
   jobs:
@@ -87,7 +87,7 @@ stages:
 
 - stage: Deploy_Npm
   displayName: Npm release
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), in(variables['Build.SourceBranch'], 'refs/heads/main', 'refs/heads/v19/main'))
   dependsOn:
     - BuildAndTest
     - GenerateSBOM

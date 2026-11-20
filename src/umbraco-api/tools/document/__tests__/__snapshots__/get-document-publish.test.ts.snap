@@ -24,7 +24,6 @@ exports[`get-document-publish should get the published state of a published docu
         "publishDate": "NORMALIZED_DATE",
         "scheduledPublishDate": null,
         "scheduledUnpublishDate": null,
-        "segment": null,
         "state": "Published",
         "updateDate": "NORMALIZED_DATE",
       },
