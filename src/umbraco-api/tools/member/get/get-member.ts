@@ -8,7 +8,8 @@ import {
 
 const GetMemberTool = {
   name: "get-member",
-  description: "Gets a member by Id",
+  description: `Gets a member by Id.
+  Account state (isApproved, isLockedOut, isTwoFactorEnabled, failedPasswordAttempts, lastLoginDate, lastLockoutDate, lastPasswordChangeDate) is only returned to users with access to sensitive data; otherwise Umbraco reports default values (false/0/null), which do not reflect the member's actual state.`,
   inputSchema: getMemberByIdParams.shape,
   outputSchema: getMemberByIdResponse.shape,
   annotations: { readOnlyHint: true },
