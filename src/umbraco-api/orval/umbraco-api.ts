@@ -9,6 +9,7 @@ import {
   relaxUntypedArrays,
   postProcessZodFiles,
 } from "@umbraco-cms/mcp-server-sdk/orval";
+import { relaxMinorAddedFields } from "./relax-minor-added-fields.js";
 
 /**
  * Stamps the Umbraco major this server targets into a generated constant.
@@ -34,7 +35,7 @@ export const UmbManagementApiOrvalConfig = defineConfig({
       },
       override: {
         // Transformers compose: relax the schemas, then stamp the target major.
-        transformer: (spec) => stampTargetMajor(relaxUntypedArrays(spec)),
+        transformer: (spec) => stampTargetMajor(relaxMinorAddedFields(relaxUntypedArrays(spec))),
       },
     },
     output: {
@@ -63,7 +64,7 @@ export const UmbManagementApiOrvalConfig = defineConfig({
         tags: ["Temporary File"],
       },
       override: {
-        transformer: relaxUntypedArrays,
+        transformer: (spec) => relaxMinorAddedFields(relaxUntypedArrays(spec)),
       },
     },
     output: {

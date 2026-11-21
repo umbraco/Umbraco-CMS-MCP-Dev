@@ -13,9 +13,14 @@ exports[`document-blueprint-tree ancestors should get ancestor items 1`] = `
         "isFolder": true,
         "name": "_Test Folder Blueprint",
         "parent": null,
+        "variants": [],
       },
       {
-        "documentType": null,
+        "documentType": {
+          "collection": null,
+          "icon": "icon-home color-blue",
+          "id": "00000000-0000-0000-0000-000000000000",
+        },
         "flags": [],
         "hasChildren": false,
         "id": "00000000-0000-0000-0000-000000000000",
@@ -24,6 +29,15 @@ exports[`document-blueprint-tree ancestors should get ancestor items 1`] = `
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
         },
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Child Blueprint",
+            "state": "Draft",
+          },
+        ],
       },
     ],
   },
@@ -58,6 +72,15 @@ exports[`document-blueprint-tree children should get child items 1`] = `
         "parent": {
           "id": "00000000-0000-0000-0000-000000000000",
         },
+        "variants": [
+          {
+            "culture": null,
+            "flags": [],
+            "id": "00000000-0000-0000-0000-000000000000",
+            "name": "_Test Child Blueprint",
+            "state": "Draft",
+          },
+        ],
       },
     ],
     "nextCursor": undefined,

@@ -14,6 +14,7 @@ describe("get-imaging-resize-urls", () => {
     const result = await GetImagingResizeUrlsTool.handler(
       {
         id: [TEST_MEDIA_UID],
+        dataTypeId: undefined,
         height: 200,
         width: 200,
         mode: undefined,
