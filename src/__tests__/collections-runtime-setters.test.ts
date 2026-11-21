@@ -22,10 +22,10 @@ import { MediaCollection } from "../umbraco-api/tools/media/index.js";
 // runtime-context.ts's internals in isolation.
 describe("./collections exports the runtime setters src/index.ts uses at startup (#563)", () => {
   // jest.setup.ts primes the shared runtime-context singleton with
-  // '18.0.0' and setAllowFilePathUploads defaults to false; restore both
+  // '18.1.0' and setAllowFilePathUploads defaults to false; restore both
   // after each test so this file doesn't leak state into others.
   afterEach(() => {
-    setUmbracoVersion("18.0.0");
+    setUmbracoVersion("18.1.0");
     setAllowFilePathUploads(false);
   });
 

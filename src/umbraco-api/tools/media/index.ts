@@ -36,7 +36,7 @@ import GetRecycleBinMediaOriginalParentTool from "./get/get-recycle-bin-media-or
 import GetMediaTypeSchemaTool from "./get/get-media-type-schema.js";
 import { CurrentUserResponseModel } from "@/umbraco-api/schemas/index.js";
 import { AuthorizationPolicies } from "auth/umbraco-auth-policies.js";
-import { isFilePathUploadAllowed } from "../../runtime-context.js";
+import { isFilePathUploadAllowed, isUmbracoAtLeast } from "../../runtime-context.js";
 import {
   type ToolCollectionExport,
   type ToolDefinition,
@@ -49,7 +49,7 @@ export const MediaCollection: ToolCollectionExport = {
     description: 'Media asset management and organization',
     dependencies: ['temporary-file']
   },
-  tools: (user: CurrentUserResponseModel) => {
+  tools: (user: CurrentUserResponseModel, options?: { umbracoVersion?: string }) => {
     const tools: ToolDefinition<any, any>[] = [];
 
     tools.push(GetMediaByIdTool);
@@ -74,8 +74,11 @@ export const MediaCollection: ToolCollectionExport = {
       tools.push(ValidateMediaTool);
       tools.push(ValidateMediaUpdateTool);
       tools.push(SortMediaTool);
-      tools.push(SortMediaChildrenTool);
-      tools.push(SortMediaRootChildrenTool);
+      // sort-children endpoints introduced in Umbraco 18.1; omit on older versions.
+      if (isUmbracoAtLeast(18, 1, options?.umbracoVersion)) {
+        tools.push(SortMediaChildrenTool);
+        tools.push(SortMediaRootChildrenTool);
+      }
       tools.push(GetMediaByIdArrayTool);
       tools.push(MoveMediaTool);
       tools.push(GetMediaAuditLogTool);
