@@ -10,7 +10,7 @@ dotenv.config({ path: '.env' });
 // Prime the runtime context with a server version so version-gated code (via
 // isUmbracoAtLeast) behaves as it would against a live instance. Override with
 // the MCP_TEST_UMBRACO_VERSION env var to target a different version.
-setUmbracoVersion(process.env.MCP_TEST_UMBRACO_VERSION ?? '18.0.0');
+setUmbracoVersion(process.env.MCP_TEST_UMBRACO_VERSION ?? '18.1.0');
 
 
 // Set allowed media paths for tests (allow project root for test files)
