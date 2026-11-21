@@ -6,6 +6,7 @@ exports[`get-media-by-id-array should get media items by id array 1`] = `
   "structuredContent": {
     "items": [
       {
+        "extension": "jpg",
         "flags": [],
         "hasChildren": false,
         "id": "00000000-0000-0000-0000-000000000000",
