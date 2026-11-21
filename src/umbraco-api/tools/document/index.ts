@@ -60,6 +60,7 @@ import {
   type ToolCollectionExport,
   type ToolDefinition,
 } from "@umbraco-cms/mcp-server-sdk";
+import { isUmbracoAtLeast } from "../../runtime-context.js";
 
 export const DocumentCollection: ToolCollectionExport = {
   metadata: {
@@ -68,7 +69,7 @@ export const DocumentCollection: ToolCollectionExport = {
     description: 'Document content management and publishing',
     dependencies: []
   },
-  tools: (user: CurrentUserResponseModel) => {
+  tools: (user: CurrentUserResponseModel, options?: { umbracoVersion?: string }) => {
   const tools: ToolDefinition<any, any>[] = [];
 
   if (AuthorizationPolicies.TreeAccessDocuments(user)) {
@@ -79,7 +80,10 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(GetDocumentTypeSchemaTool);
     tools.push(CopyDocumentTool);
     tools.push(CreateDocumentTool);
-    tools.push(CreateAndPublishDocumentTool);
+    // create-and-publish endpoint introduced in Umbraco 18.1; omit on older versions.
+    if (isUmbracoAtLeast(18, 1, options?.umbracoVersion)) {
+      tools.push(CreateAndPublishDocumentTool);
+    }
     tools.push(PostDocumentPublicAccessTool);
     tools.push(DeleteDocumentTool);
     tools.push(DeleteDocumentPublicAccessTool);
@@ -94,11 +98,17 @@ export const DocumentCollection: ToolCollectionExport = {
     tools.push(PublishDocumentTool);
     tools.push(PublishDocumentWithDescendantsTool);
     tools.push(SortDocumentTool);
-    tools.push(SortDocumentChildrenTool);
-    tools.push(SortDocumentRootChildrenTool);
+    // sort-children endpoints introduced in Umbraco 18.1; omit on older versions.
+    if (isUmbracoAtLeast(18, 1, options?.umbracoVersion)) {
+      tools.push(SortDocumentChildrenTool);
+      tools.push(SortDocumentRootChildrenTool);
+    }
     tools.push(UnpublishDocumentTool);
     tools.push(UpdateDocumentTool);
-    tools.push(UpdateAndPublishDocumentTool);
+    // update-and-publish endpoint introduced in Umbraco 18.1; omit on older versions.
+    if (isUmbracoAtLeast(18, 1, options?.umbracoVersion)) {
+      tools.push(UpdateAndPublishDocumentTool);
+    }
     tools.push(UpdateDocumentPropertiesTool);
     tools.push(UpdateDocumentNameTool);
     tools.push(UpdateBlockPropertyTool);
