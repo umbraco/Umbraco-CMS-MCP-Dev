@@ -8,6 +8,7 @@ exports[`get-media-ancestors-batch should return an ancestor chain for a child m
       {
         "ancestors": [
           {
+            "extension": null,
             "flags": [],
             "hasChildren": true,
             "id": "00000000-0000-0000-0000-000000000000",
