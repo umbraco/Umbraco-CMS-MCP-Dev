@@ -17,7 +17,8 @@ describe("get-imaging-resize-urls", () => {
         height: 200,
         width: 200,
         mode: undefined,
-        format: undefined
+        format: undefined,
+        dataTypeId: undefined
       },
       createMockRequestHandlerExtra()
     );
