@@ -7,7 +7,7 @@ import packageJson from "../package.json" with { type: "json" };
 import { UmbracoToolFactory } from "./umbraco-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { prepareStartupVersionCheck, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
+import { prepareStartupVersionCheck, withVersionCheckDeadline, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
 import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { availableCollections } from "./umbraco-api/tools/collection-registry.js";
@@ -51,10 +51,16 @@ const main = async () => {
   // command (including ones, like --list-tools, that don't need the version).
   // The cached failure is rethrown into the guard's client below, which turns
   // it into an "unable to verify" warning without repeating the request.
+  //
+  // The lookup runs under the SDK's version-check deadline (5s by default).
+  // The guard's own deadline only wraps the cached client below, so without
+  // this a /server/information that never answers would hang startup — and a
+  // parent server chaining mcp-dev would never finish `initialize`. A timeout
+  // is handled like any other failure: a warning, no block.
   let serverInfo: Awaited<ReturnType<typeof client.getServerInformation>> | undefined;
   let serverInfoError: unknown;
   try {
-    serverInfo = await client.getServerInformation();
+    serverInfo = await withVersionCheckDeadline((signal) => client.getServerInformation({ signal }));
   } catch (error) {
     serverInfoError = error;
   }
