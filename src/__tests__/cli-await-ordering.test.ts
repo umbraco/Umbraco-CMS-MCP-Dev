@@ -49,9 +49,7 @@ describe("CLI bootstrap ordering (regression for #424)", () => {
       StdioServerTransport: FakeTransport,
     }));
     jest.unstable_mockModule("@umbraco-cms/mcp-server-sdk", () => ({
-      checkUmbracoVersion: jest.fn(async () => undefined),
-      configureVersionCheckHook: jest.fn(),
-      getVersionCheckMessage: jest.fn(() => undefined),
+      prepareStartupVersionCheck: jest.fn(async () => ({ message: null, version: null, armBlock: () => {} })),
       configureApiClient: jest.fn(),
       initializeUmbracoFetch: jest.fn(),
       getServerConfig: jest.fn(async () => ({

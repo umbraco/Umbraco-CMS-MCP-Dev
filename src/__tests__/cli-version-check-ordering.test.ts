@@ -26,12 +26,14 @@ import { jest } from "@jest/globals";
 describe("CLI version-check ordering (regression for #426 / PR #540 review)", () => {
   const realExit = process.exit;
   const originalExpectedMajorEnv = process.env.UMBRACO_EXPECTED_MAJOR;
+  const originalParentCheckedEnv = process.env.UMBRACO_MCP_PARENT_CHECKED_MAJOR;
 
   beforeEach(() => {
     // A real UMBRACO_EXPECTED_MAJOR in the test process's environment (e.g.
     // from .env) would override UMBRACO_TARGET_MAJOR and silently change what
     // this test's mismatch means to src/index.ts.
     delete process.env.UMBRACO_EXPECTED_MAJOR;
+    delete process.env.UMBRACO_MCP_PARENT_CHECKED_MAJOR;
   });
 
   afterEach(() => {
@@ -43,60 +45,77 @@ describe("CLI version-check ordering (regression for #426 / PR #540 review)", ()
     } else {
       process.env.UMBRACO_EXPECTED_MAJOR = originalExpectedMajorEnv;
     }
+    if (originalParentCheckedEnv === undefined) {
+      delete process.env.UMBRACO_MCP_PARENT_CHECKED_MAJOR;
+    } else {
+      process.env.UMBRACO_MCP_PARENT_CHECKED_MAJOR = originalParentCheckedEnv;
+    }
   });
 
-  // Mirrors `VersionCheckService` + `checkUmbracoVersion` + `withPreExecutionCheck`
-  // from `@umbraco-cms/mcp-server-sdk` closely enough to exercise the same
-  // blocking behaviour, without depending on a live Umbraco instance.
+  // Mirrors `prepareStartupVersionCheck` from `@umbraco-cms/mcp-server-sdk`
+  // closely enough to exercise the same behaviour (including the chained-child
+  // skip via UMBRACO_MCP_PARENT_CHECKED_MAJOR), without depending on a live
+  // Umbraco instance.
   function createVersionCheckState() {
+    const calls: string[] = [];
     let blocked = false;
-    let message: string | null = null;
-    let preExecutionHook: (() => { blocked: boolean; message?: string; clearAfterUse?: () => void } | undefined) | null = null;
 
-    const checkUmbracoVersion = jest.fn(
-      async (options: { expectedUmbracoMajor: string; client: { getServerInformation: () => Promise<{ version: string }> } }) => {
+    const prepareStartupVersionCheck = jest.fn(
+      async (options: {
+        expectedUmbracoMajorOverride?: string | null;
+        generatedUmbracoMajor: string;
+        client: { getServerInformation: () => Promise<{ version: string }> };
+      }) => {
+        calls.push("prepare");
+        const expected = options.expectedUmbracoMajorOverride?.trim() || options.generatedUmbracoMajor;
+        if (process.env.UMBRACO_MCP_PARENT_CHECKED_MAJOR === expected) {
+          return { message: null, version: null, armBlock: () => { calls.push("armBlock"); } };
+        }
+        let message: string | null = null;
+        let mismatch = false;
+        let version: string | null = null;
         try {
-          const info = await options.client.getServerInformation();
-          const actualMajor = info.version.split(".")[0];
-          if (actualMajor === options.expectedUmbracoMajor) {
-            message = null;
-            blocked = false;
-            return;
+          version = (await options.client.getServerInformation()).version;
+          const actualMajor = version.split(".")[0];
+          if (actualMajor !== expected) {
+            mismatch = true;
+            message = `⚠️ Version Mismatch: Connected to Umbraco ${actualMajor}.x, but this server targets Umbraco ${expected}.x`;
+            console.error(message);
           }
-          message = `⚠️ Version Mismatch: Connected to Umbraco ${actualMajor}.x, but this server targets Umbraco ${options.expectedUmbracoMajor}.x`;
-          blocked = true;
-          console.error(message);
         } catch (error) {
           message = `⚠️ Unable to verify Umbraco version compatibility: ${error instanceof Error ? error.message : "Unknown error"}`;
-          blocked = false;
           console.error(message);
         }
+        return {
+          message,
+          version,
+          armBlock: () => {
+            calls.push("armBlock");
+            blocked = mismatch;
+          },
+        };
       },
     );
 
-    const configureVersionCheckHook = jest.fn(() => {
-      preExecutionHook = () =>
-        blocked ? { blocked: true, message: message ?? undefined, clearAfterUse: () => { blocked = false; } } : undefined;
-    });
-
-    const getVersionCheckMessage = jest.fn(() => message);
-
-    return { checkUmbracoVersion, configureVersionCheckHook, getVersionCheckMessage };
+    return { prepareStartupVersionCheck, calls, isBlocked: () => blocked };
   }
 
+  const serverOptions: unknown[] = [];
+
   function mockModules(state: ReturnType<typeof createVersionCheckState>, handleCliCommands: ReturnType<typeof jest.fn>) {
+    serverOptions.length = 0;
     class FakeTransport {}
     class FakeServer {
-      constructor(..._args: unknown[]) {}
+      constructor(_info: unknown, options?: unknown) {
+        serverOptions.push(options);
+      }
       async connect(..._args: unknown[]) {}
     }
 
     jest.unstable_mockModule("@modelcontextprotocol/sdk/server/mcp.js", () => ({ McpServer: FakeServer }));
     jest.unstable_mockModule("@modelcontextprotocol/sdk/server/stdio.js", () => ({ StdioServerTransport: FakeTransport }));
     jest.unstable_mockModule("@umbraco-cms/mcp-server-sdk", () => ({
-      checkUmbracoVersion: state.checkUmbracoVersion,
-      configureVersionCheckHook: state.configureVersionCheckHook,
-      getVersionCheckMessage: state.getVersionCheckMessage,
+      prepareStartupVersionCheck: state.prepareStartupVersionCheck,
       configureApiClient: jest.fn(),
       initializeUmbracoFetch: jest.fn(),
       getServerConfig: jest.fn(async () => ({ cliFlags: { callTool: "get-server-information" } })),
@@ -165,5 +184,57 @@ describe("CLI version-check ordering (regression for #426 / PR #540 review)", ()
     expect(handleCliCommands).toHaveBeenCalled();
     expect(logSpy).toHaveBeenCalledWith("tool table");
     expect(exitSpy).toHaveBeenCalledWith(0);
+  });
+
+  // The mismatched version is built from the generated major so the test
+  // doesn't depend on which major this branch targets.
+  async function mismatchedVersion() {
+    const { UMBRACO_TARGET_MAJOR } = await import("../config/umbraco-target.generated.js");
+    return { targetMajor: UMBRACO_TARGET_MAJOR, version: `${Number(UMBRACO_TARGET_MAJOR) + 1}.0.0` };
+  }
+
+  it("standalone: on a mismatch, warns in instructions and arms the block only after CLI handling", async () => {
+    const { targetMajor, version } = await mismatchedVersion();
+    const state = createVersionCheckState();
+    const handleCliCommands = jest.fn(async () => {
+      state.calls.push("handleCliCommands");
+    });
+
+    mockModules(state, handleCliCommands);
+    mockClient(async () => ({ version }));
+    jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await import("../index.js");
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(state.prepareStartupVersionCheck).toHaveBeenCalledWith(
+      expect.objectContaining({ generatedUmbracoMajor: targetMajor }),
+    );
+    expect(state.calls).toEqual(["prepare", "handleCliCommands", "armBlock"]);
+    expect(state.isBlocked()).toBe(true);
+    expect(serverOptions[0]).toEqual({ instructions: expect.stringContaining("Version Mismatch") });
+  });
+
+  it("chained (#593): when the parent checked the same major, neither blocks nor warns", async () => {
+    const { targetMajor, version } = await mismatchedVersion();
+    process.env.UMBRACO_MCP_PARENT_CHECKED_MAJOR = targetMajor;
+    const state = createVersionCheckState();
+    const handleCliCommands = jest.fn(async () => {});
+
+    mockModules(state, handleCliCommands);
+    const getServerInformation = jest.fn(async () => ({ version }));
+    mockClient(getServerInformation);
+    const runtimeContext = { setUmbracoVersion: jest.fn(), setAllowFilePathUploads: jest.fn() };
+    jest.unstable_mockModule("../umbraco-api/runtime-context.js", () => runtimeContext);
+
+    await import("../index.js");
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(state.isBlocked()).toBe(false);
+    expect(serverOptions[0]).toBeUndefined();
+    // mcp-dev still fetches the version itself, so version-gated tools keep
+    // working even though the guard made no request.
+    expect(getServerInformation).toHaveBeenCalledTimes(1);
+    expect(runtimeContext.setUmbracoVersion).toHaveBeenCalledWith(version);
   });
 });

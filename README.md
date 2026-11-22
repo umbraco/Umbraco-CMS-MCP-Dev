@@ -43,6 +43,8 @@ Download and install the [Claude Desktop app](https://claude.ai/download), then 
 
 > **Tip:** Pin `@umbraco-cms/mcp-dev` to your site's Umbraco major (e.g. `@17` above, or `@18` for an Umbraco 18.x site) rather than `@latest`. Tool schemas track the Management API of the package's own major, so a mismatched major can fail confusingly mid-task once a tool's shape has drifted. The server checks the connected site's version on startup and warns on a mismatch, but pinning avoids it altogether.
 
+> **Chaining from another MCP server:** a parent server that runs `@umbraco-cms/mcp-dev` as a chained subprocess and runs its own Umbraco-major check can set `UMBRACO_MCP_PARENT_CHECKED_MAJOR` in the child's env (build it with `chainedVersionCheckEnv()` from `@umbraco-cms/mcp-server-sdk`). When it names the major this package targets, mcp-dev skips its own check, so a mismatch is only reported once. It's meant for parent servers only and isn't an opt-out for end users: a server built for a different major ignores it.
+
 ## Documentation
 
 For complete installation instructions, configuration options, tool listings, and usage examples, see the full documentation:
