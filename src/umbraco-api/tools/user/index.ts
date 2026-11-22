@@ -20,6 +20,7 @@ import {
   type ToolCollectionExport,
   type ToolDefinition,
 } from "@umbraco-cms/mcp-server-sdk";
+import { isUmbracoAtLeast } from "../../runtime-context.js";
 
 export const UserCollection: ToolCollectionExport = {
   metadata: {
@@ -28,7 +29,7 @@ export const UserCollection: ToolCollectionExport = {
     description: 'User account management and administration',
     dependencies: ['temporary-file']
   },
-  tools: (user: CurrentUserResponseModel) => {
+  tools: (user: CurrentUserResponseModel, options?: { umbracoVersion?: string }) => {
     const tools: ToolDefinition<any, any>[] = [];
 
     // Self-service tools (available to all authenticated users)
@@ -48,7 +49,10 @@ export const UserCollection: ToolCollectionExport = {
       tools.push(GetItemUserTool);
       tools.push(GetUserConfigurationTool);
       tools.push(GetUserByIdCalculateStartNodesTool);
-      tools.push(GetUserBatchTool);
+      // batch endpoint introduced in Umbraco 18.1; omit on older versions.
+      if (isUmbracoAtLeast(18, 1, options?.umbracoVersion)) {
+        tools.push(GetUserBatchTool);
+      }
       tools.push(UploadUserAvatarByIdTool);
       tools.push(DeleteUserAvatarByIdTool);
     }

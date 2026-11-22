@@ -54,6 +54,7 @@ import {
   type ToolCollectionExport,
   type ToolDefinition,
 } from "@umbraco-cms/mcp-server-sdk";
+import { isUmbracoAtLeast } from "../../runtime-context.js";
 
 export const ElementCollection: ToolCollectionExport = {
   metadata: {
@@ -62,13 +63,16 @@ export const ElementCollection: ToolCollectionExport = {
     description: 'Element content management and publishing',
     dependencies: []
   },
-  tools: (user: CurrentUserResponseModel) => {
+  tools: (user: CurrentUserResponseModel, options?: { umbracoVersion?: string }) => {
     const tools: ToolDefinition<any, any>[] = [];
 
     if (AuthorizationPolicies.TreeAccessElements(user)) {
       // Read
       tools.push(GetElementByIdTool);
-      tools.push(GetElementPublishedTool);
+      // published endpoint introduced in Umbraco 18.1; omit on older versions.
+      if (isUmbracoAtLeast(18, 1, options?.umbracoVersion)) {
+        tools.push(GetElementPublishedTool);
+      }
       tools.push(GetElementConfigurationTool);
       tools.push(GetElementAuditLogTool);
       tools.push(GetElementAreReferencedTool);
@@ -92,12 +96,18 @@ export const ElementCollection: ToolCollectionExport = {
       tools.push(GetRecycleBinElementSiblingsTool);
       // Create / actions
       tools.push(CreateElementTool);
-      tools.push(CreateAndPublishElementTool);
+      // create-and-publish endpoint introduced in Umbraco 18.1; omit on older versions.
+      if (isUmbracoAtLeast(18, 1, options?.umbracoVersion)) {
+        tools.push(CreateAndPublishElementTool);
+      }
       tools.push(CopyElementTool);
       tools.push(ValidateElementTool);
       tools.push(RollbackElementVersionTool);
       tools.push(UpdateElementTool);
-      tools.push(UpdateAndPublishElementTool);
+      // update-and-publish endpoint introduced in Umbraco 18.1; omit on older versions.
+      if (isUmbracoAtLeast(18, 1, options?.umbracoVersion)) {
+        tools.push(UpdateAndPublishElementTool);
+      }
       tools.push(UpdateElementPropertiesTool);
       tools.push(UpdateElementBlockPropertyTool);
       tools.push(MoveElementTool);
