@@ -82,8 +82,8 @@ describe("CLI --call with piped/open stdin", () => {
 
   // Regression test for the PR #540 review: a major-version mismatch must
   // *warn*, never *block*, on the `--call` path. See the long comment in
-  // src/index.ts above the `checkUmbracoVersion`/`configureVersionCheckHook`
-  // ordering for why the hook must only be configured after
+  // src/index.ts above `prepareStartupVersionCheck` / `versionCheck.armBlock()`
+  // ordering for why the block must only be armed after
   // `handleCliCommands` runs. This spawns the real built CLI against the
   // live Umbraco instance (unlike cli-version-check-ordering.test.ts, which
   // mocks the SDK boundary), so it exercises the actual pre-execution check
