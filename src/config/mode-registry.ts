@@ -7,14 +7,14 @@ export const baseModes: ToolModeDefinition[] = [
   {
     name: 'content',
     displayName: 'Content Management',
-    description: 'Document creation, editing, versioning, and blueprints',
-    collections: ['document', 'document-version', 'document-blueprint', 'tag']
+    description: 'Documents, Library elements, versioning, and blueprints',
+    collections: ['document', 'element', 'document-version', 'document-blueprint', 'tag']
   },
   {
     name: 'content-modeling',
     displayName: 'Content Modeling',
     description: 'Document and media structure: types, data types, and content to see the output',
-    collections: ['document-type', 'data-type', 'media-type']
+    collections: ['document-type', 'data-type', 'media-type', 'property-type']
   },
   {
     name: 'front-end',
