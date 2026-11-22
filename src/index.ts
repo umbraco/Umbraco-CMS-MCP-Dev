@@ -7,7 +7,7 @@ import packageJson from "../package.json" with { type: "json" };
 import { UmbracoToolFactory } from "./umbraco-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { checkUmbracoVersion, configureVersionCheckHook, getVersionCheckMessage, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
+import { prepareStartupVersionCheck, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
 import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { availableCollections } from "./umbraco-api/tools/collection-registry.js";
@@ -40,29 +40,17 @@ const main = async () => {
     throw describeUnreachableServer(error, config.auth.baseUrl);
   }
 
-  // Check Umbraco version compatibility (logs result internally) and capture the
-  // version so collection registrations can gate tools whose endpoints were
-  // introduced in newer Umbraco releases.
+  // Fetch the connected instance's version ourselves: collection registrations
+  // need it (setUmbracoVersion) to gate tools whose endpoints were introduced
+  // in newer Umbraco releases. The SDK's startup guard below makes no request
+  // at all when a parent server already checked the same major (see the
+  // chained-child note below), so it can't be the only source of the version.
   //
-  // This must run before handleCliCommands below: handleCliCommands's --call
-  // branch invokes a tool handler directly and calls process.exit() itself,
-  // so anything placed after it never runs for `--call`. Running the check
-  // here instead means every CLI entry point — the MCP stdio server, --call,
-  // and the introspection flags (--list-tools, --describe-tool, etc, which
-  // already authenticate above via getUserCurrent) — gets the same
-  // major-mismatch warning instead of only the MCP tool-call path. See #426.
-  //
-  // getServerInformation() is awaited outside checkUmbracoVersion's own
-  // try/catch, so a failure here is caught locally: an unreachable or
-  // unauthorised /server/information must not throw out of main() and kill
-  // every CLI command (including ones, like --list-tools, that don't need
-  // the version at all). Leaving serverInfo undefined makes the wrapper below
-  // rethrow this same cached failure into checkUmbracoVersion's own
-  // try/catch, which logs its "unable to verify" message instead — the call
-  // itself isn't repeated. Only the fetch is guarded here: setUmbracoVersion
-  // is a trivial assignment that can't fail on its own, and keeping it
-  // outside the try means a future change to it can't inherit this call's
-  // error handling by accident.
+  // A failure is caught locally: an unreachable or unauthorised
+  // /server/information must not throw out of main() and kill every CLI
+  // command (including ones, like --list-tools, that don't need the version).
+  // The cached failure is rethrown into the guard's client below, which turns
+  // it into an "unable to verify" warning without repeating the request.
   let serverInfo: Awaited<ReturnType<typeof client.getServerInformation>> | undefined;
   let serverInfoError: unknown;
   try {
@@ -73,14 +61,27 @@ const main = async () => {
   if (serverInfo) {
     setUmbracoVersion(serverInfo.version);
   }
-  await checkUmbracoVersion({
+
+  // Umbraco-major guard. Runs before handleCliCommands so every CLI entry
+  // point (--call, --list-tools, ...) prints the mismatch warning (#426);
+  // handleCliCommands exits the process itself, so anything after it never
+  // runs for those flags. Arming the one-time block is deferred until after
+  // it (versionCheck.armBlock() below), so --call warns rather than refuses.
+  //
+  // Chained use (#593): a parent server that runs its own guard (e.g. the
+  // Umbraco Editor MCP) sets UMBRACO_MCP_PARENT_CHECKED_MAJOR in our spawn env
+  // via the SDK's chainedVersionCheckEnv(). When it names the major this
+  // server targets, the guard is skipped entirely: no request, no block, no
+  // `instructions` warning, so the user isn't blocked twice for one mismatch.
+  // A parent that checked a different major doesn't switch our check off.
+  //
+  // UMBRACO_TARGET_MAJOR is stamped into src/config/umbraco-target.generated.ts
+  // by the orval target-major transformer; UMBRACO_EXPECTED_MAJOR overrides it
+  // (a blank value falls back to the generated major).
+  const versionCheck = await prepareStartupVersionCheck({
+    expectedUmbracoMajorOverride: process.env.UMBRACO_EXPECTED_MAJOR,
+    generatedUmbracoMajor: UMBRACO_TARGET_MAJOR,
     mcpVersion: packageJson.version,
-    // UMBRACO_TARGET_MAJOR is stamped into src/config/umbraco-target.generated.ts
-    // by the orval target-major transformer, from the Umbraco instance the API
-    // client was generated against. Override to point at a different major.
-    // (`?.trim() ||`, not `??`: an env var set to an empty string must still
-    // fall back, or the check silently no-ops with no log output at all.)
-    expectedUmbracoMajor: process.env.UMBRACO_EXPECTED_MAJOR?.trim() || UMBRACO_TARGET_MAJOR,
     client: {
       getServerInformation: async () => {
         if (serverInfo) return serverInfo;
@@ -115,19 +116,15 @@ const main = async () => {
 
   // Reaching here means no CLI flag matched (handleCliCommands exits the
   // process itself for every one it handles), so we're about to start the
-  // real MCP stdio server. Only now does a version mismatch gate tool
-  // execution: checkUmbracoVersion above already logged the warning
-  // unconditionally (including for --call and the introspection flags), but
-  // configuring this hook any earlier would also block the --call branch's
-  // direct tool.handler() invocation above, turning "warn" into "refuse" for
-  // a warn-only check. This one gates the MCP path's *next* tool call with a
-  // warning, then clears itself — a one-time speed bump, not a persistent
-  // block.
-  configureVersionCheckHook();
+  // real MCP stdio server. Only now does a mismatch gate tool execution:
+  // arming it any earlier would also block the --call branch's direct
+  // tool.handler() invocation above. It blocks the *next* tool call once,
+  // then clears itself — a one-time speed bump, not a persistent block.
+  versionCheck.armBlock();
 
   // Surface any mismatch warning to the client during `initialize` — most hosts
   // fold `instructions` into the model's system prompt.
-  const versionCheckMessage = getVersionCheckMessage();
+  const versionCheckMessage = versionCheck.message;
 
   // Create an MCP server
   const server = new McpServer(
