@@ -1,3 +1,4 @@
+import { DEFAULT_VERSION_CHECK_TIMEOUT_MS } from "@umbraco-cms/mcp-server-sdk";
 import { describeUnreachableServer, formatFatalError, isDebugEnabled, DEBUG_ENV_VAR } from "../startup-errors.js";
 
 // Covers #549: fatal start-up errors print once, and an unreachable site
@@ -29,6 +30,14 @@ describe("startup-errors", () => {
       const result = describeUnreachableServer(fetchFailed(), baseUrl) as Error;
 
       expect(result.message).toBe(`Could not reach Umbraco at ${baseUrl} (fetch failed)`);
+    });
+
+    it("rewrites a timeout (#688: AbortSignal.timeout firing on the token wait or getUserCurrent) with the deadline", () => {
+      const original = new DOMException("The operation was aborted due to timeout", "TimeoutError");
+      const result = describeUnreachableServer(original, baseUrl) as Error;
+
+      expect(result.message).toBe(`Could not reach Umbraco at ${baseUrl} (no response within ${DEFAULT_VERSION_CHECK_TIMEOUT_MS}ms)`);
+      expect(result.cause).toBe(original);
     });
 
     it("returns any other error unchanged", () => {

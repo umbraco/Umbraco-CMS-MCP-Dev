@@ -152,6 +152,11 @@ describe("CLI version-check ordering (regression for #426 / PR #540 review)", ()
     jest.unstable_mockModule("@umbraco-cms/mcp-server-sdk", () => ({
       prepareStartupVersionCheck: state.prepareStartupVersionCheck,
       withVersionCheckDeadline: state.withVersionCheckDeadline,
+      // Short stand-in for the SDK's real 5000 so the getUserCurrent-hang
+      // tests below are fast; index.ts and startup-errors.ts both import
+      // this from the same (mocked) module specifier, so the deadline and
+      // the "no response within <N>ms" message stay in sync automatically.
+      DEFAULT_VERSION_CHECK_TIMEOUT_MS: TEST_DEADLINE_MS,
       configureApiClient: jest.fn(),
       initializeUmbracoFetch: jest.fn(),
       getServerConfig: jest.fn(async () => ({ cliFlags: { callTool: "get-server-information" } })),
@@ -248,6 +253,100 @@ describe("CLI version-check ordering (regression for #426 / PR #540 review)", ()
     expect(errorSpy.mock.calls.some((call) => String(call[0]).includes("did not respond"))).toBe(true);
     expect(state.calls).toEqual(["prepare", "handleCliCommands", "armBlock"]);
     expect(state.isBlocked()).toBe(false);
+  });
+
+  // #688: getUserCurrent() runs before any version check (it's the very
+  // first request main() makes), so neither of the above hanging-lookup
+  // protections cover it. A real UmbracoManagementClient call waits for an
+  // OAuth token first and then issues the GET — either step can hang
+  // independently against a server that accepts connections but never
+  // answers, so both are modelled here. Unlike the getServerInformation
+  // case, this isn't routed through (the mocked) withVersionCheckDeadline:
+  // index.ts bounds it directly with `AbortSignal.timeout(
+  // DEFAULT_VERSION_CHECK_TIMEOUT_MS)`, and a timeout here must fail startup
+  // rather than downgrade to a warning.
+  it("does not hang startup when the OAuth token wait never responds: getUserCurrent times out and startup fails", async () => {
+    const state = createVersionCheckState();
+    const handleCliCommands = jest.fn(async () => {
+      state.calls.push("handleCliCommands");
+    });
+
+    mockModules(state, handleCliCommands);
+    let capturedSignal: AbortSignal | undefined;
+    jest.unstable_mockModule("@umb-management-client", () => ({
+      UmbracoManagementClient: {
+        getClient: () => ({
+          // The token wait hangs before the GET to /user/current is ever
+          // issued. A real fetch-based token exchange rejects with the
+          // signal's own abort reason when the signal fires; this mirrors
+          // that instead of hanging forever regardless of the signal.
+          getUserCurrent: (options?: { signal?: AbortSignal }) =>
+            new Promise((_resolve, reject) => {
+              capturedSignal = options?.signal;
+              options?.signal?.addEventListener("abort", () => reject(options.signal!.reason), { once: true });
+            }),
+          getServerInformation: async () => ({ version: "0.0.0" }),
+        }),
+      },
+    }));
+
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const exitSpy = jest.fn();
+    process.exit = exitSpy as never;
+
+    await import("../index.js");
+    await new Promise((resolve) => setTimeout(resolve, TEST_DEADLINE_MS + 100));
+
+    expect(capturedSignal?.aborted).toBe(true);
+    // Startup fails fatally (exit code 1), unlike the soft "unable to
+    // verify" warning the getServerInformation hang produces.
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    expect(
+      errorSpy.mock.calls.some((call) => String(call[0]).includes(`no response within ${TEST_DEADLINE_MS}ms`)),
+    ).toBe(true);
+    // Fails before CLI handling ever runs — there's no user to pass it.
+    expect(handleCliCommands).not.toHaveBeenCalled();
+  });
+
+  it("does not hang startup when GET /user/current never responds (token already obtained): getUserCurrent times out and startup fails", async () => {
+    const state = createVersionCheckState();
+    const handleCliCommands = jest.fn(async () => {
+      state.calls.push("handleCliCommands");
+    });
+
+    mockModules(state, handleCliCommands);
+    let capturedSignal: AbortSignal | undefined;
+    jest.unstable_mockModule("@umb-management-client", () => ({
+      UmbracoManagementClient: {
+        getClient: () => ({
+          // Unlike the token-wait case above, the token step here resolves
+          // immediately (modelled by deferring to a microtask) — only the
+          // subsequent request to /user/current never answers.
+          getUserCurrent: (options?: { signal?: AbortSignal }) =>
+            new Promise((_resolve, reject) => {
+              queueMicrotask(() => {
+                capturedSignal = options?.signal;
+                options?.signal?.addEventListener("abort", () => reject(options.signal!.reason), { once: true });
+              });
+            }),
+          getServerInformation: async () => ({ version: "0.0.0" }),
+        }),
+      },
+    }));
+
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const exitSpy = jest.fn();
+    process.exit = exitSpy as never;
+
+    await import("../index.js");
+    await new Promise((resolve) => setTimeout(resolve, TEST_DEADLINE_MS + 100));
+
+    expect(capturedSignal?.aborted).toBe(true);
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    expect(
+      errorSpy.mock.calls.some((call) => String(call[0]).includes(`no response within ${TEST_DEADLINE_MS}ms`)),
+    ).toBe(true);
+    expect(handleCliCommands).not.toHaveBeenCalled();
   });
 
   // The mismatched version is built from the generated major so the test

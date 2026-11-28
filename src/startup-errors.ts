@@ -1,3 +1,5 @@
+import { DEFAULT_VERSION_CHECK_TIMEOUT_MS } from "@umbraco-cms/mcp-server-sdk";
+
 /**
  * Helpers for reporting fatal start-up errors from src/index.ts. Kept in
  * their own module (index.ts runs main() on import) so they can be unit
@@ -33,6 +35,19 @@ export const describeUnreachableServer = (error: unknown, baseUrl: string): unkn
   if (error instanceof TypeError && error.message === "fetch failed") {
     const causeMessage = describeFetchFailureCause((error as { cause?: unknown }).cause);
     return new Error(`Could not reach Umbraco at ${baseUrl} (fetch failed${causeMessage})`, { cause: error });
+  }
+  // AbortSignal.timeout(...) firing rejects with this DOMException — both
+  // Node's fetch and the SDK's token wait use it. Checked by `.name` rather
+  // than `error instanceof DOMException`/`instanceof Error`: Node exposes
+  // DOMException as a cross-realm global (Jest's VM-modules test
+  // environment surfaces this — `new DOMException(...)` there is not
+  // `instanceof Error`), so a prototype check is unreliable here even though
+  // it works for the plain `TypeError` above. Deliberately not routed
+  // through withVersionCheckDeadline's own message: that helper's wording is
+  // for a soft "couldn't verify, tools not blocked" warning, but a timeout on
+  // this callsite is fatal to startup (#688).
+  if (error !== null && typeof error === "object" && (error as { name?: unknown }).name === "TimeoutError") {
+    return new Error(`Could not reach Umbraco at ${baseUrl} (no response within ${DEFAULT_VERSION_CHECK_TIMEOUT_MS}ms)`, { cause: error });
   }
   return error;
 };
