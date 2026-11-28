@@ -7,7 +7,7 @@ import packageJson from "../package.json" with { type: "json" };
 import { UmbracoToolFactory } from "./umbraco-api/tools/tool-factory.js";
 
 import { UmbracoManagementClient } from "@umb-management-client";
-import { prepareStartupVersionCheck, withVersionCheckDeadline, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader } from "@umbraco-cms/mcp-server-sdk";
+import { prepareStartupVersionCheck, withVersionCheckDeadline, configureApiClient, initializeUmbracoFetch, getServerConfig, handleCliCommands, createCollectionConfigLoader, DEFAULT_VERSION_CHECK_TIMEOUT_MS } from "@umbraco-cms/mcp-server-sdk";
 import { loadServerConfig, clearConfigCache, allModes, allModeNames, allSliceNames } from "./config/index.js";
 import { UMBRACO_TARGET_MAJOR } from "./config/umbraco-target.generated.js";
 import { availableCollections } from "./umbraco-api/tools/collection-registry.js";
@@ -33,9 +33,19 @@ const main = async () => {
 
   const client = UmbracoManagementClient.getClient();
 
+  // Bounded like the version check below (same default deadline), but a
+  // timeout here is fatal rather than a soft warning: this is the first
+  // request mcp-dev makes, so it also covers the OAuth token wait (the SDK's
+  // fetch client applies the same signal to the token exchange). Without a
+  // deadline, an Umbraco that accepts connections but never answers hangs
+  // startup forever — and when mcp-dev is chained under a parent server, the
+  // parent's own `initialize` never completes either (#688). This
+  // deliberately does not go through `withVersionCheckDeadline`: that
+  // helper's contract downgrades a timeout to a warning, which is the wrong
+  // story for a call startup cannot proceed without.
   let user: Awaited<ReturnType<typeof client.getUserCurrent>>;
   try {
-    user = await client.getUserCurrent();
+    user = await client.getUserCurrent({ signal: AbortSignal.timeout(DEFAULT_VERSION_CHECK_TIMEOUT_MS) });
   } catch (error) {
     throw describeUnreachableServer(error, config.auth.baseUrl);
   }
