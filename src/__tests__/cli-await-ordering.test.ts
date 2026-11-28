@@ -51,6 +51,7 @@ describe("CLI bootstrap ordering (regression for #424)", () => {
     jest.unstable_mockModule("@umbraco-cms/mcp-server-sdk", () => ({
       prepareStartupVersionCheck: jest.fn(async () => ({ message: null, version: null, armBlock: () => {} })),
       withVersionCheckDeadline: jest.fn(async (request: (signal: AbortSignal) => Promise<unknown>) => request(new AbortController().signal)),
+      DEFAULT_VERSION_CHECK_TIMEOUT_MS: 5000,
       configureApiClient: jest.fn(),
       initializeUmbracoFetch: jest.fn(),
       getServerConfig: jest.fn(async () => ({
